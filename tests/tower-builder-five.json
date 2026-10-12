@@ -1,0 +1,20 @@
+{
+ "name": "tower-builder-five",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "materials select",
+   "steps": [
+    {
+     "click": "STEEL"
+    },
+    {
+     "click": "WOOD"
+    },
+    {
+     "see": "Budget"
+    }
+   ]
+  }
+ ]
+}

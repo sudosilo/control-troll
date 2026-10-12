@@ -1,0 +1,20 @@
+{
+ "name": "birdix",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "classic mode starts",
+   "steps": [
+    {
+     "click": "CLASSIC"
+    },
+    {
+     "wait": 800
+    },
+    {
+     "painted": "#c"
+    }
+   ]
+  }
+ ]
+}

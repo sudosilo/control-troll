@@ -1,0 +1,38 @@
+{
+ "name": "diamond-driller",
+ "tests": [
+  {
+   "feature": 2,
+   "name": "build pattern from sample",
+   "steps": [
+    {
+     "clickSel": "#build"
+    },
+    {
+     "wait": 3000
+    },
+    {
+     "seeSel": "#keyBody tr, #keyBody *"
+    }
+   ]
+  },
+  {
+   "feature": 5,
+   "name": "key downloads as CSV",
+   "steps": [
+    {
+     "download": "#dlCsv"
+    }
+   ]
+  },
+  {
+   "feature": 6,
+   "name": "page downloads as PNG",
+   "steps": [
+    {
+     "download": "#dlPage"
+    }
+   ]
+  }
+ ]
+}

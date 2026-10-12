@@ -1,0 +1,47 @@
+{
+ "name": "pixelcoop-farm",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "start screen offers environments",
+   "steps": [
+    {
+     "seeSel": ".map-card"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "shop tools select",
+   "steps": [
+    {
+     "clickSel": ".map-card"
+    },
+    {
+     "wait": 800
+    },
+    {
+     "clickSel": "#btn-chicken"
+    },
+    {
+     "clickSel": "#btn-feed"
+    },
+    {
+     "seeSel": "#hud-cash"
+    }
+   ]
+  },
+  {
+   "feature": 5,
+   "name": "farm draws and speed cycles",
+   "steps": [
+    {
+     "painted": "#c"
+    },
+    {
+     "clickSel": "#btn-speed"
+    }
+   ]
+  }
+ ]
+}

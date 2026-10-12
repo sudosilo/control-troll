@@ -1,0 +1,29 @@
+{
+ "name": "equivalence-engine",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "venue list loads",
+   "steps": [
+    {
+     "seeSel": "#home-body *"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "picking a venue shows items",
+   "steps": [
+    {
+     "clickSel": "#home-body a, #home-body button, #home-body [onclick], #home-body .venue"
+    },
+    {
+     "wait": 500
+    },
+    {
+     "see": "Back"
+    }
+   ]
+  }
+ ]
+}

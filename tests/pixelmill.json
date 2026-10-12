@@ -1,0 +1,47 @@
+{
+ "name": "pixelmill",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "plot draws",
+   "steps": [
+    {
+     "wait": 2000
+    },
+    {
+     "painted": "#plot"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "pause and next program",
+   "steps": [
+    {
+     "clickSel": "#btnPause"
+    },
+    {
+     "clickSel": "#btnSkip"
+    },
+    {
+     "seeSel": "#prog"
+    }
+   ]
+  },
+  {
+   "feature": 5,
+   "name": "save PNG downloads",
+   "steps": [
+    {
+     "clickSel": "#menuBtn"
+    },
+    {
+     "wait": 400
+    },
+    {
+     "download": "#btnSave"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+{
+ "name": "mary-jane-man",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "start shows the maze",
+   "steps": [
+    {
+     "clickSel": "#startBtn"
+    },
+    {
+     "wait": 800
+    },
+    {
+     "painted": "#gameCanvas"
+    },
+    {
+     "textOf": "#lives",
+     "has": "3"
+    }
+   ]
+  },
+  {
+   "feature": 4,
+   "name": "info opens and closes",
+   "steps": [
+    {
+     "reload": true
+    },
+    {
+     "clickSel": "#infoBtn"
+    },
+    {
+     "seeSel": "#infoModal"
+    },
+    {
+     "clickSel": "#infoClose"
+    }
+   ]
+  }
+ ]
+}

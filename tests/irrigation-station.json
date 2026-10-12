@@ -1,0 +1,21 @@
+{
+ "name": "irrigation-station",
+ "tests": [
+  {
+   "feature": 2,
+   "name": "cycle runs and day advances",
+   "steps": [
+    {
+     "seeSel": "#dayText"
+    },
+    {
+     "wait": 12000
+    },
+    {
+     "textOf": "#dayText",
+     "has": "2"
+    }
+   ]
+  }
+ ]
+}

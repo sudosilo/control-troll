@@ -1,0 +1,32 @@
+{
+ "name": "checkin-kiosk-bice",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "home shows both paths",
+   "steps": [
+    {
+     "see": "Walk in"
+    },
+    {
+     "see": "reservation"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "walk in flow opens",
+   "steps": [
+    {
+     "click": "Walk in"
+    },
+    {
+     "wait": 500
+    },
+    {
+     "see": "Start over"
+    }
+   ]
+  }
+ ]
+}

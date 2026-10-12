@@ -43,7 +43,7 @@ async function runStep(page, s) {
     const el = page.locator(s.textOf).first();
     await el.waitFor({ state: "attached", timeout: STEP_TIMEOUT });
     // Inputs and text areas hold their text in value, everything else in innerText.
-    const t = await el.evaluate((n) => ("value" in n && typeof n.value === "string" && n.tagName !== "BUTTON" && n.tagName !== "LI") ? n.value : n.innerText);
+    const t = await el.evaluate((n) => ("value" in n && typeof n.value === "string" && n.tagName !== "BUTTON" && n.tagName !== "LI") ? n.value : (n.innerText !== undefined ? n.innerText : n.textContent));
     if (!t.includes(s.has)) throw new Error(s.textOf + " text is '" + t.slice(0, 80) + "', expected it to contain '" + s.has + "'");
   } else if (s.painted) {
     const shot = await page.locator(s.painted).first().screenshot({ timeout: STEP_TIMEOUT });

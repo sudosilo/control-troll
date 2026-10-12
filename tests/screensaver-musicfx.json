@@ -1,0 +1,23 @@
+{
+ "name": "screensaver-musicfx",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "modes switch and draw",
+   "steps": [
+    {
+     "click": "STARS"
+    },
+    {
+     "wait": 800
+    },
+    {
+     "painted": "#c"
+    },
+    {
+     "click": "MATRIX"
+    }
+   ]
+  }
+ ]
+}

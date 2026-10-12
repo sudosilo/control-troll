@@ -1,0 +1,32 @@
+{
+ "name": "tower-builder-one",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "materials select",
+   "steps": [
+    {
+     "clickSel": "#btn-steel"
+    },
+    {
+     "clickSel": "#btn-wood"
+    },
+    {
+     "seeSel": "#stat-budget"
+    }
+   ]
+  },
+  {
+   "feature": 5,
+   "name": "info panel opens",
+   "steps": [
+    {
+     "click": "?"
+    },
+    {
+     "seeSel": "#info-modal"
+    }
+   ]
+  }
+ ]
+}

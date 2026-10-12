@@ -1,0 +1,17 @@
+{
+ "name": "swh-sumbler",
+ "tests": [
+  {
+   "feature": 3,
+   "name": "saved hits list shows",
+   "steps": [
+    {
+     "seeSel": "#hitCount"
+    },
+    {
+     "seeSel": "#stumbleBtn"
+    }
+   ]
+  }
+ ]
+}

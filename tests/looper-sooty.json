@@ -1,0 +1,38 @@
+{
+ "name": "looper-sooty",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "pads and categories show",
+   "steps": [
+    {
+     "seeSel": "#pad-grid *"
+    },
+    {
+     "seeSel": "#cat-tabs *"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "record and stop",
+   "steps": [
+    {
+     "clickSel": "#btn-record"
+    },
+    {
+     "clickSel": "#pad-grid > *"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "clickSel": "#btn-stop"
+    },
+    {
+     "seeSel": "#slot-grid *"
+    }
+   ]
+  }
+ ]
+}
