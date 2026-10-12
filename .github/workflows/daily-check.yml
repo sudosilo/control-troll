@@ -2,6 +2,7 @@ name: daily-check
 on:
   schedule:
     - cron: "17 13 * * *"
+    - cron: "47 13 * * *"
   workflow_dispatch:
   push:
     branches: [main]

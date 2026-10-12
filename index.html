@@ -37,6 +37,8 @@ h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
 .spec{margin-top:8px;border-top:1px solid var(--line);padding-top:8px;font-size:13px}
 .spec summary{cursor:pointer;color:var(--muted);font-weight:600}
 .spec p{margin:6px 0 0}
+.spec .tp{color:var(--ok)}
+.spec .tf{color:var(--bad)}
 .spec .ov{color:var(--warn)}
 .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;margin-left:6px}
 .tag.no{background:var(--warnbg);color:var(--warn)}
@@ -95,8 +97,16 @@ function render(){
     var meta = a.url.replace(/^https?:\/\//,"")+" . status "+(a.status||"none")+" . "+(a.ms!=null?a.ms+" ms":"no load")+(tt.length?" . tests "+(tt.length-f.length)+"/"+tt.length:"");
     var errs = f.map(function(t){return "FAIL "+esc(t.name)+": "+esc(t.error||"");}).concat((a.errors||[]).slice(0,5).map(esc)).join("\n");
     return '<div class="app '+k+'"><div class="row"><span class="name">'+esc(a.name)+'</span><span class="state">'+label+'</span></div>'+
-      '<div class="meta">'+esc(meta)+'</div>'+(errs?'<div class="errs">'+errs+'</div>':'')+specBlock(a.name)+'</div>';
+      '<div class="meta">'+esc(meta)+'</div>'+(errs?'<div class="errs">'+errs+'</div>':'')+testBlock(a)+specBlock(a.name)+'</div>';
   }).join("");
+}
+
+function testBlock(a){
+  var tt = a.tests||[]; if(!tt.length) return "";
+  var rows = tt.map(function(t){
+    return '<p class="'+(t.pass?'tp':'tf')+'">'+(t.pass?'PASS ':'FAIL ')+esc(t.name)+(t.error?' : '+esc(t.error):'')+'</p>';
+  }).join("");
+  return '<details class="spec"><summary>Tests '+(tt.length-failing(a).length)+' of '+tt.length+' passing</summary>'+rows+'</details>';
 }
 
 function specBlock(n){
