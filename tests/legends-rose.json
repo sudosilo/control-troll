@@ -14,16 +14,11 @@
    ]
   },
   {
-   "feature": 3,
-   "name": "banned words panel toggles",
+   "feature": 4,
+   "name": "oracle button shows",
    "steps": [
     {
-     "changes": "#bannedToggleLabel",
-     "after": [
-      {
-       "clickSel": ".banned-header"
-      }
-     ]
+     "see": "Ask the Oracle"
     }
    ]
   }

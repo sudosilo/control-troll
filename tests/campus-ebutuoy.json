@@ -3,10 +3,13 @@
  "tests": [
   {
    "feature": 1,
-   "name": "name label and stumble show",
+   "name": "name label prompt shows",
    "steps": [
     {
-     "see": "Start stumbling"
+     "see": "no accounts"
+    },
+    {
+     "see": "Save"
     }
    ]
   }
