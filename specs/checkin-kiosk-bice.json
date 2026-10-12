@@ -1,0 +1,13 @@
+{
+  "name": "checkin-kiosk-bice",
+  "url": "https://checkin-kiosk-bice.vercel.app",
+  "active": true,
+  "features": [
+    "Home screen offers walk in or I have a reservation.",
+    "Walk in flow takes party size and shows an estimated wait and a ticket.",
+    "Reservation lookup finds a booking, confirms it and checks the guest in.",
+    "Staff area behind a PIN shows the waiting list, log and reservations with seat, left, undo and no-show.",
+    "Staff can add reservations and move between days.",
+    "Data loads and saves through the backend API."
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "phasewell-scope",
+  "url": "https://phasewell-scope.vercel.app",
+  "active": true,
+  "features": [
+    "Dual channel scope compares a local song file against the microphone.",
+    "Views switch between overlay, split, X-Y, difference, spectrum, waterfall, radial and correlation.",
+    "Offset, residual and match readouts update live, with align now, auto track and reset trim.",
+    "A YouTube video loads as a source with match file time.",
+    "Trigger, auto level and freeze controls work."
+  ],
+  "overlap": "Older version of scope-listener. Merge candidate."
+}

@@ -2,7 +2,6 @@
  "67-press-proccessor": {
   "name": "67-press-proccessor",
   "url": "https://67-press-proccessor.vercel.app",
-  "approved": false,
   "features": [
    "Design tab draws a straight tuck end box dieline from width, depth, height, glue tab and tuck flap inputs in inches.",
    "Solid lines show cuts and dashed lines show folds on the flat view.",
@@ -10,12 +9,12 @@
    "Roll tab lays boxes out on the press web with side margin, gap, spit plate and calibration square, and RUN animates the roll feeding.",
    "Print flat supports Letter, Tabloid and A4 sheet sizes, and Download SVG saves the dieline.",
    "Save design and Load design keep designs between visits."
-  ]
+  ],
+  "active": true
  },
  "access-terminal-admin": {
   "name": "access-terminal-admin",
   "url": "https://access-terminal-admin.vercel.app",
-  "approved": false,
   "features": [
    "Login screen takes a user and password and unlocks the dashboard against the Railway backend.",
    "Dashboard lists the backend tables and loads rows for the picked table.",
@@ -23,48 +22,48 @@
    "Session locks after idle time with an I am still here warning first, and Lock ends it right away.",
    "Refresh reloads the current table."
   ],
-  "keepSeparate": "Intentionally separate. The access terminal family is kept apart for experimentation and may grow. The merge layer skips it."
+  "keepSeparate": "Intentionally separate. The access terminal family is kept apart for experimentation and may grow. The merge layer skips it.",
+  "active": true
  },
  "access-terminal-orange": {
   "name": "access-terminal-orange",
   "url": "https://access-terminal-orange.vercel.app",
-  "approved": false,
   "features": [
    "Kitchen hub themed sign in page with operator ID and access key fields.",
    "Password strength meter scores the key as it is typed.",
    "Enter Kitchen shows a result message after checking the password rules.",
    "Live kitchen clock and a list of virtual brands display on the page."
   ],
-  "keepSeparate": "Intentionally separate. The access terminal family is kept apart for experimentation and may grow. The merge layer skips it."
+  "keepSeparate": "Intentionally separate. The access terminal family is kept apart for experimentation and may grow. The merge layer skips it.",
+  "active": true
  },
  "access-terminal-red": {
   "name": "access-terminal-red",
   "url": "https://access-terminal-red.vercel.app",
-  "approved": false,
   "features": [
    "Drive-thru crew portal themed sign in page with employee ID and passcode fields.",
    "Password strength meter scores the passcode as it is typed.",
    "Clock In shows a result message after checking the password rules.",
    "Live shift clock displays on the page."
   ],
-  "keepSeparate": "Intentionally separate. The access terminal family is kept apart for experimentation and may grow. The merge layer skips it."
+  "keepSeparate": "Intentionally separate. The access terminal family is kept apart for experimentation and may grow. The merge layer skips it.",
+  "active": true
  },
  "access-terminal-smoky": {
   "name": "access-terminal-smoky",
   "url": "https://access-terminal-smoky.vercel.app",
-  "approved": false,
   "features": [
    "Micronation government themed access portal with credential ID and access key fields.",
    "Password strength meter scores the key as it is typed.",
    "Authenticate shows a result message after checking the password rules.",
    "Reference number and live clock display on the page."
   ],
-  "keepSeparate": "Intentionally separate. The access terminal family is kept apart for experimentation and may grow. The merge layer skips it."
+  "keepSeparate": "Intentionally separate. The access terminal family is kept apart for experimentation and may grow. The merge layer skips it.",
+  "active": true
  },
  "access-termonal-blue": {
   "name": "access-termonal-blue",
   "url": "https://access-termonal-blue.vercel.app",
-  "approved": false,
   "features": [
    "Boba shop themed sign in page with shop ID and passcode fields.",
    "Password strength meter scores the passcode as it is typed.",
@@ -72,54 +71,1191 @@
    "Live open now clock displays on the page."
   ],
   "keepSeparate": "Intentionally separate. The access terminal family is kept apart for experimentation and may grow. The merge layer skips it.",
-  "futureIdea": "Possible fun merge of this login screen with the boba-breakeven game later. Not now."
+  "futureIdea": "Possible fun merge of this login screen with the boba-breakeven game later. Not now.",
+  "active": true
  },
  "aerophin-twin": {
   "name": "aerophin-twin",
   "url": "https://aerophin-twin.vercel.app",
-  "approved": false,
   "features": [
    "Drawing set view shows twelve sheets for two coffee machines, a motorized column press in inches and a spring press brew head in millimeters.",
    "Each part section ends with a bill of materials.",
    "Part drawings view shows interactive 3D models that rotate and explode into parts.",
    "Pause, reset view and stop rotation buttons control each 3D model.",
    "Brew cycle animates the piston, knob twist and drip phases."
-  ]
+  ],
+  "active": true
  },
  "aliens-win": {
   "name": "aliens-win",
   "url": "https://aliens-win.vercel.app",
-  "approved": false,
   "features": [
    "Ship select screen lets the player choose a vessel before Initiate Harvest starts the game.",
    "Player flies a UFO and fires lasers at targets while enemy shots come back.",
    "Waves advance with a banner, and HP and remaining count show on screen.",
    "Obstacles, fire, humans and confetti effects draw on the canvas.",
    "Game over screen shows with a Try Again button that restarts."
-  ]
+  ],
+  "active": true
  },
  "androids": {
   "name": "androids",
   "url": "https://androids.vercel.app",
-  "approved": false,
   "features": [
    "Four deploy modes: Vercel new frontend, Vercel update, Railway new backend, Railway update.",
    "Form takes project name, download filename, commit message and environment variables, and rejects a filename named index or not ending in .html.",
    "Page writes the full Termux command block for the picked mode and Copy block copies it.",
    "Mark as used saves project names so reused names get flagged, and Clear list wipes them.",
    "Nothing runs on the page itself."
-  ]
+  ],
+  "active": true
  },
  "ascend-pearl-ten": {
   "name": "ascend-pearl-ten",
   "url": "https://ascend-pearl-ten.vercel.app",
-  "approved": false,
   "features": [
    "Vertical platformer where the player climbs endless generated platforms, some of them moving.",
    "Touch zones on screen steer and jump on a phone.",
    "Coins, gems, gliders, rockets and powerups spawn during the climb.",
    "Wind streaks, clouds and milestone banners appear as height increases.",
    "Progress or best height saves in the browser."
+  ],
+  "active": true
+ },
+ "beesim-green": {
+  "name": "beesim-green",
+  "url": "https://beesim-green.vercel.app",
+  "active": true,
+  "features": [
+   "Bee versus bee mode starts with a chosen map size and side.",
+   "Mosaic mode starts with a chosen pattern.",
+   "Map generates terrain with rivers and bush clusters that change movement cost.",
+   "Zoom toggle and menu button work during play.",
+   "Defense and advance zone tools can be placed on the map."
+  ]
+ },
+ "birdix": {
+  "name": "birdix",
+  "url": "https://birdix.vercel.app",
+  "active": true,
+  "features": [
+   "Classic mode: claim 80 percent of the grid while dodging enemy birds, with level, claimed percent, lives and score shown.",
+   "Free paint mode lets the bird fly free and paint, with clear and export.",
+   "Stained glass mode draws lead lines with wander, hunter, bounce and tracer autopilots and jewel fill.",
+   "Photo glass mode turns an uploaded photo into stained glass.",
+   "Cityscape mode generates a city that can be regenerated and exported.",
+   "Retry and main menu work after losing."
+  ]
+ },
+ "bitfield-synth": {
+  "name": "bitfield-synth",
+  "url": "https://bitfield-synth.vercel.app",
+  "active": true,
+  "features": [
+   "A typed math expression in x, y and t renders as a live animated pixel field, with errors shown for bad expressions.",
+   "Preset buttons load expressions like tunnel, xor, plasma and moire.",
+   "Audio from a loaded track or the microphone drives bass, mid, treble and beat values into the field.",
+   "Image layer loads a picture and blends it with diff, screen, multiply, overlay and dodge modes.",
+   "Palette buttons and effects like flash, blackout, invert, hue spin, scanlines and glitch apply live.",
+   "Pause stops animation and the menu opens and closes."
+  ]
+ },
+ "boba-breakeven-x8k4": {
+  "name": "boba-breakeven-x8k4",
+  "url": "https://boba-breakeven-x8k4.vercel.app",
+  "active": true,
+  "features": [
+   "Calculator tab shows cups needed to break even from fixed costs per day, price per cup and ingredient cost per cup.",
+   "Plus and minus buttons change each input and the result updates live.",
+   "Play the week runs a 7 day shop game with open for the day and next day.",
+   "End of week summary offers run another week.",
+   "Info button opens and closes an explainer."
+  ]
+ },
+ "cabin-viewer": {
+  "name": "cabin-viewer",
+  "url": "https://cabin-viewer.vercel.app",
+  "active": true,
+  "features": [
+   "3D model of the 14 by 20 lofted barn loads with exterior, interior, thermal and kitchen tabs.",
+   "Exterior view picks each wall, iso, top down, auto spin and open doors.",
+   "Interior view shows lofts and walls with look up, level and auto pan.",
+   "Thermal tab picks envelope assemblies with R value and price, and the heat overlay and tally recompute live.",
+   "Layer toggles show or hide shell, loft, water, electric, kitchen and restroom."
+  ]
+ },
+ "campus-ebutuoy": {
+  "name": "campus-ebutuoy",
+  "url": "https://campus-ebutuoy.vercel.app",
+  "active": true,
+  "features": [
+   "A name label is saved with no password and used for the transcript.",
+   "Start stumbling plays a random video, with skip and done, log it.",
+   "Course mode loads a course list and plays its videos in order.",
+   "Logged work is saved to the transcript through the Railway backend.",
+   "Open in YouTube opens the current video."
+  ]
+ },
+ "carchive-nine": {
+  "name": "carchive-nine",
+  "url": "https://carchive-nine.vercel.app",
+  "active": true,
+  "features": [
+   "Title screen starts a duel against the rival.",
+   "Card battle with hand, field, equips, battle phase and end turn.",
+   "Cards get destroyed and move to the yard.",
+   "Build deck screen with starter, clear, cancel and save, and decks persist in the browser."
+  ]
+ },
+ "checkin-kiosk-bice": {
+  "name": "checkin-kiosk-bice",
+  "url": "https://checkin-kiosk-bice.vercel.app",
+  "active": true,
+  "features": [
+   "Home screen offers walk in or I have a reservation.",
+   "Walk in flow takes party size and shows an estimated wait and a ticket.",
+   "Reservation lookup finds a booking, confirms it and checks the guest in.",
+   "Staff area behind a PIN shows the waiting list, log and reservations with seat, left, undo and no-show.",
+   "Staff can add reservations and move between days.",
+   "Data loads and saves through the backend API."
+  ]
+ },
+ "chromatogram-three": {
+  "name": "chromatogram-three",
+  "url": "https://chromatogram-three.vercel.app",
+  "active": true,
+  "features": [
+   "Microphone or uploaded audio feeds a scrolling chromagram of the 12 pitch classes.",
+   "Display modes switch between notes, dna and ascii.",
+   "Scroll toggle turns scrolling on and off, and idle state shows before audio starts."
+  ]
+ },
+ "circuit-musicfx": {
+  "name": "circuit-musicfx",
+  "url": "https://circuit-musicfx.vercel.app",
+  "active": true,
+  "features": [
+   "Audio from a loaded track, the mic or the demo drives the visuals on beats.",
+   "Circuit mode builds a random circuit board that lights traces on beats, and new board rebuilds it.",
+   "Modes switch between circuit, ASCII bars, matrix rain, tetris, snake, pong and terminal.",
+   "Terminal mode has Linux, hacker, Kali, Android, paper, Windows and PowerShell themes and a build mode that types source.",
+   "Fullscreen and the menu work."
+  ]
+ },
+ "cockpit-racer": {
+  "name": "cockpit-racer",
+  "url": "https://cockpit-racer.vercel.app",
+  "active": true,
+  "features": [
+   "Drive button starts a low poly 3D desert run from the cockpit.",
+   "Dragging the wheel steers and holding gas accelerates, with a brake button.",
+   "Traffic, deer, debris and a police cruiser appear, and speeding past the limit near police gets you pulled over.",
+   "Speed, limit, distance and best distance show, and best saves in the browser."
+  ]
+ },
+ "coffee-autosim": {
+  "name": "coffee-autosim",
+  "url": "https://coffee-autosim.vercel.app",
+  "active": true,
+  "features": [
+   "Coffee shop floor builds with stations and stick figure baristas.",
+   "Tickets get created and placed in slots, and baristas walk to stations to fill them automatically.",
+   "House brew gets used and refilled.",
+   "Speed buttons run the sim at half, 1, 2 and 4 times."
+  ]
+ },
+ "coffeekit1": {
+  "name": "coffeekit1",
+  "url": "https://coffeekit1.vercel.app",
+  "active": true,
+  "features": [
+   "Training mode shows orders on a kitchen display with drive-thru and lobby queues.",
+   "Clicking the highlighted station advances each step of the order, including milk selection.",
+   "Order complete shows and next order loads the next ticket.",
+   "Cleaning round has stations to clean and the sink to finish.",
+   "Orders count and score track progress."
+  ]
+ },
+ "cypher-wars": {
+  "name": "cypher-wars",
+  "url": "https://cypher-wars.vercel.app",
+  "active": true,
+  "features": [
+   "Choose a campaign and a side, then play branching choice scenarios through crypto history.",
+   "Each choice updates intel, era, side and streak and adds to the log.",
+   "Codex, figures and how to play open as modals.",
+   "Endings offer play other side and new campaign, and abort mission quits."
+  ]
+ },
+ "daily-outline": {
+  "name": "daily-outline",
+  "url": "https://daily-outline.vercel.app",
+  "active": true,
+  "features": [
+   "One goal per day with a day strip and calendar to move between days.",
+   "Entries save locally on the device.",
+   "Copy text and download .txt export the day.",
+   "Jump to today and clear this day work.",
+   "Email link sign in syncs entries to the cloud backend, and sign out works."
+  ]
+ },
+ "datacenter-osint": {
+  "name": "datacenter-osint",
+  "url": "https://datacenter-osint.vercel.app",
+  "active": true,
+  "features": [
+   "Map loads with data centers, thermal power plants, heavy industry, cooling towers and drought layers that toggle.",
+   "Region picker loads CA, AZ, NV, Southwest or the whole country, and each area caches for the session.",
+   "Satellite imagery shows true color, water vapor and infrared, with play the last day and latest image.",
+   "Trace the vapor downwind draws a plume path at plume, ground or mid sky level, and clear removes it.",
+   "Wind flow layer shows on the map."
+  ]
+ },
+ "diamond-driller": {
+  "name": "diamond-driller",
+  "url": "https://diamond-driller.vercel.app",
+  "active": true,
+  "features": [
+   "Image loads by choose, drop or paste, with a built in sample scene.",
+   "Build pattern turns the image into a numbered square drill pattern using DMC colors with a max colors limit.",
+   "Pattern size sets by sheets, total spots, width in spots or cm, spot size and spacing.",
+   "View shows color, color plus numbers or print look with zoom.",
+   "Color key copies as CSV or downloads as CSV.",
+   "Each page downloads as a 300 dpi PNG and the full set downloads as a print PDF."
+  ]
+ },
+ "dronecamp": {
+  "name": "dronecamp",
+  "url": "https://dronecamp.vercel.app",
+  "active": true,
+  "features": [
+   "Training group landing page for Part 107 drone training loads with its seal and text."
+  ]
+ },
+ "dronesim-blue": {
+  "name": "dronesim-blue",
+  "url": "https://dronesim-blue.vercel.app",
+  "active": true,
+  "features": [
+   "Operator console app loads its script bundle and renders past the blank shell."
+  ],
+  "note": "Code lives in a separate bundle, so the snapshot shows only the shell. Spec needs the repo source."
+ },
+ "ebutuoy": {
+  "name": "ebutuoy",
+  "url": "https://ebutuoy.vercel.app",
+  "active": true,
+  "features": [
+   "Mode picker offers topic, local and roulette.",
+   "Topic mode searches what the user types, local uses phone location, roulette picks a random spot.",
+   "Plays 30 second samples from videos under 1000 views and channels under 1000 subs, through the Railway backend.",
+   "Never repeats a seen video, and skip, keep watching and back to menu work."
+  ]
+ },
+ "edmia": {
+  "name": "edmia",
+  "url": "https://edmia.vercel.app",
+  "active": true,
+  "features": [
+   "Tap to play starts a falling block color match game where clearing squares adds to the music.",
+   "Slide left, slide right, rotate, hard drop and boost controls work.",
+   "Score shows during play and sections of the song change with level.",
+   "New high scores take three initials and save, and the high scores list shows them."
+  ]
+ },
+ "engine-companion": {
+  "name": "engine-companion",
+  "url": "https://engine-companion.vercel.app",
+  "active": true,
+  "features": [
+   "Status panel shows the trading engine heartbeat, position and ledger from the Railway backend.",
+   "Engine secret saves in the browser and is required to send commands.",
+   "Pause, resume and flatten commands get queued for the engine.",
+   "Pending commands and recent trades list on the page."
+  ]
+ },
+ "equivalence-engine": {
+  "name": "equivalence-engine",
+  "url": "https://equivalence-engine.vercel.app",
+  "active": true,
+  "features": [
+   "Venue list loads from embedded restaurant data.",
+   "Picking a venue shows its menu items and the ingredients it stocks.",
+   "Picking an item shows equivalent items buildable from any venue's ingredients or that venue's own stock.",
+   "Gluten free tags and category colors show on items.",
+   "Back button returns to the previous view."
+  ]
+ },
+ "ether-wand": {
+  "name": "ether-wand",
+  "url": "https://ether-wand.vercel.app",
+  "active": true,
+  "features": [
+   "Play starts a tone where tilting the phone controls pitch, roll controls volume and shake adds vibrato.",
+   "Pitch and Hz readout update live.",
+   "Scale modes include glide, notes and pentatonic, with dark, low, mid and high ranges.",
+   "Effects pick clean, classic, space and fuzz.",
+   "Demo mode plays routines with tempo, tap tempo and a metronome.",
+   "Re-center, flip pitch and use touch fallback work."
+  ]
+ },
+ "field-study-pi": {
+  "name": "field-study-pi",
+  "url": "https://field-study-pi.vercel.app",
+  "active": true,
+  "features": [
+   "Sets screen lists training modules that unlock in order.",
+   "Flashcards show each card, flip, and shuffle the deck.",
+   "Quiz mode checks answers and shows the result, with take it again.",
+   "Matching and multi pick drills check answers and run again.",
+   "Progress saves in the browser and clear progress resets it."
+  ]
+ },
+ "field-twin-teal": {
+  "name": "field-twin-teal",
+  "url": "https://field-twin-teal.vercel.app",
+  "active": true,
+  "features": [
+   "Map loads with the color key, show all, and tap the map to place an entry.",
+   "Miles, log and receipt buttons create entries, and new receipt captures a photo stored on the device.",
+   "Search, history, spend and mileage views look things up across entries.",
+   "Traffic cameras load from a chosen camera source, with a service check.",
+   "Export and import back up data, and email link sign in syncs entries to the cloud with sync now and sign out."
+  ]
+ },
+ "final-vector-six": {
+  "name": "final-vector-six",
+  "url": "https://final-vector-six.vercel.app",
+  "active": true,
+  "features": [
+   "Game titled Who Is The Final Victor loads and draws to the canvas.",
+   "Progress or settings save in the browser."
+  ],
+  "note": "Code is minified, so features beyond loading need the repo source."
+ },
+ "free-as-in-links-sudosilo2-1771s-projects": {
+  "name": "free-as-in-links-sudosilo2-1771s-projects",
+  "url": "https://free-as-in-links-sudosilo2-1771s-projects.vercel.app",
+  "active": true,
+  "features": [
+   "URL should show the free links index page."
+  ],
+  "problem": "This URL serves a Vercel login page instead of the app. It is a protected team URL. The project index should link the public production URL instead."
+ },
+ "frontend-sudosilo2-1771s-projects": {
+  "name": "frontend-sudosilo2-1771s-projects",
+  "url": "https://frontend-sudosilo2-1771s-projects.vercel.app",
+  "active": true,
+  "features": [
+   "URL should show the app frontend."
+  ],
+  "problem": "This URL serves a Vercel login page instead of the app. It is a protected team URL. The project index should link the public production URL instead."
+ },
+ "ghost-kitchen-builder": {
+  "name": "ghost-kitchen-builder",
+  "url": "https://ghost-kitchen-builder.vercel.app",
+  "active": true,
+  "features": [
+   "Build tab walks through concept identity and setup sections for a new restaurant concept.",
+   "Survey tab scores an existing concept, with score and completeness updating live.",
+   "Demo tab loads sample concepts with load this concept.",
+   "Clear form resets, and export summary opens a summary with copy to clipboard."
+  ]
+ },
+ "groundcore-nine": {
+  "name": "groundcore-nine",
+  "url": "https://groundcore-nine.vercel.app",
+  "active": true,
+  "features": [
+   "Spacer tab calculates row spacing from row configuration, with an optional plant pick that auto fills spacing.",
+   "Plants tab looks up a plant profile and sends it to the spacer with use in spacer.",
+   "Browse tab filters plants by category.",
+   "Sandbox tab places, moves and deletes rows, structures and drives on a map, with zoom and pan.",
+   "Show map and use my GPS put the layout on a real map."
+  ]
+ },
+ "hackercons-roulette": {
+  "name": "hackercons-roulette",
+  "url": "https://hackercons-roulette.vercel.app",
+  "active": true,
+  "features": [
+   "Stumble mode plays random 30 second clips from hacker conference talks through the Railway catalog.",
+   "Skip, pause and keep work, and kept talks save to a list.",
+   "Guess mode asks which conference a clip is from and tracks streak and best.",
+   "Next clip preloads in the background, and dead clips get reported."
+  ]
+ },
+ "hackercons": {
+  "name": "hackercons",
+  "url": "https://hackercons.vercel.app",
+  "active": true,
+  "features": [
+   "Loads the hackercons collection from the archive and plays random 30 second clips.",
+   "Skip and pause work, and the next clip buffers in a standby slot.",
+   "Now playing shows source, clip start, talk length and clips played."
+  ]
+ },
+ "hexnote-3d": {
+  "name": "hexnote-3d",
+  "url": "https://hexnote-3d.vercel.app",
+  "active": true,
+  "features": [
+   "Geodesic hex sphere renders in 3D, and tapping a hex opens a note to write, save, delete or close.",
+   "Holding a hex starts a link to another hex, and links draw as arcs.",
+   "Switch between first person, orbit and exploded space views.",
+   "Retract all hexes and clear all links work, and note and link counts update.",
+   "Notes save in the browser, and export and import back them up."
+  ]
+ },
+ "infinicanvan": {
+  "name": "infinicanvan",
+  "url": "https://infinicanvan.vercel.app",
+  "active": true,
+  "features": [
+   "Enter canvas opens an infinite canvas that zooms in and out with pinch or the toolbar, and holding zoom keeps zooming.",
+   "Pen draws and emoji stamps place on the canvas, and everything stays put at any zoom.",
+   "Paint mode and the cat and meow tools work.",
+   "Tree mode grows trees with day and night cycles, weather and resource driven growth.",
+   "Rulers show scale while zooming."
+  ]
+ },
+ "infinite-centerpoint": {
+  "name": "infinite-centerpoint",
+  "url": "https://infinite-centerpoint.vercel.app",
+  "active": true,
+  "features": [
+   "Saves an API key in a key panel that checks the key format.",
+   "Play toggles a generated counterpoint piece drawn on the canvas.",
+   "Generate and deepen request more music from the API.",
+   "Info panel opens and closes."
+  ]
+ },
+ "invoice-green-tau": {
+  "name": "invoice-green-tau",
+  "url": "https://invoice-green-tau.vercel.app",
+  "active": true,
+  "features": [
+   "Invoice app loads its script bundle and renders past the blank shell."
+  ],
+  "note": "Code lives in a separate bundle, so the snapshot shows only the shell. Spec needs the repo source."
+ },
+ "irrigation-station": {
+  "name": "irrigation-station",
+  "url": "https://irrigation-station.vercel.app",
+  "active": true,
+  "features": [
+   "Animated diagram shows power podium, 12 volt converter, 1500 gallon tank, RV pump, expansion tank, timer valve and PVC main.",
+   "Watering cycle runs automatically with one full day compressed to about 10 seconds.",
+   "Day counter advances and plants change color with watering."
+  ]
+ },
+ "j30p4rdy": {
+  "name": "j30p4rdy",
+  "url": "https://j30p4rdy.vercel.app",
+  "active": true,
+  "features": [
+   "Pick a genre and enter players to start a Jeopardy style board of songs sorted by what the lyrics mention.",
+   "Clues open, answers reveal, and scores update per player.",
+   "Daily double asks for a wager.",
+   "Final scores show with play again and change genre, and high scores submit and display."
+  ]
+ },
+ "kat-chat-flame": {
+  "name": "kat-chat-flame",
+  "url": "https://kat-chat-flame.vercel.app",
+  "active": true,
+  "features": [
+   "Connects to the chat backend and shows messages between members with names and colors.",
+   "Sends text and GIFs, and shows a reload banner when a new version is ready.",
+   "Appearance picks day, night, kat or orbit themes with a background picture and dimming.",
+   "Sound picks ding, meow or off, and notifications pick all, mentions or off, with ntfy connect.",
+   "Install app adds it to the home screen, and account status shows."
+  ]
+ },
+ "kvs-sigma": {
+  "name": "kvs-sigma",
+  "url": "https://kvs-sigma.vercel.app",
+  "active": true,
+  "features": [
+   "Scans the episode library and offers shuffle clips, random episodes and seasons modes.",
+   "Clip length picks 15 seconds, 30 seconds, 1 minute or 2 minutes.",
+   "Play, pause, next, back 10 seconds, forward 30 seconds and start over work.",
+   "Full episode plays the current episode from the start, and the bar seeks.",
+   "Rescan library rebuilds the episode list."
+  ]
+ },
+ "legends-rose": {
+  "name": "legends-rose",
+  "url": "https://legends-rose.vercel.app",
+  "active": true,
+  "features": [
+   "Pick two musicians as speaker 1 and speaker 2 from six legends.",
+   "Ask the legends sends a question through the Railway backend and shows both answers in turn.",
+   "Banned words can be added, shown and removed, and they save in the browser.",
+   "Ask the oracle for lyrics returns oracle text."
+  ]
+ },
+ "looper-sooty": {
+  "name": "looper-sooty",
+  "url": "https://looper-sooty.vercel.app",
+  "active": true,
+  "features": [
+   "Sound pads play synth and drum sounds by category, and the star adds pads to favorites.",
+   "Record arms a loop, tapping pads records it, and stop ends it.",
+   "Play, overdub, undo last dub and clear work per loop slot.",
+   "Groove timing adjusts and the band clock plays along.",
+   "Export saves a loop as a WAV file."
+  ]
+ },
+ "mary-jane-man": {
+  "name": "mary-jane-man",
+  "url": "https://mary-jane-man.vercel.app",
+  "active": true,
+  "features": [
+   "Maze chase game starts with the start button, with score, lives and level shown.",
+   "Player moves through the maze eating every nug to clear the level.",
+   "Four pipe enemies chase the player, and a golden nug scares them.",
+   "Info screen opens with back, and game over offers try again."
+  ]
+ },
+ "mill-ionaire": {
+  "name": "mill-ionaire",
+  "url": "https://mill-ionaire.vercel.app",
+  "active": true,
+  "features": [
+   "Simulated vertical knee mill with table moves on X, Y and Z at 0.1, 1, 5 and 10 step sizes.",
+   "Tool picker covers end mill, ball nose, drill, face mill and slot drill, with feed on and off.",
+   "Demo mode cuts the alphabet automatically.",
+   "Factory floor shift mode, call the millwright to repair, stow loose parts and empty the inventory bins.",
+   "Info panel explains the machine."
+  ]
+ },
+ "ming-globe": {
+  "name": "ming-globe",
+  "url": "https://ming-globe.vercel.app",
+  "active": true,
+  "features": [
+   "3D globe renders with terrain, and the atlas view lists notes.",
+   "New note takes a region, note text and size of the idea, and raise land adds an island to the globe.",
+   "Notes save to the Railway backend and pins appear on the globe.",
+   "Zoom in and out buttons work, and delete needs a second tap to confirm."
+  ]
+ },
+ "mission-operator": {
+  "name": "mission-operator",
+  "url": "https://mission-operator.vercel.app",
+  "active": true,
+  "features": [
+   "Mission operator map app loads its script bundle and renders past the blank shell."
+  ],
+  "note": "Code lives in a separate bundle, so the snapshot shows only the shell. Spec needs the repo source."
+ },
+ "mohavetech-contracts": {
+  "name": "mohavetech-contracts",
+  "url": "https://mohavetech-contracts.vercel.app",
+  "active": true,
+  "features": [
+   "Draft a contract with wording help that cleans up text or drafts from a plain description, with use this wording or keep mine.",
+   "Draft link copies so the other party can open it.",
+   "Party A and party B sign by drawing on signature pads, with clear.",
+   "The signed contract's fingerprint records on Polygon, with retry if recording fails.",
+   "Verified records open by link and download a signature card image."
+  ]
+ },
+ "nanoverse-psi": {
+  "name": "nanoverse-psi",
+  "url": "https://nanoverse-psi.vercel.app",
+  "active": true,
+  "features": [
+   "NANOVERSE loads and renders to the canvas with audio."
+  ],
+  "note": "Code is minified, so features beyond loading need the repo source."
+ },
+ "note-note-note": {
+  "name": "note-note-note",
+  "url": "https://note-note-note.vercel.app",
+  "active": true,
+  "features": [
+   "Pad shows a picture snapped into colored squares with DMC color and square code toggles.",
+   "Move, select, out and fit tools work, with rotate, size and reset.",
+   "Brush and box select squares, and make one note groups them into a note.",
+   "Notes search, undo after delete, and add a mind map here.",
+   "Data saves in the browser database, and export backup, import backup and erase everything work."
+  ]
+ },
+ "offset-listener": {
+  "name": "offset-listener",
+  "url": "https://offset-listener.vercel.app",
+  "active": true,
+  "features": [
+   "Listen identifies the playing song by microphone and calculates the playback offset.",
+   "Search finds a track, and play and broadcast shares a sync anchor so other phones play in step.",
+   "Nudge buttons shift the offset by half a second either way.",
+   "Watch in sync, measure sync by mic and save cue points work.",
+   "Enable audio unlocks playback on phones, and an info panel explains the build status."
+  ],
+  "overlap": "Shares its sync engine with scope-listener and phasewell-scope. Merge candidate."
+ },
+ "open-pipeline": {
+  "name": "open-pipeline",
+  "url": "https://open-pipeline.vercel.app",
+  "active": true,
+  "features": [
+   "Stumble generates random vercel.app names, opens them, and keep saves live ones.",
+   "Dictionary and clones tabs manage word lists and clone hosts.",
+   "Finds sort into categories that can be added.",
+   "Export and upload back up the list, and finds sync to the cloud backend."
+  ]
+ },
+ "ordersim": {
+  "name": "ordersim",
+  "url": "https://ordersim.vercel.app",
+  "active": true,
+  "features": [
+   "Landing screen takes a callsign and offers breakfast rush, dinner rush, huge orders and freeplay scenarios.",
+   "Orders fire from the POS to every kitchen station on their own.",
+   "Bumping finished tickets, tearing receipts and labels, and clearing printer jams keep stations running.",
+   "Game over offers retry and menu, and progress saves in the browser."
+  ]
+ },
+ "pajamastan-warrants": {
+  "name": "pajamastan-warrants",
+  "url": "https://pajamastan-warrants.vercel.app",
+  "active": true,
+  "features": [
+   "Page loads the active warrants docket from the backend with count, new in the last 24 hours and last checked time.",
+   "Each warrant lists as a public record entry."
+  ]
+ },
+ "pajamastan": {
+  "name": "pajamastan",
+  "url": "https://pajamastan.vercel.app",
+  "active": true,
+  "features": [
+   "Official micronation site loads with its menu and seal.",
+   "Menu opens and closes and switches between pages."
+  ]
+ },
+ "pancake-orange": {
+  "name": "pancake-orange",
+  "url": "https://pancake-orange.vercel.app",
+  "active": true,
+  "features": [
+   "Pancakes cook in slots and change color as they burn.",
+   "Tapping a pancake in time saves it, and burnt ones add a strike.",
+   "Saved count, strikes out of 5 and board level show, and the board expands with level.",
+   "Game over offers play again."
+  ]
+ },
+ "pancakes-ecru": {
+  "name": "pancakes-ecru",
+  "url": "https://pancakes-ecru.vercel.app",
+  "active": true,
+  "features": [
+   "API key saves in the browser only.",
+   "Chat tab sends messages with character settings and shows replies.",
+   "Generate tab makes an image from a prompt, negative prompt and style.",
+   "Gems balance shows after the key is set."
+  ]
+ },
+ "parkingten": {
+  "name": "parkingten",
+  "url": "https://parkingten.vercel.app",
+  "active": true,
+  "features": [
+   "Parking infrastructure management app loads and reads its data from the Redis backend."
+  ],
+  "note": "Snapshot did not save on the last run. Spec needs the repo source."
+ },
+ "phasewell-scope": {
+  "name": "phasewell-scope",
+  "url": "https://phasewell-scope.vercel.app",
+  "active": true,
+  "features": [
+   "Dual channel scope compares a local song file against the microphone.",
+   "Views switch between overlay, split, X-Y, difference, spectrum, waterfall, radial and correlation.",
+   "Offset, residual and match readouts update live, with align now, auto track and reset trim.",
+   "A YouTube video loads as a source with match file time.",
+   "Trigger, auto level and freeze controls work."
+  ],
+  "overlap": "Older version of scope-listener. Merge candidate."
+ },
+ "pipeline-builder-azure-kappa": {
+  "name": "pipeline-builder-azure-kappa",
+  "url": "https://pipeline-builder-azure-kappa.vercel.app",
+  "active": true,
+  "features": [
+   "Builder tab picks tools to make a stack with a live preview, and export, copy and clear work.",
+   "Randomizer rolls a coherent random stack with a name and build challenge, and applies it to the builder.",
+   "Diagram tab draws the stack flow.",
+   "Templates tab shows templates and loads one into the builder."
+  ],
+  "note": "Being folded into daily-outline and retired."
+ },
+ "pixelcoop-farm": {
+  "name": "pixelcoop-farm",
+  "url": "https://pixelcoop-farm.vercel.app",
+  "active": true,
+  "features": [
+   "Start screen picks a starting environment for the chicken farm.",
+   "Shop places chickens, feed, fence, coop, water source, pipe, waterer, well, worms, dust, perch and scratch, and erase removes them.",
+   "Water flows through pipes and chickens eat, drink and use coops.",
+   "Egg or meat farm mode and selling chickens earn money.",
+   "Pause, cycle speed, zoom, whole map and reset map work."
+  ]
+ },
+ "pixelmill": {
+  "name": "pixelmill",
+  "url": "https://pixelmill.vercel.app",
+  "active": true,
+  "features": [
+   "Toolpath simulator cuts pixel programs like raster, spiral, hatch, concentric, pocket, lissajous, star and cityscape.",
+   "Running, pause, next program and start over control the endless run.",
+   "Nudge pad moves the target, and fill, flood, depth and fade toggles change the cut.",
+   "City views switch between 1-point, aerial and parallax.",
+   "Pen size picks 1, 2 or 3 pixels, clear wipes the plot, and save PNG downloads it."
+  ]
+ },
+ "polygon-arcade": {
+  "name": "polygon-arcade",
+  "url": "https://polygon-arcade.vercel.app",
+  "active": true,
+  "features": [
+   "Reads arcade machines from the chain and lists each pool, play count and current crown holder.",
+   "Rules explain that holding the high score three plays running pays out the pool."
+  ]
+ },
+ "qsr-receipt-sim": {
+  "name": "qsr-receipt-sim",
+  "url": "https://qsr-receipt-sim.vercel.app",
+  "active": true,
+  "features": [
+   "Identity tab sets restaurant name, address, phone, website and a logo image under 300 KB.",
+   "Receipt tab sets header and footer messages and receipt content.",
+   "Printer tab switches between 58mm and 80mm paper.",
+   "Live receipt preview updates as fields change.",
+   "Save keeps settings in the browser, and import, export and reset work."
+  ]
+ },
+ "qsr-timeline": {
+  "name": "qsr-timeline",
+  "url": "https://qsr-timeline.vercel.app",
+  "active": true,
+  "features": [
+   "Timeline view draws each restaurant chain as a bar by year with an ownership ribbon.",
+   "Search, sort by lifespan, year founded, name or category, and filter by category.",
+   "Views include lifespan, graveyard, snapshot, radial with a picked metric, and a US map.",
+   "Map shows HQ states, origin states, chain focus and expansion, with play to animate.",
+   "Tapping bars and ribbon segments shows details."
+  ]
+ },
+ "rat-site-gilt": {
+  "name": "rat-site-gilt",
+  "url": "https://rat-site-gilt.vercel.app",
+  "active": true,
+  "features": [
+   "Track select hub lists songs with title and genre.",
+   "Launch plays the track with its own visualizer driven by bass, mid and treble.",
+   "Pause, back to tracks and FX controls work."
+  ],
+  "overlap": "Same music family as rat30-deck. Merge candidate."
+ },
+ "rat30-deck": {
+  "name": "rat30-deck",
+  "url": "https://rat30-deck.vercel.app",
+  "active": true,
+  "features": [
+   "3D VJ deck loads with a track library and drag to rotate.",
+   "Load file, library and mic feed audio into the visuals.",
+   "Play, showtime, screen mode, wall mode, explode and GFX controls work.",
+   "Tapping a unit on the deck operates it."
+  ],
+  "overlap": "Same music family as rat-site-gilt and shares circuit code with circuit-musicfx. Merge candidate."
+ },
+ "repofind-delta": {
+  "name": "repofind-delta",
+  "url": "https://repofind-delta.vercel.app",
+  "active": true,
+  "features": [
+   "Alerts tab shows repo alerts filtered by category, with demo data until the backend is live.",
+   "Find tab searches repos by terms and language, and stumble runs a random search.",
+   "Watch and my list tabs save repos, with export as json, csv or clipboard.",
+   "Archive and Shodan tabs search, with stumble for random queries.",
+   "Catalog and site watch tabs add sites, check them and export all, and backup works."
+  ]
+ },
+ "restack-wheat": {
+  "name": "restack-wheat",
+  "url": "https://restack-wheat.vercel.app",
+  "active": true,
+  "features": [
+   "Site picker switches between restaurant sites, with a site profile.",
+   "Tech stack tree expands and collapses by domain, with add domain and add node.",
+   "Each node marks known, partial or gap, and coverage percent updates.",
+   "Filter shows all, known, partial, gaps, unset or custom.",
+   "Changes save to the Railway backend, with import, export and reset."
+  ]
+ },
+ "rogue-rail": {
+  "name": "rogue-rail",
+  "url": "https://rogue-rail.vercel.app",
+  "active": true,
+  "features": [
+   "Drum and bass corridor rail shooter loads with its music baked in and starts a run."
+  ],
+  "note": "Page is over the 3 MB snapshot limit. Spec needs the repo source."
+ },
+ "rtss-sigma": {
+  "name": "rtss-sigma",
+  "url": "https://rtss-sigma.vercel.app",
+  "active": true,
+  "features": [
+   "Survey form covers site identity, venue type, infrastructure, connectivity, POS, kitchen, menu boards, drive-thru, bar, table service, A/V, payments, ATM, emerging tech, topology and notes.",
+   "Counters and add buttons add registers, KDS screens and zones.",
+   "Progress updates as sections fill in.",
+   "Load demo data and clear form work.",
+   "Save keeps the survey and CSV exports it."
+  ]
+ },
+ "scope-listener": {
+  "name": "scope-listener",
+  "url": "https://scope-listener.vercel.app",
+  "active": true,
+  "features": [
+   "Oscilloscope compares a local file or YouTube video against the phone mic and shows the offset and drift.",
+   "Views switch between overlay, split, X-Y, difference, spectrum, waterfall, radial and correlation.",
+   "Listen offset mode, nudge half a second, auto track, play, pause, speaker, loop and mic controls work.",
+   "Trim buttons adjust by 10, 1 and 0.1.",
+   "Info panel explains what works so far."
+  ],
+  "overlap": "Newer version of phasewell-scope and shares the sync engine with offset-listener. Likely merge host."
+ },
+ "screensaver-musicfx": {
+  "name": "screensaver-musicfx",
+  "url": "https://screensaver-musicfx.vercel.app",
+  "active": true,
+  "features": [
+   "Modes switch between plasma, lines, stars, pipes, matrix, blob and DVD.",
+   "Mic or an uploaded song makes the visuals react to audio.",
+   "Play toggles playback and the clock counts time."
+  ]
+ },
+ "secureops-pi": {
+  "name": "secureops-pi",
+  "url": "https://secureops-pi.vercel.app",
+  "active": true,
+  "features": [
+   "SecureOps app loads past the loading screen."
+  ],
+  "note": "Snapshot shows only a loading shell. Spec needs the repo source."
+ },
+ "shitty-ass-finance": {
+  "name": "shitty-ass-finance",
+  "url": "https://shitty-ass-finance.vercel.app",
+  "active": true,
+  "features": [
+   "Quick picks fill the paycheck amount for short, normal, overtime and overtime plus travel checks.",
+   "Inputs take paycheck total, travel reimbursement, bills per check, normal check size and floor target.",
+   "Bills pay first and the rest splits to the spokes by fixed rules, and the split redraws live.",
+   "Add a bill and remove a bill work."
+  ]
+ },
+ "shitty-ass-trading": {
+  "name": "shitty-ass-trading",
+  "url": "https://shitty-ass-trading.vercel.app",
+  "active": true,
+  "features": [
+   "Setup takes one or more free API keys or uses the shared key.",
+   "Tracks the restaurant ticker list with week, month and year views and a 1 day chart.",
+   "Sort by manual order, green first, red first or biggest movers, with a recent news filter.",
+   "Add, search and remove tickers.",
+   "Read aloud speaks the info text, and sync codes move settings between devices through the backend."
+  ]
+ },
+ "skwiggle": {
+  "name": "skwiggle",
+  "url": "https://skwiggle.vercel.app",
+  "active": true,
+  "features": [
+   "Drawing game where a line never stops, faster thins it and slower fattens it.",
+   "Modes include paint, plaid, survival, race, wash, outline, chaos, anti, auto and viz.",
+   "Pause, fill, erase, mask, clear mask and rewind work.",
+   "Zoom, reset view and hide UI work.",
+   "Save art downloads, share, AI filter and mint work, and the gallery opens."
+  ]
+ },
+ "skyflow-orange": {
+  "name": "skyflow-orange",
+  "url": "https://skyflow-orange.vercel.app",
+  "active": true,
+  "features": [
+   "Tower crane construction simulator loads in 3D and renders."
+  ],
+  "note": "Code is minified, so features beyond loading need the repo source."
+ },
+ "snapshot-engine-pied": {
+  "name": "snapshot-engine-pied",
+  "url": "https://snapshot-engine-pied.vercel.app",
+  "active": true,
+  "features": [
+   "Snapshot engine responds instead of returning an error."
+  ],
+  "problem": "Returns 404 at the root URL. If it is a backend, it needs a health endpoint. If it is a frontend, the deploy is missing."
+ },
+ "spaceout-mu": {
+  "name": "spaceout-mu",
+  "url": "https://spaceout-mu.vercel.app",
+  "active": true,
+  "features": [
+   "Tap to start a brick breaker game with score, wave and lives.",
+   "Paddle moves by swipe, drag or the left and right buttons, and fire launches the ball.",
+   "Stage clear advances to the next wave, and game over offers retry.",
+   "High score saves in the browser."
+  ]
+ },
+ "spectral-engin": {
+  "name": "spectral-engin",
+  "url": "https://spectral-engin.vercel.app",
+  "active": true,
+  "features": [
+   "Drop or browse an MP3, MP4, WAV or M4A file to load it.",
+   "Play, seek and volume work.",
+   "Twelve visualizer modes draw from the audio, aware of 31 tone equal temperament.",
+   "Readouts show bass, mid, high, peak, BPM, note, RMS and zero crossing rate."
+  ]
+ },
+ "spectrastrain": {
+  "name": "spectrastrain",
+  "url": "https://spectrastrain.vercel.app",
+  "active": true,
+  "features": [
+   "Strain wheel renders a color spectrum of strains.",
+   "Search filters the wheel and clears with the reset button.",
+   "Category labels filter what shows."
+  ]
+ },
+ "spirits-atlas": {
+  "name": "spirits-atlas",
+  "url": "https://spirits-atlas.vercel.app",
+  "active": true,
+  "features": [
+   "Globe view rotates by drag and tapping a country opens its spirits panel.",
+   "Catalog view lists spirits with search.",
+   "Filter by spirit type: beer and ale, wine, whiskey and bourbon, gin, vodka, rum, tequila and mezcal.",
+   "Country panels show origin spirits and what the country also distributes."
+  ]
+ },
+ "stompbox-lab": {
+  "name": "stompbox-lab",
+  "url": "https://stompbox-lab.vercel.app",
+  "active": true,
+  "features": [
+   "Tapping a key powers on a keyboard synth with pluck, lead and organ sounds and presets.",
+   "Pedals turn on by stomping the switch and knobs turn by dragging.",
+   "Loop player plays grooves with tempo, parts for drums, bass, lead and pad, and timing offset.",
+   "Computer keyboard plays notes.",
+   "Account sign in, create and sign out sync the board through the backend."
+  ]
+ },
+ "stumbler": {
+  "name": "stumbler",
+  "url": "https://stumbler.vercel.app",
+  "active": true,
+  "features": [
+   "Stumble generates random vercel.app names and opens them in a new tab, and keep saves live ones.",
+   "Dictionary and clones tabs manage word lists and clone hosts.",
+   "Finds sort into categories.",
+   "Export and import back up finds, and finds sync to the cloud backend."
+  ],
+  "overlap": "open-pipeline is a fork of this app with its own dataset. Merge candidate as a dataset picker."
+ },
+ "suno-forge-kappa": {
+  "name": "suno-forge-kappa",
+  "url": "https://suno-forge-kappa.vercel.app",
+  "active": true,
+  "features": [
+   "Song builder loads its script bundle and renders past the blank shell."
+  ],
+  "note": "Code lives in a separate bundle, so the snapshot shows only the shell. Spec needs the repo source."
+ },
+ "swh-sumbler": {
+  "name": "swh-sumbler",
+  "url": "https://swh-sumbler.vercel.app",
+  "active": true,
+  "features": [
+   "Stumble walks the Software Heritage archive through its API and shows a random source file.",
+   "Save keeps a hit, copy copies the code, and delete removes a saved hit.",
+   "Saved hits list with a count and export as json."
+  ]
+ },
+ "tanksandzombies": {
+  "name": "tanksandzombies",
+  "url": "https://tanksandzombies.vercel.app",
+  "active": true,
+  "features": [
+   "Start game launches a tank versus zombie horde wave shooter with score, armor, charge, wave, layer and kills.",
+   "Weapons switch between cannon, sea ram and rockets, with a charged shot.",
+   "Tank skins unlock by score.",
+   "Death screen shows score and wave with redeploy.",
+   "High scores take a three letter name and save in the browser."
+  ]
+ },
+ "termbeat": {
+  "name": "termbeat",
+  "url": "https://termbeat.vercel.app",
+  "active": true,
+  "features": [
+   "Audio from a file or the microphone makes the terminal react to sound.",
+   "Terminal themes include paper, hacker, Kali, Android, Linux, Windows and PowerShell.",
+   "Modes switch between terminal, visualizer, bars, tetris, snake and pong.",
+   "Build mode types source code, and the info panel explains the vision."
+  ],
+  "overlap": "Shares modes and themes with circuit-musicfx. Merge candidate."
+ },
+ "threat-atlas-two": {
+  "name": "threat-atlas-two",
+  "url": "https://threat-atlas-two.vercel.app",
+  "active": true,
+  "features": [
+   "Globe rotates by drag and tapping a country opens intel.",
+   "Layers toggle threats, conferences, defense and cyber, US gov cyber, satellites and US military bases.",
+   "Filter by threat class and year.",
+   "Intel and US states views list incidents with threat levels."
+  ]
+ },
+ "tile-spinner": {
+  "name": "tile-spinner",
+  "url": "https://tile-spinner.vercel.app",
+  "active": true,
+  "features": [
+   "Tapping a tile rotates it, and closing curves into loops scores matches.",
+   "Tile traditions pick a regional style that changes palette and grid shape.",
+   "Shuffle and reset work, and matches and score show."
+  ]
+ },
+ "tinewood-keys": {
+  "name": "tinewood-keys",
+  "url": "https://tinewood-keys.vercel.app",
+  "active": true,
+  "features": [
+   "Power on starts an electric piano where tapping keys plays notes, harder near the front.",
+   "Octave buttons shift range and sustain holds notes.",
+   "Knobs turn by dragging.",
+   "Computer keys A to semicolon play notes, Z and X shift octave and space sustains."
+  ]
+ },
+ "topdown-pixeltown": {
+  "name": "topdown-pixeltown",
+  "url": "https://topdown-pixeltown.vercel.app",
+  "active": true,
+  "features": [
+   "Pixel town game loads and renders to the canvas."
+  ],
+  "note": "Code is minified, so features beyond loading need the repo source."
+ },
+ "topo-wars-server": {
+  "name": "topo-wars-server",
+  "url": "https://topo-wars-server.vercel.app",
+  "active": true,
+  "features": [
+   "Topo Wars server answers requests for friend games."
+  ],
+  "problem": "Returns 404 at the root URL. A backend with no home page does that normally, so it needs a health endpoint added to tell real downtime apart."
+ },
+ "topo-wars": {
+  "name": "topo-wars",
+  "url": "https://topo-wars.vercel.app",
+  "active": true,
+  "features": [
+   "Find me or a picked place turns real map roads, buildings, water and elevation into the battlefield.",
+   "Setup picks map size 32, 64 or 128, opponent computer, friend, zombies or watch, player count and difficulty.",
+   "Turns deploy units with supply, move and attack, with undo this turn and end turn.",
+   "Units capture, wreck and encircle, and losing the commander eliminates a side.",
+   "Game guide and battle history open, and friend games join by code."
+  ]
+ },
+ "torque-converter": {
+  "name": "torque-converter",
+  "url": "https://torque-converter.vercel.app",
+  "active": true,
+  "features": [
+   "Enter a value and pick a unit to convert between newton meters, newton inches, foot pounds and inch pounds.",
+   "Results update as the value changes."
+  ]
+ },
+ "tower-builder-five": {
+  "name": "tower-builder-five",
+  "url": "https://tower-builder-five.vercel.app",
+  "active": true,
+  "features": [
+   "Build mode places beams of steel, wood or reinforced concrete between grid nodes within the budget.",
+   "Delete removes beams, and pan and zoom move the view.",
+   "Test runs a wind test then an earthquake against the target height.",
+   "Budget, spent, target height, score and level show, and clear resets."
+  ],
+  "overlap": "Same game as tower-builder-one. Merge candidate."
+ },
+ "tower-builder-one": {
+  "name": "tower-builder-one",
+  "url": "https://tower-builder-one.vercel.app",
+  "active": true,
+  "features": [
+   "Build mode places beams of steel, wood or reinforced concrete between grid nodes within the budget.",
+   "Delete removes beams, and pan and zoom move the view.",
+   "Test runs a wind test then an earthquake against the target height.",
+   "Budget, spent, target height, score and level show, and clear resets.",
+   "Info panel explains the rules."
+  ],
+  "overlap": "Same game as tower-builder-five, plus an info panel. Likely merge host."
+ },
+ "tractor-tool": {
+  "name": "tractor-tool",
+  "url": "https://tractor-tool.vercel.app",
+  "active": true,
+  "features": [
+   "Blueprint tab lists the nine business stages with checklists, expand all, collapse all and print.",
+   "Rate tab calculates an hourly rate and sends it to the quote.",
+   "Quote tab builds a job quote and prints it.",
+   "Game tab runs a driving game with restart."
+  ]
+ },
+ "tunnelfx": {
+  "name": "tunnelfx",
+  "url": "https://tunnelfx.vercel.app",
+  "active": true,
+  "features": [
+   "Infinite tunnel animates with an idle pulse when there is no audio.",
+   "Use mic or play a track makes bass widen the rim and treble shift the palette."
+  ]
+ },
+ "virality-snapshot": {
+  "name": "virality-snapshot",
+  "url": "https://virality-snapshot.vercel.app",
+  "active": true,
+  "features": [
+   "Watches price bars sent from the ticker tracker and checks each new bar on the backend against candlestick patterns, RSI and momentum.",
+   "Live, graded and report views show signals.",
+   "Clear resets the panel."
+  ]
+ },
+ "virality-trader": {
+  "name": "virality-trader",
+  "url": "https://virality-trader.vercel.app",
+  "active": true,
+  "features": [
+   "Same stock tracker as shitty-ass-trading: API key setup, ticker list with charts, sorting, news filter, read aloud and sync codes."
+  ],
+  "overlap": "Same code as shitty-ass-trading. Merge candidate."
+ },
+ "welcome-to-the-madness": {
+  "name": "welcome-to-the-madness",
+  "url": "https://welcome-to-the-madness.vercel.app",
+  "active": true,
+  "features": [
+   "Start shift begins a cooking game where orders arrive on tickets.",
+   "Tapping a station starts an item, and tapping again when it flashes green pulls it before it burns.",
+   "Serve sends a full ticket before the customer walks out.",
+   "Score, served and three hearts show, and three walkouts end the shift with run it back."
   ]
  }
 }

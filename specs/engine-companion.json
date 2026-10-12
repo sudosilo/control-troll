@@ -1,0 +1,11 @@
+{
+  "name": "engine-companion",
+  "url": "https://engine-companion.vercel.app",
+  "active": true,
+  "features": [
+    "Status panel shows the trading engine heartbeat, position and ledger from the Railway backend.",
+    "Engine secret saves in the browser and is required to send commands.",
+    "Pause, resume and flatten commands get queued for the engine.",
+    "Pending commands and recent trades list on the page."
+  ]
+}

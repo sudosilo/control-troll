@@ -1,12 +1,12 @@
 {
   "name": "aliens-win",
   "url": "https://aliens-win.vercel.app",
-  "approved": false,
   "features": [
     "Ship select screen lets the player choose a vessel before Initiate Harvest starts the game.",
     "Player flies a UFO and fires lasers at targets while enemy shots come back.",
     "Waves advance with a banner, and HP and remaining count show on screen.",
     "Obstacles, fire, humans and confetti effects draw on the canvas.",
     "Game over screen shows with a Try Again button that restarts."
-  ]
+  ],
+  "active": true
 }

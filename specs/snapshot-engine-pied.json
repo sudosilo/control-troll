@@ -1,0 +1,9 @@
+{
+  "name": "snapshot-engine-pied",
+  "url": "https://snapshot-engine-pied.vercel.app",
+  "active": true,
+  "features": [
+    "Snapshot engine responds instead of returning an error."
+  ],
+  "problem": "Returns 404 at the root URL. If it is a backend, it needs a health endpoint. If it is a frontend, the deploy is missing."
+}

@@ -98,9 +98,9 @@ function render(){
 
 function specBlock(n){
   var sp = specs[n]; if(!sp) return "";
-  var tag = sp.approved ? '<span class="tag yes">approved</span>' : '<span class="tag no">needs review</span>';
+  var tag = sp.problem ? '<span class="tag no">problem</span>' : (sp.note ? '<span class="tag no">needs source</span>' : '<span class="tag yes">active</span>');
   var f = sp.features.map(function(x){return '<p>'+esc(x)+'</p>';}).join("");
-  var ov = (sp.overlap ? '<p class="ov">'+esc(sp.overlap)+'</p>' : "")+(sp.keepSeparate ? '<p>'+esc(sp.keepSeparate)+'</p>' : "")+(sp.futureIdea ? '<p>'+esc(sp.futureIdea)+'</p>' : "");
+  var ov = (sp.overlap ? '<p class="ov">'+esc(sp.overlap)+'</p>' : "")+(sp.keepSeparate ? '<p>'+esc(sp.keepSeparate)+'</p>' : "")+(sp.futureIdea ? '<p>'+esc(sp.futureIdea)+'</p>' : "")+(sp.problem ? '<p class="ov">'+esc(sp.problem)+'</p>' : "")+(sp.note ? '<p class="ov">'+esc(sp.note)+'</p>' : "");
   return '<details class="spec"><summary>Spec'+tag+'</summary>'+f+ov+'</details>';
 }
 

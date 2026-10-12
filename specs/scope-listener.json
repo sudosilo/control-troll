@@ -1,0 +1,13 @@
+{
+  "name": "scope-listener",
+  "url": "https://scope-listener.vercel.app",
+  "active": true,
+  "features": [
+    "Oscilloscope compares a local file or YouTube video against the phone mic and shows the offset and drift.",
+    "Views switch between overlay, split, X-Y, difference, spectrum, waterfall, radial and correlation.",
+    "Listen offset mode, nudge half a second, auto track, play, pause, speaker, loop and mic controls work.",
+    "Trim buttons adjust by 10, 1 and 0.1.",
+    "Info panel explains what works so far."
+  ],
+  "overlap": "Newer version of phasewell-scope and shares the sync engine with offset-listener. Likely merge host."
+}

@@ -1,12 +1,12 @@
 {
   "name": "access-terminal-smoky",
   "url": "https://access-terminal-smoky.vercel.app",
-  "approved": false,
   "features": [
     "Micronation government themed access portal with credential ID and access key fields.",
     "Password strength meter scores the key as it is typed.",
     "Authenticate shows a result message after checking the password rules.",
     "Reference number and live clock display on the page."
   ],
-  "keepSeparate": "Intentionally separate. The access terminal family is kept apart for experimentation and may grow. The merge layer skips it."
+  "keepSeparate": "Intentionally separate. The access terminal family is kept apart for experimentation and may grow. The merge layer skips it.",
+  "active": true
 }

@@ -1,12 +1,12 @@
 {
   "name": "access-terminal-red",
   "url": "https://access-terminal-red.vercel.app",
-  "approved": false,
   "features": [
     "Drive-thru crew portal themed sign in page with employee ID and passcode fields.",
     "Password strength meter scores the passcode as it is typed.",
     "Clock In shows a result message after checking the password rules.",
     "Live shift clock displays on the page."
   ],
-  "keepSeparate": "Intentionally separate. The access terminal family is kept apart for experimentation and may grow. The merge layer skips it."
+  "keepSeparate": "Intentionally separate. The access terminal family is kept apart for experimentation and may grow. The merge layer skips it.",
+  "active": true
 }

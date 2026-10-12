@@ -1,0 +1,13 @@
+{
+  "name": "offset-listener",
+  "url": "https://offset-listener.vercel.app",
+  "active": true,
+  "features": [
+    "Listen identifies the playing song by microphone and calculates the playback offset.",
+    "Search finds a track, and play and broadcast shares a sync anchor so other phones play in step.",
+    "Nudge buttons shift the offset by half a second either way.",
+    "Watch in sync, measure sync by mic and save cue points work.",
+    "Enable audio unlocks playback on phones, and an info panel explains the build status."
+  ],
+  "overlap": "Shares its sync engine with scope-listener and phasewell-scope. Merge candidate."
+}

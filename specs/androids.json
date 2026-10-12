@@ -1,12 +1,12 @@
 {
   "name": "androids",
   "url": "https://androids.vercel.app",
-  "approved": false,
   "features": [
     "Four deploy modes: Vercel new frontend, Vercel update, Railway new backend, Railway update.",
     "Form takes project name, download filename, commit message and environment variables, and rejects a filename named index or not ending in .html.",
     "Page writes the full Termux command block for the picked mode and Copy block copies it.",
     "Mark as used saves project names so reused names get flagged, and Clear list wipes them.",
     "Nothing runs on the page itself."
-  ]
+  ],
+  "active": true
 }
