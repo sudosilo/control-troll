@@ -1,0 +1,31 @@
+{
+ "name": "legends-rose",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "roster and question box",
+   "steps": [
+    {
+     "see": "Choose Your Two"
+    },
+    {
+     "see": "Ask the Legends"
+    }
+   ]
+  },
+  {
+   "feature": 3,
+   "name": "banned words panel toggles",
+   "steps": [
+    {
+     "changes": "#bannedToggleLabel",
+     "after": [
+      {
+       "clickSel": ".banned-header"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

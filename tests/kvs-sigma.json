@@ -1,0 +1,32 @@
+{
+ "name": "kvs-sigma",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "modes show",
+   "steps": [
+    {
+     "see": "Shuffle Clips"
+    },
+    {
+     "see": "Random Eps"
+    },
+    {
+     "see": "Seasons"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "clip lengths show",
+   "steps": [
+    {
+     "see": "30 sec"
+    },
+    {
+     "see": "2 min"
+    }
+   ]
+  }
+ ]
+}

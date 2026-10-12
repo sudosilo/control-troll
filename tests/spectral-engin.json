@@ -1,0 +1,17 @@
+{
+ "name": "spectral-engin",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "file drop area shows",
+   "steps": [
+    {
+     "see": "Drop MP3"
+    },
+    {
+     "see": "PLAY"
+    }
+   ]
+  }
+ ]
+}

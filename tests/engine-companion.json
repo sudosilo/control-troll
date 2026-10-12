@@ -1,0 +1,20 @@
+{
+ "name": "engine-companion",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "status panel loads",
+   "steps": [
+    {
+     "see": "engine"
+    },
+    {
+     "see": "pause"
+    },
+    {
+     "see": "flatten"
+    }
+   ]
+  }
+ ]
+}

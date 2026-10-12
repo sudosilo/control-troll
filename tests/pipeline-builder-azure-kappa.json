@@ -1,0 +1,44 @@
+{
+ "name": "pipeline-builder-azure-kappa",
+ "tests": [
+  {
+   "feature": 2,
+   "name": "randomizer rolls a stack",
+   "steps": [
+    {
+     "click": "RANDOMIZER"
+    },
+    {
+     "click": "ROLL NEW STACK"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "see": "APPLY TO BUILDER"
+    }
+   ]
+  },
+  {
+   "feature": 4,
+   "name": "templates show",
+   "steps": [
+    {
+     "click": "TEMPLATES"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "seeSel": ".template-card"
+    },
+    {
+     "clickSel": ".template-card"
+    },
+    {
+     "see": "LOAD INTO BUILDER"
+    }
+   ]
+  }
+ ]
+}

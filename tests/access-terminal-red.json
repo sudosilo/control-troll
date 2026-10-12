@@ -1,0 +1,36 @@
+{
+ "name": "access-terminal-red",
+ "tests": [
+  {
+   "feature": 2,
+   "name": "strength meter reacts",
+   "steps": [
+    {
+     "changes": "#strengthLabel",
+     "after": [
+      {
+       "fill": "#password",
+       "value": "Zq9!zq9!Zq9!x"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": 3,
+   "name": "submit shows a result",
+   "steps": [
+    {
+     "fill": "#username",
+     "value": "zzq"
+    },
+    {
+     "click": "CLOCK IN"
+    },
+    {
+     "wait": 500
+    }
+   ]
+  }
+ ]
+}

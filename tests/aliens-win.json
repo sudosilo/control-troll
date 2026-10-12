@@ -1,0 +1,23 @@
+{
+ "name": "aliens-win",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "ship select then harvest starts",
+   "steps": [
+    {
+     "see": "CHOOSE YOUR VESSEL"
+    },
+    {
+     "click": "INITIATE HARVEST"
+    },
+    {
+     "wait": 1200
+    },
+    {
+     "painted": "canvas"
+    }
+   ]
+  }
+ ]
+}

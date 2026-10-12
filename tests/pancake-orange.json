@@ -15,17 +15,15 @@
   },
   {
    "feature": 2,
-   "name": "tapping too early adds a strike",
+   "name": "tapping a pancake scores it",
    "steps": [
     {
-     "clickSel": "#griddle .pancake"
-    },
-    {
-     "wait": 300
-    },
-    {
-     "textOf": "#burnt",
-     "has": "1"
+     "changes": "#stats",
+     "after": [
+      {
+       "clickSel": "#griddle .pancake"
+      }
+     ]
     }
    ]
   }

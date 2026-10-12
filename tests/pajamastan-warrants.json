@@ -1,0 +1,17 @@
+{
+ "name": "pajamastan-warrants",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "docket loads",
+   "steps": [
+    {
+     "see": "active warrants"
+    },
+    {
+     "gone": "never last checked"
+    }
+   ]
+  }
+ ]
+}

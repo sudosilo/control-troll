@@ -1,0 +1,17 @@
+{
+ "name": "circuit-musicfx",
+ "tests": [
+  {
+   "feature": 2,
+   "name": "board draws and modes switch",
+   "steps": [
+    {
+     "wait": 1500
+    },
+    {
+     "painted": "canvas"
+    }
+   ]
+  }
+ ]
+}

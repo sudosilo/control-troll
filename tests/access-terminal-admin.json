@@ -1,0 +1,17 @@
+{
+ "name": "access-terminal-admin",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "login form shows",
+   "steps": [
+    {
+     "see": "AUTHENTICATE"
+    },
+    {
+     "seeSel": "input[type=password]"
+    }
+   ]
+  }
+ ]
+}

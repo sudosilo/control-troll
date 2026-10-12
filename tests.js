@@ -14,6 +14,7 @@
 //   {"painted": "css"}           the canvas must have something drawn on it
 //   {"stored": true}             the app must have saved something in browser storage
 //   {"download": "css"}          clicking this must start a file download
+//   {"changes": "css", "after": [steps]}  the text must change after the inner steps run
 //   {"renders": true}            the page shows text or a drawn canvas
 //   {"reload": true}             reload the page
 const fs = require("fs");
@@ -59,6 +60,13 @@ async function runStep(page, s) {
       page.locator(s.download).first().click({ timeout: STEP_TIMEOUT }),
     ]);
     if (!dl.suggestedFilename()) throw new Error("download had no file");
+  } else if (s.changes) {
+    // Run the inner steps, then the element's text must differ from before.
+    const read = () => page.locator(s.changes).first().evaluate((n) => n.innerText !== undefined ? n.innerText : n.textContent);
+    const before = await read();
+    for (const inner of s.after || []) await runStep(page, inner);
+    await page.waitForTimeout(400);
+    if ((await read()) === before) throw new Error(s.changes + " did not change");
   } else if (s.renders) {
     // Pass when the page shows real text or has a canvas with something drawn on it.
     const text = await page.evaluate(() => (document.body && document.body.innerText || "").trim().length);

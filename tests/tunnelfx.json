@@ -1,0 +1,20 @@
+{
+ "name": "tunnelfx",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "idle tunnel animates",
+   "steps": [
+    {
+     "wait": 1500
+    },
+    {
+     "painted": "canvas"
+    },
+    {
+     "see": "Use mic"
+    }
+   ]
+  }
+ ]
+}

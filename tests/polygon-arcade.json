@@ -1,0 +1,20 @@
+{
+ "name": "polygon-arcade",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "reads the chain",
+   "steps": [
+    {
+     "see": "Arcade Bounty Board"
+    },
+    {
+     "wait": 3000
+    },
+    {
+     "gone": "Reading the chain"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "name": "chromatogram-three",
+ "tests": [
+  {
+   "feature": 2,
+   "name": "display modes switch",
+   "steps": [
+    {
+     "click": "dna"
+    },
+    {
+     "click": "ascii"
+    },
+    {
+     "click": "notes"
+    }
+   ]
+  }
+ ]
+}

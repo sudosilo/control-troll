@@ -1,0 +1,26 @@
+{
+ "name": "termbeat",
+ "tests": [
+  {
+   "feature": 2,
+   "name": "theme menu switches theme",
+   "steps": [
+    {
+     "clickSel": "#hamburgerBtn"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "clickSel": "button[data-theme=powershell]"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "renders": true
+    }
+   ]
+  }
+ ]
+}
