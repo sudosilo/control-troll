@@ -1,0 +1,67 @@
+{
+ "name": "boba-breakeven-x8k4",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "default break-even is 53 cups",
+   "steps": [
+    {
+     "textOf": "#cNum",
+     "has": "53"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "plus button changes result",
+   "steps": [
+    {
+     "clickSel": "button[data-t=price][data-d='0.25']"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "textOf": "#cNum",
+     "has": "50"
+    }
+   ]
+  },
+  {
+   "feature": 3,
+   "name": "week game opens a day",
+   "steps": [
+    {
+     "clickSel": "#tPlay"
+    },
+    {
+     "clickSel": "#startBtn"
+    },
+    {
+     "clickSel": "#openBtn"
+    },
+    {
+     "wait": 800
+    },
+    {
+     "seeSel": "#nextBtn"
+    }
+   ]
+  },
+  {
+   "feature": 5,
+   "name": "info opens",
+   "steps": [
+    {
+     "clickSel": "#infoBtn"
+    },
+    {
+     "seeSel": "#modal"
+    },
+    {
+     "clickSel": "#closeBtn"
+    }
+   ]
+  }
+ ]
+}

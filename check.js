@@ -2,6 +2,7 @@
 // and writes the results to status.json. Costs zero tokens.
 const fs = require("fs");
 const { chromium } = require("playwright");
+const { runTests } = require("./tests");
 
 const TIMEOUT = 30000;
 const MAX_SNAPSHOT = 3 * 1024 * 1024;
@@ -27,6 +28,10 @@ async function checkApp(browser, app) {
       } catch (e) {}
     }
     await page.waitForTimeout(2000);
+    if (result.up) {
+      const tests = await runTests(page, app.name);
+      if (tests) result.tests = tests;
+    }
   } catch (e) {
     result.errors.push("load: " + String(e.message || e).split("\n")[0].slice(0, 300));
   }

@@ -64,8 +64,10 @@ var data = null, specs = {}, filter = "all";
 
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
 
+function failing(a){return (a.tests||[]).filter(function(t){return !t.pass;});}
 function klass(a){
   if(!a.up) return "bad";
+  if(failing(a).length) return "warn";
   if(a.errors && a.errors.length) return "warn";
   return "ok";
 }
@@ -88,9 +90,10 @@ function render(){
   var rows = data.apps.slice().sort(function(x,y){return order[klass(x)]-order[klass(y)];});
   list.innerHTML = rows.filter(function(a){return filter==="all"||klass(a)===filter;}).map(function(a){
     var k = klass(a);
-    var label = k==="ok"?"Healthy":k==="warn"?"Errors":"Down";
-    var meta = a.url.replace(/^https?:\/\//,"")+" . status "+(a.status||"none")+" . "+(a.ms!=null?a.ms+" ms":"no load");
-    var errs = (a.errors||[]).slice(0,5).map(esc).join("\n");
+    var f = failing(a), tt = a.tests||[];
+    var label = k==="ok"?"Healthy":k==="warn"?(f.length?"Tests failing":"Errors"):"Down";
+    var meta = a.url.replace(/^https?:\/\//,"")+" . status "+(a.status||"none")+" . "+(a.ms!=null?a.ms+" ms":"no load")+(tt.length?" . tests "+(tt.length-f.length)+"/"+tt.length:"");
+    var errs = f.map(function(t){return "FAIL "+esc(t.name)+": "+esc(t.error||"");}).concat((a.errors||[]).slice(0,5).map(esc)).join("\n");
     return '<div class="app '+k+'"><div class="row"><span class="name">'+esc(a.name)+'</span><span class="state">'+label+'</span></div>'+
       '<div class="meta">'+esc(meta)+'</div>'+(errs?'<div class="errs">'+errs+'</div>':'')+specBlock(a.name)+'</div>';
   }).join("");

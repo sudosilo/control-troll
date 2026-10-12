@@ -1,0 +1,66 @@
+{
+ "name": "androids",
+ "tests": [
+  {
+   "feature": 2,
+   "name": "index filename rejected",
+   "steps": [
+    {
+     "fill": "#file",
+     "value": "index.html"
+    },
+    {
+     "textOf": "#fileMsg",
+     "has": "Never use index"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "good filename accepted",
+   "steps": [
+    {
+     "fill": "#file",
+     "value": "zzqtest42.html"
+    },
+    {
+     "textOf": "#fileMsg",
+     "has": "Looks good"
+    }
+   ]
+  },
+  {
+   "feature": 3,
+   "name": "command block written",
+   "steps": [
+    {
+     "fill": "#proj",
+     "value": "zzqproj"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "textOf": "#out",
+     "has": "zzqproj"
+    }
+   ]
+  },
+  {
+   "feature": 1,
+   "name": "railway mode switches",
+   "steps": [
+    {
+     "clickSel": "button[data-mode=rnew]"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "textOf": "#out",
+     "has": "railway"
+    }
+   ]
+  }
+ ]
+}

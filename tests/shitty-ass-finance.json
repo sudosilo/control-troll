@@ -1,0 +1,45 @@
+{
+ "name": "shitty-ass-finance",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "overtime preset fills pay",
+   "steps": [
+    {
+     "clickSel": "button[data-pay='2600']"
+    },
+    {
+     "wait": 200
+    },
+    {
+     "textOf": "#total",
+     "has": "2,600"
+    }
+   ]
+  },
+  {
+   "feature": 4,
+   "name": "add a bill adds a row",
+   "steps": [
+    {
+     "clickSel": "#addBill"
+    },
+    {
+     "wait": 200
+    },
+    {
+     "seeSel": "#billList input[data-k=name]"
+    }
+   ]
+  },
+  {
+   "feature": 3,
+   "name": "split draws",
+   "steps": [
+    {
+     "seeSel": "#svg"
+    }
+   ]
+  }
+ ]
+}

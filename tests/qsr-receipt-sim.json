@@ -1,0 +1,64 @@
+{
+ "name": "qsr-receipt-sim",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "name shows on receipt",
+   "steps": [
+    {
+     "fill": "input[data-key=restaurantName]",
+     "value": "ZZQ GRILL"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "textOf": "#receipt",
+     "has": "ZZQ GRILL"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "footer shows on receipt",
+   "steps": [
+    {
+     "clickSel": "button[data-tab=receipt]"
+    },
+    {
+     "fill": "input[data-key=footer]",
+     "value": "ZZQ THANKS"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "textOf": "#receipt",
+     "has": "ZZQ THANKS"
+    }
+   ]
+  },
+  {
+   "feature": 5,
+   "name": "save keeps settings",
+   "steps": [
+    {
+     "clickSel": "#btnSave"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "stored": true
+    },
+    {
+     "reload": true
+    },
+    {
+     "textOf": "#receipt",
+     "has": "ZZQ GRILL"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "name": "torque-converter",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "1 newton meter converts to foot pounds",
+   "steps": [
+    {
+     "fill": "#value",
+     "value": "1"
+    },
+    {
+     "wait": 200
+    },
+    {
+     "textOf": "#result",
+     "has": "0.73"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "result updates on change",
+   "steps": [
+    {
+     "fill": "#value",
+     "value": "10"
+    },
+    {
+     "wait": 200
+    },
+    {
+     "textOf": "#result",
+     "has": "7.37"
+    }
+   ]
+  }
+ ]
+}
