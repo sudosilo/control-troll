@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Control Troll</title>
+<style>
+:root{
+  --bg:#f6f5f1;--card:#ffffff;--ink:#1d1d1b;--muted:#6b6a64;--line:#e2e0d8;
+  --ok:#1f8a4c;--okbg:#e6f4ec;--bad:#c0392b;--badbg:#fbe9e7;--warn:#a86a00;--warnbg:#fdf3e1;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
+.sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+.tally{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.pill{padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--card)}
+.pill.ok{background:var(--okbg);color:var(--ok);border-color:transparent}
+.pill.bad{background:var(--badbg);color:var(--bad);border-color:transparent}
+.pill.warn{background:var(--warnbg);color:var(--warn);border-color:transparent}
+.filters{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.filters button{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.filters button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.app{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+.app.ok{border-left-color:var(--ok)}
+.app.bad{border-left-color:var(--bad)}
+.app.warn{border-left-color:var(--warn)}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.name{font-weight:650;word-break:break-word}
+.state{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;white-space:nowrap}
+.app.ok .state{color:var(--ok)}
+.app.bad .state{color:var(--bad)}
+.app.warn .state{color:var(--warn)}
+.meta{color:var(--muted);font-size:12.5px;margin-top:4px;word-break:break-all}
+.errs{margin-top:8px;font:12px/1.4 ui-monospace,Menlo,Consolas,monospace;color:var(--bad);background:var(--badbg);border-radius:6px;padding:8px;white-space:pre-wrap;word-break:break-word}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:20px;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>CONTROL TROLL</h1>
+  <div class="sub" id="when">Loading status...</div>
+  <div class="tally" id="tally"></div>
+  <div class="filters" id="filters">
+    <button data-f="all" class="on">All</button>
+    <button data-f="bad">Down</button>
+    <button data-f="warn">Errors</button>
+    <button data-f="ok">Healthy</button>
+  </div>
+  <div id="list"></div>
+</div>
+<script>
+var SRC = "https://raw.githubusercontent.com/sudosilo/control-troll/main/status.json";
+var data = null, filter = "all";
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+
+function klass(a){
+  if(!a.up) return "bad";
+  if(a.errors && a.errors.length) return "warn";
+  return "ok";
+}
+
+function render(){
+  var list = document.getElementById("list");
+  if(!data || !data.apps || !data.apps.length){
+    list.innerHTML = '<div class="empty">No apps checked yet. The first daily run fills this in.</div>';
+    document.getElementById("tally").innerHTML = "";
+    return;
+  }
+  var c = {ok:0,warn:0,bad:0};
+  data.apps.forEach(function(a){c[klass(a)]++;});
+  document.getElementById("tally").innerHTML =
+    '<span class="pill">'+data.apps.length+' apps</span>'+
+    '<span class="pill ok">'+c.ok+' healthy</span>'+
+    '<span class="pill warn">'+c.warn+' errors</span>'+
+    '<span class="pill bad">'+c.bad+' down</span>';
+  var order = {bad:0,warn:1,ok:2};
+  var rows = data.apps.slice().sort(function(x,y){return order[klass(x)]-order[klass(y)];});
+  list.innerHTML = rows.filter(function(a){return filter==="all"||klass(a)===filter;}).map(function(a){
+    var k = klass(a);
+    var label = k==="ok"?"Healthy":k==="warn"?"Errors":"Down";
+    var meta = a.url.replace(/^https?:\/\//,"")+" . status "+(a.status||"none")+" . "+(a.ms!=null?a.ms+" ms":"no load");
+    var errs = (a.errors||[]).slice(0,5).map(esc).join("\n");
+    return '<div class="app '+k+'"><div class="row"><span class="name">'+esc(a.name)+'</span><span class="state">'+label+'</span></div>'+
+      '<div class="meta">'+esc(meta)+'</div>'+(errs?'<div class="errs">'+errs+'</div>':'')+'</div>';
+  }).join("");
+}
+
+document.getElementById("filters").addEventListener("click",function(e){
+  var b = e.target.closest("button"); if(!b) return;
+  filter = b.getAttribute("data-f");
+  Array.prototype.forEach.call(this.children,function(x){x.classList.toggle("on",x===b);});
+  render();
+});
+
+fetch(SRC+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+  data = j;
+  document.getElementById("when").textContent = j && j.checkedAt ? "Last check: "+new Date(j.checkedAt).toLocaleString() : "No checks have run yet.";
+  render();
+}).catch(function(){
+  document.getElementById("when").textContent = "Status file not found yet.";
+  render();
+});
+</script>
+</body>
+</html>
