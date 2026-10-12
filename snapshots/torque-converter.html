@@ -2,106 +2,369 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Torque Converter</title>
 <style>
+  :root {
+    --bg: #f4f1ea;
+    --card: #ffffff;
+    --ink: #222222;
+    --muted: #5a554c;
+    --line: #cfc8b8;
+    --accent: #7a2e28;
+    --result: #eef2ea;
+  }
+  * { box-sizing: border-box; }
   body {
-    background: #f4f1ea;
-    color: #222;
+    background: var(--bg);
+    color: var(--ink);
     font-family: -apple-system, Segoe UI, Roboto, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px 16px;
+    padding: 24px 16px 0;
     margin: 0;
+    min-height: 100vh;
+  }
+  main {
+    width: 100%;
+    max-width: 440px;
+    flex: 1;
+    padding-bottom: 32px;
+  }
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .tab {
+    flex: 1;
+    padding: 12px 8px;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: #ebe6da;
+    color: var(--muted);
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .tab.active {
+    background: var(--card);
+    color: var(--accent);
+    border-color: var(--accent);
   }
   .card {
-    background: #fff;
-    border: 1px solid #ccc;
+    background: var(--card);
+    border: 1px solid var(--line);
     border-radius: 8px;
-    padding: 24px;
-    max-width: 420px;
+    padding: 20px;
     width: 100%;
   }
+  .panel { display: none; }
+  .panel.active { display: block; }
   h1 {
     font-size: 20px;
-    margin-top: 0;
+    margin: 0 0 4px;
+  }
+  .sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 8px;
   }
   label {
     display: block;
-    margin-top: 16px;
+    margin-top: 14px;
     font-size: 14px;
     font-weight: bold;
   }
   input, select {
     width: 100%;
-    box-sizing: border-box;
     padding: 10px;
     font-size: 16px;
     margin-top: 6px;
     border: 1px solid #999;
     border-radius: 6px;
+    background: #fff;
+    color: var(--ink);
   }
+  .row {
+    display: flex;
+    gap: 10px;
+  }
+  .row > div { flex: 1; min-width: 0; }
   .result {
-    margin-top: 20px;
+    margin-top: 18px;
     padding: 16px;
-    background: #eef2ea;
+    background: var(--result);
     border-radius: 6px;
-    font-size: 18px;
+    font-size: 17px;
+    line-height: 1.6;
   }
-  .result span {
+  .result .big {
+    font-size: 26px;
     font-weight: bold;
+  }
+  .note {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
   }
 </style>
 </head>
 <body>
-<div class="card">
-  <h1>Torque Converter</h1>
+<main>
+  <div class="tabs">
+    <button class="tab active" type="button" data-panel="convert">Converter</button>
+    <button class="tab" type="button" data-panel="bolt">Bolt Spec</button>
+  </div>
 
-  <label for="value">Value</label>
-  <input type="number" id="value" value="1" step="any">
+  <div class="card">
 
-  <label for="unit">From</label>
-  <select id="unit">
-    <option value="nm">Newton meters (N·m)</option>
-    <option value="np">Newton pounds / in-lb equivalent unit (N·in, informal)</option>
-    <option value="ftlb">Foot pounds (ft-lb)</option>
-    <option value="inlb">Inch pounds (in-lb)</option>
-  </select>
+    <section class="panel active" id="convert">
+      <h1>Torque Converter</h1>
 
-  <div class="result" id="result">Enter a value above</div>
-</div>
+      <label for="value">Value</label>
+      <input type="number" id="value" value="1" step="any" inputmode="decimal">
+
+      <label for="unit">From</label>
+      <select id="unit">
+        <option value="nm">Newton meters (N·m)</option>
+        <option value="ftlb">Foot pounds (ft-lb)</option>
+        <option value="inlb">Inch pounds (in-lb)</option>
+      </select>
+
+      <div class="result" id="result">Enter a value above</div>
+    </section>
+
+    <section class="panel" id="bolt">
+      <h1>Bolt Torque Spec</h1>
+      <p class="sub">Generic chart value. A manufacturer spec for the part always wins.</p>
+
+      <label for="system">Bolt type</label>
+      <select id="system">
+        <option value="sae">SAE (inch)</option>
+        <option value="metric">Metric</option>
+      </select>
+
+      <div class="row">
+        <div>
+          <label for="size">Size</label>
+          <select id="size"></select>
+        </div>
+        <div>
+          <label for="pitch">Thread</label>
+          <select id="pitch">
+            <option value="coarse">Coarse</option>
+            <option value="fine">Fine</option>
+          </select>
+        </div>
+      </div>
+
+      <label for="grade">Grade</label>
+      <select id="grade"></select>
+
+      <div class="row">
+        <div>
+          <label for="lube">Threads</label>
+          <select id="lube">
+            <option value="dry">Dry</option>
+            <option value="oiled">Oiled or plated</option>
+          </select>
+        </div>
+        <div>
+          <label for="into">Threads into</label>
+          <select id="into">
+            <option value="steel">Steel nut</option>
+            <option value="iron">Cast iron</option>
+            <option value="alum">Cast aluminum</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="result" id="boltResult"></div>
+      <div class="note" id="boltNote"></div>
+    </section>
+
+  </div>
+</main>
 
 <script>
-  const valueEl = document.getElementById('value');
-  const unitEl = document.getElementById('unit');
-  const resultEl = document.getElementById('result');
+  /* ---------- Tabs ---------- */
+  var tabs = document.querySelectorAll('.tab');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (x) { x.classList.remove('active'); });
+      document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
+      t.classList.add('active');
+      document.getElementById(t.dataset.panel).classList.add('active');
+    });
+  });
+
+  /* ---------- Converter ---------- */
+  var valueEl = document.getElementById('value');
+  var unitEl = document.getElementById('unit');
+  var resultEl = document.getElementById('result');
 
   function convert() {
-    const v = parseFloat(valueEl.value);
+    var v = parseFloat(valueEl.value);
     if (isNaN(v)) {
       resultEl.textContent = 'Enter a valid number';
       return;
     }
-    const unit = unitEl.value;
-    let nm;
-
+    var unit = unitEl.value;
+    var nm;
     if (unit === 'nm') nm = v;
-    else if (unit === 'np') nm = v * 0.1129848; // N per inch, rare unit, treat as N-in
     else if (unit === 'ftlb') nm = v * 1.3558179;
-    else if (unit === 'inlb') nm = v * 0.1129848;
+    else nm = v * 0.1129848;
 
-    const ftlb = nm * 0.7375621;
-    const inlb = nm * 8.8507458;
+    var ftlb = nm * 0.7375621;
+    var inlb = nm * 8.8507458;
 
     resultEl.innerHTML =
-      '<span>' + nm.toFixed(3) + '</span> N·m<br>' +
-      '<span>' + ftlb.toFixed(3) + '</span> ft-lb<br>' +
-      '<span>' + inlb.toFixed(3) + '</span> in-lb';
+      '<b>' + nm.toFixed(2) + '</b> N·m<br>' +
+      '<b>' + ftlb.toFixed(2) + '</b> ft-lb<br>' +
+      '<b>' + inlb.toFixed(2) + '</b> in-lb';
   }
-
   valueEl.addEventListener('input', convert);
   unitEl.addEventListener('change', convert);
   convert();
+
+  /* ---------- Bolt spec ----------
+     Torque = K x diameter x clamp load.
+     Clamp load = 75 percent of proof load (proof strength x stress area).
+     K = 0.20 dry, 0.15 oiled or plated. */
+
+  var SAE = [
+    { label: '1/4"',  d: 0.250, coarse: '20', cA: 0.0318, fine: '28', fA: 0.0364 },
+    { label: '5/16"', d: 0.3125, coarse: '18', cA: 0.0524, fine: '24', fA: 0.0580 },
+    { label: '3/8"',  d: 0.375, coarse: '16', cA: 0.0775, fine: '24', fA: 0.0878 },
+    { label: '7/16"', d: 0.4375, coarse: '14', cA: 0.1063, fine: '20', fA: 0.1187 },
+    { label: '1/2"',  d: 0.500, coarse: '13', cA: 0.1419, fine: '20', fA: 0.1599 },
+    { label: '9/16"', d: 0.5625, coarse: '12', cA: 0.1820, fine: '18', fA: 0.2030 },
+    { label: '5/8"',  d: 0.625, coarse: '11', cA: 0.2260, fine: '18', fA: 0.2560 },
+    { label: '3/4"',  d: 0.750, coarse: '10', cA: 0.3340, fine: '16', fA: 0.3730 },
+    { label: '7/8"',  d: 0.875, coarse: '9',  cA: 0.4620, fine: '14', fA: 0.5090 },
+    { label: '1"',    d: 1.000, coarse: '8',  cA: 0.6060, fine: '12', fA: 0.6630 }
+  ];
+
+  var METRIC = [
+    { label: 'M6',  d: 6,  coarse: '1.0',  cA: 20.1, fine: null,  fA: null },
+    { label: 'M8',  d: 8,  coarse: '1.25', cA: 36.6, fine: '1.0',  fA: 39.2 },
+    { label: 'M10', d: 10, coarse: '1.5',  cA: 58.0, fine: '1.25', fA: 61.2 },
+    { label: 'M12', d: 12, coarse: '1.75', cA: 84.3, fine: '1.5',  fA: 88.1 },
+    { label: 'M14', d: 14, coarse: '2.0',  cA: 115,  fine: '1.5',  fA: 125 },
+    { label: 'M16', d: 16, coarse: '2.0',  cA: 157,  fine: '1.5',  fA: 167 },
+    { label: 'M20', d: 20, coarse: '2.5',  cA: 245,  fine: '1.5',  fA: 272 },
+    { label: 'M24', d: 24, coarse: '3.0',  cA: 353,  fine: '2.0',  fA: 384 }
+  ];
+
+  var SAE_GRADES = [
+    { v: 'g2', label: 'Grade 2 (no marks)' },
+    { v: 'g5', label: 'Grade 5 (3 lines on head)' },
+    { v: 'g8', label: 'Grade 8 (6 lines on head)' }
+  ];
+  var METRIC_GRADES = [
+    { v: 'c88',  label: 'Class 8.8' },
+    { v: 'c109', label: 'Class 10.9' },
+    { v: 'c129', label: 'Class 12.9' }
+  ];
+
+  /* Proof strength: psi for SAE, MPa for metric */
+  function proof(grade, d) {
+    if (grade === 'g2') return d <= 0.75 ? 55000 : 33000;
+    if (grade === 'g5') return 85000;
+    if (grade === 'g8') return 120000;
+    if (grade === 'c88') return d <= 16 ? 580 : 600;
+    if (grade === 'c109') return 830;
+    if (grade === 'c129') return 970;
+  }
+
+  var systemEl = document.getElementById('system');
+  var sizeEl = document.getElementById('size');
+  var pitchEl = document.getElementById('pitch');
+  var gradeEl = document.getElementById('grade');
+  var lubeEl = document.getElementById('lube');
+  var intoEl = document.getElementById('into');
+  var boltResult = document.getElementById('boltResult');
+  var boltNote = document.getElementById('boltNote');
+
+  function fill(sel, items, keep) {
+    var old = sel.value;
+    sel.innerHTML = '';
+    items.forEach(function (it) {
+      var o = document.createElement('option');
+      o.value = it.v;
+      o.textContent = it.label;
+      sel.appendChild(o);
+    });
+    if (keep && items.some(function (it) { return it.v === old; })) sel.value = old;
+  }
+
+  function buildSystem() {
+    var metric = systemEl.value === 'metric';
+    var list = metric ? METRIC : SAE;
+    fill(sizeEl, list.map(function (b, i) { return { v: String(i), label: b.label }; }), false);
+    fill(gradeEl, metric ? METRIC_GRADES : SAE_GRADES, false);
+    sizeEl.value = metric ? '4' : '7';
+    gradeEl.value = metric ? 'c88' : 'g8';
+    boltCalc();
+  }
+
+  function boltCalc() {
+    var metric = systemEl.value === 'metric';
+    var b = (metric ? METRIC : SAE)[parseInt(sizeEl.value, 10)];
+    var useFine = pitchEl.value === 'fine' && b.fine;
+    var area = useFine ? b.fA : b.cA;
+    var threadTxt = useFine ? b.fine : b.coarse;
+    var K = lubeEl.value === 'dry' ? 0.20 : 0.15;
+    var P = proof(gradeEl.value, b.d);
+
+    var nm, ftlb;
+    if (metric) {
+      var clampN = 0.75 * P * area;
+      nm = K * (b.d / 1000) * clampN;
+      ftlb = nm * 0.7375621;
+    } else {
+      var clampLb = 0.75 * P * area;
+      var inlb = K * b.d * clampLb;
+      ftlb = inlb / 12;
+      nm = ftlb * 1.3558179;
+    }
+
+    var name = metric
+      ? b.label + ' x ' + threadTxt
+      : b.label + '-' + threadTxt + (useFine ? ' UNF' : ' UNC');
+
+    var into = intoEl.value;
+    var html = '<div>' + name + '</div>';
+
+    if (into === 'alum') {
+      html +=
+        '<div class="big">' + Math.round(ftlb * 0.5) + ' to ' + Math.round(ftlb * 0.75) + ' ft-lb</div>' +
+        '<div>' + Math.round(nm * 0.5) + ' to ' + Math.round(nm * 0.75) + ' N·m</div>' +
+        '<div>Steel nut spec: ' + Math.round(ftlb) + ' ft-lb</div>';
+    } else {
+      html +=
+        '<div class="big">' + Math.round(ftlb) + ' ft-lb</div>' +
+        '<div>' + Math.round(nm) + ' N·m</div>';
+    }
+    boltResult.innerHTML = html;
+
+    var notes = [];
+    if (pitchEl.value === 'fine' && !b.fine) notes.push('No standard fine thread listed for this size, showing coarse.');
+    if (into === 'alum') notes.push('Cast aluminum strips before the bolt reaches full spec. Range is 50 to 75 percent of steel. Use the low end for short thread engagement.');
+    if (into === 'iron') notes.push('Cast iron holds close to full spec when thread depth is at least 1.5 times the bolt diameter.');
+    if (lubeEl.value === 'oiled') notes.push('Oil, anti-seize, or zinc plating lowers friction, so the same clamp needs less torque.');
+    if (into === 'steel' && lubeEl.value === 'dry') notes.push('Based on 75 percent of proof load with clean, dry threads.');
+    boltNote.textContent = notes.join(' ');
+  }
+
+  systemEl.addEventListener('change', buildSystem);
+  [sizeEl, pitchEl, gradeEl, lubeEl, intoEl].forEach(function (el) {
+    el.addEventListener('change', boltCalc);
+  });
+  buildSystem();
 </script>
 <!-- =====================================================================
        MOHAVE TECHNOLOGY GROUP // CREATOR SEAL
