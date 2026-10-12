@@ -34,6 +34,13 @@ h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
 .app.warn .state{color:var(--warn)}
 .meta{color:var(--muted);font-size:12.5px;margin-top:4px;word-break:break-all}
 .errs{margin-top:8px;font:12px/1.4 ui-monospace,Menlo,Consolas,monospace;color:var(--bad);background:var(--badbg);border-radius:6px;padding:8px;white-space:pre-wrap;word-break:break-word}
+.spec{margin-top:8px;border-top:1px solid var(--line);padding-top:8px;font-size:13px}
+.spec summary{cursor:pointer;color:var(--muted);font-weight:600}
+.spec p{margin:6px 0 0}
+.spec .ov{color:var(--warn)}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;margin-left:6px}
+.tag.no{background:var(--warnbg);color:var(--warn)}
+.tag.yes{background:var(--okbg);color:var(--ok)}
 .empty{background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:20px;color:var(--muted);text-align:center}
 </style>
 </head>
@@ -52,7 +59,8 @@ h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
 </div>
 <script>
 var SRC = "https://raw.githubusercontent.com/sudosilo/control-troll/main/status.json";
-var data = null, filter = "all";
+var SPECS = "https://raw.githubusercontent.com/sudosilo/control-troll/main/specs/all.json";
+var data = null, specs = {}, filter = "all";
 
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
 
@@ -84,8 +92,16 @@ function render(){
     var meta = a.url.replace(/^https?:\/\//,"")+" . status "+(a.status||"none")+" . "+(a.ms!=null?a.ms+" ms":"no load");
     var errs = (a.errors||[]).slice(0,5).map(esc).join("\n");
     return '<div class="app '+k+'"><div class="row"><span class="name">'+esc(a.name)+'</span><span class="state">'+label+'</span></div>'+
-      '<div class="meta">'+esc(meta)+'</div>'+(errs?'<div class="errs">'+errs+'</div>':'')+'</div>';
+      '<div class="meta">'+esc(meta)+'</div>'+(errs?'<div class="errs">'+errs+'</div>':'')+specBlock(a.name)+'</div>';
   }).join("");
+}
+
+function specBlock(n){
+  var sp = specs[n]; if(!sp) return "";
+  var tag = sp.approved ? '<span class="tag yes">approved</span>' : '<span class="tag no">needs review</span>';
+  var f = sp.features.map(function(x){return '<p>'+esc(x)+'</p>';}).join("");
+  var ov = sp.overlap ? '<p class="ov">'+esc(sp.overlap)+'</p>' : "";
+  return '<details class="spec"><summary>Spec'+tag+'</summary>'+f+ov+'</details>';
 }
 
 document.getElementById("filters").addEventListener("click",function(e){
@@ -95,6 +111,7 @@ document.getElementById("filters").addEventListener("click",function(e){
   render();
 });
 
+fetch(SPECS+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():{};}).then(function(j){specs=j||{};render();}).catch(function(){});
 fetch(SRC+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
   data = j;
   document.getElementById("when").textContent = j && j.checkedAt ? "Last check: "+new Date(j.checkedAt).toLocaleString() : "No checks have run yet.";

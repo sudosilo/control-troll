@@ -1,0 +1,123 @@
+{
+ "67-press-proccessor": {
+  "name": "67-press-proccessor",
+  "url": "https://67-press-proccessor.vercel.app",
+  "approved": false,
+  "features": [
+   "Design tab draws a straight tuck end box dieline from width, depth, height, glue tab and tuck flap inputs in inches.",
+   "Solid lines show cuts and dashed lines show folds on the flat view.",
+   "Artwork panel generates new box art or revises current art through the Anthropic API using a key saved only in the browser.",
+   "Roll tab lays boxes out on the press web with side margin, gap, spit plate and calibration square, and RUN animates the roll feeding.",
+   "Print flat supports Letter, Tabloid and A4 sheet sizes, and Download SVG saves the dieline.",
+   "Save design and Load design keep designs between visits."
+  ]
+ },
+ "access-terminal-admin": {
+  "name": "access-terminal-admin",
+  "url": "https://access-terminal-admin.vercel.app",
+  "approved": false,
+  "features": [
+   "Login screen takes a user and password and unlocks the dashboard against the Railway backend.",
+   "Dashboard lists the backend tables and loads rows for the picked table.",
+   "Columns sort when clicked and timestamps display as readable dates.",
+   "Session locks after idle time with an I am still here warning first, and Lock ends it right away.",
+   "Refresh reloads the current table."
+  ]
+ },
+ "access-terminal-orange": {
+  "name": "access-terminal-orange",
+  "url": "https://access-terminal-orange.vercel.app",
+  "approved": false,
+  "features": [
+   "Kitchen hub themed sign in page with operator ID and access key fields.",
+   "Password strength meter scores the key as it is typed.",
+   "Enter Kitchen shows a result message after checking the password rules.",
+   "Live kitchen clock and a list of virtual brands display on the page."
+  ],
+  "overlap": "Same code as the other themed sign in pages in the access-terminal family. Merge candidate."
+ },
+ "access-terminal-red": {
+  "name": "access-terminal-red",
+  "url": "https://access-terminal-red.vercel.app",
+  "approved": false,
+  "features": [
+   "Drive-thru crew portal themed sign in page with employee ID and passcode fields.",
+   "Password strength meter scores the passcode as it is typed.",
+   "Clock In shows a result message after checking the password rules.",
+   "Live shift clock displays on the page."
+  ],
+  "overlap": "Same code as the other themed sign in pages in the access-terminal family. Merge candidate."
+ },
+ "access-terminal-smoky": {
+  "name": "access-terminal-smoky",
+  "url": "https://access-terminal-smoky.vercel.app",
+  "approved": false,
+  "features": [
+   "Micronation government themed access portal with credential ID and access key fields.",
+   "Password strength meter scores the key as it is typed.",
+   "Authenticate shows a result message after checking the password rules.",
+   "Reference number and live clock display on the page."
+  ],
+  "overlap": "Same code as the other themed sign in pages in the access-terminal family. Merge candidate."
+ },
+ "access-termonal-blue": {
+  "name": "access-termonal-blue",
+  "url": "https://access-termonal-blue.vercel.app",
+  "approved": false,
+  "features": [
+   "Boba shop themed sign in page with shop ID and passcode fields.",
+   "Password strength meter scores the passcode as it is typed.",
+   "Open Shop shows a result message after checking the password rules.",
+   "Live open now clock displays on the page."
+  ],
+  "overlap": "Same code as the other themed sign in pages in the access-terminal family. Merge candidate."
+ },
+ "aerophin-twin": {
+  "name": "aerophin-twin",
+  "url": "https://aerophin-twin.vercel.app",
+  "approved": false,
+  "features": [
+   "Drawing set view shows twelve sheets for two coffee machines, a motorized column press in inches and a spring press brew head in millimeters.",
+   "Each part section ends with a bill of materials.",
+   "Part drawings view shows interactive 3D models that rotate and explode into parts.",
+   "Pause, reset view and stop rotation buttons control each 3D model.",
+   "Brew cycle animates the piston, knob twist and drip phases."
+  ]
+ },
+ "aliens-win": {
+  "name": "aliens-win",
+  "url": "https://aliens-win.vercel.app",
+  "approved": false,
+  "features": [
+   "Ship select screen lets the player choose a vessel before Initiate Harvest starts the game.",
+   "Player flies a UFO and fires lasers at targets while enemy shots come back.",
+   "Waves advance with a banner, and HP and remaining count show on screen.",
+   "Obstacles, fire, humans and confetti effects draw on the canvas.",
+   "Game over screen shows with a Try Again button that restarts."
+  ]
+ },
+ "androids": {
+  "name": "androids",
+  "url": "https://androids.vercel.app",
+  "approved": false,
+  "features": [
+   "Four deploy modes: Vercel new frontend, Vercel update, Railway new backend, Railway update.",
+   "Form takes project name, download filename, commit message and environment variables, and rejects a filename named index or not ending in .html.",
+   "Page writes the full Termux command block for the picked mode and Copy block copies it.",
+   "Mark as used saves project names so reused names get flagged, and Clear list wipes them.",
+   "Nothing runs on the page itself."
+  ]
+ },
+ "ascend-pearl-ten": {
+  "name": "ascend-pearl-ten",
+  "url": "https://ascend-pearl-ten.vercel.app",
+  "approved": false,
+  "features": [
+   "Vertical platformer where the player climbs endless generated platforms, some of them moving.",
+   "Touch zones on screen steer and jump on a phone.",
+   "Coins, gems, gliders, rockets and powerups spawn during the climb.",
+   "Wind streaks, clouds and milestone banners appear as height increases.",
+   "Progress or best height saves in the browser."
+  ]
+ }
+}

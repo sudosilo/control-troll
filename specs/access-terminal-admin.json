@@ -1,0 +1,12 @@
+{
+  "name": "access-terminal-admin",
+  "url": "https://access-terminal-admin.vercel.app",
+  "approved": false,
+  "features": [
+    "Login screen takes a user and password and unlocks the dashboard against the Railway backend.",
+    "Dashboard lists the backend tables and loads rows for the picked table.",
+    "Columns sort when clicked and timestamps display as readable dates.",
+    "Session locks after idle time with an I am still here warning first, and Lock ends it right away.",
+    "Refresh reloads the current table."
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "67-press-proccessor",
+  "url": "https://67-press-proccessor.vercel.app",
+  "approved": false,
+  "features": [
+    "Design tab draws a straight tuck end box dieline from width, depth, height, glue tab and tuck flap inputs in inches.",
+    "Solid lines show cuts and dashed lines show folds on the flat view.",
+    "Artwork panel generates new box art or revises current art through the Anthropic API using a key saved only in the browser.",
+    "Roll tab lays boxes out on the press web with side margin, gap, spit plate and calibration square, and RUN animates the roll feeding.",
+    "Print flat supports Letter, Tabloid and A4 sheet sizes, and Download SVG saves the dieline.",
+    "Save design and Load design keep designs between visits."
+  ]
+}
