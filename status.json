@@ -1,12 +1,12 @@
 {
-  "checkedAt": "2026-10-12T03:43:13.997Z",
+  "checkedAt": "2026-10-12T03:50:23.741Z",
   "apps": [
     {
       "name": "67-press-proccessor",
       "url": "https://67-press-proccessor.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 292,
+      "ms": 171,
       "errors": [],
       "bytes": 31838,
       "tests": [
@@ -42,13 +42,23 @@
       "url": "https://access-terminal-smoky.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 294,
+      "ms": 65,
       "errors": [],
       "bytes": 9953,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 2,
+          "name": "strength meter reacts",
+          "pass": true
+        },
+        {
+          "feature": 3,
+          "name": "submit shows a result",
           "pass": true
         }
       ]
@@ -58,13 +68,18 @@
       "url": "https://access-terminal-admin.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 299,
+      "ms": 352,
       "errors": [],
       "bytes": 22993,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "login form shows",
           "pass": true
         }
       ]
@@ -74,13 +89,23 @@
       "url": "https://access-terminal-orange.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 390,
+      "ms": 219,
       "errors": [],
       "bytes": 9826,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 2,
+          "name": "strength meter reacts",
+          "pass": true
+        },
+        {
+          "feature": 3,
+          "name": "submit shows a result",
           "pass": true
         }
       ]
@@ -90,13 +115,23 @@
       "url": "https://access-terminal-red.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 320,
+      "ms": 141,
       "errors": [],
       "bytes": 9565,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 2,
+          "name": "strength meter reacts",
+          "pass": true
+        },
+        {
+          "feature": 3,
+          "name": "submit shows a result",
           "pass": true
         }
       ]
@@ -106,13 +141,23 @@
       "url": "https://access-termonal-blue.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 193,
+      "ms": 133,
       "errors": [],
       "bytes": 9648,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 2,
+          "name": "strength meter reacts",
+          "pass": true
+        },
+        {
+          "feature": 3,
+          "name": "submit shows a result",
           "pass": true
         }
       ]
@@ -122,7 +167,7 @@
       "url": "https://aerophin-twin.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 362,
+      "ms": 222,
       "errors": [],
       "bytes": 180059,
       "tests": [
@@ -138,13 +183,18 @@
       "url": "https://aliens-win.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 140,
+      "ms": 155,
       "errors": [],
       "bytes": 50672,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "ship select then harvest starts",
           "pass": true
         }
       ]
@@ -154,7 +204,7 @@
       "url": "https://androids.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 352,
+      "ms": 148,
       "errors": [],
       "bytes": 20120,
       "tests": [
@@ -190,13 +240,18 @@
       "url": "https://ascend-pearl-ten.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 333,
+      "ms": 68,
       "errors": [],
       "bytes": 49446,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "climb draws",
           "pass": true
         }
       ]
@@ -206,7 +261,7 @@
       "url": "https://axiom-eight-xi.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 257,
+      "ms": 483,
       "errors": [],
       "bytes": 69761,
       "tests": [
@@ -220,19 +275,11 @@
     {
       "name": "backend-nu-three-ak380mpvrw",
       "url": "https://backend-nu-three-ak380mpvrw.vercel.app",
-      "up": true,
-      "status": 200,
-      "ms": 126,
+      "up": false,
+      "status": 404,
+      "ms": 64,
       "errors": [
         "console: Failed to load resource: the server responded with a status of 404 ()"
-      ],
-      "bytes": 38713,
-      "tests": [
-        {
-          "feature": 0,
-          "name": "renders",
-          "pass": true
-        }
       ]
     },
     {
@@ -240,7 +287,7 @@
       "url": "https://beesim-green.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 1406,
+      "ms": 834,
       "errors": [],
       "bytes": 140618,
       "tests": [
@@ -256,7 +303,7 @@
       "url": "https://birdix.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 617,
+      "ms": 373,
       "errors": [],
       "bytes": 80208,
       "tests": [
@@ -277,7 +324,7 @@
       "url": "https://bitfield-synth.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 339,
+      "ms": 245,
       "errors": [],
       "bytes": 161828,
       "tests": [
@@ -293,7 +340,7 @@
       "url": "https://boba-breakeven-x8k4.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 460,
+      "ms": 309,
       "errors": [],
       "bytes": 21574,
       "tests": [
@@ -329,7 +376,7 @@
       "url": "https://cabin-viewer.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 2510,
+      "ms": 1548,
       "errors": [],
       "bytes": 239597,
       "tests": [
@@ -345,7 +392,7 @@
       "url": "https://campus-ebutuoy.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 1186,
+      "ms": 896,
       "errors": [],
       "bytes": 33975,
       "tests": [
@@ -353,6 +400,12 @@
           "feature": 0,
           "name": "renders",
           "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "name label and stumble show",
+          "pass": false,
+          "error": "locator.waitFor: Timeout 6000ms exceeded."
         }
       ]
     },
@@ -361,7 +414,7 @@
       "url": "https://carchive-nine.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 278,
+      "ms": 215,
       "errors": [],
       "bytes": 94742,
       "tests": [
@@ -387,7 +440,7 @@
       "url": "https://checkin-kiosk-bice.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 491,
+      "ms": 223,
       "errors": [],
       "bytes": 48738,
       "tests": [
@@ -413,13 +466,18 @@
       "url": "https://chromatogram-three.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 1207,
+      "ms": 165,
       "errors": [],
       "bytes": 10466,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 2,
+          "name": "display modes switch",
           "pass": true
         }
       ]
@@ -429,13 +487,18 @@
       "url": "https://circuit-musicfx.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 275,
+      "ms": 174,
       "errors": [],
       "bytes": 80352,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 2,
+          "name": "board draws and modes switch",
           "pass": true
         }
       ]
@@ -445,7 +508,7 @@
       "url": "https://cockpit-racer.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 1300,
+      "ms": 484,
       "errors": [],
       "bytes": 27377,
       "tests": [
@@ -461,7 +524,7 @@
       "url": "https://coffee-autosim.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 645,
+      "ms": 352,
       "errors": [],
       "bytes": 101856,
       "tests": [
@@ -477,7 +540,7 @@
       "url": "https://coffeekit1.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 323,
+      "ms": 333,
       "errors": [],
       "bytes": 54593,
       "tests": [
@@ -503,7 +566,7 @@
       "url": "https://cypher-wars.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 557,
+      "ms": 336,
       "errors": [],
       "bytes": 191827,
       "tests": [
@@ -529,7 +592,7 @@
       "url": "https://daily-outline.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 214,
+      "ms": 275,
       "errors": [],
       "bytes": 21790,
       "tests": [
@@ -560,11 +623,9 @@
       "url": "https://datacenter-osint.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 1381,
+      "ms": 1196,
       "errors": [
         "console: Access to fetch at 'https://overpass-api.de/api/interpreter' from origin 'https://datacenter-osint.vercel.app' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
-        "console: Failed to load resource: net::ERR_FAILED",
-        "console: Access to fetch at 'https://overpass.kumi.systems/api/interpreter' from origin 'https://datacenter-osint.vercel.app' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
         "console: Failed to load resource: net::ERR_FAILED"
       ],
       "bytes": 89003,
@@ -581,7 +642,7 @@
       "url": "https://diamond-driller.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 458,
+      "ms": 416,
       "errors": [],
       "bytes": 62138,
       "tests": [
@@ -612,13 +673,18 @@
       "url": "https://dronecamp.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 352,
+      "ms": 317,
       "errors": [],
       "bytes": 27401,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "landing text shows",
           "pass": true
         }
       ]
@@ -628,7 +694,7 @@
       "url": "https://dronesim-blue.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 525,
+      "ms": 265,
       "errors": [],
       "bytes": 565,
       "tests": [
@@ -644,13 +710,18 @@
       "url": "https://ebutuoy.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 1191,
+      "ms": 849,
       "errors": [],
       "bytes": 28860,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "mode picker shows",
           "pass": true
         }
       ]
@@ -660,7 +731,7 @@
       "url": "https://edmia.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 567,
+      "ms": 401,
       "errors": [],
       "bytes": 51969,
       "tests": [
@@ -686,13 +757,18 @@
       "url": "https://engine-companion.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 177,
+      "ms": 227,
       "errors": [],
       "bytes": 16115,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "status panel loads",
           "pass": true
         }
       ]
@@ -702,7 +778,7 @@
       "url": "https://equivalence-engine.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 226,
+      "ms": 323,
       "errors": [],
       "bytes": 388058,
       "tests": [
@@ -728,7 +804,7 @@
       "url": "https://ether-wand.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 261,
+      "ms": 246,
       "errors": [],
       "bytes": 40385,
       "tests": [
@@ -744,7 +820,7 @@
       "url": "https://field-study-pi.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 199,
+      "ms": 70,
       "errors": [],
       "bytes": 149214,
       "tests": [
@@ -765,7 +841,7 @@
       "url": "https://field-twin-teal.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 725,
+      "ms": 228,
       "errors": [],
       "bytes": 165724,
       "tests": [
@@ -781,7 +857,7 @@
       "url": "https://final-vector-six.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 495,
+      "ms": 182,
       "errors": [],
       "bytes": 813843,
       "tests": [
@@ -797,12 +873,13 @@
       "url": "https://free-as-in-links-sudosilo2-1771s-projects.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 892,
+      "ms": 490,
       "errors": [
         "console: Failed to load resource: the server responded with a status of 403 ()",
+        "console: Failed to load resource: the server responded with a status of 429 ()",
         "console: Provider's accounts list is empty."
       ],
-      "bytes": 332106,
+      "bytes": 332329,
       "tests": [
         {
           "feature": 0,
@@ -816,12 +893,12 @@
       "url": "https://frontend-sudosilo2-1771s-projects.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 1093,
+      "ms": 829,
       "errors": [
         "console: Failed to load resource: the server responded with a status of 403 ()",
         "console: Provider's accounts list is empty."
       ],
-      "bytes": 332070,
+      "bytes": 332074,
       "tests": [
         {
           "feature": 0,
@@ -835,7 +912,7 @@
       "url": "https://ghost-kitchen-builder.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 704,
+      "ms": 361,
       "errors": [],
       "bytes": 59595,
       "tests": [
@@ -866,7 +943,7 @@
       "url": "https://groundcore-nine.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 565,
+      "ms": 289,
       "errors": [],
       "bytes": 96984,
       "tests": [
@@ -882,13 +959,18 @@
       "url": "https://hackercons.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 359,
+      "ms": 325,
       "errors": [],
       "bytes": 15755,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "collection loads",
           "pass": true
         }
       ]
@@ -898,13 +980,18 @@
       "url": "https://hackercons-roulette.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 429,
+      "ms": 296,
       "errors": [],
       "bytes": 19589,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "stumble and guess modes",
           "pass": true
         }
       ]
@@ -914,7 +1001,7 @@
       "url": "https://hexnote-3d.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 392,
+      "ms": 413,
       "errors": [],
       "bytes": 48204,
       "tests": [
@@ -930,7 +1017,7 @@
       "url": "https://infinicanvan.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 256,
+      "ms": 239,
       "errors": [],
       "bytes": 391003,
       "tests": [
@@ -946,7 +1033,7 @@
       "url": "https://infinite-centerpoint.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 1365,
+      "ms": 962,
       "errors": [],
       "bytes": 26862,
       "tests": [
@@ -962,7 +1049,7 @@
       "url": "https://invoice-green-tau.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 592,
+      "ms": 229,
       "errors": [],
       "bytes": 395,
       "tests": [
@@ -978,7 +1065,7 @@
       "url": "https://irrigation-station.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 308,
+      "ms": 211,
       "errors": [],
       "bytes": 10586,
       "tests": [
@@ -999,7 +1086,7 @@
       "url": "https://j30p4rdy.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 697,
+      "ms": 699,
       "errors": [],
       "bytes": 35669,
       "tests": [
@@ -1020,7 +1107,7 @@
       "url": "https://kat-chat-flame.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 287,
+      "ms": 405,
       "errors": [],
       "bytes": 140060,
       "tests": [
@@ -1036,13 +1123,23 @@
       "url": "https://kvs-sigma.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 298,
+      "ms": 293,
       "errors": [],
       "bytes": 34521,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "modes show",
+          "pass": true
+        },
+        {
+          "feature": 2,
+          "name": "clip lengths show",
           "pass": true
         }
       ]
@@ -1052,7 +1149,7 @@
       "url": "https://legends-rose.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 183,
+      "ms": 197,
       "errors": [],
       "bytes": 19022,
       "tests": [
@@ -1060,6 +1157,17 @@
           "feature": 0,
           "name": "renders",
           "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "roster and question box",
+          "pass": true
+        },
+        {
+          "feature": 3,
+          "name": "banned words panel toggles",
+          "pass": false,
+          "error": "locator.click: Timeout 6000ms exceeded."
         }
       ]
     },
@@ -1068,7 +1176,7 @@
       "url": "https://looper-sooty.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 305,
+      "ms": 192,
       "errors": [],
       "bytes": 80928,
       "tests": [
@@ -1094,7 +1202,7 @@
       "url": "https://mary-jane-man.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 305,
+      "ms": 192,
       "errors": [],
       "bytes": 25293,
       "tests": [
@@ -1120,7 +1228,7 @@
       "url": "https://mill-ionaire.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 352,
+      "ms": 166,
       "errors": [],
       "bytes": 69990,
       "tests": [
@@ -1136,7 +1244,7 @@
       "url": "https://ming-globe.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 769,
+      "ms": 710,
       "errors": [],
       "bytes": 43364,
       "tests": [
@@ -1152,7 +1260,7 @@
       "url": "https://mission-operator.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 561,
+      "ms": 231,
       "errors": [
         "console: GeolocationPositionError"
       ],
@@ -1170,7 +1278,7 @@
       "url": "https://mohavetech-contracts.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 953,
+      "ms": 576,
       "errors": [
         "console: Failed to load resource: the server responded with a status of 404 ()"
       ],
@@ -1188,7 +1296,7 @@
       "url": "https://nanoverse-psi.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 749,
+      "ms": 184,
       "errors": [],
       "bytes": 219196,
       "tests": [
@@ -1204,7 +1312,7 @@
       "url": "https://note-note-note.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 323,
+      "ms": 318,
       "errors": [],
       "bytes": 89264,
       "tests": [
@@ -1220,7 +1328,7 @@
       "url": "https://offset-listener.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 76,
+      "ms": 70,
       "errors": [],
       "bytes": 68283,
       "tests": [
@@ -1236,7 +1344,7 @@
       "url": "https://open-pipeline.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 472,
+      "ms": 333,
       "errors": [
         "console: Failed to load resource: the server responded with a status of 500 ()"
       ],
@@ -1254,7 +1362,7 @@
       "url": "https://ordersim.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 162,
+      "ms": 150,
       "errors": [],
       "bytes": 39818,
       "tests": [
@@ -1280,13 +1388,18 @@
       "url": "https://pajamastan.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 275,
+      "ms": 108,
       "errors": [],
       "bytes": 2522463,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 2,
+          "name": "menu opens",
           "pass": true
         }
       ]
@@ -1306,6 +1419,11 @@
           "feature": 0,
           "name": "renders",
           "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "docket loads",
+          "pass": true
         }
       ]
     },
@@ -1314,7 +1432,7 @@
       "url": "https://pancake-orange.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 337,
+      "ms": 152,
       "errors": [],
       "bytes": 7565,
       "tests": [
@@ -1330,9 +1448,8 @@
         },
         {
           "feature": 2,
-          "name": "tapping too early adds a strike",
-          "pass": false,
-          "error": "#burnt text is '0', expected it to contain '1'"
+          "name": "tapping a pancake scores it",
+          "pass": true
         }
       ]
     },
@@ -1341,7 +1458,7 @@
       "url": "https://pancakes-ecru.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 308,
+      "ms": 162,
       "errors": [],
       "bytes": 18139,
       "tests": [
@@ -1357,7 +1474,7 @@
       "url": "https://parkingten.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 305,
+      "ms": 38,
       "errors": [],
       "tests": [
         {
@@ -1372,7 +1489,7 @@
       "url": "https://phasewell-scope.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 241,
+      "ms": 228,
       "errors": [],
       "bytes": 64140,
       "tests": [
@@ -1388,13 +1505,23 @@
       "url": "https://pipeline-builder-azure-kappa.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 370,
+      "ms": 300,
       "errors": [],
       "bytes": 42206,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 2,
+          "name": "randomizer rolls a stack",
+          "pass": true
+        },
+        {
+          "feature": 4,
+          "name": "templates show",
           "pass": true
         }
       ]
@@ -1404,7 +1531,7 @@
       "url": "https://pixelcoop-farm.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 67,
+      "ms": 134,
       "errors": [],
       "bytes": 49381,
       "tests": [
@@ -1435,7 +1562,7 @@
       "url": "https://pixelmill.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 61,
+      "ms": 52,
       "errors": [],
       "bytes": 78428,
       "tests": [
@@ -1466,13 +1593,18 @@
       "url": "https://polygon-arcade.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 309,
+      "ms": 253,
       "errors": [],
       "bytes": 5907,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "reads the chain",
           "pass": true
         }
       ]
@@ -1482,7 +1614,7 @@
       "url": "https://qsr-receipt-sim.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 137,
+      "ms": 42,
       "errors": [],
       "bytes": 16866,
       "tests": [
@@ -1513,7 +1645,7 @@
       "url": "https://qsr-timeline.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 619,
+      "ms": 372,
       "errors": [],
       "bytes": 524018,
       "tests": [
@@ -1529,7 +1661,7 @@
       "url": "https://rat-site-gilt.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 546,
+      "ms": 162,
       "errors": [],
       "bytes": 17373,
       "tests": [
@@ -1545,7 +1677,7 @@
       "url": "https://rat30-deck.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 2099,
+      "ms": 2078,
       "errors": [],
       "bytes": 126442,
       "tests": [
@@ -1561,7 +1693,7 @@
       "url": "https://repofind-delta.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 349,
+      "ms": 316,
       "errors": [],
       "bytes": 191535,
       "tests": [
@@ -1577,7 +1709,7 @@
       "url": "https://restack-wheat.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 386,
+      "ms": 388,
       "errors": [],
       "bytes": 98855,
       "tests": [
@@ -1593,7 +1725,7 @@
       "url": "https://rogue-rail.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 794,
+      "ms": 766,
       "errors": [
         "snapshot skipped: 7433 KB is over the limit"
       ],
@@ -1611,7 +1743,7 @@
       "url": "https://rtss-sigma.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 753,
+      "ms": 453,
       "errors": [],
       "bytes": 171922,
       "tests": [
@@ -1637,7 +1769,7 @@
       "url": "https://scope-listener.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 628,
+      "ms": 293,
       "errors": [],
       "bytes": 385054,
       "tests": [
@@ -1653,7 +1785,7 @@
       "url": "https://screensaver-musicfx.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 573,
+      "ms": 364,
       "errors": [],
       "bytes": 28507,
       "tests": [
@@ -1674,7 +1806,7 @@
       "url": "https://secureops-pi.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 454,
+      "ms": 54,
       "errors": [
         "console: Failed to load resource: the server responded with a status of 500 ()"
       ],
@@ -1692,7 +1824,7 @@
       "url": "https://shitty-ass-finance.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 529,
+      "ms": 364,
       "errors": [],
       "bytes": 17646,
       "tests": [
@@ -1723,7 +1855,7 @@
       "url": "https://shitty-ass-trading.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 431,
+      "ms": 241,
       "errors": [],
       "bytes": 621863,
       "tests": [
@@ -1739,7 +1871,7 @@
       "url": "https://skwiggle.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 1650,
+      "ms": 631,
       "errors": [],
       "bytes": 907441,
       "tests": [
@@ -1755,7 +1887,7 @@
       "url": "https://skyflow-orange.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 499,
+      "ms": 235,
       "errors": [],
       "bytes": 742218,
       "tests": [
@@ -1771,7 +1903,7 @@
       "url": "https://snapshot-engine-pied.vercel.app",
       "up": false,
       "status": 404,
-      "ms": 2160,
+      "ms": 2045,
       "errors": [
         "console: Failed to load resource: the server responded with a status of 404 ()"
       ]
@@ -1781,7 +1913,7 @@
       "url": "https://spaceout-mu.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 438,
+      "ms": 307,
       "errors": [],
       "bytes": 16664,
       "tests": [
@@ -1807,13 +1939,18 @@
       "url": "https://spectral-engin.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 418,
+      "ms": 259,
       "errors": [],
       "bytes": 37957,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "file drop area shows",
           "pass": true
         }
       ]
@@ -1823,7 +1960,7 @@
       "url": "https://spectral-engine.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 220,
+      "ms": 197,
       "errors": [],
       "bytes": 38547,
       "tests": [
@@ -1839,7 +1976,7 @@
       "url": "https://spectrastrain.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 1117,
+      "ms": 646,
       "errors": [],
       "bytes": 58913,
       "tests": [
@@ -1855,7 +1992,7 @@
       "url": "https://spirits-atlas.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 508,
+      "ms": 201,
       "errors": [],
       "bytes": 158217,
       "tests": [
@@ -1871,7 +2008,7 @@
       "url": "https://stompbox-lab.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 637,
+      "ms": 200,
       "errors": [
         "console: Failed to load resource: the server responded with a status of 404 ()"
       ],
@@ -1889,7 +2026,7 @@
       "url": "https://stumbler.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 245,
+      "ms": 212,
       "errors": [
         "console: Failed to load resource: the server responded with a status of 404 ()",
         "console: Failed to load resource: the server responded with a status of 404 ()"
@@ -1908,7 +2045,7 @@
       "url": "https://suno-forge-kappa.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 529,
+      "ms": 325,
       "errors": [],
       "bytes": 707,
       "tests": [
@@ -1924,7 +2061,7 @@
       "url": "https://swh-sumbler.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 210,
+      "ms": 154,
       "errors": [],
       "bytes": 12934,
       "tests": [
@@ -1945,7 +2082,7 @@
       "url": "https://tanksandzombies.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 463,
+      "ms": 285,
       "errors": [],
       "bytes": 147608,
       "tests": [
@@ -1971,13 +2108,18 @@
       "url": "https://termbeat.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 325,
+      "ms": 281,
       "errors": [],
       "bytes": 74184,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 2,
+          "name": "theme menu switches theme",
           "pass": true
         }
       ]
@@ -1987,7 +2129,7 @@
       "url": "https://threat-atlas-two.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 369,
+      "ms": 360,
       "errors": [],
       "bytes": 87797,
       "tests": [
@@ -2003,7 +2145,7 @@
       "url": "https://tile-spinner.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 378,
+      "ms": 314,
       "errors": [],
       "bytes": 66274,
       "tests": [
@@ -2034,7 +2176,7 @@
       "url": "https://tinewood-keys.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 73,
+      "ms": 143,
       "errors": [],
       "bytes": 19118,
       "tests": [
@@ -2060,7 +2202,7 @@
       "url": "https://topdown-pixeltown.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 341,
+      "ms": 161,
       "errors": [],
       "bytes": 222486,
       "tests": [
@@ -2076,7 +2218,7 @@
       "url": "https://topo-wars.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 275,
+      "ms": 183,
       "errors": [],
       "bytes": 326467,
       "tests": [
@@ -2092,7 +2234,7 @@
       "url": "https://topo-wars-server.vercel.app",
       "up": false,
       "status": 404,
-      "ms": 134,
+      "ms": 182,
       "errors": [
         "console: Failed to load resource: the server responded with a status of 404 ()"
       ]
@@ -2102,7 +2244,7 @@
       "url": "https://torque-converter.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 293,
+      "ms": 141,
       "errors": [],
       "bytes": 9971,
       "tests": [
@@ -2128,7 +2270,7 @@
       "url": "https://tower-builder-five.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 310,
+      "ms": 287,
       "errors": [],
       "bytes": 44285,
       "tests": [
@@ -2149,7 +2291,7 @@
       "url": "https://tower-builder-one.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 467,
+      "ms": 296,
       "errors": [],
       "bytes": 49351,
       "tests": [
@@ -2175,7 +2317,7 @@
       "url": "https://tractor-tool.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 332,
+      "ms": 313,
       "errors": [],
       "bytes": 57632,
       "tests": [
@@ -2206,13 +2348,18 @@
       "url": "https://tunnelfx.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 353,
+      "ms": 179,
       "errors": [],
       "bytes": 10570,
       "tests": [
         {
           "feature": 0,
           "name": "renders",
+          "pass": true
+        },
+        {
+          "feature": 1,
+          "name": "idle tunnel animates",
           "pass": true
         }
       ]
@@ -2222,11 +2369,11 @@
       "url": "https://virality-snapshot.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 182,
+      "ms": 166,
       "errors": [
-        "console: Access to fetch at 'https://signal-snapshot-backend-production.up.railway.app/signals?limit=200' from origin 'https://virality-snapshot.vercel.app' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
-        "console: Failed to load resource: net::ERR_FAILED",
         "console: Access to fetch at 'https://signal-snapshot-backend-production.up.railway.app/report' from origin 'https://virality-snapshot.vercel.app' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+        "console: Failed to load resource: net::ERR_FAILED",
+        "console: Access to fetch at 'https://signal-snapshot-backend-production.up.railway.app/signals?limit=200' from origin 'https://virality-snapshot.vercel.app' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
         "console: Failed to load resource: net::ERR_FAILED"
       ],
       "bytes": 116336,
@@ -2243,7 +2390,7 @@
       "url": "https://virality-trader.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 303,
+      "ms": 288,
       "errors": [],
       "bytes": 614279,
       "tests": [
@@ -2259,7 +2406,7 @@
       "url": "https://welcome-to-the-madness.vercel.app",
       "up": true,
       "status": 200,
-      "ms": 306,
+      "ms": 214,
       "errors": [],
       "bytes": 27605,
       "tests": [
