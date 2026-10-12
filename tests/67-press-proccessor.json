@@ -1,0 +1,63 @@
+{
+ "name": "67-press-proccessor",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "flat view draws a dieline",
+   "steps": [
+    {
+     "clickSel": "nav button[data-tab=flat]"
+    },
+    {
+     "wait": 400
+    },
+    {
+     "seeSel": "#t-flat svg"
+    }
+   ]
+  },
+  {
+   "feature": 4,
+   "name": "roll tab runs",
+   "steps": [
+    {
+     "clickSel": "nav button[data-tab=roll]"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "clickSel": "#brun"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "textOf": "#brun",
+     "has": "STOP"
+    }
+   ]
+  },
+  {
+   "feature": 5,
+   "name": "download SVG saves a file",
+   "steps": [
+    {
+     "clickSel": "nav button[data-tab=flat]"
+    },
+    {
+     "download": "#bsvg"
+    }
+   ]
+  },
+  {
+   "feature": 6,
+   "name": "save design downloads a file",
+   "steps": [
+    {
+     "download": "#bsave"
+    }
+   ]
+  }
+ ]
+}

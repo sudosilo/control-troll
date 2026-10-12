@@ -1,0 +1,26 @@
+{
+ "name": "j30p4rdy",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "genre and start show a board",
+   "steps": [
+    {
+     "clickSel": ".genre-btn"
+    },
+    {
+     "wait": 400
+    },
+    {
+     "clickSel": "#startBtn"
+    },
+    {
+     "wait": 800
+    },
+    {
+     "seeSel": "#board"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,50 @@
+{
+ "name": "tile-spinner",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "tiles rotate when tapped",
+   "steps": [
+    {
+     "seeSel": "#board"
+    },
+    {
+     "clickSel": "#board path, #board polygon, #board g"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "style drawer lists traditions",
+   "steps": [
+    {
+     "clickSel": "#menuBtn"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "seeSel": "#styleList *"
+    },
+    {
+     "clickSel": "#backdrop"
+    }
+   ]
+  },
+  {
+   "feature": 3,
+   "name": "shuffle and reset work",
+   "steps": [
+    {
+     "clickSel": "#shuffle"
+    },
+    {
+     "clickSel": "#reset"
+    },
+    {
+     "seeSel": "#score"
+    }
+   ]
+  }
+ ]
+}

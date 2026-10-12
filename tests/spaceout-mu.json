@@ -1,0 +1,38 @@
+{
+ "name": "spaceout-mu",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "tap starts the game",
+   "steps": [
+    {
+     "clickSel": "#startScreen"
+    },
+    {
+     "wait": 800
+    },
+    {
+     "painted": "#gameCanvas"
+    },
+    {
+     "seeSel": "#scoreDisplay"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "fire launches",
+   "steps": [
+    {
+     "clickSel": "#btnFire"
+    },
+    {
+     "clickSel": "#btnLeft"
+    },
+    {
+     "clickSel": "#btnRight"
+    }
+   ]
+  }
+ ]
+}

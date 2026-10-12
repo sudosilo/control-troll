@@ -1,0 +1,29 @@
+{
+ "name": "coffeekit1",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "kitchen display shows an order",
+   "steps": [
+    {
+     "seeSel": "#kds-name"
+    },
+    {
+     "seeSel": "#queue-bar"
+    }
+   ]
+  },
+  {
+   "feature": 5,
+   "name": "orders and score show",
+   "steps": [
+    {
+     "seeSel": "#s-done"
+    },
+    {
+     "seeSel": "#s-score"
+    }
+   ]
+  }
+ ]
+}

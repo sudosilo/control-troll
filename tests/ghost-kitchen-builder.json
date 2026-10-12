@@ -1,0 +1,58 @@
+{
+ "name": "ghost-kitchen-builder",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "build form fills and scores",
+   "steps": [
+    {
+     "fill": "#b-name",
+     "value": "ZZQ KITCHEN"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "seeSel": "#build-score-val"
+    }
+   ]
+  },
+  {
+   "feature": 3,
+   "name": "demo concepts load",
+   "steps": [
+    {
+     "click": "DEMO"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "seeSel": "#card-coffee"
+    }
+   ]
+  },
+  {
+   "feature": 4,
+   "name": "export summary opens",
+   "steps": [
+    {
+     "click": "BUILD"
+    },
+    {
+     "click": "EXPORT SUMMARY"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "seeSel": "#export-modal"
+    },
+    {
+     "textOf": "#export-output",
+     "has": "ZZQ KITCHEN"
+    }
+   ]
+  }
+ ]
+}

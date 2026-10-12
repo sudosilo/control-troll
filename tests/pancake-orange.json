@@ -1,0 +1,33 @@
+{
+ "name": "pancake-orange",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "pancakes appear on the griddle",
+   "steps": [
+    {
+     "wait": 2500
+    },
+    {
+     "seeSel": "#griddle .pancake"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "tapping too early adds a strike",
+   "steps": [
+    {
+     "clickSel": "#griddle .pancake"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "textOf": "#burnt",
+     "has": "1"
+    }
+   ]
+  }
+ ]
+}

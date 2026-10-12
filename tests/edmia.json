@@ -1,0 +1,38 @@
+{
+ "name": "edmia",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "tap to play starts",
+   "steps": [
+    {
+     "clickSel": "#startBtn"
+    },
+    {
+     "wait": 1000
+    },
+    {
+     "painted": "#game"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "controls respond",
+   "steps": [
+    {
+     "clickSel": "#btnLeft"
+    },
+    {
+     "clickSel": "#btnRotate"
+    },
+    {
+     "clickSel": "#btnDrop"
+    },
+    {
+     "seeSel": "#score"
+    }
+   ]
+  }
+ ]
+}

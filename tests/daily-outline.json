@@ -1,0 +1,53 @@
+{
+ "name": "daily-outline",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "day cards and strip show",
+   "steps": [
+    {
+     "seeSel": "#cards .card"
+    },
+    {
+     "seeSel": "#strip"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "marking a point saves on device",
+   "steps": [
+    {
+     "clickSel": "#cards .card button.toggle"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "seeSel": "#cards .card.done"
+    },
+    {
+     "stored": true
+    },
+    {
+     "reload": true
+    },
+    {
+     "seeSel": "#cards .card.done"
+    }
+   ]
+  },
+  {
+   "feature": 4,
+   "name": "jump to today works",
+   "steps": [
+    {
+     "clickSel": "#todayBtn"
+    },
+    {
+     "seeSel": "#dateBig"
+    }
+   ]
+  }
+ ]
+}

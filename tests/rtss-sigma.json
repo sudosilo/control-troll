@@ -1,0 +1,29 @@
+{
+ "name": "rtss-sigma",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "survey form shows",
+   "steps": [
+    {
+     "seeSel": "#mainForm"
+    }
+   ]
+  },
+  {
+   "feature": 4,
+   "name": "load demo data fills the form",
+   "steps": [
+    {
+     "click": "LOAD DEMO DATA"
+    },
+    {
+     "wait": 400
+    },
+    {
+     "seeSel": "#mainForm"
+    }
+   ]
+  }
+ ]
+}

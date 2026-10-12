@@ -1,0 +1,38 @@
+{
+ "name": "cypher-wars",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "campaign and side start a scenario",
+   "steps": [
+    {
+     "clickSel": ".camp-card"
+    },
+    {
+     "wait": 400
+    },
+    {
+     "clickSel": ".side-card.maker"
+    },
+    {
+     "wait": 600
+    },
+    {
+     "seeSel": "#game-screen"
+    }
+   ]
+  },
+  {
+   "feature": 3,
+   "name": "codex opens",
+   "steps": [
+    {
+     "click": "CODEX"
+    },
+    {
+     "seeSel": "#codex-modal"
+    }
+   ]
+  }
+ ]
+}

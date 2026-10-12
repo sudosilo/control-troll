@@ -13,6 +13,7 @@
 //   {"textOf": "css", "has": ""} the element's text must contain this
 //   {"painted": "css"}           the canvas must have something drawn on it
 //   {"stored": true}             the app must have saved something in browser storage
+//   {"download": "css"}          clicking this must start a file download
 //   {"renders": true}            the page shows text or a drawn canvas
 //   {"reload": true}             reload the page
 const fs = require("fs");
@@ -39,7 +40,10 @@ async function runStep(page, s) {
     const n = await page.getByText(s.gone, { exact: false }).locator("visible=true").count();
     if (n) throw new Error("still visible: " + s.gone);
   } else if (s.textOf) {
-    const t = await page.locator(s.textOf).first().innerText({ timeout: STEP_TIMEOUT });
+    const el = page.locator(s.textOf).first();
+    await el.waitFor({ state: "attached", timeout: STEP_TIMEOUT });
+    // Inputs and text areas hold their text in value, everything else in innerText.
+    const t = await el.evaluate((n) => ("value" in n && typeof n.value === "string" && n.tagName !== "BUTTON" && n.tagName !== "LI") ? n.value : n.innerText);
     if (!t.includes(s.has)) throw new Error(s.textOf + " text is '" + t.slice(0, 80) + "', expected it to contain '" + s.has + "'");
   } else if (s.painted) {
     const shot = await page.locator(s.painted).first().screenshot({ timeout: STEP_TIMEOUT });
@@ -49,6 +53,12 @@ async function runStep(page, s) {
     const n = await page.evaluate(() => { try { return localStorage.length; } catch (e) { return 0; } });
     const idb = await page.evaluate(async () => { try { return (await indexedDB.databases()).length; } catch (e) { return 0; } });
     if (!n && !idb) throw new Error("nothing saved in browser storage");
+  } else if (s.download) {
+    const [dl] = await Promise.all([
+      page.waitForEvent("download", { timeout: STEP_TIMEOUT }),
+      page.locator(s.download).first().click({ timeout: STEP_TIMEOUT }),
+    ]);
+    if (!dl.suggestedFilename()) throw new Error("download had no file");
   } else if (s.renders) {
     // Pass when the page shows real text or has a canvas with something drawn on it.
     const text = await page.evaluate(() => (document.body && document.body.innerText || "").trim().length);

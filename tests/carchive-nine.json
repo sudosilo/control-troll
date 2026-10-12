@@ -1,0 +1,35 @@
+{
+ "name": "carchive-nine",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "duel starts",
+   "steps": [
+    {
+     "clickSel": "#b-start"
+    },
+    {
+     "wait": 800
+    },
+    {
+     "seeSel": "#hand *"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "end turn works",
+   "steps": [
+    {
+     "clickSel": "#b-end"
+    },
+    {
+     "wait": 800
+    },
+    {
+     "seeSel": "#field"
+    }
+   ]
+  }
+ ]
+}

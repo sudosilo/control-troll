@@ -1,0 +1,56 @@
+{
+ "name": "tractor-tool",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "blueprint expands",
+   "steps": [
+    {
+     "clickSel": "#expandAll"
+    },
+    {
+     "seeSel": "#panelBlueprint"
+    }
+   ]
+  },
+  {
+   "feature": 3,
+   "name": "quote totals",
+   "steps": [
+    {
+     "click": "QUOTE"
+    },
+    {
+     "fill": "#qHrs",
+     "value": "10"
+    },
+    {
+     "fill": "#qRate",
+     "value": "100"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "textOf": "#qTotal",
+     "has": "1,"
+    }
+   ]
+  },
+  {
+   "feature": 4,
+   "name": "game tab draws",
+   "steps": [
+    {
+     "click": "GAME"
+    },
+    {
+     "wait": 800
+    },
+    {
+     "painted": "#gameCanvas"
+    }
+   ]
+  }
+ ]
+}

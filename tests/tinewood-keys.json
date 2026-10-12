@@ -1,0 +1,33 @@
+{
+ "name": "tinewood-keys",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "power on shows keys",
+   "steps": [
+    {
+     "clickSel": "#startBtn"
+    },
+    {
+     "wait": 400
+    },
+    {
+     "seeSel": "#keys *"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "octave shifts",
+   "steps": [
+    {
+     "clickSel": "#octUp"
+    },
+    {
+     "textOf": "#octVal",
+     "has": "4"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,38 @@
+{
+ "name": "tanksandzombies",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "start game runs",
+   "steps": [
+    {
+     "click": "START GAME"
+    },
+    {
+     "wait": 1500
+    },
+    {
+     "painted": "#gameCanvas"
+    },
+    {
+     "seeSel": "#hud-score"
+    }
+   ]
+  },
+  {
+   "feature": 5,
+   "name": "high scores screen opens",
+   "steps": [
+    {
+     "reload": true
+    },
+    {
+     "click": "HIGH SCORES"
+    },
+    {
+     "seeSel": "#highscore-screen"
+    }
+   ]
+  }
+ ]
+}

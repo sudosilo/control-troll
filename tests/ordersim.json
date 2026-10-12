@@ -1,0 +1,36 @@
+{
+ "name": "ordersim",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "scenarios list on landing",
+   "steps": [
+    {
+     "seeSel": "button[data-scn=breakfast]"
+    },
+    {
+     "seeSel": "button[data-scn=freeplay]"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "orders fire to stations",
+   "steps": [
+    {
+     "fill": "#callsign",
+     "value": "ZZQ"
+    },
+    {
+     "clickSel": "button[data-scn=breakfast]"
+    },
+    {
+     "wait": 4000
+    },
+    {
+     "seeSel": "#game"
+    }
+   ]
+  }
+ ]
+}

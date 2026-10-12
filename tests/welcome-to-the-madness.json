@@ -1,0 +1,41 @@
+{
+ "name": "welcome-to-the-madness",
+ "tests": [
+  {
+   "feature": 1,
+   "name": "start shift brings tickets",
+   "steps": [
+    {
+     "clickSel": "#startBtn"
+    },
+    {
+     "wait": 3000
+    },
+    {
+     "seeSel": "#orders *"
+    }
+   ]
+  },
+  {
+   "feature": 2,
+   "name": "stations are tappable",
+   "steps": [
+    {
+     "seeSel": "#grills *"
+    }
+   ]
+  },
+  {
+   "feature": 4,
+   "name": "score and served show",
+   "steps": [
+    {
+     "seeSel": "#score"
+    },
+    {
+     "seeSel": "#served"
+    }
+   ]
+  }
+ ]
+}
