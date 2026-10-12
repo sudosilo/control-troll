@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Republic of Pajamastan | Official Access Portal</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: #eef0f2;
+    color: #1a1f2b;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .gov-banner {
+    width: 100%;
+    background: #f4f1e6;
+    border-bottom: 1px solid #c9a227;
+    padding: 6px 16px;
+    font-size: 11px;
+    color: #5c4a12;
+    text-align: center;
+    letter-spacing: 0.3px;
+  }
+
+  .gov-header {
+    width: 100%;
+    background: #0b1f3a;
+    color: #f4f1e6;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 3px solid #c9a227;
+  }
+
+  .seal {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+  }
+
+  .gov-header-text .agency {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 17px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+  }
+
+  .gov-header-text .ministry {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #c9a227;
+    margin-top: 2px;
+  }
+
+  .content-wrap {
+    width: 100%;
+    max-width: 460px;
+    padding: 32px 20px 48px;
+  }
+
+  .card {
+    background: #ffffff;
+    border: 1px solid #c7ccd4;
+    border-top: 4px solid #0b1f3a;
+    border-radius: 2px;
+    padding: 28px 26px;
+  }
+
+  .form-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 18px;
+    color: #0b1f3a;
+    margin: 0 0 6px;
+  }
+
+  .form-subtitle {
+    font-size: 13px;
+    color: #4a5260;
+    margin: 0 0 22px;
+    line-height: 1.5;
+  }
+
+  label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: #0b1f3a;
+    margin-bottom: 6px;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 18px;
+    background: #fafbfc;
+    border: 1px solid #a3abb8;
+    border-radius: 2px;
+    color: #1a1f2b;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+  }
+
+  input[type="text"]:focus {
+    outline: none;
+    border-color: #0b1f3a;
+    box-shadow: 0 0 0 2px rgba(11, 31, 58, 0.15);
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    background: #0b1f3a;
+    color: #f4f1e6;
+    border: none;
+    border-radius: 2px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  button:hover:not(:disabled) {
+    background: #142c52;
+  }
+
+  button:disabled {
+    background: #9aa4b5;
+    cursor: default;
+  }
+
+  .strength-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: -8px;
+    margin-bottom: 16px;
+  }
+
+  .strength-bar {
+    flex: 1;
+    height: 5px;
+    background: #e3e6ea;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .strength-fill {
+    height: 100%;
+    width: 0%;
+    background: #a33a3a;
+    transition: width 0.2s ease, background 0.2s ease;
+  }
+
+  .strength-label {
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #5c6475;
+    min-width: 74px;
+    text-align: right;
+  }
+
+  .reset-row {
+    text-align: right;
+    margin-top: -8px;
+    margin-bottom: 16px;
+  }
+
+  .reset-row a {
+    font-size: 11px;
+    color: #4a5260;
+    text-decoration: none;
+    border-bottom: 1px dotted #4a5260;
+  }
+
+  .reset-row a:hover {
+    color: #0b1f3a;
+    border-bottom-color: #0b1f3a;
+  }
+
+  .result {
+    display: none;
+    margin-top: 18px;
+    padding: 12px 14px;
+    border-radius: 2px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .result.show {
+    display: block;
+  }
+
+  .result.new {
+    background: #eef2fb;
+    border: 1px solid #3a5f9e;
+    color: #1f3a6e;
+  }
+
+  .result.success {
+    background: #eef6ee;
+    border: 1px solid #2f6b3a;
+    color: #1d4323;
+  }
+
+  .result.fail {
+    background: #fbeeee;
+    border: 1px solid #a33a3a;
+    color: #6e2020;
+  }
+
+  .case-id {
+    margin-top: 22px;
+    font-size: 10px;
+    color: #8a93a3;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="gov-banner">
+  OFFICIAL GOVERNMENT SYSTEM | AUTHORIZED PERSONNEL ONLY | UNAUTHORIZED ACCESS IS PROHIBITED
+</div>
+
+<div class="gov-header">
+  <svg class="seal" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="46" fill="none" stroke="#c9a227" stroke-width="3"/>
+    <circle cx="50" cy="50" r="38" fill="none" stroke="#c9a227" stroke-width="1"/>
+    <polygon points="50,20 58,42 82,42 62,56 70,78 50,64 30,78 38,56 18,42 42,42"
+             fill="#c9a227"/>
+  </svg>
+  <div class="gov-header-text">
+    <div class="agency">REPUBLIC OF PAJAMASTAN</div>
+    <div class="ministry">MINISTRY OF DIGITAL ACCESS &amp; IDENTITY</div>
+  </div>
+</div>
+
+<div class="content-wrap">
+  <div class="card">
+    <div class="form-title">Secure Access Portal</div>
+    <div class="form-subtitle">
+      Enter your credentials below. All access attempts are logged in accordance
+      with national records policy.
+    </div>
+
+    <label for="username">CREDENTIAL ID</label>
+    <input type="text" id="username" autocomplete="off" spellcheck="false">
+
+    <label for="password">ACCESS KEY</label>
+    <input type="text" id="password" autocomplete="off" spellcheck="false">
+
+    <div class="strength-row">
+      <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+      <span class="strength-label" id="strengthLabel"></span>
+    </div>
+
+    <div class="reset-row">
+      <a href="#" id="resetLink">forgot access key?</a>
+    </div>
+
+    <button id="submitBtn">AUTHENTICATE</button>
+
+    <div class="result" id="result"></div>
+
+    <div class="case-id">REF: PJS-ACCESS-<span id="clock"></span></div>
+  </div>
+</div>
+
+<script>
+function tickClock() {
+  document.getElementById('clock').textContent =
+    new Date().toISOString().replace(/[-:T.]/g, '').slice(0, 14);
+}
+tickClock();
+setInterval(tickClock, 1000);
+
+function scoreStrength(u, p) {
+  const combined = u + p;
+  if (!combined) return { pct: 0, label: '', color: '#e3e6ea' };
+
+  const uniqueChars = new Set(combined.toLowerCase()).size;
+  const lengthScore = Math.min(combined.length / 16, 1);
+  const varietyScore = Math.min(uniqueChars / 10, 1);
+  const hasLower = /[a-z]/.test(combined);
+  const hasUpper = /[A-Z]/.test(combined);
+  const hasDigit = /[0-9]/.test(combined);
+  const hasSymbol = /[^a-zA-Z0-9]/.test(combined);
+  const classCount = [hasLower, hasUpper, hasDigit, hasSymbol].filter(Boolean).length;
+  const classScore = classCount / 4;
+
+  const raw = (lengthScore * 0.4) + (varietyScore * 0.35) + (classScore * 0.25);
+  const pct = Math.round(raw * 100);
+
+  let label, color;
+  if (pct < 20) { label = 'WEAK'; color = '#a33a3a'; }
+  else if (pct < 45) { label = 'FAIR'; color = '#b57f2a'; }
+  else if (pct < 70) { label = 'GOOD'; color = '#7a8f3a'; }
+  else if (pct < 90) { label = 'STRONG'; color = '#2f6b3a'; }
+  else { label = 'VERIFIED'; color = '#0b1f3a'; }
+
+  return { pct, label, color };
+}
+
+function updateStrength() {
+  const u = document.getElementById('username').value;
+  const p = document.getElementById('password').value;
+  const { pct, label, color } = scoreStrength(u, p);
+
+  const fill = document.getElementById('strengthFill');
+  const lbl = document.getElementById('strengthLabel');
+  fill.style.width = pct + '%';
+  fill.style.background = color;
+  lbl.textContent = label;
+}
+
+document.getElementById('username').addEventListener('input', updateStrength);
+document.getElementById('password').addEventListener('input', updateStrength);
+
+function showResult(text, cls) {
+  const el = document.getElementById('result');
+  el.textContent = text;
+  el.className = 'result show ' + cls;
+}
+
+const resultClassMap = {
+  welcome_back: 'success',
+  password_wrong: 'fail',
+  username_wrong: 'fail',
+  enrolled: 'new'
+};
+
+function passwordMeetsRequirements(p) {
+  const hasUpper = /[A-Z]/.test(p);
+  const hasDigit = /[0-9]/.test(p);
+  const hasSymbol = /[^a-zA-Z0-9]/.test(p);
+  return hasUpper && hasDigit && hasSymbol;
+}
+
+document.getElementById('submitBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('submitBtn');
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value.trim();
+
+  if (!u || !p) {
+    showResult('credential ID and access key are both required.', 'fail');
+    return;
+  }
+
+  if (!passwordMeetsRequirements(p)) {
+    showResult('access key must include a capital letter, a number, and a special character.', 'fail');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'VERIFYING...';
+
+  try {
+    const res = await fetch('/api/attempt', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p })
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      showResult(data.error || 'system error. try again.', 'fail');
+    } else {
+      showResult(data.message, resultClassMap[data.result] || 'fail');
+    }
+  } catch (e) {
+    showResult('could not reach the access portal.', 'fail');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'AUTHENTICATE';
+});
+
+document.getElementById('password').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') document.getElementById('submitBtn').click();
+});
+
+document.getElementById('resetLink').addEventListener('click', async (e) => {
+  e.preventDefault();
+  const u = document.getElementById('username').value.trim();
+
+  if (!u) {
+    showResult('enter a credential ID first.', 'fail');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u })
+    });
+    const data = await res.json();
+    showResult(data.message || 'request logged.', 'fail');
+  } catch (err) {
+    showResult('could not reach the access portal.', 'fail');
+  }
+});
+</script>
+
+</body>
+</html>

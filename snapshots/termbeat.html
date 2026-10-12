@@ -1,0 +1,2119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TERMBEAT - audio reactive terminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #EDEEE9;
+    --paper-raised: #F7F7F3;
+    --ink: #1E2320;
+    --ink-soft: #4A4F49;
+    --prompt: #2B5D4E;
+    --beat: #B5652A;
+    --beat-bright: #D97F3C;
+    --comment: #9C9C90;
+    --rule: #D6D6CC;
+    --error: #A23B3B;
+
+    --cat-npm: #B23B32;
+    --cat-git: #BD6A2C;
+    --cat-vercel: #1F8A82;
+    --cat-py: #6B4FA0;
+    --cat-build: #8A4A6B;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ---------- topbar ---------- */
+  #topbar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 18px;
+    background: var(--paper-raised);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  #titleRow {
+    display: flex;
+    align-items: center;
+  }
+
+  #buttonRow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  #buttonRow::-webkit-scrollbar { display: none; }
+
+  #buttonRow > * { flex-shrink: 0; }
+
+  .brand-text {
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  #titleRow .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--beat);
+    margin-right: 8px;
+    transform: translateY(-1px);
+  }
+
+  #hamburgerBtn {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    line-height: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  #hamburgerBtn:hover { background: var(--ink); color: var(--paper-raised); }
+
+  #themeMenu {
+    position: absolute;
+    top: 54px;
+    left: 18px;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 6px;
+    z-index: 50;
+    display: none;
+    flex-direction: column;
+    min-width: 190px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  }
+
+  #themeMenu.open { display: flex; }
+
+  .theme-option {
+    text-align: left;
+    background: transparent;
+    border: none;
+    padding: 10px 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .theme-option:hover { background: var(--rule); }
+
+  .theme-option.active {
+    font-weight: 600;
+    color: var(--prompt);
+  }
+
+  .theme-swatch {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    margin-right: 9px;
+  }
+
+  .btn {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .btn:hover { background: var(--ink); color: var(--paper-raised); }
+
+  .btn.active {
+    background: var(--prompt);
+    color: var(--paper-raised);
+    border-color: var(--prompt);
+  }
+
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .btn:disabled:hover { background: var(--paper); color: var(--ink); }
+
+  #fileInput { display: none; }
+
+  .spacer { flex: 1; }
+
+  .field-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  input[type="range"] {
+    width: 110px;
+    accent-color: var(--beat);
+  }
+
+  /* ---------- terminal ---------- */
+  #termWrap {
+    flex: 1;
+    padding: 18px 22px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #terminal {
+    height: 100%;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  #termTitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--rule);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  .chip {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--rule);
+  }
+
+  #tabStrip {
+    margin-left: auto;
+    display: flex;
+    gap: 4px;
+  }
+
+  .tabBtn {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 9px;
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: var(--ink-soft);
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  .tabBtn.active {
+    background: var(--ink);
+    color: var(--paper-raised);
+    border-color: var(--ink);
+  }
+
+  .paneView { display: none; }
+  .paneView.active { display: block; }
+
+  #termBody.active { display: flex; flex-direction: column; }
+  #vizPane.active { display: flex; flex-direction: column; }
+
+  #vizModeStrip {
+    display: flex;
+    gap: 4px;
+    padding: 10px 14px 0 14px;
+  }
+
+  .vizModeBtn {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 9px;
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: var(--ink-soft);
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  .vizModeBtn.active {
+    background: var(--ink);
+    color: var(--paper-raised);
+    border-color: var(--ink);
+  }
+
+  #termBody {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 18px 60px 18px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.65;
+    scrollbar-width: thin;
+  }
+
+  #termBody::-webkit-scrollbar { width: 8px; }
+  #termBody::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 4px; }
+
+  #vizOutput {
+    flex: 1;
+    margin: 0;
+    padding: 18px;
+    overflow: hidden;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    line-height: 1.35;
+    white-space: pre;
+    color: var(--prompt);
+  }
+
+  .line { white-space: pre-wrap; word-break: break-all; }
+
+  .prompt-glyph {
+    color: var(--prompt);
+    font-weight: 600;
+    transition: color 0.08s ease, text-shadow 0.08s ease;
+  }
+
+  .prompt-glyph.pulse {
+    color: var(--beat-bright);
+    text-shadow: 0 0 6px rgba(217,127,60,0.35);
+  }
+
+  .cmd-text { color: var(--ink); }
+  .out-text { color: var(--ink-soft); }
+  .out-dim { color: var(--comment); }
+  .out-err { color: var(--error); }
+
+  .cat-npm { color: var(--cat-npm); }
+  .cat-git { color: var(--cat-git); }
+  .cat-vercel { color: var(--cat-vercel); }
+  .cat-py { color: var(--cat-py); }
+  .cat-build { color: var(--cat-build); }
+
+  .out-npm { color: var(--cat-npm); opacity: 0.75; }
+  .out-git { color: var(--cat-git); opacity: 0.75; }
+  .out-vercel { color: var(--cat-vercel); opacity: 0.75; }
+  .out-py { color: var(--cat-py); opacity: 0.75; }
+  .out-build { color: var(--cat-build); opacity: 0.8; }
+
+  #cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: var(--ink);
+    margin-left: 3px;
+    vertical-align: text-bottom;
+    animation: blink 1s steps(1) infinite;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ---------- statusbar ---------- */
+  #statusbar {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 8px 22px 14px 22px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  .stat { display: flex; align-items: center; gap: 6px; }
+  .stat b { color: var(--ink); font-weight: 600; }
+
+  #beatPip {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--rule);
+    transition: background 0.06s ease, transform 0.06s ease;
+  }
+
+  #beatPip.hit {
+    background: var(--beat-bright);
+    transform: scale(1.35);
+  }
+
+  #hiddenAudio { display: none; }
+
+  #infoModal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 400;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 56px 16px;
+  }
+
+  #infoModal.open { display: flex; }
+
+  #infoCard {
+    background: var(--paper-raised);
+    color: var(--ink);
+    border-radius: 8px;
+    max-width: 480px;
+    width: 100%;
+    padding: 30px 22px 28px;
+    position: relative;
+    font-family: 'Space Grotesk', sans-serif;
+    line-height: 1.55;
+  }
+
+  #infoClose {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+
+  #infoContent h2 {
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    margin: 22px 0 8px;
+  }
+
+  #infoContent h2:first-child { margin-top: 0; }
+
+  #infoContent p {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin: 0 0 6px;
+  }
+
+  #toastEl {
+    position: fixed;
+    left: 50%;
+    bottom: 90px;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(20, 20, 20, 0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 200;
+    max-width: 80vw;
+    text-align: center;
+  }
+
+  #toastEl.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (max-width: 640px) {
+    #buttonRow { gap: 8px; }
+    .btn { padding: 7px 10px; font-size: 12px; }
+    .field-label { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="infoModal">
+  <div id="infoCard">
+    <button id="infoClose" aria-label="Close">&times;</button>
+    <div id="infoContent">
+      <h2>The vision</h2>
+      <p>TERMBEAT started as one idea: what if the terminal itself became an instrument. Scale that up and it gets big fast, a room built like a film set, walls of screens, a projector throwing code across smoke, a rack of phones each running a different theme side by side. Somewhere in the middle of it, someone is playing music instead of a keyboard. Every command that types itself, every block that drops, every line that pings back, all of it driven by a snare hit or a bassline instead of a person pressing enter. The performer is not a programmer. They are a conductor, and the orchestra is a wall of terminals losing its mind in time with the track.</p>
+
+      <h2>How it works</h2>
+      <p>The app listens to the audio itself rather than counting on its own clock. A Web Audio analyser splits the signal into two bands, low frequencies for kicks and high frequencies for hi-hats, each tracking its own rolling average. When either band spikes far enough above its recent average, that counts as a beat. Every beat triggers something, a burst of characters typed into a fake command line, a block dropping in the Visualizer, another line of a build project appearing. Quiet stretches get their own behavior too, a slow one character at a time trickle, like someone thinking between phrases instead of a hard stop.</p>
+
+      <h2>The visualizer</h2>
+      <p>Four self playing modes live behind the Visualizer tab, and none of them take input. Bars is a straightforward ASCII equalizer reading the live frequency spectrum off the same analyser the beat detection uses. Tetris drops a real piece every beat, locks it when it lands, clears full rows, and wipes the board clean if it ever fills up, unattended, forever. Snake path finds toward food on its own logic every beat and resets itself the moment it traps itself. Pong is a ball bouncing around the grid with no paddles, picking up speed on strong hits. None of them are games to play. They are games watching the music instead.</p>
+
+      <h2>Easter eggs</h2>
+      <p>Six terminal styles, Paper, Hacker, Android, Linux, Windows, PowerShell, and Kali, each pull from commands native to that world instead of generic text reused everywhere. A rare joke category sits in most of them, a fork bomb string, sudo make me a sandwich, an ASCII cowsay, the sl train, a telnet call to the old ASCII Star Wars broadcast, a fake System32 deletion in PowerShell that only ever prints text, a Windows shutdown prank paired with its own cancel command. On the Android theme, termux-toast, termux-vibrate, and termux-tts-speak are not fake, they trigger a real on screen toast, a real vibration, and real text to speech through the browser. Every theme can pop open a themed document with nano or Notepad, mix notes, a bit of hacker history, an on call runbook, a pentest engagement agenda, whatever fits. The Build button rotates through four small real projects, Tetris, Pong, Snake, and a todo list, not just one.</p>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+
+  <div id="topbar">
+    <div id="titleRow">
+      <span class="dot" id="brandDot"></span>
+      <span class="brand-text">[ TERMBEAT ]</span>
+    </div>
+    <div id="buttonRow">
+      <button id="hamburgerBtn" title="Terminal style">&#9776;</button>
+      <button class="btn" id="loadFileBtn">Load audio file</button>
+      <input type="file" id="fileInput" accept="audio/*">
+      <button class="btn" id="micBtn">Use microphone</button>
+      <button class="btn" id="playBtn" disabled>Play</button>
+      <button class="btn" id="buildBtn" title="Queue a random build sequence next">Build</button>
+      <button class="btn" id="infoBtn" title="About TERMBEAT">Info</button>
+
+      <div class="spacer"></div>
+
+      <label class="field-label">
+        Sensitivity
+        <input type="range" id="sensitivity" min="105" max="170" value="130">
+      </label>
+    </div>
+  </div>
+
+  <div id="themeMenu">
+    <button class="theme-option" data-theme="paper"><span class="theme-swatch" style="background:#EDEEE9;border:1px solid #999"></span>Paper</button>
+    <button class="theme-option" data-theme="hacker"><span class="theme-swatch" style="background:#050805;border:1px solid #39FF14"></span>Hacker</button>
+    <button class="theme-option" data-theme="kali"><span class="theme-swatch" style="background:#08090C;border:1px solid #0FA9E6"></span>Kali</button>
+    <button class="theme-option" data-theme="android"><span class="theme-swatch" style="background:#050505;border:1px solid #F2F2F2"></span>Android</button>
+    <button class="theme-option" data-theme="linux"><span class="theme-swatch" style="background:#0B0B0B;border:1px solid #6FCF97"></span>Linux</button>
+    <button class="theme-option" data-theme="windows"><span class="theme-swatch" style="background:#00007A;border:1px solid #F2F2F2"></span>Windows</button>
+    <button class="theme-option" data-theme="powershell"><span class="theme-swatch" style="background:#012456;border:1px solid #5DC9F1"></span>PowerShell</button>
+  </div>
+
+  <div id="termWrap">
+    <div id="terminal">
+      <div id="termTitle">
+        <span class="chip"></span><span class="chip"></span><span class="chip"></span>
+        <span style="margin-left:6px;" id="termTitleText">termbeat</span>
+        <div id="tabStrip">
+          <button class="tabBtn active" data-pane="terminal">Terminal</button>
+          <button class="tabBtn" data-pane="viz">Visualizer</button>
+        </div>
+      </div>
+      <div id="termBody" class="paneView active">
+        <div id="lines"></div>
+      </div>
+      <div id="vizPane" class="paneView">
+        <div id="vizModeStrip">
+          <button class="vizModeBtn active" data-mode="bars">Bars</button>
+          <button class="vizModeBtn" data-mode="tetris">Tetris</button>
+          <button class="vizModeBtn" data-mode="snake">Snake</button>
+          <button class="vizModeBtn" data-mode="pong">Pong</button>
+        </div>
+        <pre id="vizOutput">load audio or use mic to see the visualizer</pre>
+      </div>
+    </div>
+  </div>
+
+  <div id="statusbar">
+    <div class="stat"><span id="beatPip"></span></div>
+    <div class="stat">BPM <b id="bpmVal">-</b></div>
+    <div class="stat">SRC <b id="srcVal">none</b></div>
+    <div class="stat">STATE <b id="stateVal">idle</b></div>
+  </div>
+
+</div>
+
+<audio id="hiddenAudio" crossorigin="anonymous"></audio>
+<div id="toastEl"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ============ command bank ============ */
+
+  var REPOS = ["swift-parser", "cobalt-queue", "nimbus-cache", "vector-forge", "pebble-router",
+    "onyx-stream", "amber-ledger", "cinder-grid", "willow-proxy", "granite-worker"];
+  var HASHES = ["a1c9f02", "7b3e441", "e02aa19", "45fd8c0", "9931bea", "c00d7f1", "2ef451a"];
+  var USERS = ["devcrew42", "buildbot-x", "shipfast", "octoteam"];
+  var PORTS = ["3000", "4173", "5173", "8080", "8787"];
+  var FILES = ["config.json", "index.html", "worker.ts", "schema.sql", "handler.py",
+    "utils.js", "styles.css", "router.ts", "helpers.js", "server.js"];
+  var DIRS = ["src/components", "lib/utils", "public/assets", "scripts/build",
+    "server/routes", "data/cache", "tests/unit"];
+  var TERMUX_MSGS = ["deploy complete", "beat detected", "build finished", "low battery", "new commit pushed", "sensor triggered"];
+
+  var DOCS = {
+    paper: {
+      file: "session-notes.txt",
+      body: [
+        "Mix notes, take 4",
+        "",
+        "- Kick sitting a little forward in the low end, pull back 1.5dB at 80Hz",
+        "- Vocal comp is close, still want a warmer top end on the bridge",
+        "- Try automating the filter sweep into the last chorus",
+        "- Reference track for energy: still the one from last week",
+        "",
+        "Remember: rough mixes exist to be replaced."
+      ]
+    },
+    hacker: {
+      file: "notes.txt",
+      body: [
+        "Notes, hacker history",
+        "",
+        "- 1971: John Draper finds a toy whistle from a cereal box matches",
+        "  the 2600Hz tone used by AT&T's long distance switching",
+        "- 1983: the word hacker enters mainstream vocabulary after WarGames",
+        "- 1984: 2600 Magazine begins publishing",
+        "- 1988: the Morris worm becomes one of the first major internet",
+        "  incidents, largely accidental in scale",
+        "",
+        "History mostly forgets the part where most of this was curiosity."
+      ]
+    },
+    android: {
+      file: "release-notes.txt",
+      body: [
+        "v2.4.0 release notes",
+        "",
+        "- Fixed a crash on cold start when storage permission was denied",
+        "- Reduced battery drain from the background sync service",
+        "- New: haptic feedback option for notifications",
+        "- Known issue: dark mode toggle sometimes needs a second tap",
+        "",
+        "Thanks for testing the beta channel."
+      ]
+    },
+    linux: {
+      file: "runbook.txt",
+      body: [
+        "On call runbook, web tier",
+        "",
+        "1. Check systemctl status nginx first, most incidents start there",
+        "2. If load is high, check for a runaway cron job before scaling",
+        "3. Restarting the service clears about 60% of reported issues",
+        "4. Escalate only after checking disk usage, it fills up quietly",
+        "",
+        "Update this file every time you learn something the hard way."
+      ]
+    },
+    windows: {
+      file: "notes.txt",
+      body: [
+        "Maintenance window notes",
+        "",
+        "- Patch Tuesday rollout scheduled, reboot required",
+        "- Print server has been flaky since the driver update, monitor it",
+        "- Backup job finished 40 minutes over the usual window",
+        "- Ticket queue is quiet, good week to test the failover",
+        "",
+        "Leave it better than you found it."
+      ]
+    },
+    powershell: {
+      file: "notes.txt",
+      body: [
+        "Deployment checklist",
+        "",
+        "- Confirm the pipeline is green before touching prod",
+        "- Tag the release before deploying, always",
+        "- Watch the error rate for ten minutes after rollout",
+        "- Rollback plan lives in the same folder as this file",
+        "",
+        "Slow is smooth, smooth is fast."
+      ]
+    },
+    kali: {
+      file: "agenda.txt",
+      body: [
+        "Engagement agenda, draft",
+        "",
+        "Day 1: kickoff call, confirm scope and rules of engagement",
+        "Day 2: recon and enumeration within agreed scope only",
+        "Day 3: vulnerability assessment, document everything as it happens",
+        "Day 4: internal review before anything touches the report",
+        "Day 5: findings walkthrough with the client, no surprises",
+        "",
+        "Nothing outside scope, nothing without written sign off."
+      ]
+    }
+  };
+
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+  function rint(a, b) { return Math.floor(a + Math.random() * (b - a + 1)); }
+
+  var TETRIS_BODY = [
+    "const COLS = 10, ROWS = 20;",
+    "const board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));",
+    "",
+    "const SHAPES = {",
+    "  I: [[1, 1, 1, 1]],",
+    "  O: [[1, 1], [1, 1]],",
+    "  T: [[0, 1, 0], [1, 1, 1]],",
+    "  L: [[1, 0], [1, 0], [1, 1]]",
+    "};",
+    "",
+    "function spawn() {",
+    "  const keys = Object.keys(SHAPES);",
+    "  const key = keys[Math.floor(Math.random() * keys.length)];",
+    "  return { shape: SHAPES[key], x: 3, y: 0 };",
+    "}",
+    "",
+    "function collides(piece, dx, dy) {",
+    "  return piece.shape.some((row, y) =>",
+    "    row.some((cell, x) =>",
+    "      cell && (board[piece.y + y + dy] || [])[piece.x + x + dx] !== 0",
+    "    )",
+    "  );",
+    "}",
+    "",
+    "function lockPiece(piece) {",
+    "  piece.shape.forEach((row, y) => row.forEach((cell, x) => {",
+    "    if (cell) board[piece.y + y][piece.x + x] = 1;",
+    "  }));",
+    "  clearLines();",
+    "}",
+    "",
+    "function clearLines() {",
+    "  for (let y = ROWS - 1; y >= 0; y--) {",
+    "    if (board[y].every(c => c)) {",
+    "      board.splice(y, 1);",
+    "      board.unshift(Array(COLS).fill(0));",
+    "    }",
+    "  }",
+    "}"
+  ].join("\n");
+
+  var PONG_BODY = [
+    "const canvas = document.querySelector('#pong');",
+    "const ctx = canvas.getContext('2d');",
+    "",
+    "const paddle = { y: 160, h: 60, speed: 6 };",
+    "const ball = { x: 300, y: 200, vx: 4, vy: 3, r: 6 };",
+    "",
+    "function update() {",
+    "  ball.x += ball.vx;",
+    "  ball.y += ball.vy;",
+    "  if (ball.y < 0 || ball.y > canvas.height) ball.vy *= -1;",
+    "  if (ball.x < 20 && Math.abs(ball.y - paddle.y) < paddle.h / 2) {",
+    "    ball.vx *= -1;",
+    "  }",
+    "}",
+    "",
+    "function draw() {",
+    "  ctx.clearRect(0, 0, canvas.width, canvas.height);",
+    "  ctx.fillRect(10, paddle.y, 10, paddle.h);",
+    "  ctx.beginPath();",
+    "  ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);",
+    "  ctx.fill();",
+    "}",
+    "",
+    "function loop() {",
+    "  update();",
+    "  draw();",
+    "  requestAnimationFrame(loop);",
+    "}",
+    "loop();"
+  ].join("\n");
+
+  var SNAKE_BODY = [
+    "const GRID = 20;",
+    "let snake = [{ x: 8, y: 8 }];",
+    "let dir = { x: 1, y: 0 };",
+    "let food = { x: 14, y: 8 };",
+    "",
+    "function step() {",
+    "  const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };",
+    "  snake.unshift(head);",
+    "  if (head.x === food.x && head.y === food.y) {",
+    "    food = randomCell();",
+    "  } else {",
+    "    snake.pop();",
+    "  }",
+    "  if (hitsWall(head) || hitsSelf(head)) reset();",
+    "}",
+    "",
+    "function hitsWall(p) {",
+    "  return p.x < 0 || p.y < 0 || p.x >= GRID || p.y >= GRID;",
+    "}",
+    "",
+    "function hitsSelf(p) {",
+    "  return snake.slice(1).some(s => s.x === p.x && s.y === p.y);",
+    "}",
+    "",
+    "function randomCell() {",
+    "  return { x: Math.floor(Math.random() * GRID), y: Math.floor(Math.random() * GRID) };",
+    "}",
+    "",
+    "function reset() {",
+    "  snake = [{ x: 8, y: 8 }];",
+    "  dir = { x: 1, y: 0 };",
+    "}"
+  ].join("\n");
+
+  var TODO_BODY = [
+    "const list = document.querySelector('#list');",
+    "const input = document.querySelector('#input');",
+    "let items = [];",
+    "",
+    "function add(text) {",
+    "  items.push({ text, done: false });",
+    "  render();",
+    "}",
+    "",
+    "function toggle(i) {",
+    "  items[i].done = !items[i].done;",
+    "  render();",
+    "}",
+    "",
+    "function render() {",
+    "  list.innerHTML = items.map((item, i) => {",
+    "    const cls = item.done ? 'done' : '';",
+    "    return '<li class=\"' + cls + '\" data-i=\"' + i + '\">' + item.text + '</li>';",
+    "  }).join('');",
+    "}",
+    "",
+    "input.addEventListener('keydown', (e) => {",
+    "  if (e.key === 'Enter' && input.value.trim()) {",
+    "    add(input.value.trim());",
+    "    input.value = '';",
+    "  }",
+    "});"
+  ].join("\n");
+
+  var BUILD_PROJECTS = [
+    { file: "tetris.js", body: TETRIS_BODY },
+    { file: "pong.js", body: PONG_BODY },
+    { file: "snake.js", body: SNAKE_BODY },
+    { file: "todo.js", body: TODO_BODY }
+  ];
+
+  var COMMAND_BANKS = {
+    npm: [
+      function () { return "npm install"; },
+      function () { return "npm run build"; },
+      function () { return "npm run dev -- --port " + pick(PORTS); },
+      function () { return "npm audit fix"; },
+      function () { return "npm ci"; },
+      function () { return "npm run lint"; },
+      function () { return "npm run test -- --coverage"; },
+      function () { return "npm outdated"; }
+    ],
+    git: [
+      function () { return "git clone https://github.com/" + pick(USERS) + "/" + pick(REPOS) + ".git"; },
+      function () { return "git checkout -b feature/" + pick(REPOS).split("-")[0] + "-update"; },
+      function () { return "git add ."; },
+      function () { return "git commit -m \"update " + pick(FILES) + "\""; },
+      function () { return "git push origin main"; },
+      function () { return "git status"; },
+      function () { return "git log --oneline -6"; },
+      function () { return "git pull --rebase"; }
+    ],
+    fs: [
+      function () { return "mkdir -p " + pick(DIRS); },
+      function () { return "touch " + pick(FILES); },
+      function () { return "rm -rf node_modules"; },
+      function () { return "mv build/temp ./dist"; },
+      function () { return "cp -r assets ./public"; },
+      function () { return "find . -name \"*.log\" -delete"; },
+      function () { return "ls -la " + pick(DIRS); },
+      function () { return "chmod +x deploy.sh"; }
+    ],
+    sys: [
+      function () { return "ps aux | grep node"; },
+      function () { return "curl -s https://api." + pick(REPOS) + ".dev/status"; },
+      function () { return "df -h"; },
+      function () { return "top -bn1 | head -5"; },
+      function () { return "kill -9 " + rint(1000, 9000); },
+      function () { return "env | grep NODE"; },
+      function () { return "which node"; }
+    ],
+    vercel: [
+      function () { return "vercel --prod"; },
+      function () { return "vercel deploy"; },
+      function () { return "vercel logs " + pick(REPOS) + ".vercel.app"; },
+      function () { return "vercel env pull"; },
+      function () { return "vercel link"; },
+      function () { return "vercel ls"; }
+    ],
+    py: [
+      function () { return pyBin() + " -m venv .venv"; },
+      function () { return "pip install -r requirements.txt"; },
+      function () { return pyBin() + " manage.py runserver " + pick(PORTS); },
+      function () { return "pytest -q"; },
+      function () { return pyBin() + " " + pick(FILES).replace(".js", ".py"); },
+      function () { return "black . --check"; }
+    ],
+    build: [
+      function () {
+        var proj = pick(BUILD_PROJECTS);
+        if (CURRENT_FAMILY === "ps") {
+          return "@'\n" + proj.body + "\n'@ | Set-Content " + proj.file;
+        }
+        return "cat > " + proj.file + " << 'EOF'\n" + proj.body + "\nEOF";
+      }
+    ],
+    net: [
+      function () { return "nmap -sV 10.0.0.0/24"; },
+      function () { return "ssh dev@10.0.0.14"; },
+      function () { return "tcpdump -i wlan0 -n -c 20"; },
+      function () { return "dig +short " + pick(REPOS) + ".dev"; },
+      function () { return "whois " + pick(REPOS) + ".dev"; },
+      function () { return "curl -sI https://" + pick(REPOS) + ".dev"; },
+      function () { return "netstat -tulpn"; }
+    ],
+    adb: [
+      function () { return "adb devices"; },
+      function () { return "adb shell pm list packages | grep " + pick(REPOS).split("-")[0]; },
+      function () { return "adb logcat -d | tail -20"; },
+      function () { return "adb push ./dist /sdcard/termbeat"; },
+      function () { return "adb pull /sdcard/DCIM ./backup"; },
+      function () { return "termux-setup-storage"; },
+      function () { return "getprop ro.build.version.release"; },
+      function () { return "am start -n com.example/.MainActivity"; },
+      function () { return "termux-toast \"" + pick(TERMUX_MSGS) + "\""; },
+      function () { return "termux-vibrate -d " + pick([300, 500, 800, 1200, 3000]); },
+      function () { return "termux-tts-speak \"" + pick(TERMUX_MSGS) + "\""; },
+      function () { return "pkg install " + pick(["nodejs", "python", "git", "openssh"]); },
+      function () { return "pkg upgrade -y"; }
+    ],
+    admin: [
+      function () { return "sudo apt update && sudo apt upgrade -y"; },
+      function () { return "sudo apt install " + pick(["nginx", "build-essential", "python3-pip", "redis-server"]); },
+      function () { return "systemctl status nginx"; },
+      function () { return "journalctl -xe --since \"10 min ago\""; },
+      function () { return "sudo useradd -m deploy"; },
+      function () { return "sudo chown -R deploy:deploy /srv/app"; },
+      function () { return "iptables -L -n"; },
+      function () { return "uname -a"; }
+    ],
+    wincmd: [
+      function () { return "dir"; },
+      function () { return "cd C:\\projects\\termbeat"; },
+      function () { return "ipconfig /all"; },
+      function () { return "tasklist | findstr node"; },
+      function () { return "netstat -ano | findstr " + pick(PORTS); },
+      function () { return "reg query HKCU\\Software"; },
+      function () { return "ping 8.8.8.8 -n 4"; },
+      function () { return "sc query wuauserv"; },
+      function () { return "winget install " + pick(["Git.Git", "OpenJS.NodeJS", "Python.Python.3"]); },
+      function () { return "choco install " + pick(["nodejs", "python", "git"]) + " -y"; },
+      function () { return "xcopy dist deploy /E /I"; },
+      function () { return "certutil -hashfile release.zip SHA256"; }
+    ],
+    pscmd: [
+      function () { return "Get-ChildItem"; },
+      function () { return "Get-Process node"; },
+      function () { return "Get-Service -Name W32Time"; },
+      function () { return "New-Item -ItemType Directory -Path .\\dist"; },
+      function () { return "Invoke-WebRequest https://api." + pick(REPOS) + ".dev/status"; },
+      function () { return "Get-EventLog -LogName Application -Newest 5"; },
+      function () { return "Copy-Item .\\build\\* .\\dist -Recurse"; },
+      function () { return "winget install " + pick(["Git.Git", "OpenJS.NodeJS"]); },
+      function () { return "Install-Module -Name " + pick(["Az", "Pester", "PSReadLine"]); },
+      function () { return "Select-String -Pattern TODO -Path .\\*.js"; },
+      function () { return "Compress-Archive -Path .\\dist -DestinationPath release.zip"; }
+    ],
+    jokeUnix: [
+      function () { return ":(){ :|:& };:"; },
+      function () { return "sudo rm -rf --no-preserve-root /"; },
+      function () { return "sudo make me a sandwich"; },
+      function () { return "sl"; },
+      function () { return "fortune | cowsay"; },
+      function () { return "telnet towel.blinkenlights.nl"; }
+    ],
+    jokeWin: [
+      function () { return "shutdown /s /t 3600"; },
+      function () { return "shutdown /a"; },
+      function () { return "del /f /s /q C:\\*.*"; },
+      function () { return "net send * \"meeting moved to 3pm\""; }
+    ],
+    jokePs: [
+      function () { return "Write-Host \"System32 has been deleted\" -ForegroundColor Red"; },
+      function () { return "1..5 | ForEach-Object { [console]::beep(500,300) }"; },
+      function () { return "Write-Host \"sudo make me a sandwich\" -ForegroundColor Yellow"; }
+    ],
+    infosec: [
+      function () { return "nmap -sV -p- target.local"; },
+      function () { return "nmap --script vuln target.local"; },
+      function () { return "gobuster dir -u http://target.local -w common.txt"; },
+      function () { return "nikto -h http://target.local"; },
+      function () { return "whatweb target.local"; },
+      function () { return "sqlmap -u http://target.local/login --forms --batch"; },
+      function () { return "hydra -l admin -P wordlist.txt ssh://target.local"; },
+      function () { return "john --wordlist=wordlist.txt hashes.txt"; },
+      function () { return "aircrack-ng capture.cap -w wordlist.txt"; },
+      function () { return "searchsploit apache " + pick(["2.4", "2.2", "httpd"]); },
+      function () { return "enum4linux target.local"; },
+      function () { return "msfconsole -q -x \"use exploit/multi/handler; run\""; }
+    ],
+    docs: [
+      function () {
+        var doc = DOCS[CURRENT_THEME] || DOCS.paper;
+        var editor = (CURRENT_FAMILY === "win" || CURRENT_FAMILY === "ps") ? "notepad" : "nano";
+        return editor + " " + doc.file;
+      }
+    ],
+    tools: [
+      function () { return "tar czvf backup.tar.gz ./dist"; },
+      function () { return "rsync -avz ./dist dev@target.local:/var/www"; },
+      function () { return "ssh-keygen -t ed25519 -C \"deploy key\""; },
+      function () { return "docker ps"; },
+      function () { return "docker build -t " + pick(REPOS) + " ."; },
+      function () { return "curl -O https://" + pick(REPOS) + ".dev/release.tar.gz"; },
+      function () { return "tmux new -s work"; },
+      function () { return "jq '.' package.json"; },
+      function () { return "grep -rn \"TODO\" ."; },
+      function () { return "htop"; }
+    ]
+  };
+
+  var OUTPUT_LINES = {
+    npm: [
+      function () { return "added " + rint(120, 900) + " packages in " + (Math.random() * 12 + 2).toFixed(1) + "s"; },
+      function () { return rint(0, 3) + " vulnerabilities found"; },
+      function () { return "build complete, dist/ ready"; },
+      function () { return "> vite build"; },
+      function () { return "modules transformed: " + rint(4, 60); }
+    ],
+    git: [
+      function () { return "Enumerating objects: " + rint(20, 400) + ", done."; },
+      function () { return "[main " + pick(HASHES) + "] update " + pick(FILES); },
+      function () { return rint(1, 6) + " files changed, " + rint(4, 220) + " insertions(+)"; },
+      function () { return "Your branch is up to date with 'origin/main'."; },
+      function () { return "Fast-forward"; }
+    ],
+    fs: [
+      function () { return "removed " + rint(100, 4000) + " files"; },
+      function () { return "directory created"; }
+    ],
+    sys: [
+      function () { return "node    " + rint(1000, 9999) + "  0.4  1.2   node server.js"; },
+      function () { return "{\"status\":\"ok\",\"uptime\":" + rint(100, 90000) + "}"; },
+      function () { return "Filesystem     Use%  Mounted on"; }
+    ],
+    vercel: [
+      function () { return "Production: https://" + pick(REPOS) + ".vercel.app"; },
+      function () { return "Deployment ready in " + rint(4, 40) + "s"; },
+      function () { return "Build cache restored"; },
+      function () { return "Queued, building, ready"; }
+    ],
+    py: [
+      function () { return rint(1, 40) + " passed in " + (Math.random() * 6 + 0.4).toFixed(2) + "s"; },
+      function () { return "Successfully installed " + rint(3, 22) + " packages"; },
+      function () { return "Watching for file changes"; }
+    ],
+    build: [
+      function () { return "file written"; }
+    ],
+    net: [
+      function () { return "22/tcp open  ssh"; },
+      function () { return rint(1, 40) + " hosts up"; },
+      function () { return "connection established"; },
+      function () { return "TTL=" + rint(48, 64); }
+    ],
+    adb: [
+      function () { return "device " + pick(HASHES) + "  device"; },
+      function () { return "1 file pulled, 0 skipped"; },
+      function () { return "Activity started"; }
+    ],
+    admin: [
+      function () { return "active (running)"; },
+      function () { return rint(0, 12) + " packages can be upgraded"; },
+      function () { return "Chain INPUT (policy ACCEPT)"; }
+    ],
+    wincmd: [
+      function () { return "Reply from 8.8.8.8: bytes=32 time=" + rint(8, 40) + "ms TTL=" + rint(48, 64); },
+      function () { return rint(1, 9) + " File(s) copied"; },
+      function () { return "Media State ..... Media connected"; }
+    ],
+    pscmd: [
+      function () { return "StatusCode : 200"; },
+      function () { return "Directory: C:\\Users\\dev\\dist"; },
+      function () { return rint(1, 9) + " item(s) copied"; }
+    ],
+    jokeUnix: [
+      function () { return "(display only, no shell attached)"; },
+      function () { return "Okay."; },
+      function () { return "connecting to towel.blinkenlights.nl:23 ..."; },
+      function () {
+        var q = pick(["ship it", "coffee first", "no bugs today", "still compiling", "commit early, commit often"]);
+        var bar = Array(q.length + 3).join("-");
+        return " " + bar + "\n< " + q + " >\n " + bar + "\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||";
+      },
+      function () {
+        return "       __||__    ____\n     |  __  |  |    |____\n     |_|  |_|__|    |    |_\n    (_) (_)  (_)(_)  (_)(_)\n         choo choo";
+      }
+    ],
+    jokeWin: [
+      function () { return "(display only, no shell attached)"; },
+      function () { return "Shutdown cancelled"; },
+      function () { return "Are you sure? [Y/N]"; },
+      function () { return "net send is deprecated on modern Windows"; }
+    ],
+    jokePs: [
+      function () { return "System32 has been deleted"; },
+      function () { return "(pure output, nothing was touched)"; },
+      function () { return "beep beep beep beep beep"; }
+    ],
+    infosec: [
+      function () { return "Host is up (0.0" + rint(10, 90) + "s latency)"; },
+      function () { return rint(1, 4) + "/tcp open  http"; },
+      function () { return "PORT     STATE SERVICE"; },
+      function () { return rint(500, 9000) + " words loaded"; },
+      function () { return "Nikto scan complete, " + rint(0, 6) + " items reported"; },
+      function () { return "1 credential set found"; }
+    ],
+    docs: [
+      function () { return "(file closed)"; }
+    ],
+    tools: [
+      function () { return "real  0m" + rint(1, 9) + "." + rint(10, 99) + "s"; },
+      function () { return rint(1, 20) + " files transferred"; },
+      function () { return "CONTAINER ID   IMAGE          STATUS"; },
+      function () { return "Successfully built " + pick(HASHES); },
+      function () { return rint(0, 12) + " matches found"; }
+    ]
+  };
+
+  var CURRENT_THEME = "paper";
+  var CURRENT_FAMILY = "unix";
+  var CURRENT_PROMPT = "$";
+
+  function pyBin() { return (CURRENT_FAMILY === "win" || CURRENT_FAMILY === "ps") ? "python" : "python3"; }
+
+  var THEMES = {
+    paper: {
+      label: "Paper", family: "unix", prompt: "$",
+      colors: { paper: "#EDEEE9", paperRaised: "#F7F7F3", ink: "#1E2320", inkSoft: "#4A4F49",
+        prompt: "#2B5D4E", beat: "#B5652A", beatBright: "#D97F3C", comment: "#9C9C90", rule: "#D6D6CC",
+        error: "#A23B3B", catNpm: "#B23B32", catGit: "#BD6A2C", catVercel: "#1F8A82", catPy: "#6B4FA0", catBuild: "#8A4A6B" },
+      weights: { npm: 5, git: 5, fs: 4, sys: 3, vercel: 3, py: 2, build: 1, docs: 1, tools: 3 }
+    },
+    hacker: {
+      label: "Hacker", family: "unix", prompt: "root@ghost:~#",
+      colors: { paper: "#050805", paperRaised: "#0B120B", ink: "#39FF88", inkSoft: "#2C9C5B",
+        prompt: "#39FF14", beat: "#B6FF4D", beatBright: "#D4FF8F", comment: "#1F5C34", rule: "#123321",
+        error: "#FF6B6B", catNpm: "#FF6F61", catGit: "#FFA94D", catVercel: "#4DD9C6", catPy: "#B18CF2", catBuild: "#F28FB1" },
+      weights: { npm: 4, git: 4, fs: 3, sys: 3, vercel: 2, py: 2, net: 5, build: 1, jokeUnix: 2, docs: 1, tools: 3 }
+    },
+    kali: {
+      label: "Kali", family: "unix", prompt: "kali@kali:~$",
+      colors: { paper: "#08090C", paperRaised: "#10131A", ink: "#3FC6FF", inkSoft: "#2C8FBF",
+        prompt: "#0FA9E6", beat: "#FF3864", beatBright: "#FF6E8C", comment: "#264A5C", rule: "#182634",
+        error: "#FF5C5C", catNpm: "#FF6F61", catGit: "#FFA94D", catVercel: "#4DD9C6", catPy: "#B18CF2", catBuild: "#F28FB1" },
+      weights: { npm: 2, git: 2, fs: 2, sys: 2, infosec: 6, jokeUnix: 1, build: 1, docs: 1, tools: 2 }
+    },
+    android: {
+      label: "Android", family: "unix", prompt: "dev:/sdcard $",
+      colors: { paper: "#050505", paperRaised: "#101010", ink: "#F2F2F2", inkSoft: "#B7B7B7",
+        prompt: "#8BD1FF", beat: "#FFC24D", beatBright: "#FFD98A", comment: "#6E6E6E", rule: "#232323",
+        error: "#FF6B6B", catNpm: "#FF6F61", catGit: "#FFA94D", catVercel: "#4DD9C6", catPy: "#B18CF2", catBuild: "#F28FB1" },
+      weights: { npm: 4, git: 4, fs: 3, sys: 2, vercel: 2, py: 2, adb: 5, build: 1, jokeUnix: 1, docs: 1, tools: 2 }
+    },
+    linux: {
+      label: "Linux", family: "unix", prompt: "dev@devbox:~$",
+      colors: { paper: "#0B0B0B", paperRaised: "#141414", ink: "#E4E4E4", inkSoft: "#A9A9A9",
+        prompt: "#6FCF97", beat: "#F2C94C", beatBright: "#F7DE85", comment: "#5C5C5C", rule: "#262626",
+        error: "#EB5757", catNpm: "#FF6F61", catGit: "#FFA94D", catVercel: "#4DD9C6", catPy: "#B18CF2", catBuild: "#F28FB1" },
+      weights: { npm: 4, git: 4, fs: 3, sys: 3, vercel: 2, py: 2, admin: 5, build: 1, jokeUnix: 2, docs: 1, tools: 3 }
+    },
+    windows: {
+      label: "Windows", family: "win", prompt: "C:\\Users\\dev>",
+      colors: { paper: "#00007A", paperRaised: "#0000A6", ink: "#F2F2F2", inkSoft: "#C9C9E8",
+        prompt: "#F2F2F2", beat: "#FFD35C", beatBright: "#FFE38C", comment: "#9E9ECF", rule: "#1E1E9E",
+        error: "#FF7A7A", catNpm: "#FF9E96", catGit: "#FFC27A", catVercel: "#7FE0D3", catPy: "#CBB2F7", catBuild: "#F7B8CF" },
+      weights: { npm: 4, git: 4, vercel: 2, py: 2, wincmd: 6, jokeWin: 2, docs: 1 }
+    },
+    powershell: {
+      label: "PowerShell", family: "ps", prompt: "PS C:\\Users\\dev>",
+      colors: { paper: "#012456", paperRaised: "#04306E", ink: "#EEEEEE", inkSoft: "#B9C7E0",
+        prompt: "#5DC9F1", beat: "#F5D76E", beatBright: "#FBE79E", comment: "#7C8FB0", rule: "#0A3D7A",
+        error: "#FF6E6E", catNpm: "#FF9E96", catGit: "#FFC27A", catVercel: "#7FE0D3", catPy: "#CBB2F7", catBuild: "#F7B8CF" },
+      weights: { npm: 4, git: 4, vercel: 2, py: 2, pscmd: 6, build: 1, jokePs: 2, docs: 1 }
+    }
+  };
+
+  var CATEGORY_KEYS = [];
+
+  function rebuildCategoryPool() {
+    var w = THEMES[CURRENT_THEME].weights;
+    var keys = [];
+    Object.keys(w).forEach(function (k) {
+      for (var i = 0; i < w[k]; i++) keys.push(k);
+    });
+    CATEGORY_KEYS = keys;
+  }
+
+  var CMD_CLASS = { npm: "cat-npm", git: "cat-git", vercel: "cat-vercel", py: "cat-py", build: "cat-build" };
+  var OUT_CLASS = { npm: "out-npm", git: "out-git", vercel: "out-vercel", py: "out-py", build: "out-build" };
+
+  var forcedCategory = null;
+
+  function nextCommand() {
+    var cat = forcedCategory || pick(CATEGORY_KEYS);
+    forcedCategory = null;
+    var gen = pick(COMMAND_BANKS[cat]);
+    return { category: cat, text: gen() };
+  }
+
+  function outputBlock(cat) {
+    var n = rint(1, 2);
+    var lines = [];
+    for (var i = 0; i < n; i++) lines.push(pick(OUTPUT_LINES[cat])());
+    return lines;
+  }
+
+  /* ============ DOM refs ============ */
+
+  var linesEl = document.getElementById("lines");
+  var termBody = document.getElementById("termBody");
+  var cursorEl = document.createElement("span");
+  cursorEl.id = "cursor";
+  var beatPip = document.getElementById("beatPip");
+  var bpmVal = document.getElementById("bpmVal");
+  var srcVal = document.getElementById("srcVal");
+  var stateVal = document.getElementById("stateVal");
+  var termTitleText = document.getElementById("termTitleText");
+  var loadFileBtn = document.getElementById("loadFileBtn");
+  var fileInput = document.getElementById("fileInput");
+  var micBtn = document.getElementById("micBtn");
+  var playBtn = document.getElementById("playBtn");
+  var buildBtn = document.getElementById("buildBtn");
+  var sensitivitySlider = document.getElementById("sensitivity");
+  var hiddenAudio = document.getElementById("hiddenAudio");
+  var hamburgerBtn = document.getElementById("hamburgerBtn");
+  var themeMenu = document.getElementById("themeMenu");
+  var themeOptions = document.querySelectorAll(".theme-option");
+  var tabButtons = document.querySelectorAll(".tabBtn");
+  var termBodyEl = document.getElementById("termBody");
+  var vizOutputEl = document.getElementById("vizOutput");
+  var vizPaneEl = document.getElementById("vizPane");
+  var vizModeButtons = document.querySelectorAll(".vizModeBtn");
+
+  var MAX_LINES = 220;
+
+  function appendLine(html, cls) {
+    var div = document.createElement("div");
+    div.className = "line" + (cls ? " " + cls : "");
+    div.innerHTML = html;
+    linesEl.appendChild(div);
+    while (linesEl.children.length > MAX_LINES) {
+      linesEl.removeChild(linesEl.firstChild);
+    }
+    termBody.scrollTop = termBody.scrollHeight;
+    return div;
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  /* ============ typing engine ============ */
+
+  var typing = {
+    active: null,      // { category, target, typed, el }
+    phase: "idle"       // idle | typing | output-pending
+  };
+
+  function startNewCommand() {
+    var c = nextCommand();
+    var cls = CMD_CLASS[c.category] || "";
+    var el = appendLine(
+      "<span class=\"prompt-glyph\">" + escapeHtml(CURRENT_PROMPT) + "</span> <span class=\"cmd-text " + cls + "\"></span>",
+      null
+    );
+    el.appendChild(cursorEl);
+    typing.active = { category: c.category, target: c.text, typed: "", el: el };
+    typing.phase = "typing";
+  }
+
+  function typeChars(n) {
+    if (!typing.active) startNewCommand();
+    var a = typing.active;
+
+    if (typing.phase === "typing") {
+      var remaining = a.target.length - a.typed.length;
+      var take = Math.min(n, remaining);
+      a.typed += a.target.slice(a.typed.length, a.typed.length + take);
+      var span = a.el.querySelector(".cmd-text");
+      span.textContent = a.typed;
+      termBody.scrollTop = termBody.scrollHeight;
+
+      if (a.typed.length >= a.target.length) {
+        typing.phase = "output-pending";
+        triggerTermuxFx(a.target);
+      }
+      n -= take;
+    }
+
+    if (typing.phase === "output-pending" && n > 0) {
+      var out = a.category === "build" ? [buildOutputLine(a.target)]
+        : a.category === "docs" ? [docsOutputBlock()]
+        : outputBlock(a.category);
+      var outCls = OUT_CLASS[a.category] || "";
+      for (var i = 0; i < out.length; i++) {
+        var dimCls = i === out.length - 1 ? "out-dim" : "out-text";
+        appendLine(escapeHtml(out[i]), outCls ? outCls : dimCls);
+      }
+      typing.active = null;
+      typing.phase = "idle";
+      startNewCommand();
+    }
+  }
+
+  function buildOutputLine(target) {
+    var m = target.match(/cat > (\S+) <</) || target.match(/Set-Content (\S+)/);
+    var file = m ? m[1] : "file.js";
+    var lines = Math.max(target.split("\n").length - 2, 1);
+    return file + " written (" + lines + " lines)";
+  }
+
+  function docsOutputBlock() {
+    var doc = DOCS[CURRENT_THEME] || DOCS.paper;
+    var isWin = CURRENT_FAMILY === "win" || CURRENT_FAMILY === "ps";
+    var lines = [];
+    if (isWin) {
+      lines.push("Notepad - " + doc.file);
+      lines.push("");
+      doc.body.forEach(function (l) { lines.push(l); });
+    } else {
+      lines.push("GNU nano 7.2                    " + doc.file);
+      lines.push("");
+      doc.body.forEach(function (l) { lines.push(l); });
+      lines.push("");
+      lines.push("^G Help  ^O Write Out  ^W Where Is  ^X Exit");
+    }
+    return lines.join("\n");
+  }
+
+  function showToast(msg) {
+    var el = document.getElementById("toastEl");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(function () { el.classList.remove("show"); }, 1800);
+  }
+
+  function triggerTermuxFx(cmd) {
+    if (cmd.indexOf("termux-toast") === 0) {
+      var m = cmd.match(/"([^"]*)"/);
+      if (m) showToast(m[1]);
+    } else if (cmd.indexOf("termux-vibrate") === 0) {
+      if (navigator.vibrate) navigator.vibrate(280);
+    } else if (cmd.indexOf("termux-tts-speak") === 0) {
+      var m2 = cmd.match(/"([^"]*)"/);
+      if (m2 && window.speechSynthesis) {
+        try {
+          var utter = new SpeechSynthesisUtterance(m2[1]);
+          utter.rate = 1.05;
+          speechSynthesis.speak(utter);
+        } catch (e) {}
+      }
+    }
+  }
+
+  function pulsePrompt() {
+    if (typing.active && typing.active.el) {
+      var g = typing.active.el.querySelector(".prompt-glyph");
+      if (g) {
+        g.classList.add("pulse");
+        setTimeout(function () { g.classList.remove("pulse"); }, 90);
+      }
+    }
+  }
+
+  /* ============ audio engine ============ */
+
+  var audioCtx = null;
+  var analyser = null;
+  var dataArray = null;
+  var sourceNode = null;
+  var rafId = null;
+
+  var lowHistory = [];
+  var highHistory = [];
+  var HISTORY_LEN = 40;
+  var lastBeatTimeLow = 0;
+  var lastBeatTimeHigh = 0;
+  var lastAnyBeatTime = 0;
+  var beatIntervals = [];
+  var MIN_GAP_LOW_MS = 180;
+  var MIN_GAP_HIGH_MS = 90;
+
+  function ensureAudioCtx() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 1024;
+      analyser.smoothingTimeConstant = 0.25;
+      dataArray = new Uint8Array(analyser.frequencyBinCount);
+    }
+    return audioCtx;
+  }
+
+  function connectSource(node, connectToDestination) {
+    if (sourceNode) {
+      try { sourceNode.disconnect(); } catch (e) {}
+    }
+    sourceNode = node;
+    sourceNode.connect(analyser);
+    if (connectToDestination) {
+      sourceNode.connect(audioCtx.destination);
+    }
+  }
+
+  function frameEnergies() {
+    analyser.getByteFrequencyData(dataArray);
+
+    var lowBins = 8;
+    var lowSum = 0;
+    for (var i = 0; i < lowBins; i++) lowSum += dataArray[i];
+    var low = lowSum / lowBins;
+
+    var sampleRate = audioCtx.sampleRate;
+    var binHz = sampleRate / analyser.fftSize;
+    var hiStart = Math.max(lowBins, Math.round(5000 / binHz));
+    var hiEnd = Math.min(dataArray.length - 1, Math.round(11000 / binHz));
+    var hiBins = Math.max(1, hiEnd - hiStart);
+    var hiSum = 0;
+    for (var j = hiStart; j < hiEnd; j++) hiSum += dataArray[j];
+    var high = hiSum / hiBins;
+
+    return { low: low, high: high };
+  }
+
+  function loop() {
+    rafId = requestAnimationFrame(loop);
+    var en = frameEnergies();
+
+    lowHistory.push(en.low);
+    if (lowHistory.length > HISTORY_LEN) lowHistory.shift();
+    highHistory.push(en.high);
+    if (highHistory.length > HISTORY_LEN) highHistory.shift();
+
+    var avgLow = lowHistory.reduce(function (a, b) { return a + b; }, 0) / lowHistory.length;
+    var avgHigh = highHistory.reduce(function (a, b) { return a + b; }, 0) / highHistory.length;
+    var sensitivity = parseInt(sensitivitySlider.value, 10) / 100;
+    var now = performance.now();
+
+    if (activeTab === "viz" && vizMode === "bars" && now - lastVizRender > 50) {
+      renderVizBars();
+      lastVizRender = now;
+    }
+
+    var isBeatLow = en.low > avgLow * sensitivity && en.low > 14 && (now - lastBeatTimeLow) > MIN_GAP_LOW_MS;
+    var isBeatHigh = en.high > avgHigh * sensitivity && en.high > 4 && (now - lastBeatTimeHigh) > MIN_GAP_HIGH_MS;
+
+    if (isBeatLow) lastBeatTimeLow = now;
+    if (isBeatHigh) lastBeatTimeHigh = now;
+
+    if (isBeatLow || isBeatHigh) {
+      var interval = now - lastAnyBeatTime;
+      lastAnyBeatTime = now;
+
+      if (interval > 40 && interval < 2000) {
+        beatIntervals.push(interval);
+        if (beatIntervals.length > 8) beatIntervals.shift();
+      }
+      if (beatIntervals.length >= 3) {
+        var avgInt = beatIntervals.reduce(function (a, b) { return a + b; }, 0) / beatIntervals.length;
+        var bpm = Math.round(60000 / avgInt);
+        if (bpm > 40 && bpm < 240) bpmVal.textContent = bpm;
+      }
+
+      var ratioLow = isBeatLow ? en.low / Math.max(avgLow, 1) : 0;
+      var ratioHigh = isBeatHigh ? en.high / Math.max(avgHigh, 1) : 0;
+      var ratio = Math.min(3, Math.max(ratioLow, ratioHigh));
+      var chars = Math.max(2, Math.min(14, Math.round(ratio * 5)));
+
+      typeChars(chars);
+      pulsePrompt();
+      beatPip.classList.add("hit");
+      setTimeout(function () { beatPip.classList.remove("hit"); }, 90);
+
+      if (activeTab === "viz") vizBeatStep(ratio > 1.6);
+
+      stateVal.textContent = "reacting";
+      quietSince = 0;
+      stopIdleTyping();
+    } else {
+      var isQuiet = en.low < 9 && en.high < 4;
+      if (isQuiet) {
+        if (!quietSince) quietSince = now;
+        if (now - quietSince > 1200) {
+          startIdleTyping();
+          stateVal.textContent = "quiet";
+        }
+      } else {
+        quietSince = 0;
+        stopIdleTyping();
+      }
+      if (now - lastAnyBeatTime > 1800 && !idleTimer) {
+        stateVal.textContent = "listening";
+      }
+    }
+  }
+
+  var quietSince = 0;
+  var idleTimer = null;
+
+  function idleTick() {
+    typeChars(1);
+    idleTimer = setTimeout(idleTick, 380 + Math.random() * 320);
+  }
+
+  function startIdleTyping() {
+    if (!idleTimer) idleTick();
+  }
+
+  function stopIdleTyping() {
+    if (idleTimer) {
+      clearTimeout(idleTimer);
+      idleTimer = null;
+    }
+  }
+
+  function startLoop() {
+    if (!rafId) loop();
+  }
+
+  function stopLoop() {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  }
+
+  /* ============ source wiring ============ */
+
+  loadFileBtn.addEventListener("click", function () { fileInput.click(); });
+
+  buildBtn.addEventListener("click", function () {
+    forcedCategory = "build";
+    buildBtn.textContent = "Queued";
+    setTimeout(function () { buildBtn.textContent = "Build"; }, 1500);
+  });
+
+  fileInput.addEventListener("change", function () {
+    var file = fileInput.files[0];
+    if (!file) return;
+
+    ensureAudioCtx();
+    var url = URL.createObjectURL(file);
+    hiddenAudio.src = url;
+
+    if (!hiddenAudio._nodeCreated) {
+      var node = audioCtx.createMediaElementSource(hiddenAudio);
+      hiddenAudio._node = node;
+      hiddenAudio._nodeCreated = true;
+    }
+    connectSource(hiddenAudio._node, true);
+
+    srcVal.textContent = "file";
+    announceTrack("now playing: " + file.name);
+    playBtn.disabled = false;
+    playBtn.textContent = "Play";
+    micBtn.classList.remove("active");
+    loadFileBtn.classList.add("active");
+
+    lowHistory = [];
+    highHistory = [];
+    beatIntervals = [];
+    lastBeatTimeLow = 0;
+    lastBeatTimeHigh = 0;
+    lastAnyBeatTime = 0;
+    quietSince = 0;
+    stopIdleTyping();
+    startLoop();
+  });
+
+  function announceTrack(text) {
+    appendLine(
+      "<span class=\"prompt-glyph\">" + escapeHtml(CURRENT_PROMPT) + "</span> <span class=\"cmd-text\">" + escapeHtml(text) + "</span>",
+      null
+    );
+  }
+
+  playBtn.addEventListener("click", function () {
+    if (hiddenAudio.paused) {
+      audioCtx.resume();
+      hiddenAudio.play();
+      playBtn.textContent = "Pause";
+      startLoop();
+    } else {
+      hiddenAudio.pause();
+      playBtn.textContent = "Play";
+      stopLoop();
+      stopIdleTyping();
+      quietSince = 0;
+      stateVal.textContent = "paused";
+    }
+  });
+
+  micBtn.addEventListener("click", function () {
+    if (micBtn.classList.contains("active")) {
+      micBtn.classList.remove("active");
+      stopLoop();
+      stopIdleTyping();
+      quietSince = 0;
+      stateVal.textContent = "idle";
+      srcVal.textContent = "none";
+      return;
+    }
+
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
+      ensureAudioCtx();
+      audioCtx.resume();
+      var node = audioCtx.createMediaStreamSource(stream);
+      connectSource(node, false);
+
+      srcVal.textContent = "mic";
+      announceTrack("now listening: microphone input");
+      micBtn.classList.add("active");
+      loadFileBtn.classList.remove("active");
+      hiddenAudio.pause();
+      playBtn.disabled = true;
+
+      lowHistory = [];
+      highHistory = [];
+      beatIntervals = [];
+      lastBeatTimeLow = 0;
+      lastBeatTimeHigh = 0;
+      lastAnyBeatTime = 0;
+      quietSince = 0;
+      stopIdleTyping();
+      startLoop();
+    }).catch(function (err) {
+      appendLine("mic permission denied: " + escapeHtml(err.message), "out-err");
+    });
+  });
+
+  /* ============ tabs: terminal / visualizer ============ */
+
+  var activeTab = "terminal";
+
+  function setTab(tab) {
+    activeTab = tab;
+    termBodyEl.classList.toggle("active", tab === "terminal");
+    vizPaneEl.classList.toggle("active", tab === "viz");
+    tabButtons.forEach(function (btn) {
+      btn.classList.toggle("active", btn.getAttribute("data-pane") === tab);
+    });
+    if (tab === "viz") vizModeInit();
+  }
+
+  tabButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      setTab(btn.getAttribute("data-pane"));
+    });
+  });
+
+  /* ---- visualizer pane: four modes, all reacting to the same beat engine ---- */
+
+  var vizMode = "bars";
+
+  var BARS_COLS = 32;
+  var BARS_ROWS = 10;
+  var lastVizRender = 0;
+
+  function renderVizBars() {
+    if (!dataArray) return;
+    var grid = [];
+    for (var r = 0; r < BARS_ROWS; r++) grid.push(new Array(BARS_COLS).fill(" "));
+
+    var usableBins = Math.min(180, dataArray.length);
+    var perCol = Math.max(1, Math.floor(usableBins / BARS_COLS));
+
+    for (var c = 0; c < BARS_COLS; c++) {
+      var start = c * perCol;
+      var sum = 0;
+      for (var k = start; k < start + perCol; k++) sum += dataArray[k];
+      var avg = sum / perCol;
+      var h = Math.round((avg / 255) * BARS_ROWS);
+      for (var r2 = 0; r2 < h; r2++) grid[BARS_ROWS - 1 - r2][c] = "\u2588";
+    }
+
+    vizOutputEl.textContent = grid.map(function (row) { return row.join(""); }).join("\n");
+  }
+
+  var VIZ_COLS = 12;
+  var VIZ_ROWS = 16;
+
+  var VIZ_SHAPES = {
+    I: [[1, 1, 1, 1]],
+    O: [[1, 1], [1, 1]],
+    T: [[0, 1, 0], [1, 1, 1]],
+    L: [[1, 0], [1, 0], [1, 1]],
+    S: [[0, 1, 1], [1, 1, 0]],
+    Z: [[1, 1, 0], [0, 1, 1]]
+  };
+
+  var vizBoard = makeVizBoard();
+  var vizPiece = null;
+
+  function makeVizBoard() {
+    var b = [];
+    for (var i = 0; i < VIZ_ROWS; i++) b.push(new Array(VIZ_COLS).fill(0));
+    return b;
+  }
+
+  function vizCollides(piece, dx, dy) {
+    return piece.shape.some(function (row, ry) {
+      return row.some(function (cell, rx) {
+        if (!cell) return false;
+        var nx = piece.x + rx + dx;
+        var ny = piece.y + ry + dy;
+        if (nx < 0 || nx >= VIZ_COLS || ny >= VIZ_ROWS) return true;
+        if (ny >= 0 && vizBoard[ny][nx]) return true;
+        return false;
+      });
+    });
+  }
+
+  function vizLock(piece) {
+    piece.shape.forEach(function (row, ry) {
+      row.forEach(function (cell, rx) {
+        if (!cell) return;
+        var ny = piece.y + ry;
+        var nx = piece.x + rx;
+        if (ny >= 0 && ny < VIZ_ROWS) vizBoard[ny][nx] = 1;
+      });
+    });
+    vizClearLines();
+  }
+
+  function vizClearLines() {
+    for (var y = VIZ_ROWS - 1; y >= 0; y--) {
+      if (vizBoard[y].every(function (c) { return c; })) {
+        vizBoard.splice(y, 1);
+        vizBoard.unshift(new Array(VIZ_COLS).fill(0));
+      }
+    }
+  }
+
+  function vizSpawn() {
+    var keys = Object.keys(VIZ_SHAPES);
+    var key = keys[Math.floor(Math.random() * keys.length)];
+    var shape = VIZ_SHAPES[key];
+    var w = shape[0].length;
+    var x = Math.floor(Math.random() * Math.max(1, VIZ_COLS - w + 1));
+    vizPiece = { shape: shape, x: x, y: 0 };
+    if (vizCollides(vizPiece, 0, 0)) {
+      vizBoard = makeVizBoard();
+    }
+  }
+
+  function vizTetrisStep(strong) {
+    if (!vizPiece) vizSpawn();
+    var drop = strong ? 2 : 1;
+    for (var i = 0; i < drop; i++) {
+      if (!vizCollides(vizPiece, 0, 1)) {
+        vizPiece.y += 1;
+      } else {
+        vizLock(vizPiece);
+        vizPiece = null;
+        vizSpawn();
+        break;
+      }
+    }
+    renderVizBoard();
+  }
+
+  function renderVizBoard() {
+    var grid = vizBoard.map(function (row) { return row.slice(); });
+    if (vizPiece) {
+      vizPiece.shape.forEach(function (row, ry) {
+        row.forEach(function (cell, rx) {
+          if (!cell) return;
+          var ny = vizPiece.y + ry;
+          var nx = vizPiece.x + rx;
+          if (ny >= 0 && ny < VIZ_ROWS && nx >= 0 && nx < VIZ_COLS) grid[ny][nx] = 2;
+        });
+      });
+    }
+    vizOutputEl.textContent = grid.map(function (row) {
+      return row.map(function (c) {
+        return c === 0 ? " " : (c === 2 ? "\u2593" : "\u2588");
+      }).join("");
+    }).join("\n");
+  }
+
+  /* ---- snake mode: self playing, chases food, resets when it traps itself ---- */
+
+  var vizSnake = null;
+  var vizFood = null;
+
+  function vizRandomCell() {
+    return { x: Math.floor(Math.random() * VIZ_COLS), y: Math.floor(Math.random() * VIZ_ROWS) };
+  }
+
+  function vizSnakeReset() {
+    var cx = Math.floor(VIZ_COLS / 2);
+    var cy = Math.floor(VIZ_ROWS / 2);
+    vizSnake = { body: [{ x: cx, y: cy }], dir: { x: 1, y: 0 } };
+    vizFood = vizRandomCell();
+  }
+
+  function vizSnakeChooseDir() {
+    var head = vizSnake.body[0];
+    var options = [{ x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }];
+    var candidates = options.filter(function (d) {
+      if (vizSnake.body.length > 1 && d.x === -vizSnake.dir.x && d.y === -vizSnake.dir.y) return false;
+      var nx = head.x + d.x;
+      var ny = head.y + d.y;
+      if (nx < 0 || nx >= VIZ_COLS || ny < 0 || ny >= VIZ_ROWS) return false;
+      return !vizSnake.body.some(function (s) { return s.x === nx && s.y === ny; });
+    });
+    if (!candidates.length) return null;
+    candidates.sort(function (a, b) {
+      var da = Math.abs(head.x + a.x - vizFood.x) + Math.abs(head.y + a.y - vizFood.y);
+      var db = Math.abs(head.x + b.x - vizFood.x) + Math.abs(head.y + b.y - vizFood.y);
+      return da - db;
+    });
+    if (candidates.length > 1 && Math.random() < 0.15) return candidates[1];
+    return candidates[0];
+  }
+
+  function vizSnakeStep() {
+    if (!vizSnake) vizSnakeReset();
+    var dir = vizSnakeChooseDir();
+    if (!dir) { vizSnakeReset(); renderVizSnake(); return; }
+    vizSnake.dir = dir;
+    var head = vizSnake.body[0];
+    var newHead = { x: head.x + dir.x, y: head.y + dir.y };
+    vizSnake.body.unshift(newHead);
+    if (newHead.x === vizFood.x && newHead.y === vizFood.y) {
+      vizFood = vizRandomCell();
+    } else {
+      vizSnake.body.pop();
+    }
+    renderVizSnake();
+  }
+
+  function renderVizSnake() {
+    var grid = [];
+    for (var y = 0; y < VIZ_ROWS; y++) grid.push(new Array(VIZ_COLS).fill(" "));
+    vizSnake.body.forEach(function (seg, i) {
+      grid[seg.y][seg.x] = i === 0 ? "\u2593" : "\u2588";
+    });
+    grid[vizFood.y][vizFood.x] = "\u2591";
+    vizOutputEl.textContent = grid.map(function (row) { return row.join(""); }).join("\n");
+  }
+
+  /* ---- pong mode: a ball bounces the grid forever, no paddles ---- */
+
+  var vizBall = null;
+
+  function vizPongReset() {
+    vizBall = {
+      x: Math.floor(VIZ_COLS / 2),
+      y: Math.floor(VIZ_ROWS / 2),
+      vx: Math.random() < 0.5 ? 1 : -1,
+      vy: Math.random() < 0.5 ? 1 : -1
+    };
+  }
+
+  function vizPongStep(strong) {
+    if (!vizBall) vizPongReset();
+    var mult = strong ? 2 : 1;
+    for (var i = 0; i < mult; i++) {
+      vizBall.x += vizBall.vx;
+      vizBall.y += vizBall.vy;
+      if (vizBall.x <= 0 || vizBall.x >= VIZ_COLS - 1) {
+        vizBall.vx *= -1;
+      }
+      if (vizBall.y <= 0 || vizBall.y >= VIZ_ROWS - 1) {
+        vizBall.vy *= -1;
+      }
+      vizBall.x = Math.max(0, Math.min(VIZ_COLS - 1, vizBall.x));
+      vizBall.y = Math.max(0, Math.min(VIZ_ROWS - 1, vizBall.y));
+    }
+    renderVizPong();
+  }
+
+  function renderVizPong() {
+    var grid = [];
+    for (var y = 0; y < VIZ_ROWS; y++) grid.push(new Array(VIZ_COLS).fill(" "));
+    grid[Math.round(vizBall.y)][Math.round(vizBall.x)] = "\u2588";
+    vizOutputEl.textContent = grid.map(function (row) { return row.join(""); }).join("\n");
+  }
+
+  /* ---- mode dispatch ---- */
+
+  function vizModeInit() {
+    if (vizMode === "tetris") {
+      if (!vizPiece) vizSpawn();
+      renderVizBoard();
+    } else if (vizMode === "snake") {
+      vizSnakeReset();
+      renderVizSnake();
+    } else if (vizMode === "pong") {
+      vizPongReset();
+      renderVizPong();
+    } else {
+      vizOutputEl.textContent = dataArray ? "" : "load audio or use mic to see the visualizer";
+      if (dataArray) renderVizBars();
+    }
+  }
+
+  function vizBeatStep(strong) {
+    if (vizMode === "tetris") vizTetrisStep(strong);
+    else if (vizMode === "snake") vizSnakeStep();
+    else if (vizMode === "pong") vizPongStep(strong);
+  }
+
+  vizModeButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      vizMode = btn.getAttribute("data-mode");
+      vizModeButtons.forEach(function (b) { b.classList.toggle("active", b === btn); });
+      vizModeInit();
+    });
+  });
+
+  /* ============ theme system ============ */
+
+  function applyTheme(key) {
+    var t = THEMES[key];
+    if (!t) return;
+
+    CURRENT_THEME = key;
+    CURRENT_FAMILY = t.family;
+    CURRENT_PROMPT = t.prompt;
+
+    var root = document.documentElement.style;
+    root.setProperty("--paper", t.colors.paper);
+    root.setProperty("--paper-raised", t.colors.paperRaised);
+    root.setProperty("--ink", t.colors.ink);
+    root.setProperty("--ink-soft", t.colors.inkSoft);
+    root.setProperty("--prompt", t.colors.prompt);
+    root.setProperty("--beat", t.colors.beat);
+    root.setProperty("--beat-bright", t.colors.beatBright);
+    root.setProperty("--comment", t.colors.comment);
+    root.setProperty("--rule", t.colors.rule);
+    root.setProperty("--error", t.colors.error);
+    root.setProperty("--cat-npm", t.colors.catNpm);
+    root.setProperty("--cat-git", t.colors.catGit);
+    root.setProperty("--cat-vercel", t.colors.catVercel);
+    root.setProperty("--cat-py", t.colors.catPy);
+    root.setProperty("--cat-build", t.colors.catBuild);
+
+    buildBtn.disabled = !t.weights.build;
+
+    rebuildCategoryPool();
+
+    themeOptions.forEach(function (btn) {
+      btn.classList.toggle("active", btn.getAttribute("data-theme") === key);
+    });
+
+    themeMenu.classList.remove("open");
+  }
+
+  hamburgerBtn.addEventListener("click", function () {
+    themeMenu.classList.toggle("open");
+  });
+
+  var infoBtn = document.getElementById("infoBtn");
+  var infoModal = document.getElementById("infoModal");
+  var infoClose = document.getElementById("infoClose");
+
+  infoBtn.addEventListener("click", function () {
+    infoModal.classList.add("open");
+  });
+  infoClose.addEventListener("click", function () {
+    infoModal.classList.remove("open");
+  });
+  infoModal.addEventListener("click", function (e) {
+    if (e.target === infoModal) infoModal.classList.remove("open");
+  });
+
+  themeOptions.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      applyTheme(btn.getAttribute("data-theme"));
+    });
+  });
+
+  document.addEventListener("click", function (e) {
+    if (!themeMenu.contains(e.target) && e.target !== hamburgerBtn) {
+      themeMenu.classList.remove("open");
+    }
+  });
+
+  /* ============ boot ============ */
+
+  applyTheme("paper");
+  startNewCommand();
+})();
+</script>
+
+  <!-- =====================================================================
+       MOHAVE TECHNOLOGY GROUP // CREATOR SEAL
+       ===================================================================== -->
+  <script>
+  (function () {
+
+    var CONFIG = {
+      org:      "Mohave Technology Group",
+      monogram: "MTG",
+      mission:  "Practical software and hardware, built in the field.",
+      github:   "https://github.com/sudosilo",
+      linkedin: "https://www.linkedin.com/in/dicktemple"
+    };
+
+    var head = document.head || document.getElementsByTagName("head")[0];
+
+    head.appendChild(document.createComment(
+      " Made by " + CONFIG.org + " // " + CONFIG.github + " // " + CONFIG.linkedin + " "
+    ));
+
+    var metaAuthor = document.createElement("meta");
+    metaAuthor.setAttribute("name", "author");
+    metaAuthor.setAttribute("content", CONFIG.org);
+    head.appendChild(metaAuthor);
+
+    [CONFIG.github, CONFIG.linkedin].forEach(function (url) {
+      var l = document.createElement("link");
+      l.setAttribute("rel", "me");
+      l.setAttribute("href", url);
+      head.appendChild(l);
+    });
+
+    var ld = document.createElement("script");
+    ld.type = "application/ld+json";
+    ld.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": CONFIG.org,
+      "sameAs": [CONFIG.github, CONFIG.linkedin]
+    });
+    head.appendChild(ld);
+
+    var css = ''
+      + '.mtg-seal{box-sizing:border-box;width:100%;background:#efe9da;'
+      + 'border-top:1px solid #cabfa3;color:#2b2620;'
+      + 'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;'
+      + 'padding:18px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;}'
+      + '.mtg-seal-row{display:flex;align-items:center;gap:14px;}'
+      + '.mtg-seal-btn{background:none;border:0;padding:0;margin:0;cursor:pointer;'
+      + 'display:flex;align-items:center;gap:14px;color:inherit;font:inherit;}'
+      + '.mtg-seal-svg{display:block;transition:transform .18s ease;}'
+      + '.mtg-seal.open .mtg-seal-svg{transform:scale(.94);}'
+      + '.mtg-seal-label{text-align:left;line-height:1.3;}'
+      + '.mtg-seal-org{font-family:Georgia,"Times New Roman",serif;font-size:14px;'
+      + 'letter-spacing:.3px;color:#2b2620;}'
+      + '.mtg-seal-ask{font-size:12px;color:#7a2e28;text-decoration:underline;}'
+      + '.mtg-seal-panel{overflow:hidden;max-height:0;opacity:0;'
+      + 'transition:max-height .25s ease,opacity .25s ease;width:100%;max-width:360px;}'
+      + '.mtg-seal.open .mtg-seal-panel{max-height:200px;opacity:1;}'
+      + '.mtg-seal-mission{font-style:italic;color:#4a443b;font-size:13px;'
+      + 'text-align:center;margin:0 0 12px;line-height:1.5;}'
+      + '.mtg-seal-links{display:flex;justify-content:center;gap:10px;}'
+      + '.mtg-seal-links a{flex:1;text-align:center;text-decoration:none;'
+      + 'font-size:13px;color:#2b2620;background:#faf7ef;border:1px solid #cabfa3;'
+      + 'border-radius:6px;padding:8px 10px;transition:background .15s ease;}'
+      + '.mtg-seal-links a:hover{background:#fff;}'
+      + '.mtg-seal-btn:focus-visible{outline:2px solid #7a2e28;outline-offset:3px;border-radius:4px;}'
+      + '.mtg-seal-links a:focus-visible{outline:2px solid #7a2e28;outline-offset:2px;}'
+      + '@media (prefers-reduced-motion: reduce){'
+      + '.mtg-seal-svg,.mtg-seal-panel{transition:none;}}';
+
+    var style = document.createElement("style");
+    style.textContent = css;
+    head.appendChild(style);
+
+    function buildSeal() {
+      var org = CONFIG.org.toUpperCase();
+      return ''
+        + '<svg class="mtg-seal-svg" viewBox="0 0 120 120" width="58" height="58" '
+        +   'role="img" aria-label="' + CONFIG.org + ' seal">'
+        +   '<defs>'
+        +     '<path id="mtgTop" d="M 23,60 A 37,37 0 0 1 97,60" fill="none"/>'
+        +   '</defs>'
+        +   '<circle cx="60" cy="60" r="55" fill="none" stroke="#7a2e28" stroke-width="2.5"/>'
+        +   '<circle cx="60" cy="60" r="48" fill="none" stroke="#7a2e28" stroke-width="1"/>'
+        +   '<text font-family="Georgia,serif" font-size="8" fill="#7a2e28">'
+        +     '<textPath href="#mtgTop" startOffset="50%" text-anchor="middle" '
+        +     'textLength="106" lengthAdjust="spacingAndGlyphs">'
+        +     org + '</textPath>'
+        +   '</text>'
+        +   '<text x="60" y="60" text-anchor="middle" dominant-baseline="central" '
+        +     'font-family="Georgia,serif" font-weight="700" font-size="27" '
+        +     'fill="#7a2e28">' + CONFIG.monogram + '</text>'
+        +   '<g fill="#7a2e28">'
+        +     '<rect x="58" y="83.5" width="4" height="4"/>'
+        +     '<rect x="63" y="88.5" width="4" height="4"/>'
+        +     '<rect x="53" y="93.5" width="4" height="4"/>'
+        +     '<rect x="58" y="93.5" width="4" height="4"/>'
+        +     '<rect x="63" y="93.5" width="4" height="4"/>'
+        +   '</g>'
+        + '</svg>';
+    }
+
+    var seal = document.createElement("footer");
+    seal.className = "mtg-seal";
+    seal.innerHTML = ''
+      + '<div class="mtg-seal-row">'
+      +   '<button class="mtg-seal-btn" type="button" aria-expanded="false">'
+      +     buildSeal()
+      +     '<span class="mtg-seal-label">'
+      +       '<span class="mtg-seal-org">' + CONFIG.org + '</span><br>'
+      +       '<span class="mtg-seal-ask">Who made this?</span>'
+      +     '</span>'
+      +   '</button>'
+      + '</div>'
+      + '<div class="mtg-seal-panel">'
+      +   '<p class="mtg-seal-mission">' + CONFIG.mission + '</p>'
+      +   '<div class="mtg-seal-links">'
+      +     '<a href="' + CONFIG.github + '" target="_blank" rel="noopener me">GitHub</a>'
+      +     '<a href="' + CONFIG.linkedin + '" target="_blank" rel="noopener me">LinkedIn</a>'
+      +   '</div>'
+      + '</div>';
+
+    var btn = seal.querySelector(".mtg-seal-btn");
+    btn.addEventListener("click", function () {
+      var nowOpen = seal.classList.toggle("open");
+      btn.setAttribute("aria-expanded", nowOpen ? "true" : "false");
+    });
+
+    document.body.appendChild(seal);
+
+  })();
+  </script>
+  <!-- ===================== END CREATOR SEAL ===================== -->
+
+</body>
+</html>

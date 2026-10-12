@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIX LEGENDS</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    background: #f2eeea;
+    color: #1a1510;
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.9rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #7a6a55;
+    margin-bottom: 28px;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1.5px solid #d8cfc4;
+    border-radius: 10px;
+    padding: 18px;
+  }
+
+  .card-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #7a6a55;
+    margin-bottom: 14px;
+  }
+
+  .roster {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  .musician-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 2px solid #d8cfc4;
+    background: #f8f5f1;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: left;
+    font-family: inherit;
+  }
+
+  .musician-btn:hover { border-color: #a08060; background: #f0ece4; }
+  .musician-btn .m-name { font-size: 0.95rem; font-weight: 700; color: #1a1510; }
+  .musician-btn .m-tag { font-size: 0.72rem; color: #9a8a78; margin-top: 2px; }
+  .musician-btn .m-slot {
+    font-size: 0.68rem; font-weight: 800; margin-top: 6px;
+    padding: 2px 8px; border-radius: 4px; display: none; letter-spacing: 0.05em;
+  }
+
+  .musician-btn.first { border-color: #c45000; background: #fff4ee; }
+  .musician-btn.first .m-name { color: #c45000; }
+  .musician-btn.first .m-slot { display: inline-block; background: #c45000; color: #fff; }
+
+  .musician-btn.second { border-color: #6b2fcc; background: #f5f0ff; }
+  .musician-btn.second .m-name { color: #6b2fcc; }
+  .musician-btn.second .m-slot { display: inline-block; background: #6b2fcc; color: #fff; }
+
+  .pick-hint { font-size: 0.82rem; color: #9a8a78; margin-top: 12px; }
+
+  .field-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .label-first  { color: #c45000; }
+  .label-second { color: #6b2fcc; }
+  .label-you    { color: #1a1510; }
+  .label-oracle { color: #1a7a4a; }
+
+  textarea {
+    width: 100%;
+    border-radius: 8px;
+    border: 1.5px solid #d8cfc4;
+    background: #ffffff;
+    color: #1a1510;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.7;
+    padding: 14px 16px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  textarea:focus { border-color: #a08060; }
+  textarea[readonly] { background: #fafaf8; color: #2a2018; }
+  textarea::placeholder { color: #b8a898; }
+
+  #question  { min-height: 100px; }
+  #firstOut  { min-height: 140px; border-left: 4px solid #c45000; }
+  #secondOut { min-height: 140px; border-left: 4px solid #6b2fcc; }
+  #oracleOut { min-height: 180px; border-left: 4px solid #1a7a4a; }
+
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: #1a1510;
+    color: #f2eeea;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  .submit-btn:hover:not(:disabled) { background: #3a2e24; }
+  .submit-btn:active:not(:disabled) { transform: scale(0.99); }
+  .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .oracle-btn {
+    width: 100%;
+    padding: 14px;
+    background: #1a7a4a;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-bottom: 14px;
+  }
+
+  .oracle-btn:hover:not(:disabled) { background: #145c38; }
+  .oracle-btn:active:not(:disabled) { transform: scale(0.99); }
+  .oracle-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .status {
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #7a6a55;
+    min-height: 22px;
+  }
+  .status.error { color: #b02020; }
+
+  /* ORACLE CARD hidden until results are in */
+  #oracleCard { display: none; }
+
+  /* BANNED WORDS */
+  .banned-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .banned-toggle {
+    font-size: 0.75rem;
+    color: #9a8a78;
+    font-weight: 600;
+  }
+
+  .banned-body { display: none; margin-top: 14px; }
+  .banned-body.open { display: block; }
+
+  .banned-input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .banned-input {
+    flex: 1;
+    padding: 9px 12px;
+    border-radius: 6px;
+    border: 1.5px solid #d8cfc4;
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+  }
+
+  .banned-input:focus { border-color: #a08060; }
+
+  .add-word-btn {
+    padding: 9px 16px;
+    background: #1a1510;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .banned-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .banned-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8f0ee;
+    border: 1.5px solid #e8c8b8;
+    border-radius: 20px;
+    padding: 4px 10px 4px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #8a3010;
+  }
+
+  .banned-tag button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #c46050;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0;
+    font-weight: 700;
+  }
+
+  .no-banned {
+    font-size: 0.82rem;
+    color: #b8a898;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<h1>SIX LEGENDS</h1>
+<p class="subtitle">Pick two. Ask a question. Hear them talk.</p>
+
+<div class="container">
+
+  <!-- ROSTER -->
+  <div class="card">
+    <div class="card-title">Choose Your Two</div>
+    <div class="roster" id="roster"></div>
+    <p class="pick-hint" id="pickHint">Click a musician to set them as Speaker 1, click another for Speaker 2.</p>
+  </div>
+
+  <!-- QUESTION -->
+  <div class="card">
+    <label class="field-label label-you" for="question">Your Question</label>
+    <textarea id="question" placeholder="What is the nature of fire? What does freedom mean? Ask anything..."></textarea>
+  </div>
+
+  <button class="submit-btn" id="submitBtn" onclick="askLegends()">Ask the Legends</button>
+  <p class="status" id="status"></p>
+
+  <!-- FIRST RESPONSE -->
+  <div class="card">
+    <label class="field-label label-first" id="firstLabel">Speaker 1 - speaks first</label>
+    <textarea id="firstOut" readonly placeholder="First response will appear here..."></textarea>
+  </div>
+
+  <!-- SECOND RESPONSE -->
+  <div class="card">
+    <label class="field-label label-second" id="secondLabel">Speaker 2 - responds to both</label>
+    <textarea id="secondOut" readonly placeholder="Second response will appear here..."></textarea>
+  </div>
+
+  <!-- ORACLE CARD - hidden until conversation completes -->
+  <div class="card" id="oracleCard">
+
+    <!-- BANNED WORDS SECTION -->
+    <div class="banned-header" onclick="toggleBanned()">
+      <div class="card-title" style="margin-bottom:0">Banned Words</div>
+      <span class="banned-toggle" id="bannedToggleLabel">Show</span>
+    </div>
+    <div class="banned-body" id="bannedBody">
+      <div class="banned-input-row">
+        <input class="banned-input" id="bannedInput" type="text" placeholder="Add a word to ban..." />
+        <button class="add-word-btn" onclick="addBannedWord()">Add</button>
+      </div>
+      <div class="banned-list" id="bannedList"></div>
+    </div>
+
+    <div style="margin-top: 16px;">
+      <button class="oracle-btn" id="oracleBtn" onclick="askOracle()">Ask the Oracle for Lyrics</button>
+      <label class="field-label label-oracle">The Oracle</label>
+      <textarea id="oracleOut" readonly placeholder="Lyric suggestions will appear here..."></textarea>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  const PROXY = 'https://rie-api-production.up.railway.app/proxy/anthropic';
+  const LOG_URL = 'https://rie-api-production.up.railway.app/legends/log';
+
+  const MUSICIANS = [
+    {
+      id: 'jimi', name: 'Jimi Hendrix', tag: 'Electric Ladyland',
+      system: `You are Jimi Hendrix, speaking from your peak creative years 1967-1970. You think in music, color, and spiritual energy. Your voice is warm, poetic, visionary, sometimes wandering but always sincere. You say things like "you know," "man," "like." You speak in metaphors drawn from music, fire, stars, and freedom. Keep your response to 4-6 sentences. Stay in character. Do not break character.`
+    },
+    {
+      id: 'jim', name: 'Jim Morrison', tag: 'The Lizard King',
+      system: `You are Jim Morrison, poet and frontman of The Doors, speaking from 1968-1971. You have read Rimbaud, Nietzsche, Blake. Your voice is dark, literary, seductive, sometimes confrontational. You speak of roads, the desert, the ancient, the void, the threshold between life and death. Keep your response to 4-6 sentences. Stay in character. Do not break character.`
+    },
+    {
+      id: 'kurt', name: 'Kurt Cobain', tag: 'Nevermind',
+      system: `You are Kurt Cobain, speaking from your Nirvana years 1991-1994. You are uncomfortable with fame, deeply empathetic, sarcastic at times, and fiercely anti-pretension. You grew up poor in Aberdeen, Washington and you never forgot it. Your voice is raw, self-deprecating, and quietly furious. Keep your response to 4-6 sentences. Stay in character. Do not break character.`
+    },
+    {
+      id: 'freddie', name: 'Freddie Mercury', tag: 'Queen',
+      system: `You are Freddie Mercury, speaking from your peak years with Queen in the late 1970s and 1980s. You are theatrical, flamboyant, deeply confident, and tender underneath it all. Your voice is playful, warm, campy, and occasionally devastating. You love art, cats, opera, excess. Keep your response to 4-6 sentences. Stay in character. Do not break character.`
+    },
+    {
+      id: 'lennon', name: 'John Lennon', tag: 'Imagine',
+      system: `You are John Lennon, speaking from your post-Beatles years in the early 1970s. You are blunt, witty, political, and spiritual all at once. Your voice mixes sharp sarcasm with genuine idealism. You talk about peace but you are not naive. Keep your response to 4-6 sentences. Stay in character. Do not break character.`
+    },
+    {
+      id: 'janis', name: 'Janis Joplin', tag: 'Pearl',
+      system: `You are Janis Joplin, speaking from your peak years 1967-1970. You grew up an outcast in Port Arthur, Texas and you sang your way out. Your voice is raw, generous, desperate, and joyful all at once. You believe in loving hard, living hard, and leaving nothing on the stage. Keep your response to 4-6 sentences. Stay in character. Do not break character.`
+    }
+  ];
+
+  let picks = [null, null];
+  let lastConversation = null;
+  let bannedWords = JSON.parse(localStorage.getItem('legends-banned-words') || '[]');
+
+  // BANNED WORDS
+  function saveBanned() {
+    localStorage.setItem('legends-banned-words', JSON.stringify(bannedWords));
+  }
+
+  function renderBanned() {
+    const list = document.getElementById('bannedList');
+    if (bannedWords.length === 0) {
+      list.innerHTML = '<span class="no-banned">No banned words yet.</span>';
+      return;
+    }
+    list.innerHTML = bannedWords.map((w, i) =>
+      `<span class="banned-tag">${w}<button onclick="removeBannedWord(${i})">x</button></span>`
+    ).join('');
+  }
+
+  function addBannedWord() {
+    const input = document.getElementById('bannedInput');
+    const word = input.value.trim().toLowerCase();
+    if (!word || bannedWords.includes(word)) { input.value = ''; return; }
+    bannedWords.push(word);
+    saveBanned();
+    renderBanned();
+    input.value = '';
+  }
+
+  function removeBannedWord(i) {
+    bannedWords.splice(i, 1);
+    saveBanned();
+    renderBanned();
+  }
+
+  document.getElementById('bannedInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') addBannedWord();
+  });
+
+  function toggleBanned() {
+    const body = document.getElementById('bannedBody');
+    const label = document.getElementById('bannedToggleLabel');
+    const isOpen = body.classList.toggle('open');
+    label.textContent = isOpen ? 'Hide' : 'Show';
+  }
+
+  // ROSTER
+  function buildRoster() {
+    const roster = document.getElementById('roster');
+    roster.innerHTML = '';
+    MUSICIANS.forEach(m => {
+      const btn = document.createElement('button');
+      btn.className = 'musician-btn';
+      btn.id = 'btn-' + m.id;
+      btn.innerHTML = `
+        <span class="m-name">${m.name}</span>
+        <span class="m-tag">${m.tag}</span>
+        <span class="m-slot" id="slot-${m.id}"></span>
+      `;
+      btn.onclick = () => pickMusician(m.id);
+      roster.appendChild(btn);
+    });
+  }
+
+  function pickMusician(id) {
+    if (picks[0] === id) { picks[0] = picks[1]; picks[1] = null; refreshRoster(); return; }
+    if (picks[1] === id) { picks[1] = null; refreshRoster(); return; }
+    if (!picks[0]) { picks[0] = id; }
+    else if (!picks[1]) { picks[1] = id; }
+    else { picks[1] = id; }
+    refreshRoster();
+  }
+
+  function refreshRoster() {
+    MUSICIANS.forEach(m => {
+      const btn = document.getElementById('btn-' + m.id);
+      const slot = document.getElementById('slot-' + m.id);
+      btn.className = 'musician-btn';
+      slot.textContent = '';
+      if (picks[0] === m.id) { btn.classList.add('first'); slot.textContent = 'SPEAKS FIRST'; }
+      else if (picks[1] === m.id) { btn.classList.add('second'); slot.textContent = 'RESPONDS TO BOTH'; }
+    });
+
+    const first = MUSICIANS.find(m => m.id === picks[0]);
+    const second = MUSICIANS.find(m => m.id === picks[1]);
+    document.getElementById('firstLabel').textContent = first ? first.name + ' - speaks first' : 'Speaker 1 - speaks first';
+    document.getElementById('secondLabel').textContent = second ? second.name + ' - responds to both' : 'Speaker 2 - responds to both';
+
+    const hint = document.getElementById('pickHint');
+    if (!picks[0]) { hint.textContent = 'Click a musician to set them as Speaker 1.'; }
+    else if (!picks[1]) { hint.textContent = MUSICIANS.find(m => m.id === picks[0]).name + ' speaks first. Now pick Speaker 2.'; }
+    else {
+      const f = MUSICIANS.find(m => m.id === picks[0]);
+      const s = MUSICIANS.find(m => m.id === picks[1]);
+      hint.textContent = f.name + ' speaks first. ' + s.name + ' responds. Click any name to change.';
+    }
+  }
+
+  // API
+  async function callClaude(systemPrompt, userMessage) {
+    const response = await fetch(PROXY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userMessage }]
+      })
+    });
+    const data = await response.json();
+    if (data.error) throw new Error(data.error.message);
+    return data.content[0].text;
+  }
+
+  // MAIN CONVERSATION
+  async function askLegends() {
+    const question = document.getElementById('question').value.trim();
+    const status = document.getElementById('status');
+
+    if (!picks[0] || !picks[1]) { status.className = 'status error'; status.textContent = 'Pick two musicians from the roster first.'; return; }
+    if (!question) { status.className = 'status error'; status.textContent = 'Type a question first.'; return; }
+
+    const first = MUSICIANS.find(m => m.id === picks[0]);
+    const second = MUSICIANS.find(m => m.id === picks[1]);
+    const btn = document.getElementById('submitBtn');
+    const firstOut = document.getElementById('firstOut');
+    const secondOut = document.getElementById('secondOut');
+    const oracleCard = document.getElementById('oracleCard');
+
+    btn.disabled = true;
+    firstOut.value = '';
+    secondOut.value = '';
+    document.getElementById('oracleOut').value = '';
+    oracleCard.style.display = 'none';
+    status.className = 'status';
+
+    try {
+      status.textContent = first.name + ' is speaking...';
+      const firstReply = await callClaude(first.system, question);
+      firstOut.value = firstReply;
+
+      status.textContent = second.name + ' is responding...';
+      const secondMessage = `The topic was: "${question}"\n\n${first.name} just said: "${firstReply}"\n\nRespond to both the topic and to what ${first.name} said. React, agree, push back, or go deeper.`;
+      const secondReply = await callClaude(second.system, secondMessage);
+      secondOut.value = secondReply;
+
+      status.textContent = '';
+
+      lastConversation = { question, first, second, firstReply, secondReply };
+
+      // Show oracle section
+      oracleCard.style.display = 'block';
+      renderBanned();
+
+      // Log it
+      fetch(LOG_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ speaker1: first.name, speaker2: second.name, question, response1: firstReply, response2: secondReply })
+      });
+
+    } catch (err) {
+      status.className = 'status error';
+      status.textContent = 'Error: ' + err.message;
+    }
+
+    btn.disabled = false;
+  }
+
+  // ORACLE
+  async function askOracle() {
+    if (!lastConversation) return;
+    const { question, first, second, firstReply, secondReply } = lastConversation;
+    const btn = document.getElementById('oracleBtn');
+    const out = document.getElementById('oracleOut');
+
+    btn.disabled = true;
+    out.value = 'The Oracle is listening...';
+
+    const bannedLine = bannedWords.length > 0
+      ? `Do not use any of these banned words in your output: ${bannedWords.join(', ')}.`
+      : '';
+
+    const oracleSystem = `You are the Oracle, a lyric-writing intelligence that synthesizes raw conversation into song fragments. You do not speak as yourself. You extract imagery, emotion, and language from what was said and shape it into potential song lyrics. Output 3 distinct lyric fragments or verse ideas inspired by the conversation. Label them Fragment 1, Fragment 2, Fragment 3. Each should be 2-4 lines. ${bannedLine}`;
+
+    const oracleMessage = `The topic was: "${question}"
+
+${first.name} said: "${firstReply}"
+
+${second.name} said: "${secondReply}"
+
+Generate lyric fragments from this conversation.`;
+
+    try {
+      const reply = await callClaude(oracleSystem, oracleMessage);
+      out.value = reply;
+    } catch (err) {
+      out.value = 'Oracle error: ' + err.message;
+    }
+
+    btn.disabled = false;
+  }
+
+  buildRoster();
+</script>
+</body>
+</html>

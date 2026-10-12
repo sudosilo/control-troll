@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACCESS-TERMINAL-BLUE // ADMIN</title>
+<style>
+  :root {
+    --paper: #F7F8F6;
+    --ink: #16202B;
+    --blue: #1F4FD8;
+    --blue-soft: #E8EEFC;
+    --line: #C9D2DC;
+    --dim: #5B6B7C;
+    --bad: #B3261E;
+    --ok: #1B7F4B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: ui-monospace, "Cascadia Mono", "Roboto Mono", Menlo, monospace;
+    font-size: 14px;
+    min-height: 100vh;
+  }
+  header {
+    border-bottom: 3px solid var(--ink);
+    padding: 14px 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  header h1 { font-size: 15px; font-weight: 700; letter-spacing: 0.08em; }
+  header h1 span { color: var(--blue); }
+  .status {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--bad);
+  }
+  .status.ok { color: var(--ok); }
+  main { padding: 16px; max-width: 900px; margin: 0 auto; }
+
+  #login-view { max-width: 380px; margin: 10vh auto 0; }
+  .prompt-label {
+    color: var(--dim);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+  }
+  #password {
+    width: 100%;
+    padding: 12px;
+    border: 3px solid var(--ink);
+    border-radius: 0;
+    background: #FFFFFF;
+    color: var(--ink);
+    font: inherit;
+    outline: none;
+  }
+  #password:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+  button {
+    font: inherit;
+    border: 3px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 18px;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+  }
+  button:hover { background: var(--blue); border-color: var(--blue); }
+  button:focus-visible { outline: 3px solid var(--blue-soft); }
+  #login-btn { width: 100%; margin-top: 10px; }
+  .error { color: var(--bad); margin-top: 10px; font-size: 13px; min-height: 18px; }
+  .footnote { color: var(--dim); font-size: 11px; margin-top: 16px; }
+
+  #dash-view { display: none; }
+  .toolbar {
+    display: flex; gap: 10px; align-items: center;
+    flex-wrap: wrap; margin-bottom: 14px;
+  }
+  select {
+    font: inherit; padding: 10px;
+    border: 3px solid var(--ink);
+    background: #FFFFFF; color: var(--ink); border-radius: 0;
+  }
+  .toolbar .small { padding: 10px 14px; font-size: 13px; }
+  .count { color: var(--dim); font-size: 12px; }
+  .table-wrap { overflow-x: auto; border: 3px solid var(--ink); background: #FFFFFF; }
+  table { border-collapse: collapse; width: 100%; }
+  th {
+    text-align: left; background: var(--blue-soft); color: var(--ink);
+    padding: 10px 12px; border-bottom: 3px solid var(--ink);
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap;
+    cursor: pointer; user-select: none;
+  }
+  th:hover { background: var(--blue); color: #FFFFFF; }
+  th .arrow { color: var(--blue); }
+  th:hover .arrow { color: #FFFFFF; }
+  td {
+    padding: 9px 12px; border-bottom: 1px solid var(--line);
+    vertical-align: top; max-width: 340px; overflow-wrap: break-word;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #FBFCFE; }
+  .empty { padding: 28px 16px; color: var(--dim); }
+  #idle-overlay {
+    position: fixed; inset: 0; background: rgba(22,32,43,0.35);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9998; padding: 16px;
+  }
+  #idle-box {
+    background: #FFFFFF; border: 3px solid var(--ink);
+    max-width: 380px; width: 100%; padding: 18px;
+  }
+  #idle-box h2 {
+    font-size: 13px; letter-spacing: 0.12em; color: var(--dim);
+    font-weight: 400; margin-bottom: 10px;
+  }
+  #idle-count { font-size: 15px; margin-bottom: 14px; }
+  #idle-stay { width: 100%; }
+  #logout-btn { background: transparent; color: var(--ink); }
+  #logout-btn:hover { background: var(--blue-soft); color: var(--ink); border-color: var(--ink); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AUTHENTICATE</h1>
+</header>
+
+<main>
+  <div id="login-view">
+    <div class="prompt-label">USER</div>
+    <input type="text" id="admin-name" autocomplete="username"
+           style="width:100%;padding:12px;border:3px solid var(--ink);border-radius:0;background:#FFFFFF;color:var(--ink);font:inherit;outline:none;margin-bottom:14px;">
+    <div class="prompt-label">PASSWORD</div>
+    <input type="password" id="password" autocomplete="current-password"
+           onkeydown="if(event.key==='Enter')login()">
+    <button id="login-btn" onclick="login()">Unlock</button>
+    <div class="error" id="login-error"></div>
+  </div>
+
+  <div id="dash-view">
+    <div class="toolbar">
+      <select id="table-select" onchange="loadData()"></select>
+      <button class="small" onclick="loadData()">Refresh</button>
+      <span class="count" id="row-count"></span>
+      <button class="small" id="logout-btn" onclick="lock()" style="margin-left:auto">Lock</button>
+    </div>
+    <div class="table-wrap" id="table-wrap">
+      <div class="empty">Pick a table.</div>
+    </div>
+  </div>
+</main>
+
+<script src="https://access-terminal-admin-production.up.railway.app/humancheck.js"></script>
+<script>
+// EDIT THIS ONE LINE with your Railway backend URL.
+var BACKEND = "https://access-terminal-admin-production.up.railway.app";
+var VERSION = "v8";
+
+// Storage that cannot crash the page. If the browser blocks localStorage,
+// we fall back to a plain variable and the session just does not persist.
+// Session storage, not local storage. The token dies when the tab
+// closes, so a session can never outlive the visit that created it.
+var memoryToken = null;
+function saveToken(t) {
+  memoryToken = t;
+  try { sessionStorage.setItem("admin_token", t); } catch (e) {}
+}
+function readToken() {
+  if (memoryToken) return memoryToken;
+  try { return sessionStorage.getItem("admin_token"); } catch (e) { return null; }
+}
+function clearToken() {
+  memoryToken = null;
+  try { sessionStorage.removeItem("admin_token"); } catch (e) {}
+  try { localStorage.removeItem("admin_token"); } catch (e) {}
+}
+
+function el(id) { return document.getElementById(id); }
+
+// The status readout was removed from the header. This stays as a safe
+// no-op so every caller keeps working. Proof of life is now the build
+// line under the login, which only renders if the script ran.
+function setStatus(text, ok) {
+  var s = el("status");
+  if (!s) return;
+  s.textContent = text;
+  s.className = ok ? "status ok" : "status";
+}
+
+function showError(msg) {
+  el("login-error").textContent = msg;
+}
+
+function authHeaders() {
+  return { "Authorization": "Bearer " + readToken() };
+}
+
+// A pass is only obtained by solving a challenge on the server.
+// After three failures the backend refuses logins without one, and
+// answers with challenge true, which is what triggers the popup.
+function login(pass) {
+  showError("");
+  setStatus("CONTACTING BACKEND", true);
+  var password = el("password").value;
+  var payload = {
+    username: el("admin-name").value,
+    password: password
+  };
+  if (pass) payload.pass = pass;
+
+  fetch(BACKEND + "/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(function (res) {
+    return res.json().then(function (data) {
+      if (data.challenge) {
+        setStatus("HUMAN CHECK", true);
+        HumanCheck.require(BACKEND).then(function (newPass) {
+          login(newPass);
+        });
+        return;
+      }
+      if (!res.ok) {
+        setStatus("READY " + VERSION, true);
+        showError(data.error || ("Login failed, HTTP " + res.status));
+        return;
+      }
+      saveToken(data.token);
+      showDash();
+    });
+  })
+  .catch(function (err) {
+    setStatus("READY " + VERSION, true);
+    showError("Cannot reach backend: " + err.message);
+  });
+}
+
+function lock() {
+  clearToken();
+  el("dash-view").style.display = "none";
+  el("login-view").style.display = "block";
+  setStatus("READY " + VERSION, true);
+}
+
+function showDash() {
+  el("login-view").style.display = "none";
+  el("dash-view").style.display = "block";
+  setStatus("SESSION ACTIVE", true);
+  loadTables();
+}
+
+function loadTables() {
+  fetch(BACKEND + "/api/tables", { headers: authHeaders() })
+  .then(function (res) {
+    if (res.status === 401) { lock(); return null; }
+    return res.json();
+  })
+  .then(function (tables) {
+    if (!tables) return;
+    var sel = el("table-select");
+    sel.innerHTML = "";
+    for (var i = 0; i < tables.length; i++) {
+      var opt = document.createElement("option");
+      opt.value = tables[i];
+      opt.textContent = tables[i];
+      sel.appendChild(opt);
+    }
+    if (tables.length > 0) loadData();
+  })
+  .catch(function (err) {
+    el("table-wrap").innerHTML = '<div class="empty">Backend error: ' + err.message + "</div>";
+  });
+}
+
+function loadData() {
+  var table = el("table-select").value;
+  if (!table) return;
+  el("table-wrap").innerHTML = '<div class="empty">Loading ' + table + "...</div>";
+  fetch(BACKEND + "/api/data/" + encodeURIComponent(table), { headers: authHeaders() })
+  .then(function (res) {
+    if (res.status === 401) { lock(); return null; }
+    return res.json();
+  })
+  .then(function (rows) {
+    if (rows) renderTable(rows);
+  })
+  .catch(function (err) {
+    el("table-wrap").innerHTML = '<div class="empty">Backend error: ' + err.message + "</div>";
+  });
+}
+
+// SORTING
+// The loaded rows stay in memory. Tapping a header sorts them there,
+// no new request to the backend. Same column again flips direction.
+var currentRows = [];
+var currentCols = [];
+var sortCol = -1;
+var sortDir = 1;
+
+function renderTable(rows) {
+  currentRows = Array.isArray(rows) ? rows : [];
+  currentCols = currentRows.length > 0 ? Object.keys(currentRows[0]) : [];
+  sortCol = -1;
+  sortDir = 1;
+  drawTable();
+}
+
+function sortBy(i) {
+  if (sortCol === i) {
+    sortDir = -sortDir;
+  } else {
+    sortCol = i;
+    sortDir = 1;
+  }
+  var col = currentCols[i];
+  currentRows.sort(function (a, b) {
+    return compareValues(a[col], b[col]) * sortDir;
+  });
+  drawTable();
+}
+
+// Type-aware comparison. Numbers compare as numbers, timestamps as
+// dates, everything else alphabetically, case-insensitive. Empty
+// values always sink to the bottom regardless of direction.
+function compareValues(a, b) {
+  var aEmpty = (a === null || a === undefined || a === "");
+  var bEmpty = (b === null || b === undefined || b === "");
+  if (aEmpty && bEmpty) return 0;
+  if (aEmpty) return 1 * sortDir;
+  if (bEmpty) return -1 * sortDir;
+  var an = Number(a), bn = Number(b);
+  if (!isNaN(an) && !isNaN(bn) && String(a).trim() !== "" && String(b).trim() !== "") {
+    return an - bn;
+  }
+  if (isTimestamp(a) && isTimestamp(b)) {
+    return new Date(a).getTime() - new Date(b).getTime();
+  }
+  return String(a).toLowerCase().localeCompare(String(b).toLowerCase());
+}
+
+function isTimestamp(v) {
+  return typeof v === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(v);
+}
+
+// Timestamps come from Postgres in UTC. This shows them in the
+// phone's own timezone so Sunday 11:39 pm reads as exactly that.
+function displayValue(v) {
+  if (v === null || v === undefined) return "";
+  if (typeof v === "object") return JSON.stringify(v);
+  if (isTimestamp(v)) {
+    var d = new Date(v);
+    if (!isNaN(d.getTime())) {
+      return d.toLocaleString([], {
+        year: "numeric", month: "short", day: "numeric",
+        hour: "numeric", minute: "2-digit", second: "2-digit"
+      });
+    }
+  }
+  return String(v);
+}
+
+function drawTable() {
+  if (currentRows.length === 0) {
+    el("table-wrap").innerHTML = '<div class="empty">No rows in this table yet.</div>';
+    el("row-count").textContent = "0 rows";
+    return;
+  }
+  var html = "<table><tr>";
+  for (var i = 0; i < currentCols.length; i++) {
+    var arrow = "";
+    if (i === sortCol) {
+      arrow = ' <span class="arrow">' + (sortDir === 1 ? "&#9650;" : "&#9660;") + "</span>";
+    }
+    html += '<th onclick="sortBy(' + i + ')">' + escapeHtml(currentCols[i]) + arrow + "</th>";
+  }
+  html += "</tr>";
+  for (var r = 0; r < currentRows.length; r++) {
+    html += "<tr>";
+    for (var c = 0; c < currentCols.length; c++) {
+      html += "<td>" + escapeHtml(displayValue(currentRows[r][currentCols[c]])) + "</td>";
+    }
+    html += "</tr>";
+  }
+  html += "</table>";
+  el("table-wrap").innerHTML = html;
+  var label = currentRows.length + " rows (max 200)";
+  if (sortCol >= 0) {
+    label += ", sorted by " + currentCols[sortCol] + (sortDir === 1 ? " ascending" : " descending");
+  }
+  el("row-count").textContent = label;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+// IDLE TIMEOUT
+// Any touch, tap, key, or scroll counts as activity and resets the clock.
+// At four and a half minutes of silence a prompt appears with a thirty
+// second countdown. Dismissing it resets everything. Ignoring it locks.
+var IDLE_LIMIT = 300000;      // five minutes to lock
+var WARN_AT = 270000;         // prompt appears at four and a half
+var HIDDEN_GRACE = 60000;     // away from the tab this long and it locks
+var lastActivity = Date.now();
+var hiddenSince = 0;
+var warned = false;
+
+function markActivity() {
+  lastActivity = Date.now();
+  if (warned) {
+    warned = false;
+    hideWarning();
+  }
+}
+
+function showWarning() {
+  if (document.getElementById("idle-overlay")) return;
+  var overlay = document.createElement("div");
+  overlay.id = "idle-overlay";
+  overlay.innerHTML =
+    '<div id="idle-box">' +
+    "<h2>ARE YOU STILL HERE?</h2>" +
+    '<p id="idle-count">Locking in 30 seconds.</p>' +
+    '<button id="idle-stay">I am still here</button>' +
+    "</div>";
+  document.body.appendChild(overlay);
+  document.getElementById("idle-stay").onclick = markActivity;
+}
+
+function hideWarning() {
+  var o = document.getElementById("idle-overlay");
+  if (o) o.parentNode.removeChild(o);
+}
+
+function idleTick() {
+  if (!readToken()) return;
+  var idle = Date.now() - lastActivity;
+  if (idle >= IDLE_LIMIT) {
+    hideWarning();
+    lock();
+    setStatus("LOCKED, IDLE", false);
+    return;
+  }
+  if (idle >= WARN_AT) {
+    warned = true;
+    showWarning();
+    var left = Math.ceil((IDLE_LIMIT - idle) / 1000);
+    var c = document.getElementById("idle-count");
+    if (c) c.textContent = "Locking in " + left + " second" + (left === 1 ? "" : "s") + ".";
+  }
+}
+
+setInterval(idleTick, 1000);
+
+var events = ["touchstart", "mousedown", "keydown", "scroll", "click"];
+for (var i = 0; i < events.length; i++) {
+  document.addEventListener(events[i], markActivity, true);
+}
+
+// Closing or reloading the tab clears the token immediately.
+window.addEventListener("pagehide", clearToken);
+
+// Switching apps is not the same as leaving. A short trip is forgiven,
+// a long one is not.
+document.addEventListener("visibilitychange", function () {
+  if (document.hidden) {
+    hiddenSince = Date.now();
+  } else {
+    if (hiddenSince && Date.now() - hiddenSince > HIDDEN_GRACE) {
+      lock();
+      setStatus("LOCKED, AWAY", false);
+    } else {
+      markActivity();
+    }
+    hiddenSince = 0;
+  }
+});
+
+// Proof of life. If you can read READY in green, the script is alive
+// and every button works. If it still says SCRIPT DEAD, the JS never ran.
+setStatus("READY " + VERSION, true);
+// Proof of life without exposing the backend address: a quiet build
+// stamp in the page title. If the tab does not say v8, the script died.
+document.title = "AUTHENTICATE " + VERSION;
+if (readToken()) showDash();
+</script>
+<!-- =====================================================================
+       MOHAVE TECHNOLOGY GROUP // CREATOR SEAL
+       Drop this ONE block into any HTML page, anywhere before </body>.
+       The only thing you edit is the CONFIG object on the next few lines.
+       ===================================================================== -->
+  <script>
+  (function () {
+
+    /* ---------- CONFIG: the only part you change ---------- */
+    var CONFIG = {
+      org:      "Mohave Technology Group",
+      monogram: "MTG",                       // shown in the center of the seal
+      mission:  "Practical software and hardware, built in the field.",
+      github:   "https://github.com/sudosilo",
+      linkedin: "https://www.linkedin.com/in/dicktemple"
+    };
+    /* ----------------------------------------------------- */
+
+
+    /* ---------- LAYER 1: the signature pressed into the source ----------
+       This runs once and writes your identity into the page head so that
+       anyone viewing source, and any machine reading the page, can find
+       the maker even if the footer is removed. */
+    var head = document.head || document.getElementsByTagName("head")[0];
+
+    // A plain comment banner, visible in View Source.
+    head.appendChild(document.createComment(
+      " Made by " + CONFIG.org + " // " + CONFIG.github + " // " + CONFIG.linkedin + " "
+    ));
+
+    // Standard "author" tag set to the group, not a personal name.
+    var metaAuthor = document.createElement("meta");
+    metaAuthor.setAttribute("name", "author");
+    metaAuthor.setAttribute("content", CONFIG.org);
+    head.appendChild(metaAuthor);
+
+    // rel="me" links: the web standard for saying "these profiles are mine".
+    [CONFIG.github, CONFIG.linkedin].forEach(function (url) {
+      var l = document.createElement("link");
+      l.setAttribute("rel", "me");
+      l.setAttribute("href", url);
+      head.appendChild(l);
+    });
+
+    // Structured data block, so search engines and crawlers can read it.
+    var ld = document.createElement("script");
+    ld.type = "application/ld+json";
+    ld.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": CONFIG.org,
+      "sameAs": [CONFIG.github, CONFIG.linkedin]
+    });
+    head.appendChild(ld);
+
+
+    /* ---------- LAYER 2: the visible seal ---------- */
+
+    // The look of the seal. All self contained, no fonts to download.
+    var css = ''
+      + '.mtg-seal{box-sizing:border-box;width:100%;background:#efe9da;'
+      + 'border-top:1px solid #cabfa3;color:#2b2620;'
+      + 'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;'
+      + 'padding:18px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;}'
+      + '.mtg-seal-row{display:flex;align-items:center;gap:14px;}'
+      + '.mtg-seal-btn{background:none;border:0;padding:0;margin:0;cursor:pointer;'
+      + 'display:flex;align-items:center;gap:14px;color:inherit;font:inherit;}'
+      + '.mtg-seal-svg{display:block;transition:transform .18s ease;}'
+      + '.mtg-seal.open .mtg-seal-svg{transform:scale(.94);}'
+      + '.mtg-seal-label{text-align:left;line-height:1.3;}'
+      + '.mtg-seal-org{font-family:Georgia,"Times New Roman",serif;font-size:14px;'
+      + 'letter-spacing:.3px;color:#2b2620;}'
+      + '.mtg-seal-ask{font-size:12px;color:#7a2e28;text-decoration:underline;}'
+      + '.mtg-seal-panel{overflow:hidden;max-height:0;opacity:0;'
+      + 'transition:max-height .25s ease,opacity .25s ease;width:100%;max-width:360px;}'
+      + '.mtg-seal.open .mtg-seal-panel{max-height:200px;opacity:1;}'
+      + '.mtg-seal-mission{font-style:italic;color:#4a443b;font-size:13px;'
+      + 'text-align:center;margin:0 0 12px;line-height:1.5;}'
+      + '.mtg-seal-links{display:flex;justify-content:center;gap:10px;}'
+      + '.mtg-seal-links a{flex:1;text-align:center;text-decoration:none;'
+      + 'font-size:13px;color:#2b2620;background:#faf7ef;border:1px solid #cabfa3;'
+      + 'border-radius:6px;padding:8px 10px;transition:background .15s ease;}'
+      + '.mtg-seal-links a:hover{background:#fff;}'
+      + '.mtg-seal-btn:focus-visible{outline:2px solid #7a2e28;outline-offset:3px;border-radius:4px;}'
+      + '.mtg-seal-links a:focus-visible{outline:2px solid #7a2e28;outline-offset:2px;}'
+      + '@media (prefers-reduced-motion: reduce){'
+      + '.mtg-seal-svg,.mtg-seal-panel{transition:none;}}';
+
+    var style = document.createElement("style");
+    style.textContent = css;
+    head.appendChild(style);
+
+    // The seal artwork. An SVG circle with the org name around the ring,
+    // the monogram in the center, and a small diamond mark at the bottom.
+    function buildSeal() {
+      var org = CONFIG.org.toUpperCase();
+      return ''
+        + '<svg class="mtg-seal-svg" viewBox="0 0 120 120" width="58" height="58" '
+        +   'role="img" aria-label="' + CONFIG.org + ' seal">'
+        +   '<defs>'
+        +     '<path id="mtgTop" d="M 23,60 A 37,37 0 0 1 97,60" fill="none"/>'
+        +   '</defs>'
+        +   '<circle cx="60" cy="60" r="55" fill="none" stroke="#7a2e28" stroke-width="2.5"/>'
+        +   '<circle cx="60" cy="60" r="48" fill="none" stroke="#7a2e28" stroke-width="1"/>'
+        +   '<text font-family="Georgia,serif" font-size="8" fill="#7a2e28">'
+        +     '<textPath href="#mtgTop" startOffset="50%" text-anchor="middle" '
+        +     'textLength="106" lengthAdjust="spacingAndGlyphs">'
+        +     org + '</textPath>'
+        +   '</text>'
+        +   '<text x="60" y="60" text-anchor="middle" dominant-baseline="central" '
+        +     'font-family="Georgia,serif" font-weight="700" font-size="27" '
+        +     'fill="#7a2e28">' + CONFIG.monogram + '</text>'
+        +   '<g fill="#7a2e28">'
+        +     '<rect x="58" y="83.5" width="4" height="4"/>'
+        +     '<rect x="63" y="88.5" width="4" height="4"/>'
+        +     '<rect x="53" y="93.5" width="4" height="4"/>'
+        +     '<rect x="58" y="93.5" width="4" height="4"/>'
+        +     '<rect x="63" y="93.5" width="4" height="4"/>'
+        +   '</g>'
+        + '</svg>';
+    }
+
+    // Build the footer element.
+    var seal = document.createElement("footer");
+    seal.className = "mtg-seal";
+    seal.innerHTML = ''
+      + '<div class="mtg-seal-row">'
+      +   '<button class="mtg-seal-btn" type="button" aria-expanded="false">'
+      +     buildSeal()
+      +     '<span class="mtg-seal-label">'
+      +       '<span class="mtg-seal-org">' + CONFIG.org + '</span><br>'
+      +       '<span class="mtg-seal-ask">Who made this?</span>'
+      +     '</span>'
+      +   '</button>'
+      + '</div>'
+      + '<div class="mtg-seal-panel">'
+      +   '<p class="mtg-seal-mission">' + CONFIG.mission + '</p>'
+      +   '<div class="mtg-seal-links">'
+      +     '<a href="' + CONFIG.github + '" target="_blank" rel="noopener me">GitHub</a>'
+      +     '<a href="' + CONFIG.linkedin + '" target="_blank" rel="noopener me">LinkedIn</a>'
+      +   '</div>'
+      + '</div>';
+
+    // Tapping the seal opens or closes the panel.
+    var btn = seal.querySelector(".mtg-seal-btn");
+    btn.addEventListener("click", function () {
+      var nowOpen = seal.classList.toggle("open");
+      btn.setAttribute("aria-expanded", nowOpen ? "true" : "false");
+    });
+
+    // Place the seal at the very bottom of the page.
+    document.body.appendChild(seal);
+
+  })();
+  </script>
+  <!-- ===================== END CREATOR SEAL ===================== -->
+</body>
+</html>

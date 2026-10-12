@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chromatogram Visualizer</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #ffffff; overflow: hidden; height: 100%; }
+  canvas { display: block; background: #ffffff; }
+  #controls {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    padding: 10px 14px; background: rgba(255,255,255,0.92);
+    border-bottom: 1px solid #ccc;
+    font-family: monospace; font-size: 12px; color: #222;
+    z-index: 10;
+  }
+  button, label.filebtn {
+    background: #eee; border: 1px solid #999; border-radius: 4px;
+    padding: 6px 10px; cursor: pointer; font-family: monospace; font-size: 12px; color: #222;
+  }
+  button.active { background: #ccc; border-color: #555; }
+  button:hover, label.filebtn:hover { background: #ddd; }
+  input[type=file] { display: none; }
+  #status { margin-left: auto; color: #444; }
+  #keyLabel { color: #900; font-weight: 600; }
+  .sep { width: 1px; height: 20px; background: #bbb; margin: 0 4px; }
+</style>
+</head>
+<body>
+
+<div id="controls">
+  <button id="micBtn">microphone</button>
+  <label class="filebtn" for="fileInput">upload audio</label>
+  <input type="file" id="fileInput" accept="audio/*">
+  <button id="idleBtn">idle</button>
+  <div class="sep"></div>
+  <button id="scrollBtn">scroll: off</button>
+  <div class="sep"></div>
+  <button id="modeNotes" class="active">notes</button>
+  <button id="modeDna">dna</button>
+  <button id="modeAscii">ascii</button>
+  <div class="sep"></div>
+  <span id="status">idle</span>
+  <span id="keyLabel"></span>
+</div>
+
+<canvas id="c"></canvas>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+const noteNames = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const dnaBases = ['A','C','G','T'];
+const dnaColors = { A: '#1a8a3a', C: '#1a4fd6', G: '#111111', T: '#d61a1a' };
+const asciiGlyphs = ['-', '_', '/', '\\', '^', 'v', '~', '*', '|'];
+
+let symbolMode = 'notes';
+let scrollEnabled = false;
+let scrollX = 0;
+
+let audioCtx = null, analyser = null, timeData = null, freqData = null, audioEl = null;
+let mode = 'idle';
+const history = [];
+const HISTORY_LEN = 14;
+
+function ensureAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 2048;
+    analyser.smoothingTimeConstant = 0.7;
+    timeData = new Uint8Array(analyser.fftSize);
+    freqData = new Uint8Array(analyser.frequencyBinCount);
+  }
+}
+
+async function useMicrophone() {
+  ensureAudioCtx();
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const src = audioCtx.createMediaStreamSource(stream);
+    src.connect(analyser);
+    mode = 'mic';
+    document.getElementById('status').textContent = 'microphone live';
+  } catch (e) {
+    document.getElementById('status').textContent = 'microphone access denied';
+  }
+}
+
+function useFile(file) {
+  ensureAudioCtx();
+  if (audioEl) { audioEl.pause(); audioEl.remove(); }
+  audioEl = new Audio();
+  audioEl.src = URL.createObjectURL(file);
+  audioEl.loop = true;
+  const src = audioCtx.createMediaElementSource(audioEl);
+  src.connect(analyser);
+  analyser.connect(audioCtx.destination);
+  audioEl.play();
+  mode = 'file';
+  document.getElementById('status').textContent = 'playing: ' + file.name;
+}
+
+document.getElementById('micBtn').addEventListener('click', useMicrophone);
+document.getElementById('fileInput').addEventListener('change', (e) => {
+  if (e.target.files && e.target.files[0]) useFile(e.target.files[0]);
+});
+document.getElementById('idleBtn').addEventListener('click', () => {
+  mode = 'idle';
+  if (audioEl) audioEl.pause();
+  document.getElementById('status').textContent = 'idle';
+});
+
+const scrollBtn = document.getElementById('scrollBtn');
+scrollBtn.addEventListener('click', () => {
+  scrollEnabled = !scrollEnabled;
+  scrollBtn.textContent = 'scroll: ' + (scrollEnabled ? 'on' : 'off');
+  scrollBtn.classList.toggle('active', scrollEnabled);
+});
+
+const modeButtons = {
+  notes: document.getElementById('modeNotes'),
+  dna: document.getElementById('modeDna'),
+  ascii: document.getElementById('modeAscii')
+};
+Object.keys(modeButtons).forEach((k) => {
+  modeButtons[k].addEventListener('click', () => {
+    symbolMode = k;
+    Object.values(modeButtons).forEach((b) => b.classList.remove('active'));
+    modeButtons[k].classList.add('active');
+  });
+});
+
+function flatTimeData(len) {
+  const a = new Uint8Array(len);
+  a.fill(128);
+  return a;
+}
+function flatFreqData(len) {
+  return new Uint8Array(len);
+}
+
+function computeChroma(freq, sampleRate, fftSize) {
+  const chroma = new Array(12).fill(0);
+  if (!freq) return chroma;
+  const binHz = sampleRate / fftSize;
+  for (let i = 2; i < freq.length; i++) {
+    const f = i * binHz;
+    if (f < 60 || f > 5000) continue;
+    const midi = 69 + 12 * Math.log2(f / 440);
+    const pc = ((Math.round(midi) % 12) + 12) % 12;
+    chroma[pc] += freq[i];
+  }
+  const max = Math.max(1, ...chroma);
+  return chroma.map((v) => v / max);
+}
+
+const rowHeight = 190;
+const waveH = 100;
+
+function getAmp(td) {
+  let sum = 0;
+  for (let i = 0; i < td.length; i += 4) sum += Math.abs(td[i] - 128);
+  return sum / (td.length / 4) / 40;
+}
+
+function drawWaveRow(waveTop, td, colorSet, opacity, vScale) {
+  ctx.globalAlpha = opacity;
+  ctx.lineWidth = opacity > 0.9 ? 1.7 : 1;
+  const n = td.length;
+  const step = Math.max(1, Math.floor(n / W));
+  ctx.strokeStyle = colorSet;
+  ctx.beginPath();
+  let x = 0;
+  for (let i = 0; i < n; i += step, x++) {
+    const v = (td[i] - 128) / 128;
+    const y = waveTop + waveH / 2 - v * waveH * 0.48 * vScale;
+    if (x === 0) ctx.moveTo(0, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  ctx.globalAlpha = 1;
+}
+
+function drawRow(rowIndex, yTop, td, freq, chroma, amp) {
+  const waveTop = yTop;
+  const baselineY = yTop + waveH + 14;
+  const letterY = baselineY + 36;
+
+  const boldColors = ['#c62828', '#1565c0', '#111111'];
+  const faintColors = ['#4caf9077', '#e0b04077', '#c04dc077'];
+
+  boldColors.forEach((c, ci) => {
+    const h = history[Math.min(history.length - 1, rowIndex + ci)] || td;
+    drawWaveRow(waveTop, h, c, 1, 1 - ci * 0.08);
+  });
+  faintColors.forEach((c, ci) => {
+    const h = history[Math.min(history.length - 1, rowIndex + ci + 3)] || td;
+    drawWaveRow(waveTop, h, c, 0.7, 0.7);
+  });
+
+  ctx.strokeStyle = '#000000';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(0, baselineY);
+  ctx.lineTo(W, baselineY);
+  ctx.stroke();
+
+  ctx.textBaseline = 'alphabetic';
+
+  if (symbolMode === 'notes') {
+    const slots = 12;
+    const slotW = W / slots;
+    for (let i = 0; i < slots; i++) {
+      const energy = chroma[i];
+      const x = i * slotW + slotW / 2 - (scrollEnabled ? (scrollX % slotW) : 0);
+      const size = 15 + energy * 22;
+      ctx.font = '600 ' + size.toFixed(0) + 'px monospace';
+      ctx.fillStyle = energy > 0.55 ? '#c62828' : (energy > 0.25 ? '#1a4fd6' : '#999999');
+      ctx.globalAlpha = 0.35 + energy * 0.65;
+      ctx.textAlign = 'center';
+      ctx.fillText(noteNames[i], x, letterY - energy * 10);
+      ctx.globalAlpha = 1;
+    }
+    ctx.textAlign = 'left';
+  } else {
+    const letterSpacing = 30;
+    const startIndex = Math.floor(scrollX / letterSpacing) - 1;
+    const endIndex = startIndex + Math.ceil(W / letterSpacing) + 3;
+    for (let i = startIndex; i < endIndex; i++) {
+      const drawX = i * letterSpacing - (scrollEnabled ? scrollX : (Math.floor(W / letterSpacing / 2) * letterSpacing));
+      const ratio = Math.max(0, Math.min(0.999, drawX / W));
+      const binIdx = Math.floor(ratio * (freq.length * 0.5));
+      const energy = freq.length ? freq[binIdx] / 255 : 0;
+
+      if (symbolMode === 'dna') {
+        const midi = 69 + 12 * Math.log2(Math.max(30, binIdx * (audioCtx ? audioCtx.sampleRate / analyser.fftSize : 43)) / 440);
+        const pc = ((Math.round(midi) % 12) + 12) % 12;
+        const base = dnaBases[Math.floor(pc / 3) % 4];
+        const size = 14 + energy * 16;
+        ctx.font = '600 ' + size.toFixed(0) + 'px monospace';
+        ctx.fillStyle = dnaColors[base];
+        ctx.globalAlpha = 0.25 + energy * 0.75;
+        ctx.fillText(base, drawX, letterY - energy * 8);
+        ctx.globalAlpha = 1;
+      } else {
+        const prevRatio = Math.max(0, ratio - 0.02);
+        const prevIdx = Math.floor(prevRatio * (freq.length * 0.5));
+        const prevEnergy = freq.length ? freq[prevIdx] / 255 : 0;
+        const slope = energy - prevEnergy;
+        let glyph = '-';
+        if (energy < 0.08) glyph = '-';
+        else if (slope > 0.05) glyph = '/';
+        else if (slope < -0.05) glyph = '\\';
+        else if (energy > 0.6) glyph = '^';
+        else if (energy > 0.35) glyph = '~';
+        else glyph = '_';
+        const size = 16 + energy * 18;
+        ctx.font = '700 ' + size.toFixed(0) + 'px monospace';
+        ctx.fillStyle = energy > 0.5 ? '#c62828' : '#222222';
+        ctx.globalAlpha = 0.3 + energy * 0.7;
+        ctx.fillText(glyph, drawX, letterY - energy * 10);
+        ctx.globalAlpha = 1;
+      }
+    }
+  }
+}
+
+function frame() {
+  requestAnimationFrame(frame);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+
+  let td, freq, amp = 0, chroma = new Array(12).fill(0);
+
+  if ((mode === 'mic' || mode === 'file') && analyser) {
+    analyser.getByteTimeDomainData(timeData);
+    analyser.getByteFrequencyData(freqData);
+    td = timeData.slice();
+    freq = freqData.slice();
+    amp = getAmp(td);
+    chroma = computeChroma(freq, audioCtx.sampleRate, analyser.fftSize);
+  } else {
+    td = flatTimeData(2048);
+    freq = flatFreqData(1024);
+  }
+
+  history.unshift(td);
+  if (history.length > HISTORY_LEN) history.pop();
+
+  if (scrollEnabled) scrollX += 1.2 + amp * 4;
+
+  const numRows = Math.ceil(H / rowHeight) + 1;
+  for (let r = 0; r < numRows; r++) {
+    drawRow(r, r * rowHeight + 20, td, freq, chroma, amp);
+  }
+
+  if (mode === 'mic' || mode === 'file') {
+    let maxI = 0;
+    for (let i = 1; i < 12; i++) if (chroma[i] > chroma[maxI]) maxI = i;
+    document.getElementById('keyLabel').textContent = amp > 0.06 ? ('detected: ' + noteNames[maxI]) : '';
+  } else {
+    document.getElementById('keyLabel').textContent = '';
+  }
+}
+frame();
+</script>
+</body>
+</html>

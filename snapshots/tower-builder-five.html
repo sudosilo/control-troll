@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOWER BUILDER</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+  :root {
+    --bg: #0a0f1a;
+    --grid: #1a2540;
+    --gridline: #1e2d50;
+    --blue: #00d4ff;
+    --yellow: #ffd000;
+    --red: #ff3c5a;
+    --green: #00ff88;
+    --steel: #7ab3d4;
+    --wood: #c8853a;
+    --panel: #0d1628;
+    --border: #1e3a5f;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--blue);
+    font-family: 'Share Tech Mono', monospace;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 12px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  #title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--blue);
+    text-shadow: 0 0 20px var(--blue);
+  }
+
+  .stat-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .stat-label {
+    font-size: 8px;
+  }
+
+  .stat-value {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--yellow);
+  }
+
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+
+  #main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  #sidebar {
+    width: 160px;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    gap: 7px;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+
+  .section-title {
+    font-size: 9px;
+    letter-spacing: 3px;
+    opacity: 0.4;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 4px;
+  }
+
+  .tool-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--blue);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    padding: 5px 7px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    letter-spacing: 1px;
+  }
+
+  .tool-btn:hover { border-color: var(--blue); background: rgba(0,212,255,0.05); }
+  .tool-btn.active { border-color: var(--blue); background: rgba(0,212,255,0.12); color: #fff; }
+  .tool-btn.steel-btn.active { border-color: var(--steel); background: rgba(122,179,212,0.15); color: var(--steel); }
+  .tool-btn.wood-btn.active { border-color: var(--wood); background: rgba(200,133,58,0.15); color: var(--wood); }
+  .tool-btn.delete-btn.active { border-color: var(--red); background: rgba(255,60,90,0.12); color: var(--red); }
+  .tool-btn.concrete-btn.active { border-color: #a0a090; background: rgba(160,160,144,0.15); color: #d0d0c0; }
+
+  .material-info {
+    font-size: 9px;
+    opacity: 0.5;
+    line-height: 1.4;
+  }
+
+  .material-info span { display: block; }
+
+  #beam-length-container { display: flex; flex-direction: column; gap: 6px; }
+  #beam-length-container label { font-size: 9px; opacity: 0.6; }
+
+  input[type=range] {
+    width: 100%;
+    accent-color: var(--blue);
+  }
+
+  .length-display {
+    color: var(--yellow);
+    font-size: 11px;
+    text-align: center;
+  }
+
+  .cost-preview {
+    font-size: 10px;
+    text-align: center;
+    opacity: 0.6;
+  }
+
+  .action-btn {
+    background: transparent;
+    border: 1px solid;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+  }
+
+  .btn-test {
+    border-color: var(--green);
+    color: var(--green);
+  }
+  .btn-test:hover { background: rgba(0,255,136,0.1); }
+
+  .btn-clear {
+    border-color: var(--red);
+    color: var(--red);
+  }
+  .btn-clear:hover { background: rgba(255,60,90,0.1); }
+
+  .btn-build {
+    border-color: var(--yellow);
+    color: var(--yellow);
+  }
+  .btn-build:hover { background: rgba(255,208,0,0.1); }
+
+  .btn-quake {
+    border-color: #ff8c00;
+    color: #ff8c00;
+  }
+  .btn-quake:hover { background: rgba(255,140,0,0.1); }
+
+  #canvas-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  canvas {
+    display: block;
+    position: absolute;
+    top: 0; left: 0;
+  }
+
+  #instructions {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(13,22,40,0.9);
+    border: 1px solid var(--border);
+    padding: 5px 10px;
+    font-size: 9px;
+    letter-spacing: 1px;
+    opacity: 0.7;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  #message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  #message.show { opacity: 1; }
+  #message.pass { color: var(--green); text-shadow: 0 0 40px var(--green); }
+  #message.fail { color: var(--red); text-shadow: 0 0 40px var(--red); }
+
+  #zoom-controls {
+    position: absolute;
+    bottom: 38px;
+    right: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .zoom-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(13,22,40,0.9);
+    border: 1px solid var(--border);
+    color: var(--blue);
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .zoom-btn:hover {
+    border-color: var(--blue);
+    background: rgba(0,212,255,0.1);
+    color: #fff;
+  }
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    letter-spacing: 3px;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    color: var(--yellow);
+  }
+  #score-popup.show { opacity: 1; }
+
+  #phase-indicator {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 4px 14px;
+    border: 1px solid var(--border);
+    background: rgba(13,22,40,0.9);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+  }
+  #phase-indicator.show { opacity: 1; }
+
+  .icon { font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div id="title">TOWER BUILDER</div>
+  <div class="stat-group">
+    <div class="stat">
+      <span class="stat-label">Budget</span>
+      <span class="stat-value" id="stat-budget">$500</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Spent</span>
+      <span class="stat-value red" id="stat-spent">$0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Target Height</span>
+      <span class="stat-value" id="stat-target">12</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Score</span>
+      <span class="stat-value green" id="stat-score">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Level</span>
+      <span class="stat-value" id="stat-level">1</span>
+    </div>
+  </div>
+</div>
+
+<div id="main">
+  <div id="sidebar">
+    <div class="section-title">Canvas Mode</div>
+    <button class="tool-btn active" id="btn-mode-build" onclick="setCanvasMode('build')">
+      <span class="icon">✎</span> BUILD
+    </button>
+    <button class="tool-btn" id="btn-mode-pan" onclick="setCanvasMode('pan')">
+      <span class="icon">✥</span> PAN / ZOOM
+    </button>
+
+    <div class="section-title">Tool</div>
+    <button class="tool-btn active" id="btn-select" onclick="setTool('select')">
+      <span class="icon">↖</span> PLACE
+    </button>
+    <button class="tool-btn delete-btn" id="btn-delete" onclick="setTool('delete')">
+      <span class="icon">✕</span> DELETE
+    </button>
+
+    <div class="section-title">Material</div>
+    <button class="tool-btn steel-btn" id="btn-steel" onclick="setMaterial('steel')">
+      <span class="icon">▬</span> STEEL
+    </button>
+    <div class="material-info">
+      <span>Cost: $3/unit</span>
+      <span>Strength: 800N</span>
+      <span>Weight: 3kg/u</span>
+    </div>
+    <button class="tool-btn wood-btn" id="btn-wood" onclick="setMaterial('wood')">
+      <span class="icon">▬</span> WOOD
+    </button>
+    <div class="material-info">
+      <span>Cost: $1/unit</span>
+      <span>Strength: 300N</span>
+      <span>Weight: 1kg/u</span>
+    </div>
+    <button class="tool-btn concrete-btn" id="btn-concrete" onclick="setMaterial('concrete')">
+      <span class="icon">▬</span> R. CONCRETE
+    </button>
+    <div class="material-info">
+      <span>Cost: $6/unit</span>
+      <span>Strength: 1800N</span>
+      <span>Weight: 8kg/u</span>
+    </div>
+
+    <div class="section-title">Beam Length</div>
+    <div id="beam-length-container">
+      <label>Max length: <span id="max-len-label">5</span> units</label>
+      <input type="range" id="beam-length" min="1" max="5" value="3" oninput="updateLengthUI()">
+      <div class="length-display"><span id="length-val">3</span> units</div>
+      <div class="cost-preview">Est. cost: $<span id="cost-preview">9</span></div>
+    </div>
+
+    <div class="section-title">Actions</div>
+    <button class="action-btn btn-test" id="btn-test-main" onclick="runFullTest()">▶ TEST</button>
+    <button class="action-btn btn-clear" onclick="clearAll()">↺ CLEAR</button>
+  </div>
+
+  <div id="canvas-area">
+    <canvas id="canvas"></canvas>
+    <div id="instructions" id="instructions">BUILD: scroll to pan up/down &nbsp;|&nbsp; PAN mode: scroll to zoom &nbsp;|&nbsp; Ctrl+scroll: zoom anywhere</div>
+    <div id="phase-indicator"></div>
+    <div id="zoom-controls">
+      <button class="zoom-btn" onclick="zoomBy(1.25)" title="Zoom in">+</button>
+      <button class="zoom-btn" onclick="fitView()" title="Fit view">⊡</button>
+      <button class="zoom-btn" onclick="zoomBy(0.8)" title="Zoom out">−</button>
+    </div>
+    <div id="message">STRUCTURE FAILED!</div>
+    <div id="score-popup">+250 BONUS</div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const area = document.getElementById('canvas-area');
+
+// ─── Game State ───────────────────────────────────────────────
+const GRID = 40; // px per unit
+const GRAVITY = 120; // pixels/s^2
+const TIMESTEP = 0.016;
+const SIM_STEPS = 12;
+const DAMPING = 0.92;
+const SPRING_K = 12000;   // stiffness — high means beams resist stretching
+const BREAK_STRAIN = { steel: 0.30, wood: 0.13, concrete: 0.08 }; // concrete very stiff, cracks suddenly
+
+let testMode = 'wind'; // 'wind' or 'quake'
+let carryover = 0; // unspent budget carried from previous level
+
+const LEVELS = [
+  { budget: 500, targetHeight: 8,  label: 1 },
+  { budget: 700, targetHeight: 12, label: 2 },
+  { budget: 900, targetHeight: 16, label: 3 },
+  { budget: 1200,targetHeight: 20, label: 4 },
+];
+
+let level = 0;
+let score = 0;
+let tool = 'select';
+let canvasMode = 'build'; // 'build' or 'pan'
+let material = 'steel';
+let beamLength = 3;
+let testing = false;
+let simNodes = [], simBeams = [];
+let animFrame = null;
+let selectStart = null; // junction id we started drawing from
+let hoverPos = null;
+
+// Camera
+let camX = 0, camY = 0, camScale = 1;
+
+// Structure data
+let nodes = [];   // { id, gx, gy, fixed }
+let beams = [];   // { id, a, b, mat, len }
+let nextNodeId = 1, nextBeamId = 1;
+
+// ─── Init ─────────────────────────────────────────────────────
+function init() {
+  resize();
+  // Ground anchor node
+  addGroundNodes();
+  updateStats();
+  render();
+}
+
+function resize() {
+  canvas.width = area.clientWidth;
+  canvas.height = area.clientHeight;
+  // Ground sits at bottom 15% — leaves 85% of screen as build space
+  camX = canvas.width / 2;
+  camY = canvas.height * 0.88;
+}
+
+function addGroundNodes() {
+  // Fixed anchor nodes along ground
+  const anchors = [-2,-1,0,1,2];
+  anchors.forEach(gx => {
+    nodes.push({ id: nextNodeId++, gx, gy: 0, fixed: true });
+  });
+}
+
+// ─── Coordinate helpers ───────────────────────────────────────
+function worldToScreen(gx, gy) {
+  return {
+    x: camX + gx * GRID * camScale,
+    y: camY - gy * GRID * camScale
+  };
+}
+
+function screenToGrid(sx, sy) {
+  const gx = (sx - camX) / (GRID * camScale);
+  const gy = -(sy - camY) / (GRID * camScale);
+  return { gx: Math.round(gx), gy: Math.round(gy) };
+}
+
+function snapToGrid(sx, sy) {
+  const { gx, gy } = screenToGrid(sx, sy);
+  return { gx, gy };
+}
+
+// ─── Node management ─────────────────────────────────────────
+function findNode(gx, gy) {
+  return nodes.find(n => n.gx === gx && n.gy === gy);
+}
+
+function findNearestNode(gx, gy, radius = 0.5) {
+  let best = null, bestD = Infinity;
+  nodes.forEach(n => {
+    const d = Math.hypot(n.gx - gx, n.gy - gy);
+    if (d < radius && d < bestD) { bestD = d; best = n; }
+  });
+  return best;
+}
+
+function getOrCreateNode(gx, gy) {
+  if (gy < 0) return null; // below ground
+  let n = findNode(gx, gy);
+  if (!n) {
+    n = { id: nextNodeId++, gx, gy, fixed: false };
+    nodes.push(n);
+  }
+  return n;
+}
+
+// ─── Beam management ─────────────────────────────────────────
+const MAT = {
+  steel:    { cost: 3, strength: 800,  weight: 3,  color: '#7ab3d4', label: 'STEEL' },
+  wood:     { cost: 1, strength: 300,  weight: 1,  color: '#c8853a', label: 'WOOD'  },
+  concrete: { cost: 6, strength: 1800, weight: 8,  color: '#a0a090', label: 'R.CONC' }
+};
+
+function beamExists(a, b) {
+  return beams.some(bm => (bm.a === a && bm.b === b) || (bm.a === b && bm.b === a));
+}
+
+function placeBeam(ax, ay, bx, by) {
+  if (ax === bx && ay === by) return false;
+  const len = Math.hypot(bx - ax, by - ay);
+  if (len > beamLength + 0.01) return false;
+  if (by < 0 || ay < 0) return false;
+
+  const cost = len * MAT[material].cost;
+  const spent = getSpent();
+  const budget = LEVELS[level].budget + carryover;
+  if (spent + cost > budget) { flashMessage('OVER BUDGET!', 'fail'); return false; }
+
+  const na = getOrCreateNode(ax, ay);
+  const nb = getOrCreateNode(bx, by);
+  if (!na || !nb) return false;
+  if (beamExists(na.id, nb.id)) return false;
+
+  beams.push({ id: nextBeamId++, a: na.id, b: nb.id, mat: material, len });
+  updateStats();
+  return true;
+}
+
+function getSpent() {
+  return beams.reduce((s, bm) => s + bm.len * MAT[bm.mat].cost, 0);
+}
+
+function getTopHeight() {
+  if (nodes.length === 0) return 0;
+  const connected = new Set();
+  // Find all nodes reachable from ground via beams
+  const groundIds = new Set(nodes.filter(n => n.fixed).map(n => n.id));
+  let frontier = [...groundIds];
+  while (frontier.length) {
+    const cur = frontier.pop();
+    if (connected.has(cur)) continue;
+    connected.add(cur);
+    beams.forEach(bm => {
+      if (bm.a === cur && !connected.has(bm.b)) frontier.push(bm.b);
+      if (bm.b === cur && !connected.has(bm.a)) frontier.push(bm.a);
+    });
+  }
+  let top = 0;
+  nodes.forEach(n => {
+    if (connected.has(n.id)) top = Math.max(top, n.gy);
+  });
+  return top;
+}
+
+// ─── Stats ────────────────────────────────────────────────────
+function updateStats() {
+  const lv = LEVELS[level];
+  document.getElementById('stat-budget').textContent = '$' + (lv.budget + carryover);
+  document.getElementById('stat-spent').textContent = '$' + Math.ceil(getSpent());
+  document.getElementById('stat-target').textContent = lv.targetHeight + ' u';
+  document.getElementById('stat-score').textContent = score;
+  document.getElementById('stat-level').textContent = lv.label;
+}
+
+function updateLengthUI() {
+  beamLength = parseInt(document.getElementById('beam-length').value);
+  document.getElementById('length-val').textContent = beamLength;
+  document.getElementById('cost-preview').textContent = Math.ceil(beamLength * MAT[material].cost);
+  document.getElementById('max-len-label').textContent = beamLength;
+}
+
+function setTestMode(mode) {
+  testMode = mode;
+  document.getElementById('btn-mode-wind').classList.toggle('active', mode === 'wind');
+  document.getElementById('btn-mode-quake').classList.toggle('active', mode === 'quake');
+}
+
+function setTool(t) {
+  tool = t;
+  selectStart = null;
+  document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + t)?.classList.add('active');
+}
+
+function setMaterial(m) {
+  material = m;
+  document.getElementById('btn-steel').classList.toggle('active', m === 'steel');
+  document.getElementById('btn-wood').classList.toggle('active', m === 'wood');
+  document.getElementById('btn-concrete').classList.toggle('active', m === 'concrete');
+  setTool('select');
+  updateLengthUI();
+}
+
+// ─── Physics Simulation ───────────────────────────────────────
+function getConnectedToGround() {
+  const groundIds = new Set(nodes.filter(n => n.fixed).map(n => n.id));
+  const connected = new Set(groundIds);
+  let changed = true;
+  while (changed) {
+    changed = false;
+    beams.forEach(bm => {
+      if (connected.has(bm.a) && !connected.has(bm.b)) { connected.add(bm.b); changed = true; }
+      if (connected.has(bm.b) && !connected.has(bm.a)) { connected.add(bm.a); changed = true; }
+    });
+  }
+  return connected;
+}
+
+function setPhaseIndicator(text, color) {
+  const el = document.getElementById('phase-indicator');
+  el.textContent = text;
+  el.style.color = color;
+  el.style.borderColor = color;
+  el.classList.add('show');
+}
+
+function hidePhaseIndicator() {
+  document.getElementById('phase-indicator').classList.remove('show');
+}
+
+function runTest() {
+  if (testing) return;
+  if (beams.length === 0) { flashMessage('ADD BEAMS FIRST', 'fail'); return; }
+
+  // Pre-check: any beam/node not connected to ground?
+  const connected = getConnectedToGround();
+  const floating = nodes.filter(n => !n.fixed && !connected.has(n.id));
+  if (floating.length > 0) {
+    flashMessage('FLOATING BEAMS — NOT GROUNDED!', 'fail');
+    return;
+  }
+
+  testing = true;
+  setPhaseIndicator(testMode === 'wind' ? '🌬 PHASE 1: WIND TEST' : '🌍 PHASE 2: EARTHQUAKE', testMode === 'wind' ? '#00d4ff' : '#ff8c00');
+
+  // Build sim nodes
+  simNodes = nodes.map(n => ({
+    id: n.id, gx: n.gx, gy: n.gy,
+    x: n.gx * GRID, y: n.gy * GRID,
+    vx: 0, vy: 0,
+    fixed: n.fixed,
+    mass: 0,
+    loadAbove: 0   // cumulative weight carried from above
+  }));
+
+  // Compute mass from beams (each beam distributes half its weight to each endpoint)
+  beams.forEach(bm => {
+    const na = simNodes.find(n => n.id === bm.a);
+    const nb = simNodes.find(n => n.id === bm.b);
+    const m = bm.len * MAT[bm.mat].weight;
+    if (na && !na.fixed) na.mass += m / 2;
+    if (nb && !nb.fixed) nb.mass += m / 2;
+  });
+  simNodes.forEach(n => { if (n.mass < 2) n.mass = 2; });
+
+  // Compute load above each node (sum of masses of all nodes above it in connected graph)
+  // This lets beams near the base feel the full weight of the tower above
+  simNodes.forEach(n => {
+    if (n.fixed) return;
+    let load = 0;
+    simNodes.forEach(other => {
+      if (!other.fixed && other.y > n.y) load += other.mass;
+    });
+    n.loadAbove = load;
+  });
+
+  simBeams = beams.map(bm => ({
+    ...bm,
+    restLen: bm.len * GRID,
+    broken: false,
+    stress: 0
+  }));
+
+  // Count how many active beams meet at each node — joints with only 2 beams are hinges
+  const jointValence = {};
+  simNodes.forEach(n => { jointValence[n.id] = 0; });
+  simBeams.forEach(bm => { jointValence[bm.a] = (jointValence[bm.a] || 0) + 1; jointValence[bm.b] = (jointValence[bm.b] || 0) + 1; });
+
+  let steps = 0;
+  const maxSteps = 500;
+  let failed = false;
+  let failReason = 'STRUCTURE FAILED!';
+
+  function simStep() {
+    if (!testing) return;
+    for (let s = 0; s < SIM_STEPS; s++) {
+      // Spring constraints (axial — resist stretch/compression)
+      simBeams.forEach(bm => {
+        if (bm.broken) return;
+        const na = simNodes.find(n => n.id === bm.a);
+        const nb = simNodes.find(n => n.id === bm.b);
+        if (!na || !nb) return;
+
+        const dx = nb.x - na.x;
+        const dy = nb.y - na.y;
+        const dist = Math.hypot(dx, dy) || 0.001;
+        const stretch = dist - bm.restLen;
+        const strain = Math.abs(stretch) / (bm.restLen || 1);
+
+        const avgLoad = ((na.loadAbove || 0) + (nb.loadAbove || 0)) / 2;
+        const loadFactor = 1 + avgLoad * 0.012;
+        const effectiveStrain = strain * loadFactor;
+        bm.stress = Math.min(1, effectiveStrain / BREAK_STRAIN[bm.mat]);
+
+        if (effectiveStrain > BREAK_STRAIN[bm.mat]) {
+          bm.broken = true;
+          failed = true;
+          const isVertical = Math.abs(dy) > Math.abs(dx);
+          if (bm.mat === 'wood') failReason = 'WOOD SNAPPED UNDER LOAD!';
+          else if (isVertical) failReason = 'STEEL BUCKLED!';
+          else failReason = 'STRUCTURE COLLAPSED!';
+          return;
+        }
+
+        const force = stretch * SPRING_K;
+        const fx = (dx / dist) * force;
+        const fy = (dy / dist) * force;
+
+        const dt = TIMESTEP / SIM_STEPS;
+        if (!na.fixed) { na.vx += (fx / na.mass) * dt; na.vy += (fy / na.mass) * dt; }
+        if (!nb.fixed) { nb.vx -= (fx / nb.mass) * dt; nb.vy -= (fy / nb.mass) * dt; }
+      });
+
+      // Angular spring — resist bending at joints, BUT only if the joint has 3+ beams (braced)
+      // Unbraced 2-beam joints are free hinges and will fold under load
+      simNodes.forEach(pivot => {
+        if (pivot.fixed) return;
+        const valence = jointValence[pivot.id] || 0;
+        if (valence < 3) return; // hinge — no rotational resistance
+
+        // Rotational stiffness scales with how well-braced the joint is
+        const rotK = (valence >= 4 ? 280 : 140) * SPRING_K / 1000;
+
+        const arms = simBeams
+          .filter(bm => !bm.broken && (bm.a === pivot.id || bm.b === pivot.id))
+          .map(bm => {
+            const other = simNodes.find(n => n.id === (bm.a === pivot.id ? bm.b : bm.a));
+            return other ? { x: other.x - pivot.x, y: other.y - pivot.y, node: other } : null;
+          }).filter(Boolean);
+
+        // For each pair of arms, push them toward their rest angle
+        for (let i = 0; i < arms.length; i++) {
+          for (let j = i + 1; j < arms.length; j++) {
+            const a = arms[i], b = arms[j];
+            const la = Math.hypot(a.x, a.y) || 0.001;
+            const lb = Math.hypot(b.x, b.y) || 0.001;
+            const cosA = (a.x * b.x + a.y * b.y) / (la * lb);
+            const angle = Math.acos(Math.max(-1, Math.min(1, cosA)));
+            // Rest angle between two beams — evenly distributed around the joint
+            const restAngle = (Math.PI * 2) / arms.length;
+            const angleDiff = angle - restAngle;
+            if (Math.abs(angleDiff) < 0.001) continue;
+
+            const torque = angleDiff * rotK;
+            const dt = TIMESTEP / SIM_STEPS;
+            // Apply corrective force perpendicular to each arm
+            const pax = -a.y / la, pay = a.x / la;
+            const pbx = -b.y / lb, pby = b.x / lb;
+            if (!a.node.fixed) { a.node.vx += pax * torque * dt / a.node.mass; a.node.vy += pay * torque * dt / a.node.mass; }
+            if (!b.node.fixed) { b.node.vx -= pbx * torque * dt / b.node.mass; b.node.vy -= pby * torque * dt / b.node.mass; }
+          }
+        }
+      });
+
+      // Integrate positions + wind + gravity
+      // dt is per-substep in seconds. Velocities in px/s, positions in px.
+      const dt = TIMESTEP / SIM_STEPS;
+      simNodes.forEach(n => {
+        if (!n.fixed) {
+          // Gravity (px/s^2)
+          n.vy -= GRAVITY * dt;
+
+          if (testMode === 'wind') {
+            const heightFactor = 1 + (n.y / GRID) * 0.15;
+            // Heavier nodes (concrete) resist wind more — force/mass naturally handles this
+            const gust = 1200 * Math.sin(steps * 0.13) + 550 * Math.sin(steps * 0.37 + n.id * 0.3) + (Math.random() - 0.5) * 400;
+            n.vx += (gust * heightFactor / n.mass) * dt;
+          } else {
+            // Earthquake: pure lateral ground shaking — wiggle wiggle wiggle
+            // All nodes get the same ground acceleration (base excitation model)
+            // Multiple frequencies mix to feel organic, no vertical tipping
+            const shake =
+              2800 * Math.sin(steps * 0.55) +
+              1800 * Math.sin(steps * 1.1 + 0.8) +
+               900 * Math.sin(steps * 2.3 + 1.4) +
+              (Math.random() - 0.5) * 600;
+            n.vx += (shake / n.mass) * dt;
+            // tiny vertical rumble only — no tipping force
+            n.vy += ((Math.random() - 0.5) * 120 / n.mass) * dt;
+          }
+
+          // Integrate position
+          n.x += n.vx * dt;
+          n.y += n.vy * dt;
+
+          // Damping
+          n.vx *= DAMPING;
+          n.vy *= DAMPING;
+
+          if (n.y < 0) { n.y = 0; n.vy = 0; }
+        }
+      });
+
+      // Drift check: if any non-fixed node has moved far from its original position, it's collapsed
+      for (const n of simNodes) {
+        if (!n.fixed) {
+          const drift = Math.hypot(n.x - n.gx * GRID, n.y - n.gy * GRID);
+          if (drift > GRID * 3.5) {
+            failed = true;
+            failReason = testMode === 'quake' ? 'SHOOK APART!' : 'TOWER TOPPLED!';
+          }
+        }
+      }
+    }
+
+    steps++;
+    render();
+
+    if (failed || steps >= maxSteps) {
+      if (failed) {
+        setTimeout(() => {
+          flashMessage(failReason, 'fail');
+          hidePhaseIndicator();
+          testing = false;
+          document.getElementById('btn-test-main').textContent = '▶ TEST';
+          render();
+        }, 500);
+      } else {
+        // Phase complete — wind done, now run quake
+        if (testMode === 'wind') {
+          flashMessage('WIND: SURVIVED!', 'pass');
+          setTimeout(() => {
+            simNodes.forEach(n => { n.x = n.gx * GRID; n.y = n.gy * GRID; n.vx = 0; n.vy = 0; });
+            simBeams.forEach(bm => { bm.broken = false; bm.stress = 0; });
+            testMode = 'quake';
+            setPhaseIndicator('🌍 PHASE 2: EARTHQUAKE', '#ff8c00');
+            steps = 0; failed = false; failReason = 'STRUCTURE FAILED!';
+            animFrame = requestAnimationFrame(simStep);
+          }, 1200);
+        } else {
+          // Both phases passed — score it
+          const top = getTopHeight();
+          const target = LEVELS[level].targetHeight;
+          if (top >= target) {
+            const bonus = Math.max(0, (top - target)) * 50;
+            const efficiency = Math.max(0, 1 - getSpent() / LEVELS[level].budget);
+            const pts = 100 + bonus + Math.round(efficiency * 200);
+            score += pts;
+            updateStats();
+            document.getElementById('score-popup').textContent = '+' + pts + ' PTS';
+            document.getElementById('score-popup').classList.add('show');
+            setTimeout(() => document.getElementById('score-popup').classList.remove('show'), 2500);
+            const leftover = Math.floor(LEVELS[level].budget + carryover - getSpent());
+            carryover = leftover;
+            flashMessage('STANDING! +$' + leftover + ' SAVED', 'pass');
+            if (level < LEVELS.length - 1) {
+              setTimeout(() => { level++; updateStats(); clearAll(); }, 2500);
+            }
+          } else {
+            flashMessage('BUILD TALLER!', 'fail');
+          }
+          testing = false;
+          hidePhaseIndicator();
+          document.getElementById('btn-test-main').textContent = '▶ TEST';
+          render();
+        }
+      }
+      return;
+    }
+    animFrame = requestAnimationFrame(simStep);
+  }
+
+  animFrame = requestAnimationFrame(simStep);
+}
+
+function runFullTest() {
+  if (testing) {
+    // Cancel mid-test
+    testing = false;
+    if (animFrame) cancelAnimationFrame(animFrame);
+    document.getElementById('btn-test-main').textContent = '▶ TEST';
+    render();
+    return;
+  }
+  testMode = 'wind';
+  document.getElementById('btn-test-main').textContent = '■ CANCEL';
+  runTest();
+}
+
+function stopTest() {
+  testing = false;
+  if (animFrame) cancelAnimationFrame(animFrame);
+  document.getElementById('btn-test-main').textContent = '▶ TEST';
+  render();
+}
+
+function clearAll() {
+  stopTest();
+  nodes = [];
+  beams = [];
+  nextNodeId = 1; nextBeamId = 1;
+  selectStart = null;
+  addGroundNodes();
+  updateStats();
+  render();
+}
+
+function flashMessage(msg, cls) {
+  const el = document.getElementById('message');
+  el.textContent = msg;
+  el.className = 'show ' + cls;
+  setTimeout(() => el.className = '', 2000);
+}
+
+// ─── Rendering ────────────────────────────────────────────────
+function render() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  // Background
+  ctx.fillStyle = '#0a0f1a';
+  ctx.fillRect(0, 0, W, H);
+
+  drawGrid(W, H);
+  drawTargetLine();
+  drawGround();
+  drawBeams();
+  drawNodes();
+  drawPreview();
+}
+
+function drawGrid(W, H) {
+  ctx.save();
+  const step = GRID * camScale;
+  const ox = ((camX % step) + step) % step;
+  const oy = ((camY % step) + step) % step;
+
+  ctx.strokeStyle = '#1a2540';
+  ctx.lineWidth = 0.5;
+
+  for (let x = ox; x < W; x += step) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+  }
+  for (let y = oy; y < H; y += step) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawTargetLine() {
+  const target = LEVELS[level].targetHeight;
+  const { y } = worldToScreen(0, target);
+  ctx.save();
+  ctx.strokeStyle = '#00ff88';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([8, 4]);
+  ctx.globalAlpha = 0.5;
+  ctx.beginPath();
+  ctx.moveTo(0, y);
+  ctx.lineTo(canvas.width, y);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.globalAlpha = 1;
+
+  ctx.fillStyle = '#00ff88';
+  ctx.font = '10px "Share Tech Mono"';
+  ctx.fillText('TARGET: ' + target + 'u', 8, y - 5);
+  ctx.restore();
+}
+
+function drawGround() {
+  const { y } = worldToScreen(0, 0);
+  ctx.save();
+  ctx.fillStyle = '#1a2540';
+  ctx.fillRect(0, y, canvas.width, canvas.height - y);
+
+  // Hatching
+  ctx.strokeStyle = '#243050';
+  ctx.lineWidth = 1;
+  const spacing = 12;
+  for (let i = 0; i < canvas.width + canvas.height; i += spacing) {
+    ctx.beginPath();
+    ctx.moveTo(i, y);
+    ctx.lineTo(i - canvas.height, y + canvas.height);
+    ctx.stroke();
+  }
+
+  ctx.strokeStyle = '#2a3f6e';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, y);
+  ctx.lineTo(canvas.width, y);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawBeams() {
+  const bms = testing ? simBeams : beams;
+  const nds = testing ? simNodes : nodes;
+
+  bms.forEach(bm => {
+    const na = nds.find(n => n.id === bm.a);
+    const nb = nds.find(n => n.id === bm.b);
+    if (!na || !nb) return;
+
+    let pa, pb;
+    if (testing) {
+      pa = { x: camX + na.x * camScale, y: camY - na.y * camScale };
+      pb = { x: camX + nb.x * camScale, y: camY - nb.y * camScale };
+    } else {
+      pa = worldToScreen(na.gx, na.gy);
+      pb = worldToScreen(nb.gx, nb.gy);
+    }
+
+    const mat = MAT[bm.mat];
+    const isSteel = bm.mat === 'steel';
+    const lw = bm.mat === 'concrete' ? 5 * camScale : (isSteel ? 3.5 * camScale : 2.5 * camScale);
+
+    ctx.save();
+    ctx.lineCap = 'round';
+
+    if (bm.broken) {
+      // Highlight the failed beam with a red glow flash
+      if (isSteel) {
+        // Steel: draw a bent/kinked line through a mid-point offset sideways
+        const mx = (pa.x + pb.x) / 2;
+        const my = (pa.y + pb.y) / 2;
+        const dx = pb.x - pa.x, dy = pb.y - pa.y;
+        const len = Math.hypot(dx, dy) || 1;
+        // Perpendicular offset — kink amount based on beam length
+        const kink = len * 0.22;
+        const nx = -dy / len * kink, ny = dx / len * kink;
+
+        // Glow
+        ctx.shadowColor = '#ff3c5a';
+        ctx.shadowBlur = 12;
+        ctx.strokeStyle = 'rgba(255,60,90,0.85)';
+        ctx.lineWidth = lw * 1.3;
+        ctx.beginPath();
+        ctx.moveTo(pa.x, pa.y);
+        ctx.lineTo(mx + nx, my + ny);
+        ctx.lineTo(pb.x, pb.y);
+        ctx.stroke();
+        // Darker inner line for depth
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = 'rgba(255,160,80,0.6)';
+        ctx.lineWidth = lw * 0.4;
+        ctx.stroke();
+      } else {
+        // Wood: shattered dashes with orange tint
+        ctx.strokeStyle = 'rgba(220,100,30,0.5)';
+        ctx.lineWidth = lw;
+        ctx.setLineDash([3, 5]);
+        ctx.beginPath();
+        ctx.moveTo(pa.x, pa.y);
+        ctx.lineTo(pb.x, pb.y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    } else {
+      // Live beam — color by stress
+      let color = mat.color;
+      if (testing) {
+        const t = Math.min(1, (bm.stress || 0) * 1.4);
+        color = lerpColor(mat.color, '#ff3c5a', t);
+      }
+      ctx.strokeStyle = color;
+      ctx.lineWidth = lw;
+      ctx.beginPath();
+      ctx.moveTo(pa.x, pa.y);
+      ctx.lineTo(pb.x, pb.y);
+      ctx.stroke();
+
+      // Concrete gets an extra inner highlight line for chunky look
+      if (bm.mat === 'concrete') {
+        ctx.strokeStyle = testing ? lerpColor('#c8c8b8', '#ff3c5a', Math.min(1,(bm.stress||0)*1.4)) : '#c8c8b8';
+        ctx.lineWidth = lw * 0.3;
+        ctx.globalAlpha = 0.5;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    ctx.restore();
+  });
+}
+
+function drawNodes() {
+  const nds = testing ? simNodes : nodes;
+
+  nds.forEach(n => {
+    let sx, sy;
+    if (testing) {
+      sx = camX + n.x * camScale;
+      sy = camY - n.y * camScale;
+    } else {
+      const p = worldToScreen(n.gx, n.gy);
+      sx = p.x; sy = p.y;
+    }
+
+    const r = n.fixed ? 7 * camScale : 5 * camScale;
+    ctx.save();
+    ctx.fillStyle = n.fixed ? '#ffd000' : '#00d4ff';
+    ctx.strokeStyle = n.fixed ? '#fff8e0' : '#a0eaff';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(sx, sy, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    if (n.id === selectStart) {
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(sx, sy, r + 4, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  });
+}
+
+function drawPreview() {
+  if (testing || tool !== 'select' || !selectStart || !hoverPos) return;
+  const startNode = nodes.find(n => n.id === selectStart);
+  if (!startNode) return;
+
+  const pa = worldToScreen(startNode.gx, startNode.gy);
+  const { gx, gy } = hoverPos;
+  const pb = worldToScreen(gx, gy);
+  const len = Math.hypot(gx - startNode.gx, gy - startNode.gy);
+  const valid = len <= beamLength && len > 0 && gy >= 0;
+
+  ctx.save();
+  ctx.strokeStyle = valid ? 'rgba(255,255,255,0.4)' : 'rgba(255,60,90,0.4)';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([6, 4]);
+  ctx.beginPath();
+  ctx.moveTo(pa.x, pa.y);
+  ctx.lineTo(pb.x, pb.y);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Snap target
+  ctx.fillStyle = valid ? 'rgba(0,212,255,0.6)' : 'rgba(255,60,90,0.6)';
+  ctx.beginPath();
+  ctx.arc(pb.x, pb.y, 5 * camScale, 0, Math.PI * 2);
+  ctx.fill();
+
+  if (valid) {
+    ctx.fillStyle = '#fff';
+    ctx.font = `${10 * camScale}px "Share Tech Mono"`;
+    ctx.fillText(len.toFixed(1) + 'u  $' + Math.ceil(len * MAT[material].cost), pb.x + 8, pb.y - 8);
+  }
+  ctx.restore();
+}
+
+function lerpColor(a, b, t) {
+  const ah = parseInt(a.slice(1), 16), bh = parseInt(b.slice(1), 16);
+  const ar = (ah >> 16) & 0xff, ag = (ah >> 8) & 0xff, ab = ah & 0xff;
+  const br = (bh >> 16) & 0xff, bg = (bh >> 8) & 0xff, bb = bh & 0xff;
+  const r = Math.round(ar + (br - ar) * t);
+  const g = Math.round(ag + (bg - ag) * t);
+  const bl = Math.round(ab + (bb - ab) * t);
+  return '#' + [r,g,bl].map(v => v.toString(16).padStart(2,'0')).join('');
+}
+
+// ─── Input ────────────────────────────────────────────────────
+let isDragging = false, dragStart = null, dragMoved = false;
+let touchStartDist = null, touchStartCam = null;
+
+function setCanvasMode(mode) {
+  canvasMode = mode;
+  selectStart = null;
+  document.getElementById('btn-mode-build').classList.toggle('active', mode === 'build');
+  document.getElementById('btn-mode-pan').classList.toggle('active', mode === 'pan');
+  canvas.style.cursor = mode === 'pan' ? 'grab' : 'crosshair';
+  render();
+}
+
+// ── Mouse ──
+canvas.addEventListener('mousedown', e => {
+  if (e.button === 1) { e.preventDefault(); return; } // ignore middle
+  if (e.button === 2) { e.preventDefault(); selectStart = null; render(); return; }
+
+  if (canvasMode === 'pan') {
+    isDragging = true;
+    dragMoved = false;
+    dragStart = { x: e.offsetX - camX, y: e.offsetY - camY };
+    canvas.style.cursor = 'grabbing';
+    return;
+  }
+
+  // BUILD mode
+  if (testing) return;
+  const sx = e.offsetX, sy = e.offsetY;
+  const { gx, gy } = snapToGrid(sx, sy);
+  const nearNode = findNearestNode(gx, gy, 0.6);
+
+  if (tool === 'delete') {
+    if (nearNode) {
+      beams = beams.filter(bm => bm.a !== nearNode.id && bm.b !== nearNode.id);
+      if (!nearNode.fixed) nodes = nodes.filter(n => n.id !== nearNode.id);
+      cleanOrphans(); updateStats();
+    } else { deleteNearBeam(sx, sy); }
+    render(); return;
+  }
+
+  if (tool === 'select') {
+    if (selectStart === null) {
+      if (nearNode) selectStart = nearNode.id;
+    } else {
+      const startNode = nodes.find(n => n.id === selectStart);
+      if (startNode) placeBeam(startNode.gx, startNode.gy, gx, gy);
+      selectStart = null;
+    }
+    render();
+  }
+});
+
+canvas.addEventListener('mousemove', e => {
+  if (isDragging && canvasMode === 'pan') {
+    camX = e.offsetX - dragStart.x;
+    camY = e.offsetY - dragStart.y;
+    dragMoved = true;
+    render(); return;
+  }
+  if (testing || canvasMode === 'pan') return;
+  hoverPos = snapToGrid(e.offsetX, e.offsetY);
+  render();
+});
+
+canvas.addEventListener('mouseup', e => {
+  if (canvasMode === 'pan') {
+    isDragging = false;
+    canvas.style.cursor = 'grab';
+  }
+});
+
+canvas.addEventListener('mouseleave', () => {
+  hoverPos = null; isDragging = false;
+  render();
+});
+
+canvas.addEventListener('contextmenu', e => { e.preventDefault(); });
+
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  if (canvasMode === 'pan' || e.ctrlKey || e.metaKey) {
+    // Zoom centered on cursor
+    const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
+    applyZoom(factor, e.offsetX, e.offsetY);
+  } else {
+    // Build mode — scroll pans up/down so you can reach your work area
+    camY -= e.deltaY * 1.2;
+    render();
+  }
+}, { passive: false });
+
+// ── Touch ──
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  if (e.touches.length === 2) {
+    // Pinch — always works in both modes
+    touchStartDist = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
+    touchStartCam = { x: camX, y: camY, scale: camScale };
+    isDragging = false;
+  } else if (e.touches.length === 1) {
+    const r = canvas.getBoundingClientRect();
+    if (canvasMode === 'pan') {
+      isDragging = true;
+      dragMoved = false;
+      dragStart = {
+        x: e.touches[0].clientX - r.left - camX,
+        y: e.touches[0].clientY - r.top - camY
+      };
+    } else {
+      // BUILD mode — record touch start for tap detection
+      isDragging = false;
+      dragStart = { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
+      dragMoved = false;
+    }
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  const r = canvas.getBoundingClientRect();
+  if (e.touches.length === 2 && touchStartDist) {
+    const d = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
+    const factor = d / touchStartDist;
+    const mx = (e.touches[0].clientX + e.touches[1].clientX) / 2 - r.left;
+    const my = (e.touches[0].clientY + e.touches[1].clientY) / 2 - r.top;
+    camScale = Math.max(0.25, Math.min(2.5, touchStartCam.scale * factor));
+    camX = mx - (mx - touchStartCam.x) * (camScale / touchStartCam.scale);
+    camY = my - (my - touchStartCam.y) * (camScale / touchStartCam.scale);
+    render();
+  } else if (e.touches.length === 1 && isDragging && canvasMode === 'pan') {
+    camX = e.touches[0].clientX - r.left - dragStart.x;
+    camY = e.touches[0].clientY - r.top - dragStart.y;
+    dragMoved = true;
+    render();
+  } else if (e.touches.length === 1 && canvasMode === 'build' && dragStart) {
+    const dx = Math.abs(e.touches[0].clientX - r.left - dragStart.x);
+    const dy = Math.abs(e.touches[0].clientY - r.top - dragStart.y);
+    if (dx > 8 || dy > 8) dragMoved = true; // finger moved too far — not a tap
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchend', e => {
+  if (e.touches.length < 2) touchStartDist = null;
+
+  if (e.touches.length === 0) {
+    if (canvasMode === 'build' && !dragMoved && !testing && dragStart) {
+      // Treat as a tap in build mode — fire build logic
+      const sx = dragStart.x, sy = dragStart.y;
+      const { gx, gy } = snapToGrid(sx, sy);
+      const nearNode = findNearestNode(gx, gy, 0.6);
+
+      if (tool === 'delete') {
+        if (nearNode) {
+          beams = beams.filter(bm => bm.a !== nearNode.id && bm.b !== nearNode.id);
+          if (!nearNode.fixed) nodes = nodes.filter(n => n.id !== nearNode.id);
+          cleanOrphans(); updateStats();
+        } else { deleteNearBeam(sx, sy); }
+      } else if (tool === 'select') {
+        if (selectStart === null) {
+          if (nearNode) selectStart = nearNode.id;
+        } else {
+          const startNode = nodes.find(n => n.id === selectStart);
+          if (startNode) placeBeam(startNode.gx, startNode.gy, gx, gy);
+          selectStart = null;
+        }
+      }
+      render();
+    }
+    isDragging = false; dragStart = null; dragMoved = false;
+  }
+});
+
+// ─── Zoom helpers ──────────────────────────────────────────────
+function applyZoom(factor, mx, my) {
+  if (mx === undefined) { mx = canvas.width / 2; my = canvas.height / 2; }
+  const newScale = Math.max(0.25, Math.min(2.5, camScale * factor));
+  const actualFactor = newScale / camScale;
+  camX = mx - (mx - camX) * actualFactor;
+  camY = my - (my - camY) * actualFactor;
+  camScale = newScale;
+  render();
+}
+
+function zoomBy(factor) {
+  // Zoom toward the center of the canvas
+  applyZoom(factor, canvas.width / 2, canvas.height / 2);
+}
+
+function fitView() {
+  if (nodes.length === 0) { resize(); render(); return; }
+  const allNodes = nodes;
+  const xs = allNodes.map(n => n.gx);
+  const ys = allNodes.map(n => n.gy);
+  const minX = Math.min(...xs) - 3, maxX = Math.max(...xs) + 3;
+  const minY = 0, maxY = Math.max(...ys, LEVELS[level].targetHeight) + 3;
+
+  const W = canvas.width - 40, H = canvas.height - 40;
+  const scaleX = W / ((maxX - minX) * GRID);
+  const scaleY = H / ((maxY - minY) * GRID);
+  camScale = Math.max(0.2, Math.min(4, Math.min(scaleX, scaleY)));
+
+  const midGX = (minX + maxX) / 2;
+  const midGY = (minY + maxY) / 2;
+  camX = canvas.width / 2 - midGX * GRID * camScale;
+  camY = canvas.height / 2 + midGY * GRID * camScale;
+  render();
+}
+
+function deleteNearBeam(sx, sy) {
+  let closest = null, closestD = Infinity;
+  beams.forEach(bm => {
+    const na = nodes.find(n => n.id === bm.a);
+    const nb = nodes.find(n => n.id === bm.b);
+    if (!na || !nb) return;
+    const pa = worldToScreen(na.gx, na.gy);
+    const pb = worldToScreen(nb.gx, nb.gy);
+    const d = pointToSegDist(sx, sy, pa.x, pa.y, pb.x, pb.y);
+    if (d < closestD) { closestD = d; closest = bm; }
+  });
+  if (closest && closestD < 12) {
+    beams = beams.filter(b => b.id !== closest.id);
+    cleanOrphans();
+    updateStats();
+    render();
+  }
+}
+
+function pointToSegDist(px, py, ax, ay, bx, by) {
+  const dx = bx - ax, dy = by - ay;
+  const t = Math.max(0, Math.min(1, ((px-ax)*dx + (py-ay)*dy) / (dx*dx+dy*dy+0.001)));
+  return Math.hypot(px - (ax+t*dx), py - (ay+t*dy));
+}
+
+function cleanOrphans() {
+  const used = new Set();
+  beams.forEach(bm => { used.add(bm.a); used.add(bm.b); });
+  nodes = nodes.filter(n => n.fixed || used.has(n.id));
+}
+
+// ─── Start ────────────────────────────────────────────────────
+window.addEventListener('resize', () => { resize(); render(); });
+init();
+</script>
+</body>
+</html>

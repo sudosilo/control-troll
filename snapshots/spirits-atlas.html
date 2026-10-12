@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>SPIRITS ATLAS</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#060e1f; --surface:#0d1730; --border:#2a3a5c;
+  --beer:#ffaa00; --wine:#d966ff; --whiskey:#ff8855; --gin:#44ff77;
+  --vodka:#22e5ff; --rum:#ff3d6b; --tequila:#ffe844; --other:#6a80a0;
+  --text:#d8eaff; --dim:#6a80a0; --accent:#22e5ff;
+  --origin:#ff8855; --dist:#3399ff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{background:var(--bg);color:var(--text);font-family:'Share Tech Mono',monospace;display:flex;flex-direction:column;}
+
+header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;gap:6px;}
+.logo{font-family:'Orbitron',monospace;font-weight:900;font-size:13px;letter-spacing:4px;color:var(--accent);text-shadow:0 0 16px var(--accent),0 0 30px rgba(34,229,255,0.3);white-space:nowrap;}
+.logo span{color:#fff;}
+.stat-pills{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;}
+.pill{font-size:8px;padding:2px 6px;border-radius:3px;border:1px solid;letter-spacing:1px;white-space:nowrap;}
+
+.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;}
+.tab{flex:1;padding:8px 0;text-align:center;font-size:9px;letter-spacing:1px;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;text-transform:uppercase;}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);text-shadow:0 0 8px var(--accent);}
+
+.view{display:none;flex:1;overflow:hidden;flex-direction:column;}
+.view.active{display:flex;}
+
+#globe-view{position:relative;}
+#globe-container{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+#globe-container svg{cursor:grab;touch-action:none;}
+#globe-container svg:active{cursor:grabbing;}
+
+.legend{position:absolute;bottom:10px;left:8px;background:rgba(6,14,31,0.93);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:8px;letter-spacing:1px;backdrop-filter:blur(4px);}
+.legend-title{color:var(--dim);margin-bottom:6px;font-size:7px;letter-spacing:2px;}
+.legend-item{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+.legend-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.legend-label{color:var(--text);font-size:7px;}
+
+.search-panel{position:absolute;top:8px;right:8px;background:rgba(6,14,31,0.95);border:1px solid var(--border);border-radius:6px;padding:9px 10px;font-size:8px;letter-spacing:1px;backdrop-filter:blur(4px);width:min(220px,58vw);z-index:50;}
+.search-panel-label{color:var(--dim);font-size:7px;letter-spacing:2px;margin-bottom:5px;}
+.search-panel input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--text);font-family:'Share Tech Mono',monospace;font-size:10px;padding:6px 8px;outline:none;letter-spacing:1px;}
+.search-panel input:focus{border-color:var(--accent);box-shadow:0 0 8px rgba(34,229,255,0.25);}
+.search-panel input::placeholder{color:var(--dim);}
+.search-results{margin-top:6px;max-height:160px;overflow-y:auto;}
+.sr-item{font-size:8px;padding:4px 6px;border-radius:3px;cursor:pointer;border-left:2px solid transparent;margin-bottom:2px;color:var(--dim);}
+.sr-item:hover{background:rgba(34,229,255,0.07);color:var(--text);}
+.sr-item.selected{color:var(--accent);border-left-color:var(--accent);background:rgba(34,229,255,0.06);}
+.sr-name{font-size:8px;color:var(--text);}
+.sr-sub{font-size:7px;color:var(--dim);}
+
+#tooltip{position:absolute;background:rgba(6,14,31,0.97);border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:9px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:100;max-width:200px;backdrop-filter:blur(8px);}
+#tooltip.show{opacity:1;}
+.tt-country{font-family:'Orbitron',monospace;font-size:11px;color:#fff;margin-bottom:5px;font-weight:700;}
+.tt-row{display:flex;justify-content:space-between;gap:8px;margin-bottom:2px;}
+.tt-key{color:var(--dim);font-size:8px;}
+.tt-val{color:var(--text);text-align:right;font-size:8px;}
+.tt-cats{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px;}
+.tt-cat{font-size:7px;padding:2px 4px;border-radius:2px;border:1px solid;letter-spacing:1px;}
+
+#detail-panel{position:absolute;top:0;right:-100%;width:min(290px,92vw);height:100%;background:var(--surface);border-left:1px solid var(--border);transition:right .3s ease;z-index:200;overflow-y:auto;padding:14px 12px;}
+#detail-panel.open{right:0;}
+#panel-backdrop{position:absolute;top:0;left:0;right:0;bottom:0;z-index:199;display:none;}
+#panel-backdrop.show{display:block;}
+.panel-close{position:absolute;top:10px;right:10px;background:none;border:1px solid var(--border);color:var(--dim);cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:11px;padding:3px 8px;border-radius:3px;}
+.panel-close:hover{color:var(--text);border-color:var(--text);}
+.panel-country{font-family:'Orbitron',monospace;font-weight:900;font-size:13px;color:#fff;margin-bottom:3px;padding-right:36px;line-height:1.3;}
+.panel-count{color:var(--dim);font-size:9px;letter-spacing:2px;margin-bottom:12px;}
+.spirit-card{background:rgba(0,0,0,0.35);border:1px solid var(--border);border-left:3px solid;border-radius:4px;padding:8px 10px;margin-bottom:8px;}
+.sc-name{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;color:#fff;margin-bottom:3px;}
+.sc-sub{color:var(--accent);font-size:8px;letter-spacing:1px;margin-bottom:5px;}
+.sc-meta{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:5px;}
+.sc-tag{font-size:7px;padding:2px 4px;border-radius:2px;border:1px solid var(--border);color:var(--dim);letter-spacing:1px;}
+.sc-desc{font-size:8px;color:#99b0cc;line-height:1.5;}
+.sc-origin{font-size:7px;color:var(--origin);margin-top:4px;}
+.panel-section{font-size:8px;letter-spacing:2px;color:var(--dim);margin:12px 0 6px;border-bottom:1px solid var(--border);padding-bottom:4px;}
+.dist-tag{display:inline-block;font-size:7px;padding:2px 5px;border-radius:2px;border:1px solid #3399ff44;color:#3399ff;margin:2px 2px 2px 0;letter-spacing:1px;}
+
+#list-view{flex-direction:column;}
+.search-bar{padding:8px 12px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
+.search-bar input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Share Tech Mono',monospace;font-size:11px;padding:7px 11px;outline:none;letter-spacing:1px;}
+.search-bar input:focus{border-color:var(--accent);box-shadow:0 0 8px rgba(34,229,255,0.25);}
+.search-bar input::placeholder{color:var(--dim);}
+.filter-row{display:flex;gap:5px;padding:7px 12px;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;}
+.filter-btn{font-size:7px;padding:3px 7px;border-radius:3px;border:1px solid;cursor:pointer;white-space:nowrap;letter-spacing:1px;background:none;font-family:'Share Tech Mono',monospace;transition:all .15s;opacity:0.45;}
+.filter-btn.active{opacity:1;}
+#list-container{flex:1;overflow-y:auto;padding:8px 12px;}
+.list-item{background:rgba(0,0,0,0.3);border:1px solid var(--border);border-left:3px solid;border-radius:4px;padding:8px 10px;margin-bottom:7px;cursor:pointer;transition:background .15s;}
+.list-item:hover{background:rgba(34,229,255,0.06);}
+.li-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:3px;}
+.li-name{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;color:#fff;}
+.li-abv{font-size:8px;color:var(--dim);white-space:nowrap;}
+.li-producer{font-size:8px;color:var(--accent);margin-bottom:3px;}
+.li-origin{font-size:7px;color:var(--dim);}
+.li-tags{display:flex;gap:3px;flex-wrap:wrap;margin-top:4px;}
+
+@keyframes pulse{0%{r:4;opacity:.9;}70%{r:11;opacity:0;}100%{r:4;opacity:0;}}
+.pulse-ring{animation:pulse 2.2s infinite;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.02) 2px,rgba(0,0,0,0.02) 4px);pointer-events:none;z-index:9999;}
+.globe-hint{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:7px;color:var(--dim);letter-spacing:2px;pointer-events:none;white-space:nowrap;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">SPIRITS<span>ATLAS</span></div>
+  <div class="stat-pills" id="stat-pills"></div>
+</header>
+<div class="tabs">
+  <div class="tab active" data-view="globe-view">◉ GLOBE</div>
+  <div class="tab" data-view="list-view">≡ CATALOG</div>
+</div>
+
+<!-- ═══ GLOBE VIEW ═══ -->
+<div id="globe-view" class="view active">
+  <div id="globe-container">
+    <div class="globe-hint">DRAG TO ROTATE · TAP COUNTRY FOR SPIRITS</div>
+    <svg id="globe"></svg>
+
+    <div class="search-panel">
+      <div class="search-panel-label">SEARCH SPIRITS</div>
+      <input type="text" id="globe-search" placeholder="BEER, WINE, WHISKEY...">
+      <div class="search-results" id="globe-search-results"></div>
+    </div>
+
+    <div class="legend" id="legend-box">
+      <div class="legend-title">SPIRIT TYPE</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--beer)"></div><div class="legend-label">BEER / ALE</div></div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--wine)"></div><div class="legend-label">WINE</div></div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--whiskey)"></div><div class="legend-label">WHISKEY / BOURBON</div></div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--gin)"></div><div class="legend-label">GIN</div></div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--vodka)"></div><div class="legend-label">VODKA</div></div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--rum)"></div><div class="legend-label">RUM</div></div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--tequila)"></div><div class="legend-label">TEQUILA / MEZCAL</div></div>
+      <div id="legend-extras">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--dist)"></div><div class="legend-label">DISTRIBUTION COUNTRY</div></div>
+      </div>
+    </div>
+
+    <div id="tooltip">
+      <div class="tt-country" id="tt-country"></div>
+      <div class="tt-row"><span class="tt-key">ORIGIN SPIRITS</span><span class="tt-val" id="tt-count"></span></div>
+      <div class="tt-row"><span class="tt-key">ALSO DISTRIBUTES</span><span class="tt-val" id="tt-level"></span></div>
+      <div class="tt-cats" id="tt-cats"></div>
+    </div>
+  </div>
+
+  <div id="panel-backdrop"></div>
+  <div id="detail-panel">
+    <button class="panel-close" id="panel-close">✕</button>
+    <div class="panel-country" id="panel-country"></div>
+    <div class="panel-count" id="panel-count"></div>
+    <div id="panel-incidents"></div>
+  </div>
+</div>
+
+<!-- ═══ LIST VIEW ═══ -->
+<div id="list-view" class="view">
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="SEARCH NAME, PRODUCER, COUNTRY...">
+  </div>
+  <div class="filter-row" id="filter-row"></div>
+  <div id="list-container"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// DATA — 250 beers, wines, and spirits
+// ═══════════════════════════════════════════════════════════════════
+const SPIRITS = [
+  // BEER / ALE
+  {id:"budweiser",name:"Budweiser",producer:"Anheuser-Busch InBev",type:"beer",origin:"United States",abv:"5.0%",founded:"1876",desc:"America's iconic lager. Brewed with barley malt and rice. Light, crisp, and widely distributed globally.",distribution:["United States","Canada","Mexico","United Kingdom","Germany","Australia","Brazil","China","Japan","South Africa","India","France","Spain","Italy","Argentina","Colombia","Chile","Netherlands","Belgium","Russia"]},
+  {id:"bud-light",name:"Bud Light",producer:"Anheuser-Busch InBev",type:"beer",origin:"United States",abv:"4.2%",founded:"1982",desc:"America's best-selling light lager. Lower calories and carbs than regular Budweiser.",distribution:["United States","Canada","Mexico","United Kingdom","Australia","Brazil","China"]},
+  {id:"coors-banquet",name:"Coors Banquet",producer:"Molson Coors",type:"beer",origin:"United States",abv:"5.0%",founded:"1873",desc:"Rocky Mountain lager brewed with pure Colorado mountain water and 2-row barley.",distribution:["United States","Canada","United Kingdom","Australia","Japan"]},
+  {id:"miller-lite",name:"Miller Lite",producer:"Molson Coors",type:"beer",origin:"United States",abv:"4.2%",founded:"1975",desc:"First mainstream American light beer. Clean, smooth finish with a hint of hop character.",distribution:["United States","Canada","Mexico","Honduras","El Salvador"]},
+  {id:"pabst-blue-ribbon",name:"Pabst Blue Ribbon",producer:"Pabst Brewing Company",type:"beer",origin:"United States",abv:"4.7%",founded:"1844",desc:"Milwaukee's classic working-class lager. Won a blue ribbon at the 1893 World's Fair.",distribution:["United States","Canada","China","Sweden","Australia"]},
+  {id:"sierra-nevada-pale",name:"Sierra Nevada Pale Ale",producer:"Sierra Nevada Brewing",type:"beer",origin:"United States",abv:"5.6%",founded:"1980",desc:"Pioneer of American craft beer. Floral Cascade hops aroma with a clean malt backbone.",distribution:["United States","Canada","Germany","United Kingdom","Australia","Sweden","Netherlands"]},
+  {id:"samuel-adams-boston",name:"Samuel Adams Boston Lager",producer:"Boston Beer Company",type:"beer",origin:"United States",abv:"4.9%",founded:"1984",desc:"Sparked the American craft beer revolution. Noble Hallertau hops, caramel malts, rich amber color.",distribution:["United States","Canada","United Kingdom","Germany","Australia","Japan","France"]},
+  {id:"dogfish-60min",name:"Dogfish Head 60 Minute IPA",producer:"Dogfish Head Brewery",type:"beer",origin:"United States",abv:"6.0%",founded:"1995",desc:"Continuously hopped for 60 minutes. Aggressively bitter, citrus forward, slightly sweet finish.",distribution:["United States","Canada","United Kingdom","Australia"]},
+  {id:"heineken",name:"Heineken",producer:"Heineken N.V.",type:"beer",origin:"Netherlands",abv:"5.0%",founded:"1864",desc:"Dutch pale lager brewed with A-yeast. Slightly bitter, skunky (under light) character. World's most recognized beer brand.",distribution:["Netherlands","United States","United Kingdom","Germany","France","Australia","Brazil","China","Japan","Russia","South Africa","Mexico","Spain","Italy","Canada","India","Argentina","Chile","Colombia","Nigeria","Kenya","Vietnam","Indonesia","Thailand","Singapore","Malaysia","South Korea","New Zealand","Poland","Czech Republic"]},
+  {id:"stella-artois",name:"Stella Artois",producer:"Anheuser-Busch InBev",type:"beer",origin:"Belgium",abv:"5.2%",founded:"1926",desc:"Belgian pilsner with a crisp, clean taste and slight bitterness. Originally a Christmas beer.",distribution:["Belgium","United States","United Kingdom","Australia","Canada","France","Germany","Brazil","Argentina","China","South Africa","Mexico","Netherlands","Italy","Spain","India","Japan","New Zealand"]},
+  {id:"guinness-draught",name:"Guinness Draught",producer:"Diageo",type:"beer",origin:"Ireland",abv:"4.2%",founded:"1759",desc:"Iconic Irish dry stout. Cascading nitrogen bubbles, creamy tan head, roasted coffee and dark chocolate notes.",distribution:["Ireland","United Kingdom","United States","Nigeria","Canada","Australia","Germany","France","Brazil","South Africa","Japan","India","Cameroon","Ghana","Kenya","Jamaica","New Zealand","Russia","China"]},
+  {id:"murphy-stout",name:"Murphy's Irish Stout",producer:"HEINEKEN Ireland",type:"beer",origin:"Ireland",abv:"4.0%",founded:"1856",desc:"Cork's rival to Guinness. Lighter body, smoother, and slightly sweeter with nitrogen dispense.",distribution:["Ireland","United Kingdom","United States","Germany","France","Netherlands"]},
+  {id:"corona-extra",name:"Corona Extra",producer:"Grupo Modelo / AB InBev",type:"beer",origin:"Mexico",abv:"4.6%",founded:"1925",desc:"Mexico's most exported beer. Light, refreshing, best with a lime wedge. Perfect beach beer.",distribution:["Mexico","United States","Canada","United Kingdom","Australia","Germany","Brazil","China","Japan","Spain","France","Italy","Argentina","Chile","Colombia","South Africa","Netherlands","Belgium","Ireland","New Zealand","Sweden","Norway","Denmark"]},
+  {id:"modelo-especial",name:"Modelo Especial",producer:"Grupo Modelo",type:"beer",origin:"Mexico",abv:"4.4%",founded:"1925",desc:"Mexican pilsner-style lager. Slightly sweeter than Corona, fuller body, clean finish.",distribution:["Mexico","United States","Canada","Australia","Germany","United Kingdom","Spain","Japan"]},
+  {id:"dos-equis",name:"Dos Equis Lager",producer:"HEINEKEN Mexico",type:"beer",origin:"Mexico",abv:"4.3%",founded:"1897",desc:"Vienna-style lager brewed in Mexico. Malty, slightly sweet, smooth. Made famous by 'Most Interesting Man'.",distribution:["Mexico","United States","Canada","United Kingdom","Australia","Brazil"]},
+  {id:"negra-modelo",name:"Negra Modelo",producer:"Grupo Modelo",type:"beer",origin:"Mexico",abv:"5.4%",founded:"1926",desc:"Munich-style dark lager. Rich caramel and chocolate malts, slight bitterness. Mexico's premier dark beer.",distribution:["Mexico","United States","Canada","United Kingdom","Australia","Germany","Spain"]},
+  {id:"pacifico",name:"Pacifico Clara",producer:"Grupo Modelo",type:"beer",origin:"Mexico",abv:"4.5%",founded:"1900",desc:"Light pilsner from Mazatlán. Crisp and golden, popular in Pacific Mexico and surfer culture.",distribution:["Mexico","United States","Canada","Australia","United Kingdom"]},
+  {id:"tecate",name:"Tecate Original",producer:"HEINEKEN Mexico",type:"beer",origin:"Mexico",abv:"4.5%",founded:"1944",desc:"Baja California lager. Balanced, slightly bitter, light body. Associated with boxing sponsorships.",distribution:["Mexico","United States","Canada"]},
+  {id:"sol",name:"Sol",producer:"HEINEKEN Mexico",type:"beer",origin:"Mexico",abv:"4.5%",founded:"1899",desc:"Mexican pale lager. Light and refreshing, often served with lime. Popular beach beer.",distribution:["Mexico","United States","United Kingdom","Australia","Brazil","Chile","Colombia","Netherlands"]},
+  {id:"beck",name:"Beck's",producer:"Anheuser-Busch InBev",type:"beer",origin:"Germany",abv:"5.0%",founded:"1873",desc:"Premium German pilsner. Brewed under German Purity Law. Crisp, clean, slightly bitter.",distribution:["Germany","United States","United Kingdom","Australia","Brazil","Italy","France","Spain","Netherlands","Canada","China","Japan","South Africa","Belgium","Russia"]},
+  {id:"warsteiner",name:"Warsteiner Premium",producer:"Warsteiner Brewery",type:"beer",origin:"Germany",abv:"4.8%",founded:"1753",desc:"Germany's largest private brewery. Aromatic hops, clean malt body, dry finish.",distribution:["Germany","United States","Canada","United Kingdom","Australia","Brazil","China","Japan","France","Italy","Spain","Netherlands","Belgium","South Africa","Russia"]},
+  {id:"paulaner-hefeweizen",name:"Paulaner Hefeweizen",producer:"Paulaner Brewery",type:"beer",origin:"Germany",abv:"5.5%",founded:"1634",desc:"Munich wheat beer. Banana and clove esters from signature yeast. Cloudy golden pour with fluffy head.",distribution:["Germany","United States","Canada","Australia","United Kingdom","France","Italy","Spain","China","Japan","Russia","Brazil","Netherlands","Belgium","Austria","Switzerland"]},
+  {id:"erdinger-weiss",name:"Erdinger Weissbier",producer:"Erdinger Weissbrau",type:"beer",origin:"Germany",abv:"5.3%",founded:"1886",desc:"Bavaria's largest wheat beer producer. Traditional Bavarian hefeweizen. Refreshing with notes of banana and vanilla.",distribution:["Germany","United States","United Kingdom","Australia","Canada","France","Japan","China","Russia","Italy","Spain","Brazil","Switzerland","Austria","Netherlands","Belgium","Sweden","Norway","Denmark"]},
+  {id:"bitburger",name:"Bitburger Premium Pils",producer:"Bitburger Brewery",type:"beer",origin:"Germany",abv:"4.8%",founded:"1817",desc:"German pilsner from the Eifel region. Distinctively bitter, clean, dry finish. Germany's top-selling draught.",distribution:["Germany","United States","United Kingdom","Australia","Canada","France","Italy","Spain","Netherlands","Belgium","China","Japan","Russia","Brazil","South Africa"]},
+  {id:"spaten-lager",name:"Spaten Premium Lager",producer:"Spaten-Franziskaner-Bräu",type:"beer",origin:"Germany",abv:"5.2%",founded:"1397",desc:"Munich's oldest brewery. Bright golden lager, mild hop bitterness, full-bodied malt character.",distribution:["Germany","United States","Canada","United Kingdom","Brazil","Argentina","Australia","Japan","China"]},
+  {id:"leffe-blonde",name:"Leffe Blonde",producer:"Anheuser-Busch InBev / Abbaye de Leffe",type:"beer",origin:"Belgium",abv:"6.6%",founded:"1240",desc:"Belgian abbey ale. Fruity, spicy yeast character, sweet malt backbone. Brewed since the 13th century.",distribution:["Belgium","France","United States","United Kingdom","Germany","Netherlands","Italy","Spain","Australia","Canada","Brazil","China","Japan","Russia","Poland"]},
+  {id:"duvel",name:"Duvel",producer:"Duvel Moortgat",type:"beer",origin:"Belgium",abv:"8.5%",founded:"1871",desc:"Belgian strong pale ale. Complex hop bitterness, fruity esters, deceptively drinkable despite high ABV.",distribution:["Belgium","Netherlands","United States","United Kingdom","France","Germany","Canada","Australia","Japan","China","Italy","Spain","Brazil"]},
+  {id:"chimay-red",name:"Chimay Red",producer:"Bières de Chimay",type:"beer",origin:"Belgium",abv:"7.0%",founded:"1862",desc:"Trappist ale from Chimay abbey. Fruity and spicy, caramel malt notes. Authentic Trappist certification.",distribution:["Belgium","France","United States","United Kingdom","Germany","Netherlands","Canada","Australia","Italy","Spain","Japan","Brazil"]},
+  {id:"kwak",name:"Pauwel Kwak",producer:"Brouwerij Bosteels",type:"beer",origin:"Belgium",abv:"8.4%",founded:"1791",desc:"Belgian amber ale served in its iconic coachman's glass. Rich malt, caramel, vanilla, and light hops.",distribution:["Belgium","France","Netherlands","United States","United Kingdom","Germany","Canada","Australia","Italy","Japan"]},
+  {id:"carlsberg",name:"Carlsberg Pilsner",producer:"Carlsberg Group",type:"beer",origin:"Denmark",abv:"5.0%",founded:"1847",desc:"Danish pilsner. Clean, crisp, mild bitterness. Claims to be 'probably the best beer in the world'.",distribution:["Denmark","United Kingdom","Sweden","Norway","Finland","Germany","France","Italy","Spain","Netherlands","Belgium","Russia","China","India","Vietnam","Malaysia","Singapore","Australia","Canada","United States","Brazil","South Africa","Nigeria","Poland","Czech Republic"]},
+  {id:"tuborg",name:"Tuborg Green",producer:"Carlsberg Group",type:"beer",origin:"Denmark",abv:"4.6%",founded:"1875",desc:"Danish lager. Light, crisp and refreshing. Widely popular in Europe and emerging markets.",distribution:["Denmark","Germany","United States","United Kingdom","India","Greece","Turkey","Russia","Poland","Czech Republic","Romania","Bulgaria","Hungary"]},
+  {id:"kronenbourg-1664",name:"Kronenbourg 1664",producer:"Carlsberg Group",type:"beer",origin:"France",abv:"5.0%",founded:"1664",desc:"France's best-selling beer. Alsatian lager with smooth, malty flavor and subtle Strisselspalt hop aroma.",distribution:["France","United Kingdom","United States","Germany","Italy","Spain","Netherlands","Belgium","Canada","Australia","China","Russia","Brazil","South Africa"]},
+  {id:"1664-blanc",name:"Kronenbourg 1664 Blanc",producer:"Carlsberg Group",type:"beer",origin:"France",abv:"5.0%",founded:"2006",desc:"French wheat beer with Curaçao peel and coriander. Cloudy, citrusy, smooth. Popular worldwide.",distribution:["France","United Kingdom","United States","China","Canada","Australia","Germany","Italy","Russia","Japan","South Korea","Brazil","Singapore","Malaysia","Vietnam","Thailand","South Africa","Netherlands","Spain","Belgium"]},
+  {id:"peroni",name:"Peroni Nastro Azzurro",producer:"Asahi Group",type:"beer",origin:"Italy",abv:"5.1%",founded:"1963",desc:"Italy's premium export lager. Clean, light, subtly bitter. Associated with Italian style and fashion.",distribution:["Italy","United States","United Kingdom","Australia","Canada","Germany","France","Spain","Netherlands","Brazil","Japan","South Africa","New Zealand","Ireland","Belgium","China"]},
+  {id:"moretti",name:"Birra Moretti",producer:"HEINEKEN Italy",type:"beer",origin:"Italy",abv:"4.6%",founded:"1859",desc:"Northern Italian lager from Udine. Full-bodied, malty, slightly hoppy. Famous for the mustachioed man label.",distribution:["Italy","United Kingdom","United States","Australia","Canada","Germany","France","Netherlands","Ireland","Brazil","Spain"]},
+  {id:"san-miguel",name:"San Miguel Pale Pilsen",producer:"San Miguel Brewery",type:"beer",origin:"Philippines",abv:"5.0%",founded:"1890",desc:"Southeast Asia's oldest brewery. Light, crisp pilsner. Southeast Asia's most-consumed beer.",distribution:["Philippines","Spain","China","Vietnam","Indonesia","Malaysia","Singapore","Thailand","Australia","United Kingdom","United States","Canada","Germany","UAE","Japan","South Korea"]},
+  {id:"tiger-beer",name:"Tiger Beer",producer:"HEINEKEN Asia Pacific",type:"beer",origin:"Singapore",abv:"5.0%",founded:"1932",desc:"Southeast Asian lager. Clean, refreshing, slightly bitter. Won 1939 Brussels World's Fair gold medal.",distribution:["Singapore","Malaysia","Vietnam","Indonesia","Thailand","China","Australia","United Kingdom","United States","Canada","Netherlands","Germany","France","Japan","South Korea","UAE"]},
+  {id:"tsingtao",name:"Tsingtao Beer",producer:"Tsingtao Brewery",type:"beer",origin:"China",abv:"4.7%",founded:"1903",desc:"China's most exported beer. German-style lager from Qingdao, originally founded by German settlers.",distribution:["China","United States","Japan","South Korea","Germany","Australia","Canada","United Kingdom","France","Italy","Brazil","Russia","Netherlands","Belgium","Vietnam","Thailand"]},
+  {id:"sapporo",name:"Sapporo Premium",producer:"Sapporo Breweries",type:"beer",origin:"Japan",abv:"4.9%",founded:"1876",desc:"Japan's oldest beer brand. Crisp, clean lager with a refined, slightly bitter taste.",distribution:["Japan","United States","Canada","Australia","United Kingdom","Germany","France","China","South Korea","Brazil","Singapore","Malaysia","Vietnam","Thailand","Netherlands"]},
+  {id:"asahi",name:"Asahi Super Dry",producer:"Asahi Group",type:"beer",origin:"Japan",abv:"5.0%",founded:"1987",desc:"Japan's best-selling beer. Ultra-dry, crisp, virtually no aftertaste. Karakuchi (dry taste) pioneer.",distribution:["Japan","United States","United Kingdom","Australia","Germany","France","Canada","China","South Korea","Brazil","Italy","Netherlands","Singapore","Vietnam","Thailand","Malaysia","UAE","Russia","New Zealand"]},
+  {id:"kirin-ichiban",name:"Kirin Ichiban",producer:"Kirin Brewery",type:"beer",origin:"Japan",abv:"5.0%",founded:"1990",desc:"First press brew — uses only wort from first pressing of malt. Smooth, mellow, clean flavor.",distribution:["Japan","United States","United Kingdom","Australia","Canada","Germany","France","China","South Korea","Brazil","Netherlands","Singapore","Vietnam"]},
+  {id:"hite",name:"Hite",producer:"Hite-Jinro",type:"beer",origin:"South Korea",abv:"4.5%",founded:"1993",desc:"South Korea's top-selling beer. Brewed with 100% pure underground spring water. Light, crisp, refreshing.",distribution:["South Korea","United States","Canada","Australia","China","Japan","United Kingdom","Germany"]},
+  {id:"kingfisher",name:"Kingfisher Premium",producer:"United Breweries",type:"beer",origin:"India",abv:"4.8%",founded:"1978",desc:"India's most popular beer. Light lager, slightly sweet with mild hops. The 'King of Good Times'.",distribution:["India","United States","United Kingdom","Canada","Australia","Germany","France","Netherlands","Singapore","UAE","New Zealand","Japan"]},
+  {id:"coopers-sparkling",name:"Coopers Sparkling Ale",producer:"Coopers Brewery",type:"beer",origin:"Australia",abv:"5.8%",founded:"1862",desc:"South Australian bottle-conditioned ale. Cloudy, fruity, tropical and floral notes from natural carbonation.",distribution:["Australia","United States","Canada","United Kingdom","Germany","Japan","New Zealand","Singapore"]},
+  {id:"tooheys-new",name:"Tooheys New",producer:"Lion",type:"beer",origin:"Australia",abv:"4.6%",founded:"1869",desc:"New South Wales lager. Clean, crisp, refreshing. One of Australia's best-known regional beers.",distribution:["Australia","United States","United Kingdom","Canada"]},
+  {id:"xxxx-gold",name:"XXXX Gold",producer:"Lion",type:"beer",origin:"Australia",abv:"3.5%",founded:"1924",desc:"Queensland's most popular midstrength beer. Mild, easy-drinking, golden lager.",distribution:["Australia","United Kingdom","United States"]},
+  {id:"vb",name:"Victoria Bitter",producer:"Carlton & United Breweries",type:"beer",origin:"Australia",abv:"4.9%",founded:"1854",desc:"Australia's best-selling beer for decades. Full-flavored lager, slightly sweet, traditionally heavy on hops.",distribution:["Australia","United States","United Kingdom","New Zealand","Canada"]},
+  {id:"castle-lager",name:"Castle Lager",producer:"SABMiller / AB InBev",type:"beer",origin:"South Africa",abv:"5.0%",founded:"1895",desc:"South Africa's most iconic beer. Light, golden lager. Crisp, dry finish. 'Proudly South African'.",distribution:["South Africa","United Kingdom","United States","Canada","Australia","Botswana","Zimbabwe","Zambia","Mozambique","Namibia"]},
+  {id:"skol",name:"Skol",producer:"Carlsberg Group / various",type:"beer",origin:"United Kingdom",abv:"4.0%",founded:"1959",desc:"International lager consortium brand. Light, smooth, broadly available. Brazil's top-selling beer.",distribution:["United Kingdom","Brazil","Sweden","Denmark","Belgium","Germany","France","Italy","Spain","Canada","Australia"]},
+  {id:"cobra-beer",name:"Cobra Beer",producer:"Molson Coors",type:"beer",origin:"United Kingdom",abv:"4.5%",founded:"1990",desc:"Extra smooth lager brewed to complement spicy food. Originally designed to pair with Indian cuisine.",distribution:["United Kingdom","United States","Canada","Australia","Germany","France","Netherlands","India","South Africa","UAE","Singapore"]},
+  // WINE
+  {id:"yellowtail-chardonnay",name:"Yellow Tail Chardonnay",producer:"Casella Family Brands",type:"wine",origin:"Australia",abv:"13.0%",founded:"2001",desc:"Australian chardonnay. Approachable, tropical fruit notes, light oak. Made Australian wine mainstream in the US.",distribution:["Australia","United States","United Kingdom","Canada","Germany","Japan","New Zealand","Ireland","Sweden","Netherlands","Norway","Denmark"]},
+  {id:"jacob-creek-shiraz",name:"Jacob's Creek Classic Shiraz",producer:"Orlando Wines / Pernod Ricard",type:"wine",origin:"Australia",abv:"13.9%",founded:"1976",desc:"One of Australia's most recognized wine exports. Dark fruit, spice, smooth tannins.",distribution:["Australia","United Kingdom","United States","Germany","Canada","Japan","New Zealand","France","Netherlands","Sweden","China","Ireland","South Korea"]},
+  {id:"penfolds-grange",name:"Penfolds Grange",producer:"Penfolds",type:"wine",origin:"Australia",abv:"14.5%",founded:"1951",desc:"Australia's most prestigious red wine. Multi-region Shiraz blend. Legendary collectible, commands thousands per bottle.",distribution:["Australia","United States","United Kingdom","Germany","Japan","China","France","Canada","Singapore","Hong Kong","Sweden","Switzerland","Denmark"]},
+  {id:"wolf-blass-yellow",name:"Wolf Blass Yellow Label Cab Sav",producer:"Wolf Blass",type:"wine",origin:"Australia",abv:"13.5%",founded:"1966",desc:"Classic South Australian Cabernet Sauvignon. Blackcurrant, mint, oak-matured, firm tannins.",distribution:["Australia","United States","United Kingdom","Canada","Germany","Japan","New Zealand","China","Netherlands","Sweden"]},
+  {id:"santa-rita-120",name:"Santa Rita 120 Cabernet",producer:"Viña Santa Rita",type:"wine",origin:"Chile",abv:"13.5%",founded:"1880",desc:"Chilean icon. Crisp Cabernet from the Central Valley. Named after 120 patriots who hid in winery caves.",distribution:["Chile","United States","Brazil","United Kingdom","Germany","Canada","Mexico","China","Sweden","Netherlands","Russia","Japan","Australia"]},
+  {id:"concha-toro-casillero",name:"Casillero del Diablo Carménère",producer:"Concha y Toro",type:"wine",origin:"Chile",abv:"13.5%",founded:"1963",desc:"Chile's flagship Carménère. The Devil's Cellar legend—plum, chocolate, coffee notes, distinctly Chilean.",distribution:["Chile","United States","Brazil","United Kingdom","Canada","Germany","Mexico","Japan","China","Sweden","Netherlands","Australia","South Africa","Russia","Spain","France","Italy"]},
+  {id:"montes-alpha-merlot",name:"Montes Alpha Merlot",producer:"Montes Winery",type:"wine",origin:"Chile",abv:"14.0%",founded:"1988",desc:"Premium Chilean Merlot from Colchagua Valley. Plummy, soft, approachable. Pioneer of premium Chilean wine.",distribution:["Chile","United States","United Kingdom","Germany","Brazil","Canada","Australia","Japan","China","Netherlands","Sweden","Switzerland","Denmark"]},
+  {id:"malbec-catena",name:"Catena Malbec",producer:"Bodega Catena Zapata",type:"wine",origin:"Argentina",abv:"14.0%",founded:"1902",desc:"Premier Argentine Malbec from high-altitude Mendoza vineyards. Violet, plum, cocoa, velvety texture.",distribution:["Argentina","United States","United Kingdom","Brazil","Canada","Germany","Australia","Japan","China","Sweden","Netherlands","France","Switzerland","Russia","Mexico"]},
+  {id:"trivento-reserve",name:"Trivento Reserve Malbec",producer:"Trivento Bodegas y Viñedos",type:"wine",origin:"Argentina",abv:"13.5%",founded:"1996",desc:"Value-focused Mendoza Malbec. Owned by Concha y Toro. Deep purple, blackberry, mocha, smooth finish.",distribution:["Argentina","United States","United Kingdom","Canada","Germany","Brazil","Australia","Japan","China","Netherlands","Sweden","Ireland","France"]},
+  {id:"norton-malbec",name:"Bodega Norton Malbec",producer:"Bodega Norton",type:"wine",origin:"Argentina",abv:"13.5%",founded:"1895",desc:"One of Argentina's oldest and largest wineries. Classic Malbec character—dark fruit, leather, cedar.",distribution:["Argentina","United States","United Kingdom","Brazil","Canada","Germany","Australia","Japan","Netherlands","Sweden"]},
+  {id:"lindemans-bin-65",name:"Lindemans Bin 65 Chardonnay",producer:"Lindemans",type:"wine",origin:"Australia",abv:"13.0%",founded:"1843",desc:"Australia's #1 selling Chardonnay by volume. Peach, melon, light oak. Consistently excellent value.",distribution:["Australia","United States","United Kingdom","Canada","Germany","Netherlands","Sweden","Japan","New Zealand","Ireland","Norway","Denmark"]},
+  {id:"opus-one",name:"Opus One",producer:"Robert Mondavi & Baron Philippe de Rothschild",type:"wine",origin:"United States",abv:"14.5%",founded:"1979",desc:"Napa Valley icon. Collaboration between two wine legends. Bordeaux-style blend. Trophy wine of California.",distribution:["United States","United Kingdom","Japan","France","Germany","Canada","Australia","Switzerland","China","Hong Kong","Singapore","South Korea","Italy","Brazil","Russia"]},
+  {id:"caymus-cabernet",name:"Caymus Cabernet Sauvignon",producer:"Caymus Vineyards",type:"wine",origin:"United States",abv:"14.8%",founded:"1972",desc:"Napa Valley favorite. Plush, approachable Cabernet with dark cherry, mocha, and hints of tobacco.",distribution:["United States","United Kingdom","Canada","Japan","Germany","Australia","China","Sweden","Netherlands","Switzerland","France","South Korea"]},
+  {id:"stags-leap",name:"Stag's Leap Wine Cellars Cabernet",producer:"Stag's Leap Wine Cellars",type:"wine",origin:"United States",abv:"14.5%",founded:"1970",desc:"Legendary Napa winery. Won the 1976 Paris Tasting against French Bordeaux. Changed wine world's perception.",distribution:["United States","United Kingdom","Germany","Japan","France","Canada","Australia","China","Switzerland","Sweden","Netherlands"]},
+  {id:"kim-crawford-sauv",name:"Kim Crawford Sauvignon Blanc",producer:"Kim Crawford Wines",type:"wine",origin:"New Zealand",abv:"12.5%",founded:"1996",desc:"Marlborough Sauvignon Blanc. Intense tropical fruit, passionfruit, crisp acidity. Changed perception of NZ wine.",distribution:["New Zealand","United States","Canada","United Kingdom","Australia","Germany","Sweden","Netherlands","Japan","Ireland","Denmark","Norway","Switzerland","China"]},
+  {id:"cloudy-bay",name:"Cloudy Bay Sauvignon Blanc",producer:"Cloudy Bay Vineyards / LVMH",type:"wine",origin:"New Zealand",abv:"13.0%",founded:"1985",desc:"Marlborough iconic SB. Grapefruit, elderflower, grassy notes, mineral finish. Put New Zealand on the world wine map.",distribution:["New Zealand","United Kingdom","United States","Australia","Germany","France","Canada","Japan","Netherlands","Sweden","Ireland","Switzerland","Singapore","Hong Kong","China","Denmark","Norway"]},
+  {id:"villa-maria-private",name:"Villa Maria Private Bin Sauv Blanc",producer:"Villa Maria Estate",type:"wine",origin:"New Zealand",abv:"13.0%",founded:"1961",desc:"New Zealand's most awarded wine producer. Classic Marlborough style. Consistently excellent quality.",distribution:["New Zealand","United Kingdom","United States","Canada","Australia","Germany","Sweden","Netherlands","Denmark","Ireland","Norway","Japan","China"]},
+  {id:"rothschild-mouton",name:"Château Mouton Rothschild",producer:"Baron Philippe de Rothschild",type:"wine",origin:"France",abv:"13.5%",founded:"1853",desc:"Premier Grand Cru Classé de Pauillac. Bordeaux's artistic label changes each vintage. World-class Cabernet Franc blend.",distribution:["France","United States","United Kingdom","Japan","Germany","China","Canada","Switzerland","Australia","Hong Kong","Singapore","Italy","Belgium","Netherlands","Sweden","Russia","South Korea","Brazil"]},
+  {id:"petrus",name:"Château Pétrus",producer:"Établissements Jean-Pierre Moueix",type:"wine",origin:"France",abv:"14.0%",founded:"1800",desc:"Pomerol's crown jewel. Near-100% Merlot from blue clay soil. One of world's most expensive and sought-after wines.",distribution:["France","United States","United Kingdom","Japan","Germany","China","Canada","Switzerland","Italy","Belgium","Netherlands","Australia","Hong Kong","Singapore","South Korea","Russia","Brazil"]},
+  {id:"latour",name:"Château Latour",producer:"Château Latour",type:"wine",origin:"France",abv:"13.5%",founded:"1331",desc:"Pauillac First Growth. Most age-worthy of Médoc. Austere, tannic, powerful Cabernet Sauvignon-dominant blend.",distribution:["France","United States","United Kingdom","Japan","Germany","China","Switzerland","Canada","Hong Kong","Singapore","Australia","Italy","Belgium","Netherlands","Sweden","South Korea"]},
+  {id:"moet-chandon",name:"Moët & Chandon Imperial Brut",producer:"Moët & Chandon / LVMH",type:"wine",origin:"France",abv:"12.0%",founded:"1743",desc:"World's most recognized Champagne. Apple, pear, brioche. Consistent house style. Goes with everything.",distribution:["France","United States","United Kingdom","Japan","Germany","Australia","China","Canada","Italy","Brazil","Spain","Russia","Switzerland","Netherlands","Belgium","Sweden","South Africa","UAE","Singapore","Hong Kong","South Korea","Mexico","Argentina","Thailand","Indonesia"]},
+  {id:"veuve-clicquot",name:"Veuve Clicquot Yellow Label",producer:"Veuve Clicquot Ponsardin / LVMH",type:"wine",origin:"France",abv:"12.0%",founded:"1772",desc:"Iconic Champagne house. La Grande Dame invented riddling technique. Crisp, rich, pinot-dominant style.",distribution:["France","United States","United Kingdom","Japan","Germany","Australia","China","Canada","Italy","Brazil","Russia","Switzerland","Netherlands","Spain","Belgium","Sweden","South Africa","UAE","Singapore","Hong Kong","South Korea","Mexico","New Zealand","Ireland"]},
+  {id:"dom-perignon",name:"Dom Pérignon",producer:"Moët & Chandon / LVMH",type:"wine",origin:"France",abv:"12.5%",founded:"1921",desc:"Champagne's ultimate prestige cuvée. Named after Benedictine monk. Released only in exceptional vintages.",distribution:["France","United States","United Kingdom","Japan","Germany","China","Canada","Italy","Switzerland","Australia","Brazil","Russia","Hong Kong","Singapore","UAE","South Korea","Spain","Netherlands","Belgium","Sweden","Mexico"]},
+  {id:"la-crema-pinot",name:"La Crema Sonoma Pinot Noir",producer:"La Crema Winery",type:"wine",origin:"United States",abv:"13.5%",founded:"1979",desc:"Sonoma Coast Pinot Noir. Cherry, strawberry, earthy forest floor. Coast-influenced cool-climate style.",distribution:["United States","Canada","United Kingdom","Germany","Australia","Japan","Netherlands","Sweden","China","New Zealand"]},
+  {id:"meiomi-pinot",name:"Meiomi Pinot Noir",producer:"Constellation Brands",type:"wine",origin:"United States",abv:"13.5%",founded:"2006",desc:"California coastal blend—Sonoma, Santa Barbara, Monterey. Smooth, fruity, slightly sweet. America's best-selling Pinot Noir.",distribution:["United States","Canada","United Kingdom","Australia","Japan","Germany","Netherlands","Sweden","Ireland","New Zealand"]},
+  {id:"apothic-red",name:"Apothic Red",producer:"E&J Gallo Winery",type:"wine",origin:"United States",abv:"13.5%",founded:"2010",desc:"California red blend. Sweet, dark fruit, vanilla, mocha. Inspired by a mysterious medieval wine merchant's lair.",distribution:["United States","Canada","United Kingdom","Germany","Australia","Japan","Netherlands","Sweden","Ireland","New Zealand","China","South Africa"]},
+  {id:"barefoot-pinot-grigio",name:"Barefoot Pinot Grigio",producer:"E&J Gallo Winery",type:"wine",origin:"United States",abv:"12.5%",founded:"2001",desc:"America's most popular wine brand. Light, fresh, crisp with peach and citrus. Ultra-approachable everyday wine.",distribution:["United States","United Kingdom","Canada","Australia","Germany","Japan","Netherlands","Sweden","Ireland","New Zealand","South Africa","Brazil"]},
+  {id:"santa-margherita-pg",name:"Santa Margherita Pinot Grigio",producer:"Santa Margherita",type:"wine",origin:"Italy",abv:"12.0%",founded:"1935",desc:"The original modern Pinot Grigio. Crisp, dry, golden straw. Single-handedly launched the PG craze in the US.",distribution:["Italy","United States","United Kingdom","Germany","Canada","Australia","Japan","Switzerland","Netherlands","Brazil","Sweden","Austria","France"]},
+  {id:"barolo-fontanafredda",name:"Fontanafredda Barolo",producer:"Fontanafredda",type:"wine",origin:"Italy",abv:"14.0%",founded:"1858",desc:"King of Italian wines. 100% Nebbiolo from Serralunga d'Alba. Tar and roses, powerful tannins, built for aging.",distribution:["Italy","United States","United Kingdom","Germany","Japan","Canada","France","Switzerland","Australia","Sweden","Netherlands","Denmark","China"]},
+  {id:"chianti-ruffino",name:"Ruffino Chianti DOCG",producer:"Ruffino",type:"wine",origin:"Italy",abv:"13.0%",founded:"1877",desc:"Tuscan Sangiovese from the Chianti Classico region. Cherry, leather, earthy. Iconic straw-covered fiasco bottle.",distribution:["Italy","United States","United Kingdom","Germany","Canada","Australia","Japan","Sweden","Netherlands","France","Brazil","Switzerland"]},
+  {id:"antinori-tignanello",name:"Antinori Tignanello",producer:"Marchesi Antinori",type:"wine",origin:"Italy",abv:"14.0%",founded:"1971",desc:"Italy's original 'Super Tuscan'. Sangiovese with Cabernet blend, barrel-aged. Defied DOC rules, redefined Italian wine.",distribution:["Italy","United States","United Kingdom","Germany","Japan","Canada","France","Australia","Switzerland","Sweden","Netherlands","China","Hong Kong","Brazil","Denmark","South Korea"]},
+  {id:"rioja-marques",name:"Marqués de Riscal Rioja Reserva",producer:"Herederos del Marqués de Riscal",type:"wine",origin:"Spain",abv:"13.5%",founded:"1858",desc:"Historic Spanish Rioja. Tempranillo-dominant, aged in American oak. Vanilla, red fruit, elegant complexity.",distribution:["Spain","United States","United Kingdom","Germany","France","Canada","Australia","Japan","Mexico","Sweden","Netherlands","China","Brazil","Switzerland","Denmark","Ireland"]},
+  {id:"torres-sangre",name:"Torres Sangre de Toro",producer:"Miguel Torres",type:"wine",origin:"Spain",abv:"13.5%",founded:"1954",desc:"Catalan classic. Garnacha and Carignan blend. Spicy, fruity, distinctively earthy. Famous bull-on-the-bottle.",distribution:["Spain","United States","United Kingdom","Germany","France","Canada","Australia","Japan","Netherlands","Sweden","Italy","Brazil","Mexico","China","Denmark","Ireland","Switzerland"]},
+  {id:"vega-sicilia-unico",name:"Vega-Sicilia Único",producer:"Bodegas Vega-Sicilia",type:"wine",origin:"Spain",abv:"14.0%",founded:"1864",desc:"Spain's most prestigious red wine. Ribera del Duero blend aged 10+ years. Legendary quality, very limited production.",distribution:["Spain","United States","United Kingdom","Germany","Japan","France","Canada","Switzerland","Australia","Netherlands","Belgium","Sweden","China","Hong Kong","South Korea"]},
+  {id:"kendall-jackson-chard",name:"Kendall-Jackson Vintner's Reserve Chardonnay",producer:"Kendall-Jackson Winery",type:"wine",origin:"United States",abv:"13.5%",founded:"1982",desc:"California's best-selling chardonnay. Pineapple, papaya, toasted oak. Multi-county blend for consistency.",distribution:["United States","Canada","United Kingdom","Japan","Germany","Australia","Netherlands","Sweden","Ireland","New Zealand","China"]},
+  // WHISKEY / BOURBON
+  {id:"jack-daniels",name:"Jack Daniel's Old No. 7",producer:"Jack Daniel's Distillery / Brown-Forman",type:"whiskey",origin:"United States",abv:"40%",founded:"1875",desc:"Tennessee sour mash whiskey. Charcoal-mellowed through 10 feet of sugar maple. Vanilla, caramel, oak. World's best-selling American whiskey.",distribution:["United States","United Kingdom","Australia","Germany","France","Canada","Japan","Brazil","South Africa","Russia","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","China","India","UAE","Singapore","South Korea","New Zealand","Ireland","Argentina","Chile","Colombia","Poland","Czech Republic","Greece","Turkey","Thailand","Vietnam","Malaysia","Indonesia","Philippines","Nigeria","Kenya"]},
+  {id:"jim-beam",name:"Jim Beam White Label",producer:"Beam Suntory",type:"whiskey",origin:"United States",abv:"40%",founded:"1795",desc:"World's #1 selling Kentucky Straight Bourbon. 7 generations of Beam family craftsmanship. Corn, vanilla, caramel.",distribution:["United States","United Kingdom","Australia","Germany","France","Canada","Japan","Brazil","South Africa","Russia","Mexico","Spain","Italy","Netherlands","Belgium","China","UAE","Singapore","Poland","Australia","New Zealand","Ireland","India","Chile","Argentina"]},
+  {id:"makers-mark",name:"Maker's Mark",producer:"Beam Suntory",type:"whiskey",origin:"United States",abv:"45%",founded:"1953",desc:"Handcrafted Kentucky straight bourbon. Soft red wheat in place of rye. Distinctive red wax dip. Sweet, gentle, approachable.",distribution:["United States","United Kingdom","Australia","Germany","Japan","Canada","France","Sweden","Netherlands","China","South Korea","Brazil","Russia","Ireland","New Zealand","Singapore","UAE","South Africa","Spain","Italy"]},
+  {id:"wild-turkey-101",name:"Wild Turkey 101",producer:"Wild Turkey Distillery / Campari",type:"whiskey",origin:"United States",abv:"50.5%",founded:"1940",desc:"High-proof Kentucky bourbon. Aged in #4 char barrels. Big, bold, caramel, vanilla, pepper, long finish.",distribution:["United States","United Kingdom","Australia","Japan","Germany","Canada","France","Sweden","Netherlands","Brazil","China","South Korea","Ireland","New Zealand","Singapore","UAE","South Africa","Spain","Italy","Russia"]},
+  {id:"woodford-reserve",name:"Woodford Reserve Distiller's Select",producer:"Brown-Forman",type:"whiskey",origin:"United States",abv:"43.2%",founded:"1996",desc:"Triple pot-still distilled Kentucky bourbon. Fruit, floral, spice, grain. Official bourbon of the Kentucky Derby.",distribution:["United States","United Kingdom","Australia","Germany","Japan","Canada","France","Sweden","Netherlands","China","South Korea","Brazil","Russia","Ireland","New Zealand","Singapore","UAE","Spain","Italy","Switzerland","Denmark","Norway"]},
+  {id:"bulleit-bourbon",name:"Bulleit Bourbon",producer:"Diageo",type:"whiskey",origin:"United States",abv:"45%",founded:"1987",desc:"High-rye Kentucky bourbon. Spicy, bold, with vanilla, honey, and a dry finish. Frontier whiskey heritage.",distribution:["United States","United Kingdom","Australia","Germany","Japan","Canada","France","Sweden","Netherlands","Brazil","China","South Korea","Ireland","New Zealand","Singapore","UAE","Spain","Italy","Switzerland","Denmark","South Africa"]},
+  {id:"four-roses-single",name:"Four Roses Single Barrel",producer:"Four Roses Distillery / Kirin",type:"whiskey",origin:"United States",abv:"50%",founded:"1888",desc:"Single barrel Kentucky bourbon. Uses 10 proprietary recipes. Rich spice, full body, dried apricot, long finish.",distribution:["United States","United Kingdom","Japan","Germany","Canada","Australia","France","Sweden","Netherlands","South Korea","China","Ireland","New Zealand","Singapore","Spain","Italy","Switzerland","Denmark"]},
+  {id:"pappy-van-winkle",name:"Pappy Van Winkle's Family Reserve",producer:"Old Rip Van Winkle Distillery / Buffalo Trace",type:"whiskey",origin:"United States",abv:"47%",founded:"1972",desc:"Wheated bourbon. Most coveted bourbon in the world. 15, 20, 23-year expressions. Extraordinary depth and sweetness.",distribution:["United States","United Kingdom","Japan","Germany","Canada","Australia","France","Sweden","Netherlands","China","South Korea","Singapore","Switzerland","Ireland","New Zealand"]},
+  {id:"buffalo-trace",name:"Buffalo Trace",producer:"Buffalo Trace Distillery / Sazerac",type:"whiskey",origin:"United States",abv:"45%",founded:"1773",desc:"America's oldest continuously operating distillery. Complex, rich, toffee, dark fruit, anise finish. Exceptional value.",distribution:["United States","United Kingdom","Australia","Germany","Japan","Canada","France","Sweden","Netherlands","China","South Korea","Brazil","Russia","Ireland","New Zealand","Singapore","UAE","Spain","Italy","Switzerland","Denmark","South Africa"]},
+  {id:"weller-special",name:"W.L. Weller Special Reserve",producer:"Buffalo Trace Distillery / Sazerac",type:"whiskey",origin:"United States",abv:"45%",founded:"1849",desc:"Wheated bourbon. The original 'poor man's Pappy'. Soft, sweet, approachable. Now cult-status and difficult to find.",distribution:["United States","United Kingdom","Japan","Germany","Canada","Australia","France","Netherlands","Sweden","South Korea","Ireland","Singapore","China"]},
+  {id:"glenfiddich-12",name:"Glenfiddich 12 Year",producer:"William Grant & Sons",type:"whiskey",origin:"United Kingdom",abv:"40%",founded:"1887",desc:"World's most awarded single malt Scotch whisky. Pear, apple, subtle oak. The whisky that launched the single malt category.",distribution:["United Kingdom","United States","Australia","Germany","France","Japan","Canada","China","India","Brazil","Russia","South Africa","Netherlands","Sweden","Spain","Italy","Mexico","South Korea","UAE","Singapore","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Czech Republic","Greece","Turkey","Thailand","Vietnam","Malaysia","Indonesia","Philippines"]},
+  {id:"macallan-12",name:"The Macallan 12 Year Sherry Oak",producer:"The Macallan Distillery",type:"whiskey",origin:"United Kingdom",abv:"40%",founded:"1824",desc:"Speyside single malt aged in hand-picked sherry-seasoned oak from Jerez, Spain. Dried fruit, spice, chocolate.",distribution:["United Kingdom","United States","Australia","Germany","France","Japan","Canada","China","India","Brazil","Russia","South Africa","Netherlands","Sweden","Spain","Italy","South Korea","UAE","Singapore","Ireland","New Zealand","Switzerland","Denmark","Hong Kong","Taiwan","Thailand","Vietnam","Malaysia","Indonesia","Philippines"]},
+  {id:"laphroaig-10",name:"Laphroaig 10 Year",producer:"Laphroaig Distillery / Beam Suntory",type:"whiskey",origin:"United Kingdom",abv:"40%",founded:"1815",desc:"Islay single malt. Intensely peated, iodine, seaweed, bonfire smoke, medicinal. Love it or hate it.",distribution:["United Kingdom","United States","Germany","France","Japan","Australia","Canada","Netherlands","Sweden","Italy","Spain","Ireland","China","South Korea","UAE","Singapore","New Zealand","Switzerland","Denmark","Norway","Russia","Brazil","South Africa"]},
+  {id:"johnnie-walker-black",name:"Johnnie Walker Black Label",producer:"Diageo",type:"whiskey",origin:"United Kingdom",abv:"40%",founded:"1909",desc:"World's top-selling blended Scotch whisky. Rich, complex with smoky sweetness, dark fruit, vanilla. 12-year minimum.",distribution:["United Kingdom","United States","Australia","Germany","France","Japan","Canada","China","Brazil","India","Russia","South Africa","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","UAE","Singapore","South Korea","New Zealand","Ireland","Argentina","Chile","Colombia","Poland","Czech Republic","Greece","Turkey","Thailand","Vietnam","Malaysia","Indonesia","Philippines","Nigeria","Kenya","Peru","Venezuela"]},
+  {id:"chivas-regal-12",name:"Chivas Regal 12 Year",producer:"Chivas Brothers / Pernod Ricard",type:"whiskey",origin:"United Kingdom",abv:"40%",founded:"1909",desc:"Speyside blended Scotch. Smooth, generous, honey, orchard fruit, vanilla. World's best-selling premium blended Scotch.",distribution:["United Kingdom","United States","Australia","Germany","France","Japan","Canada","China","Brazil","India","Russia","South Africa","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","UAE","Singapore","South Korea","New Zealand","Ireland","Argentina","Chile","Poland","Czech Republic","Greece","Turkey","Thailand","Vietnam","Malaysia","Indonesia","Philippines","Nigeria"]},
+  {id:"jameson",name:"Jameson Irish Whiskey",producer:"Irish Distillers / Pernod Ricard",type:"whiskey",origin:"Ireland",abv:"40%",founded:"1780",desc:"World's best-selling Irish whiskey. Triple-distilled for smoothness. Light, sweet, gentle vanilla, nutty. Universally loved.",distribution:["Ireland","United States","United Kingdom","Australia","Germany","France","Canada","Japan","Brazil","Russia","South Africa","Netherlands","Sweden","Spain","Italy","Mexico","China","UAE","Singapore","South Korea","New Zealand","Argentina","Chile","Colombia","Poland","Czech Republic","Greece","Turkey","Thailand","Vietnam","Malaysia","Nigeria","Kenya","India","Switzerland","Denmark","Norway","Belgium","Austria","Portugal","Romania","Hungary","Philippines"]},
+  {id:"bushmills-original",name:"Bushmills Original",producer:"Old Bushmills Distillery / Diageo",type:"whiskey",origin:"United Kingdom",abv:"40%",founded:"1608",desc:"World's oldest licensed distillery. Triple-distilled grain-and-malt blend. Light, sweet, accessible Irish style.",distribution:["United Kingdom","Ireland","United States","Australia","Germany","France","Canada","Japan","Netherlands","Sweden","Russia","South Africa","Spain","Italy","Brazil","UAE","Singapore","South Korea","New Zealand","China","Mexico"]},
+  {id:"tullamore-dew",name:"Tullamore D.E.W.",producer:"William Grant & Sons",type:"whiskey",origin:"Ireland",abv:"40%",founded:"1829",desc:"Triple blend of pot still, malt, and grain whiskeys. Sweet, fruity, smooth, approachable. Dew stands for Daniel E. Williams.",distribution:["Ireland","United States","United Kingdom","Germany","France","Australia","Canada","Japan","Netherlands","Sweden","Russia","South Africa","Brazil","UAE","Singapore","South Korea","China","Spain","Italy","Poland","Czech Republic","Austria","Belgium","Switzerland","Denmark","Greece","Turkey"]},
+  {id:"suntory-hibiki",name:"Suntory Hibiki Harmony",producer:"Suntory Spirits",type:"whiskey",origin:"Japan",abv:"43%",founded:"1989",desc:"Japanese blended whisky from Suntory's three distilleries. Honey, orange peel, rose water, white chocolate. Iconic 24-facet bottle.",distribution:["Japan","United States","United Kingdom","Germany","France","Australia","Canada","China","Taiwan","South Korea","Hong Kong","Singapore","Thailand","Malaysia","UAE","Netherlands","Sweden","Switzerland","Denmark","Norway","Ireland","New Zealand","Russia","Italy","Spain"]},
+  {id:"nikka-from-the-barrel",name:"Nikka From the Barrel",producer:"Nikka Whisky",type:"whiskey",origin:"Japan",abv:"51.4%",founded:"1985",desc:"High-strength Japanese blend. Malt and grain from Miyagikyo and Yoichi. Bold, complex, spice, sherry, tobacco.",distribution:["Japan","United States","United Kingdom","Germany","France","Australia","Canada","Netherlands","Sweden","Switzerland","Denmark","Norway","China","Taiwan","South Korea","Hong Kong","Singapore","Thailand","Malaysia","UAE","Ireland","New Zealand","Italy","Spain","Belgium","Finland","Poland"]},
+  {id:"yamazaki-12",name:"Yamazaki 12 Year",producer:"Suntory Spirits",type:"whiskey",origin:"Japan",abv:"43%",founded:"1984",desc:"Japan's most celebrated single malt. Peach, pineapple, grapefruit, clove, candied orange. Consistently won world's best whisky.",distribution:["Japan","United States","United Kingdom","Germany","France","Australia","Canada","China","Taiwan","South Korea","Hong Kong","Singapore","Thailand","Malaysia","UAE","Netherlands","Sweden","Switzerland","Denmark","Norway","Ireland","New Zealand","Italy","Spain"]},
+  {id:"canadian-club",name:"Canadian Club",producer:"Beam Suntory",type:"whiskey",origin:"Canada",abv:"40%",founded:"1858",desc:"Canada's most exported whisky. Light, smooth, slightly sweet rye character. Blended and aged in Canada.",distribution:["Canada","United States","United Kingdom","Australia","Japan","Germany","France","Netherlands","Sweden","China","South Africa","Ireland","New Zealand","Brazil","Spain","Italy","Russia","UAE"]},
+  {id:"crown-royal",name:"Crown Royal",producer:"Diageo",type:"whiskey",origin:"Canada",abv:"40%",founded:"1939",desc:"Canada's best-selling whisky. Created for King George VI's Canada visit. Velvety smooth, notes of vanilla, fruit, spice.",distribution:["Canada","United States","United Kingdom","Australia","Germany","France","Netherlands","Sweden","Japan","China","South Africa","Ireland","New Zealand","Brazil","Spain","Italy","Russia","UAE","Mexico"]},
+  // GIN
+  {id:"tanqueray",name:"Tanqueray London Dry Gin",producer:"Diageo",type:"gin",origin:"United Kingdom",abv:"47.3%",founded:"1830",desc:"Classic London Dry Gin. Four botanicals: juniper, coriander, angelica root, liquorice. Bold, piney, crisp martini standard.",distribution:["United Kingdom","United States","Australia","Germany","France","Canada","Japan","Brazil","South Africa","Russia","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","China","India","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Czech Republic","Greece","Turkey","Thailand","Vietnam","Malaysia","Colombia","Argentina","Chile","Portugal","Austria","Finland"]},
+  {id:"hendricks",name:"Hendrick's Gin",producer:"William Grant & Sons",type:"gin",origin:"United Kingdom",abv:"41.4%",founded:"1999",desc:"Scottish gin with cucumber and rose petal infusion. Unusual botanicals create a distinctive floral, garden freshness.",distribution:["United Kingdom","United States","Australia","Germany","France","Canada","Japan","Brazil","South Africa","Russia","Spain","Italy","Netherlands","Belgium","Sweden","China","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Czech Republic","Mexico","Argentina","Chile","Turkey","Thailand","Vietnam","Malaysia","Colombia","Portugal","Austria","Finland"]},
+  {id:"gordons-gin",name:"Gordon's London Dry Gin",producer:"Diageo",type:"gin",origin:"United Kingdom",abv:"37.5%",founded:"1769",desc:"The world's best-selling gin by volume. Traditional juniper-forward London Dry. Essential G&T base.",distribution:["United Kingdom","United States","Australia","Germany","France","Canada","Japan","Brazil","South Africa","Russia","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","China","India","UAE","Singapore","South Korea","Ireland","New Zealand","Poland","Czech Republic","Greece","Turkey","Thailand","Malaysia","Colombia","Argentina","Chile","Portugal","Austria","Finland","Nigeria","Kenya","Zimbabwe"]},
+  {id:"bombay-sapphire",name:"Bombay Sapphire",producer:"Bacardi",type:"gin",origin:"United Kingdom",abv:"47%",founded:"1987",desc:"Vapor-infused London Dry with 10 botanicals. Distinctive blue bottle, fresh, complex, citrus-forward.",distribution:["United Kingdom","United States","Australia","Germany","France","Canada","Japan","Brazil","South Africa","Russia","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","China","India","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Mexico","Colombia","Argentina","Chile","Turkey","Thailand","Vietnam","Malaysia"]},
+  {id:"aviation-gin",name:"Aviation American Gin",producer:"Davos Brands / Moët Hennessy",type:"gin",origin:"United States",abv:"42%",founded:"2006",desc:"Portland, Oregon non-traditional gin. Cardamom, lavender, anise seed, sarsaparilla forward—juniper secondary.",distribution:["United States","United Kingdom","Canada","Australia","Germany","France","Japan","Netherlands","Sweden","Ireland","New Zealand","South Korea","China","Brazil","Spain","Italy","Switzerland","Denmark","UAE"]},
+  {id:"monkey-47",name:"Monkey 47 Schwarzwald Dry Gin",producer:"Distillery Stählemühle / Pernod Ricard",type:"gin",origin:"Germany",abv:"47%",founded:"2006",desc:"Black Forest gin. 47 botanicals from the region including cranberries. Complex, resinous, herbal, extraordinary.",distribution:["Germany","United States","United Kingdom","France","Australia","Canada","Japan","Netherlands","Sweden","Switzerland","Denmark","Norway","Italy","Spain","Ireland","China","South Korea","UAE","Singapore","Brazil","Austria","Belgium","Finland","Poland","New Zealand"]},
+  {id:"nolets-silver",name:"Nolet's Silver Dry Gin",producer:"Nolet Distillery",type:"gin",origin:"Netherlands",abv:"47.6%",founded:"1691",desc:"Holland's oldest distillery—11 generations. Rose, Turkish rose, white peach, raspberry. Fragrant, feminine, aromatic.",distribution:["Netherlands","United States","United Kingdom","Germany","France","Canada","Australia","Japan","Sweden","Denmark","Norway","Belgium","Switzerland","Ireland","Italy","Spain","China","South Korea","UAE","Singapore","New Zealand"]},
+  // VODKA
+  {id:"grey-goose",name:"Grey Goose",producer:"Bacardi",type:"vodka",origin:"France",abv:"40%",founded:"1997",desc:"French wheat vodka from Cognac, France. Ultra-premium, remarkably smooth, slightly sweet wheat character.",distribution:["France","United States","United Kingdom","Australia","Germany","Canada","Japan","Brazil","South Africa","Russia","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","China","India","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Greece","Turkey","Thailand","Vietnam","Malaysia","Colombia","Argentina","Chile","Portugal","Austria","Finland","Nigeria","Kenya","Jamaica","Bahamas"]},
+  {id:"belvedere",name:"Belvedere Vodka",producer:"LVMH",type:"vodka",origin:"Poland",abv:"40%",founded:"1993",desc:"Polish rye vodka from Żubrówka bison grass country. Vanilla, almond, cream, clean finish. Poland's prestige export.",distribution:["Poland","United States","United Kingdom","Germany","France","Australia","Canada","Japan","Brazil","South Africa","Russia","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","China","India","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Czech Republic","Greece","Turkey","Thailand","Colombia","Argentina","Chile","Austria","Finland"]},
+  {id:"ketel-one",name:"Ketel One",producer:"Nolet Distillery / Diageo",type:"vodka",origin:"Netherlands",abv:"40%",founded:"1983",desc:"Dutch wheat and grain vodka. Distilled in copper pot still 'Distilleerketel #1'. Crisp, clean, citrus, pepper finish.",distribution:["Netherlands","United States","United Kingdom","Germany","France","Australia","Canada","Japan","Brazil","South Africa","Mexico","Spain","Italy","Belgium","Sweden","China","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Austria","Poland","Czech Republic","Greece","Turkey","Colombia","Argentina","Chile"]},
+  {id:"absolut",name:"Absolut Vodka",producer:"Pernod Ricard",type:"vodka",origin:"Sweden",abv:"40%",founded:"1879",desc:"Swedish winter wheat vodka. Continuous distillation in 50+ column stills. Clean, smooth, subtle grain sweetness.",distribution:["Sweden","United States","United Kingdom","Australia","Germany","France","Canada","Japan","Brazil","South Africa","Russia","Mexico","Spain","Italy","Netherlands","Belgium","China","India","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Finland","Czech Republic","Greece","Turkey","Thailand","Vietnam","Malaysia","Colombia","Argentina","Chile","Portugal","Austria","Nigeria","Kenya","Jamaica","Philippines"]},
+  {id:"smirnoff",name:"Smirnoff No. 21",producer:"Diageo",type:"vodka",origin:"Russia",abv:"37.5%",founded:"1864",desc:"World's best-selling vodka by volume. Triple-distilled, charcoal-filtered. Clean, versatile, classic cocktail base.",distribution:["Russia","United States","United Kingdom","Australia","Germany","France","Canada","Japan","Brazil","South Africa","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","China","India","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Finland","Czech Republic","Greece","Turkey","Thailand","Vietnam","Malaysia","Colombia","Argentina","Chile","Portugal","Austria","Nigeria","Kenya","Jamaica","Philippines","Indonesia"]},
+  {id:"tito",name:"Tito's Handmade Vodka",producer:"Fifth Generation",type:"vodka",origin:"United States",abv:"40%",founded:"1997",desc:"Austin, Texas corn-based vodka. First craft distillery in Texas. Pot-distilled, 6 times. Gluten-free, mellow, slightly sweet.",distribution:["United States","Canada","United Kingdom","Australia","Germany","Japan","France","Netherlands","Sweden","Ireland","New Zealand","Brazil","Mexico","South Africa","UAE","Singapore","China","South Korea","Spain","Italy","Switzerland","Denmark","Norway","Austria","Belgium","Poland"]},
+  {id:"ciroc",name:"Cîroc Ultra-Premium Vodka",producer:"Diageo",type:"vodka",origin:"France",abv:"40%",founded:"2003",desc:"Made from Mauzac and Ugni Blanc grapes (not grain). Cold-fermented, 5x distilled. Fresh, fruity, crisp, citrus finish.",distribution:["France","United States","United Kingdom","Australia","Germany","Canada","Japan","Brazil","South Africa","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","China","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Czech Republic","Greece","Turkey","Thailand","Colombia","Argentina","Chile","Austria","Nigeria","Jamaica","Bahamas"]},
+  {id:"stolichnaya",name:"Stolichnaya Premium",producer:"Stoli Group",type:"vodka",origin:"Russia",abv:"40%",founded:"1938",desc:"Classic Soviet-era premium vodka. Wheat and rye from Tambov, filtered through quartz sand and charcoal. Crisp, clean.",distribution:["Russia","United States","United Kingdom","Germany","France","Australia","Canada","Japan","Brazil","South Africa","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","China","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Czech Republic","Greece","Turkey","Thailand","Colombia","Argentina","Chile","Austria","Finland"]},
+  // RUM
+  {id:"bacardi-superior",name:"Bacardi Superior",producer:"Bacardi Limited",type:"rum",origin:"Cuba",abv:"40%",founded:"1862",desc:"World's most awarded rum. Original Cuban formula relocated to Puerto Rico. Light, dry, clean. Foundation of the Daiquiri and Mojito.",distribution:["Cuba","United States","United Kingdom","Australia","Germany","France","Canada","Japan","Brazil","South Africa","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","China","India","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Colombia","Argentina","Chile","Portugal","Austria","Finland","Jamaica","Bahamas","Trinidad","Dominican Republic","Puerto Rico","Costa Rica","Panama","Honduras","El Salvador","Nicaragua","Guatemala","Philippines","Vietnam","Thailand","Malaysia","Indonesia","Nigeria","Kenya","Ghana"]},
+  {id:"captain-morgan",name:"Captain Morgan Original Spiced Rum",producer:"Diageo",type:"rum",origin:"Jamaica",abv:"35%",founded:"1944",desc:"World's #2 selling rum. Caribbean rum blended with spices and natural flavors. Vanilla, caramel, and warming spice.",distribution:["Jamaica","United States","United Kingdom","Australia","Germany","France","Canada","Japan","Brazil","South Africa","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","China","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Greece","Turkey","Thailand","Colombia","Argentina","Chile","Austria","Finland","Nigeria","Kenya","Jamaica","Bahamas","Trinidad","Dominican Republic","Philippines","Vietnam","Malaysia","Indonesia"]},
+  {id:"malibu",name:"Malibu Original",producer:"Pernod Ricard",type:"rum",origin:"Barbados",abv:"21%",founded:"1982",desc:"Caribbean rum with coconut flavor. Sweet, tropical, low ABV. Beach cocktail staple. Originated in South Africa.",distribution:["Barbados","United States","United Kingdom","Australia","Germany","France","Canada","Japan","Brazil","South Africa","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","China","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Colombia","Argentina","Chile","Austria","Finland","Thailand","Vietnam","Malaysia","Indonesia"]},
+  {id:"mount-gay-eclipse",name:"Mount Gay Eclipse",producer:"Mount Gay Distilleries",type:"rum",origin:"Barbados",abv:"40%",founded:"1703",desc:"World's oldest rum distillery (1703). Barbados aged blend. Oak, banana, vanilla, slight smokiness.",distribution:["Barbados","United States","United Kingdom","Germany","France","Canada","Australia","Japan","Netherlands","Sweden","Switzerland","Denmark","Norway","Ireland","New Zealand","Belgium","Italy","Spain","China","South Korea","UAE","Singapore","Brazil","Mexico","South Africa"]},
+  {id:"appleton-estate",name:"Appleton Estate Signature",producer:"J. Wray & Nephew",type:"rum",origin:"Jamaica",abv:"40%",founded:"1749",desc:"Jamaica's most awarded estate rum. Estate-grown sugarcane, copper pot still, genuine Jamaican funk (hogo).",distribution:["Jamaica","United States","United Kingdom","Germany","France","Canada","Australia","Japan","Netherlands","Sweden","Switzerland","Denmark","Norway","Ireland","New Zealand","Belgium","Italy","Spain","China","South Korea","UAE","Singapore","Brazil","Mexico","South Africa","Netherlands","Austria","Poland"]},
+  {id:"havana-club-7",name:"Havana Club 7 Años",producer:"Cuba Ron / Pernod Ricard",type:"rum",origin:"Cuba",abv:"40%",founded:"1878",desc:"Aged 7 years in white oak. The benchmark of Cuban rum. Rich, sweet, oak, tobacco, dried fruit. Officially unavailable in US.",distribution:["Cuba","France","Germany","United Kingdom","Spain","Italy","Mexico","Canada","Australia","Japan","Brazil","Netherlands","Belgium","Sweden","Switzerland","Denmark","Norway","Poland","Czech Republic","Russia","China","South Korea","UAE","Singapore","Ireland","New Zealand","Argentina","Chile","Colombia","Portugal","Austria","Finland","Greece","Turkey","Thailand","Vietnam","Malaysia"]},
+  {id:"zacapa-23",name:"Ron Zacapa Centenario 23",producer:"Industrias Licoreras de Guatemala / Diageo",type:"rum",origin:"Guatemala",abv:"40%",founded:"1976",desc:"Aged at 2,300m altitude in Guatemala. Solera system blend from 6–23 years. Rich, complex, toffee, cacao, tobacco.",distribution:["Guatemala","United States","United Kingdom","Germany","France","Canada","Australia","Japan","Netherlands","Sweden","Switzerland","Denmark","Norway","Italy","Spain","Ireland","New Zealand","Belgium","China","South Korea","UAE","Singapore","Brazil","Mexico","South Africa","Austria","Poland","Czech Republic","Greece","Turkey"]},
+  // TEQUILA / MEZCAL
+  {id:"jose-cuervo-gold",name:"Jose Cuervo Especial Gold",producer:"Becle / Jose Cuervo",type:"tequila",origin:"Mexico",abv:"38%",founded:"1795",desc:"World's best-selling tequila. Gold mixto tequila, partially barrel-aged. Citrus, vanilla, sweet agave. Ideal for margaritas.",distribution:["Mexico","United States","United Kingdom","Canada","Australia","Germany","France","Japan","Brazil","South Africa","Spain","Italy","Netherlands","Belgium","Sweden","China","India","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Colombia","Argentina","Chile","Russia","Greece","Turkey","Thailand","Vietnam","Malaysia","Indonesia","Philippines","Nigeria","Kenya"]},
+  {id:"patron-silver",name:"Patrón Silver",producer:"Patrón Spirits / Bacardi",type:"tequila",origin:"Mexico",abv:"40%",founded:"1989",desc:"Premium 100% Weber blue agave tequila. Small batch, tahona-crushed. Clean, light, fresh agave with citrus notes.",distribution:["Mexico","United States","United Kingdom","Canada","Australia","Germany","France","Japan","Brazil","South Africa","Spain","Italy","Netherlands","Belgium","Sweden","China","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Colombia","Argentina","Chile","Russia","Greece","Turkey","Thailand","Vietnam","Malaysia"]},
+  {id:"don-julio-blanco",name:"Don Julio Blanco",producer:"Don Julio / Diageo",type:"tequila",origin:"Mexico",abv:"38%",founded:"1942",desc:"Boutique-style 100% agave blanco. Grown in Los Altos highlands at elevation. Grassy, citrus, white pepper, clean finish.",distribution:["Mexico","United States","United Kingdom","Canada","Australia","Germany","France","Japan","Brazil","South Africa","Spain","Italy","Netherlands","Belgium","Sweden","China","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Colombia","Argentina","Chile","Russia","Greece","Turkey","Thailand","Malaysia"]},
+  {id:"clase-azul-reposado",name:"Clase Azul Reposado",producer:"Clase Azul México",type:"tequila",origin:"Mexico",abv:"40%",founded:"1997",desc:"Luxury reposado aged 8 months in American whiskey barrels. Iconic hand-painted ceramic decanter. Caramel, vanilla, oak.",distribution:["Mexico","United States","United Kingdom","Canada","Australia","Germany","France","Japan","China","UAE","Singapore","South Korea","Switzerland","Denmark","Sweden","Norway","Netherlands","Italy","Spain","Brazil","Argentina","Ireland","New Zealand","Russia"]},
+  {id:"casamigos-blanco",name:"Casamigos Blanco",producer:"Casamigos / Diageo",type:"tequila",origin:"Mexico",abv:"40%",founded:"2013",desc:"Founded by George Clooney and Rande Gerber. Highland blanco. Vanilla, citrus, subtle agave, smooth easy sip.",distribution:["Mexico","United States","United Kingdom","Canada","Australia","Germany","France","Japan","Netherlands","Sweden","Ireland","New Zealand","South Korea","China","Brazil","UAE","Singapore","Spain","Italy","Switzerland","Denmark","Norway","South Africa"]},
+  {id:"del-maguey-vida",name:"Del Maguey Vida Mezcal",producer:"Del Maguey Single Village Mezcal",type:"tequila",origin:"Mexico",abv:"42%",founded:"1995",desc:"Single-village Oaxacan mezcal from San Luis del Rio. Traditional earth pit roasting, clay pot distillation. Smoky, funky, complex.",distribution:["Mexico","United States","United Kingdom","Germany","France","Canada","Australia","Japan","Netherlands","Sweden","Denmark","Norway","Switzerland","Italy","Spain","Ireland","New Zealand","China","South Korea","UAE","Singapore","Brazil","Argentina"]},
+  // OTHER
+  {id:"baileys",name:"Baileys Original Irish Cream",producer:"Diageo",type:"other",origin:"Ireland",abv:"17%",founded:"1974",desc:"World's best-selling liqueur. Irish whiskey, cream, and chocolate. Served cold, in coffee, or baked into desserts.",distribution:["Ireland","United States","United Kingdom","Australia","Germany","France","Canada","Japan","Brazil","South Africa","Russia","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","China","India","UAE","Singapore","South Korea","New Zealand","Switzerland","Denmark","Norway","Poland","Colombia","Argentina","Chile","Portugal","Austria","Finland","Greece","Turkey","Thailand","Vietnam","Malaysia","Indonesia","Philippines","Nigeria","Kenya","Jamaica"]},
+  {id:"kahlua",name:"Kahlúa",producer:"Pernod Ricard",type:"other",origin:"Mexico",abv:"20%",founded:"1936",desc:"Mexican rum-based coffee liqueur. Arabica coffee, vanilla, sugar. Basis of White Russian, Espresso Martini.",distribution:["Mexico","United States","United Kingdom","Australia","Germany","France","Canada","Japan","Brazil","South Africa","Spain","Italy","Netherlands","Belgium","Sweden","China","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Colombia","Argentina","Chile","Russia","Greece","Turkey","Thailand","Malaysia","Philippines"]},
+  {id:"cointreau",name:"Cointreau",producer:"Rémy Cointreau",type:"other",origin:"France",abv:"40%",founded:"1875",desc:"French triple sec orange liqueur. Balanced bitter and sweet orange peel. Essential for Margarita, Cosmopolitan, Sidecar.",distribution:["France","United States","United Kingdom","Germany","Australia","Canada","Japan","Brazil","South Africa","Spain","Italy","Netherlands","Belgium","Sweden","China","Russia","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Mexico","Colombia","Argentina","Chile","Turkey","Thailand","Vietnam","Malaysia","Indonesia","Philippines","Austria","Portugal","Finland","Greece","India"]},
+  {id:"grand-marnier",name:"Grand Marnier Cordon Rouge",producer:"Marnier-Lapostolle / Campari",type:"other",origin:"France",abv:"40%",founded:"1880",desc:"Cognac-based orange liqueur with wild tropical oranges from Haiti. Richer, warmer, more complex than Cointreau.",distribution:["France","United States","United Kingdom","Germany","Australia","Canada","Japan","Brazil","South Africa","Spain","Italy","Netherlands","Belgium","Sweden","China","Russia","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Mexico","Colombia","Argentina","Chile","Turkey","Thailand","Malaysia","Austria","Portugal"]},
+  {id:"amaretto-disaronno",name:"Disaronno Originale",producer:"Illva Saronno",type:"other",origin:"Italy",abv:"28%",founded:"1525",desc:"Italian amaretto. Made from apricot kernel oil, absolute alcohol, sugar. Marzipan, cherry, caramel. Claims 16th-century origin.",distribution:["Italy","United States","United Kingdom","Germany","Australia","France","Canada","Japan","Brazil","South Africa","Spain","Netherlands","Belgium","Sweden","China","Russia","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Mexico","Argentina","Chile","Turkey","Thailand","Malaysia","Austria","Portugal","Greece","Finland","Colombia"]},
+  {id:"campari",name:"Campari",producer:"Campari Group",type:"other",origin:"Italy",abv:"25%",founded:"1860",desc:"Bitter Italian aperitivo. Secret recipe with 60+ ingredients. Deep red from artificial coloring (historically cochineal). Negroni foundation.",distribution:["Italy","United States","United Kingdom","Germany","Australia","France","Canada","Japan","Brazil","South Africa","Spain","Netherlands","Belgium","Sweden","China","Russia","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Mexico","Argentina","Chile","Turkey","Thailand","Malaysia","Austria","Portugal","Greece","Finland","Colombia","Peru","Venezuela"]},
+  {id:"aperol",name:"Aperol",producer:"Campari Group",type:"other",origin:"Italy",abv:"11%",founded:"1919",desc:"Orange Italian aperitivo. Lighter and sweeter than Campari. Rhubarb, chinotto, gentian. Famous for the Aperol Spritz.",distribution:["Italy","United States","United Kingdom","Germany","Australia","France","Canada","Japan","Brazil","South Africa","Spain","Netherlands","Belgium","Sweden","China","Russia","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Mexico","Argentina","Chile","Turkey","Thailand","Malaysia","Austria","Portugal","Greece","Finland","Colombia","India","Czech Republic","Hungary","Romania"]},
+  {id:"jagermeister",name:"Jägermeister",producer:"Mast-Jägermeister SE",type:"other",origin:"Germany",abv:"35%",founded:"1934",desc:"German herbal liqueur. 56 botanicals: citrus peel, licorice, anise, ginger, cloves. Served ice cold. Bombing culture.",distribution:["Germany","United States","United Kingdom","Australia","France","Canada","Japan","Brazil","South Africa","Spain","Italy","Netherlands","Belgium","Sweden","China","Russia","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Mexico","Argentina","Chile","Turkey","Thailand","Malaysia","Austria","Portugal","Greece","Finland","Colombia","Czech Republic","Hungary","Romania","Bulgaria","India","Vietnam","Philippines"]},
+  {id:"hennessy-vs",name:"Hennessy V.S.",producer:"Moët Hennessy / LVMH",type:"other",origin:"France",abv:"40%",founded:"1765",desc:"World's best-selling Cognac. Very Special — minimum 2 years in Limousin oak. Fruity, amber, toasted oak. Aged blend of 40+ eaux-de-vie.",distribution:["France","United States","China","United Kingdom","Australia","Germany","Canada","Japan","Brazil","South Africa","Russia","Mexico","Spain","Italy","Netherlands","Belgium","Sweden","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Colombia","Argentina","Chile","Thailand","Vietnam","Malaysia","Indonesia","Philippines","Nigeria","Ghana","Cameroon","Senegal","Ivory Coast","Kenya","Cuba","Jamaica","Trinidad","Barbados","Bahamas","India","Taiwan","Hong Kong"]},
+  {id:"remy-martin-vsop",name:"Rémy Martin V.S.O.P.",producer:"Rémy Cointreau",type:"other",origin:"France",abv:"40%",founded:"1738",desc:"Fine Champagne Cognac from Grande and Petite Champagne crus only. Fruit, spice, oak. Aged 4–12 years minimum.",distribution:["France","United States","China","United Kingdom","Australia","Germany","Canada","Japan","Brazil","South Africa","Russia","Spain","Italy","Netherlands","Belgium","Sweden","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Mexico","Colombia","Argentina","Chile","Thailand","Vietnam","Malaysia","Philippines","Nigeria","Ghana","India","Taiwan","Hong Kong","Indonesia"]},
+  {id:"drambuie",name:"Drambuie",producer:"William Grant & Sons",type:"other",origin:"United Kingdom",abv:"40%",founded:"1745",desc:"Scotch whisky liqueur with heather honey, herbs, and spices. Supposedly Bonnie Prince Charlie's personal recipe.",distribution:["United Kingdom","United States","Australia","Germany","France","Canada","Japan","Brazil","South Africa","Spain","Italy","Netherlands","Belgium","Sweden","China","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Russia","Mexico","Argentina","Chile","Turkey","Austria","Poland","Finland"]},
+  {id:"limoncello-luxardo",name:"Luxardo Limoncello",producer:"Girolamo Luxardo",type:"other",origin:"Italy",abv:"27%",founded:"1821",desc:"Artisanal Italian lemon liqueur from the Veneto. Intensely lemony, bright, sweet, summery. Essential after-dinner digestif.",distribution:["Italy","United States","United Kingdom","Germany","Australia","France","Canada","Japan","Brazil","Spain","Netherlands","Belgium","Sweden","Switzerland","Ireland","New Zealand","Denmark","Norway","Austria","China","South Korea","UAE","Singapore","South Africa","Russia","Greece","Turkey"]},
+  {id:"st-germain",name:"St-Germain Elderflower Liqueur",producer:"Bacardi",type:"other",origin:"France",abv:"20%",founded:"2007",desc:"French artisanal liqueur made from fresh elderflower blossoms hand-picked in the Alps each spring. Floral, lychee, pear.",distribution:["France","United States","United Kingdom","Germany","Australia","Canada","Japan","Netherlands","Sweden","Switzerland","Denmark","Norway","Italy","Spain","Ireland","Belgium","New Zealand","China","South Korea","UAE","Singapore","Austria","Finland","Poland","Czech Republic","Brazil","Mexico","Argentina","South Africa","Russia","Greece","Turkey"]},
+  {id:"frangelico",name:"Frangelico",producer:"Campari Group",type:"other",origin:"Italy",abv:"20%",founded:"1978",desc:"Italian hazelnut liqueur in habit-shaped bottle. Wild Tonda Gentile hazelnuts, cocoa, vanilla. Named after Fra Angelico.",distribution:["Italy","United States","United Kingdom","Germany","Australia","France","Canada","Japan","Brazil","South Africa","Spain","Netherlands","Belgium","Sweden","China","Russia","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Mexico","Argentina","Chile","Turkey","Austria","Portugal","Greece","Finland"]},
+  {id:"sambuca-molinari",name:"Sambuca Molinari",producer:"Molinari",type:"other",origin:"Italy",abv:"40%",founded:"1945",desc:"Classic Italian anise liqueur. Anis or elderberry. Often served with three coffee beans (con la mosca). Flaming shot tradition.",distribution:["Italy","United States","United Kingdom","Germany","Australia","France","Canada","Japan","Brazil","South Africa","Spain","Netherlands","Belgium","Sweden","Russia","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Mexico","Argentina","Chile","Turkey","Austria","Greece","Finland"]},
+  {id:"midori",name:"Midori Melon Liqueur",producer:"Suntory",type:"other",origin:"Japan",abv:"20%",founded:"1978",desc:"Bright green Japanese melon liqueur. Muskmelon flavored, sweet, vivid. Launched at Studio 54 in New York City.",distribution:["Japan","United States","United Kingdom","Germany","Australia","France","Canada","Netherlands","Sweden","Brazil","South Korea","UAE","Singapore","Ireland","New Zealand","Switzerland","Denmark","Norway","China","Italy","Spain","Mexico","Argentina","Chile","Thailand","Vietnam","Malaysia","Indonesia","Philippines"]},
+  {id:"galliano",name:"Galliano L'Autentico",producer:"Lucas Bols",type:"other",origin:"Italy",abv:"42.3%",founded:"1896",desc:"Italian herbal liqueur with 30 herbs and spices. Anise, licorice, cinnamon, lavender, vanilla. Famous tall bottle. Harvey Wallbanger.",distribution:["Italy","United States","United Kingdom","Germany","Australia","France","Canada","Japan","Netherlands","Sweden","Brazil","South Africa","Spain","Belgium","Ireland","New Zealand","Switzerland","Denmark","Norway","China","South Korea","UAE","Singapore","Austria","Poland","Russia","Mexico"]},
+  {id:"peach-schnapps",name:"DeKuyper Peach Schnapps",producer:"DeKuyper / Beam Suntory",type:"other",origin:"Netherlands",abv:"15%",founded:"1695",desc:"Classic fruit schnapps from Holland's oldest distillery. Sweet, peach candy flavor. Fuzzy Navel staple.",distribution:["Netherlands","United States","United Kingdom","Canada","Australia","Germany","France","Japan","Brazil","South Africa","Mexico","Spain","Italy","Belgium","Sweden","China","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Austria","Russia","Colombia","Argentina","Chile"]},
+  {id:"triple-sec-bols",name:"Bols Triple Sec",producer:"Lucas Bols",type:"other",origin:"Netherlands",abv:"38%",founded:"1575",desc:"World's oldest distillery brand. Classic orange triple sec made from dried Curaçao orange peels. Sweet, orange, clear.",distribution:["Netherlands","United States","United Kingdom","Canada","Australia","Germany","France","Japan","Brazil","South Africa","Mexico","Spain","Italy","Belgium","Sweden","China","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Austria","Russia","Colombia","Argentina","Chile","Turkey","Thailand","Vietnam","Malaysia","Indonesia","Philippines"]},
+  {id:"tia-maria",name:"Tia Maria",producer:"Illva Saronno / DI.VI.CO.",type:"other",origin:"Jamaica",abv:"20%",founded:"1946",desc:"Jamaican coffee liqueur made with Blue Mountain coffee, rum, vanilla. Slightly drier and more complex than Kahlúa.",distribution:["Jamaica","United States","United Kingdom","Germany","Australia","France","Canada","Japan","Brazil","South Africa","Spain","Italy","Netherlands","Belgium","Sweden","China","Russia","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Mexico","Argentina","Chile","Turkey","Austria","Portugal","Greece","Finland"]},
+  {id:"patron-xo",name:"Patrón XO Cafe",producer:"Patrón Spirits",type:"other",origin:"Mexico",abv:"35%",founded:"2000",desc:"Coffee and 100% agave tequila liqueur. Espresso intensity with smooth tequila finish. Less sweet than most coffee liqueurs.",distribution:["Mexico","United States","United Kingdom","Canada","Australia","Germany","France","Japan","Netherlands","Sweden","Ireland","New Zealand","South Korea","China","Brazil","UAE","Singapore","Spain","Italy","Switzerland","Denmark","Norway","South Africa"]},
+  {id:"alize-red",name:"Alizé Red Passion",producer:"Kobrand Corporation",type:"other",origin:"France",abv:"16%",founded:"1984",desc:"French cognac-based passion fruit liqueur with Vodka and tropical fruits. Colorful, sweet, easy sipper.",distribution:["France","United States","United Kingdom","Germany","Canada","Australia","Japan","Brazil","South Africa","Spain","Italy","Netherlands","Belgium","Sweden","China","UAE","Singapore","South Korea","Ireland","New Zealand","Mexico","Colombia","Argentina","Chile","Nigeria","Kenya","Jamaica"]},
+  {id:"benedictine",name:"Bénédictine D.O.M.",producer:"Bacardi",type:"other",origin:"France",abv:"40%",founded:"1510",desc:"French herbal liqueur from Fécamp, Normandy. 27 plants and spices. Honey, herbs, citrus. Monks' original secret recipe.",distribution:["France","United States","United Kingdom","Germany","Australia","Canada","Japan","Brazil","South Africa","Spain","Italy","Netherlands","Belgium","Sweden","China","Russia","UAE","Singapore","South Korea","Ireland","New Zealand","Switzerland","Denmark","Norway","Poland","Mexico","Argentina","Chile","Turkey","Austria","Portugal","Greece"]},
+  {id:"pisco-sour-tabernero",name:"Tabernero Pisco",producer:"Bodega Tabernero",type:"other",origin:"Peru",abv:"40%",founded:"1897",desc:"Peruvian pisco from Ica Valley. 100% quebranta grape. Clear, unaged brandy. Essential for Pisco Sour.",distribution:["Peru","United States","Chile","Brazil","United Kingdom","Germany","France","Canada","Australia","Japan","Netherlands","Sweden","Spain","Italy","Switzerland","Ireland","China","UAE","Singapore","Colombia","Argentina","New Zealand","South Africa","Mexico"]},
+  {id:"fernet-branca",name:"Fernet-Branca",producer:"Fratelli Branca",type:"other",origin:"Italy",abv:"39%",founded:"1845",desc:"Italian bitter amaro. 27 herbs from 4 continents. Menthol, myrrh, chamomile, cardamom. The bartender's handshake.",distribution:["Italy","United States","Argentina","Brazil","Germany","United Kingdom","France","Australia","Canada","Japan","Netherlands","Sweden","Switzerland","Spain","South Africa","Mexico","Colombia","Chile","Ireland","New Zealand","Denmark","Norway","China","South Korea","UAE","Singapore","Austria","Poland","Czech Republic","Greece","Turkey","Russia","Israel"]},
+
+  // ── OREGON CRAFT BEERS ─────────────────────────────────────────
+  {id:"deschutes-jubelale",name:"Jubelale",producer:"Deschutes Brewery",type:"beer",origin:"United States",abv:"8.0%",founded:"1988",desc:"Deschutes Brewery's beloved Bend, Oregon winter warmer. Annual release since 1988. Rich malt, dark fruit, spice. Each year features a different artist's label.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Australia","Japan","Germany"]},
+  {id:"deschutes-abominable",name:"Abominable Winter Ale",producer:"Hop Valley / Deschutes family",type:"beer",origin:"United States",abv:"8.5%",founded:"2000",desc:"Pacific Northwest winter ale. Caramel malt, citrus hops, warming alcohol. A West Coast cold-weather staple.",region:"Oregon",distribution:["United States","Canada"]},
+  {id:"deschutes-abominable-ba",name:"Barrel-aged Old Fashioned Abominable Winter Ale",producer:"Deschutes Brewery",type:"beer",origin:"United States",abv:"12.0%",founded:"2015",desc:"Abominable aged in bourbon barrels with bitters and orange peel. Rich vanilla, oak, orange, warming spice.",region:"Oregon",distribution:["United States"]},
+  {id:"deschutes-cda",name:"CDA",producer:"Deschutes Brewery",type:"beer",origin:"United States",abv:"6.5%",founded:"2010",desc:"Cascadian Dark Ale — a Pacific Northwest original. Black IPA character: roasted malt up front, aggressive Northwest hops finish. Deschutes helped define the style.",region:"Oregon",distribution:["United States","Canada"]},
+  {id:"pfriem-cda",name:"pFriem CDA",producer:"pFriem Family Brewers",type:"beer",origin:"United States",abv:"6.8%",founded:"2012",desc:"Hood River, Oregon Cascadian Dark Ale. Roasted malt backbone, resinous Pacific Northwest hops, dry bitter finish. Award-winning Hood River craft.",region:"Oregon",distribution:["United States","Canada"]},
+  {id:"zoiglhaus-porter",name:"Zoiglhaus Porter",producer:"Zoiglhaus Brewing Company",type:"beer",origin:"United States",abv:"5.8%",founded:"2015",desc:"Portland, Oregon German-inspired porter. Smooth, chocolate and roasted malt, inspired by traditional Bavarian Zoigl brewing communal tradition.",region:"Oregon",distribution:["United States"]},
+  {id:"zoiglhaus-cold-ipa",name:"Zoiglhaus Cold IPA",producer:"Zoiglhaus Brewing Company",type:"beer",origin:"United States",abv:"6.5%",founded:"2021",desc:"Portland Zoiglhaus Cold IPA — lager-fermented at cold temperatures with IPA hop bill. Crisp, clean, aggressively hopped. Cutting-edge Pacific Northwest style.",region:"Oregon",distribution:["United States"]},
+  {id:"breakside-shred-head",name:"Shred Head Winter Ale CGX Nuvo Variant",producer:"Breakside Brewery",type:"beer",origin:"United States",abv:"7.5%",founded:"2018",desc:"Breakside's experimental CGX Nuvo variant of their Shred Head Winter Ale. Portland craft with complex dry-hop and malt character. Limited release.",region:"Oregon",distribution:["United States"]},
+  {id:"northcoast-old-rasputin",name:"Old Rasputin Russian Imperial Stout",producer:"North Coast Brewing",type:"beer",origin:"United States",abv:"9.0%",founded:"1994",desc:"Fort Bragg, California classic. Big, bold, roasted coffee and dark chocolate. One of America's benchmark Imperial Stouts. On tap at Oregon winter fests.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Japan","Australia","Germany","Netherlands","Sweden"]},
+  {id:"old-man-thunder-cda",name:"Old Man Thunder CDA",producer:"North Coast / Winter Fest",type:"beer",origin:"United States",abv:"7.0%",founded:"2012",desc:"Cascadian Dark Ale in the Old Man Thunder style. Deep black color with a hop-forward Pacific Northwest character. Earthy, piney, roasty.",region:"Oregon",distribution:["United States"]},
+  {id:"for-the-joy-wcipa",name:"For The Joy WCIPA",producer:"West Coast Craft",type:"beer",origin:"United States",abv:"6.8%",founded:"2019",desc:"West Coast IPA with classic clean bitterness, dry finish, piney and citrus hops. No haze, no fluff—traditional West Coast precision.",region:"Oregon",distribution:["United States"]},
+  {id:"more-stuffin-wcipa",name:"More Stuffin Please WCIPA",producer:"Pacific Northwest Craft",type:"beer",origin:"United States",abv:"7.2%",founded:"2020",desc:"Holiday-themed West Coast IPA. Dry, bitter, citrus and dank hops. Pun-heavy label. Classic Pacific Northwest irreverence.",region:"Oregon",distribution:["United States"]},
+  {id:"gorillas-in-grist",name:"Gorillas in the Grist",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"8.8%",founded:"2017",desc:"Robust winter malt-forward ale. Dense grain bill, dark fruit, cocoa, roast. Playful Pacific Northwest wild-animal naming tradition.",region:"Oregon",distribution:["United States"]},
+  {id:"grumplestiltskin",name:"Grumplestiltskin Barleywine",producer:"Pacific Northwest Craft",type:"beer",origin:"United States",abv:"11.5%",founded:"2016",desc:"American Barleywine. Massive caramel and toffee malt, balancing West Coast bitterness. Winter sipping beer. Classic Oregon fest pourer.",region:"Oregon",distribution:["United States"]},
+  {id:"magnetic-north-stout",name:"Magnetic North Imperial Stout",producer:"Pacific Northwest Craft",type:"beer",origin:"United States",abv:"12.0%",founded:"2018",desc:"Imperial Stout. Jet black, full body, espresso, dark chocolate, figs, warming booze. Brewed for cold Oregon winters.",region:"Oregon",distribution:["United States"]},
+  {id:"big-chillin-stout",name:"Big Chillin' Vanilla Stout",producer:"Northwest Craft",type:"beer",origin:"United States",abv:"7.5%",founded:"2019",desc:"Stout conditioned on whole vanilla beans. Roasted malt, smooth chocolate, prominent vanilla sweetness. Dessert in a glass.",region:"Oregon",distribution:["United States"]},
+  {id:"it-not-a-phase",name:"It's Not a Phase Stout",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"8.2%",founded:"2020",desc:"Dry Irish-meets-imperial stout. Deep black, coffee roast, dry bitter finish. Zero apologies for being a stout. Pacific Northwest scene.",region:"Oregon",distribution:["United States"]},
+  {id:"plum-noir",name:"Plum Noir",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"7.8%",founded:"2019",desc:"Fruit-forward dark ale brewed with Oregon plums. Plum jam, toasted malt, slight tartness, dark fruit finish.",region:"Oregon",distribution:["United States"]},
+  {id:"charred-voyage",name:"Charred Voyage",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"10.5%",founded:"2018",desc:"Barrel-aged dark ale. Deep char, bourbon whiskey, vanilla, caramel. Named for the journey through the barrel.",region:"Oregon",distribution:["United States"]},
+  {id:"winter-porter",name:"Winter Porter",producer:"Oregon Regional Craft",type:"beer",origin:"United States",abv:"6.0%",founded:"2015",desc:"Classic Pacific Northwest winter porter. Chocolate and coffee malt character, smooth body, low bitterness. Reliable cold-season companion.",region:"Oregon",distribution:["United States"]},
+  {id:"dark-lager-oregon",name:"Czech Dark Lager",producer:"Zoiglhaus / Oregon Craft",type:"beer",origin:"United States",abv:"4.8%",founded:"2016",desc:"Czech-style tmavý ležák. Toasted bread, caramel, subtle roast, smooth lager finish. Brewed to honor Old World lager tradition in the New World.",region:"Oregon",distribution:["United States"]},
+  {id:"cozy-cabin-winter",name:"Cozy Cabin Spiced Winter Ale",producer:"Pacific Northwest Craft",type:"beer",origin:"United States",abv:"7.0%",founded:"2017",desc:"Spiced winter ale with cinnamon, nutmeg, and orange peel. Amber, warming, holiday-forward. Built for a fireplace and a flannel.",region:"Oregon",distribution:["United States"]},
+  {id:"brunos-winter-warmer",name:"Bruno's Winter Warmer",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"8.0%",founded:"2014",desc:"English-style winter warmer named for an unknown Bruno. Toffee, dried fruit, low hops, warming finish. Old-school craft ethos.",region:"Oregon",distribution:["United States"]},
+  {id:"patagonia-lager",name:"Patagonia Provisions Long Root Ale",producer:"Patagonia Provisions",type:"beer",origin:"United States",abv:"5.0%",founded:"2016",desc:"Certified organic ale made with Kernza perennial grain. Supports soil health and regenerative agriculture. Clean, crisp, slightly nutty. B-Corp brewed.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Germany","Australia","Japan","Netherlands"]},
+  {id:"sled-zeppelin",name:"Sled Zeppelin",producer:"Pacific Northwest Seasonal",type:"beer",origin:"United States",abv:"7.5%",founded:"2018",desc:"Heavy winter seasonal. Dense malt construction, layered dark fruit, subtle smoke. The name alone earns it a place on the tap list.",region:"Oregon",distribution:["United States"]},
+  {id:"dark-royale",name:"Dark Royale",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"9.0%",founded:"2019",desc:"Dark Belgian-inspired strong ale. Rich, complex, dried fig, cherry, warming alcohol. Regal pour for a cold night.",region:"Oregon",distribution:["United States"]},
+  {id:"guardian-angel",name:"Guardian Angel",producer:"Northwest Craft",type:"beer",origin:"United States",abv:"6.5%",founded:"2017",desc:"Amber ale with a heavenly hop profile. Balanced malt sweetness and citrus hops. Name nods to Oregon's outdoor rescue culture.",region:"Oregon",distribution:["United States"]},
+  {id:"saint-misbehavin",name:"S'Aint Misbehavin'",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"8.3%",founded:"2018",desc:"Belgian-style strong golden ale with irreverent name. Spicy yeast, pear, golden sugar. Looks innocent, drinks dangerously well.",region:"Oregon",distribution:["United States"]},
+  {id:"arrakis-winter",name:"Arrakis Winter Ale",producer:"Oregon Sci-Fi Craft",type:"beer",origin:"United States",abv:"8.5%",founded:"2020",desc:"Spiced winter ale named after the desert planet Dune. Cardamom, warm spice, caramel malt. The spice must flow.",region:"Oregon",distribution:["United States"]},
+  {id:"hoppy-holidays-iipa",name:"Hoppy Holidays Imperial IPA with Citrus and Spruce Tips",producer:"Oregon Holiday Craft",type:"beer",origin:"United States",abv:"9.5%",founded:"2016",desc:"Double IPA brewed with fresh spruce tips and citrus zest. Piney, resinous, bright citrus, massive bitterness. Quintessential Pacific Northwest Christmas beer.",region:"Oregon",distribution:["United States"]},
+  {id:"ol-saint-nick",name:"Ol' Saint Nick Winter Ale",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"7.2%",founded:"2015",desc:"Holiday winter ale. Cinnamon, brown sugar, gentle hops, warming malt. Festive label, reliable pour.",region:"Oregon",distribution:["United States"]},
+  {id:"snickerdoodle-cider",name:"Imperial Snickerdoodle Cookie Cider",producer:"Oregon Cidery",type:"beer",origin:"United States",abv:"8.0%",founded:"2019",desc:"Imperial hard cider with cinnamon, sugar, and vanilla — a snickerdoodle cookie in liquid form. Fermented apple base, dessert finish.",region:"Oregon",distribution:["United States"]},
+  {id:"shrieking-eels",name:"Shrieking Eels Belgian Holiday Ale",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"9.0%",founded:"2017",desc:"Belgian holiday strong ale brewed with fresh spruce tips. Princess Bride reference. Fruity yeast, spruce forest, warming. Only mostly dead.",region:"Oregon",distribution:["United States"]},
+  {id:"fa-la-la",name:"FA LA LA LA LA",producer:"Pacific Northwest Holiday Craft",type:"beer",origin:"United States",abv:"7.8%",founded:"2018",desc:"Christmas seasonal. Malt-forward winter warmer with holiday spice additions. The label does most of the work; the beer keeps it honest.",region:"Oregon",distribution:["United States"]},
+  {id:"casual-christmas",name:"Casual Christmas",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"6.5%",founded:"2019",desc:"Easy-drinking holiday ale. Not too boozy, not too spiced. For the person who shows up in a Santa hat but doesn't want to commit.",region:"Oregon",distribution:["United States"]},
+  {id:"old-school-amber",name:"Old School Amber",producer:"Oregon Regional",type:"beer",origin:"United States",abv:"5.5%",founded:"2010",desc:"Classic American amber ale. Caramel malt, mild hops, clean finish. A Pacific Northwest taproom staple that doesn't need a gimmick.",region:"Oregon",distribution:["United States"]},
+  {id:"chocolate-especial",name:"Chocolate Especial",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"8.5%",founded:"2017",desc:"Dark ale brewed with cacao nibs and specialty chocolate malt. Intense, dessert-like, rich. Spanish-tinged name, Pacific Northwest execution.",region:"Oregon",distribution:["United States"]},
+  {id:"magnanimous-ipa",name:"Magnanimous IPA",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"6.8%",founded:"2018",desc:"West Coast IPA with a generous hop bill. Grapefruit, pine, mango notes from modern hops. The name is doing some heavy lifting.",region:"Oregon",distribution:["United States"]},
+  {id:"holiday-fruit-monster",name:"Holiday Fruit Monster",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"10.5%",founded:"2016",desc:"Big winter ale with cherry, plum, cranberry, and orange additions. Malt backbone holds massive fruit character. A seasonal beast.",region:"Oregon",distribution:["United States"]},
+  {id:"neon-snowsuit-winter",name:"Neon Snowsuit Winter Ale",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"7.5%",founded:"2020",desc:"Bright, hop-forward winter ale. Unusual for the style: light color, vibrant citrus hops, clean finish. Like ski gear that actually works.",region:"Oregon",distribution:["United States"]},
+  {id:"bad-santa",name:"Bad Santa",producer:"Oregon Holiday Craft",type:"beer",origin:"United States",abv:"9.0%",founded:"2015",desc:"Imperial holiday ale. Way too boozy for the season, exactly right for the concept. Dark, rich, warming. No good behavior required.",region:"Oregon",distribution:["United States"]},
+  {id:"greater-tingle",name:"The Greater Tingle",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"8.2%",founded:"2019",desc:"Strong winter ale. Warming alcohol tingle, holiday spice, toffee malt. Possibly named after a certain Zelda character. Oregon will do that.",region:"Oregon",distribution:["United States"]},
+  {id:"isaac-birthday-brew",name:"Isaac's Birthday Spiced Brew",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"7.0%",founded:"2018",desc:"Spiced seasonal brewed to celebrate a specific Isaac's birthday. Cinnamon, allspice, amber malt. Hyper-local Pacific Northwest origin story.",region:"Oregon",distribution:["United States"]},
+  {id:"frozen-fractals-ipa",name:"Frozen Fractals IPA",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"7.5%",founded:"2021",desc:"Winter IPA named after the Frozen lyric. Simcoe and Mosaic hops, slight malt sweetness, clean bitter finish. The cold never bothered this IPA anyway.",region:"Oregon",distribution:["United States"]},
+  {id:"santa-sauce",name:"Santa's Sauce",producer:"Oregon Holiday Craft",type:"beer",origin:"United States",abv:"10.0%",founded:"2016",desc:"High-ABV holiday ale. Boozy, malty, festive. What Santa actually drinks after all those rooftop landings. A Pacific Northwest December tradition.",region:"Oregon",distribution:["United States"]},
+  {id:"white-dragon-cider",name:"White Dragon Imperial Vanilla Cider",producer:"Oregon Cidery",type:"beer",origin:"United States",abv:"9.0%",founded:"2018",desc:"Imperial hard cider with whole vanilla bean conditioning. Clear, bright apple character with creamy vanilla backbone. Dragon-sized pour.",region:"Oregon",distribution:["United States"]},
+  {id:"old-scrooge-ale",name:"Old Scrooge Christmas Ale",producer:"Oregon Craft",type:"beer",origin:"United States",abv:"8.0%",founded:"2014",desc:"English-inspired Christmas ale. Dark, malty, warming. Named for the reformed miser — it started bitter but mellowed with age.",region:"Oregon",distribution:["United States"]},
+  {id:"cranberry-mule",name:"Cranberry Mule",producer:"Oregon Craft Cidery",type:"beer",origin:"United States",abv:"5.5%",founded:"2020",desc:"Cranberry hard cider with ginger spice. Tart, bright, effervescent. Cider-meets-cocktail crossover. A holiday pour for people who don't drink beer.",region:"Oregon",distribution:["United States"]},
+
+  // ── WASHINGTON CRAFT BEERS ─────────────────────────────────────
+  {id:"elysian-space-dust",name:"Space Dust IPA",producer:"Elysian Brewing",type:"beer",origin:"United States",abv:"8.2%",founded:"1996",desc:"Seattle's Elysian Brewing flagship IPA. Citrus, tropical, and pine. Named for the hoppy cloud you drift into after drinking it. Massive Pacific Northwest icon.",region:"Washington",distribution:["United States","Canada","United Kingdom","Australia","Germany","Japan","Netherlands","Sweden"]},
+  {id:"georgetown-bodhizafa",name:"Bodhizafa IPA",producer:"Georgetown Brewing",type:"beer",origin:"United States",abv:"6.9%",founded:"2002",desc:"Seattle's Georgetown Brewing most popular IPA. Dry-hopped, bright citrus and tropical fruit. Washington's best-selling craft IPA. Named after a mythical surf guru.",region:"Washington",distribution:["United States","Canada"]},
+  {id:"fremont-lush",name:"Lush IPA",producer:"Fremont Brewing",type:"beer",origin:"United States",abv:"6.4%",founded:"2009",desc:"Seattle's Fremont Brewing flagship. Unfiltered Pacific Northwest IPA. Soft body, tropical hops, hazy appearance before hazy was a category.",region:"Washington",distribution:["United States","Canada","United Kingdom","Germany","Australia","Japan"]},
+  {id:"mannys-pale",name:"Manny's Pale Ale",producer:"Georgetown Brewing",type:"beer",origin:"United States",abv:"5.4%",founded:"2002",desc:"Georgetown Brewing's original workhorse. Seattle's most-poured tap for years. Classic American pale ale, balanced malt and hops, dangerously sessionable.",region:"Washington",distribution:["United States","Canada"]},
+  {id:"sky-kraken",name:"Sky Kraken",producer:"Washington Craft",type:"beer",origin:"United States",abv:"7.8%",founded:"2018",desc:"Pacific Northwest imperial red ale. Big caramel malt, aggressive West Coast hops. The name implies chaos; the beer delivers it in the best way.",region:"Washington",distribution:["United States","Canada"]},
+
+  // ── IDAHO CRAFT BEERS ─────────────────────────────────────────
+  {id:"idaho-highland-scotch",name:"Highland Scotch Ale",producer:"Idaho Brewing Company",type:"beer",origin:"United States",abv:"7.5%",founded:"1995",desc:"Idaho Falls Scottish-style wee heavy. Rich caramel malt, slight smoke, low hops. Brewed for Idaho's cold winters and mountain culture.",region:"Idaho",distribution:["United States"]},
+  {id:"idaho-dog-slobber",name:"Maggie's Dog Slobber Brown Ale",producer:"Idaho Brewing Company",type:"beer",origin:"United States",abv:"5.4%",founded:"1995",desc:"Idaho Falls beloved brown ale. Named after an actual dog. Nutty, chocolatey, mild, easy-drinking. One of Idaho's most recognizable craft beers.",region:"Idaho",distribution:["United States"]},
+  {id:"idaho-black-lager",name:"Idaho Black Lager",producer:"Idaho Brewing Company",type:"beer",origin:"United States",abv:"5.2%",founded:"1998",desc:"Schwarzbier-style black lager from Idaho Falls. Dark color, surprisingly light body. Roasted malt character without heaviness.",region:"Idaho",distribution:["United States"]},
+  {id:"idaho-red-warrior",name:"Red Warrior",producer:"Idaho Brewing Company",type:"beer",origin:"United States",abv:"6.0%",founded:"2000",desc:"Idaho amber/red ale. Caramel malt backbone, moderate hop bitterness. Nods to Idaho's Shoshone-Bannock heritage. Taproom staple.",region:"Idaho",distribution:["United States"]},
+  {id:"payette-sofa-king-delightful",name:"Sofa King Delightful",producer:"Payette Brewing",type:"beer",origin:"United States",abv:"5.2%",founded:"2011",desc:"Payette Brewing Boise golden ale. Crisp, light, crushable. A beer for people who love life on the couch as much as on the trail. Top Boise seller.",region:"Idaho",distribution:["United States"]},
+  {id:"payette-sofa-king-sunny",name:"Sofa King Sunny",producer:"Payette Brewing",type:"beer",origin:"United States",abv:"4.8%",founded:"2015",desc:"Payette Brewing wheat ale variant. Light, citrus, summer vibes. Part of the beloved Sofa King lineup that made Payette a Boise institution.",region:"Idaho",distribution:["United States"]},
+  {id:"payette-sofa-king-dreamy",name:"Sofa King Dreamy",producer:"Payette Brewing",type:"beer",origin:"United States",abv:"6.5%",founded:"2018",desc:"Payette Brewing hazy IPA variant. Soft, tropical, pillowy. The dreamiest of the Sofa King lineup. Boise's answer to the East Coast haze craze.",region:"Idaho",distribution:["United States"]},
+
+  // ── ARIZONA CRAFT BEERS ────────────────────────────────────────
+  {id:"barrio-tucson-blonde",name:"Barrio Blonde",producer:"Barrio Brewing",type:"beer",origin:"United States",abv:"4.8%",founded:"1991",desc:"Tucson's original craft brewer. Light, crisp golden ale. One of Arizona's longest-running craft beers. Desert-friendly easy drinker since 1991.",region:"Arizona",distribution:["United States"]},
+
+  // ── OREGON WINES ──────────────────────────────────────────────
+  {id:"adelsheim-pinot",name:"Adelsheim Vineyard Pinot Noir",producer:"Adelsheim Vineyard",type:"wine",origin:"United States",abv:"13.5%",founded:"1971",desc:"Willamette Valley pioneer. One of Oregon's founding wineries. Elegant, earthy Pinot Noir with dark cherry, forest floor, silky tannins.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland"]},
+  {id:"amity-pinot",name:"Amity Vineyards Pinot Noir",producer:"Amity Vineyards",type:"wine",origin:"United States",abv:"13.0%",founded:"1974",desc:"One of Oregon's earliest Pinot Noir producers. Old-school Willamette Valley winemaking. Earthy, spice-driven, Burgundian in spirit.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark","Switzerland"]},
+  {id:"andrew-rich-pinot",name:"Andrew Rich Wines Pinot Gris",producer:"Andrew Rich Wines",type:"wine",origin:"United States",abv:"13.0%",founded:"1995",desc:"Boutique Columbia Gorge winery. Balanced Pinot Gris with pear, spice, and crisp acidity. Oregon's rugged volcanic soils.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Japan","Netherlands","Sweden"]},
+  {id:"argyle-brut",name:"Argyle Winery Brut",producer:"Argyle Winery",type:"wine",origin:"United States",abv:"12.5%",founded:"1987",desc:"Oregon's finest sparkling wine producer. Willamette Valley Brut from Pinot Noir and Chardonnay. Extended tirage, toasty brioche, green apple, fine bubbles.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland"]},
+  {id:"arterberry-maresh",name:"Arterberry Maresh Pinot Noir",producer:"Arterberry Maresh",type:"wine",origin:"United States",abv:"13.5%",founded:"1983",desc:"Dundee Hills estate Pinot Noir from some of Oregon's oldest vines. Profound mineral intensity, red fruit, dusty tannins.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Japan","Germany","Netherlands","Sweden","Denmark","Switzerland"]},
+  {id:"domaine-serene-evenstad",name:"Domaine Serene Evenstad Reserve Pinot Noir",producer:"Domaine Serene",type:"wine",origin:"United States",abv:"14.0%",founded:"1989",desc:"Dundee Hills flagship. Burgundy-inspired Pinot Noir from Willamette Valley. Opulent, structured, dark cherry, spice, new oak. Oregon's answer to premier cru.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","France","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland","China","South Korea","Singapore"]},
+  {id:"elk-cove-pinot",name:"Elk Cove Vineyards Pinot Noir",producer:"Elk Cove Vineyards",type:"wine",origin:"United States",abv:"13.5%",founded:"1974",desc:"Willamette Valley estate winery. Multiple single-vineyard Pinot Noirs. Consistent, elegant, red fruit and earth. Family winery for 50 years.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland"]},
+  {id:"phelps-creek-pinot",name:"Phelps Creek Vineyards Pinot Noir",producer:"Phelps Creek Vineyards",type:"wine",origin:"United States",abv:"13.5%",founded:"1992",desc:"Columbia Gorge estate. Pinot Noir at the crossroads of Oregon and Washington. Red cherry, plum, earthy spice.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Japan","Netherlands","Sweden","Switzerland"]},
+  {id:"roco-winery-pinot",name:"Roco Winery Pinot Noir",producer:"Roco Winery",type:"wine",origin:"United States",abv:"14.0%",founded:"2003",desc:"Willamette Valley boutique producer. Former Argyle winemaker. Rich, full-bodied Oregon Pinot with dark fruit and French oak influence.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark"]},
+  {id:"stoller-estate-pinot",name:"Stoller Family Estate Pinot Noir",producer:"Stoller Family Estate",type:"wine",origin:"United States",abv:"13.5%",founded:"1993",desc:"Dundee Hills certified LEED Gold winery. Estate Pinot Noir from their 373-acre property. Cherry, raspberry, silky finish.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland"]},
+  {id:"willamette-valley-pinot",name:"Willamette Valley Vineyards Pinot Noir",producer:"Willamette Valley Vineyards",type:"wine",origin:"United States",abv:"13.5%",founded:"1983",desc:"Oregon's largest estate winery. Consistently outstanding value Willamette Valley Pinot. Certified sustainable. Raspberry, cherry, earthy complexity.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland","China"]},
+  {id:"wines-by-joe-pinot",name:"Wines by Joe Pinot Gris",producer:"Wines by Joe",type:"wine",origin:"United States",abv:"12.5%",founded:"2001",desc:"Willamette Valley approachable Pinot Gris. Peach, pear, floral. Accessible price, consistent quality. Oregon everyday white done right.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark"]},
+  {id:"scharffenberger-brut",name:"Scharffenberger Cellars Brut",producer:"Scharffenberger Cellars",type:"wine",origin:"United States",abv:"12.0%",founded:"1981",desc:"Mendocino County sparkling wine. Traditional method, Pinot Noir and Chardonnay. Clean, crisp, citrus and brioche. Anderson Valley cool-climate fruit.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark","Switzerland","Ireland"]},
+
+  // ── WASHINGTON WINES ──────────────────────────────────────────
+  {id:"barnard-griffin-riesling",name:"Barnard Griffin Riesling",producer:"Barnard Griffin",type:"wine",origin:"United States",abv:"12.0%",founded:"1983",desc:"Richland, Washington off-dry Riesling from Columbia Valley. Peach, apricot, honey, vibrant acidity. Washington State's longest-running female winemaker.",region:"Washington",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark"]},
+  {id:"hedges-family-cabernet",name:"Hedges Family Estate Red Mountain Cabernet",producer:"Hedges Family Estate",type:"wine",origin:"United States",abv:"14.0%",founded:"1987",desc:"Red Mountain AVA, Washington State's most prestigious appellation. Intense Cabernet Sauvignon. Dark fruit, tobacco, firm tannins from volcanic basalt soils.",region:"Washington",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark","Switzerland","Norway","France","Belgium","China"]},
+  {id:"kiona-late-harvest",name:"Kiona Vineyards Late Harvest Riesling",producer:"Kiona Vineyards",type:"wine",origin:"United States",abv:"9.0%",founded:"1979",desc:"Red Mountain pioneer. Botrytis-affected late harvest Riesling. Apricot jam, honey, bright acidity. Washington's oldest Red Mountain estate.",region:"Washington",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark"]},
+  {id:"lecole-semillon",name:"L'Ecole No 41 Semillon",producer:"L'Ecole No 41",type:"wine",origin:"United States",abv:"13.5%",founded:"1983",desc:"Walla Walla Valley Semillon from a converted 1915 schoolhouse. Rich, waxy, lanolin, fig, honey. America's finest expression of Semillon.",region:"Washington",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","France","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland","China"]},
+  {id:"long-shadows-cabernet",name:"Long Shadows Vintners Cabernet",producer:"Long Shadows Vintners",type:"wine",origin:"United States",abv:"14.5%",founded:"2002",desc:"Collaboration winery — hired world-famous winemakers to craft Washington State wines. Collector Cabernet from Columbia Valley. Powerful, polished, collectible.",region:"Washington",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","France","Netherlands","Sweden","Denmark","Switzerland","Norway","China","Hong Kong","Singapore"]},
+  {id:"waterbrook-merlot",name:"Waterbrook Merlot",producer:"Waterbrook Winery",type:"wine",origin:"United States",abv:"13.5%",founded:"1984",desc:"Walla Walla Valley estate Merlot. Plum, mocha, vanilla. Washington's Columbia Valley produces some of North America's best Merlot.",region:"Washington",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark","Switzerland"]},
+  {id:"woodward-canyon-cabernet",name:"Woodward Canyon Winery Artist Series Cabernet",producer:"Woodward Canyon Winery",type:"wine",origin:"United States",abv:"14.0%",founded:"1981",desc:"Walla Walla Valley landmark. Artist Series label rotates annually. Bordeaux-style Cabernet. One of Washington State's most celebrated producers.",region:"Washington",distribution:["United States","Canada","United Kingdom","Germany","Japan","France","Australia","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland","China"]},
+
+  // ── CALIFORNIA WINES ──────────────────────────────────────────
+  {id:"artesa-chardonnay",name:"Artesa Winery Chardonnay",producer:"Artesa Winery",type:"wine",origin:"United States",abv:"13.5%",founded:"1991",desc:"Napa Valley hillside winery with stunning architecture. Carneros Chardonnay — cool-climate, crisp, green apple, mineral, light oak.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Spain","Australia","Netherlands","Sweden","Denmark","Switzerland","Ireland","China","Mexico"]},
+  {id:"alexander-valley-cab",name:"Alexander Valley Vineyards Cabernet Sauvignon",producer:"Alexander Valley Vineyards",type:"wine",origin:"United States",abv:"14.0%",founded:"1975",desc:"Sonoma's Alexander Valley. Warm valley Cabernet with dark cherry, chocolate, soft tannins. Family estate on the original Cyrus Alexander homestead.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","Netherlands","Sweden","Denmark","Switzerland","Ireland","China"]},
+  {id:"amista-zinfandel",name:"Amista Vineyards Zinfandel",producer:"Amista Vineyards",type:"wine",origin:"United States",abv:"14.5%",founded:"2004",desc:"Dry Creek Valley Zinfandel. Big, spicy, jammy California Zin. Blackberry, pepper, mocha. Family winery in Healdsburg, Sonoma.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark"]},
+  {id:"bargetto-pinot-gris",name:"Bargetto Winery Pinot Gris",producer:"Bargetto Winery",type:"wine",origin:"United States",abv:"12.5%",founded:"1933",desc:"Santa Cruz oldest winery, founded by Italian immigrants post-Prohibition. Coastal Pinot Gris with citrus, pear, light spice.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark","Switzerland"]},
+  {id:"cakebread-chardonnay",name:"Cakebread Cellars Chardonnay",producer:"Cakebread Cellars",type:"wine",origin:"United States",abv:"13.5%",founded:"1973",desc:"Napa Valley benchmark Chardonnay. Rich, yet restrained. Stone fruit, toasted oak, butter. Found in every high-end restaurant in America.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","France","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland","China","South Korea","Singapore"]},
+  {id:"chateau-montelena-cabernet",name:"Chateau Montelena Cabernet Sauvignon",producer:"Chateau Montelena",type:"wine",origin:"United States",abv:"14.0%",founded:"1882",desc:"The winery that won the 1976 Paris Tasting — Judgment of Paris Chardonnay. Napa Valley Cabernet. Historic, structured, age-worthy.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","France","Australia","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland","China","South Korea","Singapore","Hong Kong"]},
+  {id:"duckhorn-merlot",name:"Duckhorn Vineyards Merlot",producer:"Duckhorn Vineyards",type:"wine",origin:"United States",abv:"14.0%",founded:"1976",desc:"Napa Valley Merlot pioneer. Three Palms Vineyard Merlot is an American icon. Plum, cherry, cocoa, polished tannins. Survived the Sideways anti-Merlot era.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","France","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland","China","South Korea","Singapore"]},
+  {id:"ferrari-carano-fume",name:"Ferrari-Carano Fumé Blanc",producer:"Ferrari-Carano Vineyards",type:"wine",origin:"United States",abv:"13.5%",founded:"1981",desc:"Dry Creek Valley Sauvignon Blanc/Fumé Blanc. Fig, melon, grapefruit, grassy. Known for impeccably manicured gardens as much as the wine.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","Netherlands","Sweden","Denmark","Switzerland","Ireland","China"]},
+  {id:"frank-family-chardonnay",name:"Frank Family Vineyards Chardonnay",producer:"Frank Family Vineyards",type:"wine",origin:"United States",abv:"14.0%",founded:"1992",desc:"Napa Valley Carneros Chardonnay. Rich, creamy, pineapple, lemon curd, toasted oak. Former Disney executive built this Calistoga icon.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland","China","South Korea"]},
+  {id:"j-lohr-seven-oaks",name:"J. Lohr Seven Oaks Cabernet Sauvignon",producer:"J. Lohr Vineyards",type:"wine",origin:"United States",abv:"13.5%",founded:"1974",desc:"Paso Robles Cabernet Sauvignon. Dark cherry, blackberry, mocha, gentle tannins. Extraordinary value from California's warm central coast.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","Netherlands","Sweden","Denmark","Switzerland","Ireland","China","South Korea","Mexico","Brazil"]},
+  {id:"marietta-cellars-nc",name:"Marietta Cellars Old Vine Red",producer:"Marietta Cellars",type:"wine",origin:"United States",abv:"13.5%",founded:"1980",desc:"Sonoma County non-vintage old vine red blend. Zinfandel, Petite Sirah, Cabernet. Bold, rustic, honest California red. Numbered cask releases.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark","Switzerland"]},
+  {id:"merry-edwards-sauv",name:"Merry Edwards Sauvignon Blanc",producer:"Merry Edwards Winery",type:"wine",origin:"United States",abv:"13.5%",founded:"1997",desc:"Russian River Valley dry Sauvignon Blanc. Fermented with Edwards' signature Merry yeast. Tropical, citrus, elegant. Hall of Fame winemaker.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","France","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland"]},
+  {id:"monticello-napa-chardonnay",name:"Monticello Vineyards Corley Reserve Chardonnay",producer:"Monticello Vineyards",type:"wine",origin:"United States",abv:"14.0%",founded:"1969",desc:"Oak Knoll District Napa Valley Chardonnay. One of Napa's oldest family estates. Orchard fruit, Burgundian complexity.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark","Switzerland","Ireland"]},
+  {id:"navarro-gewurz",name:"Navarro Vineyards Gewürztraminer",producer:"Navarro Vineyards",type:"wine",origin:"United States",abv:"12.5%",founded:"1974",desc:"Anderson Valley Gewürztraminer. Lychee, rose, ginger. America's finest expression of Gewürz. Sold direct-to-consumer for 50 years. Iconoclast Mendocino winery.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark","Switzerland"]},
+  {id:"newton-napa-cabernet",name:"Newton Vineyard Cabernet Sauvignon",producer:"Newton Vineyard",type:"wine",origin:"United States",abv:"14.5%",founded:"1977",desc:"Spring Mountain District Napa Cabernet. Mountain fruit intensity, structured tannins, blackcurrant, cedar. Unfiltered philosophy since founding.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","France","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland","China","Hong Kong"]},
+  {id:"peju-napa-cabernet",name:"Peju Province Winery Cabernet Sauvignon",producer:"Peju Province Winery",type:"wine",origin:"United States",abv:"14.5%",founded:"1983",desc:"Rutherford Bench Napa Valley Cabernet. Rich, ripe, dark cherry, sage, chocolate. Peju family estate, famous for its distinctive tower.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland","China"]},
+  {id:"quady-starboard",name:"Quady Winery Starboard",producer:"Quady Winery",type:"wine",origin:"United States",abv:"18.5%",founded:"1975",desc:"Madera, California Port-style wine. Tinta Roriz, Touriga Nacional. Rich, sweet, dark fruit, walnut. Quady pioneered California dessert wines.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark","Switzerland","Australia","Ireland"]},
+  {id:"ridge-zinfandel-lytton",name:"Ridge Lytton Springs Zinfandel",producer:"Ridge Vineyards",type:"wine",origin:"United States",abv:"14.5%",founded:"1962",desc:"Dry Creek Valley old-vine Zinfandel from pre-Prohibition vines. One of America's most celebrated wines. Won the 2006 Judgment of Paris 30th anniversary tasting.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","France","Australia","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland","China","South Korea","Singapore","Hong Kong"]},
+  {id:"saxum-jamesberry",name:"Saxum Vineyards James Berry Vineyard",producer:"Saxum",type:"wine",origin:"United States",abv:"15.5%",founded:"2002",desc:"Paso Robles Grenache/Syrah/Mourvèdre. 100 points from Robert Parker twice. Volcanic calcareous soils. One of California's most allocated wines.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","France","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland","China","Hong Kong","Singapore","South Korea"]},
+  {id:"seghesio-zin",name:"Seghesio Family Vineyards Sonoma Zinfandel",producer:"Seghesio Family Vineyards",type:"wine",origin:"United States",abv:"14.5%",founded:"1895",desc:"Alexander Valley Zinfandel from Italian immigrant family. Old-vine, bramble fruit, black pepper, Italian-American history in a bottle.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","Netherlands","Sweden","Denmark","Switzerland","Ireland","Italy","China"]},
+  {id:"trefethen-riesling",name:"Trefethen Family Vineyards Dry Riesling",producer:"Trefethen Family Vineyards",type:"wine",origin:"United States",abv:"12.5%",founded:"1968",desc:"Oak Knoll District Napa Valley dry Riesling. Rare in Napa. Stone fruit, citrus, mineral. Historic estate on National Register of Historic Places.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark","Switzerland","Norway","Ireland"]},
+  {id:"trinchero-napa-cab",name:"Trinchero Napa Valley Cabernet Sauvignon",producer:"Trinchero Family Estates",type:"wine",origin:"United States",abv:"14.5%",founded:"1948",desc:"Napa Valley Cabernet from Trinchero family, founders of Sutter Home. Dense, structured, dark fruit, plum. Family-run since post-WWII era.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","Netherlands","Sweden","Denmark","Switzerland","Ireland","China","Mexico","Brazil"]},
+
+  // ── IDAHO WINES ───────────────────────────────────────────────
+  {id:"clearwater-canyon-riesling",name:"Clearwater Canyon Cellars Riesling",producer:"Clearwater Canyon Cellars",type:"wine",origin:"United States",abv:"12.0%",founded:"2004",desc:"Lewis-Clark Valley AVA, Idaho. Riesling from the Snake River Valley region. Peach, apple blossom, bright acidity. One of Idaho's pioneering wineries.",region:"Idaho",distribution:["United States","Canada"]},
+  {id:"colters-creek-cabernet",name:"Colter's Creek Cabernet Franc",producer:"Colter's Creek",type:"wine",origin:"United States",abv:"13.5%",founded:"2009",desc:"Juliaetta, Idaho estate winery. Snake River Valley Cabernet Franc. Earthy, spice-forward, bell pepper, cassis. Pacific Northwest frontier wine country.",region:"Idaho",distribution:["United States","Canada"]},
+  {id:"telaya-balu",name:"Telaya Wine Co. Balu",producer:"Telaya Wine Co.",type:"wine",origin:"United States",abv:"14.0%",founded:"2008",desc:"Boise-based winery using Idaho and Columbia Valley grapes. Red Bordeaux-style blend. Dark fruit, chocolate, cedar. Named for the Sanskrit word for strength.",region:"Idaho",distribution:["United States","Canada"]},
+
+  // ── ARIZONA WINES ─────────────────────────────────────────────
+  {id:"aridus-mourvedre",name:"Aridus Wine Company Mourvèdre",producer:"Aridus Wine Company",type:"wine",origin:"United States",abv:"14.0%",founded:"2012",desc:"Willcox, Arizona Mourvèdre from high-elevation desert vineyards at 4,200 ft. Dark fruit, lavender, leather. Arizona's Rhône specialist.",region:"Arizona",distribution:["United States"]},
+  {id:"baron-herzog-chenin",name:"Baron Herzog Chenin Blanc",producer:"Baron Herzog",type:"wine",origin:"United States",abv:"12.5%",founded:"1986",desc:"California-made Kosher wine. Off-dry Chenin Blanc. Peach, pear, light honey. One of America's top Kosher wine producers, now based in California.",region:"Arizona",distribution:["United States","Canada","Israel","United Kingdom","Germany","Australia","France","Netherlands","Sweden","Switzerland","South Africa","Brazil","Argentina"]},
+  {id:"benton-lane-pinot",name:"Benton-Lane Winery Pinot Noir",producer:"Benton-Lane Winery",type:"wine",origin:"United States",abv:"13.5%",founded:"1992",desc:"Willamette Valley estate near Monroe, Oregon. Single-vineyard Pinot Noir. Dark cherry, wild herbs, earthy. 85-acre certified sustainable estate.",region:"Oregon",distribution:["United States","Canada","United Kingdom","Germany","Japan","Netherlands","Sweden","Denmark","Switzerland","Norway"]},
+  {id:"bogle-petite-sirah",name:"Bogle Vineyards Petite Sirah",producer:"Bogle Vineyards",type:"wine",origin:"United States",abv:"13.5%",founded:"1968",desc:"Sacramento Delta, California. Old-vine Petite Sirah. Dense, inky, blueberry, black pepper, grippy tannins. Multi-generational family farm winery.",region:"California",distribution:["United States","Canada","United Kingdom","Germany","Japan","Australia","Netherlands","Sweden","Denmark","Switzerland","Ireland","China","Mexico","Brazil"]},
+];
+
+
+// Country → ISO numeric code mapping for globe coloring
+const COUNTRY_TO_NUM = {
+  "United States":840,"Russia":643,"China":156,"United Kingdom":826,"Germany":276,
+  "France":250,"Japan":392,"Australia":36,"Canada":124,"Brazil":76,
+  "Mexico":484,"South Africa":710,"India":356,"South Korea":410,"Spain":724,
+  "Italy":380,"Netherlands":528,"Belgium":56,"Sweden":752,"Norway":578,
+  "Denmark":208,"Switzerland":756,"Ireland":372,"Poland":616,"Czech Republic":203,
+  "Argentina":32,"Chile":152,"Colombia":170,"Netherlands":528,"New Zealand":554,
+  "Portugal":620,"Austria":40,"Finland":246,"Greece":300,"Turkey":792,
+  "Thailand":764,"Vietnam":704,"Malaysia":458,"Indonesia":360,"Philippines":608,
+  "Singapore":702,"UAE":784,"Hong Kong":344,"Taiwan":158,"South Korea":410,
+  "Nigeria":566,"Kenya":404,"Ghana":288,"Cameroon":120,"Senegal":686,
+  "Ivory Coast":384,"Zimbabwe":716,"Zambia":894,"Mozambique":508,"Namibia":516,
+  "Botswana":72,"Morocco":504,"Algeria":12,"Tunisia":788,"Egypt":818,
+  "Peru":604,"Venezuela":862,"Ecuador":218,"Bolivia":68,"Paraguay":600,
+  "Uruguay":858,"Costa Rica":188,"Panama":591,"Honduras":340,"Guatemala":320,
+  "El Salvador":222,"Nicaragua":558,"Dominican Republic":214,"Cuba":192,
+  "Jamaica":388,"Trinidad":780,"Barbados":52,"Bahamas":44,"Puerto Rico":630,
+  "Israel":376,"Saudi Arabia":682,"Kuwait":414,"Bahrain":48,"Qatar":634,
+  "Jordan":400,"Lebanon":422,"Ukraine":804,"Romania":642,"Hungary":348,
+  "Bulgaria":100,"Serbia":688,"Croatia":191,"Slovakia":703,"Slovenia":705,
+  "Estonia":233,"Latvia":428,"Lithuania":440,"Iceland":352,"Luxembourg":442,
+  "Malta":470,"Cyprus":196,"Belarus":112,"Moldova":498,"Armenia":51,
+  "Georgia":268,"Azerbaijan":31,"Kazakhstan":398,"Uzbekistan":860,
+  "Mongolia":496,"North Korea":408,"Myanmar":104,"Cambodia":116,
+  "Laos":418,"Bangladesh":50,"Sri Lanka":144,"Nepal":524,"Pakistan":586,
+  "Afghanistan":4,"Iran":364,"Iraq":368,"Syria":760,"Yemen":887,
+  "Libya":434,"Sudan":729,"Ethiopia":231,"Tanzania":834,"Uganda":800,
+  "Rwanda":646,"Angola":24,"Mozambique":508,"Madagascar":450,
+  "New Caledonia":540,"Papua New Guinea":598,"Fiji":242,"Cuba":192,
+};
+
+const NUM_TO_COUNTRY = {};
+Object.entries(COUNTRY_TO_NUM).forEach(([c,n])=>NUM_TO_COUNTRY[n]=c);
+
+const TYPE_COLOR = {
+  beer:'#ffaa00', wine:'#d966ff', whiskey:'#ff8855',
+  gin:'#44ff77', vodka:'#22e5ff', rum:'#ff3d6b',
+  tequila:'#ffe844', other:'#6a80a0'
+};
+const TYPE_LABEL = {
+  beer:'BEER/ALE', wine:'WINE', whiskey:'WHISKEY/BOURBON',
+  gin:'GIN', vodka:'VODKA', rum:'RUM',
+  tequila:'TEQUILA/MEZCAL', other:'LIQUEUR/OTHER'
+};
+
+// ═══════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════
+let activeCategory = null, activeRegion = null, searchQuery = '', globeSearch = '';
+let selectedSpirit = null;
+let isDragging = false, lastPos = null, rotation = [0,-20];
+let world = null, countriesFeatures = [];
+let projection, pathGen, svg, g;
+
+// ═══════════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════════
+function getFiltered() {
+  return SPIRITS.filter(s => {
+    if(activeCategory && s.type !== activeCategory) return false;
+    if(searchQuery) {
+      const q = searchQuery.toLowerCase();
+      return s.name.toLowerCase().includes(q) || s.producer.toLowerCase().includes(q) ||
+        s.origin.toLowerCase().includes(q) || s.type.toLowerCase().includes(q) ||
+        s.desc.toLowerCase().includes(q);
+    }
+    return true;
+  });
+}
+
+function getOriginSpirits(country) {
+  return SPIRITS.filter(s => s.origin === country);
+}
+
+function getDistSpirits(country) {
+  return SPIRITS.filter(s => s.distribution && s.distribution.includes(country) && s.origin !== country);
+}
+
+function getDominantType(spirits) {
+  if(!spirits.length) return null;
+  const c = {};
+  spirits.forEach(s => c[s.type] = (c[s.type]||0)+1);
+  return Object.entries(c).sort((a,b)=>b[1]-a[1])[0][0];
+}
+
+function getGlobeCountryFill(numId) {
+  const country = NUM_TO_COUNTRY[numId];
+  if(!country) return null;
+  if(selectedSpirit) {
+    const s = selectedSpirit;
+    if(s.origin === country) return { color: TYPE_COLOR[s.type], opacity: 0.9, isOrigin: true, isDist: false };
+    if(s.distribution && s.distribution.includes(country)) return { color: '#3399ff', opacity: 0.6, isOrigin: false, isDist: true };
+    return { color: '#1a3055', opacity: 0.7, isOrigin: false, isDist: false };
+  }
+  const originSpirits = getOriginSpirits(country);
+  if(originSpirits.length) {
+    const dom = getDominantType(originSpirits);
+    return { color: TYPE_COLOR[dom], opacity: 0.5 + (originSpirits.length/20)*0.4, isOrigin: true, isDist: false };
+  }
+  return null;
+}
+
+function renderStats() {
+  const f = getFiltered();
+  const origins = new Set(f.map(s => s.origin)).size;
+  document.getElementById('stat-pills').innerHTML = `
+    <div class="pill" style="color:#22e5ff;border-color:#22e5ff33">${f.length} SPIRITS</div>
+    <div class="pill" style="color:#d966ff;border-color:#d966ff33">${origins} ORIGIN NATIONS</div>
+    ${selectedSpirit ? `<div class="pill" style="color:${TYPE_COLOR[selectedSpirit.type]};border-color:${TYPE_COLOR[selectedSpirit.type]}44">◉ ${selectedSpirit.name.toUpperCase()}</div>` : ''}
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════════════════════
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.view).classList.add('active');
+    if(tab.dataset.view === 'list-view') renderList();
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL
+// ═══════════════════════════════════════════════════════════════════
+function openPanel(title, subtitle, bodyHTML) {
+  document.getElementById('panel-country').textContent = title;
+  document.getElementById('panel-count').textContent = subtitle;
+  document.getElementById('panel-incidents').innerHTML = bodyHTML;
+  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('panel-backdrop').classList.add('show');
+}
+function closePanel() {
+  document.getElementById('detail-panel').classList.remove('open');
+  document.getElementById('panel-backdrop').classList.remove('show');
+}
+document.getElementById('panel-close').addEventListener('click', closePanel);
+document.getElementById('panel-backdrop').addEventListener('click', closePanel);
+
+function buildSpiritPanel(spirit) {
+  const distList = spirit.distribution || [];
+  const html = `
+    <div class="spirit-card" style="border-left-color:${TYPE_COLOR[spirit.type]}">
+      <div class="sc-name">${spirit.name}</div>
+      <div class="sc-sub">${spirit.producer}</div>
+      <div class="sc-meta">
+        <span class="sc-tag" style="border-color:${TYPE_COLOR[spirit.type]}55;color:${TYPE_COLOR[spirit.type]}">${TYPE_LABEL[spirit.type]}</span>
+        <span class="sc-tag">ABV ${spirit.abv}</span>
+        <span class="sc-tag">EST. ${spirit.founded}</span>
+      </div>
+      <div class="sc-desc">${spirit.desc}</div>
+      <div class="sc-origin">⊕ ORIGIN: ${spirit.origin.toUpperCase()}</div>
+    </div>
+    <div class="panel-section">DISTRIBUTED IN ${distList.length} COUNTRIES</div>
+    <div style="padding:0 2px">${distList.map(c => `<span class="dist-tag">${c.toUpperCase()}</span>`).join('')}</div>
+  `;
+  openPanel(spirit.name.toUpperCase(), `${TYPE_LABEL[spirit.type]} · ${spirit.origin.toUpperCase()}`, html);
+}
+
+function buildCountryPanel(country) {
+  const originSpirits = getOriginSpirits(country);
+  const distSpirits = getDistSpirits(country);
+  let html = '';
+  if(originSpirits.length) {
+    html += `<div class="panel-section">ORIGINATING HERE (${originSpirits.length})</div>`;
+    html += originSpirits.map(s => `
+      <div class="spirit-card" style="border-left-color:${TYPE_COLOR[s.type]};cursor:pointer" data-sid="${s.id}">
+        <div class="sc-name">${s.name}</div>
+        <div class="sc-sub">${s.producer}</div>
+        <div class="sc-meta">
+          <span class="sc-tag" style="color:${TYPE_COLOR[s.type]};border-color:${TYPE_COLOR[s.type]}44">${TYPE_LABEL[s.type]}</span>
+          <span class="sc-tag">ABV ${s.abv}</span>
+        </div>
+        <div class="sc-desc">${s.desc.substring(0,80)}...</div>
+      </div>`).join('');
+  }
+  if(distSpirits.length) {
+    html += `<div class="panel-section">ALSO DISTRIBUTED HERE (${distSpirits.length})</div>`;
+    html += distSpirits.slice(0,15).map(s => `
+      <div class="spirit-card" style="border-left-color:#3399ff88;cursor:pointer" data-sid="${s.id}">
+        <div class="sc-name" style="color:#cce8ff">${s.name}</div>
+        <div class="sc-sub">${s.origin}</div>
+        <div class="sc-meta"><span class="sc-tag" style="color:#3399ff;border-color:#3399ff44">${TYPE_LABEL[s.type]}</span></div>
+      </div>`).join('');
+    if(distSpirits.length > 15) html += `<div style="font-size:8px;color:var(--dim);padding:4px 2px">...AND ${distSpirits.length-15} MORE</div>`;
+  }
+  const subtitle = `${originSpirits.length} ORIGIN · ${distSpirits.length} DISTRIBUTED`;
+  openPanel(country.toUpperCase(), subtitle, html);
+  // Click on spirit cards
+  setTimeout(() => {
+    document.querySelectorAll('.spirit-card[data-sid]').forEach(el => {
+      el.addEventListener('click', () => {
+        const s = SPIRITS.find(x => x.id === el.dataset.sid);
+        if(s) { selectedSpirit = s; renderGlobe(); renderStats(); buildSpiritPanel(s); }
+      });
+    });
+  }, 50);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// GLOBE SEARCH
+// ═══════════════════════════════════════════════════════════════════
+document.getElementById('globe-search').addEventListener('input', e => {
+  globeSearch = e.target.value.trim();
+  renderGlobeSearch();
+});
+
+function renderGlobeSearch() {
+  const container = document.getElementById('globe-search-results');
+  if(!globeSearch) { container.innerHTML = ''; return; }
+  const q = globeSearch.toLowerCase();
+  const results = SPIRITS.filter(s =>
+    s.name.toLowerCase().includes(q) || s.producer.toLowerCase().includes(q) ||
+    s.type.toLowerCase().includes(q) || s.origin.toLowerCase().includes(q)
+  ).slice(0, 8);
+  container.innerHTML = results.length === 0
+    ? `<div style="font-size:8px;color:var(--dim);padding:4px">NO RESULTS</div>`
+    : results.map(s => `
+      <div class="sr-item ${selectedSpirit?.id===s.id?'selected':''}" data-sid="${s.id}">
+        <div class="sr-name">${s.name}</div>
+        <div class="sr-sub">${TYPE_LABEL[s.type]} · ${s.origin}</div>
+      </div>`).join('');
+  container.querySelectorAll('.sr-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const s = SPIRITS.find(x => x.id === el.dataset.sid);
+      if(!s) return;
+      selectedSpirit = s;
+      renderGlobe(); renderStats(); buildSpiritPanel(s);
+      container.querySelectorAll('.sr-item').forEach(i => i.classList.remove('selected'));
+      el.classList.add('selected');
+    });
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// GLOBE INIT
+// ═══════════════════════════════════════════════════════════════════
+async function initGlobe() {
+  const container = document.getElementById('globe-container');
+  const W = container.clientWidth, H = container.clientHeight;
+  const R = Math.min(W, H) * 0.42;
+  svg = d3.select('#globe').attr('width', W).attr('height', H);
+  svg.append('g').selectAll('circle')
+    .data(Array.from({length:250}, () => ({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+0.2,o:Math.random()*0.55+0.15})))
+    .enter().append('circle').attr('cx', d=>d.x).attr('cy', d=>d.y).attr('r', d=>d.r).attr('fill','white').attr('opacity', d=>d.o);
+
+  const defs = svg.append('defs');
+  const glow = defs.append('filter').attr('id','glow');
+  glow.append('feGaussianBlur').attr('stdDeviation','4').attr('result','coloredBlur');
+  const fm = glow.append('feMerge');
+  fm.append('feMergeNode').attr('in','coloredBlur');
+  fm.append('feMergeNode').attr('in','SourceGraphic');
+  const og = defs.append('radialGradient').attr('id','og').attr('cx','38%').attr('cy','38%').attr('r','60%');
+  og.append('stop').attr('offset','0%').attr('stop-color','#071428');
+  og.append('stop').attr('offset','100%').attr('stop-color','#030a14');
+
+  projection = d3.geoOrthographic().scale(R).translate([W/2,H/2]).clipAngle(90).rotate(rotation);
+  pathGen = d3.geoPath().projection(projection);
+  g = svg.append('g');
+  g.append('circle').attr('cx',W/2).attr('cy',H/2).attr('r',R).attr('fill','url(#og)').attr('filter','url(#glow)');
+  g.append('circle').attr('cx',W/2).attr('cy',H/2).attr('r',R+2).attr('fill','none').attr('stroke','#22e5ff').attr('stroke-width','1.5').attr('opacity','0.18');
+  g.append('circle').attr('cx',W/2).attr('cy',H/2).attr('r',R+7).attr('fill','none').attr('stroke','#22e5ff').attr('stroke-width','0.8').attr('opacity','0.07');
+
+  try {
+    const resp = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+    world = await resp.json();
+    countriesFeatures = topojson.feature(world, world.objects.countries).features;
+    renderGlobe();
+    setupGlobeInteractions();
+  } catch(e) { console.warn('World data failed', e); }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// RENDER GLOBE
+// ═══════════════════════════════════════════════════════════════════
+function renderGlobe() {
+  if(!world) return;
+  g.selectAll('.country,.graticule').remove();
+  g.append('path').datum(d3.geoGraticule()()).attr('class','graticule')
+    .attr('d',pathGen).attr('fill','none').attr('stroke','#1e3060').attr('stroke-width','0.4');
+
+  const tt = document.getElementById('tooltip');
+
+  g.selectAll('.country').data(countriesFeatures).enter().append('path').attr('class','country')
+    .attr('d', pathGen)
+    .attr('fill', d => {
+      const info = getGlobeCountryFill(+d.id);
+      return info ? info.color : '#1a3055';
+    })
+    .attr('fill-opacity', d => {
+      const info = getGlobeCountryFill(+d.id);
+      return info ? info.opacity : 0.75;
+    })
+    .attr('stroke', d => {
+      const info = getGlobeCountryFill(+d.id);
+      if(info && info.isOrigin) return info.color;
+      if(info && info.isDist) return '#3399ff';
+      return '#3a5580';
+    })
+    .attr('stroke-width', d => {
+      const info = getGlobeCountryFill(+d.id);
+      return (info && (info.isOrigin || info.isDist)) ? '0.9' : '0.4';
+    })
+    .on('mousemove touchmove', function(event, d) {
+      if(isDragging) return;
+      const country = NUM_TO_COUNTRY[+d.id];
+      if(!country) return;
+      const orig = getOriginSpirits(country);
+      const dist = getDistSpirits(country);
+      if(!orig.length && !dist.length) return;
+      const types = [...new Set(orig.map(s=>s.type))];
+      document.getElementById('tt-country').textContent = country.toUpperCase();
+      document.getElementById('tt-count').textContent = orig.length || '—';
+      document.getElementById('tt-level').textContent = dist.length || '—';
+      document.getElementById('tt-cats').innerHTML = types.map(t => `<span class="tt-cat" style="color:${TYPE_COLOR[t]};border-color:${TYPE_COLOR[t]}55">${TYPE_LABEL[t]}</span>`).join('');
+      posTooltip(event, tt); tt.classList.add('show');
+    })
+    .on('mouseleave touchend', () => tt.classList.remove('show'))
+    .on('click touchstart', function(event, d) {
+      if(isDragging) return;
+      const country = NUM_TO_COUNTRY[+d.id];
+      if(!country) return;
+      const orig = getOriginSpirits(country);
+      const dist = getDistSpirits(country);
+      if(!orig.length && !dist.length) return;
+      buildCountryPanel(country);
+    });
+}
+
+function posTooltip(event, tt) {
+  const rect = document.getElementById('globe-container').getBoundingClientRect();
+  const cx = event.touches ? event.touches[0].clientX : event.clientX;
+  const cy = event.touches ? event.touches[0].clientY : event.clientY;
+  let x = cx-rect.left+14, y = cy-rect.top-10;
+  if(x+210>rect.width) x = cx-rect.left-220;
+  if(y+140>rect.height) y = cy-rect.top-140;
+  tt.style.left = x+'px'; tt.style.top = y+'px';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// DRAG TO ROTATE
+// ═══════════════════════════════════════════════════════════════════
+function setupGlobeInteractions() {
+  const svgEl = document.getElementById('globe');
+  function onStart(x,y) { isDragging=false; lastPos=[x,y]; }
+  function onMove(x,y) {
+    if(!lastPos) return;
+    const dx=x-lastPos[0], dy=y-lastPos[1];
+    if(Math.abs(dx)>3||Math.abs(dy)>3) isDragging=true;
+    if(!isDragging) return;
+    rotation[0]+=dx*0.4; rotation[1]-=dy*0.4;
+    rotation[1]=Math.max(-90,Math.min(90,rotation[1]));
+    projection.rotate(rotation);
+    g.selectAll('path').attr('d',pathGen);
+    lastPos=[x,y];
+  }
+  function onEnd() {
+    lastPos=null;
+    setTimeout(()=>{ isDragging=false; renderGlobe(); },60);
+  }
+  svgEl.addEventListener('mousedown',e=>onStart(e.clientX,e.clientY));
+  window.addEventListener('mousemove',e=>{if(lastPos)onMove(e.clientX,e.clientY);});
+  window.addEventListener('mouseup',onEnd);
+  svgEl.addEventListener('touchstart',e=>{e.preventDefault();onStart(e.touches[0].clientX,e.touches[0].clientY);},{passive:false});
+  svgEl.addEventListener('touchmove',e=>{e.preventDefault();if(e.touches.length===1)onMove(e.touches[0].clientX,e.touches[0].clientY);},{passive:false});
+  svgEl.addEventListener('touchend',onEnd);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// LIST VIEW
+// ═══════════════════════════════════════════════════════════════════
+function renderList() {
+  const types = ['beer','wine','whiskey','gin','vodka','rum','tequila','other'];
+  const regions = ['Oregon','Washington','Idaho','Arizona','California'];
+  document.getElementById('filter-row').innerHTML =
+    `<button class="filter-btn ${!activeCategory?'active':''}" data-cat="" style="color:#fff;border-color:#ffffff44">ALL</button>` +
+    types.map(t=>`<button class="filter-btn ${activeCategory===t?'active':''}" data-cat="${t}" style="color:${TYPE_COLOR[t]};border-color:${TYPE_COLOR[t]}">${TYPE_LABEL[t]}</button>`).join('') +
+    `<span style="color:var(--dim);font-size:7px;padding:0 4px;align-self:center;white-space:nowrap">│</span>` +
+    regions.map(r=>`<button class="filter-btn ${activeRegion===r?'active':''}" data-region="${r}" style="color:#a0c8ff;border-color:#a0c8ff">${r.toUpperCase()}</button>`).join('');
+  document.querySelectorAll('.filter-btn[data-cat]').forEach(btn => {
+    btn.addEventListener('click', () => { activeCategory=btn.dataset.cat||null; renderList(); renderGlobe(); renderStats(); });
+  });
+  document.querySelectorAll('.filter-btn[data-region]').forEach(btn => {
+    btn.addEventListener('click', () => { activeRegion = activeRegion===btn.dataset.region ? null : btn.dataset.region; renderList(); renderStats(); });
+  });
+  const items = getFiltered().filter(s => !activeRegion || s.region===activeRegion).sort((a,b)=>a.name.localeCompare(b.name));
+  const regionTag = s => s.region ? `<span class="inc-tag" style="border-color:#a0c8ff33;color:#a0c8ff">${s.region.toUpperCase()}</span>` : '';
+  const regionLine = s => s.region ? `<span style="color:#a0c8ff">${s.region.toUpperCase()} · </span>` : '';
+  document.getElementById('list-container').innerHTML = items.length === 0
+    ? `<div style="color:var(--dim);font-size:10px;padding:20px;text-align:center">NO SPIRITS MATCH FILTER</div>`
+    : items.map(s =>
+      `<div class="list-item" style="border-left-color:${TYPE_COLOR[s.type]}" data-id="${s.id}">` +
+      `<div class="li-header"><div class="li-name">${s.name}</div><div class="li-abv">${s.abv}</div></div>` +
+      `<div class="li-producer">${s.producer}</div>` +
+      `<div class="li-origin">${regionLine(s)}${s.origin.toUpperCase()} · ${s.distribution?.length||0} COUNTRIES</div>` +
+      `<div class="li-tags"><span class="inc-tag" style="border-color:${TYPE_COLOR[s.type]}55;color:${TYPE_COLOR[s.type]}">${TYPE_LABEL[s.type]}</span>${regionTag(s)}</div>` +
+      `</div>`).join('');
+  document.querySelectorAll('.list-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const s = SPIRITS.find(x => x.id === el.dataset.id);
+      if(!s) return;
+      selectedSpirit = s;
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+      document.querySelector('[data-view="globe-view"]').classList.add('active');
+      document.getElementById('globe-view').classList.add('active');
+      renderGlobe(); renderStats(); buildSpiritPanel(s);
+    });
+  });
+}
+
+document.getElementById('search-input').addEventListener('input', e => {
+  searchQuery = e.target.value.trim();
+  renderList(); renderStats();
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════
+renderStats();
+initGlobe();
+renderList();
+</script>
+</body>
+</html>

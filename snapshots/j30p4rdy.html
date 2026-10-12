@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>LYR1C J30P4RDY</title>
+<!-- BLUE CODE -->
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #eef3fb;
+    color: #14213d;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100%;
+  }
+  #app { max-width: 760px; margin: 0 auto; padding: 12px; padding-bottom: 40px; }
+  header { text-align: center; padding: 14px 8px 10px; }
+  header h1 { margin: 0; font-size: 22px; color: #0b5ed7; letter-spacing: 0.5px; }
+  header p { margin: 4px 0 0; font-size: 13px; color: #5a6b8c; }
+
+  .card {
+    background: #fff; border-radius: 14px; padding: 20px;
+    box-shadow: 0 2px 10px rgba(11,94,215,0.08); text-align: center;
+  }
+  .genre-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 14px;
+  }
+  .genre-btn {
+    background: #fff; border: 1.5px solid #0b5ed7; color: #0b5ed7;
+    border-radius: 12px; padding: 16px 8px; font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+  .genre-btn:active { background: #dceafd; }
+  #setup input {
+    width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #cbd8f2;
+    font-size: 15px; margin: 12px 0;
+  }
+  .btn {
+    display: inline-block; background: #0b5ed7; color: #fff; border: none;
+    border-radius: 10px; padding: 11px 20px; font-size: 15px; font-weight: 600; cursor: pointer;
+  }
+  .btn:active { background: #084bb0; }
+  .btn.secondary { background: #fff; color: #0b5ed7; border: 1.5px solid #0b5ed7; }
+  .btn.correct { background: #1a9e58; }
+  .btn.wrong { background: #d5473e; }
+  .btn.small { padding: 7px 14px; font-size: 13px; }
+
+  #highScores { margin-top: 16px; text-align: left; }
+  #highScores h3 { font-size: 13px; color: #5a6b8c; margin: 0 0 6px; text-align: center; letter-spacing: 0.5px; }
+  #highScores ol { margin: 0; padding-left: 22px; font-size: 14px; }
+  #highScores li { padding: 2px 0; }
+  #highScores .empty { text-align: center; font-size: 13px; color: #a7b3c9; }
+
+  #genreBadge { display: none; text-align: center; font-size: 12px; color: #5a6b8c; margin-bottom: 6px; }
+  #genreBadge span { color: #0b5ed7; font-weight: 700; }
+
+  #turnBanner {
+    display: none; text-align: center; background: #0b5ed7; color: #fff;
+    font-size: 14px; font-weight: 700; border-radius: 10px; padding: 8px; margin-bottom: 8px;
+    letter-spacing: 0.3px;
+  }
+
+  @keyframes ddPop {
+    0% { transform: scale(0.3); opacity: 0; }
+    60% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes ddGlow {
+    0%, 100% { text-shadow: 0 0 6px rgba(217,154,0,0.35); }
+    50% { text-shadow: 0 0 24px rgba(217,154,0,0.95); }
+  }
+  @keyframes ddRing {
+    0% { box-shadow: 0 10px 40px rgba(0,0,0,0.2), 0 0 0 0 rgba(217,154,0,0.55); }
+    100% { box-shadow: 0 10px 40px rgba(0,0,0,0.2), 0 0 0 22px rgba(217,154,0,0); }
+  }
+  #ddTitle {
+    animation: ddPop 0.45s cubic-bezier(.25,1.4,.4,1), ddGlow 1.1s ease-in-out infinite 0.45s;
+  }
+  #clueCard.dd-flash { animation: ddRing 0.9s ease-out; }
+
+  #boardWrap { display: none; overflow-x: auto; margin-top: 6px; }
+  #board { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; min-width: 560px; }
+  .cat-header {
+    background: #0b5ed7; color: #fff; font-size: 9.5px; font-weight: 700; text-align: center;
+    padding: 8px 2px; border-radius: 8px; line-height: 1.15; min-height: 34px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tile {
+    background: #fff; border: 1.5px solid #cbd8f2; border-radius: 8px; text-align: center;
+    padding: 11px 2px; cursor: pointer; color: #0b5ed7;
+  }
+  .tile .lvl { font-size: 9px; font-weight: 700; display: block; opacity: 0.75; }
+  .tile .pts { font-size: 14px; font-weight: 700; display: block; }
+  .tile:active { background: #dceafd; }
+  .tile.used { background: #eef1f6; color: #b7c0d1; border-color: #e2e7f0; cursor: default; }
+
+  #scoreboard {
+    display: none; margin-top: 14px; background: #fff; border-radius: 12px; padding: 10px 14px;
+    box-shadow: 0 2px 8px rgba(11,94,215,0.06); font-size: 14px; flex-wrap: wrap; gap: 10px; justify-content: center;
+  }
+  .score-pill { background: #eef3fb; border-radius: 999px; padding: 6px 14px; font-weight: 600; }
+
+  #controls { display: none; text-align: center; margin-top: 10px; }
+
+  #overlay {
+    display: none; position: fixed; inset: 0; background: rgba(20,33,61,0.45);
+    align-items: flex-start; justify-content: center; padding: 16px; z-index: 10;
+    overflow-y: auto;
+  }
+  #clueCard {
+    background: #fff; border-radius: 16px; padding: 22px 20px; max-width: 480px; width: 100%;
+    text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    margin-top: 40px; margin-bottom: 40px;
+    max-height: 85vh; overflow-y: auto;
+  }
+  #clueCard .cat-val { font-size: 12px; color: #0b5ed7; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 10px; }
+  #ddTitle { font-size: 20px; font-weight: 800; color: #d99a00; margin-bottom: 8px; }
+  #clueText { font-size: 17px; line-height: 1.4; margin-bottom: 16px; }
+  #answerText { font-size: 15px; color: #5a6b8c; margin: 10px 0; min-height: 20px; }
+  #answerReveal { font-weight: 700; color: #14213d; }
+  .row-btns { display: flex; gap: 8px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+  #wagerInput {
+    width: 140px; padding: 10px; border-radius: 10px; border: 1px solid #cbd8f2;
+    font-size: 16px; text-align: center; margin: 10px 0;
+  }
+
+  #finalScreen {
+    display: none; background: #fff; border-radius: 14px; padding: 24px; text-align: center;
+    box-shadow: 0 2px 10px rgba(11,94,215,0.08);
+  }
+  #finalScreen h2 { color: #0b5ed7; margin-top: 0; }
+  #finalList { font-size: 16px; margin: 14px 0; }
+  #finalList div { padding: 4px 0; }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>LYR1C J30P4RDY</h1>
+    <p>Songs sorted by what they say — cities, colors, numbers, animals, weather, food</p>
+  </header>
+
+  <div class="card" id="genreScreen">
+    <div>Choose a genre</div>
+    <div class="genre-grid" id="genreGrid"></div>
+    <div id="highScores">
+      <h3>HIGH SCORES</h3>
+      <div id="highScoresList"></div>
+    </div>
+  </div>
+
+  <div class="card" id="setup" style="display:none;">
+    <div>Who's playing?</div>
+    <input id="playerInput" placeholder="e.g. Blue, Sam (leave blank for solo)" />
+    <div><button class="btn" id="startBtn">Start Game</button></div>
+  </div>
+
+  <div id="genreBadge">Genre: <span id="genreBadgeText"></span></div>
+  <div id="turnBanner"></div>
+  <div id="boardWrap"><div id="board"></div></div>
+  <div id="scoreboard"></div>
+  <div id="controls"><button class="btn secondary small" id="changeGenreBtn">Change Genre</button></div>
+
+  <div class="card" id="finalScreen">
+    <h2>Final Scores</h2>
+    <div id="finalList"></div>
+    <button class="btn" id="playAgainBtn">Play Again</button>
+  </div>
+</div>
+
+<div id="overlay">
+  <div id="clueCard">
+    <div id="ddTitle" style="display:none;">DAILY DOUBLE!</div>
+    <div class="cat-val" id="clueCatVal"></div>
+    <div id="clueBody"></div>
+    <div id="answerText"></div>
+    <div class="row-btns" id="clueBtns"></div>
+  </div>
+</div>
+
+<script>
+// BLUE CODE
+const CATS = ["CITY NAMES","COLORS","NUMBERS","ANIMALS","WEATHER","FOOD & DRINK"];
+const VALUES = [200,400,600,800,1000];
+
+const GENRES = {
+"POP": {
+  "CITY NAMES": [
+    [200,"Barry Manilow's disco-tinged 1978 hit tells of a nightclub dancer at a Rio de Janeiro beach.","Copacabana"],
+    [400,"The Beach Boys string together tropical island names in their 1988 hit.","Kokomo"],
+    [600,"Frank Sinatra's swinging standard promises that if you can make it in this city, you'll make it anywhere.","New York, New York"],
+    [800,"Taylor Swift's 2014 track welcomes newcomers to the bright lights of the city that never sleeps.","Welcome to New York"],
+    [1000,"Sufjan Stevens' sprawling 2005 indie-pop epic is a tribute to this Illinois city.","Chicago"]
+  ],
+  "COLORS": [
+    [200,"Coldplay's 2000 breakout single is titled after the color of stars in the lyrics.","Yellow"],
+    [400,"Beyoncé's 2006 hit warns a cheating man to hit the road, borrowing its title from a traffic signal color.","Green Light"],
+    [600,"Chris de Burgh's 1986 soft-pop ballad admires a woman in a specific colored dress.","Lady in Red"],
+    [800,"Prince's 1984 signature ballad is named for a shade of falling rain.","Purple Rain"],
+    [1000,"Harry Styles titled his shimmering 2020 single after a metallic color.","Golden"]
+  ],
+  "NUMBERS": [
+    [200,"Ariana Grande's 2019 hit centers on a specific number of jewelry pieces.","7 rings"],
+    [400,"Maroon 5's 2012 hit begs for just one additional night together.","One More Night"],
+    [600,"Britney Spears' 1998 debut single begs to be hit just one more time.","...Baby One More Time"],
+    [800,"Ciara's 2004 hit counts listeners through a two-part dance move.","1, 2 Step"],
+    [1000,"Bryan Adams looks back on a specific year in his 1984 anthem.","Summer of '69"]
+  ],
+  "ANIMALS": [
+    [200,"Katy Perry's 2013 anthem invokes the eye of a courageous big cat.","Roar"],
+    [400,"Elvis Presley told this crying canine it never caught a rabbit in his 1956 smash.","Hound Dog"],
+    [600,"Crazy Town's 2000 hit compares a woman to a delicate winged insect.","Butterfly"],
+    [800,"Maroon 5's 2014 hit is literally titled after wild creatures and hunting instincts.","Animals"],
+    [1000,"Flo Rida and Sia's 2012 hit calls out to reckless, untamed party animals.","Wild Ones"]
+  ],
+  "WEATHER": [
+    [200,"The Beatles welcome back this celestial object after a long cold winter in their 1969 track.","Here Comes the Sun"],
+    [400,"Rihanna offered shelter under this rain-blocking object in her 2007 chart-topper.","Umbrella"],
+    [600,"Lady Gaga and Ariana Grande's 2020 duet says they'd rather feel this wet weather than nothing at all.","Rain on Me"],
+    [800,"Bruno Mars' 2011 ballad promises this weather will fall if his love ever leaves.","It Will Rain"],
+    [1000,"Sheryl Crow's 2002 hit encourages soaking up this bright weather element.","Soak Up the Sun"]
+  ],
+  "FOOD & DRINK": [
+    [200,"DNCE's 2015 hit uses a dessert metaphor for a beach hookup.","Cake by the Ocean"],
+    [400,"Kelis' 2003 hit boasts that her frozen dairy dessert brings all the boys to the yard.","Milkshake"],
+    [600,"Maroon 5's 2015 hit repeats a sweet word begging for a little bit of affection.","Sugar"],
+    [800,"Ariana Grande's 2018 title track is named after a substance that sweetens things.","Sweetener"],
+    [1000,"Katy Perry's 2017 single compares herself to a five-star meal ready to be served.","Bon Appétit"]
+  ]
+},
+"ROCK": {
+  "CITY NAMES": [
+    [200,"Warren Zevon's werewolf howls through this English capital in his 1978 rock classic.","Werewolves of London"],
+    [400,"The Doors' 1971 tune paints a woman as this sprawling California city itself.","L.A. Woman"],
+    [600,"Kiss's 1976 anthem is titled after a Michigan city and rock itself.","Detroit Rock City"],
+    [800,"Augustana's 2005 song title is simply this Massachusetts city.","Boston"],
+    [1000,"Journey's 1978 song pays tribute to the city by the bay and its shining lights.","Lights"]
+  ],
+  "COLORS": [
+    [200,"The Rolling Stones' 1966 hit wants to see this color on doors, curtains, and even the sun.","Paint It Black"],
+    [400,"Elvis and Carl Perkins made this 1955/56 tune about ruined footwear in a particular color famous.","Blue Suede Shoes"],
+    [600,"Jimi Hendrix's 1967 psychedelic classic is named for a hazy shade of this color.","Purple Haze"],
+    [800,"David Bowie's 1975 hit celebrates golden years ahead.","Golden Years"],
+    [1000,"The Rolling Stones' 1967 ballad is titled after a woman named for a red gemstone color.","Ruby Tuesday"]
+  ],
+  "NUMBERS": [
+    [200,"U2's 1991 ballad insists this single-digit number is the loneliest.","One"],
+    [400,"Bryan Adams looks back on a specific year in his 1984 rock anthem.","Summer of '69"],
+    [600,"Chicago's 1970 hit title is a cryptic countdown of numbers.","25 or 6 to 4"],
+    [800,"Rush's 1976 sci-fi concept track is named after a specific future year.","2112"],
+    [1000,"Iron Maiden's 1982 metal classic is built around a notorious three-digit number.","The Number of the Beast"]
+  ],
+  "ANIMALS": [
+    [200,"Lynyrd Skynyrd's 1973 anthem asks a winged creature not to change.","Free Bird"],
+    [400,"The Beatles' 1968 track sings to a broken-winged bird waiting to fly.","Blackbird"],
+    [600,"Fleetwood Mac's 1975 song is named for a Welsh witch compared to a bird taking flight.","Rhiannon"],
+    [800,"Survivor's 1982 Rocky III anthem invokes the eye of this big cat.","Eye of the Tiger"],
+    [1000,"Jefferson Airplane's 1967 classic follows a girl down a hole after a white creature.","White Rabbit"]
+  ],
+  "WEATHER": [
+    [200,"The Beatles welcome back this celestial object after a long cold winter.","Here Comes the Sun"],
+    [400,"The Doors' 1971 song follows travelers moving through a storm.","Riders on the Storm"],
+    [600,"Creedence Clearwater Revival's 1971 hit asks if you've ever seen this falling from the sky.","Have You Ever Seen the Rain"],
+    [800,"Scorpions' 1984 hit says their love will hit you like this violent weather system.","Rock You Like a Hurricane"],
+    [1000,"Bob Dylan's 1963 folk-rock classic asks how many roads, its answer carried on this element.","Blowin' in the Wind"]
+  ],
+  "FOOD & DRINK": [
+    [200,"The Rolling Stones' 1971 hit is titled after a controversial sweetener with a color in front of it.","Brown Sugar"],
+    [400,"Warrant's 1990 glam-metal hit is titled after a fruity dessert used as innuendo.","Cherry Pie"],
+    [600,"The Beatles' 1968 White Album deep cut lists chocolate flavors, named after a fancy candy.","Savoy Truffle"],
+    [800,"Jimmy Buffett's 1978 hit craves a specific American sandwich while stranded on an island.","Cheeseburger in Paradise"],
+    [1000,"UB40's 1983 reggae cover pines over a specific dark alcoholic drink to numb heartbreak.","Red Red Wine"]
+  ]
+},
+"COUNTRY": {
+  "CITY NAMES": [
+    [200,"Glen Campbell's 1968 hit is named for a small Kansas town, sung by a lineman still on the line.","Wichita Lineman"],
+    [400,"Glen Campbell's 1969 hit is named after a Texas Gulf Coast city.","Galveston"],
+    [600,"George Strait's 1982 hit promises arrival in this Texas panhandle city by morning.","Amarillo by Morning"],
+    [800,"Waylon Jennings' 1977 outlaw country hit is titled after a tiny Texas town.","Luckenbach, Texas"],
+    [1000,"Merle Haggard's 1969 hit is named for an Oklahoma town he claims pride in.","Okie from Muskogee"]
+  ],
+  "COLORS": [
+    [200,"Crystal Gayle's 1977 hit wonders why her eyes changed to this color.","Don't It Make My Brown Eyes Blue"],
+    [400,"Dolly Parton's 1971 hit describes a childhood garment stitched from many different colors.","Coat of Many Colors"],
+    [600,"Alan Jackson's 1990 debut single chases the multicolored glow of an arc through honky-tonks.","Chasin' That Neon Rainbow"],
+    [800,"Taylor Swift's 2012 title track compares heartbreak to a fiery color.","Red"],
+    [1000,"Willie Nelson's 1975 classic finds this color of eyes crying in the rain.","Blue Eyes Crying in the Rain"]
+  ],
+  "NUMBERS": [
+    [200,"Kenny Rogers' 1989 ballad looks back on a two-decade span.","Twenty Years Ago"],
+    [400,"Alabama's 1985 tribute to blue-collar workers counts a specific weekly hour total.","Forty Hour Week (For a Livin')"],
+    [600,"Dolly Parton's 1980 anthem for the working class counts the hours of a standard shift.","9 to 5"],
+    [800,"Alan Jackson and Jimmy Buffett's 2003 duet insists it's always this hour somewhere.","It's Five O'Clock Somewhere"],
+    [1000,"Big & Rich's 2005 song commemorates a specific date in a fall month.","8th of November"]
+  ],
+  "ANIMALS": [
+    [200,"Brad Paisley's 2007 flirty hit uses tiny biting bugs as a pickup line.","Ticks"],
+    [400,"Blake Shelton's 2001 hit tells of a prison bloodhound that never quite catches escaped convicts.","Ol' Red"],
+    [600,"Big & Rich's 2004 party anthem plays on a saying about a four-legged ride and a cowboy.","Save a Horse (Ride a Cowboy)"],
+    [800,"This traditional folk-country song, recorded by many artists, mourns a beloved hound dog by name.","Old Blue"],
+    [1000,"Zac Brown Band's 2008 breakout hit centers on a fried poultry dish and a cold beer.","Chicken Fried"]
+  ],
+  "WEATHER": [
+    [200,"Garth Brooks' 1991 hit follows a storm and a cheating husband, named for a booming weather sound.","The Thunder Rolls"],
+    [400,"Luke Bryan's 2010 hit argues this wet weather turns into whiskey and corn.","Rain Is a Good Thing"],
+    [600,"Carrie Underwood's 2012 hit follows a girl who lets a violent spinning storm take her father's house.","Blown Away"],
+    [800,"Zac Brown Band's 2010 ballad is named after dropping temperatures pulling a trucker's heart back.","Colder Weather"],
+    [1000,"The Dixie Chicks' 2002 cover borrows its title from a sudden slope-collapsing natural event.","Landslide"]
+  ],
+  "FOOD & DRINK": [
+    [200,"Toby Keith's 2011 novelty hit is a tribute to a disposable red plastic drinking vessel.","Red Solo Cup"],
+    [400,"Deana Carter's 1996 coming-of-age hit is named after a sweet homemade drink shared one summer.","Strawberry Wine"],
+    [600,"Blake Shelton's 2011 hit compares his love to sweet nectar made by a buzzing insect.","Honey Bee"],
+    [800,"Zac Brown Band's 2008 hit describes wiggling toes in the sand with a frozen citrus cocktail in hand.","Toes"],
+    [1000,"Kenny Chesney's 2010 hit numbs a bad year with a cold drink south of the border.","Beer in Mexico"]
+  ]
+},
+"HIP-HOP": {
+  "CITY NAMES": [
+    [200,"Jay-Z and Alicia Keys built a 2009 anthem around this East Coast city's concrete jungle.","Empire State of Mind"],
+    [400,"Ludacris and Jermaine Dupri's 2001 duet welcomes listeners to this Georgia city.","Welcome to Atlanta"],
+    [600,"2Pac's 1996 track is titled after living and dying in the City of Angels.","To Live and Die in L.A."],
+    [800,"Nas' 1994 classic captures the mindset of surviving in New York's largest city.","N.Y. State of Mind"],
+    [1000,"Kendrick Lamar's 2012 title nods to his upbringing in this California city.","m.A.A.d city"]
+  ],
+  "COLORS": [
+    [200,"Kanye West's 2005 hit is titled after someone chasing wealth, using a shiny metallic color.","Gold Digger"],
+    [400,"Wiz Khalifa's 2010 Pittsburgh anthem repeats two colors representing his hometown's team.","Black and Yellow"],
+    [600,"Cardi B's breakout 2017 single borrows its title's color from a fellow rapper's name.","Bodak Yellow"],
+    [800,"Childish Gambino's 2016 falsetto hit takes its title from slang for a light complexion.","Redbone"],
+    [1000,"Rae Sremmurd's 2016 hit compares its subjects to legendary musicians using one color.","Black Beatles"]
+  ],
+  "NUMBERS": [
+    [200,"Jay-Z's 2003 hit lists 99 problems, though one famous thing isn't among them.","99 Problems"],
+    [400,"The Notorious B.I.G.'s 1997 track lays out ten rules for the drug trade.","Ten Crack Commandments"],
+    [600,"Drake's 2014 single boasts about going from zero to a triple-digit number real quick.","0 to 100"],
+    [800,"Eminem's 2002 title track is named after a Detroit road that splits the city.","8 Mile"],
+    [1000,"Bone Thugs-n-Harmony's 1995 hit celebrates the day welfare checks arrive.","1st of tha Month"]
+  ],
+  "ANIMALS": [
+    [200,"Lil Nas X's 2019 genre-blending smash brags about horses in the back of his vehicle.","Old Town Road"],
+    [400,"Travis Scott's 2017 hit borrows its title from a chaos theory concept named after a winged insect.","Butterfly Effect"],
+    [600,"Snoop Dogg's 1993 debut single declares it's a certain kind of canine world.","Who Am I (What's My Name)?"],
+    [800,"Desiigner's 2016 breakout hit is titled after a black-and-white bear.","Panda"],
+    [1000,"Travis Scott's 2016 hit is titled after a skin reaction whose name hides a farm bird.","Goosebumps"]
+  ],
+  "WEATHER": [
+    [200,"Nelly's 2002 hit complains it's so hot inside that clothes have to come off.","Hot in Herre"],
+    [400,"Flo Rida's 2009 hit featuring Wynter Gordon is titled after bright, warm weather.","Sunshine"],
+    [600,"Missy Elliott's iconic 1997 song and video reference falling precipitation.","The Rain (Supa Dupa Fly)"],
+    [800,"Ludacris and Ozuna's 2017 collaboration repeats a phrase about falling water droplets.","Rain Drop Drop Top"],
+    [1000,"Vanilla Ice's 1990 debut hit repeats a frozen-water phrase twice in the title.","Ice Ice Baby"]
+  ],
+  "FOOD & DRINK": [
+    [200,"Ludacris' 2004 hit is a tribute to a strain of marijuana using a fruity dessert name.","Blueberry Yum Yum"],
+    [400,"50 Cent's 2005 hit invites a girl to his shop full of sweet treats, laced with innuendo.","Candy Shop"],
+    [600,"Drake's 2021 opening track compares his poetry to a bubbly celebratory drink.","Champagne Poetry"],
+    [800,"Chance the Rapper's 2013 track is named after a sweet-smelling skin cream reminiscent of chocolate.","Cocoa Butter Kisses"],
+    [1000,"Lil Wayne's 2008 hit compares a girl to a sweet treat on a stick, loaded with innuendo.","Lollipop"]
+  ]
+},
+"ELECTRONIC": {
+  "CITY NAMES": [
+    [200,"Swedish House Mafia and Tinie Tempah's 2010 track names a Florida city and a Spanish party island.","Miami 2 Ibiza"],
+    [400,"Fergie's 2006 dance-pop hit borrows its hook from a nursery rhyme about a falling English landmark.","London Bridge"],
+    [600,"Baauer's 2013 viral instrumental takes its name from a Manhattan neighborhood dance craze.","Harlem Shake"],
+    [800,"Cascada's 2006 Eurodance track is titled simply after this Florida party city.","Miami"],
+    [1000,"Vengaboys' 1999 Eurodance cover invites listeners to this Spanish party island.","We're Going to Ibiza!"]
+  ],
+  "COLORS": [
+    [200,"New Order's 1983 synth-pop landmark is named for a gloomy color and the start of the work week.","Blue Monday"],
+    [400,"David Guetta and Sia's 2011 anthem borrows its title from a super-strong silvery metal.","Titanium"],
+    [600,"Klaxons' 2007 nu-rave hit is titled after shimmering metallic-colored scans.","Golden Skans"],
+    [800,"Eiffel 65's 1999 Eurodance novelty hit repeats one color describing a man's whole world.","Blue (Da Ba Dee)"],
+    [1000,"Kylie Minogue's 2018 title track anticipates something glowing and golden ahead.","Golden"]
+  ],
+  "NUMBERS": [
+    [200,"Daft Punk's 2000 house anthem repeats a phrase asking for a single additional time.","One More Time"],
+    [400,"ATB's 1998 trance classic is titled after a specific evening hour when the music takes over.","9pm (Till I Come)"],
+    [600,"Nena's 1983 synth-pop hit counts a fleet of red balloons.","99 Luftballons"],
+    [800,"Swedish House Mafia's 2010 anthem repeats a single-digit number in its title.","One (Your Name)"],
+    [1000,"Tommy Tutone's 1981 synth-tinged hit is built around a girl's phone number.","867-5309/Jenny"]
+  ],
+  "ANIMALS": [
+    [200,"Owl City's 2009 breakout single counts thousands of glowing insects outside his window.","Fireflies"],
+    [400,"Ylvis' 2013 viral electro-pop novelty hit wonders what sound this red woodland creature makes.","The Fox (What Does the Fox Say?)"],
+    [600,"Metric's 2009 synth-driven track is titled after an idiom for an outcast farm animal.","Black Sheep"],
+    [800,"Miike Snow's 2009 indie-electronic hit is simply titled after wild creatures.","Animal"],
+    [1000,"Selena Gomez and Marshmello's 2017 EDM-pop hit is titled after pack-hunting canines.","Wolves"]
+  ],
+  "WEATHER": [
+    [200,"Darude's 2000 trance instrumental is named after a swirling desert weather event.","Sandstorm"],
+    [400,"Marc Anthony and Pitbull's 2011 dance-pop hit is titled after falling water covering someone completely.","Rain Over Me"],
+    [600,"Calvin Harris' 2011 dance hit is titled after the daily appearance of daylight over the horizon.","Sunrise"],
+    [800,"Imagine Dragons' 2017 electronic-leaning hit repeats a booming weather sound as its title.","Thunder"],
+    [1000,"The Wanted's 2012 dance-pop hit is about pursuing daylight before it disappears.","Chasing the Sun"]
+  ],
+  "FOOD & DRINK": [
+    [200,"Robyn's 2018 comeback title track is named after a sweet, sticky food that also means \"darling.\"","Honey"],
+    [400,"Flo Rida's 2012 dance-pop hit featuring Wynter Gordon repeats a sweet word as its hook.","Sugar"],
+    [600,"Calvin Harris and Florence Welch's 2012 hit says she gave him nothing, but it was still this sugary-sounding word.","Sweet Nothing"],
+    [800,"Eurythmics' 1983 synth-pop classic promises these sugary-sounding visions are made of \"this.\"","Sweet Dreams (Are Made of This)"],
+    [1000,"CamelPhat and Elderbrook's 2017 deep house hit is named after a fizzy soft drink.","Cola"]
+  ]
+}
+};
+
+let genre = null;
+let players = [];
+let scores = {};
+let used = {};
+let current = null;
+let dailyDouble = null;
+let turnIndex = 0;
+
+const genreScreen = document.getElementById('genreScreen');
+const setupEl = document.getElementById('setup');
+const boardWrapEl = document.getElementById('boardWrap');
+const boardEl = document.getElementById('board');
+const scoreboardEl = document.getElementById('scoreboard');
+const controlsEl = document.getElementById('controls');
+const genreBadge = document.getElementById('genreBadge');
+const turnBanner = document.getElementById('turnBanner');
+const finalEl = document.getElementById('finalScreen');
+const overlayEl = document.getElementById('overlay');
+
+function currentPlayer() {
+  return players[turnIndex];
+}
+
+function renderTurnBanner() {
+  if (players.length > 1) {
+    turnBanner.style.display = 'block';
+    turnBanner.textContent = "▶ " + currentPlayer() + "'s turn";
+  } else {
+    turnBanner.style.display = 'none';
+  }
+}
+
+function renderGenreGrid() {
+  const grid = document.getElementById('genreGrid');
+  grid.innerHTML = '';
+  Object.keys(GENRES).forEach(g => {
+    const b = document.createElement('button');
+    b.className = 'genre-btn';
+    b.textContent = g;
+    b.addEventListener('click', () => {
+      genre = g;
+      genreScreen.style.display = 'none';
+      setupEl.style.display = 'block';
+    });
+    grid.appendChild(b);
+  });
+}
+
+function renderHighScores() {
+  const el = document.getElementById('highScoresList');
+  el.innerHTML = '<div class="empty">Loading...</div>';
+  fetch('?action=leaderboard')
+    .then(function(r) { return r.json(); })
+    .then(function(list) {
+      if (!list || !list.length) {
+        el.innerHTML = '<div class="empty">No scores yet — be the first.</div>';
+        return;
+      }
+      var rows = list.slice(0, 10).map(function(e) {
+        return '<li>' + escapeHtml(e.name) + ' — $' + e.score +
+          ' <span style="color:#a7b3c9;">(' + escapeHtml(e.genre) + ')</span></li>';
+      });
+      el.innerHTML = '<ol>' + rows.join('') + '</ol>';
+    })
+    .catch(function() {
+      el.innerHTML = '<div class="empty">Leaderboard unavailable right now.</div>';
+    });
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, function(c) {
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+  });
+}
+
+function submitScores(entries) {
+  entries.forEach(function(e) {
+    fetch('?action=leaderboard', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: e.name, genre: e.genre, score: e.score })
+    }).catch(function() { /* fail quietly, game still ends normally */ });
+  });
+}
+
+renderGenreGrid();
+renderHighScores();
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  const raw = document.getElementById('playerInput').value.trim();
+  players = raw ? raw.split(',').map(s=>s.trim()).filter(Boolean) : ['You'];
+  scores = {}; used = {}; turnIndex = 0;
+  players.forEach(p => scores[p] = 0);
+
+  const allCells = [];
+  CATS.forEach(cat => VALUES.forEach(val => allCells.push({cat, val})));
+  dailyDouble = allCells[Math.floor(Math.random() * allCells.length)];
+
+  setupEl.style.display = 'none';
+  finalEl.style.display = 'none';
+  boardWrapEl.style.display = 'block';
+  scoreboardEl.style.display = 'flex';
+  controlsEl.style.display = 'block';
+  genreBadge.style.display = 'block';
+  document.getElementById('genreBadgeText').textContent = genre;
+  renderBoard();
+  renderScoreboard();
+  renderTurnBanner();
+});
+
+document.getElementById('changeGenreBtn').addEventListener('click', resetToGenreScreen);
+document.getElementById('playAgainBtn').addEventListener('click', resetToGenreScreen);
+
+function resetToGenreScreen() {
+  genre = null; players = []; scores = {}; used = {}; current = null; dailyDouble = null; turnIndex = 0;
+  boardWrapEl.style.display = 'none';
+  scoreboardEl.style.display = 'none';
+  controlsEl.style.display = 'none';
+  genreBadge.style.display = 'none';
+  turnBanner.style.display = 'none';
+  finalEl.style.display = 'none';
+  setupEl.style.display = 'none';
+  genreScreen.style.display = 'block';
+  renderHighScores();
+}
+
+function renderBoard() {
+  boardEl.innerHTML = '';
+  CATS.forEach(cat => {
+    const h = document.createElement('div');
+    h.className = 'cat-header';
+    h.textContent = cat;
+    boardEl.appendChild(h);
+  });
+  VALUES.forEach((val, idx) => {
+    CATS.forEach(cat => {
+      const key = cat + '|' + val;
+      const tile = document.createElement('div');
+      tile.className = 'tile' + (used[key] ? ' used' : '');
+      if (!used[key]) {
+        tile.innerHTML = '<span class="lvl">LEVEL ' + (idx+1) + '</span><span class="pts">$' + val + '</span>';
+        tile.addEventListener('click', () => openClue(cat, val));
+      }
+      boardEl.appendChild(tile);
+    });
+  });
+}
+
+function renderScoreboard() {
+  scoreboardEl.innerHTML = '';
+  players.forEach((p, i) => {
+    const pill = document.createElement('div');
+    pill.className = 'score-pill';
+    if (players.length > 1 && i === turnIndex) {
+      pill.style.background = '#0b5ed7';
+      pill.style.color = '#fff';
+    }
+    pill.textContent = p + ': $' + scores[p];
+    scoreboardEl.appendChild(pill);
+  });
+}
+
+function isDailyDouble(cat, val) {
+  return dailyDouble && dailyDouble.cat === cat && dailyDouble.val === val;
+}
+
+function openClue(cat, val) {
+  const key = cat + '|' + val;
+  used[key] = true;
+  const clue = GENRES[genre][cat].find(c => c[0] === val);
+  current = { cat, val, answer: clue[2] };
+  renderBoard();
+
+  if (isDailyDouble(cat, val)) {
+    openDailyDouble(cat, val, clue);
+  } else {
+    document.getElementById('ddTitle').style.display = 'none';
+    document.getElementById('clueCard').classList.remove('dd-flash');
+    const lvl = VALUES.indexOf(val) + 1;
+    document.getElementById('clueCatVal').textContent = cat + ' — Level ' + lvl + ' ($' + val + ')';
+    document.getElementById('clueBody').innerHTML = '<div id="clueText">' + clue[1] + '</div>';
+    document.getElementById('answerText').innerHTML = '';
+    const btns = document.getElementById('clueBtns');
+    btns.innerHTML = '';
+    const revealBtn = document.createElement('button');
+    revealBtn.className = 'btn secondary';
+    revealBtn.textContent = 'Reveal Answer';
+    revealBtn.addEventListener('click', revealAnswer);
+    btns.appendChild(revealBtn);
+    overlayEl.style.display = 'flex';
+  }
+}
+
+function openDailyDouble(cat, val, clue) {
+  const card = document.getElementById('clueCard');
+  document.getElementById('ddTitle').style.display = 'block';
+  document.getElementById('clueCatVal').textContent = cat + ' — you found a Daily Double';
+  document.getElementById('clueBody').innerHTML = '';
+  document.getElementById('answerText').innerHTML = '';
+  document.getElementById('clueBtns').innerHTML = '';
+  card.classList.remove('dd-flash');
+  void card.offsetWidth; // restart animation
+  card.classList.add('dd-flash');
+  overlayEl.style.display = 'flex';
+  setTimeout(() => askWager(clue), 650);
+}
+
+function askWager(clue) {
+  const cp = currentPlayer();
+  const maxWager = Math.max(scores[cp], 1000);
+  const defaultWager = Math.min(500, maxWager);
+  const body = document.getElementById('clueBody');
+  body.innerHTML = '<div>' + escapeHtml(cp) + ', place your wager (up to $' + maxWager + '):</div>' +
+    '<input id="wagerInput" type="text" inputmode="numeric" pattern="[0-9]*" value="' + defaultWager + '" />';
+  const btns = document.getElementById('clueBtns');
+  btns.innerHTML = '';
+  const goBtn = document.createElement('button');
+  goBtn.className = 'btn';
+  goBtn.textContent = 'Lock In Wager';
+  goBtn.addEventListener('click', () => {
+    const raw = document.getElementById('wagerInput').value.replace(/[^0-9]/g, '');
+    let wager = parseInt(raw, 10);
+    if (isNaN(wager) || wager < 5) wager = 5;
+    if (wager > maxWager) wager = maxWager;
+    current.wager = wager;
+    current.isDD = true;
+    showDailyDoubleClue(clue);
+  });
+  btns.appendChild(goBtn);
+}
+
+function showDailyDoubleClue(clue) {
+  document.getElementById('clueBody').innerHTML = '<div id="clueText">' + clue[1] + '</div>';
+  const btns = document.getElementById('clueBtns');
+  btns.innerHTML = '';
+  const revealBtn = document.createElement('button');
+  revealBtn.className = 'btn secondary';
+  revealBtn.textContent = 'Reveal Answer';
+  revealBtn.addEventListener('click', revealAnswer);
+  btns.appendChild(revealBtn);
+}
+
+function revealAnswer() {
+  document.getElementById('answerText').innerHTML =
+    'Answer: <span id="answerReveal">' + current.answer + '</span>';
+  const btns = document.getElementById('clueBtns');
+  btns.innerHTML = '';
+  const cp = currentPlayer();
+
+  const yes = document.createElement('button');
+  yes.className = 'btn correct';
+  const no = document.createElement('button');
+  no.className = 'btn wrong';
+
+  if (current.isDD) {
+    yes.textContent = cp + ' got it (+$' + current.wager + ')';
+    yes.addEventListener('click', () => finishAnswer(true));
+    no.textContent = cp + ' missed it (-$' + current.wager + ')';
+    no.addEventListener('click', () => finishAnswer(false));
+  } else {
+    yes.textContent = cp + ' got it right';
+    yes.addEventListener('click', () => finishAnswer(true));
+    no.textContent = cp + ' missed it';
+    no.addEventListener('click', () => finishAnswer(false));
+  }
+  btns.appendChild(yes);
+  btns.appendChild(no);
+}
+
+function finishAnswer(correct) {
+  const cp = currentPlayer();
+  if (current.isDD) {
+    scores[cp] += correct ? current.wager : -current.wager;
+  } else if (correct) {
+    scores[cp] += current.val;
+  }
+  if (!correct && players.length > 1) {
+    turnIndex = (turnIndex + 1) % players.length;
+  }
+  closeClue();
+}
+
+function closeClue() {
+  overlayEl.style.display = 'none';
+  document.getElementById('clueCard').classList.remove('dd-flash');
+  current = null;
+  renderScoreboard();
+  renderTurnBanner();
+  checkDone();
+}
+
+function checkDone() {
+  const total = CATS.length * VALUES.length;
+  if (Object.keys(used).length >= total) showFinal();
+}
+
+function showFinal() {
+  boardWrapEl.style.display = 'none';
+  scoreboardEl.style.display = 'none';
+  controlsEl.style.display = 'none';
+  genreBadge.style.display = 'none';
+  turnBanner.style.display = 'none';
+  finalEl.style.display = 'block';
+  const list = document.getElementById('finalList');
+  list.innerHTML = '';
+  const sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  sorted.forEach(([name, sc]) => {
+    const row = document.createElement('div');
+    row.textContent = name + ': $' + sc;
+    list.appendChild(row);
+  });
+  submitScores(sorted.map(([name, sc]) => ({ name: name, genre: genre, score: sc })));
+}
+</script>
+</body>
+</html>

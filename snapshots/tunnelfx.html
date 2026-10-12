@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<!-- RED PHONE: Audio-reactive WebGL tunnel. Shader (IQ palette) inherited from prior conversation; this phone wired the render loop, Web Audio analysis, and the start overlay. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Tunnel</title>
+<style>
+  :root{
+    /* RED PHONE: light/mid-tone chrome only — no black UI backgrounds */
+    --panel: rgba(244,241,234,0.92);
+    --ink:   #1c2024;
+    --accent:#d2491f;
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; height:100%; overflow:hidden; background:#3a3f47; }
+  #v{ position:fixed; inset:0; width:100%; height:100%; display:block; touch-action:none; }
+
+  /* Start overlay — the one piece of UI, kept quiet so the shader is the hero */
+  #gate{
+    position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+    background:var(--panel); backdrop-filter:blur(6px); z-index:10;
+    transition:opacity .45s ease; padding:24px;
+  }
+  #gate.hidden{ opacity:0; pointer-events:none; }
+  .card{ text-align:center; color:var(--ink); max-width:360px; }
+  .card h1{
+    font:600 13px/1.4 ui-monospace,"Roboto Mono",monospace;
+    letter-spacing:.32em; text-transform:uppercase; margin:0 0 6px; color:var(--accent);
+  }
+  .card p{ font:400 15px/1.5 system-ui,"Roboto",sans-serif; margin:0 0 22px; opacity:.8; }
+  .btn{
+    appearance:none; border:none; cursor:pointer;
+    font:600 16px/1 system-ui,"Roboto",sans-serif;
+    color:#fff; background:var(--accent); padding:16px 30px; border-radius:14px;
+    box-shadow:0 4px 14px rgba(210,73,31,.35);
+  }
+  .btn:active{ transform:translateY(1px); }
+  /* RED PHONE: secondary (outline) action for the track picker */
+  .btn.ghost{ background:transparent; color:var(--accent); box-shadow:none;
+    border:1.5px solid var(--accent); margin-top:12px; }
+  .row{ display:flex; flex-direction:column; gap:0; }
+  #file{ display:none; }
+  .note{ margin-top:14px; font:400 12px/1.5 ui-monospace,monospace; opacity:.55; }
+  #hud{ cursor:pointer; }
+
+  /* tiny live readout, light pill, bottom-center */
+  #hud{
+    position:fixed; left:50%; bottom:14px; transform:translateX(-50%); z-index:5;
+    font:500 11px/1 ui-monospace,monospace; letter-spacing:.08em;
+    color:var(--ink); background:var(--panel); padding:7px 12px; border-radius:999px;
+    opacity:0; transition:opacity .4s ease;
+  }
+  #hud.on{ opacity:.85; }
+</style>
+</head>
+<body>
+<canvas id="v"></canvas>
+
+<div id="gate">
+  <div class="card">
+    <h1>Tunnel</h1>
+    <p>An infinite tunnel that breathes with sound. Use the mic, or feed it a track from your phone — bass widens the rim, treble shifts the palette.</p>
+    <div class="row">
+      <button class="btn" id="start">Use mic</button>
+      <button class="btn ghost" id="pick">Play a track</button>
+    </div>
+    <div class="note">no audio? it still runs on a gentle idle pulse</div>
+  </div>
+</div>
+
+<input type="file" id="file" accept="audio/*">
+<audio id="track" crossorigin="anonymous" loop></audio>
+
+<div id="hud">— idle —</div>
+
+<script>
+const canvas = document.getElementById('v');
+const gl = canvas.getContext('webgl', {antialias:false, alpha:false});
+
+const VERT = `
+attribute vec2 p;
+void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
+
+const FRAG = `
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+uniform vec2  iResolution;
+uniform float iTime;
+uniform float uBass, uMid, uTreble, uLevel;
+
+// Inigo Quilez cosine palette — iquilezles.org/articles/palettes/
+vec3 palette(float t, vec3 a, vec3 b, vec3 c, vec3 d){
+  return a + b*cos(6.283185*(c*t+d));
+}
+#define PI 3.1415927
+void main(){
+  vec2 uvp = (2.0*gl_FragCoord.xy - iResolution.xy)/iResolution.y;
+  float a = atan(uvp.y, uvp.x);          // angle (-PI..PI)
+  float r = length(uvp);                 // radius
+  float time = iTime*0.5 + uLevel*2.0;   // music speeds the scroll
+  vec2 uv;
+  uv.x = 1.0/r + time;                   // depth: scrolls INTO the tunnel
+  uv.y = a/PI;                           // angle around the wall
+  float pat = 0.5 + 0.5*sin(uv.x*12.0)*sin(uv.y*PI*8.0);
+  vec3 col = palette(uv.x*0.5 + uv.y*0.25 + uTreble*0.5,
+                     vec3(0.5), vec3(0.5), vec3(1.0), vec3(0.0,0.33,0.67));
+  col *= 0.6 + 0.4*pat;
+  col *= r * (0.7 + uBass*0.8);          // bass brightens the rim
+  gl_FragColor = vec4(col, 1.0);
+}`;
+
+function sh(type, src){ const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s);
+  if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(s)); return s; }
+const prog = gl.createProgram();
+gl.attachShader(prog, sh(gl.VERTEX_SHADER, VERT));
+gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FRAG));
+gl.linkProgram(prog); gl.useProgram(prog);
+
+const buf = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+const loc = gl.getAttribLocation(prog,'p');
+gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+
+const U = n => gl.getUniformLocation(prog,n);
+const uRes=U('iResolution'), uTime=U('iTime'),
+      uB=U('uBass'), uM=U('uMid'), uT=U('uTreble'), uL=U('uLevel');
+
+function resize(){
+  const dpr = Math.min(window.devicePixelRatio||1, 2);   // cap DPR on mobile for perf
+  canvas.width  = Math.floor(canvas.clientWidth  * dpr);
+  canvas.height = Math.floor(canvas.clientHeight * dpr);
+  gl.viewport(0,0,canvas.width,canvas.height);
+}
+window.addEventListener('resize', resize); resize();
+
+// RED PHONE: ---- render loop ----
+// Smoothed audio bands. Without a mic, these ride a slow idle oscillation so
+// the tunnel never sits dead-still.
+let analyser=null, freq=null, audioCtx=null;
+const band = {bass:0, mid:0, treble:0, level:0};
+
+function sampleAudio(t){
+  if(analyser){
+    analyser.getByteFrequencyData(freq);
+    const n = freq.length;                       // ~half the fftSize
+    const avg = (lo,hi)=>{ let s=0,c=0;
+      for(let i=lo;i<hi;i++){ s+=freq[i]; c++; } return c? (s/c)/255 : 0; };
+    // bins are linear over 0..nyquist; carve rough low/mid/high thirds
+    const target = {
+      bass:   avg(0,             Math.floor(n*0.08)),
+      mid:    avg(Math.floor(n*0.08), Math.floor(n*0.35)),
+      treble: avg(Math.floor(n*0.35), n),
+      level:  avg(0, n)
+    };
+    // attack fast, release slow — feels musical, not jittery
+    for(const k in band){
+      const tg = target[k];
+      const rate = tg > band[k] ? 0.5 : 0.08;
+      band[k] += (tg - band[k]) * rate;
+    }
+  } else {
+    // idle pulse
+    band.bass   = 0.25 + 0.20*Math.sin(t*1.1);
+    band.mid    = 0.25 + 0.18*Math.sin(t*0.7 + 1.0);
+    band.treble = 0.30 + 0.15*Math.sin(t*1.7 + 2.0);
+    band.level  = 0.20 + 0.10*Math.sin(t*0.5);
+  }
+}
+
+const hud = document.getElementById('hud');
+const start0 = performance.now();
+let running = true;
+
+function frame(now){
+  if(!running) return;
+  const t = (now - start0)/1000;
+  sampleAudio(t);
+  gl.uniform2f(uRes, canvas.width, canvas.height);
+  gl.uniform1f(uTime, t);
+  gl.uniform1f(uB, band.bass);
+  gl.uniform1f(uM, band.mid);
+  gl.uniform1f(uT, band.treble);
+  gl.uniform1f(uL, band.level);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+// RED PHONE: ---- audio setup. Two sources (mic OR a track) share one analyser ----
+let micNode=null, trackNode=null;   // createMediaElementSource is once-per-element, so trackNode is cached
+const track = document.getElementById('track');
+
+function ensureCtx(){
+  if(!audioCtx){
+    audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 1024;
+    analyser.smoothingTimeConstant = 0.6;
+    freq = new Uint8Array(analyser.frequencyBinCount);
+  }
+}
+
+// Mic — analyser only, never to destination (avoids speaker feedback)
+async function startMic(){
+  try{
+    ensureCtx();
+    if(trackNode) trackNode.disconnect();         // drop track's analyser + speaker branches
+    track.pause();
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio:{ echoCancellation:false, noiseSuppression:false, autoGainControl:false }
+    });
+    micNode = audioCtx.createMediaStreamSource(stream);
+    micNode.connect(analyser);                    // analyser is a dead-end, so mic never reaches speaker
+    if(audioCtx.state === 'suspended') await audioCtx.resume();
+    hud.textContent = '● mic';
+  }catch(e){
+    hud.textContent = '— idle (mic blocked) —';   // graceful fallback, keeps running
+  }
+}
+
+// Track — file from the phone. Two branches: one to the analyser, one to the speaker.
+async function startTrack(file){
+  ensureCtx();
+  if(micNode) micNode.disconnect();               // free the analyser from the mic
+  if(!trackNode) trackNode = audioCtx.createMediaElementSource(track);
+  trackNode.disconnect();
+  trackNode.connect(analyser);                    // analysis branch
+  trackNode.connect(audioCtx.destination);        // audible branch
+  track.src = URL.createObjectURL(file);
+  if(audioCtx.state === 'suspended') await audioCtx.resume();
+  hud.dataset.name = shortName(file.name);
+  try{ await track.play(); hud.textContent = '▮▮ ' + hud.dataset.name; }
+  catch(e){ hud.textContent = '▶ tap to play'; }
+}
+
+function shortName(n){ return n.length>22 ? n.slice(0,20)+'…' : n; }
+
+const gate  = document.getElementById('gate');
+const fileIn = document.getElementById('file');
+
+document.getElementById('start').addEventListener('click', async ()=>{
+  gate.classList.add('hidden'); hud.classList.add('on');
+  await startMic();
+});
+document.getElementById('pick').addEventListener('click', ()=> fileIn.click());
+fileIn.addEventListener('change', async (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  gate.classList.add('hidden'); hud.classList.add('on');
+  await startTrack(f);
+});
+
+// HUD toggles track playback once a track is loaded
+hud.addEventListener('click', async ()=>{
+  if(!trackNode) return;
+  if(audioCtx.state === 'suspended') await audioCtx.resume();
+  if(track.paused){ track.play(); hud.textContent = '▮▮ ' + hud.dataset.name; }
+  else { track.pause(); hud.textContent = '▶ paused'; }
+});
+
+// pause work when tab/app is backgrounded
+document.addEventListener('visibilitychange', ()=>{
+  if(document.hidden){ running=false; if(audioCtx) audioCtx.suspend(); }
+  else if(!running){ running=true; if(audioCtx) audioCtx.resume(); requestAnimationFrame(frame); }
+});
+</script>
+</body>
+</html>

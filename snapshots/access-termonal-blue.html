@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<!-- BLUE CODE: source device Blue Phone -->
+<title>Boba Break-Even</title>
+<style>
+
+:root { color-scheme: only light; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { background: #FBF6EE; }
+body {
+  margin: 0; min-height: 100vh; color: #2B2622;
+  font-family: "Trebuchet MS", "Segoe UI", system-ui, -apple-system, sans-serif;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 28px 16px 40px;
+}
+.hero { text-align: center; margin-bottom: 18px; }
+.cup { width: 104px; height: auto; display: block; margin: 0 auto 6px; }
+h1 {
+  font-family: "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+  font-weight: 800; font-size: 32px; letter-spacing: -0.5px; margin: 0; color: #2B2622;
+}
+.sub { color: #8A8076; font-size: 14px; margin-top: 4px; }
+.card {
+  width: 100%; max-width: 420px; background: #FFFFFF; border: 1px solid #ECE3D5;
+  border-radius: 18px; padding: 24px 22px; box-shadow: 0 6px 24px rgba(43, 38, 34, 0.07);
+}
+label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; color: #8A8076; margin-bottom: 6px; }
+input[type="text"] {
+  width: 100%; padding: 12px 14px; margin-bottom: 18px; border: 2px solid #ECE3D5;
+  border-radius: 12px; background: #FFFDF9; color: #2B2622; font-family: inherit; font-size: 16px;
+}
+input[type="text"]:focus { outline: none; border-color: #1E6FE0; }
+button {
+  width: 100%; padding: 14px; background: #1E6FE0; color: #FFFFFF; border: none; border-radius: 12px;
+  font-family: inherit; font-size: 15px; font-weight: 800; letter-spacing: 1.5px; cursor: pointer;
+}
+button:hover:not(:disabled) { background: #1657B0; }
+button:disabled { background: #9DBEF0; cursor: default; }
+.strength-row { display: flex; align-items: center; gap: 8px; margin-top: -8px; margin-bottom: 14px; }
+.strength-bar { flex: 1; height: 7px; background: #ECE3D5; border-radius: 4px; overflow: hidden; }
+.strength-fill { height: 100%; width: 0%; background: #D8433B; transition: width 0.2s ease, background 0.2s ease; }
+.strength-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #8A8076; min-width: 70px; text-align: right; }
+.reset-row { text-align: right; margin-top: -4px; margin-bottom: 16px; }
+.reset-row a { font-size: 12px; color: #1657B0; text-decoration: none; border-bottom: 1px dotted #1657B0; }
+.result { display: none; margin-top: 18px; padding: 12px 14px; border-radius: 12px; font-size: 14px; line-height: 1.5; }
+.result.show { display: block; }
+.result.new { background: #EAF1FD; border: 1px solid #1E6FE0; color: #1657B0; }
+.result.success { background: #E9F6EE; border: 1px solid #1F9D55; color: #17703F; }
+.result.fail { background: #FCEDEC; border: 1px solid #D8433B; color: #9A2B25; }
+.dots { display: flex; gap: 8px; justify-content: center; margin-top: 22px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: #ECE3D5; }
+.dot.now { background: #1E6FE0; }
+.caption { text-align: center; color: #8A8076; font-size: 12px; margin-top: 8px; }
+.hours { text-align: center; color: #8A8076; font-size: 12px; margin-top: 14px; }
+
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <svg class="cup" viewBox="0 0 120 150" xmlns="http://www.w3.org/2000/svg">
+    <rect x="62" y="2" width="8" height="58" rx="4" fill="#1E6FE0" transform="rotate(12 66 32)"/>
+    <path d="M20 44 H100 L90 138 Q89 146 81 146 H39 Q31 146 30 138 Z" fill="#FFFFFF" stroke="#2B2622" stroke-width="3" stroke-linejoin="round"/>
+    <clipPath id="cupClip"><path d="M23 47 H97 L88 136 Q87 143 80 143 H40 Q33 143 32 136 Z"/></clipPath>
+    <g clip-path="url(#cupClip)">
+      <rect x="0" y="72" width="120" height="80" fill="#E7C49C"/>
+      <rect x="0" y="104" width="120" height="50" fill="#D6A06E"/>
+      <circle cx="42" cy="134" r="5.5" fill="#36281F"/>
+      <circle cx="54" cy="137" r="5.5" fill="#36281F"/>
+      <circle cx="67" cy="134" r="5.5" fill="#36281F"/>
+      <circle cx="79" cy="137" r="5.5" fill="#36281F"/>
+      <circle cx="48" cy="125" r="5.5" fill="#36281F"/>
+      <circle cx="61" cy="126" r="5.5" fill="#36281F"/>
+      <circle cx="73" cy="125" r="5.5" fill="#36281F"/>
+    </g>
+    <line x1="16" y1="84" x2="104" y2="84" stroke="#1E6FE0" stroke-width="2" stroke-dasharray="5 4"/>
+    <rect x="14" y="36" width="92" height="10" rx="5" fill="#1E6FE0"/>
+  </svg>
+  <h1>Boba Break-Even</h1>
+  <div class="sub">Sign in to open your shop for the day.</div>
+</div>
+
+<div class="card">
+  <label for="username">SHOP ID</label>
+  <input type="text" id="username" autocomplete="off" spellcheck="false">
+
+  <label for="password">PASSCODE</label>
+  <input type="text" id="password" autocomplete="off" spellcheck="false">
+
+  <div class="strength-row">
+    <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+    <span class="strength-label" id="strengthLabel"></span>
+  </div>
+
+  <div class="reset-row">
+    <a href="#" id="resetLink">forgot passcode?</a>
+  </div>
+
+  <button id="submitBtn">OPEN SHOP</button>
+
+  <div class="result" id="result"></div>
+</div>
+
+<div class="dots">
+  <div class="dot now"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+<div class="caption">7 days to cover your costs</div>
+<div class="hours">Open now | <span id="clock"></span></div>
+
+<script>
+
+const LEVELS = [["WATERY", "#D8433B"], ["LIGHT", "#D6A06E"], ["CREAMY", "#C9873F"], ["RICH", "#1F9D55"], ["FULL CUP", "#1657B0"]];
+const EMPTY = '#ECE3D5';
+
+function tickClock() {
+  const c = document.getElementById('clock');
+  if (c) c.textContent = new Date().toLocaleTimeString();
+}
+tickClock();
+setInterval(tickClock, 1000);
+
+function scoreStrength(u, p) {
+  const combined = u + p;
+  if (!combined) return { pct: 0, label: '', color: EMPTY };
+
+  const uniqueChars = new Set(combined.toLowerCase()).size;
+  const lengthScore = Math.min(combined.length / 16, 1);
+  const varietyScore = Math.min(uniqueChars / 10, 1);
+  const hasLower = /[a-z]/.test(combined);
+  const hasUpper = /[A-Z]/.test(combined);
+  const hasDigit = /[0-9]/.test(combined);
+  const hasSymbol = /[^a-zA-Z0-9]/.test(combined);
+  const classCount = [hasLower, hasUpper, hasDigit, hasSymbol].filter(Boolean).length;
+  const classScore = classCount / 4;
+
+  const raw = (lengthScore * 0.4) + (varietyScore * 0.35) + (classScore * 0.25);
+  const pct = Math.round(raw * 100);
+  const idx = pct < 20 ? 0 : pct < 45 ? 1 : pct < 70 ? 2 : pct < 90 ? 3 : 4;
+
+  return { pct, label: LEVELS[idx][0], color: LEVELS[idx][1] };
+}
+
+function updateStrength() {
+  const u = document.getElementById('username').value;
+  const p = document.getElementById('password').value;
+  const { pct, label, color } = scoreStrength(u, p);
+
+  const fill = document.getElementById('strengthFill');
+  const lbl = document.getElementById('strengthLabel');
+  fill.style.width = pct + '%';
+  fill.style.background = color;
+  lbl.textContent = label;
+}
+
+document.getElementById('username').addEventListener('input', updateStrength);
+document.getElementById('password').addEventListener('input', updateStrength);
+
+function showResult(text, cls) {
+  const el = document.getElementById('result');
+  el.textContent = text;
+  el.className = 'result show ' + cls;
+}
+
+const resultClassMap = {
+  welcome_back: 'success',
+  password_wrong: 'fail',
+  username_wrong: 'fail',
+  enrolled: 'new'
+};
+
+function passwordMeetsRequirements(p) {
+  const hasUpper = /[A-Z]/.test(p);
+  const hasDigit = /[0-9]/.test(p);
+  const hasSymbol = /[^a-zA-Z0-9]/.test(p);
+  return hasUpper && hasDigit && hasSymbol;
+}
+
+document.getElementById('submitBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('submitBtn');
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value.trim();
+
+  if (!u || !p) {
+    showResult('shop ID and passcode are both required.', 'fail');
+    return;
+  }
+
+  if (!passwordMeetsRequirements(p)) {
+    showResult('passcode needs a capital letter, a number, and a special character.', 'fail');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'OPENING...';
+
+  try {
+    const res = await fetch('/api/attempt', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p })
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      showResult(data.error || 'something spilled. try again.', 'fail');
+    } else {
+      showResult(data.message, resultClassMap[data.result] || 'fail');
+    }
+  } catch (e) {
+    showResult('the shop could not be reached.', 'fail');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'OPEN SHOP';
+});
+
+document.getElementById('password').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') document.getElementById('submitBtn').click();
+});
+
+document.getElementById('resetLink').addEventListener('click', async (e) => {
+  e.preventDefault();
+  const u = document.getElementById('username').value.trim();
+
+  if (!u) {
+    showResult('enter a shop ID first.', 'fail');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u })
+    });
+    const data = await res.json();
+    showResult(data.message || 'request received.', 'fail');
+  } catch (err) {
+    showResult('the shop could not be reached.', 'fail');
+  }
+});
+</script>
+</body>
+</html>

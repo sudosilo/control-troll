@@ -1,0 +1,3906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Field Twin</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://fonts.bunny.net/css?family=overpass:400,600,800">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.17/hls.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.1/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+  :root {
+    --bg: #f4f6f9;
+    --panel: #ffffff;
+    --line: #d5dce4;
+    --accent: #1265c9;
+    --accent-dim: #7fa8d6;
+    --text: #14202e;
+    --text-dim: #5c6c7d;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    overflow: hidden;
+  }
+  #map {
+    position: absolute;
+    top: 140px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 84px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    z-index: 1000;
+  }
+  .header-center {
+    flex: 1;
+    text-align: center;
+    overflow: hidden;
+    padding: 0 10px;
+  }
+  #infoBtn {
+    background: transparent;
+    border: 1px solid var(--accent-dim);
+    color: var(--accent);
+    padding: 10px 15px;
+    font-size: 15px;
+    line-height: 1;
+    font-style: italic;
+  }
+  #actionBar {
+    position: absolute;
+    top: 84px;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 14px;
+    z-index: 1000;
+  }
+  .title {
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: var(--accent);
+  }
+  .status {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .radar {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 20px;
+  }
+  .radar div {
+    width: 4px;
+    background: var(--accent-dim);
+  }
+  .radar div.on {
+    background: var(--accent);
+  }
+  button {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    padding: 10px 16px;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: bold;
+  }
+  button.secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent-dim);
+  }
+  button:disabled {
+    opacity: 0.5;
+  }
+  #panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 62%;
+    background: var(--panel);
+    border-top: 1px solid var(--accent-dim);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 16px;
+    display: none;
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+  }
+  #panel.open {
+    display: block;
+  }
+  #panel h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin: 0 0 10px 0;
+  }
+  .meta-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 3px;
+  }
+  .question {
+    margin: 14px 0 6px 0;
+    font-size: 14px;
+  }
+  input[type=text], textarea {
+    width: 100%;
+    background: #f9fafb;
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  textarea {
+    min-height: 60px;
+    resize: vertical;
+  }
+  .panel-actions {
+    margin-top: 16px;
+    display: flex;
+    gap: 8px;
+  }
+  #receiptFile { display: none; }
+  .conf-low { border-color: #e07b00 !important; background: #fff7ec !important; }
+  #searchPage {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--bg);
+    z-index: 3000;
+    display: none;
+    overflow-y: auto;
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    color: var(--text);
+  }
+  #searchPage.open { display: block; }
+  .sq-head {
+    position: sticky; top: 0;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px;
+    z-index: 2;
+  }
+  .sq-filters { background: var(--panel); padding: 12px 14px; border-bottom: 1px solid var(--line); }
+  .sq-filters label { display: block; font-size: 11px; color: var(--text-dim); margin-top: 8px; }
+  .sq-filters input, .sq-filters select {
+    width: 100%; background: #f9fafb; border: 1px solid var(--line); color: var(--text);
+    padding: 8px; font-family: inherit; font-size: 14px; margin-top: 4px;
+  }
+  .sq-pair { display: flex; gap: 10px; }
+  .sq-pair > div { flex: 1; min-width: 0; }
+  .sq-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .sq-actions button { flex: 1; padding: 10px 4px; font-size: 11px; }
+  .sq-summary { padding: 10px 14px; font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 12px; color: var(--accent); }
+  .sq-row { display: flex; align-items: center; gap: 10px; background: var(--panel); border-bottom: 1px solid var(--line); padding: 10px 14px; }
+  .sq-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex: 0 0 auto; }
+  .sq-main { flex: 1; min-width: 0; }
+  .sq-name { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sq-sub { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+  .sq-amt { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 13px; flex: 0 0 auto; }
+  .sq-empty { padding: 24px 14px; color: var(--text-dim); font-size: 14px; }
+  #mapFilterBar {
+    position: absolute; left: 10px; right: 10px; bottom: 14px; z-index: 900;
+    background: var(--panel); border: 1px solid var(--accent-dim);
+    display: none; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 8px 10px; font-size: 12px;
+  }
+  #importInput { display: none; }
+  #menuBtn {
+    background: transparent;
+    border: 1px solid var(--accent-dim);
+    color: var(--accent);
+    padding: 10px 12px;
+    font-size: 16px;
+    line-height: 1;
+  }
+  #sideMenu {
+    position: absolute;
+    top: 0;
+    right: -260px;
+    bottom: 0;
+    width: 240px;
+    background: var(--panel);
+    border-left: 1px solid var(--accent-dim);
+    z-index: 1200;
+    padding: 16px;
+    transition: right 0.2s ease;
+    overflow-y: auto;
+  }
+  #sideMenu.open {
+    right: 0;
+  }
+  #sideMenu h3 {
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin: 18px 0 8px 0;
+  }
+  #sideMenu h3:first-child {
+    margin-top: 0;
+  }
+  .legend-row {
+    font-size: 11px;
+    line-height: 22px;
+    color: var(--text);
+  }
+  .legend-row span.dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+  #sideMenu button {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  #menuOverlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 1100;
+    display: none;
+  }
+  #menuOverlay.open {
+    display: block;
+  }
+  .icon-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .icon-choice {
+    flex: 0 0 auto;
+    width: calc(25% - 6px);
+    background: #f9fafb;
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 8px 2px;
+    font-size: 18px;
+    text-align: center;
+  }
+  .icon-choice.active {
+    border-color: var(--accent);
+    background: #e4eefb;
+  }
+  .icon-choice.qopt {
+    width: auto;
+    flex: 1 1 auto;
+    min-width: 70px;
+    padding: 10px 8px;
+  }
+  select {
+    width: 100%;
+    background: #f9fafb;
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  .marker-emoji-tooltip {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 15px !important;
+    padding: 0 !important;
+    pointer-events: none;
+  }
+  .marker-emoji-tooltip::before {
+    display: none !important;
+  }
+  .field-twin-badge {
+    background: transparent !important;
+    border: none !important;
+  }
+
+  /* ---- v11 skin: road sign legibility for outdoor use ---- */
+  :root {
+    --bg: #eef2f6;
+    --panel: #ffffff;
+    --line: #b8c2cc;
+    --accent: #0b4ea2;
+    --accent-dim: #0b4ea2;
+    --text: #0a1b2e;
+    --text-dim: #44556a;
+    --signal: #7fb0f0;
+    --tint: #dbe9fb;
+    --dock-h: 66px;
+    --head-h: 64px;
+  }
+  html, body {
+    font-family: 'Overpass', 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 16px;
+    font-variant-numeric: tabular-nums;
+  }
+  header {
+    height: var(--head-h);
+    border-bottom: 2px solid var(--text);
+    padding: 0 10px;
+  }
+  .title {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: var(--text);
+  }
+  .status {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #map { top: var(--head-h); bottom: var(--dock-h); }
+  #actionBar {
+    top: auto;
+    bottom: 0;
+    height: var(--dock-h);
+    border-bottom: none;
+    border-top: 2px solid var(--text);
+    padding: 0 12px;
+    gap: 10px;
+    justify-content: space-between;
+  }
+  .radar { height: 26px; gap: 3px; flex: 0 0 auto; }
+  .radar div { width: 5px; background: var(--line); }
+  .radar div.on { background: var(--accent); }
+
+  button {
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    text-transform: lowercase;
+    min-height: 48px;
+    padding: 0 16px;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #ffffff;
+    border: 2px solid var(--accent);
+  }
+  button::first-letter { text-transform: uppercase; }
+  button.secondary {
+    background: #ffffff;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+  }
+  button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 3px solid var(--signal);
+    outline-offset: 2px;
+  }
+  #actionBar { justify-content: flex-end; gap: 12px; }
+  #actionBar .radar { margin-right: auto; }
+  #updateBtn, #receiptDockBtn {
+    flex: 0 0 auto;
+    min-height: 46px;
+    padding: 0 22px;
+    font-size: 16px;
+    border: 2px solid var(--text);
+    border-radius: 8px;
+    box-shadow: 3px 3px 0 var(--text);
+  }
+  #updateBtn { background: var(--accent); color: #ffffff; }
+  #receiptDockBtn { background: #ffffff; color: var(--text); }
+  #updateBtn:active, #receiptDockBtn:active { box-shadow: none; transform: translate(3px, 3px); }
+  #menuBtn, #infoBtn {
+    min-height: 44px;
+    width: 44px;
+    padding: 0;
+    font-size: 20px;
+    font-style: normal;
+    background: #ffffff;
+    color: var(--text);
+    border: 2px solid var(--text);
+    border-radius: 8px;
+  }
+  #infoBtn { font-weight: 800; text-transform: none; }
+  #infoBtn::first-letter { text-transform: none; }
+  #searchPage { font-family: inherit; }
+  #panel .panel-actions {
+    position: sticky;
+    bottom: -22px;
+    background: var(--panel);
+    margin: 18px -16px -22px -16px;
+    padding: 10px 16px 22px 16px;
+    border-top: 1px solid var(--line);
+  }
+
+  #panel {
+    z-index: 1010;
+    max-height: 72%;
+    border-top: 2px solid var(--text);
+    border-radius: 16px 16px 0 0;
+    padding: 18px 16px 22px 16px;
+    font-family: inherit;
+    box-shadow: 0 -6px 0 rgba(10, 27, 46, 0.08);
+  }
+  #panel h2 {
+    font-family: inherit;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0;
+    color: var(--text);
+    text-transform: lowercase;
+    margin: 0 0 8px 0;
+  }
+  #panel h2::first-letter { text-transform: uppercase; }
+  .meta-line {
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+  }
+  .question {
+    margin: 16px 0 4px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+  }
+  .question + div { font-size: 17px; }
+  input[type=text], input[type=number], input[type=date], input[type=datetime-local], textarea, select,
+  .sq-filters input, .sq-filters select {
+    background: #ffffff;
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 11px 10px;
+    font-family: inherit;
+    font-size: 16px;
+    min-height: 48px;
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+  .conf-low { border-color: #c96a00 !important; background: #fff4e0 !important; }
+  .panel-actions { margin-top: 18px; gap: 8px; flex-wrap: wrap; }
+  .panel-actions button { flex: 1 1 auto; }
+
+  .icon-choice {
+    background: #ffffff;
+    border: 2px solid var(--line);
+    border-radius: 8px;
+  }
+  .icon-choice.active { border-color: var(--accent); background: #e2edfb; }
+  .icon-choice.qopt { min-height: 46px; display: flex; align-items: center; justify-content: center; font-size: 15px !important; font-weight: 600; }
+
+  #sideMenu {
+    left: -300px;
+    right: auto;
+    width: 280px;
+    border-left: none;
+    border-right: 2px solid var(--text);
+    padding: 14px 0 24px 0;
+    transition: left 0.2s ease;
+  }
+  #sideMenu.open { left: 0; right: auto; }
+  #sideMenu h3 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--text-dim);
+    margin: 18px 16px 4px 16px;
+  }
+  #sideMenu h3:first-child { margin-top: 4px; }
+  #sideMenu button, #sideMenu button.secondary {
+    width: 100%;
+    margin: 0;
+    min-height: 50px;
+    padding: 0 16px;
+    text-align: left;
+    font-size: 17px;
+    font-weight: 600;
+    background: #ffffff;
+    color: var(--text);
+    border: none;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+  }
+  #sideMenu button:active { background: #e2edfb; }
+  .legend-row { font-size: 14px; line-height: 26px; padding: 0 16px; }
+  .legend-row span.dot { width: 10px; height: 10px; }
+  #menuOverlay { background: rgba(10, 27, 46, 0.45); }
+
+  #mapFilterBar, #pinPlaceBar {
+    bottom: calc(var(--dock-h) + 12px) !important;
+    border: 2px solid var(--text) !important;
+    border-radius: 10px;
+    font-size: 15px !important;
+    font-weight: 600;
+  }
+  #mapFilterBar button, #pinPlaceBar button { min-height: 40px; font-size: 14px !important; }
+
+  .sq-head { border-bottom: 2px solid var(--text); }
+  .sq-head .title { letter-spacing: 3px; }
+  .sq-filters label { font-size: 13px; font-weight: 600; }
+  .sq-actions button { font-size: 13px; padding: 0 4px; }
+  .sq-summary { font-family: inherit; font-size: 15px; font-weight: 800; color: var(--text); }
+  .sq-name { font-size: 16px; font-weight: 600; }
+  .sq-sub { font-size: 13px; }
+  .sq-amt { font-family: inherit; font-size: 16px; font-weight: 800; }
+  .sq-icon { width: 34px; height: 34px; font-size: 17px; border: 2px solid var(--text); }
+
+  .ft-pin {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    border: 2px solid var(--text);
+    opacity: 0.9;
+  }
+  .ft-price {
+    position: absolute;
+    left: 0; top: 0;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    background: var(--tint);
+    color: var(--text);
+    border: 2px solid var(--text);
+    border-radius: 6px;
+    padding: 2px 6px 1px 6px;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 16px;
+    opacity: 0.92;
+  }
+  .ft-cluster {
+    border-radius: 50%;
+    background: var(--accent);
+    color: #ffffff;
+    font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid var(--text);
+    opacity: 0.95;
+  }
+  .ft-sign { position: relative; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; }
+  .ft-sign svg { position: absolute; left: 0; top: 0; z-index: 0 !important; pointer-events: none; }
+  .ft-sign span { position: relative; z-index: 1; line-height: 1; }
+  .ft-signwrap { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); opacity: 0.92; }
+  .sq-sign { flex: 0 0 auto; width: 42px; display: flex; justify-content: center; }
+  .legend-row { display: flex; align-items: center; gap: 10px; font-size: 14px; line-height: 18px; padding: 4px 14px; }
+  .legend-row .ft-sign { width: 34px !important; justify-content: center; }
+  .legend-row .ft-sign svg { left: 50%; transform: translateX(-50%); }
+  #sideMenu { left: -250px; width: 226px; }
+  #sideMenu h3 { margin: 16px 14px 2px 14px; }
+  #sideMenu button, #sideMenu button.secondary { min-height: 46px; padding: 0 14px; font-size: 16px; }
+  .leaflet-cluster-anim .leaflet-marker-icon, .leaflet-cluster-anim .leaflet-marker-shadow {
+    transition: transform 0.3s ease-out, opacity 0.3s ease-in;
+  }
+  .leaflet-cluster-spider-leg { transition: stroke-dashoffset 0.3s ease-out, stroke-opacity 0.3s ease-in; }
+  .leaflet-bar a { width: 40px !important; height: 40px !important; line-height: 40px !important; font-size: 22px !important; color: var(--text) !important; }
+  .leaflet-bar { border: 2px solid var(--text) !important; border-radius: 8px !important; overflow: hidden; }
+  @media (prefers-reduced-motion: reduce) {
+    #sideMenu, .leaflet-cluster-anim .leaflet-marker-icon { transition: none; }
+  }
+  .entry-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .entry-head h2 { margin: 0; }
+  #movePinBtn { flex: 0 0 auto; width: 48px; height: 48px; min-width: 0; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+  #milesDockBtn { flex: 0 0 auto; min-height: 46px; padding: 0 14px; font-size: 16px; border: 2px solid var(--text); border-radius: 8px; box-shadow: 3px 3px 0 var(--text); background: var(--tint); color: var(--text); }
+  #milesDockBtn:active { box-shadow: none; transform: translate(3px, 3px); }
+  #actionBar.three #updateBtn, #actionBar.three #receiptDockBtn { padding: 0 14px; }
+  .mi-day { margin-top: 14px; padding-top: 10px; border-top: 2px solid var(--text); font-weight: 800; }
+  .mi-row { padding: 8px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+</style>
+</head>
+<body>
+
+<header>
+  <button id="menuBtn">&#9776;</button>
+  <div class="header-center">
+    <div class="title">[ FIELD TWIN ]</div>
+    <div class="status" id="statusLine">idle</div>
+  </div>
+  <button id="infoBtn">i</button>
+</header>
+
+<div id="actionBar">
+  <div class="radar" id="radar">
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+  </div>
+  <button id="milesDockBtn" style="display:none;">MILES</button>
+  <button id="updateBtn">LOG</button>
+  <button id="receiptDockBtn">RECEIPT</button>
+</div>
+
+<div id="map"></div>
+<input type="file" id="receiptFile" accept="image/*" capture="environment">
+
+<div id="menuOverlay"></div>
+<div id="sideMenu">
+  <h3>Capture</h3>
+  <button class="secondary" id="receiptBtn">NEW RECEIPT</button>
+  <button class="secondary" id="milesToggleBtn">ODOMETER BUTTON IS OFF</button>
+  <h3>Look things up</h3>
+  <button class="secondary" id="searchBtn">SEARCH</button>
+  <button class="secondary" id="historyBtn">HISTORY</button>
+  <button class="secondary" id="spendBtn">SPEND</button>
+  <button class="secondary" id="mileageBtn">MILEAGE</button>
+  <h3>Traffic cameras</h3>
+  <button class="secondary" id="camerasBtn">CAMERAS</button>
+  <button class="secondary" id="camKeyBtn">CAMERA SOURCE</button>
+  <button class="secondary" id="checkBtn">SERVICE CHECK</button>
+  <h3>Your data</h3>
+  <button class="secondary" id="accountBtn">ACCOUNT AND PROFILE</button>
+  <button class="secondary" id="exportBtn">EXPORT</button>
+  <button class="secondary" id="importBtn">IMPORT</button>
+  <input type="file" id="importInput" accept="application/json">
+  <h3>Color key</h3>
+  <div id="legendRows"></div>
+</div>
+
+<div id="mapFilterBar"><span id="mapFilterText"></span><button class="secondary" id="mapFilterClear" style="padding:8px 10px;font-size:11px;">SHOW ALL</button></div>
+<div id="pinPlaceBar" style="position:absolute;left:10px;right:10px;bottom:14px;z-index:950;background:var(--panel);border:2px solid var(--accent);display:none;align-items:center;justify-content:space-between;gap:10px;padding:10px;font-size:13px;"><span>Tap the map where this entry belongs</span><button class="secondary" id="pinPlaceCancel" style="padding:8px 10px;font-size:11px;">CANCEL</button></div>
+<div id="panel"></div>
+<div id="searchPage"></div>
+
+<script>
+const STORAGE_KEY = 'entries';
+const TWIN_KEY = 'twinId';
+
+function getTwinId() {
+  try {
+    let id = localStorage.getItem(TWIN_KEY);
+    if (!id) {
+      id = 'twin-' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+      localStorage.setItem(TWIN_KEY, id);
+    }
+    return id;
+  } catch (e) {
+    return 'twin-session';
+  }
+}
+
+const TWIN_ID = getTwinId();
+
+let map, markersLayer;
+let entries = [];
+let pendingEntry = null;
+const CATEGORIES = {
+  gas_station:   { label: 'Gas station',    icon: '\u{26FD}',   color: '#0f9d58' },
+  grocery:       { label: 'Grocery store',  icon: '\u{1F6D2}',  color: '#8e24aa' },
+  fast_food:     { label: 'Fast food',      icon: '\u{1F354}',  color: '#d81b60' },
+  amazon_locker: { label: 'Parcel locker',  icon: '\u{1F4E6}',  color: '#e07b00' },
+  coffee_shop:   { label: 'Coffee shop',    icon: '\u{2615}',   color: '#795548' },
+  dispensary:    { label: 'Dispensary',     icon: '\u{1F33F}',  color: '#2e7d32' },
+  pharmacy:      { label: 'Pharmacy',       icon: '\u{1F48A}',  color: '#00838f' },
+  bank:          { label: 'Bank or ATM',    icon: '\u{1F3E7}',  color: '#455a64' },
+  hotel:         { label: 'Hotel or motel', icon: '\u{1F6CF}',  color: '#5e35b1' },
+  car_wash:      { label: 'Car wash',       icon: '\u{1F697}',  color: '#0277bd' },
+  laundromat:    { label: 'Laundromat',     icon: '\u{1F9FA}',  color: '#00695c' },
+  restaurant:    { label: 'Sit down dining',icon: '\u{1F37D}',  color: '#c62828' },
+  retail:        { label: 'Retail store',   icon: '\u{1F3EA}',  color: '#6d4c41' },
+  warehouse:     { label: 'Warehouse',      icon: '\u{1F3ED}',  color: '#37474f' },
+  printer_site:  { label: 'Printer service',icon: '\u{1F5A8}',  color: '#1565c0' },
+  memorial:      { label: 'Roadside memorial', icon: '\u{1F56F}', color: '#6a1b9a' },
+  receipt:       { label: 'Receipt',        icon: '\u{1F9FE}',  color: '#2e7d32' },
+  airstrip:      { label: 'Airstrip',       icon: '\u{1F6E9}',  color: '#00acc1' },
+  airport:       { label: 'Airport',        icon: '\u{2708}',   color: '#0288d1' },
+  govt_building: { label: 'Government',     icon: '\u{1F3DB}',  color: '#546e7a' },
+  mall:          { label: 'Mall',           icon: '\u{1F6CD}',  color: '#ad1457' },
+  general:       { label: 'Other stop',     icon: '\u{1F4CD}',  color: '#1265c9' },
+  odometer:      { label: 'Odometer reading', icon: '\u{1F6E3}', color: '#0b4ea2' },
+  none:          { label: 'Silent log',     icon: '\u{1F319}',  color: '#5c6c7d' }
+};
+
+const SIGN_SHAPES = {
+  fast_food: 'octagon', restaurant: 'octagon', coffee_shop: 'octagon',
+  gas_station: 'square', hotel: 'square', car_wash: 'square', laundromat: 'square', pharmacy: 'square',
+  amazon_locker: 'diamond', warehouse: 'diamond', printer_site: 'diamond',
+  govt_building: 'pentagon',
+  airport: 'guide', airstrip: 'guide',
+  memorial: 'yield',
+  grocery: 'circle', retail: 'circle', mall: 'circle', bank: 'circle', dispensary: 'circle',
+  general: 'shield', none: 'shield', receipt: 'tag', odometer: 'guide'
+};
+
+function signHtml(key, iconChar, size) {
+  const meta = CATEGORIES[key] || CATEGORIES.general;
+  const shape = SIGN_SHAPES[key] || 'shield';
+  const ink = '#0a1b2e';
+  let w = 34, h = 34, body = '', shift = 0, scale = 1;
+  if (shape === 'octagon') body = '<polygon points="10,1.5 24,1.5 32.5,10 32.5,24 24,32.5 10,32.5 1.5,24 1.5,10"/>';
+  else if (shape === 'square') body = '<rect x="2" y="2" width="30" height="30" rx="5"/>';
+  else if (shape === 'diamond') { body = '<polygon points="17,1.5 32.5,17 17,32.5 1.5,17"/>'; scale = 0.82; }
+  else if (shape === 'pentagon') { body = '<polygon points="17,1.5 32.5,13 32.5,32.5 1.5,32.5 1.5,13"/>'; shift = 3; }
+  else if (shape === 'guide') { w = 42; body = '<rect x="1.5" y="5" width="39" height="24" rx="4"/>'; }
+  else if (shape === 'yield') { body = '<polygon points="1.5,3 32.5,3 17,32.5"/>'; shift = -4; scale = 0.78; }
+  else if (shape === 'circle') body = '<circle cx="17" cy="17" r="15.5"/>';
+  else if (shape === 'tag') { w = 30; body = '<rect x="2" y="2" width="26" height="30" rx="3"/>'; }
+  else { body = '<path d="M3,2 H31 V17 C31,26 17,32.5 17,32.5 C17,32.5 3,26 3,17 Z"/>'; shift = -2; scale = 0.9; }
+  const k = (size || 34) / 34;
+  const fs = Math.round(16 * scale * k);
+  return '<div class="ft-sign" style="width:' + Math.round(w * k) + 'px;height:' + Math.round(h * k) + 'px;">' +
+    '<svg viewBox="0 0 ' + w + ' ' + h + '" width="' + Math.round(w * k) + '" height="' + Math.round(h * k) + '" aria-hidden="true">' +
+    '<g fill="#ffffff" stroke="none">' + body + '</g>' +
+    '<g fill="' + meta.color + '" fill-opacity="0.2" stroke="' + ink + '" stroke-width="2" stroke-linejoin="round">' + body + '</g>' +
+    '</svg>' +
+    '<span style="font-size:' + fs + 'px;transform:translateY(' + Math.round(shift * k) + 'px);">' + iconChar + '</span></div>';
+}
+
+const ICON_CHOICES = Object.keys(CATEGORIES).filter(k => k !== 'none' && k !== 'odometer');
+const FALLBACK_ICON = CATEGORIES.general.icon;
+let selectedIcon = FALLBACK_ICON;
+const MIN_SAVE_INTERVAL_MS = 30000;
+let lastSaveTime = 0;
+let lastSaveSignature = '';
+
+function setStatus(text) {
+  document.getElementById('statusLine').textContent = text;
+}
+
+function setRadar(level) {
+  const bars = document.querySelectorAll('#radar div');
+  bars.forEach((b, i) => {
+    b.style.height = (6 + i * 2) + 'px';
+    b.classList.toggle('on', i < level);
+  });
+}
+
+const RETENTION_MS = 30 * 24 * 60 * 60 * 1000;
+
+const PHOTO_DB = 'fieldTwinPhotos';
+const PHOTO_STORE = 'photos';
+let photoDbPromise = null;
+
+function openPhotoDb() {
+  if (photoDbPromise) return photoDbPromise;
+  photoDbPromise = new Promise((resolve, reject) => {
+    if (!window.indexedDB) { reject(new Error('no indexeddb')); return; }
+    const req = indexedDB.open(PHOTO_DB, 1);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(PHOTO_STORE)) {
+        db.createObjectStore(PHOTO_STORE);
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+  return photoDbPromise;
+}
+
+function photoPut(id, dataUrl) {
+  return openPhotoDb().then(db => new Promise((resolve, reject) => {
+    const tx = db.transaction(PHOTO_STORE, 'readwrite');
+    tx.objectStore(PHOTO_STORE).put(dataUrl, id);
+    tx.oncomplete = () => resolve(true);
+    tx.onerror = () => reject(tx.error);
+  }));
+}
+
+function photoGet(id) {
+  return openPhotoDb().then(db => new Promise((resolve, reject) => {
+    const tx = db.transaction(PHOTO_STORE, 'readonly');
+    const req = tx.objectStore(PHOTO_STORE).get(id);
+    req.onsuccess = () => resolve(req.result || '');
+    req.onerror = () => reject(req.error);
+  }));
+}
+
+function photoDelete(id) {
+  return openPhotoDb().then(db => new Promise((resolve) => {
+    const tx = db.transaction(PHOTO_STORE, 'readwrite');
+    tx.objectStore(PHOTO_STORE).delete(id);
+    tx.oncomplete = () => resolve(true);
+    tx.onerror = () => resolve(false);
+  }));
+}
+
+const SUPABASE_URL = 'https://zasyjjoypkpvyqdueums.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inphc3lqam95cGtwdnlxZHVldW1zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjk1NjQsImV4cCI6MjEwNjgwNTU2NH0.PZrUvG4qsTpMQeihXbbzaFYUAAJ9YV7FtxLTkcQGFVI';
+const SYNCED_KEY = 'syncedIds';
+let sb = null;
+let cloudUser = null;
+let syncing = false;
+
+function cloudReady() {
+  return Boolean(sb && cloudUser);
+}
+
+function getSyncedIds() {
+  try { return new Set(JSON.parse(localStorage.getItem(SYNCED_KEY) || '[]')); } catch (e) { return new Set(); }
+}
+
+function setSyncedIds(set) {
+  try { localStorage.setItem(SYNCED_KEY, JSON.stringify(Array.from(set))); } catch (e) {}
+}
+
+function initCloud() {
+  if (!window.supabase || SUPABASE_ANON.indexOf('xxxx') === 0) return;
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  });
+  sb.auth.onAuthStateChange((event, session) => {
+    const wasOut = !cloudUser;
+    cloudUser = session ? session.user : null;
+    if (cloudUser && wasOut) {
+      setStatus('signed in, syncing');
+      cloudPull().then(cloudPush);
+    }
+  });
+}
+
+async function loadCloudSession() {
+  if (!sb) return;
+  try {
+    const res = await sb.auth.getSession();
+    cloudUser = res.data && res.data.session ? res.data.session.user : null;
+  } catch (e) {
+    cloudUser = null;
+  }
+}
+
+function dataUrlToBlob(dataUrl) {
+  const parts = dataUrl.split(',');
+  const mime = (parts[0].match(/:(.*?);/) || [])[1] || 'image/jpeg';
+  const bin = atob(parts[1]);
+  const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  return new Blob([arr], { type: mime });
+}
+
+function entryToRow(e, photoPath) {
+  return {
+    id: e.id,
+    user_id: cloudUser.id,
+    twin_id: e.twinId || TWIN_ID,
+    ts: e.timestamp,
+    lat: typeof e.lat === 'number' ? e.lat : null,
+    lon: typeof e.lon === 'number' ? e.lon : null,
+    address_label: e.addressLabel || '',
+    category: e.category || null,
+    form_type: e.formType || null,
+    place_type: e.placeType || null,
+    icon: e.icon || null,
+    questions: (e.questions || []).map(q => (q && typeof q === 'object') ? q.text : q),
+    answers: e.answers || [],
+    context: e.context || '',
+    loc_src: e.locSrc || null,
+    photo_path: photoPath || e.photoPath || null
+  };
+}
+
+function rowToEntry(r) {
+  return {
+    id: r.id,
+    timestamp: r.ts,
+    lat: r.lat,
+    lon: r.lon,
+    addressLabel: r.address_label || '',
+    category: r.category,
+    formType: r.form_type,
+    placeType: r.place_type,
+    icon: r.icon,
+    questions: r.questions || [],
+    answers: r.answers || [],
+    context: r.context || '',
+    locSrc: r.loc_src,
+    twinId: r.twin_id,
+    photoPath: r.photo_path,
+    updatedAt: r.updated_at
+  };
+}
+
+function getDeletedIds() {
+  try { return new Set(JSON.parse(localStorage.getItem('deletedIds') || '[]')); } catch (e) { return new Set(); }
+}
+
+function setDeletedIds(set) {
+  try { localStorage.setItem('deletedIds', JSON.stringify(Array.from(set))); } catch (e) {}
+}
+
+function photoRemove(id) {
+  return new Promise(resolve => {
+    try {
+      const req = indexedDB.open('fieldTwinPhotos');
+      req.onsuccess = () => {
+        try {
+          const db = req.result;
+          const name = db.objectStoreNames[0];
+          if (!name) { resolve(); return; }
+          const tx = db.transaction(name, 'readwrite');
+          tx.objectStore(name).delete(id);
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => resolve();
+        } catch (e) { resolve(); }
+      };
+      req.onerror = () => resolve();
+    } catch (e) { resolve(); }
+  });
+}
+
+async function cloudDeletePending() {
+  if (!cloudReady()) return;
+  const gone = getDeletedIds();
+  if (!gone.size) return;
+  for (const id of Array.from(gone)) {
+    try {
+      await sb.storage.from('photos').remove([cloudUser.id + '/' + id + '.jpg']);
+      await sb.from('receipts').delete().eq('entry_id', id);
+      const del = await sb.from('entries').delete().eq('id', id);
+      if (del.error) continue;
+      const check = await sb.from('entries').select('id').eq('id', id);
+      if (!check.error && (check.data || []).length === 0) {
+        gone.delete(id);
+        setDeletedIds(gone);
+      }
+    } catch (e) {}
+  }
+}
+
+async function deleteEntry(entry) {
+  const idx = entries.findIndex(e => e.id === entry.id);
+  if (idx !== -1) entries.splice(idx, 1);
+  const gone = getDeletedIds();
+  gone.add(entry.id);
+  setDeletedIds(gone);
+  const synced = getSyncedIds();
+  synced.delete(entry.id);
+  setSyncedIds(synced);
+  const dirty = getDirtyIds();
+  dirty.delete(entry.id);
+  setDirtyIds(dirty);
+  await photoRemove(entry.id);
+  await saveEntriesLocal();
+  renderMarkers();
+  setStatus('entry deleted');
+  cloudDeletePending();
+}
+
+async function cloudPush() {
+  if (!cloudReady() || syncing) return;
+  syncing = true;
+  const synced = getSyncedIds();
+  const dirty = getDirtyIds();
+  const pending = entries.filter(e => e.id && (!synced.has(e.id) || dirty.has(e.id)));
+  let done = 0;
+  try {
+    for (const e of pending) {
+      let photoPath = e.photoPath || null;
+      if (e.photo && !photoPath) {
+        const path = cloudUser.id + '/' + e.id + '.jpg';
+        const up = await sb.storage.from('photos').upload(path, dataUrlToBlob(e.photo), {
+          upsert: true, contentType: 'image/jpeg'
+        });
+        if (!up.error) {
+          photoPath = path;
+          e.photoPath = path;
+        }
+      }
+      const er = await sb.from('entries').upsert(entryToRow(e, photoPath), { onConflict: 'id' });
+      if (er.error) throw new Error(er.error.message);
+      if (e.category === 'receipt' && e.receipt) {
+        const rr = await sb.from('receipts').upsert({
+          entry_id: e.id,
+          user_id: cloudUser.id,
+          store: e.receipt.store || '',
+          total: e.receipt.total || 0,
+          saved: e.receipt.saved || 0,
+          tax: e.receipt.tax || 0,
+          work: Boolean(e.receipt.work),
+          receipt_date: (e.answers || [])[4] || null,
+          receipt_time: (e.answers || [])[5] || null,
+          raw: e.receipt
+        }, { onConflict: 'entry_id' });
+        if (rr.error) throw new Error(rr.error.message);
+      }
+      synced.add(e.id);
+      setSyncedIds(synced);
+      dirty.delete(e.id);
+      setDirtyIds(dirty);
+      done++;
+    }
+    if (pending.length) setStatus('synced ' + done + ' to cloud');
+  } catch (err) {
+    setStatus('sync paused, ' + err.message);
+  } finally {
+    syncing = false;
+  }
+}
+
+async function cloudPull() {
+  if (!cloudReady()) return;
+  try {
+    await cloudDeletePending();
+    const goneNow = getDeletedIds();
+    const res = await sb.from('entries').select('*').order('ts', { ascending: false });
+    if (res.error) throw new Error(res.error.message);
+    const rec = await sb.from('receipts').select('*');
+    const receiptMap = {};
+    (rec.data || []).forEach(r => { receiptMap[r.entry_id] = r; });
+    const have = {};
+    entries.forEach(e => { have[e.id] = e; });
+    const synced = getSyncedIds();
+    const dirtyNow = getDirtyIds();
+    let added = 0;
+    (res.data || []).forEach(r => {
+      if (goneNow.has(r.id)) return;
+      synced.add(r.id);
+      const local = have[r.id];
+      if (local) {
+        if (dirtyNow.has(r.id)) return;
+        if (!r.updated_at) return;
+        if (local.updatedAt && new Date(r.updated_at) <= new Date(local.updatedAt)) return;
+        const fresh = rowToEntry(r);
+        const keepPhoto = local.photo;
+        const keepCaptured = local.capturedAt;
+        Object.assign(local, fresh);
+        if (keepPhoto) local.photo = keepPhoto;
+        if (keepCaptured) local.capturedAt = keepCaptured;
+        const rcu = receiptMap[r.id];
+        if (rcu) {
+          local.receipt = {
+            store: rcu.store || '',
+            total: Number(rcu.total) || 0,
+            saved: Number(rcu.saved) || 0,
+            tax: Number(rcu.tax) || 0,
+            work: Boolean(rcu.work),
+            items: cleanItems(rcu.raw && rcu.raw.items)
+          };
+        }
+        added++;
+        return;
+      }
+      const e = rowToEntry(r);
+      const rc = receiptMap[r.id];
+      if (rc) {
+        e.receipt = {
+          store: rc.store || '',
+          total: Number(rc.total) || 0,
+          saved: Number(rc.saved) || 0,
+          tax: Number(rc.tax) || 0,
+          work: Boolean(rc.work),
+          items: cleanItems(rc.raw && rc.raw.items)
+        };
+      }
+      entries.push(e);
+      added++;
+    });
+    setSyncedIds(synced);
+    entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    if (added) {
+      await saveEntriesLocal();
+      renderMarkers();
+    }
+    setStatus(entries.length + ' entries, cloud synced');
+  } catch (err) {
+    setStatus('cloud pull failed, ' + err.message);
+  }
+}
+
+async function cloudPhotoUrl(path) {
+  if (!cloudReady() || !path) return '';
+  const res = await sb.storage.from('photos').createSignedUrl(path, 3600);
+  return res.data ? res.data.signedUrl : '';
+}
+
+function showAccount() {
+  const panel = document.getElementById('panel');
+  let html = '<h2>ACCOUNT AND PROFILE</h2>';
+  if (!sb) {
+    html += '<div class="meta-line">cloud is not configured in this build</div>';
+  } else if (cloudUser) {
+    const pending = entries.filter(e => !getSyncedIds().has(e.id)).length;
+    html += '<div class="meta-line">signed in as ' + escapeHtml(cloudUser.email || '') + '</div>';
+    html += '<div class="meta-line">' + (pending ? pending + ' entries waiting to upload' : 'everything is uploaded') + '</div>';
+    html += '<div class="panel-actions">';
+    html += '<button id="syncNowBtn">SYNC NOW</button>';
+    html += '<button class="secondary" id="signOutBtn">SIGN OUT</button>';
+    html += '</div>';
+  } else {
+    html += '<div>Enter your email. A sign in link arrives in your inbox. Opening that link on this phone signs you in, and every entry on this phone uploads to your account.</div>';
+    html += '<input type="text" id="authEmail" inputmode="email" autocomplete="email">';
+    html += '<div class="panel-actions"><button id="sendLinkBtn">SEND LINK</button></div>';
+  }
+  if (cloudUser) {
+    html += '<div class="meta-line">Your points and trophies are counted from the entries saved to this email, so they follow you to any phone you sign in on.</div>';
+  } else {
+    html += '<div class="meta-line">Not signed in. Entries, points and trophies are kept in this browser on this phone only, and entries older than thirty days are dropped. Signing in saves them to your email.</div>';
+  }
+  html += '<div class="meta-line">Phone tag ' + TWIN_ID + '. This tag is made up by this browser and stamped on each entry so you can tell which phone logged it. It does not identify the phone itself.</div>';
+  html += profileHtml();
+  html += '<div class="panel-actions"><button class="secondary" id="closeAccountBtn">CLOSE</button></div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+  document.getElementById('closeAccountBtn').addEventListener('click', closePanel);
+
+  const sendBtn = document.getElementById('sendLinkBtn');
+  if (sendBtn) {
+    sendBtn.addEventListener('click', async () => {
+      const email = (document.getElementById('authEmail').value || '').trim();
+      if (!email) return;
+      sendBtn.disabled = true;
+      sendBtn.textContent = 'SENDING';
+      const res = await sb.auth.signInWithOtp({
+        email: email,
+        options: { emailRedirectTo: window.location.origin }
+      });
+      if (res.error) {
+        sendBtn.disabled = false;
+        sendBtn.textContent = 'SEND LINK';
+        setStatus('link failed, ' + res.error.message);
+      } else {
+        sendBtn.textContent = 'LINK SENT';
+        setStatus('check your email for the sign in link');
+      }
+    });
+  }
+  const syncBtn = document.getElementById('syncNowBtn');
+  if (syncBtn) {
+    syncBtn.addEventListener('click', async () => {
+      syncBtn.disabled = true;
+      await cloudPull();
+      await cloudPush();
+      showAccount();
+    });
+  }
+  const outBtn = document.getElementById('signOutBtn');
+  if (outBtn) {
+    outBtn.addEventListener('click', async () => {
+      await sb.auth.signOut();
+      cloudUser = null;
+      setStatus('signed out');
+      showAccount();
+    });
+  }
+}
+
+function pruneToRetention(list) {
+  if (cloudUser) return list;
+  const cutoff = Date.now() - RETENTION_MS;
+  return list.filter(e => new Date(e.capturedAt || e.timestamp).getTime() >= cutoff);
+}
+
+async function loadEntries() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const stored = raw ? JSON.parse(raw) : [];
+    const pruned = pruneToRetention(stored);
+    entries = pruned;
+    if (pruned.length !== stored.length) {
+      const dropped = stored.filter(e => pruned.indexOf(e) === -1);
+      dropped.forEach(e => { if (e.id) photoDelete(e.id); });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(pruned));
+    }
+    await Promise.all(entries.map(e => {
+      if (!e.id || e.photo) return Promise.resolve();
+      return photoGet(e.id).then(d => { if (d) e.photo = d; }).catch(() => {});
+    }));
+  } catch (e) {
+    entries = [];
+  }
+}
+
+async function saveEntries() {
+  await saveEntriesLocal();
+  cloudPush();
+}
+
+async function saveEntriesLocal() {
+  const persisted = pruneToRetention(entries);
+  await Promise.all(persisted.map(e => {
+    if (!e.id || !e.photo) return Promise.resolve();
+    return photoPut(e.id, e.photo).catch(() => {});
+  }));
+  const light = persisted.map(e => {
+    const copy = Object.assign({}, e);
+    delete copy.photo;
+    return copy;
+  });
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(light));
+  } catch (e) {
+    setStatus('storage write failed, entry kept in this session only');
+  }
+}
+
+function initMap() {
+  map = L.map('map', { zoomControl: true, preferCanvas: true }).setView([36.1, -113.9], 9);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'OpenStreetMap contributors',
+    maxZoom: 19,
+    crossOrigin: true
+  }).addTo(map);
+  if (L.markerClusterGroup) {
+    markersLayer = L.markerClusterGroup({
+      maxClusterRadius: 44,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: false,
+      spiderfyOnMaxZoom: true,
+      spiderfyDistanceMultiplier: 1.6,
+      iconCreateFunction: function (cluster) {
+        const n = cluster.getChildCount();
+        const size = n < 10 ? 34 : (n < 50 ? 40 : 46);
+        return L.divIcon({
+          html: '<div class="ft-cluster" style="width:' + size + 'px;height:' + size + 'px;font-size:' + (n < 100 ? 15 : 13) + 'px;">' + n + '</div>',
+          className: 'field-twin-badge',
+          iconSize: [size, size],
+          iconAnchor: [size / 2, size / 2]
+        });
+      }
+    });
+    markersLayer.on('clusterclick', (ev) => {
+      if (pinPlacing) {
+        finishPinPlacement(ev.originalEvent ? map.mouseEventToLatLng(ev.originalEvent) : ev.latlng);
+      } else if (map.getZoom() >= map.getMaxZoom() - 1) {
+        ev.layer.spiderfy();
+      } else {
+        ev.layer.zoomToBounds({ padding: [50, 50] });
+      }
+    });
+    markersLayer.addTo(map);
+  } else {
+    markersLayer = L.layerGroup().addTo(map);
+  }
+  map.on('click', (ev) => { if (pinPlacing) finishPinPlacement(ev.latlng); });
+  map.on('zoomend', () => { if (camerasVisible) renderCameras(); });
+  setTimeout(() => map.invalidateSize(), 200);
+  setTimeout(() => { map.invalidateSize(); renderMarkers(); }, 800);
+}
+
+function hasPos(e) {
+  return typeof e.lat === 'number' && typeof e.lon === 'number' && isFinite(e.lat) && isFinite(e.lon);
+}
+
+function siteKey(e) {
+  if (!hasPos(e)) return 'nopos';
+  return e.lat.toFixed(3) + ',' + e.lon.toFixed(3);
+}
+
+function answeredCount(e) {
+  if (e.context) return 3;
+  if (!e.answers) return 0;
+  return e.answers.filter(a => a && String(a).trim() !== '').length;
+}
+
+function scoreEntries(list) {
+  const seenSites = {};
+  const siteFields = {};
+  const categoryCounts = {};
+  let total = 0;
+  let firstVisits = 0;
+  let photos = 0;
+
+  const chrono = list.slice().sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+  chrono.forEach(e => {
+    const key = siteKey(e);
+    const cat = e.category || 'general';
+    const fields = answeredCount(e);
+
+    let points = 5 + fields * 3;
+    if (e.photo) { points += 15; photos++; }
+    if (!seenSites[key]) {
+      points += 40;
+      seenSites[key] = true;
+      firstVisits++;
+    } else {
+      points = Math.round(points * 0.5);
+    }
+    if (['airstrip', 'memorial', 'airport', 'govt_building'].indexOf(cat) !== -1) {
+      points = Math.round(points * 1.5);
+    }
+
+    total += points;
+    siteFields[key] = (siteFields[key] || 0) + fields;
+    categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+  });
+
+  const siteCount = Object.keys(seenSites).length;
+  const completedSites = Object.keys(siteFields).filter(k => siteFields[k] >= 24).length;
+  total += completedSites * 60;
+
+  return { total, entryCount: list.length, siteCount, firstVisits, photos, completedSites, categoryCounts, siteFields };
+}
+
+function territorySpan(list) {
+  list = list.filter(hasPos);
+  if (!list.length) return 0;
+  let minLat = 90, maxLat = -90, minLon = 180, maxLon = -180;
+  list.forEach(e => {
+    minLat = Math.min(minLat, e.lat); maxLat = Math.max(maxLat, e.lat);
+    minLon = Math.min(minLon, e.lon); maxLon = Math.max(maxLon, e.lon);
+  });
+  const latMiles = (maxLat - minLat) * 69;
+  const lonMiles = (maxLon - minLon) * 55;
+  return Math.round(Math.sqrt(latMiles * latMiles + lonMiles * lonMiles));
+}
+
+function computeTrophies(stats, list) {
+  const catKeys = Object.keys(CATEGORIES).filter(k => k !== 'none' && k !== 'odometer');
+  const distinctCats = catKeys.filter(k => stats.categoryCounts[k]).length;
+  const span = territorySpan(list);
+  return [
+    { name: 'First contact', desc: 'Log your first stop', earned: stats.entryCount >= 1 },
+    { name: 'Ten down', desc: 'Log ten stops', earned: stats.entryCount >= 10 },
+    { name: 'Century', desc: 'Log one hundred stops', earned: stats.entryCount >= 100 },
+    { name: 'Documentarian', desc: 'Attach ten photos', earned: stats.photos >= 10 },
+    { name: 'Thorough', desc: 'Fully document five sites', earned: stats.completedSites >= 5 },
+    { name: 'Scout', desc: 'Reach twenty five distinct sites', earned: stats.siteCount >= 25 },
+    { name: 'Cartographer', desc: 'Cover fifty miles of ground', earned: span >= 50 },
+    { name: 'Range rider', desc: 'Cover two hundred miles of ground', earned: span >= 200 },
+    { name: 'Bush pilot', desc: 'Document three airstrips', earned: (stats.categoryCounts.airstrip || 0) >= 3 },
+    { name: 'Keeper', desc: 'Record five roadside memorials', earned: (stats.categoryCounts.memorial || 0) >= 5 },
+    { name: 'Civic duty', desc: 'Document five government buildings', earned: (stats.categoryCounts.govt_building || 0) >= 5 },
+    { name: 'Full spectrum', desc: 'Log every category at least once', earned: distinctCats >= catKeys.length }
+  ];
+}
+
+let mapFilterIds = null;
+let searchResults = [];
+
+function cleanItems(list) {
+  if (!Array.isArray(list)) return [];
+  return list
+    .map(it => ({
+      name: String((it && it.name) || '').trim(),
+      price: (it && it.price !== null && it.price !== undefined && isFinite(Number(it.price))) ? Number(it.price) : null
+    }))
+    .filter(it => it.name);
+}
+
+function itemsToText(items) {
+  return cleanItems(items).map(it => it.name + (it.price !== null ? ' | ' + it.price.toFixed(2) : '')).join('\n');
+}
+
+function textToItems(text) {
+  return String(text || '').split('\n').map(line => {
+    const t = line.trim();
+    if (!t) return null;
+    const m = t.match(/^(.*?)\s*\|\s*\$?(-?\d+(?:\.\d+)?)\s*$/);
+    if (m && m[1].trim()) return { name: m[1].trim(), price: parseFloat(m[2]) };
+    return { name: t.replace(/\s*\|\s*$/, ''), price: null };
+  }).filter(Boolean);
+}
+
+async function entryPhotoData(entry) {
+  if (entry.photo) return entry.photo;
+  if (!entry.photoPath) return '';
+  const url = await cloudPhotoUrl(entry.photoPath);
+  if (!url) return '';
+  const blob = await (await fetch(url)).blob();
+  return await new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(fr.result);
+    fr.onerror = reject;
+    fr.readAsDataURL(blob);
+  });
+}
+
+function entryText(e) {
+  const m = CATEGORIES[e.category || 'general'] || CATEGORIES.general;
+  const parts = [e.addressLabel || '', e.context || '', m.label];
+  (e.answers || []).forEach(a => { if (a) parts.push(String(a)); });
+  if (e.receipt && e.receipt.items) e.receipt.items.forEach(it => { parts.push(it.name); });
+  return parts.join(' ').toLowerCase();
+}
+
+function localDay(ts) {
+  const d = new Date(ts);
+  const p = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+}
+
+function runSearch() {
+  const val = id => (document.getElementById(id).value || '').trim();
+  const words = val('sqText').toLowerCase().split(/\s+/).filter(Boolean);
+  const from = val('sqFrom');
+  const to = val('sqTo');
+  const cat = val('sqCat');
+  const work = val('sqWork');
+  const photo = val('sqPhoto');
+  const min = val('sqMin') === '' ? null : parseFloat(val('sqMin'));
+  const max = val('sqMax') === '' ? null : parseFloat(val('sqMax'));
+  const sort = val('sqSort');
+
+  let list = entries.filter(e => {
+    if (cat && (e.category || 'general') !== cat) return false;
+    const day = localDay(e.timestamp);
+    if (from && day < from) return false;
+    if (to && day > to) return false;
+    if (work) {
+      if (!e.receipt) return false;
+      if (work === 'work' && !e.receipt.work) return false;
+      if (work === 'personal' && e.receipt.work) return false;
+    }
+    if (photo === 'yes' && !(e.photo || e.photoPath)) return false;
+    if (photo === 'no' && (e.photo || e.photoPath)) return false;
+    if (min !== null || max !== null) {
+      if (!e.receipt) return false;
+      if (min !== null && e.receipt.total < min) return false;
+      if (max !== null && e.receipt.total > max) return false;
+    }
+    if (words.length) {
+      const hay = entryText(e);
+      for (let i = 0; i < words.length; i++) {
+        if (hay.indexOf(words[i]) === -1) return false;
+      }
+    }
+    return true;
+  });
+
+  const total = e => (e.receipt ? e.receipt.total : 0);
+  if (sort === 'old') list.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  else if (sort === 'high') list.sort((a, b) => total(b) - total(a));
+  else if (sort === 'low') list.sort((a, b) => total(a) - total(b));
+  else if (sort === 'name') list.sort((a, b) => (a.addressLabel || '').localeCompare(b.addressLabel || ''));
+  else list.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  searchResults = list;
+  let spent = 0, saved = 0, receipts = 0;
+  list.forEach(e => { if (e.receipt) { spent += e.receipt.total; saved += e.receipt.saved; receipts++; } });
+  document.getElementById('sqSummary').textContent =
+    list.length + ' found' + (receipts ? ', ' + receipts + ' receipts, $' + spent.toFixed(2) + ' spent, $' + saved.toFixed(2) + ' saved' : '');
+
+  const box = document.getElementById('sqRows');
+  if (!list.length) {
+    box.innerHTML = '<div class="sq-empty">Nothing matches these filters</div>';
+    return;
+  }
+  let html = '';
+  list.forEach((e, i) => {
+    const m = CATEGORIES[e.category || 'general'] || CATEGORIES.general;
+    const d = new Date(e.timestamp);
+    html += '<div class="sq-row" data-i="' + i + '">';
+    html += '<div class="sq-sign">' + signHtml(e.formType === 'none' ? 'none' : (e.category || 'general'), e.icon || m.icon, 34) + '</div>';
+    html += '<div class="sq-main">';
+    html += '<div class="sq-name">' + escapeHtml(e.addressLabel || m.label) + '</div>';
+    html += '<div class="sq-sub">' + d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) +
+            ', ' + m.label + (e.receipt ? (e.receipt.work ? ', work' : ', personal') : '') +
+            (e.receipt && e.receipt.items && e.receipt.items.length ? ', ' + e.receipt.items.length + ' items' : '') +
+            (hasPos(e) ? '' : ', no pin') + '</div>';
+    html += '</div>';
+    html += '<div class="sq-amt">' + (e.receipt ? '$' + e.receipt.total.toFixed(2) : '') + '</div>';
+    html += '</div>';
+  });
+  box.innerHTML = html;
+  box.querySelectorAll('.sq-row').forEach(el => {
+    el.addEventListener('click', () => {
+      const e = searchResults[parseInt(el.getAttribute('data-i'), 10)];
+      document.getElementById('searchPage').classList.remove('open');
+      if (hasPos(e)) map.setView([e.lat, e.lon], 15);
+      showEntry(e, 'search');
+    });
+  });
+}
+
+function csvCell(v) {
+  const s = v === null || v === undefined ? '' : String(v);
+  return '"' + s.replace(/"/g, '""') + '"';
+}
+
+function exportSearchCsv() {
+  const head = ['date', 'time', 'name', 'type', 'store', 'total', 'saved', 'tax', 'work or personal', 'address on receipt', 'latitude', 'longitude', 'notes', 'context', 'items'];
+  const lines = [head.map(csvCell).join(',')];
+  searchResults.forEach(e => {
+    const m = CATEGORIES[e.category || 'general'] || CATEGORIES.general;
+    const d = new Date(e.timestamp);
+    const qs = (e.questions || []).map(q => (q && typeof q === 'object') ? q.text : q);
+    const ans = name => { const i = qs.indexOf(name); return i >= 0 ? ((e.answers || [])[i] || '') : ''; };
+    lines.push([
+      localDay(e.timestamp),
+      d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+      e.addressLabel || '',
+      m.label,
+      e.receipt ? e.receipt.store : '',
+      e.receipt ? e.receipt.total.toFixed(2) : '',
+      e.receipt ? e.receipt.saved.toFixed(2) : '',
+      e.receipt ? e.receipt.tax.toFixed(2) : '',
+      e.receipt ? (e.receipt.work ? 'work' : 'personal') : '',
+      ans('Address on receipt'),
+      hasPos(e) ? e.lat : '',
+      hasPos(e) ? e.lon : '',
+      ans('Notes'),
+      e.context || '',
+      (e.receipt && e.receipt.items) ? e.receipt.items.map(it => it.name + (it.price !== null && it.price !== undefined ? ' ' + Number(it.price).toFixed(2) : '')).join('; ') : ''
+    ].map(csvCell).join(','));
+  });
+  const blob = new Blob([lines.join('\n')], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'field-twin-search-' + localDay(new Date()) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function buildSearchPage() {
+  const page = document.getElementById('searchPage');
+  if (page.getAttribute('data-built')) return;
+  let cats = '<option value="">All types</option>';
+  Object.keys(CATEGORIES).forEach(k => {
+    cats += '<option value="' + k + '">' + CATEGORIES[k].icon + ' ' + CATEGORIES[k].label + '</option>';
+  });
+  let html = '<div class="sq-head"><div class="title">[ SEARCH ]</div><button class="secondary" id="sqClose">CLOSE</button></div>';
+  html += '<div class="sq-filters">';
+  html += '<input type="text" id="sqText" placeholder="store, town, note, any word">';
+  html += '<div class="sq-pair"><div><label>From</label><input type="date" id="sqFrom"></div><div><label>To</label><input type="date" id="sqTo"></div></div>';
+  html += '<div class="sq-pair"><div><label>Type</label><select id="sqCat">' + cats + '</select></div>';
+  html += '<div><label>Work or personal</label><select id="sqWork"><option value="">Either</option><option value="work">Work</option><option value="personal">Personal</option></select></div></div>';
+  html += '<div class="sq-pair"><div><label>Total at least</label><input type="number" id="sqMin" inputmode="decimal" step="0.01"></div><div><label>Total at most</label><input type="number" id="sqMax" inputmode="decimal" step="0.01"></div></div>';
+  html += '<div class="sq-pair"><div><label>Photo</label><select id="sqPhoto"><option value="">Either</option><option value="yes">With photo</option><option value="no">Without photo</option></select></div>';
+  html += '<div><label>Sort</label><select id="sqSort"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="high">Highest total</option><option value="low">Lowest total</option><option value="name">Name</option></select></div></div>';
+  html += '<div class="sq-actions"><button class="secondary" id="sqReset">RESET</button><button class="secondary" id="sqMap">SHOW ON MAP</button><button class="secondary" id="sqCsv">SAVE AS SHEET</button></div>';
+  html += '</div>';
+  html += '<div class="sq-summary" id="sqSummary"></div>';
+  html += '<div id="sqRows"></div>';
+  page.innerHTML = html;
+  page.setAttribute('data-built', '1');
+
+  ['sqText', 'sqFrom', 'sqTo', 'sqCat', 'sqWork', 'sqMin', 'sqMax', 'sqPhoto', 'sqSort'].forEach(id => {
+    const el = document.getElementById(id);
+    const isTyped = el.tagName === 'INPUT' && el.type !== 'date';
+    el.addEventListener(isTyped ? 'input' : 'change', runSearch);
+  });
+  document.getElementById('sqClose').addEventListener('click', () => page.classList.remove('open'));
+  document.getElementById('sqReset').addEventListener('click', () => {
+    ['sqText', 'sqFrom', 'sqTo', 'sqCat', 'sqWork', 'sqMin', 'sqMax', 'sqPhoto'].forEach(id => { document.getElementById(id).value = ''; });
+    document.getElementById('sqSort').value = 'new';
+    runSearch();
+  });
+  document.getElementById('sqCsv').addEventListener('click', exportSearchCsv);
+  document.getElementById('sqMap').addEventListener('click', () => {
+    mapFilterIds = new Set(searchResults.map(e => e.id));
+    renderMarkers();
+    const pinned = searchResults.filter(hasPos);
+    if (pinned.length) {
+      map.fitBounds(L.latLngBounds(pinned.map(e => [e.lat, e.lon])).pad(0.2), { maxZoom: 15 });
+    }
+    page.classList.remove('open');
+    document.getElementById('mapFilterBar').style.display = 'flex';
+    document.getElementById('mapFilterText').textContent = 'map shows ' + pinned.length + ' search results';
+  });
+}
+
+function openSearch() {
+  buildSearchPage();
+  runSearch();
+  document.getElementById('searchPage').classList.add('open');
+}
+
+function clearMapFilter() {
+  mapFilterIds = null;
+  document.getElementById('mapFilterBar').style.display = 'none';
+  renderMarkers();
+}
+
+function renderMarkers() {
+  if (!map || !markersLayer) return;
+  markersLayer.clearLayers();
+  let renderError = null;
+  let drawn = 0;
+  entries.forEach(e => {
+    if (!hasPos(e)) return;
+    if (mapFilterIds && !mapFilterIds.has(e.id)) return;
+    const lat = e.lat;
+    const lon = e.lon;
+    try {
+      const key = e.formType === 'none' ? 'none' : (e.category || 'general');
+      const meta = CATEGORIES[key] || CATEGORIES.general;
+      const fill = meta.color;
+      const iconChar = e.icon || meta.icon;
+
+      let pinIcon;
+      if (key === 'receipt') {
+        const amt = e.receipt && e.receipt.total ? '$' + Math.round(e.receipt.total) : '$';
+        pinIcon = L.divIcon({
+          html: '<div class="ft-price">' + amt + '</div>',
+          className: 'field-twin-badge',
+          iconSize: [0, 0],
+          iconAnchor: [0, 0]
+        });
+      } else {
+        pinIcon = L.divIcon({
+          html: '<div class="ft-signwrap">' + signHtml(key, iconChar, 34) + '</div>',
+          className: 'field-twin-badge',
+          iconSize: [0, 0],
+          iconAnchor: [0, 0]
+        });
+      }
+      const pin = L.marker([lat, lon], { icon: pinIcon, interactive: true });
+      pin.on('click', (ev) => { if (pinPlacing) finishPinPlacement(ev.originalEvent ? map.mouseEventToLatLng(ev.originalEvent) : ev.latlng); else showEntry(e); });
+      pin.addTo(markersLayer);
+
+      drawn++;
+    } catch (err) {
+      renderError = err.message;
+    }
+  });
+  setTimeout(() => map.invalidateSize(), 50);
+  if (renderError) {
+    setStatus('marker render error: ' + renderError);
+  }
+}
+
+function timeOfDay(date) {
+  const h = date.getHours();
+  if (h >= 22 || h < 6) return 'late';
+  if (h >= 6 && h < 18) return 'work';
+  return 'evening';
+}
+
+function detectCategory(geo) {
+  const type = (geo.type || '').toLowerCase();
+  const name = (geo.name || geo.display_name || '').toLowerCase();
+  const addr = geo.address || {};
+  const shop = (addr.shop || '').toLowerCase();
+  const amenity = (addr.amenity || '').toLowerCase();
+  const tourism = (addr.tourism || '').toLowerCase();
+  const office = (addr.office || '').toLowerCase();
+  const all = [type, shop, amenity, tourism, office];
+  const has = (v) => all.indexOf(v) !== -1;
+
+  if (has('parcel_locker') || name.includes('amazon hub') || name.includes('amazon locker')) return 'amazon_locker';
+  if (has('fuel')) return 'gas_station';
+  if (has('cafe') || has('coffee')) return 'coffee_shop';
+  if (has('cannabis') || name.includes('dispensary')) return 'dispensary';
+  if (has('pharmacy') || has('chemist')) return 'pharmacy';
+  if (has('bank') || has('atm')) return 'bank';
+  if (has('car_wash')) return 'car_wash';
+  if (has('laundry') || has('dry_cleaning') || name.includes('laundromat')) return 'laundromat';
+  if (has('fast_food')) return 'fast_food';
+  if (has('restaurant') || has('food_court')) return 'restaurant';
+  if (has('supermarket') || has('grocery') || has('convenience')) return 'grocery';
+  if (has('hotel') || has('motel') || has('lodging') || has('guest_house')) return 'hotel';
+  if (has('warehouse') || has('industrial') || has('distribution')) return 'warehouse';
+  if (has('copyshop') || name.includes('print')) return 'printer_site';
+  if (has('aerodrome') || has('airport') || name.includes('airport')) {
+    return (name.includes('airstrip') || name.includes('airfield') || name.includes('landing')) ? 'airstrip' : 'airport';
+  }
+  if (has('runway') || has('airstrip') || name.includes('airstrip') || name.includes('airfield')) return 'airstrip';
+  if (has('mall') || has('shopping_centre') || has('shopping_center') || name.includes('mall')) return 'mall';
+  if (has('police') || has('fire_station') || has('library') || has('courthouse') ||
+      has('townhall') || has('post_office') || has('government') || has('public_building') ||
+      has('social_facility') || has('prison') || has('ranger_station')) return 'govt_building';
+  if (shop || has('department_store') || has('marketplace')) return 'retail';
+  return null;
+}
+
+function classify(geo, hasMilitary, tod) {
+  const tags = geo.address || {};
+  const isCommercial = !!(tags.shop || tags.amenity || tags.office || tags.industrial);
+  const isLodging = !!(tags.tourism === 'hotel' || tags.building === 'hotel' || tags.amenity === 'lodging');
+
+  if (tod === 'late' && isLodging) {
+    return { placeType: 'lodging', confidence: 3, formType: 'none', questions: [], category: null };
+  }
+  if (hasMilitary) {
+    return {
+      placeType: 'restricted proximity',
+      confidence: 1,
+      formType: 'full',
+      questions: fullQuestions(),
+      category: null
+    };
+  }
+
+  const category = detectCategory(geo);
+  if (category) {
+    return {
+      placeType: categoryLabel(category),
+      confidence: 5,
+      formType: 'category',
+      questions: categoryQuestions(category),
+      category: category
+    };
+  }
+
+  if (isCommercial && tod === 'work') {
+    return {
+      placeType: 'commercial, work hours',
+      confidence: 4,
+      formType: 'short',
+      questions: shortQuestions(),
+      category: null
+    };
+  }
+  if (isLodging && tod === 'work') {
+    return {
+      placeType: 'lodging, work hours',
+      confidence: 3,
+      formType: 'short',
+      questions: shortQuestions(),
+      category: null
+    };
+  }
+  return {
+    placeType: 'ambiguous',
+    confidence: 2,
+    formType: 'full',
+    questions: fullQuestions(),
+    category: null
+  };
+}
+
+function categoryLabel(category) {
+  return CATEGORIES[category] ? CATEGORIES[category].label : category;
+}
+
+function pickSubset(pool, n) {
+  const copy = pool.slice();
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, Math.min(n, copy.length));
+}
+
+function bq(id, text, options) {
+  return { id, text, type: 'buttons', options };
+}
+function sq(id, text, options) {
+  return { id, text, type: 'select', options };
+}
+function tq(id, text) {
+  return { id, text, type: 'text' };
+}
+
+function categoryQuestions(category) {
+  const pools = {
+    amazon_locker: [
+      sq('brandModel', 'Locker unit brand or model, if visible', ['Amazon Hub Locker', 'Amazon Hub Counter', 'Unbranded', 'Unknown']),
+      sq('compartments', 'Approximate compartment count', ['Under 20', '20-50', '50-100', 'Over 100']),
+      bq('camera', 'Is there a camera on or near the unit', ['Yes', 'No']),
+      bq('networkVisible', 'Is a network cable or antenna visible on the unit', ['Yes', 'No']),
+      sq('signal', 'Cell signal strength at this location', ['Poor', 'Fair', 'Good', 'Excellent']),
+      bq('indoor', 'Is the unit indoors or outdoors', ['Indoors', 'Outdoors']),
+      bq('screen', 'Kiosk screen or touchpad only', ['Screen', 'Touchpad only', 'Neither']),
+      bq('litAtNight', 'Is the unit lit at night', ['Yes', 'No']),
+      bq('staffNearby', 'Is staff present nearby or is the unit unattended', ['Staff nearby', 'Unattended']),
+      bq('tampering', 'Any visible tampering or physical damage', ['Yes', 'No']),
+      bq('shade', 'Is the unit shaded or exposed to direct sun', ['Shaded', 'Exposed']),
+      bq('parking', 'Is nearby parking available for a service stop', ['Yes', 'No']),
+      sq('accessCode', 'Unit code entry method', ['Keypad', 'App scan', 'Both', 'Unknown'])
+    ],
+    gas_station: [
+      sq('pumps', 'How many pumps are on site', ['1-2', '3-4', '5-6', '7-8', '9 or more']),
+      bq('shade', 'Is shade available at the pumps', ['Yes', 'No']),
+      bq('sunReady', 'Are you equipped to work in direct sun today', ['Yes', 'No']),
+      sq('posBrand', 'POS terminal brand at the register', ['Verifone', 'Gilbarco', 'NCR', 'Wayne', 'Other', 'Unknown']),
+      sq('pumpTerminal', 'Payment terminal brand on the pumps', ['Verifone', 'Gilbarco', 'Ingenico', 'Wayne', 'Other', 'Unknown']),
+      bq('canopyLight', 'Canopy lighting condition', ['Bright', 'Dim', 'Off']),
+      sq('cameraCount', 'Visible camera count', ['0', '1-2', '3-4', '5 or more']),
+      bq('backoffice', 'Is a backoffice or office visible from the counter', ['Yes', 'No']),
+      bq('wifi', 'Is guest wifi available', ['Yes', 'No']),
+      bq('skimmer', 'Any visible signs of card skimmer tampering', ['Yes', 'No']),
+      sq('staffCount', 'How many staff are visible on site', ['1', '2', '3', '4 or more']),
+      sq('security', 'Security system brand, if visible', ['ADT', 'Diebold', 'Other', 'Unknown']),
+      bq('restroom', 'Restroom access', ['Customer only', 'Public', 'None']),
+      bq('airWater', 'Is an air or water station available', ['Yes', 'No']),
+      bq('diesel', 'Is diesel available', ['Yes', 'No']),
+      bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full']),
+      bq('nightLight', 'Overall lighting at night', ['Bright', 'Moderate', 'Dim'])
+    ],
+    fast_food: [
+      sq('posBrand', 'POS terminal brand at the counter', ['NCR', 'Toast', 'Micros', 'Square', 'Other', 'Unknown']),
+      sq('kiosk', 'How many self order kiosks', ['0', '1', '2', '3 or more']),
+      bq('kds', 'Is a kitchen display system visible', ['Yes', 'No']),
+      bq('driveThruMenu', 'Is the drive thru menu board digital', ['Yes', 'No']),
+      sq('lanes', 'How many drive thru lanes', ['0', '1', '2', '3 or more']),
+      sq('cameraCount', 'Visible camera count', ['0', '1-2', '3-4', '5 or more']),
+      bq('networkGear', 'Is network equipment visible, like a router or switch', ['Yes', 'No']),
+      bq('thirdParty', 'Is third party delivery pickup signage present', ['Yes', 'No']),
+      sq('staffCount', 'How many staff are visible on site', ['1-2', '3-4', '5-6', '7 or more']),
+      bq('wifi', 'Is guest wifi available', ['Yes', 'No']),
+      bq('seating', 'Is dine in seating available', ['Yes', 'No']),
+      bq('printer', 'Is a receipt or kitchen printer visibly down or jammed', ['Yes', 'No', 'Not visible']),
+      bq('shade', 'Is shade available at the drive thru or entrance', ['Yes', 'No']),
+      bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full']),
+      bq('restroom', 'Restroom access', ['Customer only', 'Public', 'None']),
+      sq('waitEstimate', 'Estimated drive thru wait right now', ['Under 2 min', '2-5 min', '5-10 min', 'Over 10 min'])
+    ],
+    grocery: [
+      sq('selfCheckout', 'Self checkout brand in use', ['NCR', 'Toshiba', 'Diebold', 'Other', 'None on site', 'Unknown']),
+      sq('posBrand', 'POS terminal brand at staffed registers', ['NCR', 'Toshiba', 'Oracle Micros', 'Other', 'Unknown']),
+      sq('registerCount', 'How many staffed registers are open', ['0', '1-2', '3-4', '5 or more']),
+      sq('selfCheckoutLanes', 'How many self checkout lanes', ['0', '1-2', '3-4', '5 or more']),
+      sq('cameraCount', 'Visible camera count', ['0', '1-2', '3-4', '5 or more']),
+      bq('easGates', 'Are EAS or RFID security gates present at the exits', ['Yes', 'No']),
+      bq('digitalTags', 'Are digital shelf price tags in use', ['Yes', 'No']),
+      bq('pharmacy', 'Is a pharmacy present with its own POS', ['Yes', 'No', 'No pharmacy']),
+      bq('networkCloset', 'Is a server or network closet visible anywhere in store', ['Yes', 'No']),
+      bq('wifi', 'Is guest wifi available', ['Yes', 'No']),
+      bq('loyaltyKiosk', 'Is a loyalty program kiosk or sign up point visible', ['Yes', 'No']),
+      bq('lossPrevention', 'Is loss prevention tech visible, like mirrors or tag readers', ['Yes', 'No']),
+      bq('carts', 'Are shopping carts readily available', ['Yes', 'No']),
+      bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full']),
+      bq('printer', 'Is a receipt printer visibly down at any register', ['Yes', 'No', 'Not visible']),
+      bq('restroom', 'Restroom access', ['Customer only', 'Public', 'None'])
+    ],
+    coffee_shop: [
+      sq('posBrand', 'POS terminal brand at the counter', ['Square', 'Toast', 'Clover', 'NCR', 'Other', 'Unknown']),
+      bq('driveThru', 'Is there a drive thru window', ['Yes', 'No']),
+      bq('mobileOrder', 'Is there a mobile order pickup area', ['Yes', 'No']),
+      bq('wifi', 'Is guest wifi available', ['Yes', 'No']),
+      sq('outlets', 'Power outlets available for customers', ['None', 'A few', 'Many']),
+      sq('seating', 'Seating capacity', ['None', 'Under 10', '10-25', 'Over 25']),
+      bq('kds', 'Is a kitchen or barista display system visible', ['Yes', 'No']),
+      sq('cameraCount', 'Visible camera count', ['0', '1-2', '3-4', '5 or more']),
+      sq('staffCount', 'How many staff are visible', ['1', '2-3', '4-5', '6 or more']),
+      bq('printer', 'Is a receipt or label printer visibly down', ['Yes', 'No', 'Not visible']),
+      bq('shade', 'Is shaded outdoor seating available', ['Yes', 'No']),
+      bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full']),
+      bq('restroom', 'Restroom access', ['Customer only', 'Public', 'None']),
+      sq('waitEstimate', 'Estimated wait right now', ['Under 2 min', '2-5 min', '5-10 min', 'Over 10 min'])
+    ],
+    dispensary: [
+      bq('idCheck', 'Is there an ID check point at the entrance', ['Yes', 'No']),
+      sq('posBrand', 'POS terminal brand in use', ['Dutchie', 'Flowhub', 'Treez', 'Other', 'Unknown']),
+      bq('security', 'Is a security guard present', ['Yes', 'No']),
+      sq('cameraCount', 'Visible camera count', ['0', '1-2', '3-5', '6 or more']),
+      bq('cashOnly', 'Payment methods accepted', ['Cash only', 'Cash and debit', 'Cards accepted']),
+      bq('atm', 'Is an ATM on site', ['Yes', 'No']),
+      bq('waitingRoom', 'Is there a separate waiting or check in room', ['Yes', 'No']),
+      bq('kiosk', 'Are self service ordering kiosks present', ['Yes', 'No']),
+      sq('staffCount', 'How many staff are visible', ['1-2', '3-4', '5-6', '7 or more']),
+      bq('deliveryPickup', 'Is there an online order pickup counter', ['Yes', 'No']),
+      bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full']),
+      bq('signage', 'Is exterior signage clearly visible from the road', ['Yes', 'No'])
+    ],
+    pharmacy: [
+      bq('standalone', 'Standalone pharmacy or inside a larger store', ['Standalone', 'Inside store']),
+      sq('posBrand', 'POS terminal brand at the pharmacy counter', ['NCR', 'Toshiba', 'Other', 'Unknown']),
+      bq('driveThru', 'Is there a drive thru window', ['Yes', 'No']),
+      bq('consultWindow', 'Is there a separate consultation window', ['Yes', 'No']),
+      sq('cameraCount', 'Visible camera count', ['0', '1-2', '3-4', '5 or more']),
+      bq('kiosk', 'Is a prescription pickup kiosk present', ['Yes', 'No']),
+      sq('staffCount', 'How many staff are visible behind the counter', ['1', '2-3', '4-5', '6 or more']),
+      bq('printer', 'Is a label printer visibly down or jammed', ['Yes', 'No', 'Not visible']),
+      sq('waitEstimate', 'Estimated wait at the counter', ['No wait', 'Under 5 min', '5-15 min', 'Over 15 min']),
+      bq('secureStorage', 'Is a locked or secured storage area visible', ['Yes', 'No']),
+      bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full'])
+    ],
+    bank: [
+      bq('branchType', 'Is this a full branch or ATM only', ['Full branch', 'ATM only']),
+      sq('atmCount', 'How many ATMs on site', ['1', '2', '3', '4 or more']),
+      bq('driveThru', 'Is there a drive thru lane', ['Yes', 'No']),
+      sq('atmBrand', 'ATM manufacturer, if visible', ['NCR', 'Diebold', 'Hyosung', 'Other', 'Unknown']),
+      sq('cameraCount', 'Visible camera count', ['0', '1-2', '3-5', '6 or more']),
+      bq('vestibule', 'Is there a card access vestibule', ['Yes', 'No']),
+      bq('skimmer', 'Any visible signs of ATM tampering', ['Yes', 'No']),
+      bq('lighting', 'Lighting quality at the ATM', ['Bright', 'Moderate', 'Dim']),
+      sq('staffCount', 'How many staff are visible inside', ['0', '1-2', '3-4', '5 or more']),
+      bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full']),
+      bq('shade', 'Is the ATM shaded or exposed to direct sun', ['Shaded', 'Exposed'])
+    ],
+    hotel: [
+      sq('propertyType', 'Property type', ['Motel', 'Budget hotel', 'Mid range', 'Upscale']),
+      sq('floors', 'How many floors', ['1', '2', '3-4', '5 or more']),
+      bq('exteriorEntry', 'Room entry style', ['Exterior doors', 'Interior corridors']),
+      sq('posBrand', 'Front desk system brand, if visible', ['Opera', 'Choice Advantage', 'Other', 'Unknown']),
+      bq('keyType', 'Room key type', ['Magstripe card', 'RFID card', 'Physical key']),
+      sq('cameraCount', 'Visible camera count in the lobby', ['0', '1-2', '3-4', '5 or more']),
+      bq('wifi', 'Is guest wifi available', ['Yes', 'No']),
+      bq('breakfast', 'Is breakfast service offered', ['Yes', 'No']),
+      bq('deskStaffed', 'Is the front desk staffed right now', ['Yes', 'No']),
+      bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full']),
+      bq('lighting', 'Exterior lighting at night', ['Bright', 'Moderate', 'Dim'])
+    ],
+    car_wash: [
+      bq('washType', 'Wash type', ['Automatic tunnel', 'In bay automatic', 'Self serve bays', 'Hand wash']),
+      sq('bayCount', 'How many bays or lanes', ['1', '2-3', '4-5', '6 or more']),
+      sq('paymentKiosk', 'Payment kiosk brand, if visible', ['Unitec', 'Innovative Control', 'Other', 'Unknown']),
+      bq('cardReader', 'Does the kiosk accept cards', ['Yes', 'No']),
+      bq('vacuums', 'Are free vacuum stations available', ['Yes', 'No']),
+      bq('attendant', 'Is an attendant on site', ['Yes', 'No']),
+      sq('cameraCount', 'Visible camera count', ['0', '1-2', '3-4', '5 or more']),
+      bq('outOfOrder', 'Are any bays marked out of order', ['Yes', 'No']),
+      bq('shade', 'Is shade available while waiting', ['Yes', 'No']),
+      bq('lighting', 'Lighting at night', ['Bright', 'Moderate', 'Dim']),
+      bq('parking', 'Queue length right now', ['Empty', 'Moderate', 'Long'])
+    ],
+    laundromat: [
+      sq('washerCount', 'Approximate washer count', ['Under 10', '10-20', '20-40', 'Over 40']),
+      sq('dryerCount', 'Approximate dryer count', ['Under 10', '10-20', '20-40', 'Over 40']),
+      bq('paymentType', 'Payment method', ['Coin', 'Card', 'App', 'Mixed']),
+      sq('kioskBrand', 'Payment kiosk or card system brand', ['CCI', 'ESD', 'Laundroworks', 'Other', 'Unknown']),
+      bq('attendant', 'Is an attendant on site', ['Yes', 'No']),
+      sq('cameraCount', 'Visible camera count', ['0', '1-2', '3-4', '5 or more']),
+      bq('wifi', 'Is guest wifi available', ['Yes', 'No']),
+      bq('outOfOrder', 'Are any machines marked out of order', ['Yes', 'No']),
+      bq('airConditioned', 'Is the space air conditioned', ['Yes', 'No']),
+      bq('restroom', 'Restroom access', ['Customer only', 'Public', 'None']),
+      bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full'])
+    ],
+    restaurant: [
+      sq('posBrand', 'POS terminal brand in use', ['Toast', 'Micros', 'Aloha', 'Square', 'Other', 'Unknown']),
+      bq('handheld', 'Are servers using handheld ordering devices', ['Yes', 'No']),
+      bq('kds', 'Is a kitchen display system visible', ['Yes', 'No']),
+      bq('payAtTable', 'Is pay at table technology in use', ['Yes', 'No']),
+      sq('seating', 'Approximate seating capacity', ['Under 30', '30-60', '60-100', 'Over 100']),
+      sq('cameraCount', 'Visible camera count', ['0', '1-2', '3-4', '5 or more']),
+      bq('bar', 'Is there a full bar', ['Yes', 'No']),
+      bq('printer', 'Is a receipt or kitchen printer visibly down', ['Yes', 'No', 'Not visible']),
+      sq('staffCount', 'How many staff are visible', ['1-3', '4-6', '7-10', 'Over 10']),
+      bq('wifi', 'Is guest wifi available', ['Yes', 'No']),
+      bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full']),
+      sq('waitEstimate', 'Estimated wait for a table', ['No wait', 'Under 10 min', '10-30 min', 'Over 30 min'])
+    ],
+    retail: [
+      sq('posBrand', 'POS terminal brand at the registers', ['NCR', 'Toshiba', 'Square', 'Clover', 'Other', 'Unknown']),
+      sq('registerCount', 'How many registers are open', ['1', '2-3', '4-6', '7 or more']),
+      bq('selfCheckout', 'Is self checkout available', ['Yes', 'No']),
+      bq('easGates', 'Are security gates present at the exits', ['Yes', 'No']),
+      sq('cameraCount', 'Visible camera count', ['0', '1-2', '3-5', '6 or more']),
+      bq('networkGear', 'Is network equipment visible', ['Yes', 'No']),
+      bq('digitalSignage', 'Is digital signage in use', ['Yes', 'No']),
+      bq('printer', 'Is a receipt or label printer visibly down', ['Yes', 'No', 'Not visible']),
+      sq('staffCount', 'How many staff are visible', ['1-2', '3-5', '6-10', 'Over 10']),
+      bq('wifi', 'Is guest wifi available', ['Yes', 'No']),
+      bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full']),
+      bq('backRoom', 'Is a stock room or back office accessible from the floor', ['Yes', 'No'])
+    ],
+    warehouse: [
+      sq('dockDoors', 'How many dock doors', ['1-4', '5-10', '11-20', 'Over 20']),
+      bq('gated', 'Is the property gated', ['Yes', 'No']),
+      bq('guardShack', 'Is there a guard shack or check in point', ['Yes', 'No']),
+      bq('badgeAccess', 'Is badge or card access required to enter', ['Yes', 'No']),
+      sq('cameraCount', 'Visible camera count', ['0', '1-5', '6-15', 'Over 15']),
+      bq('networkCloset', 'Is a network or server closet visible', ['Yes', 'No']),
+      bq('forkliftTraffic', 'Is there active forklift traffic', ['Yes', 'No']),
+      bq('scanners', 'Are handheld scanners in use', ['Yes', 'No']),
+      bq('shade', 'Is shaded staging area available', ['Yes', 'No']),
+      bq('sunReady', 'Are you equipped to work in direct sun today', ['Yes', 'No']),
+      sq('staffCount', 'How many staff are visible', ['1-5', '6-15', '16-30', 'Over 30']),
+      bq('parking', 'Is visitor parking available', ['Yes', 'No'])
+    ],
+    printer_site: [
+      sq('printerBrand', 'Printer brand on site', ['HP', 'Zebra', 'Epson', 'Brother', 'Star', 'Other', 'Unknown']),
+      sq('printerCount', 'How many printers on site', ['1', '2-3', '4-6', '7 or more']),
+      bq('connection', 'Printer connection type', ['USB', 'Ethernet', 'Wifi', 'Bluetooth', 'Unknown']),
+      bq('errorState', 'Is the printer showing an error state', ['Yes', 'No']),
+      bq('paperStocked', 'Is paper or label stock available on site', ['Yes', 'No']),
+      bq('powerAccess', 'Is a power outlet accessible at the printer', ['Yes', 'No']),
+      bq('networkGear', 'Is a router or switch accessible', ['Yes', 'No']),
+      bq('spaceToWork', 'Is there room to work at the unit', ['Yes', 'No']),
+      sq('staffContact', 'Is a site contact available', ['Yes', 'No', 'Unknown']),
+      bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full']),
+      bq('shade', 'Is the work area climate controlled', ['Yes', 'No'])
+    ],
+    memorial: [
+      sq('peopleCount', 'How many people is this memorial for', ['1', '2', '3', '4 or more', 'Not stated']),
+      tq('names', 'Names shown, if any'),
+      tq('dateShown', 'Date shown, if any'),
+      sq('condition', 'Overall condition', ['Well kept', 'Weathered', 'Damaged', 'Overgrown']),
+      sq('memorialType', 'Type of marker', ['Cross', 'Plaque', 'Stone', 'Sign', 'Informal', 'Mixed']),
+      sq('recentVisit', 'Signs of recent visits', ['Fresh flowers', 'Older offerings', 'None visible']),
+      bq('roadside', 'Position relative to the road', ['Shoulder', 'Median', 'Off road', 'Fence line']),
+      sq('materials', 'Main materials', ['Wood', 'Metal', 'Stone', 'Plastic', 'Mixed']),
+      tq('inscription', 'Inscription or message, if legible'),
+      tq('observations', 'Anything else worth recording')
+    ],
+    airstrip: [
+      sq('surface', 'Runway surface', ['Paved', 'Gravel', 'Dirt', 'Grass', 'Salt or playa']),
+      sq('lengthEstimate', 'Estimated usable length', ['Under 2000 ft', '2000-3000 ft', '3000-5000 ft', 'Over 5000 ft']),
+      sq('condition', 'Surface condition', ['Good', 'Rough', 'Rutted', 'Overgrown', 'Unusable']),
+      bq('markings', 'Are runway markings present', ['Yes', 'No', 'Faded']),
+      bq('windsock', 'Is a windsock present', ['Yes', 'No']),
+      bq('lighting', 'Is runway lighting present', ['Yes', 'No']),
+      bq('obstructions', 'Obstructions on approach', ['None', 'Powerlines', 'Trees', 'Terrain', 'Fencing']),
+      bq('accessRoad', 'Is there vehicle access to the strip', ['Yes', 'No']),
+      bq('hangars', 'Are hangars or structures present', ['Yes', 'No']),
+      bq('fuel', 'Is fuel available on site', ['Yes', 'No', 'Unknown']),
+      sq('aircraftPresent', 'Aircraft visible on site', ['0', '1-2', '3-5', '6 or more']),
+      bq('active', 'Does the strip appear active', ['Yes', 'No', 'Unclear']),
+      bq('gated', 'Is the property gated or posted', ['Yes', 'No']),
+      tq('identifier', 'Field identifier or name, if posted')
+    ],
+    airport: [
+      sq('sizeClass', 'Airport size', ['Regional', 'Medium hub', 'Large hub', 'International']),
+      sq('terminalCount', 'How many terminals', ['1', '2', '3', '4 or more']),
+      sq('restaurantCount', 'How many restaurants past security', ['0', '1-3', '4-8', '9 or more']),
+      sq('restroomCondition', 'Restroom condition', ['Clean', 'Acceptable', 'Poor']),
+      bq('restroomFamily', 'Is a family or companion restroom available', ['Yes', 'No']),
+      sq('kioskCount', 'Self service check in kiosks', ['0', '1-5', '6-15', 'Over 15']),
+      bq('wifi', 'Is free guest wifi available', ['Yes', 'No']),
+      sq('outlets', 'Power outlets at gate seating', ['None', 'A few', 'Many']),
+      bq('chargingStations', 'Are dedicated charging stations present', ['Yes', 'No']),
+      bq('rentalCars', 'Is on site car rental available', ['Yes', 'No']),
+      sq('parkingType', 'Parking options', ['Surface only', 'Garage', 'Both']),
+      bq('rideshare', 'Is there a marked rideshare pickup area', ['Yes', 'No']),
+      sq('securityWait', 'Security line length right now', ['None', 'Short', 'Moderate', 'Long']),
+      bq('baggageCarousels', 'Are baggage carousels visible from arrivals', ['Yes', 'No']),
+      bq('shade', 'Is covered walkway access available outside', ['Yes', 'No'])
+    ],
+    govt_building: [
+      sq('buildingType', 'Type of facility', ['Police', 'Fire', 'Library', 'Courthouse', 'Post office', 'Social services', 'City or county', 'Other']),
+      bq('publicAccess', 'Is the building open to the public right now', ['Yes', 'No', 'By appointment']),
+      bq('securityScreening', 'Is there security screening at the entrance', ['Yes', 'No']),
+      bq('metalDetector', 'Is a metal detector in use', ['Yes', 'No']),
+      sq('cameraCount', 'Visible camera count', ['0', '1-3', '4-8', '9 or more']),
+      bq('badgeAccess', 'Is badge access required past the lobby', ['Yes', 'No']),
+      bq('publicWifi', 'Is public wifi available', ['Yes', 'No']),
+      bq('publicComputers', 'Are public computers available', ['Yes', 'No']),
+      bq('kiosk', 'Is a self service kiosk present', ['Yes', 'No']),
+      sq('staffVisible', 'How many staff are visible at the counter', ['0', '1-2', '3-5', '6 or more']),
+      sq('waitEstimate', 'Estimated wait to be helped', ['No wait', 'Under 15 min', '15-45 min', 'Over 45 min']),
+      bq('restroom', 'Restroom access', ['Public', 'Staff only', 'None']),
+      bq('parking', 'Visitor parking availability', ['Empty', 'Moderate', 'Full', 'None on site']),
+      bq('accessibility', 'Is step free access available', ['Yes', 'No']),
+      tq('hoursPosted', 'Posted hours, if visible')
+    ],
+    mall: [
+      sq('anchorCount', 'How many anchor stores', ['0', '1', '2', '3', '4 or more']),
+      sq('occupancy', 'Approximate storefront occupancy', ['Under 25 percent', '25-50 percent', '50-75 percent', 'Over 75 percent']),
+      sq('floors', 'How many floors', ['1', '2', '3 or more']),
+      bq('foodCourt', 'Is there a food court', ['Yes', 'No']),
+      sq('foodVendors', 'How many food vendors are open', ['0', '1-3', '4-8', '9 or more']),
+      sq('restroomCondition', 'Restroom condition', ['Clean', 'Acceptable', 'Poor']),
+      sq('cameraCount', 'Visible camera count', ['0', '1-5', '6-15', 'Over 15']),
+      bq('security', 'Is mall security visible', ['Yes', 'No']),
+      bq('directory', 'Is a directory kiosk present', ['Digital', 'Static', 'None']),
+      bq('wifi', 'Is guest wifi available', ['Yes', 'No']),
+      bq('kiosksCarts', 'Are center aisle kiosks or carts in use', ['Yes', 'No']),
+      sq('footTraffic', 'Foot traffic right now', ['Empty', 'Light', 'Moderate', 'Busy']),
+      bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full']),
+      bq('vacantAnchor', 'Is any anchor space visibly vacant', ['Yes', 'No']),
+      bq('climateControl', 'Is the common area climate controlled', ['Yes', 'No'])
+    ]
+  };
+  const pool = pools[category];
+  if (!pool) return fullQuestions();
+  if (category === 'memorial') return pool;
+  return pickSubset(pool, 8);
+}
+
+function shortQuestions() {
+  return [
+    bq('purpose', 'Purpose of this stop', ['Work', 'Personal', 'Unplanned']),
+    sq('duration', 'Expected duration', ['Under 15 min', '15-30 min', '30-60 min', 'Over 1 hour']),
+    bq('shade', 'Is shade or shelter available', ['Yes', 'No']),
+    tq('flag', 'Anything to flag about this stop')
+  ];
+}
+
+function fullQuestions() {
+  return [
+    bq('purpose', 'Purpose of this stop', ['Work', 'Personal', 'Unplanned']),
+    bq('planned', 'Planned or unplanned', ['Planned', 'Unplanned']),
+    bq('others', 'Who else is present', ['Alone', 'Coworker', 'Public', 'Unknown']),
+    sq('duration', 'Expected duration', ['Under 15 min', '15-30 min', '30-60 min', 'Over 1 hour']),
+    sq('concern', 'Concern level about this location', ['None', 'Mild', 'Moderate', 'High']),
+    bq('offRecord', 'Should this stay off the record', ['Yes', 'No']),
+    tq('note', 'Anything else worth noting')
+  ];
+}
+
+async function reverseGeocode(lat, lon) {
+  const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1&namedetails=1`;
+  const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+  if (!res.ok) throw new Error('reverse geocode failed');
+  const data = await res.json();
+  return data || {};
+}
+
+async function checkMilitary(lat, lon) {
+  const query = `[out:json][timeout:15];(way(around:400,${lat},${lon})[landuse=military];relation(around:400,${lat},${lon})[landuse=military];);out count;`;
+  try {
+    const res = await fetch('https://overpass-api.de/api/interpreter', {
+      method: 'POST',
+      body: query
+    });
+    if (!res.ok) return false;
+    const data = await res.json();
+    const count = data.elements && data.elements[0] && data.elements[0].tags
+      ? parseInt(data.elements[0].tags.total || '0', 10)
+      : 0;
+    return count > 0;
+  } catch (e) {
+    return false;
+  }
+}
+
+function getPosition() {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject, {
+      enableHighAccuracy: true,
+      timeout: 15000
+    });
+  });
+}
+
+async function forceUpdate() {
+  const btn = document.getElementById('updateBtn');
+  btn.disabled = true;
+  try {
+    setStatus('acquiring position');
+    setRadar(1);
+    const pos = await getPosition();
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+
+    setStatus('resolving address');
+    setRadar(3);
+    const geo = await reverseGeocode(lat, lon).catch(() => ({}));
+
+    setStatus('checking proximity');
+    setRadar(5);
+    const hasMilitary = await checkMilitary(lat, lon);
+
+    const now = new Date();
+    const tod = timeOfDay(now);
+    const cls = classify(geo, hasMilitary, tod);
+
+    setRadar(8);
+    setStatus('stop identified');
+
+    const entry = {
+      id: now.getTime() + '-' + Math.random().toString(36).slice(2, 8),
+      timestamp: now.toISOString(),
+      lat, lon,
+      addressLabel: formatAddress(geo.address || {}),
+      placeType: cls.placeType,
+      confidence: cls.confidence,
+      formType: cls.formType,
+      category: cls.category,
+      questions: cls.questions,
+      answers: [],
+      context: '',
+      icon: (CATEGORIES[cls.category] || CATEGORIES.general).icon,
+      twinId: TWIN_ID
+    };
+
+    if (cls.formType === 'none') {
+      entries.unshift(entry);
+      await saveEntries();
+      renderMarkers();
+      map.setView([lat, lon], 14);
+      setRadar(0);
+    } else {
+      pendingEntry = entry;
+      showForm(entry);
+      map.setView([lat, lon], 14);
+    }
+  } catch (err) {
+    setStatus('update failed, ' + (err.message || 'unknown error'));
+    setRadar(0);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function formatAddress(address) {
+  const parts = [address.road, address.neighbourhood, address.suburb, address.city, address.town, address.village];
+  return parts.filter(Boolean).join(', ') || 'unresolved address';
+}
+
+function showForm(entry) {
+  const questionObjs = entry.questions;
+  const formAnswers = {};
+  selectedIcon = (CATEGORIES[entry.category] || CATEGORIES.general).icon;
+  const panel = document.getElementById('panel');
+  const label = entry.category ? entry.category.toUpperCase().replace('_', ' ') : 'LOG ENTRY';
+  let html = '<h2>' + label + '</h2>';
+  html += '<div class="meta-line">' + entry.addressLabel + '</div>';
+  html += '<div class="question">Stop type, changes the form below</div>';
+  html += '<div class="icon-picker" id="iconPicker">';
+  ICON_CHOICES.forEach((key) => {
+    const meta = CATEGORIES[key];
+    const active = (entry.category || 'general') === key ? ' active' : '';
+    html += '<div class="icon-choice' + active + '" data-catkey="' + key + '">';
+    html += '<div style="font-size:20px;line-height:24px;">' + meta.icon + '</div>';
+    html += '<div style="font-size:10px;line-height:13px;">' + meta.label + '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  html += '<div class="question">Photo, optional</div>';
+  html += '<input type="file" id="photoInput" accept="image/*" capture="environment" style="width:100%;font-size:13px;">';
+  html += '<div id="photoPreview"></div>';
+  html += '<div class="question">Context, optional, overrides the questions below</div>';
+  html += '<textarea id="contextInput" placeholder="a single line here can replace the full form"></textarea>';
+  questionObjs.forEach((q) => {
+    html += '<div class="question">' + q.text + '</div>';
+    if (q.type === 'buttons') {
+      html += '<div class="icon-picker" data-qid="' + q.id + '">';
+      q.options.forEach((opt) => {
+        html += '<div class="icon-choice qopt" data-qid="' + q.id + '" data-value="' + opt + '" style="font-size:12px;">' + opt + '</div>';
+      });
+      html += '</div>';
+    } else if (q.type === 'select') {
+      html += '<select id="q_' + q.id + '" data-qid="' + q.id + '">';
+      html += '<option value="">Select</option>';
+      q.options.forEach((opt) => {
+        html += '<option value="' + opt + '">' + opt + '</option>';
+      });
+      html += '</select>';
+    } else {
+      html += '<input type="text" id="q_' + q.id + '" data-qid="' + q.id + '" />';
+    }
+  });
+  html += '<div class="panel-actions">';
+  html += '<button id="saveEntryBtn">SAVE ENTRY</button>';
+  html += '<button class="secondary" id="skipEntryBtn">LOG WITHOUT ANSWERS</button>';
+  html += '</div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+
+  let photoData = entry.photo || '';
+  const photoInput = document.getElementById('photoInput');
+  const photoPreview = document.getElementById('photoPreview');
+  if (photoData) {
+    photoPreview.innerHTML = '<img src="' + photoData + '" style="max-width:100%;margin-top:6px;">';
+  }
+  photoInput.addEventListener('change', () => {
+    const file = photoInput.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const maxDim = 900;
+        let w = img.width;
+        let h = img.height;
+        if (w > h && w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+        else if (h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        photoData = canvas.toDataURL('image/jpeg', 0.7);
+        photoPreview.innerHTML = '<img src="' + photoData + '" style="max-width:100%;margin-top:6px;">';
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById('iconPicker').querySelectorAll('.icon-choice').forEach(el => {
+    el.addEventListener('click', () => {
+      const key = el.getAttribute('data-catkey');
+      if ((entry.category || 'general') === key) return;
+      entry.photo = photoData;
+      entry.category = key === 'general' ? null : key;
+      entry.icon = CATEGORIES[key].icon;
+      entry.formType = key === 'general' ? 'full' : 'category';
+      entry.questions = key === 'general' ? fullQuestions() : categoryQuestions(key);
+      showForm(entry);
+    });
+  });
+
+  panel.querySelectorAll('.qopt').forEach(el => {
+    el.addEventListener('click', () => {
+      const qid = el.getAttribute('data-qid');
+      panel.querySelectorAll('.qopt[data-qid="' + qid + '"]').forEach(x => x.classList.remove('active'));
+      el.classList.add('active');
+      formAnswers[qid] = el.getAttribute('data-value');
+    });
+  });
+
+  panel.querySelectorAll('select[data-qid]').forEach(el => {
+    el.addEventListener('change', () => {
+      formAnswers[el.getAttribute('data-qid')] = el.value;
+    });
+  });
+
+  panel.querySelectorAll('input[data-qid]').forEach(el => {
+    el.addEventListener('input', () => {
+      formAnswers[el.getAttribute('data-qid')] = el.value.trim();
+    });
+  });
+
+  function finalizeEntry(withAnswers) {
+    const context = document.getElementById('contextInput').value.trim();
+    entry.context = context;
+    if (context) {
+      entry.answers = [];
+      entry.questions = questionObjs.map(q => q.text);
+    } else if (withAnswers) {
+      entry.answers = questionObjs.map(q => formAnswers[q.id] || '');
+      entry.questions = questionObjs.map(q => q.text);
+    } else {
+      entry.answers = [];
+      entry.questions = questionObjs.map(q => q.text);
+    }
+    entry.icon = selectedIcon;
+    entry.photo = photoData;
+  }
+
+  function entrySignature(e) {
+    return e.lat.toFixed(4) + '|' + e.lon.toFixed(4) + '|' + e.context + '|' + e.answers.join('~');
+  }
+
+  function commitEntry(saveBtn, skipBtn, statusMessage) {
+    const signature = entrySignature(entry);
+    const now = Date.now();
+    if (now - lastSaveTime < MIN_SAVE_INTERVAL_MS && signature === lastSaveSignature) {
+      setStatus('duplicate ignored, same info at this spot within the last 30 seconds');
+      closePanel();
+      return;
+    }
+    lastSaveTime = now;
+    lastSaveSignature = signature;
+    const beforeScore = scoreEntries(entries).total;
+    entries.unshift(entry);
+    saveEntries().catch(() => {}).then(() => {
+      renderMarkers();
+      map.setView([entry.lat, entry.lon], 15);
+      setRadar(0);
+      const after = scoreEntries(entries).total;
+      const gained = after - beforeScore;
+      setStatus('saved, plus ' + gained + ' points, ' + after + ' total');
+      setTimeout(closePanel, 500);
+    });
+  }
+
+  document.getElementById('saveEntryBtn').addEventListener('click', function () {
+    const saveBtn = this;
+    const skipBtn = document.getElementById('skipEntryBtn');
+    if (saveBtn.disabled) return;
+    saveBtn.disabled = true;
+    skipBtn.disabled = true;
+    saveBtn.textContent = 'SAVED';
+    finalizeEntry(true);
+    commitEntry(saveBtn, skipBtn, 'entry saved');
+  });
+
+  document.getElementById('skipEntryBtn').addEventListener('click', function () {
+    const skipBtn = this;
+    const saveBtn = document.getElementById('saveEntryBtn');
+    if (skipBtn.disabled) return;
+    skipBtn.disabled = true;
+    saveBtn.disabled = true;
+    skipBtn.textContent = 'LOGGED';
+    finalizeEntry(false);
+    commitEntry(saveBtn, skipBtn, 'entry logged without answers');
+  });
+}
+
+const API_BASE_KEY = 'apiBase';
+const CAM_CACHE = 'ndotCameras';
+let cameraLayer = null;
+let cameras = [];
+let camerasVisible = false;
+
+function getApiToken() {
+  try { return localStorage.getItem('apiToken') || ''; } catch (e) { return ''; }
+}
+
+function setApiToken(v) {
+  try { localStorage.setItem('apiToken', v); } catch (e) {}
+}
+
+function getApiBase() {
+  try { return localStorage.getItem(API_BASE_KEY) || ''; } catch (e) { return ''; }
+}
+
+function setApiBase(v) {
+  try { localStorage.setItem(API_BASE_KEY, v); } catch (e) {}
+}
+
+function milesBetween(lat1, lon1, lat2, lon2) {
+  const dLat = (lat2 - lat1) * 69;
+  const dLon = (lon2 - lon1) * 55;
+  return Math.sqrt(dLat * dLat + dLon * dLon);
+}
+
+async function loadCameras(force) {
+  const base = getApiBase();
+  if (!base) { setStatus('no api address set, add one in the menu'); return false; }
+  if (!force) {
+    try {
+      const cached = localStorage.getItem(CAM_CACHE);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Date.now() - parsed.at < 7 * 24 * 60 * 60 * 1000) {
+          cameras = parsed.list;
+          return true;
+        }
+      }
+    } catch (e) {}
+  }
+  setStatus('loading cameras');
+  try {
+    const root = base.replace(/\/+$/, '');
+    const res = await fetch(root + '/cameras');
+    if (!res.ok) throw new Error('http ' + res.status);
+    const payload = await res.json();
+    const list = payload.cameras || [];
+    cameras = list.filter(c => isFinite(c.lat) && isFinite(c.lon));
+    try {
+      localStorage.setItem(CAM_CACHE, JSON.stringify({ at: Date.now(), list: cameras }));
+    } catch (e) {}
+    setStatus(cameras.length + ' cameras loaded');
+    return true;
+  } catch (e) {
+    setStatus('camera load failed, service unreachable at ' + getApiBase().replace(/^https?:\/\//, ''));
+    return false;
+  }
+}
+
+function renderCameras() {
+  if (!cameraLayer) cameraLayer = L.layerGroup();
+  cameraLayer.clearLayers();
+  const zoom = map.getZoom();
+  const showLabels = zoom >= 14;
+  cameras.forEach(c => {
+    const marker = L.marker([c.lat, c.lon], {
+      icon: L.divIcon({
+        html: '<div style="width:30px;height:30px;border-radius:50%;background:' + (c.online === false ? '#9aa7b1' : '#00838f') + ';opacity:' + (c.online === false ? '0.55' : '1') + ';border:3px solid #ffffff;box-shadow:0 2px 6px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;font-size:15px;">\u{1F4F9}</div>' +
+              (showLabels ? '<div style="position:absolute;top:32px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:10px;background:rgba(255,255,255,0.9);padding:1px 4px;border-radius:3px;color:#14202e;">' + escapeHtml(c.roadway || '') + '</div>' : ''),
+        className: 'field-twin-badge',
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+      }),
+      zIndexOffset: 500
+    });
+    marker.on('click', () => showCamera(c));
+    marker.addTo(cameraLayer);
+  });
+}
+
+function playStream(video, url) {
+  if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = url;
+    video.play().catch(() => {});
+    return;
+  }
+  if (window.Hls && window.Hls.isSupported()) {
+    const hls = new window.Hls();
+    hls.loadSource(url);
+    hls.attachMedia(video);
+    return;
+  }
+  video.src = url;
+  video.play().catch(() => {});
+}
+
+function showCamera(c) {
+  const panel = document.getElementById('panel');
+  let html = '<h2>CAMERA</h2>';
+  html += '<div class="meta-line">' + escapeHtml(c.roadway || 'unnamed') + '</div>';
+  if (c.direction && c.direction !== 'Unknown') {
+    html += '<div class="meta-line">facing ' + escapeHtml(c.direction) + '</div>';
+  }
+  if (c.online === false) {
+    html += '<div class="meta-line" style="color:#b00020;">reported offline at last daily check</div>';
+  }
+  html += '<video id="camVideo" controls autoplay muted playsinline style="width:100%;margin-top:8px;background:#000;"></video>';
+
+  const near = entries
+    .filter(hasPos)
+    .map(e => ({ e: e, dist: milesBetween(c.lat, c.lon, e.lat, e.lon) }))
+    .filter(x => x.dist <= 0.5)
+    .sort((a, b) => a.dist - b.dist);
+  if (near.length) {
+    html += '<div class="question">Your stops in view range</div>';
+    near.forEach(x => {
+      const m = CATEGORIES[x.e.category || 'general'] || CATEGORIES.general;
+      html += '<div class="meta-line">' + m.icon + ' ' + escapeHtml(x.e.addressLabel) + ', ' + x.dist.toFixed(2) + ' mi</div>';
+    });
+  }
+  html += '<div class="panel-actions"><button class="secondary" id="closeCamBtn">CLOSE</button></div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+  document.getElementById('closeCamBtn').addEventListener('click', closePanel);
+  if (c.stream) playStream(document.getElementById('camVideo'), c.stream);
+}
+
+async function toggleCameras() {
+  if (camerasVisible) {
+    if (cameraLayer) map.removeLayer(cameraLayer);
+    camerasVisible = false;
+    setStatus('cameras hidden');
+    return;
+  }
+  const ok = cameras.length ? true : await loadCameras(false);
+  if (!ok) return;
+  renderCameras();
+  cameraLayer.addTo(map);
+  camerasVisible = true;
+  setStatus(cameras.length + ' cameras shown');
+}
+
+function showCameraKeyPanel() {
+  const panel = document.getElementById('panel');
+  let html = '<h2>CAMERA SOURCE</h2>';
+  html += '<div>Address of the Field Twin camera service. No key is stored on this phone, the service holds it.</div>';
+  html += '<input type="text" id="apiBaseInput" placeholder="xxxxxxxx.up.railway.app" value="' + escapeHtml(getApiBase()) + '">';
+  html += '<div class="question">Access token, leave blank if the service does not require one</div>';
+  html += '<input type="text" id="apiTokenInput" value="' + escapeHtml(getApiToken()) + '">';
+  html += '<div class="panel-actions">';
+  html += '<button id="saveApiBaseBtn">SAVE</button>';
+  html += '<button class="secondary" id="closeApiBaseBtn">CLOSE</button>';
+  html += '</div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+  document.getElementById('saveApiBaseBtn').addEventListener('click', async () => {
+    let v = document.getElementById('apiBaseInput').value.trim();
+    if (v && !/^https?:\/\//i.test(v)) v = 'https://' + v;
+    setApiBase(v);
+    setApiToken((document.getElementById('apiTokenInput').value || '').trim());
+    closePanel();
+    const ok = await loadCameras(true);
+    if (ok) {
+      renderCameras();
+      if (!camerasVisible) { cameraLayer.addTo(map); camerasVisible = true; }
+    }
+  });
+  document.getElementById('closeApiBaseBtn').addEventListener('click', closePanel);
+}
+
+async function serviceCheck() {
+  const panel = document.getElementById('panel');
+  const base = getApiBase().replace(/\/+$/, '');
+  const tok = getApiToken();
+  let html = '<h2>SERVICE CHECK</h2>';
+  html += '<div class="meta-line">' + escapeHtml(base || 'no address set') + '</div>';
+  html += '<div class="meta-line">token ' + (tok ? 'saved, ' + tok.length + ' characters' : 'not set') + '</div>';
+  html += '<div id="checkRows"></div>';
+  html += '<div class="panel-actions"><button class="secondary" id="closeCheckBtn">CLOSE</button></div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+  document.getElementById('closeCheckBtn').addEventListener('click', closePanel);
+  const rows = document.getElementById('checkRows');
+  if (!base) return;
+
+  function row(label, msg) {
+    rows.innerHTML += '<div class="meta-line">' + label + ': ' + escapeHtml(msg) + '</div>';
+  }
+
+  try {
+    const r = await fetch(base + '/health');
+    const j = await r.json();
+    row('health', 'status ' + r.status + ', vision key ' + (j.keyConfigured ? 'set' : 'MISSING') + ', redis ' + j.redis);
+  } catch (e) {
+    row('health', 'unreachable, ' + e.message);
+  }
+
+  try {
+    const r = await fetch(base + '/');
+    const j = await r.json();
+    const eps = (j.endpoints || []).join(' ');
+    row('endpoints', eps || 'none listed');
+    row('extract deployed', eps.indexOf('extract') !== -1 ? 'yes' : 'NO, old build still running');
+  } catch (e) {
+    row('endpoints', 'unreachable, ' + e.message);
+  }
+
+  const pixel = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+  try {
+    const headers = { 'Content-Type': 'application/json' };
+    if (tok) headers['Authorization'] = 'Bearer ' + tok;
+    const r = await fetch(base + '/receipts/extract', {
+      method: 'POST', headers: headers, body: JSON.stringify({ image: pixel })
+    });
+    let detail = '';
+    try { const j = await r.json(); detail = j.error ? ', ' + j.error : ''; } catch (e2) {}
+    if (r.status === 401) detail = ', token rejected';
+    if (r.status === 404) detail = ', endpoint not deployed';
+    if (r.status === 413) detail = ', payload too large';
+    row('extract call', 'status ' + r.status + detail);
+  } catch (e) {
+    row('extract call', 'blocked, ' + e.message);
+  }
+}
+
+function shrinkDataUrl(dataUrl, maxDim, quality) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      let w = img.width, h = img.height;
+      if (w > h && w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+      else if (h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(c.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = () => resolve(dataUrl);
+    img.src = dataUrl;
+  });
+}
+
+async function extractWithVision(photoData) {
+  const base = getApiBase();
+  if (!base) throw new Error('no service address set');
+  const root = base.replace(/\/+$/, '');
+  const headers = { 'Content-Type': 'application/json' };
+  const tok = getApiToken();
+  if (tok) headers['Authorization'] = 'Bearer ' + tok;
+  const small = await shrinkDataUrl(photoData, 1100, 0.6);
+  const res = await fetch(root + '/receipts/extract', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({ image: small })
+  });
+  if (!res.ok) throw new Error('service returned ' + res.status);
+  const data = await res.json();
+  return data.receipt || {};
+}
+
+function visionToFields(r) {
+  const n = v => (v === null || v === undefined || v === '') ? '' : String(v);
+  const addrParts = [r.address, r.city, r.state].filter(Boolean).join(', ');
+  const out = {
+    store: n(r.store),
+    city: n(r.city),
+    state: n(r.state),
+    addr: addrParts,
+    date: n(r.date),
+    time: n(r.time),
+    total: r.total !== null && r.total !== undefined ? Number(r.total).toFixed(2) : '',
+    tax: r.tax !== null && r.tax !== undefined ? Number(r.tax).toFixed(2) : '',
+    saved: r.saved !== null && r.saved !== undefined && Number(r.saved) > 0 ? Number(r.saved).toFixed(2) : '',
+    conf: {}
+  };
+  ['store', 'addr', 'date', 'time', 'total', 'tax', 'saved'].forEach(k => {
+    out.conf[k] = out[k] ? 'ok' : 'low';
+  });
+  out.items = cleanItems(r.items);
+  if (r.fuel && (r.fuel.gallons || r.fuel.price_per_gallon)) {
+    out.fuelNote = [
+      r.fuel.gallons ? r.fuel.gallons + ' gal' : '',
+      r.fuel.price_per_gallon ? 'at $' + r.fuel.price_per_gallon + ' per gal' : '',
+      r.fuel.pump ? 'pump ' + r.fuel.pump : ''
+    ].filter(Boolean).join(', ');
+  }
+  return out;
+}
+
+let pinNotice = null;
+let pinPlacing = null;
+
+function cleanAddress(a) {
+  return String(a || '')
+    .replace(/\b(suite|ste|unit|apt|apartment|bldg|building|space|spc|room|rm|lot)\b\.?\s*#?\s*[\w-]*/gi, ' ')
+    .replace(/#\s*[\w-]+/g, ' ')
+    .replace(/\s+,/g, ',')
+    .replace(/,\s*,+/g, ',')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/^[\s,]+|[\s,]+$/g, '');
+}
+
+async function geocodeQuery(q, state) {
+  const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=5&addressdetails=1' +
+    (state ? '&countrycodes=us' : '') + '&q=' + encodeURIComponent(q);
+  const res = await fetch(url, { headers: { Accept: 'application/json' } });
+  if (!res.ok) throw new Error('geocode failed');
+  return await res.json();
+}
+
+async function geocodeSmart(raw) {
+  const clean = cleanAddress(raw);
+  if (!clean) throw new Error('address not found');
+  const parts = clean.split(',').map(x => x.trim()).filter(Boolean);
+  let state = '', city = '';
+  const last = parts[parts.length - 1] || '';
+  const sm = last.match(/^([A-Za-z]{2})(\s+\d{5}(-\d{4})?)?$/);
+  if (sm && parts.length >= 2) {
+    state = sm[1].toUpperCase();
+    if (parts.length >= 3) city = parts[parts.length - 2];
+  }
+  const tries = [clean];
+  const street = parts[0] || '';
+  const streetNoNumber = street.replace(/^\d+[A-Za-z]?\s+/, '');
+  if (city && streetNoNumber && streetNoNumber !== street) {
+    tries.push([streetNoNumber, city, state].filter(Boolean).join(', '));
+  }
+  const inState = r => !state || !r.address || !r.address['ISO3166-2-lvl4'] || r.address['ISO3166-2-lvl4'] === 'US-' + state;
+  const inCity = r => !city || String(r.display_name || '').toLowerCase().indexOf(city.toLowerCase()) !== -1;
+  let weak = null;
+  for (let i = 0; i < tries.length; i++) {
+    if (i > 0) await new Promise(r => setTimeout(r, 1200));
+    let list = [];
+    try { list = await geocodeQuery(tries[i], state); } catch (e) { list = []; }
+    const good = list.filter(r => inState(r) && inCity(r))[0];
+    if (good) {
+      return { lat: parseFloat(good.lat), lon: parseFloat(good.lon), label: good.display_name, exact: i === 0 };
+    }
+    if (!weak) {
+      const w = list.filter(inState)[0];
+      if (w && !city) weak = { lat: parseFloat(w.lat), lon: parseFloat(w.lon), label: w.display_name, exact: false };
+    }
+  }
+  if (weak) return weak;
+  throw new Error('address not found');
+}
+
+function startPinPlacement(entry, fromHistory) {
+  closePanel();
+  document.getElementById('searchPage').classList.remove('open');
+  pinPlacing = { entry: entry, fromHistory: fromHistory };
+  const bar = document.getElementById('pinPlaceBar');
+  bar.style.display = 'flex';
+  setStatus('tap the map where this entry belongs');
+}
+
+function cancelPinPlacement() {
+  const p = pinPlacing;
+  pinPlacing = null;
+  document.getElementById('pinPlaceBar').style.display = 'none';
+  if (p) showEntry(p.entry, p.fromHistory);
+}
+
+async function finishPinPlacement(latlng) {
+  const p = pinPlacing;
+  if (!p) return;
+  pinPlacing = null;
+  document.getElementById('pinPlaceBar').style.display = 'none';
+  p.entry.lat = latlng.lat;
+  p.entry.lon = latlng.lng;
+  p.entry.locSrc = 'manual';
+  p.entry.updatedAt = new Date().toISOString();
+  const dirty = getDirtyIds();
+  dirty.add(p.entry.id);
+  setDirtyIds(dirty);
+  await saveEntries().catch(() => {});
+  renderMarkers();
+  setStatus('pin moved');
+  showEntry(p.entry, p.fromHistory);
+}
+
+async function geocodeAddress(q) {
+  const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(q);
+  const res = await fetch(url, { headers: { Accept: 'application/json' } });
+  if (!res.ok) throw new Error('geocode failed');
+  const list = await res.json();
+  if (!list.length) throw new Error('address not found');
+  return { lat: parseFloat(list[0].lat), lon: parseFloat(list[0].lon), label: list[0].display_name };
+}
+
+function parseReceipt(text) {
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  const out = { store: '', addr: '', date: '', time: '', total: '', tax: '', saved: '', conf: {} };
+
+  const addrRe = /\d{2,6}\s+\w.+?(st|street|ave|avenue|rd|road|blvd|dr|drive|ln|lane|way|hwy|highway)\b/i;
+  let addrIdx = -1;
+  for (let i = 0; i < lines.length; i++) {
+    if (addrRe.test(lines[i])) { out.addr = lines[i]; addrIdx = i; break; }
+  }
+  const head = lines.slice(0, addrIdx > 0 ? addrIdx : 3);
+  out.store = (head.filter(l => /[a-z]/i.test(l) && l.length > 2)[0] || '').replace(/[^\w\s&'.-]/g, '').trim();
+  out.conf.store = out.store ? 'ok' : 'low';
+  out.conf.addr = out.addr ? 'ok' : 'low';
+
+  const dm = text.match(/(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4})/);
+  out.date = dm ? dm[1] : '';
+  out.conf.date = dm ? 'ok' : 'low';
+
+  const tm = text.match(/(\d{1,2}:\d{2}\s*(am|pm)?)/i);
+  out.time = tm ? tm[1] : '';
+  out.conf.time = tm ? 'ok' : 'low';
+
+  const totalRe = /(total|balance due|amount due|amount)\D{0,10}(\d+\.\d{2})/ig;
+  let m, last = null;
+  while ((m = totalRe.exec(text)) !== null) {
+    if (/sub\s*total/i.test(m[0])) continue;
+    last = m[2];
+  }
+  out.total = last || '';
+  out.conf.total = last ? 'ok' : 'low';
+
+  const tax = text.match(/tax\D{0,10}(\d+\.\d{2})/i);
+  out.tax = tax ? tax[1] : '';
+  out.conf.tax = tax ? 'ok' : 'low';
+
+  const savedRe = /(you saved|total savings|club savings|member savings|card savings|savings)\D{0,10}(\d+\.\d{2})/ig;
+  let sum = 0, hit = false;
+  while ((m = savedRe.exec(text)) !== null) { sum += parseFloat(m[2]); hit = true; }
+  out.saved = hit ? sum.toFixed(2) : '';
+  out.conf.saved = hit ? 'ok' : 'low';
+
+  return out;
+}
+
+function receiptWhen(dateStr, timeStr, fallback) {
+  const d = (dateStr || '').trim();
+  const t = (timeStr || '').trim();
+  let y, mo, da;
+  let m = d.match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})$/);
+  if (m) { y = +m[1]; mo = +m[2]; da = +m[3]; }
+  else {
+    m = d.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})$/);
+    if (m) { mo = +m[1]; da = +m[2]; y = +m[3]; if (y < 100) y += 2000; }
+  }
+  if (!y || mo < 1 || mo > 12 || da < 1 || da > 31) return fallback;
+  let hh = 12, mm = 0;
+  const tm = t.match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(am|pm)?$/i);
+  if (tm) {
+    hh = +tm[1]; mm = +tm[2];
+    const ap = (tm[3] || '').toLowerCase();
+    if (ap === 'pm' && hh < 12) hh += 12;
+    if (ap === 'am' && hh === 12) hh = 0;
+  }
+  const out = new Date(y, mo - 1, da, hh, mm, 0);
+  if (isNaN(out.getTime()) || out.getTime() > Date.now() + 86400000) return fallback;
+  return out;
+}
+
+function classifyWork(when) {
+  const day = when.getDay();
+  const hr = when.getHours();
+  if (day >= 1 && day <= 5 && hr >= 8 && hr < 17) {
+    return { work: true, reason: 'weekday work hours' };
+  }
+  return { work: false, reason: 'outside work hours' };
+}
+
+function prepForOcr(dataUrl, maxDim) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      let w = img.width, h = img.height;
+      if (w > h && w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+      else if (h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      const imgData = ctx.getImageData(0, 0, w, h);
+      const d = imgData.data;
+      let sum = 0;
+      for (let i = 0; i < d.length; i += 4) {
+        const g = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+        d[i] = d[i + 1] = d[i + 2] = g;
+        sum += g;
+      }
+      const mean = sum / (d.length / 4);
+      const cut = mean * 0.88;
+      for (let i = 0; i < d.length; i += 4) {
+        const val = d[i] > cut ? 255 : 0;
+        d[i] = d[i + 1] = d[i + 2] = val;
+      }
+      ctx.putImageData(imgData, 0, 0);
+      resolve(canvas.toDataURL('image/png'));
+    };
+    img.onerror = () => resolve(dataUrl);
+    img.src = dataUrl;
+  });
+}
+
+function shrinkImage(file, maxDim, quality) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        if (w > h && w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+        else if (h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = reject;
+      img.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function startReceipt(file) {
+  setStatus('reading receipt');
+  let photoData = '';
+  try {
+    photoData = await shrinkImage(file, 1600, 0.85);
+  } catch (e) {
+    setStatus('could not read photo');
+    return;
+  }
+
+  let parsed = null;
+  let fallbackReason = '';
+  try {
+    setStatus('reading receipt');
+    const r = await extractWithVision(photoData);
+    parsed = visionToFields(r);
+    setStatus('receipt read');
+  } catch (e) {
+    fallbackReason = e.message;
+    setStatus('using offline reader, ' + e.message);
+    let text = '';
+    try {
+      const ocrImage = await prepForOcr(photoData, 2000);
+      const res = await Tesseract.recognize(ocrImage, 'eng', {
+        logger: m => {
+          if (m.status === 'recognizing text') {
+            setStatus('offline reader, ' + Math.round(m.progress * 100) + ' percent');
+          }
+        }
+      });
+      text = res.data.text || '';
+    } catch (e2) {
+      setStatus('could not read text, enter details by hand');
+    }
+    parsed = parseReceipt(text);
+    parsed.fallbackReason = fallbackReason;
+  }
+  let lat = null, lon = null, addressLabel = 'location not captured';
+  try {
+    const pos = await getPosition();
+    lat = pos.coords.latitude;
+    lon = pos.coords.longitude;
+    const geo = await reverseGeocode(lat, lon).catch(() => ({}));
+    addressLabel = formatAddress(geo.address || {});
+  } catch (e) {}
+
+  showReceiptForm(parsed, photoData, lat, lon, addressLabel);
+}
+
+function showReceiptForm(p, photoData, lat, lon, addressLabel) {
+  const panel = document.getElementById('panel');
+  const now = new Date();
+  const cls = classifyWork(receiptWhen(p.date, p.time, now));
+
+  function field(id, label, value, conf) {
+    const bad = conf === 'low' ? ' conf-low' : '';
+    return '<div class="question">' + label + '</div>' +
+           '<input type="text" id="' + id + '" class="rfield' + bad + '" value="' + escapeHtml(value || '') + '">';
+  }
+
+  let html = '<h2>RECEIPT</h2>';
+  html += '<div class="meta-line">' + escapeHtml(addressLabel) + '</div>';
+  if (p.fallbackReason) {
+    html += '<div class="meta-line" style="color:#b00020;">offline reader used, ' + escapeHtml(p.fallbackReason) + '</div>';
+  }
+  if (photoData) html += '<img src="' + photoData + '" style="max-width:100%;margin-top:8px;">';
+  html += field('rStore', 'Store', p.store, p.conf.store);
+  html += field('rTotal', 'Total', p.total, p.conf.total);
+  html += field('rSaved', 'Saved', p.saved, p.conf.saved);
+  html += field('rTax', 'Tax', p.tax, p.conf.tax);
+  html += field('rDate', 'Date on receipt', p.date, p.conf.date);
+  html += field('rTime', 'Time on receipt', p.time, p.conf.time);
+  html += field('rAddr', 'Address on receipt', p.addr, p.conf.addr);
+  html += '<div class="question">Where the map pin goes</div>';
+  html += '<div class="icon-picker" id="pinPicker">';
+  html += '<div class="icon-choice qopt' + (lat === null ? '' : ' active') + '" data-pin="phone" style="font-size:12px;">My location</div>';
+  html += '<div class="icon-choice qopt' + (lat === null ? ' active' : '') + '" data-pin="receipt" style="font-size:12px;">Receipt address</div>';
+  html += '</div>';
+  if (lat === null) html += '<div class="meta-line">The phone has no location fix right now, so the receipt address is selected.</div>';
+  html += '<div class="question">Work or personal, ' + cls.reason + '</div>';
+  html += '<div class="icon-picker" id="workPicker">';
+  html += '<div class="icon-choice qopt' + (cls.work ? ' active' : '') + '" data-work="1" style="font-size:12px;">Work</div>';
+  html += '<div class="icon-choice qopt' + (cls.work ? '' : ' active') + '" data-work="0" style="font-size:12px;">Personal</div>';
+  html += '</div>';
+  html += '<div class="question">Items, one per line, name then a bar then the price</div>';
+  html += '<textarea id="rItems" style="min-height:120px;">' + escapeHtml(itemsToText(p.items || [])) + '</textarea>';
+  html += '<div class="question">Notes</div><textarea id="rNotes">' + escapeHtml(p.fuelNote || '') + '</textarea>';
+  html += '<div class="panel-actions">';
+  html += '<button id="saveReceiptBtn">SAVE RECEIPT</button>';
+  html += '<button class="secondary" id="cancelReceiptBtn">CANCEL</button>';
+  html += '</div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+  setStatus('review the highlighted fields');
+
+  let isWork = cls.work;
+  panel.querySelectorAll('#workPicker .qopt').forEach(el => {
+    el.addEventListener('click', () => {
+      panel.querySelectorAll('#workPicker .qopt').forEach(x => x.classList.remove('active'));
+      el.classList.add('active');
+      isWork = el.getAttribute('data-work') === '1';
+    });
+  });
+
+  let pinFrom = lat === null ? 'receipt' : 'phone';
+  panel.querySelectorAll('#pinPicker .qopt').forEach(el => {
+    el.addEventListener('click', () => {
+      panel.querySelectorAll('#pinPicker .qopt').forEach(x => x.classList.remove('active'));
+      el.classList.add('active');
+      pinFrom = el.getAttribute('data-pin');
+    });
+  });
+
+  document.getElementById('cancelReceiptBtn').addEventListener('click', closePanel);
+
+  document.getElementById('saveReceiptBtn').addEventListener('click', async function () {
+    const btn = this;
+    if (btn.disabled) return;
+    btn.disabled = true;
+    const v = id => (document.getElementById(id).value || '').trim();
+
+    let useLat = lat, useLon = lon, useLabel = addressLabel, locSrc = lat === null ? 'none' : 'phone';
+    const typedAddr = v('rAddr');
+    const typedStore = v('rStore');
+    const town = [p.city, p.state].filter(Boolean).join(', ');
+    const tries = [];
+    const usePhone = pinFrom === 'phone' && lat !== null;
+    if (!usePhone) {
+      if (typedAddr) tries.push({ q: typedAddr, src: 'address' });
+      if (typedStore && town) tries.push({ q: typedStore + ', ' + town, src: 'store' });
+      if (town && lat === null) tries.push({ q: town, src: 'town' });
+    }
+    let found = null;
+    if (tries.length) btn.textContent = 'LOCATING';
+    for (let i = 0; i < tries.length && !found; i++) {
+      if (i > 0) await new Promise(r => setTimeout(r, 1200));
+      try {
+        const g = tries[i].src === 'address' ? await geocodeSmart(tries[i].q) : await geocodeAddress(tries[i].q);
+        found = { lat: g.lat, lon: g.lon, label: g.label, src: tries[i].src };
+      } catch (e) {}
+    }
+    const purchasedAt = receiptWhen(v('rDate'), v('rTime'), now);
+    const oldReceipt = now.getTime() - purchasedAt.getTime() > 6 * 60 * 60 * 1000;
+    if (found) {
+      useLat = found.lat;
+      useLon = found.lon;
+      useLabel = found.label;
+      locSrc = found.src;
+    } else if (oldReceipt && !usePhone) {
+      useLat = null;
+      useLon = null;
+      useLabel = typedAddr || 'no location';
+      locSrc = 'none';
+    }
+    btn.textContent = 'SAVED';
+    const questions = ['Store', 'Total', 'Saved', 'Tax', 'Date on receipt', 'Time on receipt', 'Address on receipt', 'Work or personal', 'Notes'];
+    const answers = [v('rStore'), v('rTotal'), v('rSaved'), v('rTax'), v('rDate'), v('rTime'), v('rAddr'),
+                     isWork ? 'Work' : 'Personal', v('rNotes')];
+    const entry = {
+      id: Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+      timestamp: receiptWhen(v('rDate'), v('rTime'), now).toISOString(),
+      capturedAt: now.toISOString(),
+      lat: useLat, lon: useLon,
+      addressLabel: v('rStore') || useLabel,
+      locSrc: locSrc,
+      placeType: 'receipt',
+      confidence: 5,
+      formType: 'category',
+      category: 'receipt',
+      questions: questions,
+      answers: answers,
+      context: '',
+      icon: CATEGORIES.receipt.icon,
+      twinId: TWIN_ID,
+      photo: photoData,
+      receipt: {
+        store: v('rStore'),
+        total: parseFloat(v('rTotal')) || 0,
+        saved: parseFloat(v('rSaved')) || 0,
+        tax: parseFloat(v('rTax')) || 0,
+        work: isWork,
+        items: textToItems(v('rItems'))
+      }
+    };
+    entries.unshift(entry);
+    entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    await saveEntries().catch(() => {});
+    renderMarkers();
+    if (useLat !== null) map.setView([useLat, useLon], 15);
+    const pinWords = {
+      address: ', pinned at receipt address',
+      store: ', pinned at the store in that town',
+      town: ', pinned at the town on the receipt',
+      phone: ', pinned at phone location',
+      none: ', no map pin, address not found'
+    };
+    setStatus('receipt saved' + (v('rTotal') ? ', $' + v('rTotal') : '') + (pinWords[locSrc] || ''));
+    setTimeout(closePanel, 500);
+  });
+}
+
+function milesOn() {
+  try { return localStorage.getItem('milesOn') === '1'; } catch (e) { return false; }
+}
+
+function applyMilesToggle() {
+  const on = milesOn();
+  document.getElementById('milesDockBtn').style.display = on ? '' : 'none';
+  document.getElementById('actionBar').classList.toggle('three', on);
+  document.getElementById('milesToggleBtn').textContent = on ? 'ODOMETER BUTTON IS ON' : 'ODOMETER BUTTON IS OFF';
+}
+
+function odoList() {
+  entries.forEach(odoFromAnswers);
+  return entries.filter(e => e.category === 'odometer' && e.odometer && isFinite(e.odometer.reading))
+    .slice().sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+}
+
+function showOdometer() {
+  const panel = document.getElementById('panel');
+  const list = odoList();
+  const last = list[list.length - 1];
+  const now = new Date();
+  const cls = classifyWork(now);
+  let vehicle = '';
+  try { vehicle = localStorage.getItem('milesVehicle') || ''; } catch (e) {}
+  let html = '<h2>ODOMETER</h2>';
+  html += '<div class="meta-line">' + (last ? 'Last reading ' + last.odometer.reading + ' on ' + new Date(last.timestamp).toLocaleString() : 'No readings saved yet') + '</div>';
+  html += '<div class="question">Number on the odometer right now</div>';
+  html += '<input type="text" id="odoReading" inputmode="decimal" autocomplete="off">';
+  html += '<div class="question">Vehicle</div>';
+  html += '<input type="text" id="odoVehicle" value="' + escapeHtml(vehicle) + '">';
+  html += '<div class="question">Work or personal, ' + cls.reason + '</div>';
+  html += '<div class="icon-picker" id="odoWork">';
+  html += '<div class="icon-choice qopt' + (cls.work ? ' active' : '') + '" data-work="1" style="font-size:12px;">Work</div>';
+  html += '<div class="icon-choice qopt' + (cls.work ? '' : ' active') + '" data-work="0" style="font-size:12px;">Personal</div>';
+  html += '</div>';
+  html += '<div class="question">Notes</div><textarea id="odoNotes"></textarea>';
+  html += '<div class="meta-line" id="odoMsg" style="color:#b00020;"></div>';
+  html += '<div class="panel-actions"><button id="odoSaveBtn">SAVE READING</button><button class="secondary" id="odoCancelBtn">CANCEL</button></div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+  let isWork = cls.work;
+  panel.querySelectorAll('#odoWork .qopt').forEach(el => {
+    el.addEventListener('click', () => {
+      panel.querySelectorAll('#odoWork .qopt').forEach(x => x.classList.remove('active'));
+      el.classList.add('active');
+      isWork = el.getAttribute('data-work') === '1';
+    });
+  });
+  document.getElementById('odoCancelBtn').addEventListener('click', closePanel);
+  document.getElementById('odoSaveBtn').addEventListener('click', async function () {
+    const btn = this;
+    const reading = parseFloat((document.getElementById('odoReading').value || '').replace(/,/g, ''));
+    if (!isFinite(reading) || reading < 0) {
+      document.getElementById('odoMsg').textContent = 'Type the number shown on the odometer.';
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'LOCATING';
+    const veh = (document.getElementById('odoVehicle').value || '').trim();
+    const notes = (document.getElementById('odoNotes').value || '').trim();
+    try { localStorage.setItem('milesVehicle', veh); } catch (e) {}
+    let lat = null, lon = null, label = 'no location';
+    try {
+      const pos = await getPosition();
+      lat = pos.coords.latitude;
+      lon = pos.coords.longitude;
+      const geo = await reverseGeocode(lat, lon).catch(() => ({}));
+      label = formatAddress(geo.address || {}) || 'position saved';
+    } catch (e) {}
+    const when = new Date();
+    const entry = {
+      id: when.getTime() + '-' + Math.random().toString(36).slice(2, 8),
+      timestamp: when.toISOString(),
+      lat: lat, lon: lon,
+      addressLabel: label,
+      locSrc: lat === null ? 'none' : 'phone',
+      placeType: 'odometer',
+      confidence: 5,
+      formType: 'category',
+      category: 'odometer',
+      questions: ['Odometer', 'Vehicle', 'Work or personal', 'Notes'],
+      answers: [String(reading), veh, isWork ? 'Work' : 'Personal', notes],
+      context: '',
+      icon: CATEGORIES.odometer.icon,
+      twinId: TWIN_ID,
+      odometer: { reading: reading, vehicle: veh, work: isWork }
+    };
+    entries.unshift(entry);
+    entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    await saveEntries();
+    renderMarkers();
+    closePanel();
+    setStatus('odometer ' + reading + ' saved' + (lat === null ? ', no location fix' : ''));
+  });
+}
+
+function odoFromAnswers(e) {
+  if (e.category !== 'odometer') return;
+  const a = e.answers || [];
+  const r = parseFloat(a[0]);
+  if (isFinite(r)) e.odometer = { reading: r, vehicle: a[1] || '', work: a[2] !== 'Personal' };
+}
+
+function mileageLegs() {
+  entries.forEach(odoFromAnswers);
+  const byVeh = {};
+  odoList().forEach(e => {
+    const k = e.odometer.vehicle || '';
+    (byVeh[k] = byVeh[k] || []).push(e);
+  });
+  const legs = [];
+  Object.keys(byVeh).forEach(k => {
+    const l = byVeh[k];
+    for (let i = 0; i < l.length; i++) {
+      const prev = i ? l[i - 1] : null;
+      const miles = prev ? Math.round((l[i].odometer.reading - prev.odometer.reading) * 10) / 10 : null;
+      let crow = null;
+      if (prev && hasPos(prev) && hasPos(l[i])) {
+        const R = 3958.8, t = Math.PI / 180;
+        const dLat = (l[i].lat - prev.lat) * t, dLon = (l[i].lon - prev.lon) * t;
+        const h = Math.sin(dLat / 2) ** 2 + Math.cos(prev.lat * t) * Math.cos(l[i].lat * t) * Math.sin(dLon / 2) ** 2;
+        crow = Math.round(2 * R * Math.asin(Math.sqrt(h)) * 10) / 10;
+      }
+      legs.push({ entry: l[i], prev: prev, miles: miles, crow: crow });
+    }
+  });
+  legs.sort((a, b) => new Date(b.entry.timestamp) - new Date(a.entry.timestamp));
+  return legs;
+}
+
+function showMileage() {
+  const panel = document.getElementById('panel');
+  const legs = mileageLegs();
+  let html = '<h2>MILEAGE</h2>';
+  if (!legs.length) {
+    html += '<div class="meta-line">No odometer readings yet. Turn on the odometer button in the menu, then press Miles at the bottom of the screen and type the number on the odometer.</div>';
+  } else {
+    let work = 0, personal = 0;
+    legs.forEach(g => { if (g.miles > 0) { if (g.entry.odometer.work) work += g.miles; else personal += g.miles; } });
+    html += '<div class="meta-line">Each line is one reading. Miles are counted from the reading before it on the same vehicle, and belong to the work or personal choice on the later reading.</div>';
+    html += '<div style="font-size:28px;color:var(--accent);margin:8px 0 0;">' + (Math.round(work * 10) / 10) + '</div><div class="meta-line">work miles</div>';
+    html += '<div style="font-size:28px;color:var(--accent);margin:8px 0 0;">' + (Math.round(personal * 10) / 10) + '</div><div class="meta-line">personal miles</div>';
+    let day = '';
+    legs.forEach((g, i) => {
+      const d = new Date(g.entry.timestamp);
+      const dk = d.toLocaleDateString();
+      if (dk !== day) {
+        day = dk;
+        let tot = 0;
+        legs.forEach(x => { if (new Date(x.entry.timestamp).toLocaleDateString() === dk && x.miles > 0) tot += x.miles; });
+        html += '<div class="mi-day">' + dk + ', ' + (Math.round(tot * 10) / 10) + ' miles</div>';
+      }
+      html += '<div class="mi-row" data-leg="' + i + '">' + d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + ', odometer ' + g.entry.odometer.reading +
+        (g.entry.odometer.vehicle ? ', ' + escapeHtml(g.entry.odometer.vehicle) : '') + ', ' + (g.entry.odometer.work ? 'work' : 'personal') +
+        '<br>' + (g.miles === null ? 'first reading for this vehicle' : g.miles < 0 ? 'lower than the reading before it, check the number' : g.miles + ' miles driven since the reading before') +
+        (g.crow !== null ? ', ' + g.crow + ' miles apart in a straight line' : '') +
+        '<br><span class="meta-line">' + escapeHtml(g.entry.addressLabel || '') + '</span></div>';
+    });
+    html += '<div class="panel-actions"><button id="miCsvBtn">SAVE SPREADSHEET</button><button class="secondary" id="closeMileageBtn">CLOSE</button></div>';
+  }
+  if (!legs.length) html += '<div class="panel-actions"><button class="secondary" id="closeMileageBtn">CLOSE</button></div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+  document.getElementById('closeMileageBtn').addEventListener('click', closePanel);
+  panel.querySelectorAll('[data-leg]').forEach(el => {
+    el.addEventListener('click', () => showEntry(legs[parseInt(el.getAttribute('data-leg'), 10)].entry, true));
+  });
+  const csvBtn = document.getElementById('miCsvBtn');
+  if (csvBtn) csvBtn.addEventListener('click', () => {
+    const rows = [['date', 'time', 'vehicle', 'odometer', 'miles since previous reading', 'straight line miles', 'work or personal', 'address', 'lat', 'lon', 'notes']];
+    legs.slice().reverse().forEach(g => {
+      const d = new Date(g.entry.timestamp);
+      rows.push([d.toLocaleDateString(), d.toLocaleTimeString(), g.entry.odometer.vehicle || '', g.entry.odometer.reading, g.miles === null ? '' : g.miles, g.crow === null ? '' : g.crow,
+        g.entry.odometer.work ? 'work' : 'personal', g.entry.addressLabel || '', hasPos(g.entry) ? g.entry.lat : '', hasPos(g.entry) ? g.entry.lon : '', (g.entry.answers || [])[3] || '']);
+    });
+    const blob = new Blob([rows.map(r => r.map(csvCell).join(',')).join('\n')], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'field-twin-mileage-' + localStamp(new Date()).replace(/[:T]/g, '-') + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  });
+}
+
+function showSpend() {
+  const panel = document.getElementById('panel');
+  const rs = entries.filter(e => e.category === 'receipt' && e.receipt);
+  let spent = 0, work = 0, personal = 0, saved = 0;
+  rs.forEach(e => {
+    spent += e.receipt.total;
+    saved += e.receipt.saved;
+    if (e.receipt.work) work += e.receipt.total; else personal += e.receipt.total;
+  });
+  const byStore = {};
+  rs.forEach(e => {
+    const k = e.receipt.store || 'unnamed';
+    if (!byStore[k]) byStore[k] = { visits: 0, spent: 0, saved: 0 };
+    byStore[k].visits++;
+    byStore[k].spent += e.receipt.total;
+    byStore[k].saved += e.receipt.saved;
+  });
+
+  let html = '<h2>SPEND</h2>';
+  html += '<div class="meta-line">' + rs.length + ' receipts</div>';
+  html += '<div style="font-size:30px;color:var(--accent);margin:8px 0;">$' + spent.toFixed(2) + '</div>';
+  html += '<div class="meta-line">work $' + work.toFixed(2) + '</div>';
+  html += '<div class="meta-line">personal $' + personal.toFixed(2) + '</div>';
+  html += '<div class="meta-line">saved $' + saved.toFixed(2) + '</div>';
+  html += '<div class="question">By store</div>';
+  Object.keys(byStore).sort((a, b) => byStore[b].spent - byStore[a].spent).forEach(k => {
+    const s = byStore[k];
+    html += '<div class="meta-line">' + escapeHtml(k) + ', ' + s.visits + ' visits, $' + s.spent.toFixed(2) +
+            (s.saved ? ', saved $' + s.saved.toFixed(2) : '') + '</div>';
+  });
+  if (!rs.length) html += '<div class="meta-line">no receipts captured yet</div>';
+  html += '<div class="panel-actions"><button class="secondary" id="closeSpendBtn">CLOSE</button></div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+  document.getElementById('closeSpendBtn').addEventListener('click', closePanel);
+}
+
+function profileHtml() {
+  const stats = scoreEntries(entries);
+  const trophies = computeTrophies(stats, entries);
+  const span = territorySpan(entries);
+  const earned = trophies.filter(t => t.earned).length;
+
+  let html = '<div class="question">Points</div>';
+  html += '<div style="font-size:34px;color:var(--accent);margin:10px 0;">' + stats.total + '</div>';
+  html += '<div class="meta-line">total points</div>';
+
+  html += '<div class="question">Coverage</div>';
+  html += '<div class="meta-line">' + stats.entryCount + ' entries logged</div>';
+  html += '<div class="meta-line">' + stats.siteCount + ' distinct sites reached</div>';
+  html += '<div class="meta-line">' + stats.completedSites + ' sites fully documented</div>';
+  html += '<div class="meta-line">' + stats.photos + ' photos attached</div>';
+  html += '<div class="meta-line">' + span + ' miles of ground covered</div>';
+
+  html += '<div class="question">Categories</div>';
+  const catKeys = Object.keys(CATEGORIES).filter(k => k !== 'none' && k !== 'odometer');
+  catKeys.forEach(k => {
+    const n = stats.categoryCounts[k] || 0;
+    const m = CATEGORIES[k];
+    const color = n ? 'var(--text)' : 'var(--text-dim)';
+    html += '<div class="meta-line" style="color:' + color + ';">' + m.icon + ' ' + m.label + ' ' + n + '</div>';
+  });
+
+  html += '<div class="question">Trophies, ' + earned + ' of ' + trophies.length + '</div>';
+  trophies.forEach(t => {
+    const color = t.earned ? 'var(--accent)' : 'var(--text-dim)';
+    const mark = t.earned ? '\u2605' : '\u2606';
+    html += '<div class="meta-line" style="color:' + color + ';">' + mark + ' ' + t.name + ', ' + t.desc + '</div>';
+  });
+
+  return html;
+}
+
+function showProfile() { showAccount(); }
+
+function showInfo() {
+  const panel = document.getElementById('panel');
+  let html = '<h2>ABOUT</h2>';
+  html += '<div class="question">Logging a stop</div>';
+  html += '<div>Press Log at the bottom of the screen. The app reads your position, looks up the address, works out what kind of place it is, and opens a short form for that kind of place. No answer is required. Press save with as many or as few answers as you want. You can attach a photo.</div>';
+  html += '<div class="question">Receipts</div>';
+  html += '<div>Press Receipt at the bottom of the screen and photograph a receipt. The app reads the store, total, tax, savings, date, time, address and every item line. Fields it was unsure about are highlighted so you can fix them before saving. The entry is filed under the date printed on the receipt, not the date you photographed it.</div>';
+  html += '<div class="question">Where the receipt pin goes</div>';
+  html += '<div>The receipt form has a choice between My location and Receipt address. My location puts the pin where the phone is standing. Receipt address looks up the address printed on the receipt. If the phone has no position, Receipt address is used.</div>';
+  html += '<div class="question">Map</div>';
+  html += '<div>Each stop is drawn as a road sign shape with a picture inside. The shape and tint tell you the kind of place, and the full list is under Color key in the menu. Receipts show as a price tag with the total. Stops that sit close together merge into a blue circle with a count. Tap the circle to zoom in and spread them apart. Tap any sign to open that entry.</div>';
+  html += '<div class="question">Opening, editing and moving an entry</div>';
+  html += '<div>Tap a sign on the map or a line in History to open an entry. Edit changes any answer, the date, the address, the items and the notes. Delete is on the Edit screen. Tap Delete, then tap it again to confirm. The entry and its photo are removed from this phone and from your account. The four arrows button at the top right of an entry moves the pin. Press it, then tap the map at the correct spot.</div>';
+  html += '<div class="question">Search</div>';
+  html += '<div>Search in the menu looks through store names, addresses, notes, answers and receipt items. You can narrow by kind of place, by dates and by work or personal. Results can be shown on the map or saved as a spreadsheet file.</div>';
+  html += '<div class="question">Mileage</div>';
+  html += '<div>Under Capture in the menu there is a switch named Odometer button. Tap it to turn it on, and a Miles button appears at the bottom of the screen. Press Miles any time during the day and type the number on the odometer. The app saves that number with the time and one reading of where the phone is. It does not track the phone between readings, so it does not drain the battery. Mileage in the menu lists every reading, the miles driven since the reading before it, the straight line distance between the two spots, work and personal totals, and a spreadsheet file to save.</div>';
+  html += '<div class="question">History and Spend</div>';
+  html += '<div>History lists every entry, newest first. Spend adds up receipt totals, tax and savings.</div>';
+  html += '<div class="question">Account and profile</div>';
+  html += '<div>Account and profile in the menu is one page. Type your email and a sign in link arrives in your inbox. Opening that link on this phone signs you in. Once signed in, every entry and photo is saved to your email account and comes back on any phone where you sign in. Points and trophies are counted from those saved entries, so they belong to your email.</div>';
+  html += '<div class="question">Using the app without an account</div>';
+  html += '<div>Signing in is optional. Without it, everything stays in this browser on this phone, nothing is uploaded, and entries older than thirty days are dropped. Export saves a file you can store anywhere, and Import reads that file back in without making duplicates. Clearing this browser\'s site data erases entries that were never exported or signed in.</div>';
+  html += '<div class="question">Phone tag</div>';
+  html += '<div>Each browser makes up a random tag the first time the app opens, shown on the Account and profile page. The tag is stamped on each entry so that entries from different phones can be told apart after an import or a sign in. It is not read from the phone, and it is not stored on any server by itself.</div>';
+  html += '<div class="question">Traffic cameras</div>';
+  html += '<div>Cameras in the menu shows Nevada highway cameras on the map. Tap one to watch it. The camera list is refreshed daily by the app\'s own server. Service check shows whether that server is reachable.</div>';
+  html += '<div class="question">Duplicate protection</div>';
+  html += '<div>Saving the same answers at the same spot within thirty seconds is ignored, so a double tap does not create a second copy.</div>';
+  html += '<div class="panel-actions"><button class="secondary" id="closeInfoBtn">CLOSE</button></div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+  document.getElementById('closeInfoBtn').addEventListener('click', closePanel);
+}
+
+function showHistory() {
+  const panel = document.getElementById('panel');
+  let html = '<h2>HISTORY</h2>';
+  if (!entries.length) {
+    html += '<div class="question">No entries recorded yet</div>';
+  } else {
+    entries.forEach((e, i) => {
+      html += '<div class="meta-line" data-idx="' + i + '" style="padding:8px 0;border-bottom:1px solid var(--line);cursor:pointer;">';
+      html += new Date(e.timestamp).toLocaleString() + '<br>' + e.addressLabel;
+      html += '</div>';
+    });
+  }
+  html += '<div class="panel-actions"><button class="secondary" id="closeHistoryBtn">CLOSE</button></div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+  panel.querySelectorAll('[data-idx]').forEach(el => {
+    el.addEventListener('click', () => {
+      showEntry(entries[parseInt(el.getAttribute('data-idx'), 10)], true);
+    });
+  });
+  document.getElementById('closeHistoryBtn').addEventListener('click', closePanel);
+}
+
+function getDirtyIds() {
+  try { return new Set(JSON.parse(localStorage.getItem('dirtyIds') || '[]')); } catch (e) { return new Set(); }
+}
+
+function setDirtyIds(set) {
+  try { localStorage.setItem('dirtyIds', JSON.stringify(Array.from(set))); } catch (e) {}
+}
+
+function localStamp(d) {
+  const p = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + 'T' + p(d.getHours()) + ':' + p(d.getMinutes());
+}
+
+function showEdit(entry, fromHistory) {
+  const panel = document.getElementById('panel');
+  const isReceipt = entry.category === 'receipt';
+  const questions = (entry.questions || []).map(q => (q && typeof q === 'object') ? q.text : q);
+  const answers = (entry.answers || []).slice();
+  while (answers.length < questions.length) answers.push('');
+  const notesIdx = questions.indexOf('Notes');
+  const workIdx = isReceipt ? questions.indexOf('Work or personal') : -1;
+  const addrIdx = isReceipt ? questions.indexOf('Address on receipt') : -1;
+  const originalAddr = addrIdx >= 0 ? (answers[addrIdx] || '') : '';
+  let isWork = entry.receipt ? Boolean(entry.receipt.work) : (workIdx >= 0 && answers[workIdx] === 'Work');
+
+  let html = '<h2>EDIT</h2>';
+  html += '<div class="question">Name shown in history</div>';
+  html += '<input type="text" id="edLabel" value="' + escapeHtml(entry.addressLabel || '') + '">';
+  if (!isReceipt) {
+    html += '<div class="question">Date and time</div>';
+    html += '<input type="datetime-local" id="edWhen" value="' + localStamp(new Date(entry.timestamp)) + '" style="width:100%;padding:8px;font-size:14px;margin-top:4px;border:1px solid var(--line);background:#f9fafb;color:var(--text);">';
+    html += '<div class="question">Type</div>';
+    html += '<select id="edCat">';
+    Object.keys(CATEGORIES).filter(k => k !== 'none' && k !== 'receipt' && k !== 'odometer').forEach(k => {
+      const sel = (entry.category || 'general') === k ? ' selected' : '';
+      html += '<option value="' + k + '"' + sel + '>' + CATEGORIES[k].icon + ' ' + CATEGORIES[k].label + '</option>';
+    });
+    html += '</select>';
+    html += '<div class="question">Context</div>';
+    html += '<textarea id="edContext">' + escapeHtml(entry.context || '') + '</textarea>';
+  }
+  questions.forEach((q, i) => {
+    if (i === notesIdx) return;
+    if (i === workIdx) {
+      html += '<div class="question">Work or personal</div>';
+      html += '<div class="icon-picker" id="edWork">';
+      html += '<div class="icon-choice qopt' + (isWork ? ' active' : '') + '" data-work="1" style="font-size:12px;">Work</div>';
+      html += '<div class="icon-choice qopt' + (isWork ? '' : ' active') + '" data-work="0" style="font-size:12px;">Personal</div>';
+      html += '</div>';
+      return;
+    }
+    const label = i === addrIdx ? 'Address on receipt' : q;
+    html += '<div class="question">' + escapeHtml(label) + '</div>';
+    html += '<input type="text" class="edAns" data-i="' + i + '" value="' + escapeHtml(answers[i] || '') + '">';
+  });
+  if (!isReceipt) {
+    html += '<div class="question">Move the map pin to this address, leave empty to leave the pin where it is</div>';
+    html += '<input type="text" id="edMove">';
+  } else {
+    html += '<div class="question">Map pin</div>';
+    html += '<select id="edPin"><option value="auto">Move it when the address above changes</option><option value="move">Find the address above and move the pin there now</option><option value="stay">Leave the pin where it is</option></select>';
+  }
+  if (isReceipt) {
+    html += '<div class="question">Items, one per line, name then a bar then the price</div>';
+    html += '<textarea id="edItems" style="min-height:120px;">' + escapeHtml(itemsToText((entry.receipt && entry.receipt.items) || [])) + '</textarea>';
+    if (entry.photo || entry.photoPath) {
+      html += '<button class="secondary" id="edReread" style="margin-top:8px;width:100%;">READ ITEMS FROM THE PHOTO</button>';
+    }
+  }
+  html += '<div class="question">Notes</div>';
+  html += '<textarea id="edNotes">' + escapeHtml(notesIdx >= 0 ? (answers[notesIdx] || '') : '') + '</textarea>';
+  html += '<div class="panel-actions">';
+  html += '<button id="edSaveBtn">SAVE CHANGES</button>';
+  html += '<button class="secondary" id="edCancelBtn">CANCEL</button>';
+  html += '<button class="secondary" id="edDeleteBtn" style="color:#b00020;border-color:#b00020;">DELETE</button>';
+  html += '</div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+
+  panel.querySelectorAll('#edWork .qopt').forEach(el => {
+    el.addEventListener('click', () => {
+      panel.querySelectorAll('#edWork .qopt').forEach(x => x.classList.remove('active'));
+      el.classList.add('active');
+      isWork = el.getAttribute('data-work') === '1';
+    });
+  });
+
+  document.getElementById('edCancelBtn').addEventListener('click', () => showEntry(entry, fromHistory));
+  document.getElementById('edDeleteBtn').addEventListener('click', async function () {
+    if (this.getAttribute('data-armed') !== '1') {
+      this.setAttribute('data-armed', '1');
+      this.textContent = 'TAP AGAIN TO DELETE';
+      return;
+    }
+    this.disabled = true;
+    await deleteEntry(entry);
+    if (fromHistory === 'search') { closePanel(); openSearch(); }
+    else if (fromHistory) showHistory();
+    else closePanel();
+  });
+
+  const rereadBtn = document.getElementById('edReread');
+  if (rereadBtn) {
+    rereadBtn.addEventListener('click', async () => {
+      rereadBtn.disabled = true;
+      rereadBtn.textContent = 'READING';
+      try {
+        const data = await entryPhotoData(entry);
+        if (!data) throw new Error('photo not available');
+        const r = await extractWithVision(data);
+        const found = cleanItems(r.items);
+        document.getElementById('edItems').value = itemsToText(found);
+        rereadBtn.textContent = found.length ? 'ITEMS READ, REVIEW THEN SAVE' : 'NO ITEMS FOUND ON THE PHOTO';
+      } catch (e) {
+        rereadBtn.textContent = 'COULD NOT READ, ' + e.message;
+      }
+      rereadBtn.disabled = false;
+    });
+  }
+
+  document.getElementById('edSaveBtn').addEventListener('click', async function () {
+    const btn = this;
+    if (btn.disabled) return;
+    btn.disabled = true;
+    const val = id => { const el = document.getElementById(id); return el ? (el.value || '').trim() : ''; };
+
+    panel.querySelectorAll('.edAns').forEach(el => {
+      answers[parseInt(el.getAttribute('data-i'), 10)] = (el.value || '').trim();
+    });
+    if (workIdx >= 0) answers[workIdx] = isWork ? 'Work' : 'Personal';
+    const notes = val('edNotes');
+    if (notesIdx >= 0) {
+      answers[notesIdx] = notes;
+    } else if (notes) {
+      questions.push('Notes');
+      answers.push(notes);
+    }
+    entry.questions = questions;
+    entry.answers = answers;
+
+    let moveTo = '';
+    let pinNote = '';
+    if (isReceipt) {
+      const get = name => { const i = questions.indexOf(name); return i >= 0 ? answers[i] : ''; };
+      entry.receipt = {
+        store: get('Store'),
+        total: parseFloat(get('Total')) || 0,
+        saved: parseFloat(get('Saved')) || 0,
+        tax: parseFloat(get('Tax')) || 0,
+        work: isWork,
+        items: textToItems(val('edItems'))
+      };
+      if (!entry.capturedAt) entry.capturedAt = entry.timestamp;
+      entry.timestamp = receiptWhen(get('Date on receipt'), get('Time on receipt'), new Date(entry.timestamp)).toISOString();
+      const newAddr = get('Address on receipt');
+      const pinChoice = val('edPin') || 'auto';
+      if (newAddr && pinChoice === 'move') moveTo = newAddr;
+      else if (newAddr && pinChoice === 'auto' && newAddr !== originalAddr) moveTo = newAddr;
+    } else {
+      const when = new Date(val('edWhen'));
+      if (!isNaN(when.getTime())) entry.timestamp = when.toISOString();
+      const cat = val('edCat') || 'general';
+      if (cat !== (entry.category || 'general')) {
+        entry.category = cat === 'general' ? null : cat;
+        entry.icon = CATEGORIES[cat].icon;
+        entry.formType = cat === 'general' ? 'full' : 'category';
+        entry.placeType = CATEGORIES[cat].label;
+      }
+      entry.context = val('edContext');
+      moveTo = val('edMove');
+    }
+    entry.addressLabel = val('edLabel') || entry.addressLabel;
+
+    if (moveTo) {
+      btn.textContent = 'LOCATING';
+      try {
+        const g = await geocodeSmart(moveTo);
+        entry.lat = g.lat;
+        entry.lon = g.lon;
+        entry.locSrc = 'address';
+        pinNote = ', pin moved';
+        pinNotice = { id: entry.id, ok: true, text: g.exact ? 'Pin moved to the address.' : 'The exact street number was not on the map, so the pin was moved to that street. Tap the four arrows button at the top right to set the exact spot.' };
+      } catch (e) {
+        pinNote = ', address not found so the pin stayed';
+        pinNotice = { id: entry.id, ok: false, text: 'The map service could not find that address, so the pin did not move. Tap the four arrows button at the top right, then tap the map to set it.' };
+      }
+    }
+
+    entry.updatedAt = new Date().toISOString();
+    const dirty = getDirtyIds();
+    dirty.add(entry.id);
+    setDirtyIds(dirty);
+    entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    await saveEntries().catch(() => {});
+    renderMarkers();
+    if (pinNote === ', pin moved') map.setView([entry.lat, entry.lon], 15);
+    setStatus('changes saved' + pinNote);
+    showEntry(entry, fromHistory);
+  });
+}
+
+function showEntry(entry, fromHistory) {
+  const panel = document.getElementById('panel');
+  let html = '<div class="entry-head"><h2>ENTRY</h2><button class="secondary" id="movePinBtn" aria-label="Move pin" title="Move pin"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/></svg></button></div>';
+  if (pinNotice && pinNotice.id === entry.id) {
+    html += '<div style="margin:6px 0;padding:8px;border:1px solid ' + (pinNotice.ok ? 'var(--accent-dim)' : '#b00020') + ';color:' + (pinNotice.ok ? 'var(--text)' : '#b00020') + ';font-size:13px;">' + escapeHtml(pinNotice.text) + '</div>';
+    pinNotice = null;
+  }
+  if (!hasPos(entry)) {
+    html += '<div class="meta-line">no map pin</div>';
+  }
+  html += '<div class="meta-line">' + new Date(entry.timestamp).toLocaleString() + '</div>';
+  html += '<div class="meta-line">' + entry.addressLabel + '</div>';
+  if (entry.photo) {
+    html += '<img src="' + entry.photo + '" style="max-width:100%;margin-top:8px;">';
+  } else if (entry.photoPath) {
+    html += '<img id="cloudPhoto" style="max-width:100%;margin-top:8px;">';
+  }
+  let shown = false;
+  if (entry.context) {
+    html += '<div class="question">Context</div><div>' + escapeHtml(entry.context) + '</div>';
+    shown = true;
+  }
+  (entry.questions || []).forEach((q, i) => {
+    const a = (entry.answers || [])[i];
+    if (a === undefined || a === null || String(a).trim() === '') return;
+    const label = (q && typeof q === 'object') ? q.text : q;
+    html += '<div class="question">' + escapeHtml(label) + '</div><div>' + escapeHtml(String(a)) + '</div>';
+    shown = true;
+  });
+  if (entry.receipt && entry.receipt.items && entry.receipt.items.length) {
+    html += '<div class="question">Items</div>';
+    entry.receipt.items.forEach(it => {
+      html += '<div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:3px 0;border-bottom:1px solid var(--line);">' +
+              '<span>' + escapeHtml(it.name) + '</span><span>' + (it.price !== null && it.price !== undefined ? '$' + Number(it.price).toFixed(2) : '') + '</span></div>';
+    });
+    shown = true;
+  }
+  if (!shown) {
+    html += '<div class="question">No answers recorded</div>';
+  }
+  if (cameras.length && hasPos(entry)) {
+    const nearCams = cameras
+      .map(c => ({ c: c, dist: milesBetween(entry.lat, entry.lon, c.lat, c.lon) }))
+      .filter(x => x.dist <= 0.5)
+      .sort((a, b) => a.dist - b.dist)
+      .slice(0, 5);
+    if (nearCams.length) {
+      html += '<div class="question">Cameras covering this spot</div>';
+      nearCams.forEach((x, i) => {
+        html += '<div class="meta-line camlink" data-camidx="' + cameras.indexOf(x.c) + '" style="padding:6px 0;border-bottom:1px solid var(--line);">';
+        html += escapeHtml(x.c.roadway || 'unnamed') + ', ' + x.dist.toFixed(2) + ' mi</div>';
+      });
+    }
+  }
+  html += '<div class="panel-actions"><button id="editEntryBtn">EDIT</button><button class="secondary" id="closeEntryBtn">' + (fromHistory ? 'BACK' : 'CLOSE') + '</button></div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+  if (!entry.photo && entry.photoPath) {
+    cloudPhotoUrl(entry.photoPath).then(u => {
+      const img = document.getElementById('cloudPhoto');
+      if (img && u) img.src = u;
+    }).catch(() => {});
+  }
+  panel.querySelectorAll('.camlink').forEach(el => {
+    el.addEventListener('click', () => {
+      showCamera(cameras[parseInt(el.getAttribute('data-camidx'), 10)]);
+    });
+  });
+  document.getElementById('editEntryBtn').addEventListener('click', () => showEdit(entry, fromHistory));
+  document.getElementById('movePinBtn').addEventListener('click', () => startPinPlacement(entry, fromHistory));
+  document.getElementById('closeEntryBtn').addEventListener('click', () => {
+    if (fromHistory === 'search') { closePanel(); openSearch(); }
+    else if (fromHistory) showHistory();
+    else closePanel();
+  });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function closePanel() {
+  document.getElementById('panel').classList.remove('open');
+  document.getElementById('panel').innerHTML = '';
+  pendingEntry = null;
+}
+
+function exportEntries() {
+  const payload = {
+    format: 'field-twin',
+    version: 1,
+    twinId: TWIN_ID,
+    exportedAt: new Date().toISOString(),
+    stats: scoreEntries(entries),
+    entries: entries
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'field-twin-' + TWIN_ID + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importEntries(file) {
+  const reader = new FileReader();
+  reader.onload = async () => {
+    try {
+      const parsed = JSON.parse(reader.result);
+      const incoming = Array.isArray(parsed) ? parsed : (parsed.entries || []);
+      const sourceTwin = Array.isArray(parsed) ? 'unknown' : (parsed.twinId || 'unknown');
+      const existingKeys = new Set(entries.map(e => e.id || (e.timestamp + e.lat + e.lon)));
+      let added = 0;
+      incoming.forEach(e => {
+        const key = e.id || (e.timestamp + e.lat + e.lon);
+        if (!existingKeys.has(key)) {
+          if (!e.twinId) e.twinId = sourceTwin;
+          entries.unshift(e);
+          existingKeys.add(key);
+          added++;
+        }
+      });
+      entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      await saveEntries();
+      renderMarkers();
+      const foreign = sourceTwin !== 'unknown' && sourceTwin !== TWIN_ID;
+      setStatus('import complete, ' + added + ' new entries' + (foreign ? ', from ' + sourceTwin : ''));
+    } catch (e) {
+      setStatus('import failed, invalid file');
+    }
+  };
+  reader.readAsText(file);
+}
+
+async function init() {
+  const legendHtml = Object.keys(CATEGORIES).map(k => {
+    const m = CATEGORIES[k];
+    return '<div class="legend-row">' + signHtml(k, m.icon, 26) + '<span>' + m.label + '</span></div>';
+  }).join('');
+  document.getElementById('legendRows').innerHTML = legendHtml;
+  setRadar(0);
+  initMap();
+  initCloud();
+  await loadCloudSession();
+  await loadEntries();
+  renderMarkers();
+  const firstPinned = entries.filter(hasPos)[0];
+  if (firstPinned) {
+    map.setView([firstPinned.lat, firstPinned.lon], 12);
+  }
+  setStatus(scoreEntries(entries).total + ' points, ' + entries.length + ' entries' + (cloudUser ? ', signed in' : ''));
+  if (cloudUser) cloudPull().then(cloudPush);
+  window.addEventListener('online', () => { if (cloudUser) cloudPush(); });
+
+  document.getElementById('updateBtn').addEventListener('click', forceUpdate);
+  document.getElementById('exportBtn').addEventListener('click', exportEntries);
+  document.getElementById('importBtn').addEventListener('click', () => {
+    document.getElementById('importInput').click();
+  });
+  document.getElementById('importInput').addEventListener('change', (e) => {
+    if (e.target.files[0]) importEntries(e.target.files[0]);
+  });
+
+  const menuBtn = document.getElementById('menuBtn');
+  const sideMenu = document.getElementById('sideMenu');
+  const menuOverlay = document.getElementById('menuOverlay');
+  function openMenu() {
+    sideMenu.classList.add('open');
+    menuOverlay.classList.add('open');
+  }
+  function closeMenu() {
+    sideMenu.classList.remove('open');
+    menuOverlay.classList.remove('open');
+  }
+  menuBtn.addEventListener('click', () => {
+    if (sideMenu.classList.contains('open')) closeMenu(); else openMenu();
+  });
+  menuOverlay.addEventListener('click', closeMenu);
+
+  document.getElementById('historyBtn').addEventListener('click', () => {
+    closeMenu();
+    showHistory();
+  });
+
+  document.getElementById('searchBtn').addEventListener('click', () => {
+    closeMenu();
+    closePanel();
+    openSearch();
+  });
+  document.getElementById('mapFilterClear').addEventListener('click', clearMapFilter);
+  document.getElementById('pinPlaceCancel').addEventListener('click', cancelPinPlacement);
+
+  applyMilesToggle();
+  document.getElementById('milesToggleBtn').addEventListener('click', () => {
+    try { localStorage.setItem('milesOn', milesOn() ? '0' : '1'); } catch (e) {}
+    applyMilesToggle();
+  });
+  document.getElementById('milesDockBtn').addEventListener('click', showOdometer);
+  document.getElementById('mileageBtn').addEventListener('click', () => {
+    closeMenu();
+    showMileage();
+  });
+
+  document.getElementById('spendBtn').addEventListener('click', () => {
+    closeMenu();
+    showSpend();
+  });
+
+  document.getElementById('receiptDockBtn').addEventListener('click', () => {
+    document.getElementById('receiptFile').click();
+  });
+  document.getElementById('receiptBtn').addEventListener('click', () => {
+    closeMenu();
+    document.getElementById('receiptFile').click();
+  });
+  document.getElementById('receiptFile').addEventListener('change', (e) => {
+    if (e.target.files[0]) startReceipt(e.target.files[0]);
+    e.target.value = '';
+  });
+
+  document.getElementById('camerasBtn').addEventListener('click', () => {
+    closeMenu();
+    toggleCameras();
+  });
+
+  document.getElementById('accountBtn').addEventListener('click', () => {
+    closeMenu();
+    showAccount();
+  });
+
+  document.getElementById('checkBtn').addEventListener('click', () => {
+    closeMenu();
+    serviceCheck();
+  });
+
+  document.getElementById('camKeyBtn').addEventListener('click', () => {
+    closeMenu();
+    showCameraKeyPanel();
+  });
+
+  document.getElementById('infoBtn').addEventListener('click', () => {
+    closeMenu();
+    showInfo();
+  });
+}
+
+window.addEventListener('error', (e) => {
+  setStatus('JS ERROR: ' + e.message + ' (line ' + e.lineno + ')');
+});
+window.addEventListener('unhandledrejection', (e) => {
+  const msg = e.reason && e.reason.message ? e.reason.message : String(e.reason);
+  setStatus('PROMISE ERROR: ' + msg);
+});
+
+init();
+</script>
+</body>
+</html>

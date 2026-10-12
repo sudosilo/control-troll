@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Strain Spectrum</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>* { margin:0; padding:0; box-sizing:border-box; } body { background:#16141f; }</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useRef } = React;
+
+    const STRAINS = [
+      { name: "Strawberry Cough", h: 5,   s: 92, l: 62, type: "sativa",       terps: ["myrcene","caryophyllene","ocimene"],       brand: null,               formats: ["flower","vape","concentrate"],             effects: ["euphoria","social","anxiety"],   notes: "Sweet strawberry aroma. Uplifting, social, anxiety-melting." },
+      { name: "Amnesia Haze",     h: 12,  s: 88, l: 60, type: "sativa",       terps: ["terpinolene","ocimene","myrcene"],          brand: null,               formats: ["flower","concentrate"],                   effects: ["euphoria","creative","focus"],   notes: "Earthy citrus Haze. Euphoric, energizing, creative surge." },
+      { name: "Durban Poison",    h: 20,  s: 90, l: 60, type: "sativa",       terps: ["terpinolene","myrcene","ocimene"],          brand: null,               formats: ["flower","concentrate","vape"],             effects: ["focus","creative","social"],     notes: "Pure African landrace. Electric focus, sweet anise finish." },
+      { name: "Super Silver Haze",h: 27,  s: 88, l: 58, type: "sativa",       terps: ["myrcene","caryophyllene","limonene"],       brand: null,               formats: ["flower","concentrate"],                   effects: ["euphoria","creative","focus"],   notes: "Spicy, earthy Haze cross. Long-lasting uplifting energy." },
+      { name: "Jack Herer",       h: 35,  s: 85, l: 63, type: "sativa",       terps: ["terpinolene","ocimene","caryophyllene"],    brand: null,               formats: ["flower","vape","concentrate","edible"],    effects: ["focus","creative","euphoria"],   notes: "Resinous, spicy-pine legend. Clear-headed creative uplift." },
+      { name: "Lemon Haze",       h: 42,  s: 88, l: 62, type: "sativa",       terps: ["limonene","myrcene","caryophyllene"],       brand: null,               formats: ["flower","vape","concentrate"],             effects: ["euphoria","creative","social"],  notes: "Sharp lemon zest. Energetic, mood-lifting daytime strain." },
+      { name: "Maui Wowie",       h: 50,  s: 82, l: 65, type: "sativa",       terps: ["myrcene","pinene","limonene"],              brand: null,               formats: ["flower","vape"],                           effects: ["creative","social","euphoria"],  notes: "Tropical Hawaiian landrace. Light, creative, stress-free." },
+      { name: "Green Crack",      h: 57,  s: 80, l: 60, type: "sativa",       terps: ["myrcene","caryophyllene","ocimene"],        brand: null,               formats: ["flower","vape","concentrate"],             effects: ["focus","creative","euphoria"],   notes: "Tangy mango punch. Intense mental focus. Daytime fuel." },
+      { name: "Acapulco Gold",    h: 15,  s: 85, l: 63, type: "sativa",       terps: ["myrcene","caryophyllene","pinene"],         brand: null,               formats: ["flower"],                                 effects: ["euphoria","creative","focus"],   notes: "Mexican landrace legend. Earthy, toffee, energetic stone." },
+      { name: "Chocolope",        h: 30,  s: 80, l: 58, type: "sativa",       terps: ["myrcene","pinene","caryophyllene"],         brand: null,               formats: ["flower","concentrate"],                   effects: ["creative","focus","euphoria"],   notes: "Coffee-chocolate sativa. Dreamy, cerebral, motivating." },
+      { name: "Panama Red",       h: 8,   s: 86, l: 58, type: "sativa",       terps: ["myrcene","ocimene","pinene"],               brand: null,               formats: ["flower"],                                 effects: ["euphoria","creative","focus"],   notes: "70s Central American classic. Clear, soaring head high." },
+      { name: "Cinderella 99",    h: 44,  s: 84, l: 63, type: "sativa",       terps: ["terpinolene","myrcene","limonene"],         brand: null,               formats: ["flower","concentrate"],                   effects: ["euphoria","creative","social"],  notes: "Fruity pineapple burst. Euphoric, fast-acting cerebral rush." },
+      { name: "Kali Mist",        h: 22,  s: 82, l: 60, type: "sativa",       terps: ["terpinolene","pinene","myrcene"],           brand: null,               formats: ["flower","concentrate"],                   effects: ["focus","creative","euphoria"],   notes: "Spicy, woody, cedar. Clear meditative sativa focus." },
+      { name: "Mango Haze",       h: 46,  s: 80, l: 62, type: "sativa",       terps: ["myrcene","pinene","limonene"],              brand: null,               formats: ["flower","concentrate"],                   effects: ["creative","euphoria","social"],  notes: "Mango x Haze. Tropical fruit clarity. Daytime creative." },
+      { name: "Sour Diesel",       h: 63,  s: 85, l: 52, type: "sativa-hybrid", terps: ["caryophyllene","limonene","myrcene"],     brand: null,               formats: ["flower","vape","concentrate","edible"],    effects: ["focus","creative","euphoria"],   notes: "Diesel funk. Dreamy, energizing. East Coast staple." },
+      { name: "Pineapple Express", h: 68,  s: 78, l: 58, type: "sativa-hybrid", terps: ["ocimene","myrcene","caryophyllene"],      brand: null,               formats: ["flower","vape","edible","concentrate"],    effects: ["creative","social","euphoria"],  notes: "Long energetic buzz. Cedar and fresh pineapple." },
+      { name: "Tangie",            h: 73,  s: 82, l: 60, type: "sativa-hybrid", terps: ["limonene","myrcene","caryophyllene"],     brand: null,               formats: ["flower","vape","concentrate"],             effects: ["euphoria","creative","social"],  notes: "Retro Tangerine Dream revival. Citrus explosion." },
+      { name: "Trainwreck",        h: 78,  s: 72, l: 54, type: "sativa-hybrid", terps: ["terpinolene","ocimene","myrcene"],        brand: null,               formats: ["flower","concentrate","vape"],             effects: ["creative","euphoria","pain"],    notes: "Lemon-pine rush. Fast onset, creative euphoria." },
+      { name: "Blue Dream",        h: 85,  s: 65, l: 56, type: "sativa-hybrid", terps: ["myrcene","caryophyllene","pinene"],       brand: "Stiiizy",          formats: ["flower","vape","concentrate","edible"],    effects: ["creative","euphoria","pain"],    notes: "Blueberry x Haze. Gentle full-body + cerebral balance." },
+      { name: "Ghost Train Haze",  h: 90,  s: 70, l: 53, type: "sativa-hybrid", terps: ["terpinolene","ocimene","limonene"],       brand: null,               formats: ["flower","concentrate"],                   effects: ["euphoria","focus","creative"],   notes: "Potent citrus-floral. Soaring psychedelic sativa." },
+      { name: "Casey Jones",       h: 95,  s: 74, l: 56, type: "sativa-hybrid", terps: ["limonene","caryophyllene","myrcene"],     brand: null,               formats: ["flower","concentrate"],                   effects: ["focus","creative","social"],     notes: "Trainwreck x Sour Diesel. Railroad-speed euphoria." },
+      { name: "XJ-13",             h: 100, s: 70, l: 54, type: "sativa-hybrid", terps: ["terpinolene","myrcene","pinene"],         brand: null,               formats: ["flower","concentrate"],                   effects: ["euphoria","creative","focus"],   notes: "Jack Herer x G13 Haze. Citrus-pine, euphoric, social." },
+      { name: "Dutch Treat",       h: 107, s: 68, l: 54, type: "sativa-hybrid", terps: ["terpinolene","ocimene","myrcene"],        brand: null,               formats: ["flower","concentrate","vape"],             effects: ["euphoria","creative","social"],  notes: "Sweet pine eucalyptus. Euphoric, relaxed, Vancouver legend." },
+      { name: "AK-47",             h: 113, s: 72, l: 52, type: "sativa-hybrid", terps: ["myrcene","caryophyllene","limonene"],     brand: null,               formats: ["flower","vape","concentrate","edible"],    effects: ["focus","euphoria","creative"],   notes: "Multi-continental cross. Complex earthy-floral. Mellow alert." },
+      { name: "Harlequin",         h: 65,  s: 60, l: 60, type: "sativa-hybrid", terps: ["myrcene","pinene","caryophyllene"],       brand: null,               formats: ["flower","concentrate","vape"],             effects: ["pain","anxiety","focus"],        notes: "High-CBD, low-anxiety. Earthy mango, clear-headed calm." },
+      { name: "Lemon Skunk",       h: 70,  s: 82, l: 58, type: "sativa-hybrid", terps: ["limonene","myrcene","caryophyllene"],     brand: null,               formats: ["flower","vape","concentrate"],             effects: ["euphoria","social","creative"],  notes: "Double Skunk x Citrus. Zesty, euphoric, mood-lifter." },
+      { name: "Jillybean",         h: 80,  s: 76, l: 58, type: "sativa-hybrid", terps: ["limonene","ocimene","myrcene"],           brand: null,               formats: ["flower","concentrate"],                   effects: ["social","creative","euphoria"],  notes: "Orange candy sweetness. Giggly, social, daytime joy." },
+      { name: "Hawaiian",          h: 53,  s: 80, l: 63, type: "sativa-hybrid", terps: ["ocimene","myrcene","limonene"],           brand: null,               formats: ["flower"],                                 effects: ["creative","social","euphoria"],  notes: "Classic tropical landrace. Breezy, fruity, island-energy." },
+      { name: "Super Lemon Haze",  h: 60,  s: 86, l: 56, type: "sativa-hybrid", terps: ["limonene","caryophyllene","myrcene"],     brand: null,               formats: ["flower","vape","concentrate","edible"],    effects: ["euphoria","creative","focus"],   notes: "GSC Haze x Lemon Skunk. Two-time Cannabis Cup winner." },
+      { name: "Strawberry Banana", h: 6,   s: 88, l: 63, type: "sativa-hybrid", terps: ["myrcene","caryophyllene","limonene"],     brand: null,               formats: ["flower","vape","concentrate"],             effects: ["euphoria","creative","appetite"],notes: "Strawberry Bubblegum x Banana Kush. Sweet fruit, calm bliss." },
+      { name: "Gorilla Glue #4",   h: 122, s: 58, l: 44, type: "hybrid",       terps: ["caryophyllene","myrcene","limonene"],     brand: null,               formats: ["flower","vape","concentrate","edible"],    effects: ["euphoria","pain","sleep"],       notes: "Pungent diesel-pine. Heavy-hitting full body lock." },
+      { name: "Girl Scout Cookies",h: 128, s: 60, l: 46, type: "hybrid",       terps: ["caryophyllene","limonene","humulene"],    brand: "Cookies",          formats: ["flower","vape","concentrate","edible","preroll"], effects: ["euphoria","creative","appetite"],notes: "OG Kush x Durban Poison. Complex euphoria + relaxation." },
+      { name: "Zkittlez",          h: 134, s: 62, l: 52, type: "hybrid",       terps: ["caryophyllene","linalool","humulene"],    brand: null,               formats: ["flower","vape","concentrate","edible"],    effects: ["euphoria","social","sleep"],     notes: "Sweet multi-fruit medley. Calm, focused, full-body tingle." },
+      { name: "Wedding Cake",      h: 140, s: 55, l: 48, type: "hybrid",       terps: ["caryophyllene","limonene","myrcene"],     brand: "Jungle Boys",      formats: ["flower","vape","concentrate","edible","preroll"], effects: ["euphoria","pain","sleep"],       notes: "Tangy, earthy richness. Relaxing with mental clarity." },
+      { name: "Gelato",            h: 147, s: 58, l: 50, type: "hybrid",       terps: ["caryophyllene","limonene","humulene"],    brand: "Cookies",          formats: ["flower","vape","concentrate","edible","preroll"], effects: ["euphoria","creative","pain"],    notes: "Sunset Sherbet x Thin Mint. Bliss with body weight." },
+      { name: "MAC",               h: 154, s: 52, l: 48, type: "hybrid",       terps: ["limonene","caryophyllene","myrcene"],     brand: "Alien Labs",       formats: ["flower","concentrate","preroll"],          effects: ["euphoria","creative","social"],  notes: "Miracle Alien Cookies. Creamy citrus-diesel, balanced stone." },
+      { name: "Mimosa",            h: 160, s: 65, l: 54, type: "hybrid",       terps: ["limonene","myrcene","caryophyllene"],     brand: "Jungle Boys",      formats: ["flower","vape","concentrate","preroll"],    effects: ["euphoria","creative","social"],  notes: "Clementine x Purple Punch. Bright citrus, energetic body." },
+      { name: "Sundae Driver",     h: 165, s: 55, l: 50, type: "hybrid",       terps: ["caryophyllene","limonene","linalool"],    brand: "Jungle Boys",      formats: ["flower","concentrate","preroll"],          effects: ["euphoria","creative","sleep"],   notes: "Fruity Pebbles OG x Grape Pie. Creamy, relaxed, euphoric." },
+      { name: "Biscotti",          h: 170, s: 52, l: 46, type: "hybrid",       terps: ["caryophyllene","limonene","myrcene"],     brand: "Cookies",          formats: ["flower","concentrate","preroll"],          effects: ["euphoria","creative","sleep"],   notes: "GSC x Gelato x South Florida OG. Cookie-diesel depth." },
+      { name: "Cereal Milk",       h: 175, s: 56, l: 52, type: "hybrid",       terps: ["caryophyllene","limonene","linalool"],    brand: "Cookies",          formats: ["flower","concentrate","preroll"],          effects: ["euphoria","social","creative"],  notes: "Y-Life x Snowman. Sweet milk-cereal, balanced euphoria." },
+      { name: "Gary Payton",       h: 130, s: 56, l: 44, type: "hybrid",       terps: ["limonene","caryophyllene","myrcene"],     brand: "Cookies",          formats: ["flower","concentrate","vape","preroll"],   effects: ["euphoria","pain","creative"],    notes: "The Y x Snowman. Gassy, spicy, powerful full-body." },
+      { name: "Dosidos",           h: 158, s: 60, l: 46, type: "hybrid",       terps: ["caryophyllene","linalool","limonene"],    brand: "Jungle Boys",      formats: ["flower","concentrate","preroll"],          effects: ["euphoria","sleep","pain"],       notes: "Face Off OG x GSC. Floral, earthy. Creeping heavy stone." },
+      { name: "Meat Breath",       h: 124, s: 54, l: 42, type: "hybrid",       terps: ["myrcene","caryophyllene","limonene"],     brand: "Compound Genetics",formats: ["flower","concentrate"],                   effects: ["sleep","pain","euphoria"],       notes: "Meatloaf x Mendo Breath. Diesel-gas, dark, potent." },
+      { name: "Papaya",            h: 143, s: 68, l: 54, type: "hybrid",       terps: ["myrcene","caryophyllene","ocimene"],      brand: "Jungle Boys",      formats: ["flower","concentrate","preroll"],          effects: ["euphoria","appetite","social"],  notes: "Citral #13 x Ice #2. Tropical papaya-mango, calming." },
+      { name: "Banana Sherbet",    h: 168, s: 62, l: 54, type: "hybrid",       terps: ["myrcene","limonene","caryophyllene"],     brand: null,               formats: ["flower","vape","concentrate"],             effects: ["euphoria","creative","appetite"],notes: "Sweet banana-candy. Relaxing yet mood-lifting." },
+      { name: "Sherbet",           h: 184, s: 60, l: 50, type: "indica-hybrid", terps: ["caryophyllene","humulene","linalool"],   brand: null,               formats: ["flower","vape","concentrate","edible"],    effects: ["euphoria","creative","sleep"],   notes: "Sweet creamy berry-citrus. Relaxing mental clarity." },
+      { name: "OG Kush",           h: 192, s: 65, l: 46, type: "indica-hybrid", terps: ["myrcene","limonene","caryophyllene"],   brand: null,               formats: ["flower","vape","concentrate","edible","preroll"], effects: ["euphoria","pain","sleep"],       notes: "Fuel, skunk, spice. Stress-crushing West Coast icon." },
+      { name: "Chemdawg",          h: 200, s: 70, l: 48, type: "indica-hybrid", terps: ["caryophyllene","myrcene","limonene"],   brand: null,               formats: ["flower","vape","concentrate","preroll"],   effects: ["euphoria","creative","pain"],    notes: "Diesel pungency. Cerebral + heavy body combo." },
+      { name: "Ice Cream Cake",    h: 208, s: 58, l: 46, type: "indica-hybrid", terps: ["caryophyllene","limonene","linalool"],  brand: "Compound Genetics",formats: ["flower","concentrate","vape","preroll"],   effects: ["sleep","pain","euphoria"],       notes: "Cheesy, creamy vanilla. Deep sedation at day's end." },
+      { name: "Do-Si-Dos",         h: 216, s: 65, l: 44, type: "indica-hybrid", terps: ["limonene","caryophyllene","linalool"],  brand: "Jungle Boys",      formats: ["flower","concentrate","vape","preroll"],   effects: ["sleep","pain","euphoria"],       notes: "Floral, earthy, pungent. Sedating body-first stone." },
+      { name: "Purple Punch",      h: 224, s: 68, l: 46, type: "indica-hybrid", terps: ["myrcene","caryophyllene","pinene"],     brand: null,               formats: ["flower","vape","concentrate","edible"],    effects: ["sleep","appetite","euphoria"],   notes: "Grape Kool-Aid aroma. Knockout evening nightcap." },
+      { name: "Tahoe OG",          h: 188, s: 62, l: 44, type: "indica-hybrid", terps: ["myrcene","limonene","caryophyllene"],   brand: null,               formats: ["flower","concentrate","vape"],             effects: ["sleep","pain","euphoria"],       notes: "Lemon, pine, earthy. Fast-acting heavy body stone." },
+      { name: "Skywalker OG",      h: 196, s: 66, l: 44, type: "indica-hybrid", terps: ["myrcene","caryophyllene","linalool"],   brand: "Stiiizy",          formats: ["flower","vape","concentrate","edible"],    effects: ["sleep","pain","euphoria"],       notes: "Blueberry x OG. Spicy herbal, deep body sedation." },
+      { name: "Master Kush",       h: 232, s: 60, l: 42, type: "indica-hybrid", terps: ["myrcene","caryophyllene","limonene"],   brand: null,               formats: ["flower","vape","concentrate","edible"],    effects: ["sleep","pain","appetite"],       notes: "Hindu Kush x Skunk. Earthy-citrus. Classic relaxing stone." },
+      { name: "Platinum OG",       h: 204, s: 64, l: 44, type: "indica-hybrid", terps: ["myrcene","caryophyllene","pinene"],     brand: null,               formats: ["flower","concentrate","vape"],             effects: ["sleep","pain","euphoria"],       notes: "Master Kush x OG Kush. Heavy, piney, knockout." },
+      { name: "Wifi OG",           h: 186, s: 68, l: 48, type: "indica-hybrid", terps: ["caryophyllene","myrcene","limonene"],   brand: null,               formats: ["flower","concentrate","preroll"],          effects: ["euphoria","pain","creative"],    notes: "Fire OG x The White. Strong diesel, cerebral then body." },
+      { name: "Fire OG",           h: 193, s: 67, l: 45, type: "indica-hybrid", terps: ["myrcene","limonene","caryophyllene"],   brand: null,               formats: ["flower","concentrate","vape"],             effects: ["sleep","pain","euphoria"],       notes: "OG Kush x SFV OG. Potent lemon-pine. Heavy sedation." },
+      { name: "9 Pound Hammer",    h: 220, s: 62, l: 44, type: "indica-hybrid", terps: ["myrcene","caryophyllene","pinene"],     brand: null,               formats: ["flower","concentrate"],                   effects: ["sleep","pain","appetite"],       notes: "Gooberry x Hells Angel OG x JTR. Grape-lime knockout." },
+      { name: "Black Diamond",     h: 237, s: 60, l: 40, type: "indica-hybrid", terps: ["myrcene","caryophyllene","linalool"],   brand: null,               formats: ["flower","concentrate","vape"],             effects: ["sleep","pain","euphoria"],       notes: "Blackberry x Diamond OG. Rich grape, pine. Heavy indica feel." },
+      { name: "Bubba Kush",        h: 242, s: 62, l: 42, type: "indica",       terps: ["myrcene","caryophyllene","limonene"],     brand: null,               formats: ["flower","vape","concentrate","edible"],    effects: ["sleep","pain","appetite"],       notes: "Earthy, coffee-chocolate. Heavy tranquilizing couch lock." },
+      { name: "Northern Lights",   h: 249, s: 65, l: 42, type: "indica",       terps: ["myrcene","caryophyllene","pinene"],       brand: "Stiiizy",          formats: ["flower","vape","concentrate","edible"],    effects: ["sleep","pain","appetite"],       notes: "Resinous Afghani cross. Lazy, dreamy, pain-relieving." },
+      { name: "Afghan Kush",       h: 256, s: 60, l: 40, type: "indica",       terps: ["myrcene","pinene","caryophyllene"],       brand: null,               formats: ["flower","concentrate"],                   effects: ["sleep","pain","appetite"],       notes: "Landrace Afghani. Thick resin, deep sedating stone." },
+      { name: "Granddaddy Purple", h: 263, s: 72, l: 46, type: "indica",       terps: ["myrcene","caryophyllene","pinene"],       brand: "Stiiizy",          formats: ["flower","vape","concentrate","edible"],    effects: ["sleep","pain","appetite"],       notes: "Grape-berry bliss. Full-body sedation. Classic sleep aid." },
+      { name: "Blueberry",         h: 270, s: 68, l: 48, type: "indica",       terps: ["myrcene","caryophyllene","pinene"],       brand: null,               formats: ["flower","vape","concentrate","edible"],    effects: ["euphoria","sleep","appetite"],   notes: "DJ Short classic. Sweet blueberry, euphoric body stone." },
+      { name: "Purple Urkle",      h: 278, s: 70, l: 44, type: "indica",       terps: ["myrcene","caryophyllene","linalool"],     brand: null,               formats: ["flower","concentrate","vape"],             effects: ["sleep","pain","appetite"],       notes: "Skunky grape. Potent sedation. Body melter." },
+      { name: "Blackberry Kush",   h: 285, s: 68, l: 42, type: "indica",       terps: ["myrcene","caryophyllene","pinene"],       brand: null,               formats: ["flower","concentrate","vape"],             effects: ["sleep","pain","appetite"],       notes: "Afghani x Blackberry. Dark berry, diesel. Couch-lock heavy." },
+      { name: "Hindu Kush",        h: 258, s: 58, l: 38, type: "indica",       terps: ["myrcene","caryophyllene","humulene"],     brand: null,               formats: ["flower","concentrate"],                   effects: ["sleep","pain","appetite"],       notes: "Mountain landrace. Sandalwood, sweet. Deep physical relief." },
+      { name: "God's Gift",        h: 268, s: 66, l: 44, type: "indica",       terps: ["myrcene","pinene","caryophyllene"],       brand: null,               formats: ["flower","concentrate","vape"],             effects: ["sleep","pain","appetite"],       notes: "Granddaddy Purple x OG Kush. Grape-citrus bliss. Sedating." },
+      { name: "Death Star",        h: 245, s: 60, l: 40, type: "indica",       terps: ["myrcene","caryophyllene","limonene"],     brand: null,               formats: ["flower","concentrate"],                   effects: ["sleep","pain","euphoria"],       notes: "Sensi Star x Sour Diesel. Skunk-diesel. Powerfully sedating." },
+      { name: "LA Confidential",   h: 252, s: 62, l: 40, type: "indica",       terps: ["myrcene","pinene","caryophyllene"],       brand: null,               formats: ["flower","concentrate","vape"],             effects: ["sleep","pain","appetite"],       notes: "OG LA Affie x Afghani. Pine-skunk. Fast-acting body lock." },
+      { name: "Sensi Star",        h: 260, s: 64, l: 40, type: "indica",       terps: ["myrcene","caryophyllene","humulene"],     brand: null,               formats: ["flower","concentrate"],                   effects: ["sleep","pain","appetite"],       notes: "Award-winning Afghani. Earthy, deep stone. Heavy sleeper." },
+      { name: "Kosher Kush",       h: 253, s: 66, l: 42, type: "indica",       terps: ["myrcene","limonene","caryophyllene"],     brand: null,               formats: ["flower","concentrate","vape"],             effects: ["sleep","pain","appetite"],       notes: "First celebrity-branded strain. Rich earth, fruit. Sedating." },
+      { name: "Skywalker",         h: 246, s: 63, l: 42, type: "indica",       terps: ["myrcene","caryophyllene","linalool"],     brand: null,               formats: ["flower","concentrate","vape"],             effects: ["sleep","pain","euphoria"],       notes: "Blueberry x Mazar. Herbal sweet. Relaxing body wrap." },
+      { name: "Pure Kush",         h: 240, s: 60, l: 40, type: "indica",       terps: ["myrcene","caryophyllene","pinene"],       brand: null,               formats: ["flower","concentrate"],                   effects: ["sleep","pain","appetite"],       notes: "Afghani-dominant. Earthy, pine. Deep muscle relaxation." },
+      { name: "Forbidden Fruit",    h: 303, s: 75, l: 50, type: "indica-hybrid", terps: ["myrcene","limonene","ocimene"],         brand: null,               formats: ["flower","vape","concentrate"],             effects: ["sleep","appetite","euphoria"],   notes: "Cherry Pie x Tangie. Tropical stone, heavy body pull." },
+      { name: "Zkittlez (Purple)",  h: 293, s: 70, l: 46, type: "indica",        terps: ["caryophyllene","linalool","humulene"],  brand: null,               formats: ["flower","concentrate"],                   effects: ["sleep","euphoria","appetite"],   notes: "Purple phenotype. Deeper grape, more sedating." },
+      { name: "Grape Ape",          h: 287, s: 68, l: 44, type: "indica",        terps: ["myrcene","caryophyllene","pinene"],     brand: null,               formats: ["flower","vape","concentrate","edible"],    effects: ["sleep","appetite","pain"],       notes: "Mendocino Purps x Skunk x Afghani. Grape candy body lock." },
+      { name: "Tropicana Cookies",  h: 316, s: 80, l: 56, type: "sativa-hybrid", terps: ["limonene","caryophyllene","myrcene"],   brand: "Cookies",          formats: ["flower","concentrate","preroll"],          effects: ["creative","euphoria","social"],  notes: "Citrus-forward GSC cross. Energetic, creative, daytime." },
+      { name: "Runtz",              h: 330, s: 78, l: 54, type: "hybrid",         terps: ["limonene","caryophyllene","linalool"],  brand: "Cookies",          formats: ["flower","vape","concentrate","edible","preroll"], effects: ["euphoria","social","creative"],  notes: "Candy-sweet Zkittlez x Gelato. Euphoric body tingle." },
+      { name: "Pink Runtz",         h: 340, s: 80, l: 56, type: "hybrid",         terps: ["limonene","myrcene","caryophyllene"],   brand: "Backpack Boyz",    formats: ["flower","concentrate","vape","preroll"],   effects: ["euphoria","social","creative"],  notes: "Fruity-sweet Runtz phenotype. Calming yet uplifting." },
+      { name: "Cherry Pie",         h: 353, s: 82, l: 56, type: "indica-hybrid",  terps: ["caryophyllene","myrcene","limonene"],   brand: null,               formats: ["flower","vape","concentrate","edible"],    effects: ["euphoria","social","pain"],      notes: "Granddaddy Purple x Durban Poison. Sweet-sour cherry, happy." },
+      { name: "Grape Pie",          h: 295, s: 72, l: 46, type: "indica-hybrid",  terps: ["myrcene","caryophyllene","linalool"],   brand: null,               formats: ["flower","concentrate"],                   effects: ["sleep","euphoria","appetite"],   notes: "Cherry Pie x Grape Stomper. Rich grape candy, relaxing." },
+      { name: "Purple Gelato",      h: 308, s: 70, l: 48, type: "indica-hybrid",  terps: ["caryophyllene","limonene","linalool"],  brand: "Alien Labs",       formats: ["flower","concentrate","preroll"],          effects: ["euphoria","sleep","creative"],   notes: "Gelato x Purple genetics. Fruity, relaxing body euphoria." },
+      { name: "Blackberry Fire",    h: 320, s: 74, l: 50, type: "hybrid",         terps: ["myrcene","caryophyllene","limonene"],   brand: "Backpack Boyz",    formats: ["flower","concentrate","preroll"],          effects: ["sleep","pain","euphoria"],       notes: "Blackberry x Fire OG. Dark berry meets diesel stone." },
+      { name: "Peach Ringz",        h: 346, s: 78, l: 56, type: "hybrid",         terps: ["limonene","myrcene","ocimene"],         brand: null,               formats: ["flower","vape","concentrate"],             effects: ["euphoria","social","creative"],  notes: "Marionberry x Peach Crescendo. Candy-sweet, calming." },
+      { name: "Watermelon Zkittlez",h: 325, s: 76, l: 54, type: "hybrid",         terps: ["myrcene","limonene","caryophyllene"],   brand: "Backpack Boyz",    formats: ["flower","concentrate","preroll"],          effects: ["euphoria","social","sleep"],     notes: "Zkittlez x Watermelon. Sweet summer fruit, body relaxation." },
+    ];
+
+    const TYPE_CONFIG = {
+      sativa:          { label: "Sativa",          ring: 3 },
+      "sativa-hybrid": { label: "Sativa-Dominant", ring: 2 },
+      hybrid:          { label: "True Hybrid",      ring: 1 },
+      "indica-hybrid": { label: "Indica-Dominant", ring: 2 },
+      indica:          { label: "Indica",           ring: 3 },
+      cbd:             { label: "CBD",              ring: 0 },
+    };
+
+    const TERP_CONFIG = {
+      myrcene:       { color: "#c8a84b", label: "Myrcene",       desc: "Earthy, musky, mango. Most common terpene. Sedating, muscle-relaxing." },
+      caryophyllene: { color: "#c0522a", label: "Caryophyllene", desc: "Spicy, peppery, woody. Binds CB2 receptors. Anti-inflammatory." },
+      limonene:      { color: "#e8d44d", label: "Limonene",      desc: "Citrus, lemon, orange. Mood elevation, stress relief, antifungal." },
+      terpinolene:   { color: "#7ec8a0", label: "Terpinolene",   desc: "Floral, herbal, piney. Uplifting, antioxidant. Common in sativas." },
+      pinene:        { color: "#4a9e6b", label: "Pinene",        desc: "Pine, fresh, sharp. Memory retention, alertness, bronchodilator." },
+      linalool:      { color: "#9b6db5", label: "Linalool",      desc: "Floral, lavender, spice. Calming, anti-anxiety, analgesic." },
+      ocimene:       { color: "#e8a84b", label: "Ocimene",       desc: "Sweet, herbal, woody. Uplifting, antiviral, decongestant." },
+      humulene:      { color: "#8b6914", label: "Humulene",      desc: "Earthy, woody, hoppy. Appetite suppressant, anti-inflammatory." },
+    };
+
+    const BRAND_CONFIG = {
+      "Cookies":           { color: "#e8c060", label: "Cookies" },
+      "Jungle Boys":       { color: "#60d8a0", label: "Jungle Boys" },
+      "Alien Labs":        { color: "#6090e8", label: "Alien Labs" },
+      "Backpack Boyz":     { color: "#e86090", label: "Backpack Boyz" },
+      "Compound Genetics": { color: "#e09060", label: "Compound Genetics" },
+      "Stiiizy":           { color: "#b060e8", label: "Stiiizy" },
+    };
+
+    const FORMAT_CONFIG = {
+      flower:      { color: "#70c870", label: "Flower",      icon: "✦" },
+      vape:        { color: "#60b8e8", label: "Vape",        icon: "◈" },
+      concentrate: { color: "#e8c060", label: "Concentrate", icon: "◆" },
+      edible:      { color: "#e870c0", label: "Edible",      icon: "◉" },
+      preroll:     { color: "#e09060", label: "Pre-roll",    icon: "⊘" },
+    };
+
+    const EFFECT_CONFIG = {
+      sleep:    { color: "#7878e8", label: "Sleep" },
+      focus:    { color: "#e8e060", label: "Focus" },
+      creative: { color: "#60e8c8", label: "Creative" },
+      euphoria: { color: "#e8a060", label: "Euphoria" },
+      social:   { color: "#e8c860", label: "Social" },
+      pain:     { color: "#e86060", label: "Pain Relief" },
+      appetite: { color: "#80e860", label: "Appetite" },
+      anxiety:  { color: "#8060e8", label: "Anxiety Relief" },
+    };
+
+    const CBD_STRAINS = [
+      { name: "Charlotte's Web",  h: 152, s: 40, l: 60, type: "cbd", cbd: "~20:1", terps: ["myrcene","caryophyllene","pinene"],    brand: null, formats: ["flower","concentrate","tincture"], effects: ["anxiety","pain"],        notes: "The strain that launched the CBD movement. Earthy, pine. Pioneered pediatric epilepsy treatment." },
+      { name: "ACDC",             h: 140, s: 42, l: 62, type: "cbd", cbd: "20:1",  terps: ["myrcene","pinene","caryophyllene"],    brand: null, formats: ["flower","concentrate","tincture"], effects: ["pain","anxiety"],        notes: "CBD powerhouse. Woody, earthy, pine. Renowned for pain, anxiety, and inflammation relief." },
+      { name: "Cannatonic",       h: 110, s: 36, l: 58, type: "cbd", cbd: "1:1",   terps: ["myrcene","caryophyllene","limonene"],  brand: null, formats: ["flower","concentrate"],             effects: ["pain","anxiety","focus"], notes: "Balanced THC:CBD hybrid. Earthy citrus. Short-lived mild high. Medical workhorse strain." },
+      { name: "Ringo's Gift",     h: 160, s: 38, l: 60, type: "cbd", cbd: "24:1",  terps: ["pinene","myrcene","ocimene"],          brand: null, formats: ["flower","concentrate","tincture"], effects: ["pain","anxiety"],        notes: "ACDC x Harle-Tsu. One of the highest CBD ratios. Woody, pine, subtle floral." },
+      { name: "Harle-Tsu",        h: 130, s: 35, l: 60, type: "cbd", cbd: "20:1",  terps: ["myrcene","pinene","ocimene"],          brand: null, formats: ["flower","concentrate"],             effects: ["pain","focus","anxiety"], notes: "Harlequin x Sour Tsunami. Sweet, earthy, pine. Focused relief without sedation." },
+      { name: "Sour Tsunami",     h: 80,  s: 36, l: 58, type: "cbd", cbd: "13:1",  terps: ["myrcene","caryophyllene","pinene"],    brand: null, formats: ["flower","concentrate"],             effects: ["pain","anxiety"],        notes: "One of the first high-CBD strains bred intentionally. Earthy diesel, non-intoxicating." },
+      { name: "Valentine X",      h: 95,  s: 34, l: 58, type: "cbd", cbd: "25:1",  terps: ["pinene","myrcene","caryophyllene"],    brand: null, formats: ["flower","concentrate","tincture"], effects: ["pain","anxiety"],        notes: "ACDC phenotype. Among the highest CBD ratios. Used for seizure management." },
+      { name: "Lifter",           h: 60,  s: 38, l: 60, type: "cbd", cbd: "~20:1", terps: ["myrcene","limonene","ocimene"],        brand: null, formats: ["flower","concentrate","vape"],     effects: ["anxiety","focus","euphoria"], notes: "Hemp-derived CBD strain. Fruity, earthy, floral. Uplifting without intoxication." },
+      { name: "Special Sauce",    h: 330, s: 32, l: 56, type: "cbd", cbd: "~20:1", terps: ["myrcene","caryophyllene","linalool"],  brand: null, formats: ["flower","concentrate","tincture"], effects: ["anxiety","sleep","pain"], notes: "Berry, earthy, floral hemp strain. Relaxing without psychoactivity." },
+      { name: "Elektra",          h: 45,  s: 36, l: 60, type: "cbd", cbd: "~20:1", terps: ["myrcene","pinene","ocimene"],          brand: null, formats: ["flower","concentrate","vape"],     effects: ["anxiety","focus"],       notes: "ACDC x ERB. Citrus-chocolate aroma. Calm, clear-headed hemp variety." },
+      { name: "Hawaiian Haze",    h: 50,  s: 38, l: 62, type: "cbd", cbd: "~18:1", terps: ["myrcene","limonene","pinene"],         brand: null, formats: ["flower","concentrate","vape"],     effects: ["euphoria","focus","anxiety"], notes: "Tropical fruity hemp CBD. Uplifting, light euphoria, functional daytime." },
+      { name: "Suzy Q",           h: 100, s: 30, l: 58, type: "cbd", cbd: "25:1",  terps: ["myrcene","pinene","humulene"],         brand: null, formats: ["flower","concentrate","tincture"], effects: ["pain","anxiety"],        notes: "ACDC-derived. Almost zero THC. Musty, earthy. Pure therapeutic with no high." },
+    ];
+
+    const SEGMENT_LABELS = [
+      { angle: 30,  label: "SATIVA",      sub: "cerebral / energetic" },
+      { angle: 90,  label: "SAT-HYBRID",  sub: "uplifting / balanced" },
+      { angle: 150, label: "HYBRID",      sub: "balanced / complex" },
+      { angle: 210, label: "IND-HYBRID",  sub: "relaxing / euphoric" },
+      { angle: 270, label: "INDICA",      sub: "sedating / body" },
+      { angle: 330, label: "TRANSITION",  sub: "complex / layered" },
+    ];
+
+    function hslRgb(h, s, l) {
+      s /= 100; l /= 100;
+      const a = s * Math.min(l, 1 - l);
+      const f = n => { const k = (n + h / 30) % 12; return Math.round(255*(l - a*Math.max(Math.min(k-3,9-k,1),-1))); };
+      return `${f(0)},${f(8)},${f(4)}`;
+    }
+
+    function StrainWheel() {
+      const [hovered, setHovered]           = useState(null);
+      const [selected, setSelected]         = useState(null);
+      const [filter, setFilter]             = useState("all");
+      const [brandFilter, setBrandFilter]   = useState("all");
+      const [effectFilter, setEffectFilter] = useState("all");
+      const [formatFilter, setFormatFilter] = useState("all");
+      const [search, setSearch]             = useState("");
+      const svgRef = useRef(null);
+
+      const W = 700, H = 700, CX = 350, CY = 350;
+      const OUTER = 280, INNER = 90, CBD_R = 58;
+
+      const polarToXY = (deg, r) => {
+        const rad = ((deg - 90) * Math.PI) / 180;
+        return { x: CX + r * Math.cos(rad), y: CY + r * Math.sin(rad) };
+      };
+      const ringRadius = (ring) => INNER + ((OUTER - INNER) / 4) * ring;
+
+      const ALL_STRAINS = [...STRAINS, ...CBD_STRAINS];
+      const searchResults = search.trim().length > 0
+        ? ALL_STRAINS.filter(s =>
+            s.name.toLowerCase().includes(search.toLowerCase()) ||
+            s.notes.toLowerCase().includes(search.toLowerCase()) ||
+            (s.brand || "").toLowerCase().includes(search.toLowerCase()) ||
+            (s.effects || []).some(e => e.includes(search.toLowerCase())))
+        : [];
+      const highlightedNames = new Set(searchResults.map(s => s.name));
+      const searching = search.trim().length > 0;
+      const activeStrain = selected || hovered;
+
+      const isDimmed = (strain) => {
+        if (searching && !highlightedNames.has(strain.name)) return true;
+        if (filter !== "all" && strain.type !== filter) return true;
+        if (filter === "cbd" && strain.type !== "cbd") return true;
+        if (brandFilter !== "all" && strain.brand !== brandFilter) return true;
+        if (effectFilter !== "all" && !(strain.effects || []).includes(effectFilter)) return true;
+        if (formatFilter !== "all" && !(strain.formats || []).includes(formatFilter)) return true;
+        return false;
+      };
+
+      const handleSearchSelect = (strain) => { setSelected(strain); setSearch(""); };
+
+      const FilterChip = ({ label, active, onClick, color }) => (
+        <button onClick={onClick} style={{
+          background: active ? (color ? color + "28" : "rgba(255,255,255,0.12)") : "transparent",
+          border: `1px solid ${active ? (color || "rgba(255,255,255,0.5)") : "rgba(255,255,255,0.12)"}`,
+          color: active ? (color || "#f0ead8") : "#888",
+          padding: "3px 10px", fontSize: 9, letterSpacing: 1.5,
+          cursor: "pointer", borderRadius: 2, whiteSpace: "nowrap",
+        }}>{label}</button>
+      );
+
+      return (
+        <div style={{ minHeight: "100vh", background: "#16141f", fontFamily: "'Courier New',monospace", color: "#e8e0d0", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px 12px" }}>
+          <div style={{ textAlign: "center", marginBottom: 16 }}>
+            <div style={{ fontSize: 10, letterSpacing: 8, color: "#666", marginBottom: 4 }}>CHROMATIC TAXONOMY</div>
+            <h1 style={{ fontSize: "clamp(20px,5vw,34px)", fontFamily: "'Georgia',serif", fontWeight: 400, letterSpacing: 2, color: "#f0ead8", margin: 0 }}>The Strain Spectrum</h1>
+            <div style={{ fontSize: 10, color: "#555", marginTop: 4, letterSpacing: 2 }}>{STRAINS.length + CBD_STRAINS.length} STRAINS · HSL PHENOTYPE WHEEL</div>
+          </div>
+
+          <div style={{ position: "relative", width: "100%", maxWidth: 420, marginBottom: 12 }}>
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="SEARCH BY NAME, EFFECT, OR BRAND..."
+              style={{ width: "100%", boxSizing: "border-box", background: "rgba(255,255,255,0.05)", border: `1px solid ${searching ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.12)"}`, color: "#f0ead8", fontFamily: "'Courier New',monospace", fontSize: 10, letterSpacing: 1.5, padding: "8px 34px 8px 12px", borderRadius: 2, outline: "none" }} />
+            {search.length > 0 && <button onClick={() => setSearch("")} style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: "#666", cursor: "pointer", fontSize: 16, padding: 0 }}>×</button>}
+            {searchResults.length > 0 && (
+              <div style={{ position: "absolute", top: "calc(100% + 3px)", left: 0, right: 0, background: "#1e1c28", border: "1px solid rgba(255,255,255,0.14)", borderRadius: 2, zIndex: 100, maxHeight: 200, overflowY: "auto" }}>
+                {searchResults.map(s => {
+                  const bc = s.brand ? BRAND_CONFIG[s.brand] : null;
+                  return (
+                    <div key={s.name} onClick={() => handleSearchSelect(s)}
+                      style={{ display: "flex", alignItems: "center", gap: 10, padding: "7px 12px", cursor: "pointer", borderBottom: "1px solid rgba(255,255,255,0.05)" }}
+                      onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.06)"}
+                      onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+                      <div style={{ width: 9, height: 9, borderRadius: "50%", background: `hsl(${s.h},${s.s}%,${s.l}%)`, flexShrink: 0, boxShadow: `0 0 6px hsl(${s.h},${s.s}%,${s.l}%)` }} />
+                      <span style={{ fontSize: 11, color: "#e8e0d0" }}>{s.name}</span>
+                      {bc && <span style={{ fontSize: 8, color: bc.color, marginLeft: "auto", letterSpacing: 1 }}>{bc.label}</span>}
+                      {!bc && <span style={{ fontSize: 8, color: "#555", marginLeft: "auto", letterSpacing: 1 }}>{TYPE_CONFIG[s.type].label.toUpperCase()}</span>}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            {searching && searchResults.length === 0 && (
+              <div style={{ position: "absolute", top: "calc(100% + 3px)", left: 0, right: 0, background: "#1e1c28", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 2, padding: "10px 12px", fontSize: 9, color: "#555", letterSpacing: 2 }}>NO MATCH</div>
+            )}
+          </div>
+
+          <div style={{ width: "100%", maxWidth: 700, display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
+            <div style={{ display: "flex", gap: 5, flexWrap: "wrap", alignItems: "center" }}>
+              <span style={{ fontSize: 8, color: "#555", letterSpacing: 2, minWidth: 44 }}>TYPE</span>
+              {["all","sativa","sativa-hybrid","hybrid","indica-hybrid","indica","cbd"].map(f => {
+                const lm = { all:"ALL", sativa:"SATIVA", "sativa-hybrid":"SAT-DOM", hybrid:"HYBRID", "indica-hybrid":"IND-DOM", indica:"INDICA", cbd:"CBD" };
+                return <FilterChip key={f} label={lm[f]} active={filter === f} onClick={() => setFilter(f)} />;
+              })}
+            </div>
+            <div style={{ display: "flex", gap: 5, flexWrap: "wrap", alignItems: "center" }}>
+              <span style={{ fontSize: 8, color: "#555", letterSpacing: 2, minWidth: 44 }}>BRAND</span>
+              <FilterChip label="ALL" active={brandFilter === "all"} onClick={() => setBrandFilter("all")} />
+              {Object.entries(BRAND_CONFIG).map(([k,v]) => (
+                <FilterChip key={k} label={v.label} active={brandFilter === k} onClick={() => setBrandFilter(k)} color={v.color} />
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: 5, flexWrap: "wrap", alignItems: "center" }}>
+              <span style={{ fontSize: 8, color: "#555", letterSpacing: 2, minWidth: 44 }}>EFFECT</span>
+              <FilterChip label="ALL" active={effectFilter === "all"} onClick={() => setEffectFilter("all")} />
+              {Object.entries(EFFECT_CONFIG).map(([k,v]) => (
+                <FilterChip key={k} label={v.label} active={effectFilter === k} onClick={() => setEffectFilter(k)} color={v.color} />
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: 5, flexWrap: "wrap", alignItems: "center" }}>
+              <span style={{ fontSize: 8, color: "#555", letterSpacing: 2, minWidth: 44 }}>FORMAT</span>
+              <FilterChip label="ALL" active={formatFilter === "all"} onClick={() => setFormatFilter("all")} />
+              {Object.entries(FORMAT_CONFIG).map(([k,v]) => (
+                <FilterChip key={k} label={`${v.icon} ${v.label}`} active={formatFilter === k} onClick={() => setFormatFilter(k)} color={v.color} />
+              ))}
+            </div>
+          </div>
+
+          <div style={{ position: "relative", maxWidth: 700, width: "100%" }}>
+            <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", height: "auto" }}>
+              <defs>
+                <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#221f30" />
+                  <stop offset="100%" stopColor="#16141f" />
+                </radialGradient>
+                <radialGradient id="cbdGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#0f2e20" />
+                  <stop offset="60%" stopColor="#0c1e16" />
+                  <stop offset="100%" stopColor="#16141f" />
+                </radialGradient>
+                {Array.from({ length: 360 }, (_, i) => {
+                  const a1 = i, a2 = i + 1.5;
+                  const p1o = polarToXY(a1, OUTER+8), p2o = polarToXY(a2, OUTER+8);
+                  const p1i = polarToXY(a1, INNER-8), p2i = polarToXY(a2, INNER-8);
+                  return <path key={i} d={`M ${p1i.x} ${p1i.y} L ${p1o.x} ${p1o.y} A ${OUTER+8} ${OUTER+8} 0 0 1 ${p2o.x} ${p2o.y} L ${p2i.x} ${p2i.y} A ${INNER-8} ${INNER-8} 0 0 0 ${p1i.x} ${p1i.y}`} fill={`hsl(${i},80%,55%)`} opacity={0.30} />;
+                })}
+              </defs>
+
+              <circle cx={CX} cy={CY} r={OUTER+20} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={1} />
+              <circle cx={CX} cy={CY} r={OUTER+8}  fill="none" stroke="rgba(255,255,255,0.10)" strokeWidth={1} />
+              {[1,2,3].map(r => <circle key={r} cx={CX} cy={CY} r={ringRadius(r)} fill="none" stroke="rgba(255,255,255,0.10)" strokeWidth={1} strokeDasharray="3 5" />)}
+
+              <circle cx={CX} cy={CY} r={INNER-4} fill="url(#cbdGlow)" stroke="rgba(80,200,140,0.25)" strokeWidth={1.5} strokeDasharray="4 4" />
+              <circle cx={CX} cy={CY} r={CBD_R+6}  fill="none" stroke="rgba(80,200,140,0.14)" strokeWidth={1} />
+
+              {CBD_STRAINS.map(strain => {
+                const isActive = activeStrain && activeStrain.name === strain.name;
+                const isCbdFiltered = filter !== "all" && filter !== "cbd";
+                const finalDim = isCbdFiltered || (searching && !highlightedNames.has(strain.name));
+                const pos = polarToXY(strain.h, CBD_R-10);
+                const dotColor = `hsl(${strain.h},${strain.s}%,${strain.l}%)`;
+                const size = isActive ? 9 : 5;
+                return (
+                  <g key={strain.name} style={{ cursor: "pointer", opacity: finalDim ? 0.1 : 1, transition: "opacity 0.25s" }}
+                    onMouseEnter={() => setHovered(strain)} onMouseLeave={() => setHovered(null)}
+                    onClick={() => setSelected(selected && selected.name === strain.name ? null : strain)}>
+                    {isActive && <>
+                      <circle cx={pos.x} cy={pos.y} r={15} fill={dotColor} opacity={0.18} />
+                      <line x1={CX} y1={CY} x2={pos.x} y2={pos.y} stroke="rgba(80,200,140,0.35)" strokeWidth={0.5} strokeDasharray="2 3" />
+                    </>}
+                    <circle cx={pos.x} cy={pos.y} r={size+2} fill={dotColor} opacity={0.25} />
+                    <circle cx={pos.x} cy={pos.y} r={size} fill={dotColor} stroke={isActive ? "rgba(80,200,140,0.9)" : "rgba(80,200,140,0.5)"} strokeWidth={isActive ? 1.5 : 1} />
+                    <circle cx={pos.x-size*0.25} cy={pos.y-size*0.25} r={size*0.3} fill="rgba(255,255,255,0.45)" />
+                  </g>
+                );
+              })}
+
+              <text x={CX} y={CY-12} textAnchor="middle" fontSize={9}  fill="rgba(80,200,140,0.7)" letterSpacing={2}>CBD</text>
+              <text x={CX} y={CY+2}  textAnchor="middle" fontSize={7}  fill="rgba(255,255,255,0.4)" letterSpacing={2}>STRAIN</text>
+              <text x={CX} y={CY+14} textAnchor="middle" fontSize={7}  fill="rgba(255,255,255,0.4)" letterSpacing={2}>WHEEL</text>
+              <text x={CX} y={CY+26} textAnchor="middle" fontSize={6}  fill="rgba(255,255,255,0.2)" letterSpacing={1}>{STRAINS.length + CBD_STRAINS.length} strains</text>
+
+              {SEGMENT_LABELS.map(seg => {
+                const inner = polarToXY(seg.angle, INNER-4), outer = polarToXY(seg.angle, OUTER+4);
+                const lp = polarToXY(seg.angle, OUTER+32), sp = polarToXY(seg.angle, OUTER+44);
+                const rot = seg.angle > 90 && seg.angle < 270 ? seg.angle+90 : seg.angle-90;
+                return (
+                  <g key={seg.angle}>
+                    <line x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y} stroke="rgba(255,255,255,0.10)" strokeWidth={1} />
+                    <text x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="middle" fontSize={7} letterSpacing={2} fill="rgba(255,255,255,0.38)" transform={`rotate(${rot},${lp.x},${lp.y})`}>{seg.label}</text>
+                    <text x={sp.x} y={sp.y} textAnchor="middle" dominantBaseline="middle" fontSize={5.5} letterSpacing={1} fill="rgba(255,255,255,0.20)" transform={`rotate(${rot},${sp.x},${sp.y})`}>{seg.sub}</text>
+                  </g>
+                );
+              })}
+
+              {STRAINS.map(strain => {
+                const ring = TYPE_CONFIG[strain.type].ring;
+                const pos = polarToXY(strain.h, ringRadius(ring));
+                const isActive = activeStrain && activeStrain.name === strain.name;
+                const dim = isDimmed(strain);
+                const isHit = searching && highlightedNames.has(strain.name);
+                const dotColor = `hsl(${strain.h},${strain.s}%,${strain.l}%)`;
+                const glowColor = `hsl(${strain.h},${strain.s}%,${Math.min(strain.l+18,90)}%)`;
+                const size = (isActive || isHit) ? 10 : 7;
+                const bc = strain.brand ? BRAND_CONFIG[strain.brand] : null;
+                return (
+                  <g key={strain.name} style={{ cursor: "pointer", opacity: dim ? 0.1 : 1, transition: "opacity 0.25s" }}
+                    onMouseEnter={() => setHovered(strain)} onMouseLeave={() => setHovered(null)}
+                    onClick={() => setSelected(selected && selected.name === strain.name ? null : strain)}>
+                    {isActive && <>
+                      <circle cx={pos.x} cy={pos.y} r={20} fill={dotColor} opacity={0.14} />
+                      <circle cx={pos.x} cy={pos.y} r={13} fill={dotColor} opacity={0.22} />
+                      <line x1={CX} y1={CY} x2={pos.x} y2={pos.y} stroke={dotColor} strokeWidth={0.6} opacity={0.4} strokeDasharray="3 4" />
+                    </>}
+                    {isHit && !isActive && <circle cx={pos.x} cy={pos.y} r={14} fill={dotColor} opacity={0.20} />}
+                    {bc && <circle cx={pos.x} cy={pos.y} r={size+4} fill="none" stroke={bc.color} strokeWidth={1.5} opacity={brandFilter !== "all" && strain.brand === brandFilter ? 0.9 : 0.35} />}
+                    <circle cx={pos.x} cy={pos.y} r={size+2} fill={dotColor} opacity={0.30} />
+                    <circle cx={pos.x} cy={pos.y} r={size} fill={dotColor} stroke={isActive ? glowColor : "rgba(255,255,255,0.40)"} strokeWidth={isActive ? 1.8 : 0.6} />
+                    <circle cx={pos.x-size*0.25} cy={pos.y-size*0.25} r={size*0.3} fill="rgba(255,255,255,0.45)" />
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
+
+          <div style={{ width: "100%", maxWidth: 700, minHeight: 100, marginTop: 10, border: "1px solid rgba(255,255,255,0.10)", borderRadius: 4, padding: "14px 18px", background: activeStrain ? `linear-gradient(135deg, rgba(${hslRgb(activeStrain.h,activeStrain.s,activeStrain.l)},0.14), transparent)` : "rgba(255,255,255,0.025)", transition: "background 0.4s" }}>
+            {activeStrain ? (
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
+                <div style={{ width: 42, height: 42, borderRadius: "50%", background: `hsl(${activeStrain.h},${activeStrain.s}%,${activeStrain.l}%)`, boxShadow: `0 0 22px hsl(${activeStrain.h},${activeStrain.s}%,${activeStrain.l}%)`, flexShrink: 0 }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                    <span style={{ fontSize: 17, fontFamily: "'Georgia',serif", color: "#f0ead8" }}>{activeStrain.name}</span>
+                    <span style={{ fontSize: 8, letterSpacing: 2, padding: "2px 7px", border: `1px solid ${activeStrain.type === "cbd" ? "rgba(80,200,140,0.6)" : `hsl(${activeStrain.h},${activeStrain.s}%,${activeStrain.l}%)`}`, color: activeStrain.type === "cbd" ? "rgba(80,200,140,0.9)" : `hsl(${activeStrain.h},${activeStrain.s}%,${Math.min(activeStrain.l+20,90)}%)`, borderRadius: 2 }}>
+                      {TYPE_CONFIG[activeStrain.type].label.toUpperCase()}
+                    </span>
+                    {activeStrain.type === "cbd" && activeStrain.cbd && (
+                      <span style={{ fontSize: 8, letterSpacing: 2, padding: "2px 7px", border: "1px solid rgba(80,200,140,0.35)", color: "rgba(80,200,140,0.75)", borderRadius: 2 }}>CBD:THC {activeStrain.cbd}</span>
+                    )}
+                    {activeStrain.brand && BRAND_CONFIG[activeStrain.brand] && (
+                      <span style={{ fontSize: 8, letterSpacing: 1.5, padding: "2px 8px", background: BRAND_CONFIG[activeStrain.brand].color + "22", border: `1px solid ${BRAND_CONFIG[activeStrain.brand].color}66`, color: BRAND_CONFIG[activeStrain.brand].color, borderRadius: 2 }}>
+                        {BRAND_CONFIG[activeStrain.brand].label}
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ fontSize: 11, color: "#aaa", marginTop: 6, lineHeight: 1.6 }}>{activeStrain.notes}</div>
+                  {activeStrain.formats && (
+                    <div style={{ marginTop: 8, display: "flex", gap: 5, flexWrap: "wrap" }}>
+                      {activeStrain.formats.map(f => {
+                        const fc = FORMAT_CONFIG[f];
+                        if (!fc) return <span key={f} style={{ fontSize: 8, color: "#666", padding: "2px 6px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 2 }}>{f.toUpperCase()}</span>;
+                        return <span key={f} style={{ fontSize: 8, letterSpacing: 1.5, padding: "2px 8px", background: fc.color + "18", border: `1px solid ${fc.color}55`, color: fc.color, borderRadius: 2 }}>{fc.icon} {fc.label.toUpperCase()}</span>;
+                      })}
+                    </div>
+                  )}
+                  {activeStrain.effects && (
+                    <div style={{ marginTop: 6, display: "flex", gap: 5, flexWrap: "wrap" }}>
+                      {activeStrain.effects.map(e => {
+                        const ec = EFFECT_CONFIG[e];
+                        if (!ec) return null;
+                        return <span key={e} style={{ fontSize: 8, letterSpacing: 1.5, padding: "2px 8px", background: ec.color + "18", border: `1px solid ${ec.color}55`, color: ec.color, borderRadius: 2 }}>{ec.label.toUpperCase()}</span>;
+                      })}
+                    </div>
+                  )}
+                  {activeStrain.terps && (
+                    <div style={{ marginTop: 6, display: "flex", gap: 5, flexWrap: "wrap" }}>
+                      {activeStrain.terps.map(t => {
+                        const tc = TERP_CONFIG[t];
+                        if (!tc) return null;
+                        return (
+                          <div key={t} title={tc.desc} style={{ display: "flex", alignItems: "center", gap: 4, padding: "2px 8px", background: tc.color + "18", border: `1px solid ${tc.color}50`, borderRadius: 2, cursor: "help" }}>
+                            <div style={{ width: 5, height: 5, borderRadius: "50%", background: tc.color }} />
+                            <span style={{ fontSize: 8, letterSpacing: 1.5, color: tc.color }}>{tc.label.toUpperCase()}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                  <div style={{ marginTop: 8, display: "flex", gap: 14, fontSize: 9, color: "#555", letterSpacing: 1 }}>
+                    <span>HUE {activeStrain.h}°</span>
+                    <span>SAT {activeStrain.s}%</span>
+                    <span>LGT {activeStrain.l}%</span>
+                    <span style={{ color: `hsl(${activeStrain.h},${activeStrain.s}%,${activeStrain.l}%)` }}>hsl({activeStrain.h},{activeStrain.s}%,{activeStrain.l}%)</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div style={{ textAlign: "center", color: "#555", fontSize: 11, letterSpacing: 2, paddingTop: 28 }}>HOVER OR SELECT A STRAIN</div>
+            )}
+          </div>
+
+          <div style={{ display: "flex", gap: 16, marginTop: 14, flexWrap: "wrap", justifyContent: "center" }}>
+            {[{r:3,l:"Pure (outer)"},{r:2,l:"Dominant (mid)"},{r:1,l:"True Hybrid (inner)"}].map(({r,l}) => (
+              <div key={l} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 9, color: "#666", letterSpacing: 1 }}>
+                <div style={{ width: r===3?10:r===2?8:6, height: r===3?10:r===2?8:6, borderRadius: "50%", background: "#777", border: "1px solid rgba(255,255,255,0.3)" }} />
+                {l.toUpperCase()}
+              </div>
+            ))}
+            <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 9, color: "rgba(80,200,140,0.65)", letterSpacing: 1 }}>
+              <div style={{ width: 8, height: 8, borderRadius: "50%", background: "rgba(80,200,140,0.45)", border: "1px solid rgba(80,200,140,0.65)" }} />
+              CBD SANCTUM
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 9, color: "#888", letterSpacing: 1 }}>
+              <div style={{ width: 10, height: 10, borderRadius: "50%", background: "transparent", border: "1.5px solid #e8c060" }} />
+              BRAND RING
+            </div>
+          </div>
+          <div style={{ fontSize: 9, color: "#3a3848", marginTop: 14, letterSpacing: 2, textAlign: "center" }}>
+            COLOR POSITION = PHENOTYPE CHARACTER · RING DEPTH = GENETIC PURITY · OUTER RING = BRAND HOUSE
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<StrainWheel />);
+  </script>
+</body>
+</html>

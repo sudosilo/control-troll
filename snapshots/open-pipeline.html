@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<!-- ============================================================================
+  OPEN PIPELINE  -  HANDOFF NOTES   (forked from Stumbler, BLUE PHONE -> next phone)
+  ============================================================================
+  WHAT IT IS
+  Fork of Stumbler (stumbler.vercel.app), same core loop: generate <host>.vercel.app
+  names, open in a new tab, keep the live ones. Forked to run a SEPARATE dataset
+  under its own name/backend rather than mixing into Stumbler's finds.
+  Lives at open-pipeline.vercel.app. Deployed from ~/open-pipeline via Vercel CLI.
+
+  WHAT'S DIFFERENT FROM STUMBLER AT FORK TIME
+    - No 160-url seed. Starts EMPTY. This dataset is its own thing.
+    - api/hits.js ships from the first deploy (Upstash REST, zero deps) instead
+      of being bolted on after months of running with no backend.
+    - CLONES walks its site list in order (like DICTIONARY) instead of random
+      sampling, so it covers all ~100 sites with no repeats before looping.
+    - Generation is dedupe-checked against kept hits before it's shown, in all
+      three modes, so you're never re-served a host you already kept.
+    - Category sync to the cloud is NOT half-done here - pushCloud() has sent
+      {url,cat} since the first commit, and api/hits.js stores/returns it.
+
+  DEPLOY (termux)
+    cd ~/open-pipeline
+    cp "$(ls -t ~/storage/downloads/index*.html | head -1)" index.html
+    vercel --prod
+    rm ~/storage/downloads/index*.html
+  Firefox caches hard - hard-refresh the live page after a deploy or you will
+  think nothing changed.
+
+  THREE MODES (tabs)
+    STUMBLE  - word-word combos; biased by stems of kept hits (the feedback loop)
+    DICTIONARY - walks a single-word list in order (dictIdx persists)
+    CLONES   - walks ~100 popular site names in order (cloneIdx persists),
+               mangling each the way clone-builders actually name things
+               ({site}-clone, clone-{site}, {site}-next, backwards, etc.)
+
+  KEPT HITS + SYNC
+    Local cache: localStorage key "pipeline.hits.v1" (array of url strings).
+    Cloud: frontend calls fetch("/api/hits") GET and POST.
+      GET  -> { hits:[{url,cat,found_at}], times:{url:{l:ts}} }
+      POST {hits:[{url,cat}], urls:[...]} -> upsert, same response shape
+      POST {action:"visit", url} -> stamps last-checked, cross-device
+    LIVE backend = Upstash Redis via the Vercel function at /api/hits
+      (api/hits.js in this project; HASH "pipeline:hits" + HASH "pipeline:visits").
+      Env vars (Production + Preview + Development, all three):
+        UPSTASH_REDIS_REST_URL  -- the https://xxxx.upstash.io REST url,
+                                    NOT the rediss:// connection string
+        UPSTASH_REDIS_REST_TOKEN
+
+  CATEGORIES
+    CATS    = { url -> category }  in localStorage "pipeline.cats.v1"
+    CATLIST = user-growable names  in localStorage "pipeline.catlist.v1",
+              starts ["Stumble","Dictionary","Clone"], case-insensitive dedupe.
+    Helpers: catOf(), setCat(), ensureCat(), guessCat(), modeCat().
+    Kept hits auto-tag by the mode they were found in and sync to the cloud
+    on every change via pushCloud(). EXPORT writes [{url,cat}].
+
+  AGE COLUMN
+    Left of each row: minutes/hours/days since a REAL tap on that url
+    (markVisited -> VISITED[u], local + pushed to /api/hits as action:"visit").
+    Blank ("-") until the first tap - no fake baseline stamp. 30d+ turns amber,
+    99d (the display cap) turns red.
+
+  STILL OPEN / NEXT TASK CANDIDATES
+    - Live/dead recheck of kept hits: Stumbler had a half-built version of this
+      (a /api/check endpoint + button) that got pulled entirely rather than
+      fixed. Worth deciding whether Open Pipeline wants it as a real feature -
+      needs a batch endpoint that fetches each kept url and a place to store
+      state (up/dead/broken) per url, ideally not blocking the UI thread.
+
+  CONVENTIONS
+    - Mark every contribution with a "<COLOR> PHONE:" comment.
+    - Backgrounds must stay LIGHT (no black/near-black panels). Warm accents ok.
+    - Project hands off across RED / GREEN / ORANGE / BLUE phones.
+  ============================================================================ -->
+<!-- BLUE PHONE: open-pipeline. stumble=app-word combos, dict=single words in order, clone=ordered site walk. -->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#e7e2d4" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+<title>Open Pipeline</title>
+<style>
+  :root { --paper:#e7e2d4; --panel:#efebdf; --ink:#2a2620; --dim:#857c69;
+          --rule:#b3ab96; --red:#b23a2b; --red2:#8c2c20; --green:#3f7d52;
+          --accent:#2b5fb2; --accent2:#1f4685;
+          --brown:#6c5f49; --brown2:#4f4636; }
+  * { box-sizing:border-box; }
+  html { background:#e7e2d4; }
+  body { margin:0 auto; min-height:100dvh; max-width:520px; background:var(--paper);
+    color:var(--ink); font-family:ui-monospace,"Share Tech Mono","JetBrains Mono",monospace;
+    padding:18px 14px 32px; -webkit-text-size-adjust:100%; }
+  h1 { font-size:15px; letter-spacing:.22em; margin:0; text-align:center; color:var(--ink); font-weight:700; }
+  h1::before { content:"[ "; color:var(--accent); }
+  h1::after { content:" ]"; color:var(--accent); }
+  h1 b { color:var(--accent); -webkit-text-fill-color:currentColor; }
+  .hud { display:flex; justify-content:space-between; gap:8px; margin:9px 0 10px; padding:5px 2px;
+    font-size:10px; letter-spacing:.1em; color:var(--dim);
+    border-top:1px dashed var(--rule); border-bottom:1px dashed var(--rule); }
+  .hud b { color:var(--accent); font-weight:700; }
+
+  .tabs { display:flex; gap:6px; margin-bottom:8px; }
+  .tab { flex:1; font-family:inherit; font-weight:700; font-size:11px;
+    letter-spacing:.05em; padding:10px 4px; border-radius:2px; cursor:pointer;
+    white-space:nowrap; border:1.5px solid var(--rule); background:var(--panel); color:var(--dim);
+    -webkit-tap-highlight-color:transparent; }
+  .tab.active { background:var(--accent); color:var(--paper); border-color:var(--accent2); }
+  .tab.active::before { content:">"; margin-right:3px; }
+  .tab.active::after { content:"<"; margin-left:3px; }
+  .pos { text-align:center; font-size:10px; letter-spacing:.1em; color:var(--dim);
+    margin:0 0 12px; min-height:13px; }
+
+  .url { width:100%; text-align:left; font-size:13px; color:var(--ink);
+    background:var(--panel); border:1.5px solid var(--rule); border-radius:2px;
+    padding:13px 12px; margin-bottom:12px; font-family:inherit; }
+  .url::placeholder { color:var(--dim); }
+
+  .row { display:flex; gap:8px; }
+  button { border:none; cursor:pointer; color:var(--paper); font-family:inherit; font-weight:700;
+    border-radius:2px; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+  .stumble { flex:2; font-size:20px; letter-spacing:.16em; padding:18px;
+    background:var(--accent); color:var(--paper); border:1.5px solid var(--accent2); }
+  .stumble::before { content:"> "; opacity:.65; }
+  .stumble:active { transform:translateY(1px); background:var(--accent2); }
+  .keep { flex:1; font-size:13px; letter-spacing:.06em; background:var(--panel);
+    color:var(--ink); border:1.5px solid var(--rule); }
+  .keep:active { transform:translateY(1px); background:var(--rule); }
+
+  .add { display:flex; gap:8px; margin-top:10px; }
+  .add input { flex:1; min-width:0; font-family:inherit; font-size:13px; color:var(--ink);
+    background:var(--panel); border:1.5px solid var(--rule); border-radius:2px;
+    padding:11px; }
+  .add input::placeholder { color:var(--dim); }
+  .add button { flex:none; font-size:13px; letter-spacing:.06em; padding:11px 15px;
+    background:var(--panel); color:var(--ink); border:1.5px solid var(--rule); }
+  .add button:active { transform:translateY(1px); background:var(--rule); }
+
+  .io { display:flex; gap:8px; margin-top:8px; }
+  .io button { flex:1; font-size:11px; letter-spacing:.08em; padding:11px;
+    background:var(--panel); color:var(--ink); border:1.5px solid var(--rule); }
+  .io button:active { transform:translateY(1px); background:var(--rule); }
+
+  .hd { display:flex; justify-content:space-between; align-items:baseline;
+    margin:24px 0 8px; font-size:10px; letter-spacing:.16em; color:var(--dim);
+    text-transform:uppercase; }
+  ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0; }
+  li { display:flex; gap:6px; align-items:center; border-bottom:1px dashed var(--rule); padding:1px 0; }
+  li a { flex:1; min-width:0; display:flex; gap:7px; align-items:center; text-decoration:none; color:var(--ink);
+    background:none; border:none; border-radius:0; padding:9px 2px; font-size:12px; word-break:break-all; }
+  li a::before { content:""; }
+  .ver { position:absolute; right:0; top:50%; transform:translateY(-50%);
+    font-size:10px; letter-spacing:.06em; color:var(--dim); }
+  .age { flex:none; min-width:36px; text-align:right; font-size:10px; letter-spacing:.02em;
+    color:var(--dim); font-variant-numeric:tabular-nums; }
+  .age.old { color:var(--red); font-weight:700; }
+  .age.warn { color:#a5701a; }
+  li a .x { margin-left:auto; color:var(--accent); font-weight:700; flex:none; }
+  li .cat { flex:none; font-family:inherit; font-size:10px; letter-spacing:.03em; color:var(--ink);
+    background:var(--panel); border:1.5px solid var(--rule); border-radius:2px; padding:3px 5px; max-width:104px; }
+  .filters { display:flex; flex-wrap:wrap; gap:6px; margin:0 0 10px; }
+  .chip { font-family:inherit; font-weight:700; font-size:10px; letter-spacing:.05em;
+    text-transform:uppercase; padding:6px 10px; border-radius:2px; cursor:pointer;
+    border:1.5px solid var(--rule); background:var(--panel); color:var(--dim);
+    -webkit-tap-highlight-color:transparent; }
+  .chip.active { background:var(--accent); color:var(--paper); border-color:var(--accent2); }
+  .chip.add { color:var(--ink); }
+  .empty { font-size:11px; color:var(--dim); }
+  .sync { font-weight:400; letter-spacing:.03em; color:var(--dim); }
+  .pager { display:flex; align-items:center; justify-content:center; gap:12px; margin-top:12px; }
+  .pager button { font-family:inherit; font-weight:700; font-size:13px; color:var(--ink);
+    background:var(--panel); border:1.5px solid var(--rule); border-radius:2px;
+    padding:8px 14px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .pager button:disabled { opacity:.4; }
+  .pager .pinfo { font-size:11px; letter-spacing:.04em; color:var(--dim); min-width:104px; text-align:center; }
+  /* BLUE PHONE: hamburger + kept-hits drawer */
+  .topbar { position:relative; display:flex; align-items:center; justify-content:center; min-height:36px; }
+  .hamburger { position:absolute; left:0; top:50%; transform:translateY(-50%); display:flex;
+    align-items:center; gap:7px; background:var(--panel); border:1.5px solid var(--rule);
+    border-radius:2px; padding:7px 10px; cursor:pointer; -webkit-tap-highlight-color:transparent;
+    font-family:inherit; color:var(--ink); }
+  .hamburger::before { content:"<\2261"; font-weight:700; font-size:14px; }
+  .hamburger .bars { display:none; }
+  .hamburger .badge { font-family:inherit; font-weight:700; font-size:11px; color:var(--accent); min-width:14px; }
+  .scrim { position:fixed; inset:0; background:rgba(42,38,32,.42); opacity:0; pointer-events:none;
+    transition:opacity .18s ease; z-index:40; }
+  .scrim.open { opacity:1; pointer-events:auto; }
+  .drawer { position:fixed; top:0; left:0; bottom:0; width:min(92vw,460px); background:var(--paper);
+    border-right:1.5px solid var(--ink); box-shadow:5px 0 0 var(--rule);
+    transform:translateX(-102%); transition:transform .2s ease; z-index:50; overflow-y:auto;
+    padding:16px 14px calc(28px + env(safe-area-inset-bottom)); }
+  .drawer.open { transform:translateX(0); }
+  .drawer-hd { display:flex; align-items:center; justify-content:space-between;
+    font-weight:700; letter-spacing:.12em; font-size:14px; color:var(--ink); }
+  .drawer-hd::before { content:"// "; color:var(--accent); }
+  .dclose { background:none; border:none; font-size:24px; line-height:1; color:var(--ink);
+    cursor:pointer; padding:0 4px; -webkit-tap-highlight-color:transparent; }
+  .drawer-sub { font-size:11px; color:var(--dim); letter-spacing:.04em; margin:3px 0 12px; }
+  .drawer-sub::before { content:":: "; }
+  .drawer-sub::after { content:" ::"; }
+  .dtools { display:flex; gap:8px; margin:0 0 12px; }
+  .dtools button { flex:1; font-family:inherit; font-weight:700; font-size:11px; letter-spacing:.08em;
+    padding:9px; background:var(--panel); color:var(--ink); border:1.5px solid var(--rule);
+    border-radius:2px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .dtools button:disabled { opacity:.5; }
+  .dtools button.armed { background:var(--accent); color:var(--paper); border-color:var(--accent2); }
+  .search { width:100%; font-family:inherit; font-size:13px; color:var(--ink);
+    background:var(--panel); border:1.5px solid var(--rule); border-radius:2px;
+    padding:10px 11px; margin:0 0 10px; }
+  .search::placeholder { color:var(--dim); }
+  .stat { display:flex; align-items:center; gap:4px; flex:none; }
+  .stat .dot { font-size:11px; line-height:1; font-style:normal; }
+  .stat .dot.up { color:var(--green); }
+  .stat .dot.broken { color:var(--red); }
+  .stat .dot.dead { color:#9a9488; }
+  .stat .dot.unknown { color:var(--dim); }
+  .stat .spark { font-size:9px; letter-spacing:-1px; line-height:1; white-space:nowrap; }
+  .stat .spark i { font-style:normal; }
+  .stat .spark i.u { color:var(--green); }
+  .stat .spark i.b { color:var(--red); }
+  .stat .spark i.d { color:#9a9488; }
+  .del { flex:none; background:none; border:1.5px solid var(--rule); color:var(--red);
+    border-radius:2px; font-family:inherit; font-weight:700; font-size:12px; padding:4px 8px;
+    cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  /* BLUE PHONE: footer seal */
+  .seal { margin-top:30px; padding-top:12px; text-align:center; border-top:1px dashed var(--rule); }
+  .seal-mark { font-family:inherit; font-weight:700; letter-spacing:2px; font-size:10px; color:var(--accent); }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <button class="hamburger" id="menu" aria-label="Open kept hits">
+      <span class="bars"></span>
+    </button>
+    <h1>OPEN <b>PIPELINE</b></h1>
+    <span class="ver" id="ver"></span>
+  </header>
+  <div class="hud" id="hud"></div>
+
+  <div class="tabs">
+    <button class="tab active" id="tab-stumble" data-mode="stumble">STUMBLE</button>
+    <button class="tab" id="tab-dict" data-mode="dict">DICTIONARY</button>
+    <button class="tab" id="tab-clone" data-mode="clone">CLONES</button>
+  </div>
+  <div class="pos" id="pos"></div>
+
+  <input class="url" id="url" type="text" inputmode="url" autocapitalize="off"
+         autocomplete="off" spellcheck="false" placeholder="&gt; tap stumble or type a url" />
+
+  <div class="row">
+    <button class="stumble" id="go">STUMBLE</button>
+    <button class="keep" id="keep">&#9733; keep</button>
+  </div>
+
+  <div class="add">
+    <input id="manual" type="url" inputmode="url" autocapitalize="off" autocomplete="off"
+           spellcheck="false" placeholder="paste a url you found&hellip;" />
+    <button id="addbtn">ADD</button>
+  </div>
+
+  <div class="io">
+    <button id="exportbtn">&#8595; EXPORT</button>
+    <button id="uploadbtn">&#8593; UPLOAD</button>
+    <input id="file" type="file" accept=".json,.txt,application/json,text/plain" hidden />
+  </div>
+
+
+  <div class="scrim" id="scrim"></div>
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-hd">
+      <span>KEPT HITS <span id="sync" class="sync"></span></span>
+      <button class="dclose" id="menuClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="dtools">
+    </div>
+    <input id="search" class="search" type="search" inputmode="search" autocomplete="off"
+           spellcheck="false" placeholder="&gt; search discovered urls&hellip;" />
+    <div class="filters" id="filters"></div>
+    <ul id="hits"></ul>
+    <div class="pager" id="pager"></div>
+    <div class="empty" id="empty">none yet &mdash; keep the legit ones</div>
+  </aside>
+
+<script>
+// BLUE PHONE: STUMBLE vocab -> app words, ordered most-likely first.
+//   Combined as word-word / wordword. NEVER numbered (fresh guesses
+//   resolve better bare). Numbers only come from saved hits below.
+const BASE = ["app","my","dev","web","site","ai","api","dashboard","admin","portal",
+"blog","docs","store","shop","portfolio","resume","todo","task","notes","chat","bot",
+"game","play","music","photo","video","draw","paint","canvas","news","feed","social",
+"link","bio","form","poll","quiz","map","weather","clock","timer","calendar","recipe",
+"food","menu","order","book","travel","trip","fit","gym","run","health","learn","course",
+"study","card","test","demo","hello","world","example","sample","project","starter",
+"template","clone","hub","lab","studio","next","react","vue","svelte","astro","node",
+"data","cloud","edge","pixel","retro","neon","snake","chess","arcade","stream","gallery",
+"wiki","kanban","board","tracker","budget","finance","crypto","wallet","pay","invoice",
+"ledger","stock","crew","shift","team","home","landing","page","portal","tool","kit",
+"flow","spark","forge","build","stack","core","loop","wave","field","quick","cool","tiny"];
+
+// BLUE PHONE: DICTIONARY vocab -> SINGLE words, ordered roughly by how
+//   common / likely-as-an-app they are. Walked sequentially, one per
+//   tap. Other-language words mixed in near the end for fun (ascii only).
+const DICT = ["app","home","hello","world","test","demo","game","play","blog","shop",
+"store","music","photo","video","news","food","travel","book","money","work","time",
+"life","love","light","dark","fire","water","earth","wind","star","moon","sun","sky",
+"cloud","rain","snow","storm","ocean","river","lake","mountain","forest","desert","island",
+"city","town","road","bridge","tower","castle","garden","field","farm","market","money",
+"gold","silver","copper","iron","steel","stone","glass","paper","wood","cotton","silk",
+"coffee","tea","sugar","honey","bread","apple","orange","lemon","cherry","grape","mango",
+"berry","mint","ginger","pepper","tiger","lion","wolf","fox","bear","eagle","hawk","owl",
+"raven","robin","sparrow","swan","crane","heron","dove","falcon","panther","cobra","viper",
+"dragon","phoenix","griffin","unicorn","pixel","vector","matrix","cipher","kernel","binary",
+"signal","beacon","compass","anchor","arrow","blade","shield","spear","crown","throne","quest",
+"legend","myth","fable","saga","echo","whisper","shadow","ember","frost","flame","spark","glow",
+"prism","crystal","quartz","amber","jade","opal","ruby","pearl","ivory","onyx","cobalt","indigo",
+"violet","crimson","scarlet","azure","amber","olive","maroon","teal","coral","ivory","slate",
+"comet","meteor","nebula","galaxy","orbit","cosmos","lunar","solar","stellar","nova","pulsar",
+"zenith","apex","summit","ridge","valley","canyon","cliff","glacier","tundra","savanna","jungle",
+"meadow","prairie","lagoon","reef","tide","wave","current","breeze","gale","mist","fog","dew",
+"casa","sol","luna","mar","fuego","agua","tierra","cielo","flor","gato","perro","rojo","verde",
+"azul","oro","noche","dia","mundo","vida","amor","fiesta","maison","soleil","lune","feu","eau",
+"ciel","fleur","chat","chien","rouge","vert","bleu","nuit","jour","reve","vie","amour","liberte",
+"haus","sonne","mond","feuer","wasser","himmel","blume","katze","hund","rot","gruen","blau",
+"nacht","tag","welt","leben","licht","wald","berg","stern","sora","hikari","yume","neko","mizu",
+"hoshi","kaze","tsuki","hana","yama","umi","kawa","mori","sakura","kumo","tori","ame","yuki",
+"cielo","stella","luce","fuoco","acqua","terra","fiore","gatto","rosso","verde","notte","vita"];
+
+// BLUE PHONE: CLONES vocab -> well-known site base-names (no TLD). Clone-builders
+//   recreate these and name them similarly, so we mangle each into the
+//   conventions people actually use. Trim/extend this list freely.
+const SITES = ["youtube","netflix","spotify","twitter","instagram","facebook","reddit",
+"amazon","google","tiktok","discord","twitch","github","gitlab","notion","figma","canva",
+"airbnb","uber","lyft","doordash","grubhub","venmo","paypal","stripe","slack","zoom",
+"dropbox","gmail","outlook","linkedin","pinterest","snapchat","whatsapp","telegram",
+"tinder","bumble","hinge","soundcloud","bandcamp","vimeo","hulu","disney","crunchyroll",
+"steam","roblox","minecraft","fortnite","leetcode","hackerrank","codepen","codesandbox",
+"replit","stackoverflow","medium","substack","wordpress","wix","squarespace","shopify",
+"etsy","ebay","walmart","target","wayfair","ikea","zillow","redfin","indeed","glassdoor",
+"coursera","udemy","khanacademy","duolingo","quizlet","chegg","wikipedia","quora","yelp",
+"tripadvisor","booking","expedia","kayak","robinhood","coinbase","binance","cashapp",
+"openai","chatgpt","claude","gemini","perplexity","midjourney","huggingface","vercel",
+"netlify","heroku","railway","supabase","firebase","cloudflare","trello","asana","jira",
+"clickup","airtable","calendly","loom","miro","framer","webflow","cursor","linktree"];
+
+// BLUE PHONE: clone naming conventions seen in the wild
+const PRE = ["my","new","mini","free","open","the","get","go","try","not","fake","re","just"];
+const SUF = ["clone","app","web","next","react","demo","lite","pro","ai","x","io","hub","js","now"];
+const reverse = (s) => s.split("").reverse().join("");
+let cloneTarget = "";
+
+// BLUE PHONE: clone host -> walks SITES in order (like dictHost), so all
+//   ~100 sites get covered with no repeats before it loops, instead of
+//   randomly re-sampling the same popular ones. Mangle pattern is still
+//   randomized per visit -- only WHICH site is picked is now ordered.
+const CIDX_KEY = "pipeline.cloneidx.v1";
+let cloneIdx = (() => {
+  try { const v = parseInt(localStorage.getItem(CIDX_KEY), 10); return Number.isFinite(v) ? v : 0; } catch { return 0; }
+})();
+function cloneHost() {
+  const b = SITES[cloneIdx];
+  cloneIdx = (cloneIdx + 1) % SITES.length;
+  try { localStorage.setItem(CIDX_KEY, String(cloneIdx)); } catch {}
+  cloneTarget = b;
+  const r = Math.random();
+  if (r < 0.34) return b + "-clone" + (Math.random() < 0.25 ? "-" + (2 + (Math.random()*7|0)) : "");
+  if (r < 0.46) return "clone-" + b;
+  if (r < 0.55) return b + "clone";
+  if (r < 0.72) return b + "-" + pick(SUF);
+  if (r < 0.86) return pick(PRE) + "-" + b;
+  if (r < 0.94) return reverse(b);          // spelled backwards
+  return pick(PRE) + b;                       // glued prefix
+}
+
+const KEY = "pipeline.hits.v1";
+const MODE_KEY = "pipeline.mode.v1";
+const DIDX_KEY = "pipeline.dictidx.v1";
+let mode = (() => { try { return localStorage.getItem(MODE_KEY) || "stumble"; } catch { return "stumble"; } })();
+// BLUE PHONE: start the dictionary walk at a random spot each access (not the
+//   beginning) so different phones/sessions don't all run the same sequence.
+let dictIdx = DICT.length > 1 ? 1 + Math.floor(Math.random() * (DICT.length - 1)) : 0;
+
+// BLUE PHONE: storage -> in-memory list mirrored to localStorage (offline
+//   cache) AND synced to /api/hits (the cross-phone source of truth).
+// BLUE PHONE: storage -> in-memory list mirrored to localStorage (offline
+//   cache) AND synced to /api/hits (the cross-phone source of truth).
+// BLUE PHONE: SEED = empty. Open Pipeline starts with a clean dataset,
+//   separate from Stumbler's finds. Add real kept urls through normal use.
+const SEED = [
+];
+
+function loadLocal() { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch { return []; } }
+let HITS = loadLocal();
+const load = () => HITS;
+
+// BLUE PHONE: categories ------------------------------------------------
+//   CATS  = map { url -> category name }   (per-hit assignment)
+//   CATLIST = ordered list of category names the user can grow
+const CATS_KEY = "pipeline.cats.v1";
+const CATLIST_KEY = "pipeline.catlist.v1";
+const DEFAULT_CATS = ["Stumble", "Dictionary", "Clone", "Functional", "Broken",
+  "Redirect", "Placeholder", "Login", "Game", "Tool", "Shop", "Art", "Blog", "AI", "Foreign"];
+function loadCats() { try { return JSON.parse(localStorage.getItem(CATS_KEY) || "{}") || {}; } catch { return {}; } }
+function loadCatList() {
+  try { const a = JSON.parse(localStorage.getItem(CATLIST_KEY) || "null"); if (Array.isArray(a) && a.length) return a; } catch {}
+  return DEFAULT_CATS.slice();
+}
+let CATS = loadCats();
+let CATLIST = loadCatList();
+const saveCats = () => { try { localStorage.setItem(CATS_KEY, JSON.stringify(CATS)); } catch {} };
+const saveCatList = () => { try { localStorage.setItem(CATLIST_KEY, JSON.stringify(CATLIST)); } catch {} };
+let activeFilter = "All"; // BLUE PHONE: which category the list is filtered to
+let searchQ = "";         // BLUE PHONE: live url search text
+const PER_PAGE = 30;      // BLUE PHONE: kept-hits rows per page
+let page = 0;             // BLUE PHONE: current page index
+
+const catOf = (u) => CATS[u] || "Stumble";
+function ensureCat(name) {
+  if (!name) return;
+  const lc = name.toLowerCase();
+  if (CATLIST.some(c => c.toLowerCase() === lc)) return; // BLUE PHONE: case-insensitive, no doubles
+  CATLIST.push(name); saveCatList();
+}
+function setCat(u, name) { if (!u || !name) return; CATS[u] = name; ensureCat(name); saveCats(); }
+// BLUE PHONE: which category a mode's finds belong to
+const modeCat = () => (mode === "dict" ? "Dictionary" : mode === "clone" ? "Clone" : "Stumble");
+// BLUE PHONE: heuristic category for the seed / unknown urls
+// BLUE PHONE: known single-word vocabulary (dict words + stumble stems), used
+//   to tell a real single word from a smashed-together concept.
+let _wordset = null;
+function wordset() {
+  if (_wordset) return _wordset;
+  _wordset = new Set();
+  const add = (arr) => { try { for (const w of arr) { const s = String(w).toLowerCase(); if (/^[a-z]{2,}$/.test(s)) _wordset.add(s); } } catch {} };
+  add(DICT); add(BASE);
+  return _wordset;
+}
+function splitsIntoTwoWords(h) {
+  const ws = wordset();
+  for (let i = 2; i <= h.length - 2; i++) if (ws.has(h.slice(0, i)) && ws.has(h.slice(i))) return true;
+  return false;
+}
+// BLUE PHONE: category by URL SHAPE, not by the mode you found it in.
+//   Clone      -> clone markers / knockoff affixes / brand rips
+//   Dictionary -> a single real word (one token, letters only)
+//   Stumble    -> concept ideas: dashes, smashed-together words, digits/leet
+function guessCat(u) {
+  const h = u.replace(/^https?:\/\//, "").split(".")[0].toLowerCase();
+  if (/clone/.test(h)) return "Clone";
+  if (/(^|-)(fake|not|try|the)-/.test(h)) return "Clone";
+  if (/-(hub|x|react|next|demo)$/.test(h)) return "Clone";
+  if (/gpt/.test(h)) return "Clone";
+  if (h.includes("-") || /[0-9]/.test(h)) return "Stumble";   // multi-token or mangled/leet
+  if (wordset().has(h)) return "Dictionary";                   // known single word
+  if (splitsIntoTwoWords(h)) return "Stumble";                 // concatenated concept
+  return "Dictionary";                                          // lone token (brand/proper noun)
+}
+
+function save(l) {
+  // BLUE PHONE: dedupe (keep first-seen order), cap, mirror to localStorage
+  const seen = new Set(); const out = [];
+  for (const u of l) { if (u && !seen.has(u)) { seen.add(u); out.push(u); } }
+  HITS = out.slice(0, 1000);
+  try { localStorage.setItem(KEY, JSON.stringify(HITS)); } catch {}
+}
+
+// BLUE PHONE: cloud sync ------------------------------------------------
+let syncEl = null;
+const setSync = (t) => { if (syncEl) syncEl.textContent = t; };
+
+// BLUE PHONE: fold cloud items into local. Accepts BOTH old (plain url string)
+//   and new ({url,cat}) shapes so a frontend deployed before the backend, or a
+//   backend still returning strings, both keep working. Cloud cat wins on pull
+//   (local label edits push up immediately, so this converges).
+function applyCloud(items) {
+  const urls = [];
+  for (const it of items) {
+    if (typeof it === "string") {
+      urls.push(it);
+      if (!CATS[it]) setCat(it, guessCat(it));
+    } else if (it && it.url) {
+      urls.push(it.url);
+      if (it.cat) setCat(it.url, it.cat);
+      else if (!CATS[it.url]) setCat(it.url, guessCat(it.url));
+    }
+  }
+  return urls;
+}
+
+// BLUE PHONE: unsynced local keeps that failed to push -> survive pulls, retried
+function loadPending() { try { return JSON.parse(localStorage.getItem("pipeline.pending.v1") || "[]"); } catch { return []; } }
+function savePending(p) { try { localStorage.setItem("pipeline.pending.v1", JSON.stringify(p.slice(0, 200))); } catch {} }
+
+// BLUE PHONE: sync freshness -> the emblem shows how long since a real pull,
+//   so a stale phone stops falsely reading "synced" forever.
+let syncing = false, pushing = false, lastSyncAt = 0, syncState = "";
+function relTime(ts) {
+  const s = Math.max(0, Math.round((Date.now() - ts) / 1000));
+  if (s < 60) return s + "s ago";
+  const m = Math.round(s / 60); if (m < 60) return m + "m ago";
+  return Math.round(m / 60) + "h ago";
+}
+function paintSync() {
+  const q = loadPending().length; // BLUE PHONE: items not yet confirmed in cloud
+  if (syncState === "syncing") setSync("\u2601 syncing\u2026");
+  else if (syncState === "saving") setSync("\u2601 saving\u2026");
+  else if (syncState === "offline") setSync(q ? "\u2601 offline \u00b7 " + q + " queued" : "\u2601 offline");
+  else if (syncState === "synced") setSync(q ? "\u21ba " + q + " unsynced" : "\u2601 synced \u00b7 " + relTime(lastSyncAt));
+  else setSync("");
+}
+
+async function pullCloud(silent) {
+  if (syncing || pushing) return;      // BLUE PHONE: no overlapping pulls, none mid-push
+  syncing = true; if (!silent) { syncState = "syncing"; paintSync(); } // BLUE PHONE: background poll stays quiet
+  try {
+    const r = await fetch("/api/hits", { headers: { Accept: "application/json" } });
+    if (!r.ok) throw new Error("pull " + r.status); // BLUE PHONE: a 500 is NOT synced
+    const j = await r.json();
+    mergeTimes(j); // BLUE PHONE: pick up visits from other phones
+    const items = Array.isArray(j.hits) ? j.hits : [];
+    const cloudUrls = applyCloud(items);          // BLUE PHONE: cloud labels win
+    const pending = loadPending();
+    // BLUE PHONE: cloud is authoritative (so deletes elsewhere stick); only
+    //   unsynced local keeps (pending) survive. Items the cloud dropped vanish.
+    save([...cloudUrls, ...pending]); render();
+    if (!items.length) { await pushCloud(SEED); }       // BLUE PHONE: seed an empty cloud
+    else if (pending.length) { await pushCloud(pending, true); } // BLUE PHONE: flush unsynced
+    lastSyncAt = Date.now(); syncState = "synced"; paintSync();
+  } catch { syncState = "offline"; paintSync(); }
+  finally { syncing = false; }
+}
+
+async function pushCloud(urls, isRetry) {
+  urls = (Array.isArray(urls) ? urls : [urls]).filter(Boolean);
+  if (!urls.length) return;
+  if (!isRetry) { save([...urls, ...HITS]); render(); }   // BLUE PHONE: optimistic add
+  // BLUE PHONE: queue FIRST -> if the POST errors or 500s, the item is never lost
+  { const p = loadPending(); for (const u of urls) if (!p.includes(u)) p.push(u); savePending(p); }
+  pushing = true; syncState = "saving"; paintSync();
+  const hits = urls.map(u => ({ url: u, cat: catOf(u) }));
+  try {
+    const r = await fetch("/api/hits", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ hits, urls }), // BLUE PHONE: hits=w/labels, urls=legacy fallback
+    });
+    if (!r.ok) throw new Error("push " + r.status);       // BLUE PHONE: 500/403 -> keep queued
+    const j = await r.json();
+    if (!Array.isArray(j.hits)) throw new Error("bad push response");
+    mergeTimes(j); // BLUE PHONE: pick up firstSeen stamps + other-phone visits
+    // BLUE PHONE: confirmed in cloud -> clear these from the queue
+    const remaining = loadPending().filter(u => !urls.includes(u));
+    savePending(remaining);
+    const got = applyCloud(j.hits); save([...got, ...remaining]); render();
+    lastSyncAt = Date.now(); syncState = "synced"; paintSync();
+  } catch {
+    syncState = "offline"; paintSync();                    // BLUE PHONE: stays queued, retried later
+  } finally { pushing = false; }
+}
+
+// BLUE PHONE: machine liveness removed. Only human visits mark a url.
+
+// BLUE PHONE: proven stems from kept hits -> stumble feedback loop
+function stems() {
+  const s = [];
+  for (const u of load()) {
+    const host = u.replace(/^https?:\/\//,"").split(".")[0];
+    for (let part of host.split("-")) {
+      part = part.replace(/[0-9]+$/,"");
+      if (part.length >= 2) s.push(part);
+    }
+  }
+  return s;
+}
+const pick = (a) => a[Math.random()*a.length|0];
+function pickWord(proven, pool) {
+  return (proven.length && Math.random() < 0.45) ? pick(proven) : pick(pool);
+}
+
+// BLUE PHONE: numbered variants ONLY from saved vercel hosts.
+//   if base exists, a sibling like name2 / name+1 might too.
+function savedVercelHosts() {
+  return load()
+    .filter(u => /\.vercel\.app/i.test(u))
+    .map(u => u.replace(/^https?:\/\//,"").replace(/\.vercel\.app.*$/i,""))
+    .filter(Boolean);
+}
+function numberedFromSaved() {
+  const hosts = savedVercelHosts();
+  if (!hosts.length) return null;
+  let h = pick(hosts);
+  const m = h.match(/^(.*?)(\d+)$/);
+  if (m) return m[1] + (parseInt(m[2],10) + 1);   // increment existing number
+  return h + (2 + (Math.random()*7|0));            // else append 2..8
+}
+
+// BLUE PHONE: stumble host -> app-word combo, one hyphen max, no number
+function stumbleHost() {
+  if (Math.random() < 0.25) { const n = numberedFromSaved(); if (n) return n; }
+  const p = stems(), a = pickWord(p,BASE), b = pickWord(p,BASE);
+  return Math.random() < 0.6 ? a+"-"+b : a+b;
+}
+// BLUE PHONE: dictionary host -> next single word in order, wraps around
+function dictHost() {
+  const w = DICT[dictIdx];
+  dictIdx = (dictIdx + 1) % DICT.length;
+  try { localStorage.setItem(DIDX_KEY, String(dictIdx)); } catch {}
+  return w;
+}
+
+// BLUE PHONE: url helpers -------------------------------------------
+function normalize(raw) {
+  let v = (raw || "").trim();
+  if (!v) return "";
+  if (!/^https?:\/\//i.test(v)) v = "https://" + v;
+  try { return new URL(v).href.replace(/\/$/, ""); } catch { return ""; }
+}
+const urlField = document.getElementById("url");
+const posEl = document.getElementById("pos");
+// BLUE PHONE: per-device visit log -> age stamp on each row ("11h","43d", cap 99d)
+const VKEY = "pipeline.visited.v1";
+function loadVisited() { try { return JSON.parse(localStorage.getItem(VKEY) || "{}"); } catch { return {}; } }
+let VISITED = loadVisited();
+function saveVisited() { try { localStorage.setItem(VKEY, JSON.stringify(VISITED)); } catch {} }
+function markVisited(u) {
+  if (!u) return;
+  VISITED[u] = Date.now(); saveVisited(); // BLUE PHONE: local cache
+  // BLUE PHONE: propagate the visit so age is fresh on every phone
+  try { fetch("/api/hits", { method: "POST", keepalive: true, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "visit", url: u }) }); } catch {}
+}
+// BLUE PHONE: fold cloud last-visited times into local (newest wins)
+function mergeTimes(j) {
+  if (!j || !j.times) return;
+  let ch = false;
+  for (const u in j.times) { const l = j.times[u] && j.times[u].l; if (l && l > (VISITED[u] || 0)) { VISITED[u] = l; ch = true; } }
+  if (ch) saveVisited();
+}
+function ageLabel(u) {
+  const ts = VISITED[u]; if (!ts) return "";
+  const mins = (Date.now() - ts) / 60000;
+  if (mins < 1) return "now";
+  if (mins < 60) return Math.floor(mins) + "m"; // BLUE PHONE: minutes tier
+  const h = mins / 60;
+  if (h < 24) return Math.floor(h) + "h";
+  return Math.min(Math.floor(h / 24), 99) + "d"; // BLUE PHONE: never past 99d
+}
+const openUrl = (u) => { if (!u) return; markVisited(u); window.open(u, "_blank", "noopener"); };
+
+function updatePos() {
+  if (!posEl) return;
+  if (mode === "dict") posEl.textContent = "WORD " + (dictIdx + 1) + " / " + DICT.length + " \u00b7 NEXT: " + DICT[dictIdx];
+  else if (mode === "clone") posEl.textContent = "SITE " + (cloneIdx + 1) + " / " + SITES.length + " \u00b7 NEXT: " + SITES[cloneIdx];
+  else posEl.textContent = "";
+}
+
+// BLUE PHONE: render kept hits --------------------------------------
+function renderChips() {
+  const bar = document.getElementById("filters");
+  bar.innerHTML = "";
+  const names = ["All", ...CATLIST];
+  for (const name of names) {
+    const b = document.createElement("button");
+    b.className = "chip" + (activeFilter === name ? " active" : "");
+    b.textContent = name;
+    b.onclick = () => { activeFilter = name; page = 0; render(); };
+    bar.appendChild(b);
+  }
+  const add = document.createElement("button");
+  add.className = "chip add"; add.textContent = "+";
+  add.onclick = () => {
+    const name = (prompt("New category name") || "").trim();
+    if (name) { ensureCat(name); activeFilter = name; page = 0; render(); }
+  };
+  bar.appendChild(add);
+}
+
+function render() {
+  renderChips();
+  const all = load();
+  let list = activeFilter === "All" ? all : all.filter(u => catOf(u) === activeFilter);
+  if (searchQ) list = list.filter(u => u.toLowerCase().includes(searchQ)); // BLUE PHONE: url search
+  const ul = document.getElementById("hits");
+  document.getElementById("empty").style.display = all.length ? "none" : "block";
+
+  // BLUE PHONE: clamp page to range, then slice to the current 30
+  const pages = Math.max(1, Math.ceil(list.length / PER_PAGE));
+  if (page >= pages) page = pages - 1;
+  if (page < 0) page = 0;
+  const start = page * PER_PAGE;
+  const slice = list.slice(start, start + PER_PAGE);
+
+  ul.innerHTML = "";
+  for (const u of slice) {
+    const li = document.createElement("li");
+    // BLUE PHONE: left age stamp (replaces the old carrot) -> time since last visit
+    const age = document.createElement("span");
+    age.className = "age";
+    const lbl = ageLabel(u);
+    age.textContent = lbl || "\u2013"; // BLUE PHONE: neutral dash until a human opens it
+    const days = (lbl.endsWith("d")) ? parseInt(lbl, 10) : 0;
+    if (days >= 99) age.classList.add("old");      // BLUE PHONE: capped + red
+    else if (days >= 30) age.classList.add("warn"); // BLUE PHONE: getting stale
+    const a = document.createElement("a");
+    a.href = u; a.target = "_blank"; a.rel = "noopener";
+    a.innerHTML = '<span>' + u.replace(/^https?:\/\//, "") + '</span><span class="x">&#8599;</span>';
+    a.addEventListener("click", () => { markVisited(u); setTimeout(render, 60); }); // BLUE PHONE: log the visit, refresh age
+    // BLUE PHONE: per-row category picker -> reassign on change
+    const sel = document.createElement("select");
+    sel.className = "cat";
+    for (const c of CATLIST) {
+      const o = document.createElement("option");
+      o.value = c; o.textContent = c; if (c === catOf(u)) o.selected = true;
+      sel.appendChild(o);
+    }
+    sel.onchange = () => { setCat(u, sel.value); render(); pushCloud([u]); }; // BLUE PHONE: sync the label change
+    li.appendChild(age);
+    li.appendChild(a);
+    li.appendChild(sel);
+    ul.appendChild(li);
+  }
+  renderPager(list.length, pages);
+  // BLUE PHONE: HUD stat line, game-style
+  const hud = document.getElementById("hud");
+  if (hud) {
+    const ml = { stumble: "STUMBLE", dict: "DICTIONARY", clone: "CLONES" }[mode] || mode.toUpperCase();
+    hud.innerHTML = "<span>MODE <b>" + ml + "</b></span>";
+  }
+}
+
+// BLUE PHONE: prev / page x of y / next -> hidden when it all fits on one page
+function renderPager(total, pages) {
+  const bar = document.getElementById("pager");
+  bar.innerHTML = "";
+  if (pages <= 1) return;
+  const prev = document.createElement("button");
+  prev.textContent = "\u2039 prev"; prev.disabled = page <= 0;
+  prev.onclick = () => { if (page > 0) { page--; render(); window.scrollTo(0, document.getElementById("hits").offsetTop); } };
+  const info = document.createElement("span");
+  info.className = "pinfo";
+  const from = page * PER_PAGE + 1, to = Math.min(total, (page + 1) * PER_PAGE);
+  info.textContent = from + "\u2013" + to + " of " + total;
+  const next = document.createElement("button");
+  next.textContent = "next \u203a"; next.disabled = page >= pages - 1;
+  next.onclick = () => { if (page < pages - 1) { page++; render(); window.scrollTo(0, document.getElementById("hits").offsetTop); } };
+  bar.appendChild(prev); bar.appendChild(info); bar.appendChild(next);
+}
+function addToHits(u, cat) {
+  if (!u) return;
+  setCat(u, cat || guessCat(u)); // BLUE PHONE: shape-based tag before syncing
+  markVisited(u);                // BLUE PHONE: discovered/checked now
+  pushCloud([u]); // BLUE PHONE: local + cloud
+}
+
+// BLUE PHONE: mode tabs ---------------------------------------------
+function setMode(m) {
+  mode = m;
+  try { localStorage.setItem(MODE_KEY, m); } catch {}
+  document.getElementById("tab-stumble").classList.toggle("active", m === "stumble");
+  document.getElementById("tab-dict").classList.toggle("active", m === "dict");
+  document.getElementById("tab-clone").classList.toggle("active", m === "clone");
+  const go = document.getElementById("go"); if (go) go.textContent = m === "dict" ? "DICTIONARY" : m === "clone" ? "CLONES" : "STUMBLE";
+  updatePos();
+  render(); // BLUE PHONE: keep HUD mode label in sync
+}
+document.getElementById("tab-stumble").onclick = () => setMode("stumble");
+document.getElementById("tab-dict").onclick = () => setMode("dict");
+document.getElementById("tab-clone").onclick = () => setMode("clone");
+
+// BLUE PHONE: actions -----------------------------------------------
+// BLUE PHONE: dedupe-on-generate -> never re-serve a host already kept.
+//   dict/clone just keep advancing their ordered pointer past known hits
+//   (correct - it means you actually cover new ground). stumble is random,
+//   so it's capped at 25 tries before giving up and returning whatever it
+//   landed on, rather than looping forever if you've kept nearly everything.
+function generateHost() {
+  const gen = mode === "dict" ? dictHost : mode === "clone" ? cloneHost : stumbleHost;
+  const cap = mode === "stumble" ? 25 : (mode === "dict" ? DICT.length : SITES.length) + 1;
+  const kept = new Set(load());
+  let host, tries = 0;
+  do {
+    host = gen();
+    tries++;
+  } while (kept.has("https://" + host + ".vercel.app") && tries < cap);
+  return host;
+}
+document.getElementById("go").onclick = () => {
+  const host = generateHost();
+  const u = "https://" + host + ".vercel.app";
+  urlField.value = u; openUrl(u); updatePos();
+};
+urlField.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") { const u = normalize(urlField.value); if (u) { urlField.value = u; openUrl(u); } }
+});
+document.getElementById("keep").onclick = () => { addToHits(normalize(urlField.value)); };
+
+const manual = document.getElementById("manual");
+const addCat = () => (activeFilter !== "All" ? activeFilter : null); // BLUE PHONE: chosen filter, else shape-based
+document.getElementById("addbtn").onclick = () => { addToHits(normalize(manual.value), addCat()); manual.value = ""; };
+manual.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") { addToHits(normalize(manual.value), addCat()); manual.value = ""; }
+});
+
+// BLUE PHONE: export ------------------------------------------------
+document.getElementById("exportbtn").onclick = () => {
+  // BLUE PHONE: export url + category so tags survive export -> import
+  const data = load().map(u => ({ url: u, cat: catOf(u) }));
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const d = new Date().toISOString().slice(0,10).replace(/-/g,"");
+  a.href = url; a.download = "open-pipeline-hits-" + d + ".json";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+
+// BLUE PHONE: upload ------------------------------------------------
+const fileInput = document.getElementById("file");
+document.getElementById("uploadbtn").onclick = () => fileInput.click();
+fileInput.addEventListener("change", () => {
+  const f = fileInput.files && fileInput.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    let incoming = [];
+    const txt = String(reader.result || "");
+    try { const j = JSON.parse(txt); if (Array.isArray(j)) incoming = j; } catch {}
+    if (!incoming.length) incoming = txt.split(/\r?\n/);
+    // BLUE PHONE: accept [{url,cat}], ["url"], or newline text -> restore tags when present
+    const urls = [];
+    for (const item of incoming) {
+      let u, c;
+      if (item && typeof item === "object") { u = normalize(item.url); c = item.cat; }
+      else { u = normalize(item); }
+      if (!u) continue;
+      urls.push(u);
+      if (!VISITED[u]) markVisited(u); // BLUE PHONE: stamp new uploads
+      // BLUE PHONE: keep custom labels (Sexy, Russian, Broken...), re-shape the auto trio
+      if (c && !["Stumble", "Dictionary", "Clone"].includes(c)) setCat(u, c);
+      else setCat(u, guessCat(u));
+    }
+    pushCloud(urls); fileInput.value = ""; // BLUE PHONE: uploads go to the cloud too
+  };
+  reader.readAsText(f);
+});
+
+syncEl = document.getElementById("sync");
+// BLUE PHONE: kept-hits drawer open/close
+(function () {
+  const drawer = document.getElementById("drawer");
+  const scrim = document.getElementById("scrim");
+  const openMenu = () => { drawer.classList.add("open"); scrim.classList.add("open"); drawer.setAttribute("aria-hidden", "false"); pullCloud(); }; // BLUE PHONE: refresh on open
+  const closeMenu = () => { drawer.classList.remove("open"); scrim.classList.remove("open"); drawer.setAttribute("aria-hidden", "true"); };
+  document.getElementById("menu").onclick = openMenu;
+  document.getElementById("menuClose").onclick = closeMenu;
+  scrim.onclick = closeMenu;
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
+})();
+// BLUE PHONE: merge SEED in once per version, even if HITS already has data
+//   (dedupe makes this safe). Bump SEED_VER whenever the SEED list changes.
+const SEED_VER = "v1-empty";
+let seededVer = null; try { seededVer = localStorage.getItem("pipeline.seedver"); } catch {}
+if (seededVer !== SEED_VER) {
+  save([...SEED, ...HITS]);
+  for (const u of SEED) { if (!CATS[u]) setCat(u, guessCat(u)); } // BLUE PHONE: sort the seed into Clone/Stumble
+  try { localStorage.setItem("pipeline.seedver", SEED_VER); } catch {}
+}
+for (const c of DEFAULT_CATS) ensureCat(c); // BLUE PHONE: merge in topic categories
+// BLUE PHONE: one-time collapse of case-duplicate chips (broken vs Broken).
+//   Keep first-seen casing, remap affected hits, sync the corrections up.
+if (localStorage.getItem("pipeline.catdedupe") !== "v1") {
+  const canon = {}; const cleaned = [];
+  for (const c of CATLIST) { const lc = c.toLowerCase(); if (!(lc in canon)) { canon[lc] = c; cleaned.push(c); } }
+  CATLIST = cleaned; saveCatList();
+  const changed = [];
+  for (const u in CATS) { const cn = canon[String(CATS[u]).toLowerCase()]; if (cn && cn !== CATS[u]) { CATS[u] = cn; changed.push(u); } }
+  saveCats();
+  try { localStorage.setItem("pipeline.catdedupe", "v1"); } catch {}
+  if (changed.length) pushCloud(changed);
+}
+// BLUE PHONE: one-time re-sort of the auto trio by url shape. Custom labels
+//   (Sexy, Russian, Broken, ...) are left untouched. Bump RESORT_VER to redo.
+const RESORT_VER = "v1-shape";
+let resortVer = null; try { resortVer = localStorage.getItem("pipeline.resortver"); } catch {}
+if (resortVer !== RESORT_VER) {
+  const AUTO = new Set(["Stumble", "Dictionary", "Clone"]);
+  const changed = [];
+  for (const u of HITS) {
+    const cur = catOf(u);
+    if (AUTO.has(cur)) { const g = guessCat(u); if (g !== cur) { setCat(u, g); changed.push(u); } }
+  }
+  try { localStorage.setItem("pipeline.resortver", RESORT_VER); } catch {}
+  if (changed.length) pushCloud(changed); // BLUE PHONE: sync corrected labels
+}
+setMode(mode);
+// BLUE PHONE: version tag
+const APP_VERSION = "1.0";
+const verEl = document.getElementById("ver"); if (verEl) verEl.textContent = "v" + APP_VERSION;
+// BLUE PHONE: NO baseline stamp. Age is set ONLY by a real human tap. Unvisited
+//   urls show a neutral dash until someone actually opens them.
+render();
+pullCloud(); // BLUE PHONE: merge in the shared cloud list (and seed it if empty)
+// BLUE PHONE: live url search
+const searchEl = document.getElementById("search");
+if (searchEl) searchEl.oninput = () => { searchQ = searchEl.value.trim().toLowerCase(); page = 0; render(); };
+
+// BLUE PHONE: keep every phone converged. Manual triggers are visible; the
+//   background poll is SILENT (no blip) and only updates the "Xs ago" readout.
+if (syncEl) { syncEl.style.cursor = "pointer"; syncEl.title = "tap to refresh"; syncEl.onclick = () => pullCloud(); }
+document.addEventListener("visibilitychange", () => { if (!document.hidden) pullCloud(); }); // BLUE PHONE: refresh when the phone comes back
+setInterval(() => { if (!document.hidden) pullCloud(true); }, 30000); // BLUE PHONE: silent background poll
+setInterval(paintSync, 5000); // BLUE PHONE: tick the "synced Xs ago" readout
+</script>
+  <!-- =====================================================================
+       MOHAVE TECHNOLOGY GROUP // CREATOR SEAL
+       Drop this ONE block into any HTML page, anywhere before </body>.
+       The only thing you edit is the CONFIG object on the next few lines.
+       ===================================================================== -->
+  <script>
+  (function () {
+
+    /* ---------- CONFIG: the only part you change ---------- */
+    var CONFIG = {
+      org:      "Mohave Technology Group",
+      monogram: "MTG",                       // shown in the center of the seal
+      mission:  "Practical software and hardware, built in the field.",
+      github:   "https://github.com/sudosilo",
+      linkedin: "https://www.linkedin.com/in/dicktemple"
+    };
+    /* ----------------------------------------------------- */
+
+
+    /* ---------- LAYER 1: the signature pressed into the source ----------
+       This runs once and writes your identity into the page head so that
+       anyone viewing source, and any machine reading the page, can find
+       the maker even if the footer is removed. */
+    var head = document.head || document.getElementsByTagName("head")[0];
+
+    // A plain comment banner, visible in View Source.
+    head.appendChild(document.createComment(
+      " Made by " + CONFIG.org + " // " + CONFIG.github + " // " + CONFIG.linkedin + " "
+    ));
+
+    // Standard "author" tag set to the group, not a personal name.
+    var metaAuthor = document.createElement("meta");
+    metaAuthor.setAttribute("name", "author");
+    metaAuthor.setAttribute("content", CONFIG.org);
+    head.appendChild(metaAuthor);
+
+    // rel="me" links: the web standard for saying "these profiles are mine".
+    [CONFIG.github, CONFIG.linkedin].forEach(function (url) {
+      var l = document.createElement("link");
+      l.setAttribute("rel", "me");
+      l.setAttribute("href", url);
+      head.appendChild(l);
+    });
+
+    // Structured data block, so search engines and crawlers can read it.
+    var ld = document.createElement("script");
+    ld.type = "application/ld+json";
+    ld.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": CONFIG.org,
+      "sameAs": [CONFIG.github, CONFIG.linkedin]
+    });
+    head.appendChild(ld);
+
+
+    /* ---------- LAYER 2: the visible seal ---------- */
+
+    // The look of the seal. All self contained, no fonts to download.
+    var css = ''
+      + '.mtg-seal{box-sizing:border-box;width:100%;background:#efe9da;'
+      + 'border-top:1px solid #cabfa3;color:#2b2620;'
+      + 'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;'
+      + 'padding:18px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;}'
+      + '.mtg-seal-row{display:flex;align-items:center;gap:14px;}'
+      + '.mtg-seal-btn{background:none;border:0;padding:0;margin:0;cursor:pointer;'
+      + 'display:flex;align-items:center;gap:14px;color:inherit;font:inherit;}'
+      + '.mtg-seal-svg{display:block;transition:transform .18s ease;}'
+      + '.mtg-seal.open .mtg-seal-svg{transform:scale(.94);}'
+      + '.mtg-seal-label{text-align:left;line-height:1.3;}'
+      + '.mtg-seal-org{font-family:Georgia,"Times New Roman",serif;font-size:14px;'
+      + 'letter-spacing:.3px;color:#2b2620;}'
+      + '.mtg-seal-ask{font-size:12px;color:#7a2e28;text-decoration:underline;}'
+      + '.mtg-seal-panel{overflow:hidden;max-height:0;opacity:0;'
+      + 'transition:max-height .25s ease,opacity .25s ease;width:100%;max-width:360px;}'
+      + '.mtg-seal.open .mtg-seal-panel{max-height:200px;opacity:1;}'
+      + '.mtg-seal-mission{font-style:italic;color:#4a443b;font-size:13px;'
+      + 'text-align:center;margin:0 0 12px;line-height:1.5;}'
+      + '.mtg-seal-links{display:flex;justify-content:center;gap:10px;}'
+      + '.mtg-seal-links a{flex:1;text-align:center;text-decoration:none;'
+      + 'font-size:13px;color:#2b2620;background:#faf7ef;border:1px solid #cabfa3;'
+      + 'border-radius:6px;padding:8px 10px;transition:background .15s ease;}'
+      + '.mtg-seal-links a:hover{background:#fff;}'
+      + '.mtg-seal-btn:focus-visible{outline:2px solid #7a2e28;outline-offset:3px;border-radius:4px;}'
+      + '.mtg-seal-links a:focus-visible{outline:2px solid #7a2e28;outline-offset:2px;}'
+      + '@media (prefers-reduced-motion: reduce){'
+      + '.mtg-seal-svg,.mtg-seal-panel{transition:none;}}';
+
+    var style = document.createElement("style");
+    style.textContent = css;
+    head.appendChild(style);
+
+    // The seal artwork. An SVG circle with the org name around the ring,
+    // the monogram in the center, and a small diamond mark at the bottom.
+    function buildSeal() {
+      var org = CONFIG.org.toUpperCase();
+      return ''
+        + '<svg class="mtg-seal-svg" viewBox="0 0 120 120" width="58" height="58" '
+        +   'role="img" aria-label="' + CONFIG.org + ' seal">'
+        +   '<defs>'
+        +     '<path id="mtgTop" d="M 23,60 A 37,37 0 0 1 97,60" fill="none"/>'
+        +   '</defs>'
+        +   '<circle cx="60" cy="60" r="55" fill="none" stroke="#7a2e28" stroke-width="2.5"/>'
+        +   '<circle cx="60" cy="60" r="48" fill="none" stroke="#7a2e28" stroke-width="1"/>'
+        +   '<text font-family="Georgia,serif" font-size="8" fill="#7a2e28">'
+        +     '<textPath href="#mtgTop" startOffset="50%" text-anchor="middle" '
+        +     'textLength="106" lengthAdjust="spacingAndGlyphs">'
+        +     org + '</textPath>'
+        +   '</text>'
+        +   '<text x="60" y="60" text-anchor="middle" dominant-baseline="central" '
+        +     'font-family="Georgia,serif" font-weight="700" font-size="27" '
+        +     'fill="#7a2e28">' + CONFIG.monogram + '</text>'
+        +   '<g fill="#7a2e28">'
+        +     '<rect x="58" y="83.5" width="4" height="4"/>'
+        +     '<rect x="63" y="88.5" width="4" height="4"/>'
+        +     '<rect x="53" y="93.5" width="4" height="4"/>'
+        +     '<rect x="58" y="93.5" width="4" height="4"/>'
+        +     '<rect x="63" y="93.5" width="4" height="4"/>'
+        +   '</g>'
+        + '</svg>';
+    }
+
+    // Build the footer element.
+    var seal = document.createElement("footer");
+    seal.className = "mtg-seal";
+    seal.innerHTML = ''
+      + '<div class="mtg-seal-row">'
+      +   '<button class="mtg-seal-btn" type="button" aria-expanded="false">'
+      +     buildSeal()
+      +     '<span class="mtg-seal-label">'
+      +       '<span class="mtg-seal-org">' + CONFIG.org + '</span><br>'
+      +       '<span class="mtg-seal-ask">Who made this?</span>'
+      +     '</span>'
+      +   '</button>'
+      + '</div>'
+      + '<div class="mtg-seal-panel">'
+      +   '<p class="mtg-seal-mission">' + CONFIG.mission + '</p>'
+      +   '<div class="mtg-seal-links">'
+      +     '<a href="' + CONFIG.github + '" target="_blank" rel="noopener me">GitHub</a>'
+      +     '<a href="' + CONFIG.linkedin + '" target="_blank" rel="noopener me">LinkedIn</a>'
+      +   '</div>'
+      + '</div>';
+
+    // Tapping the seal opens or closes the panel.
+    var btn = seal.querySelector(".mtg-seal-btn");
+    btn.addEventListener("click", function () {
+      var nowOpen = seal.classList.toggle("open");
+      btn.setAttribute("aria-expanded", nowOpen ? "true" : "false");
+    });
+
+    // Place the seal at the very bottom of the page.
+    document.body.appendChild(seal);
+
+  })();
+  </script>
+  <!-- ===================== END CREATOR SEAL ===================== -->
+</body>
+</html>

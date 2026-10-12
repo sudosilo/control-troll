@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arcade Bounty Board</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.14.0/ethers.umd.min.js"></script>
+<style>
+/* GREEN PHONE EDIT - light theme only, no dark mode anywhere */
+
+:root {
+  --paper: #f7f4ed;
+  --ink: #14120f;
+  --rule: #cdc6b8;
+  --pool: #1f5c3a;
+  --crown: #a8761c;
+  --dim: #6d6558;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  padding: 32px 20px 80px;
+  max-width: 940px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.masthead {
+  border-bottom: 3px double var(--ink);
+  padding-bottom: 14px;
+  margin-bottom: 6px;
+}
+
+h1 {
+  font-size: clamp(30px, 8vw, 52px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.tagline {
+  font-size: 14px;
+  color: var(--dim);
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.status {
+  font-size: 12px;
+  color: var(--dim);
+  padding: 8px 0 26px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 26px;
+}
+
+.game {
+  border-bottom: 1px solid var(--rule);
+  padding: 22px 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 18px;
+  align-items: baseline;
+}
+
+.game-name {
+  font-size: 24px;
+  grid-column: 1;
+}
+
+.pool {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  text-align: right;
+  align-self: center;
+}
+
+.pool-amount {
+  font-size: clamp(26px, 6vw, 38px);
+  color: var(--pool);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  display: block;
+}
+
+.pool-label {
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.04em;
+}
+
+.detail {
+  grid-column: 1;
+  font-size: 14px;
+  color: var(--dim);
+}
+
+.detail strong {
+  font-weight: 400;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.crowns {
+  display: inline-block;
+  margin-left: 4px;
+  letter-spacing: 3px;
+}
+
+.crown-on { color: var(--crown); }
+.crown-off { color: var(--rule); }
+
+.holder {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+}
+
+.empty, .error {
+  padding: 40px 0;
+  font-size: 15px;
+  color: var(--dim);
+}
+
+.error { color: #8a2b1f; }
+
+footer {
+  margin-top: 40px;
+  font-size: 13px;
+  color: var(--dim);
+  line-height: 1.7;
+  border-top: 1px solid var(--rule);
+  padding-top: 18px;
+}
+
+@media (max-width: 520px) {
+  .game { grid-template-columns: 1fr; }
+  .pool { grid-column: 1; grid-row: auto; text-align: left; margin-top: 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <h1>Arcade Bounty Board</h1>
+  <p class="tagline">Hold the high score three plays running and the pool is yours.</p>
+</div>
+
+<p class="status" id="status">Reading the chain...</p>
+
+<div id="games"></div>
+
+<footer>
+Every play adds to the pool for that machine. Beat the standing high score and you take the crown.
+Beat it twice more before anyone else does and the whole pool pays out to your wallet, and the machine starts over from zero.
+Anyone else taking the high score resets your run.
+</footer>
+
+<script>
+// GREEN PHONE EDIT - read only dashboard, no wallet, no writes
+
+const CONTRACT_ADDRESS = "0x8BD9795028A95c466DB219550672ef3F7a2D0C2f";
+const RPC_URL = "https://polygon-mainnet.g.alchemy.com/v2/alch_n4nX7asxiVGtFTwYJUt2d";
+const REFRESH_MS = 20000;
+
+const ABI = [
+  "function gameCount() view returns (uint256)",
+  "function getGame(uint256) view returns (string, uint256, uint256, address, uint256, bool)",
+  "function getPlayCount(uint256) view returns (uint256)"
+];
+
+const statusEl = document.getElementById("status");
+const gamesEl = document.getElementById("games");
+
+function shortAddr(a) {
+  if (!a || a === "0x0000000000000000000000000000000000000000") return "no holder yet";
+  return a.slice(0, 6) + "\u2026" + a.slice(-4);
+}
+
+function crowns(n) {
+  let out = "";
+  for (let i = 0; i < 3; i++) {
+    out += i < n
+      ? '<span class="crown-on">\u265B</span>'
+      : '<span class="crown-off">\u265B</span>';
+  }
+  return '<span class="crowns">' + out + "</span>";
+}
+
+function render(list) {
+  if (!list.length) {
+    gamesEl.innerHTML = '<p class="empty">No machines on the floor yet.</p>';
+    return;
+  }
+
+  gamesEl.innerHTML = list.map(function (g) {
+    return '' +
+      '<div class="game">' +
+        '<div class="game-name">' + g.name + '</div>' +
+        '<div class="pool">' +
+          '<span class="pool-amount">' + g.pool + '</span>' +
+          '<span class="pool-label">POL in the pool</span>' +
+        '</div>' +
+        '<div class="detail">' +
+          'High score <strong>' + (g.high > 0 ? g.high.toLocaleString() : "not set") + '</strong>' +
+          ' held by <span class="holder">' + shortAddr(g.holder) + '</span>' +
+          crowns(g.crowns) +
+          ' \u00B7 <strong>' + g.plays.toLocaleString() + '</strong> plays' +
+        '</div>' +
+      '</div>';
+  }).join("");
+}
+
+async function load() {
+  try {
+    const provider = new ethers.JsonRpcProvider(RPC_URL);
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, provider);
+
+    const count = Number(await contract.gameCount());
+    const list = [];
+
+    for (let i = 0; i < count; i++) {
+      const g = await contract.getGame(i);
+      const plays = await contract.getPlayCount(i);
+
+      if (g[5]) {
+        list.push({
+          name: g[0],
+          pool: parseFloat(ethers.formatEther(g[1])).toFixed(4),
+          high: Number(g[2]),
+          holder: g[3],
+          crowns: Number(g[4]),
+          plays: Number(plays)
+        });
+      }
+    }
+
+    render(list);
+    statusEl.textContent = "Live from Polygon. Last read " + new Date().toLocaleTimeString() + ".";
+  } catch (err) {
+    console.error(err);
+    statusEl.innerHTML = '<span class="error">Could not reach the contract. Retrying shortly.</span>';
+  }
+}
+
+load();
+setInterval(load, REFRESH_MS);
+</script>
+
+</body>
+</html>

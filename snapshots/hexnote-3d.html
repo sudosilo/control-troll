@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>HEXNOTE</title>
+<style>
+  :root {
+    --paper: #f5f6fa;
+    --ink: #14161f;
+    --line: #d6d9e4;
+    --accent: #2533c9;
+    --amber: #e8720c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+  #scene { position: fixed; inset: 0; display: block; touch-action: none; }
+
+  #toggle {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 11;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  #toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 1px;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  #toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  #toggle.open span:nth-child(2) { opacity: 0; }
+  #toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  #panel {
+    position: fixed;
+    top: 64px;
+    left: 12px;
+    width: 230px;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-family: "Courier New", monospace;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+    z-index: 10;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  #panel .ver { font-size: 9px; color: #8a8fa3; letter-spacing: 1px; margin-top: 8px; }
+  #panel .sect {
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #3a3f52;
+    margin: 12px 0 6px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+  }
+  #noteList { display: flex; flex-direction: column; gap: 4px; max-height: 180px; overflow-y: auto; }
+  #noteList button {
+    text-align: left;
+    padding: 6px 8px;
+    font-family: inherit;
+    font-size: 11px;
+    background: #fff;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--amber);
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #noteList .empty { font-size: 10px; color: #8a8fa3; }
+  .ctl.pair { display: flex; gap: 6px; }
+  .ctl.pair button { flex: 1; }
+  #importFile { display: none; }
+  #panel h1 { font-size: 13px; letter-spacing: 2px; margin-bottom: 2px; }
+  #panel p.sub { font-size: 10px; color: #5a5f73; margin-bottom: 12px; }
+  .ctl { margin-bottom: 10px; }
+  .ctl label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+    color: #3a3f52;
+  }
+  .ctl input[type=range] { width: 100%; accent-color: var(--accent); }
+  .ctl button {
+    width: 100%;
+    padding: 7px 0;
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 1px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .ctl button.alt { background: #fff; color: var(--accent); border: 1px solid var(--accent); }
+  .ctl button:focus-visible, .ctl input:focus-visible,
+  #editor button:focus-visible, #noteText:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  #noteCount, #linkCount { font-size: 10px; color: #5a5f73; letter-spacing: 1px; }
+
+  #reticle {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 34px;
+    height: 34px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9;
+    display: none;
+  }
+  #reticle::before, #reticle::after {
+    content: "";
+    position: absolute;
+    background: #ffffff;
+    box-shadow: 0 0 6px rgba(255,255,255,0.9);
+  }
+  #reticle::before { left: 50%; top: 0; width: 2px; height: 100%; transform: translateX(-50%); }
+  #reticle::after  { top: 50%; left: 0; height: 2px; width: 100%; transform: translateY(-50%); }
+  #reticle .ring {
+    position: absolute;
+    inset: 4px;
+    border: 2px solid rgba(255,255,255,0.85);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(255,255,255,0.6);
+  }
+
+  #hint {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    z-index: 9;
+    opacity: 0.92;
+    white-space: nowrap;
+  }
+
+  /* note editor: a hexagon that blooms open at screen center.
+     Outer div is the amber rim, inner div is the paper face,
+     both cut into hex shape with clip-path. */
+  #editor {
+    position: fixed;
+    top: 38%;
+    left: 50%;
+    width: min(86vw, 360px);
+    aspect-ratio: 1.1547;
+    transform: translate(-50%, -50%) scale(0.06);
+    opacity: 0;
+    display: none;
+    z-index: 20;
+    background: var(--amber);
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.12), opacity 0.3s;
+    filter: drop-shadow(0 0 20px rgba(232, 114, 12, 0.55));
+  }
+  #editor.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  #editor .hexin {
+    position: absolute;
+    inset: 4px;
+    background: var(--paper);
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8% 20%;
+    font-family: "Courier New", monospace;
+    color: var(--ink);
+  }
+  #editor h2 {
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  #editor h2 em {
+    font-style: normal;
+    color: var(--amber);
+  }
+  #noteMeta {
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: #6a6f83;
+    margin: -4px 0 6px;
+  }
+  #delBtn.armed { background: #b3261e; color: #fff; }
+  #noteText {
+    width: 100%;
+    height: 80px;
+    resize: none;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 6px 8px;
+    font-family: inherit;
+    font-size: 16px;
+    color: var(--ink);
+    background: #fff;
+    margin-bottom: 8px;
+  }
+  #editor .row { display: flex; gap: 5px; width: 100%; }
+  #editor .row button {
+    flex: 1;
+    padding: 7px 0;
+    font-family: inherit;
+    font-size: 9px;
+    letter-spacing: 1px;
+    border-radius: 7px;
+    cursor: pointer;
+    border: none;
+  }
+  #saveBtn  { background: var(--accent); color: #fff; }
+  #delBtn   { background: #fff; color: #b3261e; border: 1px solid #b3261e !important; }
+  #closeBtn { background: #fff; color: var(--ink); border: 1px solid var(--line) !important; }
+
+  /* note title rendered inside its hex */
+  .hexlabel {
+    position: fixed;
+    transform: translate(-50%, -50%);
+    color: #1a1208;
+    text-shadow: 0 0 3px rgba(255,255,255,0.9), 0 0 7px rgba(255,255,255,0.6);
+    font-family: "Courier New", monospace;
+    font-size: 8.5px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 1.25;
+    text-align: center;
+    white-space: normal;
+    word-break: break-word;
+    width: 62px;
+    max-height: 34px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 8;
+  }
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+
+<button id="toggle" aria-label="Menu">
+  <span></span><span></span><span></span>
+</button>
+
+<div id="panel" style="display:none">
+  <h1>HEXNOTE</h1>
+  <p class="sub">notes on a geodesic sphere</p>
+  <div class="ctl">
+    <button id="mode">SWITCH TO ORBIT VIEW</button>
+  </div>
+  <div class="ctl">
+    <button id="space" class="alt">EXPLODED SPACE VIEW</button>
+  </div>
+  <div class="ctl">
+    <label for="pulse">CELL PULSE</label>
+    <input id="pulse" type="range" min="0" max="100" value="50">
+  </div>
+  <div class="ctl">
+    <label for="accent">RED CELLS</label>
+    <input id="accent" type="range" min="0" max="100" value="10">
+  </div>
+  <div class="ctl">
+    <label for="noteExp">EXPAND NOTE BLOCKS</label>
+    <input id="noteExp" type="range" min="0" max="100" value="55">
+  </div>
+  <div class="ctl">
+    <label for="hexExp">EXPAND OTHER BLOCKS</label>
+    <input id="hexExp" type="range" min="0" max="100" value="0">
+  </div>
+  <div class="ctl">
+    <button id="reset" class="alt">RETRACT ALL HEXES</button>
+  </div>
+  <div class="ctl">
+    <button id="clearLinks" class="alt">CLEAR ALL LINKS</button>
+  </div>
+  <p id="noteCount">0 NOTES SAVED</p>
+  <p id="linkCount">0 LINKS</p>
+
+  <p class="sect">YOUR NOTES</p>
+  <div id="noteList"></div>
+
+  <p class="sect">BACKUP</p>
+  <div class="ctl pair">
+    <button id="exportBtn" class="alt">EXPORT</button>
+    <button id="importBtn" class="alt">IMPORT</button>
+  </div>
+  <input id="importFile" type="file" accept=".json,application/json">
+  <p class="ver">HEXNOTE v1.1</p>
+</div>
+
+<div id="reticle"><div class="ring"></div></div>
+<div id="hint">TAP TO WRITE / HOLD TO LINK</div>
+
+<div id="editor">
+  <div class="hexin">
+    <h2>HEX <em id="hexId">000</em></h2>
+    <p id="noteMeta">NEW NOTE</p>
+    <textarea id="noteText" placeholder="Write a note for this hex"></textarea>
+    <div class="row">
+      <button id="saveBtn">SAVE</button>
+      <button id="delBtn">DELETE</button>
+      <button id="closeBtn">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ==================================================================
+// PART 1: BUILD THE GEODESIC SPHERE
+// Icosahedron, subdivided, then flipped into its dual so every
+// vertex becomes a hexagon tile (plus the 12 required pentagons).
+// ==================================================================
+
+function buildGeodesic(detail) {
+  const t = (1 + Math.sqrt(5)) / 2;
+  const raw = [
+    [-1, t, 0], [1, t, 0], [-1, -t, 0], [1, -t, 0],
+    [0, -1, t], [0, 1, t], [0, -1, -t], [0, 1, -t],
+    [t, 0, -1], [t, 0, 1], [-t, 0, -1], [-t, 0, 1]
+  ];
+  const verts = raw.map(v => new THREE.Vector3(v[0], v[1], v[2]).normalize());
+  let faces = [
+    [0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],
+    [1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],
+    [3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],
+    [4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]
+  ];
+
+  const midCache = new Map();
+  function midpoint(a, b) {
+    const key = Math.min(a, b) + "_" + Math.max(a, b);
+    if (midCache.has(key)) return midCache.get(key);
+    const m = verts[a].clone().add(verts[b]).normalize();
+    verts.push(m);
+    const idx = verts.length - 1;
+    midCache.set(key, idx);
+    return idx;
+  }
+
+  for (let s = 0; s < detail; s++) {
+    const next = [];
+    for (const [a, b, c] of faces) {
+      const ab = midpoint(a, b), bc = midpoint(b, c), ca = midpoint(c, a);
+      next.push([a, ab, ca], [b, bc, ab], [c, ca, bc], [ab, bc, ca]);
+    }
+    faces = next;
+  }
+  return { verts, faces };
+}
+
+// stable pseudo random from a tile's position, so colors and ids
+// stay the same every time the page loads
+function hashDir(v) {
+  const s = Math.sin(v.x * 127.1 + v.y * 311.7 + v.z * 74.7) * 43758.5453;
+  return s - Math.floor(s);
+}
+
+function buildTiles(detail) {
+  const { verts, faces } = buildGeodesic(detail);
+  const centroids = faces.map(f =>
+    verts[f[0]].clone().add(verts[f[1]]).add(verts[f[2]]).normalize()
+  );
+  const touching = verts.map(() => []);
+  faces.forEach((f, fi) => f.forEach(vi => touching[vi].push(fi)));
+
+  return verts.map((center, vi) => {
+    const helper = Math.abs(center.y) < 0.9
+      ? new THREE.Vector3(0, 1, 0) : new THREE.Vector3(1, 0, 0);
+    const t1 = new THREE.Vector3().crossVectors(center, helper).normalize();
+    const t2 = new THREE.Vector3().crossVectors(center, t1);
+    const corners = touching[vi]
+      .map(fi => centroids[fi])
+      .sort((a, b) => {
+        const angA = Math.atan2(a.dot(t2), a.dot(t1));
+        const angB = Math.atan2(b.dot(t2), b.dot(t1));
+        return angA - angB;
+      });
+    return { center, corners, rand: hashDir(center), h: 0.6, targetH: 0.6 };
+  });
+}
+
+// ==================================================================
+// PART 2: ONE MERGED MESH
+// ==================================================================
+
+const RADIUS = 40;
+const GAP = 0.07;
+const REST = 0.6;        // resting height of a plain hex
+const MARK = 3.0;        // resting height of a hex that holds a note
+const FULL = RADIUS - 2.5; // extended all the way to the viewer
+
+const tiles = buildTiles(3); // 642 tiles
+tiles.forEach(tile => {
+  tile.dirs = tile.corners.map(c =>
+    c.clone().lerp(tile.center, GAP).normalize()
+  );
+});
+
+let vCount = 0, iCount = 0;
+tiles.forEach(tile => {
+  const k = tile.dirs.length;
+  tile.vStart = vCount;
+  vCount += 1 + k + 4 * k;
+  iCount += (k + 2 * k) * 3;
+});
+
+const positions = new Float32Array(vCount * 3);
+const normals   = new Float32Array(vCount * 3);
+const aRand     = new Float32Array(vCount);
+const aTile     = new Float32Array(vCount);
+const aEdge     = new Float32Array(vCount);
+const aNoted    = new Float32Array(vCount);
+const indices   = new Uint32Array(iCount);
+
+function put3(arr, i, v) { arr[i*3] = v.x; arr[i*3+1] = v.y; arr[i*3+2] = v.z; }
+const tmp = new THREE.Vector3();
+
+function writeTile(tile) {
+  const rIn = RADIUS - tile.h;
+  const k = tile.dirs.length;
+  let v = tile.vStart;
+  put3(positions, v, tmp.copy(tile.center).multiplyScalar(rIn)); v++;
+  for (let i = 0; i < k; i++) {
+    put3(positions, v, tmp.copy(tile.dirs[i]).multiplyScalar(rIn)); v++;
+  }
+  for (let i = 0; i < k; i++) {
+    const a = tile.dirs[i], b = tile.dirs[(i + 1) % k];
+    put3(positions, v++, tmp.copy(a).multiplyScalar(RADIUS));
+    put3(positions, v++, tmp.copy(b).multiplyScalar(RADIUS));
+    put3(positions, v++, tmp.copy(b).multiplyScalar(rIn));
+    put3(positions, v++, tmp.copy(a).multiplyScalar(rIn));
+  }
+}
+
+function setNoted(ti, val) {
+  const tile = tiles[ti];
+  const k = tile.dirs.length;
+  const total = 1 + k + 4 * k;
+  for (let i = 0; i < total; i++) aNoted[tile.vStart + i] = val;
+  geo.attributes.aNoted.needsUpdate = true;
+}
+
+let ii = 0;
+const inward = new THREE.Vector3();
+tiles.forEach((tile, ti) => {
+  const k = tile.dirs.length;
+  const v0 = tile.vStart;
+  inward.copy(tile.center).negate();
+
+  for (let i = 0; i <= k; i++) {
+    put3(normals, v0 + i, inward);
+    aRand[v0 + i] = tile.rand;
+    aTile[v0 + i] = ti;
+    aEdge[v0 + i] = i === 0 ? 0 : 1;
+  }
+  for (let i = 0; i < k; i++) {
+    const a = tile.dirs[i], b = tile.dirs[(i + 1) % k];
+    const wn = new THREE.Vector3().subVectors(b, a).cross(a).normalize();
+    for (let j = 0; j < 4; j++) {
+      const v = v0 + 1 + k + 4 * i + j;
+      put3(normals, v, wn);
+      aRand[v] = tile.rand;
+      aTile[v] = ti;
+      aEdge[v] = 1;
+    }
+  }
+  for (let i = 0; i < k; i++) {
+    indices[ii++] = v0;
+    indices[ii++] = v0 + 1 + i;
+    indices[ii++] = v0 + 1 + ((i + 1) % k);
+  }
+  for (let i = 0; i < k; i++) {
+    const w = v0 + 1 + k + 4 * i;
+    indices[ii++] = w; indices[ii++] = w + 1; indices[ii++] = w + 2;
+    indices[ii++] = w; indices[ii++] = w + 2; indices[ii++] = w + 3;
+  }
+  writeTile(tile);
+});
+
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+geo.setAttribute('normal',   new THREE.BufferAttribute(normals, 3));
+geo.setAttribute('aRand',    new THREE.BufferAttribute(aRand, 1));
+geo.setAttribute('aTile',    new THREE.BufferAttribute(aTile, 1));
+geo.setAttribute('aEdge',    new THREE.BufferAttribute(aEdge, 1));
+geo.setAttribute('aNoted',   new THREE.BufferAttribute(aNoted, 1));
+geo.setIndex(new THREE.BufferAttribute(indices, 1));
+
+// ==================================================================
+// PART 3: THE SHADER
+// Blue field, scattered orange cells, amber glow on noted hexes.
+// ==================================================================
+
+const uniforms = {
+  uTime:       { value: 0 },
+  uPulse:      { value: 0.5 },
+  uAccentFrac: { value: 0.10 },
+  uHilite:     { value: -1 },
+  uAnchor:     { value: -1 },
+  uOpacity:    { value: 1.0 }
+};
+
+const hexMat = new THREE.ShaderMaterial({
+  uniforms,
+  side: THREE.DoubleSide,
+  transparent: true,
+  vertexShader: `
+    attribute float aRand;
+    attribute float aTile;
+    attribute float aEdge;
+    attribute float aNoted;
+    varying float vRand;
+    varying float vTile;
+    varying float vEdge;
+    varying float vNoted;
+    varying vec3 vNorm;
+    varying vec3 vPos;
+    void main() {
+      vRand = aRand;
+      vTile = aTile;
+      vEdge = aEdge;
+      vNoted = aNoted;
+      vNorm = normal;
+      vPos = position;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: `
+    precision highp float;
+    varying float vRand;
+    varying float vTile;
+    varying float vEdge;
+    varying float vNoted;
+    varying vec3 vNorm;
+    varying vec3 vPos;
+    uniform float uTime;
+    uniform float uPulse;
+    uniform float uAccentFrac;
+    uniform float uHilite;
+    uniform float uAnchor;
+    uniform float uOpacity;
+
+    void main() {
+      float pulse = 0.55 + 0.45 * sin(uTime * (0.6 + uPulse * 2.4) + vRand * 6.2831);
+      float bright = mix(0.55, pulse, uPulse);
+
+      float isRed = step(1.0 - uAccentFrac, fract(vRand * 7.31));
+
+      vec3 blue = vec3(0.06, 0.12, 0.95) * (0.45 + 0.55 * bright);
+      vec3 red  = vec3(0.95, 0.05, 0.22) * (0.55 + 0.45 * bright);
+      vec3 cell = mix(blue, red, isRed);
+
+      // a hex carrying a note becomes warm amber and breathes slowly
+      vec3 amber = vec3(1.0, 0.62, 0.12) * (0.75 + 0.25 * sin(uTime * 1.4 + vRand * 6.2831));
+      cell = mix(cell, amber, vNoted);
+
+      vec3 V = normalize(cameraPosition - vPos);
+      float l = 0.45 + 0.55 * abs(dot(normalize(vNorm), V));
+      vec3 col = cell * l;
+
+      col += cell * smoothstep(0.65, 1.0, vEdge) * 0.55;
+
+      if (abs(vTile - uHilite) < 0.5) {
+        col = mix(col, vec3(1.0), 0.4) + vec3(0.12);
+      }
+      if (abs(vTile - uAnchor) < 0.5) {
+        col = mix(col, vec3(0.2, 1.0, 0.45), 0.5);
+      }
+      gl_FragColor = vec4(col, uOpacity);
+    }
+  `
+});
+
+// ==================================================================
+// PART 4: SCENE AND FIGURE
+// ==================================================================
+
+const canvas = document.getElementById('scene');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(72, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+const hexSphere = new THREE.Mesh(geo, hexMat);
+scene.add(hexSphere);
+
+const cubeRT = new THREE.WebGLCubeRenderTarget(256, {
+  format: THREE.RGBFormat,
+  generateMipmaps: true,
+  minFilter: THREE.LinearMipmapLinearFilter
+});
+const cubeCam = new THREE.CubeCamera(0.1, 100, cubeRT);
+scene.add(cubeCam);
+
+const chrome = new THREE.MeshStandardMaterial({
+  color: 0xdfe6ff, metalness: 1.0, roughness: 0.08, envMap: cubeRT.texture
+});
+
+const figure = new THREE.Group();
+function limb(x1, y1, z1, x2, y2, z2, r) {
+  const a = new THREE.Vector3(x1, y1, z1);
+  const b = new THREE.Vector3(x2, y2, z2);
+  const len = a.distanceTo(b);
+  const cyl = new THREE.Mesh(new THREE.CylinderGeometry(r, r * 0.8, len, 12), chrome);
+  cyl.position.copy(a).lerp(b, 0.5);
+  cyl.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
+  figure.add(cyl);
+  const joint = new THREE.Mesh(new THREE.SphereGeometry(r * 1.05, 12, 12), chrome);
+  joint.position.copy(b);
+  figure.add(joint);
+}
+const torso = new THREE.Mesh(new THREE.SphereGeometry(0.55, 16, 16), chrome);
+torso.scale.set(0.8, 1.35, 0.55);
+torso.position.set(0, 0.2, 0);
+figure.add(torso);
+const head = new THREE.Mesh(new THREE.SphereGeometry(0.32, 16, 16), chrome);
+head.scale.set(0.9, 1.15, 1.0);
+head.position.set(0, 1.25, 0.05);
+figure.add(head);
+limb(-0.45, 0.75, 0, -1.35, 0.95, -0.15, 0.13);
+limb(-1.35, 0.95, -0.15, -2.1, 0.75, -0.35, 0.10);
+limb(0.45, 0.75, 0, 1.35, 0.95, -0.15, 0.13);
+limb(1.35, 0.95, -0.15, 2.1, 0.75, -0.35, 0.10);
+limb(-0.25, -0.55, 0, -0.45, -1.5, 0.45, 0.15);
+limb(-0.45, -1.5, 0.45, -0.55, -2.3, 1.0, 0.12);
+limb(0.25, -0.55, 0, 0.45, -1.5, 0.45, 0.15);
+limb(0.45, -1.5, 0.45, 0.55, -2.3, 1.0, 0.12);
+figure.rotation.x = -0.5;
+scene.add(figure);
+
+scene.add(new THREE.AmbientLight(0x335577, 1.2));
+const key = new THREE.PointLight(0x99aaff, 1.4, 100);
+key.position.set(6, 10, 6);
+scene.add(key);
+
+// ==================================================================
+// PART 5: NOTES
+// Stored in the browser's localStorage as one JSON object keyed
+// by tile id. Tile ids are stable because the geometry is built
+// the same way every load.
+// ==================================================================
+
+const STORE_KEY = 'hexnote-v1';
+let notes = {};
+try { notes = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+catch (e) { notes = {}; }
+
+function persistNotes() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(notes)); }
+  catch (e) { /* storage unavailable: notes live for this session only */ }
+  updateNoteCount();
+}
+
+function updateNoteCount() {
+  const n = Object.keys(notes).length;
+  document.getElementById('noteCount').textContent =
+    n + (n === 1 ? ' NOTE SAVED' : ' NOTES SAVED');
+  buildNoteList();
+}
+
+// menu list of every note, newest first. Tapping one turns you
+// to face that hex (inside) or opens it directly (space view).
+function buildNoteList() {
+  const box = document.getElementById('noteList');
+  box.innerHTML = '';
+  const ids = Object.keys(notes)
+    .map(n => parseInt(n, 10))
+    .filter(ti => tiles[ti])
+    .sort((a, b) => (notes[b].ts || 0) - (notes[a].ts || 0));
+  if (!ids.length) {
+    const p = document.createElement('p');
+    p.className = 'empty';
+    p.textContent = 'No notes yet. Aim at a hex and tap.';
+    box.appendChild(p);
+    return;
+  }
+  ids.forEach(ti => {
+    const b = document.createElement('button');
+    b.textContent = String(ti).padStart(3, '0') + '  ' + noteTitle(notes[ti].text);
+    b.addEventListener('click', () => jumpToNote(ti));
+    box.appendChild(b);
+  });
+}
+
+function fmtStamp(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  const p = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) +
+    ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+}
+
+// floating title labels: one small div per noted hex, repositioned
+// every frame by projecting the hex's 3d position onto the screen
+const labels = {};
+
+function noteTitle(text) {
+  const line = text.split('\n')[0].trim();
+  return line.length > 26 ? line.slice(0, 25) + '...' : line;
+}
+
+function addOrUpdateLabel(ti) {
+  let el = labels[ti];
+  if (!el) {
+    el = document.createElement('div');
+    el.className = 'hexlabel';
+    document.body.appendChild(el);
+    labels[ti] = el;
+  }
+  el.textContent = noteTitle(notes[ti].text);
+}
+
+function removeLabel(ti) {
+  if (labels[ti]) {
+    labels[ti].remove();
+    delete labels[ti];
+  }
+}
+
+// restore saved notes: mark, raise, and label those hexes
+Object.keys(notes).forEach(idStr => {
+  const ti = parseInt(idStr, 10);
+  if (tiles[ti]) {
+    tiles[ti].targetH = MARK;
+    setNoted(ti, 1);
+    addOrUpdateLabel(ti);
+  }
+});
+updateNoteCount();
+
+// ==================================================================
+// PART 5B: LINKS
+// Red strings between hexes, like an investigation wall. Each
+// string is a great circle arc: instead of a straight chord that
+// could stab through the camera, the line walks along the sphere
+// between the two hexes, sagging slightly inward.
+// ==================================================================
+
+const LINKS_KEY = 'hexnote-links-v1';
+let links = [];
+try { links = JSON.parse(localStorage.getItem(LINKS_KEY)) || []; }
+catch (e) { links = []; }
+
+function persistLinks() {
+  try { localStorage.setItem(LINKS_KEY, JSON.stringify(links)); }
+  catch (e) { /* storage unavailable */ }
+  updateLinkCount();
+}
+
+function updateLinkCount() {
+  const n = links.length;
+  document.getElementById('linkCount').textContent =
+    n + (n === 1 ? ' LINK' : ' LINKS');
+}
+
+// spherical interpolation: walks from direction a to direction b
+// along the surface of the sphere instead of cutting through it
+function slerpDir(a, b, t, out) {
+  const cosO = THREE.MathUtils.clamp(a.dot(b), -1, 1);
+  const omega = Math.acos(cosO);
+  if (omega < 1e-4) return out.copy(a);
+  const so = Math.sin(omega);
+  return out.copy(a).multiplyScalar(Math.sin((1 - t) * omega) / so)
+    .addScaledVector(b, Math.sin(t * omega) / so);
+}
+
+const SAMPLES = 24;
+const linkGroup = new THREE.Group();
+scene.add(linkGroup);
+const linkMat = new THREE.LineBasicMaterial({ color: 0xff2233 });
+const pendMat = new THREE.LineBasicMaterial({ color: 0xffffff });
+const arcDir = new THREE.Vector3();
+
+function writeArc(posAttr, dirA, rA, dirB, rB) {
+  for (let i = 0; i <= SAMPLES; i++) {
+    const t = i / SAMPLES;
+    slerpDir(dirA, dirB, t, arcDir);
+    const r = rA + (rB - rA) * t - Math.sin(t * Math.PI) * 1.2;
+    posAttr.setXYZ(i, arcDir.x * r, arcDir.y * r, arcDir.z * r);
+  }
+  posAttr.needsUpdate = true;
+}
+
+function makeLine(mat) {
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position',
+    new THREE.BufferAttribute(new Float32Array((SAMPLES + 1) * 3), 3));
+  const line = new THREE.Line(g, mat);
+  line.frustumCulled = false;
+  return line;
+}
+
+function tileRadius(ti) { return RADIUS - tiles[ti].h - 0.4; }
+
+function updateLinkPositions() {
+  links.forEach((lk, i) => {
+    const line = linkGroup.children[i];
+    if (!line) return;
+    writeArc(line.geometry.attributes.position,
+      tiles[lk[0]].center, tileRadius(lk[0]),
+      tiles[lk[1]].center, tileRadius(lk[1]));
+  });
+}
+
+function refreshLinks() {
+  for (let i = linkGroup.children.length - 1; i >= 0; i--) {
+    const l = linkGroup.children[i];
+    linkGroup.remove(l);
+    l.geometry.dispose();
+  }
+  links.forEach(() => linkGroup.add(makeLine(linkMat)));
+  updateLinkPositions();
+}
+
+function toggleLink(a, b) {
+  const lo = Math.min(a, b), hi = Math.max(a, b);
+  const idx = links.findIndex(l => l[0] === lo && l[1] === hi);
+  if (idx >= 0) links.splice(idx, 1);
+  else links.push([lo, hi]);
+  persistLinks();
+  refreshLinks();
+}
+
+const pendingLine = makeLine(pendMat);
+pendingLine.visible = false;
+scene.add(pendingLine);
+
+let linkAnchor = -1;
+refreshLinks();
+updateLinkCount();
+
+// ==================================================================
+// PART 5C: SPACE / EXPLODED VIEW
+// A starfield, plus one little hexagonal disc per note. In space
+// view the shell fades, the camera flies out, and the discs drift
+// outward from the surface like an exploded diagram, each tied to
+// the center by a faint leader line.
+// ==================================================================
+
+// starfield: random points sprinkled on a big distant sphere
+const starGeo = new THREE.BufferGeometry();
+const STAR_N = 1400;
+const starPos = new Float32Array(STAR_N * 3);
+for (let i = 0; i < STAR_N; i++) {
+  const u = Math.random() * 2 - 1;
+  const a = Math.random() * Math.PI * 2;
+  const s = Math.sqrt(1 - u * u);
+  const R = 400 + Math.random() * 250;
+  starPos[i*3]   = Math.cos(a) * s * R;
+  starPos[i*3+1] = u * R;
+  starPos[i*3+2] = Math.sin(a) * s * R;
+}
+starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+const stars = new THREE.Points(
+  starGeo,
+  new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 2.2,
+    sizeAttenuation: true,
+    transparent: true,
+    opacity: 0,
+    depthTest: false,     // always behind everything, never occluded
+    depthWrite: false
+  })
+);
+stars.renderOrder = -1;    // draw the sky first, before the globe
+scene.add(stars);
+
+// one hex disc per note. CylinderGeometry with 6 sides is a real
+// hexagonal coin with thickness, so it never flickers edge on.
+const DISC_R = 2.4;
+const DISC_THICK = 0.6;
+const discGeoTpl = new THREE.CylinderGeometry(DISC_R, DISC_R, DISC_THICK, 6);
+const yAxis = new THREE.Vector3(0, 1, 0);
+
+const discGroup = new THREE.Group();
+scene.add(discGroup);
+
+const spokeGeo = new THREE.BufferGeometry();
+const spokeMat = new THREE.LineBasicMaterial({ color: 0xc8d0ff, transparent: true, opacity: 0 });
+const spokes = new THREE.LineSegments(spokeGeo, spokeMat);
+spokes.frustumCulled = false;
+scene.add(spokes);
+
+let discs = [];   // { ti, dir, explR, mesh }
+
+function buildDiscs() {
+  for (let i = discGroup.children.length - 1; i >= 0; i--) {
+    const m = discGroup.children[i];
+    discGroup.remove(m);
+    m.material.dispose();
+  }
+  discs = [];
+  const ids = Object.keys(notes).map(n => parseInt(n, 10)).filter(ti => tiles[ti]);
+  ids.forEach(ti => {
+    const tile = tiles[ti];
+    const mat = new THREE.MeshStandardMaterial({
+      color: 0xff9a1f, emissive: 0xe8720c, emissiveIntensity: 0.5,
+      metalness: 0.3, roughness: 0.5, transparent: true, opacity: 0
+    });
+    const mesh = new THREE.Mesh(discGeoTpl, mat);
+    mesh.quaternion.setFromUnitVectors(yAxis, tile.center); // face outward
+    mesh.visible = false;
+    discGroup.add(mesh);
+    discs.push({ ti, dir: tile.center, explR: RADIUS * 1.7, mesh });
+  });
+  // leader lines: center to each disc, rebuilt to match disc count
+  spokeGeo.setAttribute('position',
+    new THREE.BufferAttribute(new Float32Array(discs.length * 2 * 3), 3));
+}
+buildDiscs();
+
+// ==================================================================
+// PART 6: CONTROLS, TARGETING, EDITOR
+// ==================================================================
+
+const panel = document.getElementById('panel');
+const toggleBtn = document.getElementById('toggle');
+const modeBtn = document.getElementById('mode');
+const spaceBtn = document.getElementById('space');
+const resetBtn = document.getElementById('reset');
+const pulseInput = document.getElementById('pulse');
+const accentInput = document.getElementById('accent');
+const noteExpInput = document.getElementById('noteExp');
+const hexExpInput = document.getElementById('hexExp');
+const reticle = document.getElementById('reticle');
+const hint = document.getElementById('hint');
+const editor = document.getElementById('editor');
+const noteText = document.getElementById('noteText');
+const hexIdEl = document.getElementById('hexId');
+const noteMeta = document.getElementById('noteMeta');
+const delBtn = document.getElementById('delBtn');
+
+let mode = 'fp';
+let yaw = 0, pitch = 0;
+let orbitAngle = 0;
+let hiliteTile = -1;
+let editorTile = -1;
+let spaceT = 0;          // 0 inside, 1 fully exploded in space
+
+function applyMode() {
+  const fp = mode === 'fp';
+  const space = mode === 'space';
+  figure.visible = !fp;
+  reticle.style.display = fp ? 'block' : 'none';
+  hint.style.display = fp ? 'block' : 'none';
+  modeBtn.textContent = fp ? 'SWITCH TO ORBIT VIEW' : 'SWITCH TO FIRST PERSON';
+  spaceBtn.textContent = space ? 'RETURN INSIDE' : 'EXPLODED SPACE VIEW';
+  if (!fp) {
+    uniforms.uHilite.value = -1;
+    hiliteTile = -1;
+    linkAnchor = -1;
+    uniforms.uAnchor.value = -1;
+    pendingLine.visible = false;
+    closeEditor();
+  }
+}
+
+// smooth turn toward a target direction. aimYaw stays null when
+// no turn is in progress, so your own dragging always wins.
+let aimYaw = null, aimPitch = null;
+
+function jumpToNote(ti) {
+  const dir = tiles[ti].center;
+  if (mode === 'space') {          // already floating out here: just open it
+    openEditor(ti);
+    return;
+  }
+  if (mode !== 'fp') { mode = 'fp'; lastInsideMode = 'fp'; applyMode(); }
+  aimPitch = Math.asin(THREE.MathUtils.clamp(dir.y, -1, 1));
+  aimPitch = Math.max(-1.45, Math.min(1.45, aimPitch));
+  aimYaw = Math.atan2(dir.x, dir.z);
+  // take the short way around instead of spinning a full lap
+  while (aimYaw - yaw > Math.PI) aimYaw -= Math.PI * 2;
+  while (aimYaw - yaw < -Math.PI) aimYaw += Math.PI * 2;
+  panel.style.display = 'none';
+  toggleBtn.classList.remove('open');
+}
+
+let delArmed = false, delTimer = null;
+function disarmDelete() {
+  delArmed = false;
+  clearTimeout(delTimer);
+  delBtn.classList.remove('armed');
+  delBtn.textContent = 'DELETE';
+}
+
+function openEditor(ti) {
+  editorTile = ti;
+  hexIdEl.textContent = String(ti).padStart(3, '0');
+  noteText.value = notes[ti] ? notes[ti].text : '';
+  noteMeta.textContent = notes[ti] ? 'EDITED ' + fmtStamp(notes[ti].ts) : 'NEW NOTE';
+  disarmDelete();
+  hint.style.display = 'none';
+
+  // in space view the hex is not in front of you, so bloom the
+  // panel right away instead of waiting for a flight that is offscreen
+  if (mode === 'space') {
+    editor.style.display = 'block';
+    void editor.offsetWidth;
+    editor.classList.add('show');
+    return;
+  }
+
+  tiles[ti].targetH = FULL;                 // hex rides out to meet you
+  // let the 3d hex fly most of the way in, then bloom the panel
+  // open from the reticle point, small to full, like it expanded
+  setTimeout(() => {
+    if (editorTile !== ti) return;          // closed before it opened
+    editor.style.display = 'block';
+    void editor.offsetWidth;                // commit the start state first
+    editor.classList.add('show');
+  }, 240);
+}
+
+function closeEditor() {
+  if (editorTile >= 0 && mode !== 'space') {
+    const ti = editorTile;
+    tiles[ti].targetH = notes[ti] ? MARK : REST;
+  }
+  editorTile = -1;
+  editor.classList.remove('show');          // shrink back toward the hex
+  setTimeout(() => {
+    if (editorTile < 0) editor.style.display = 'none';
+  }, 380);
+  if (mode === 'fp') hint.style.display = 'block';
+}
+
+document.getElementById('saveBtn').addEventListener('click', () => {
+  if (editorTile < 0) return;
+  const text = noteText.value.trim();
+  if (text) {
+    notes[editorTile] = { text, ts: Date.now() };
+    setNoted(editorTile, 1);
+    addOrUpdateLabel(editorTile);
+  } else {
+    delete notes[editorTile];
+    setNoted(editorTile, 0);
+    removeLabel(editorTile);
+  }
+  persistNotes();
+  buildDiscs();
+  closeEditor();
+});
+
+delBtn.addEventListener('click', () => {
+  if (editorTile < 0) return;
+  // first tap arms it, second tap within 3 seconds deletes
+  if (!delArmed) {
+    delArmed = true;
+    delBtn.classList.add('armed');
+    delBtn.textContent = 'SURE?';
+    delTimer = setTimeout(disarmDelete, 3000);
+    return;
+  }
+  disarmDelete();
+  delete notes[editorTile];
+  setNoted(editorTile, 0);
+  removeLabel(editorTile);
+  persistNotes();
+  buildDiscs();
+  closeEditor();
+});
+
+document.getElementById('closeBtn').addEventListener('click', closeEditor);
+
+// when the keyboard opens the visible part of the page shrinks.
+// visualViewport reports that smaller area, so we re-center the
+// editor inside whatever space the keyboard leaves us.
+function placeEditor() {
+  const vv = window.visualViewport;
+  if (!vv) return;
+  editor.style.top = (vv.offsetTop + vv.height * 0.42) + 'px';
+}
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', placeEditor);
+  window.visualViewport.addEventListener('scroll', placeEditor);
+  placeEditor();
+}
+
+toggleBtn.addEventListener('click', () => {
+  const open = panel.style.display !== 'none';
+  panel.style.display = open ? 'none' : 'block';
+  toggleBtn.classList.toggle('open', !open);
+});
+let lastInsideMode = 'fp';
+modeBtn.addEventListener('click', () => {
+  mode = mode === 'fp' ? 'orbit' : 'fp';
+  lastInsideMode = mode;
+  applyMode();
+});
+spaceBtn.addEventListener('click', () => {
+  if (mode === 'space') { mode = lastInsideMode; }
+  else { mode = 'space'; }
+  applyMode();
+});
+resetBtn.addEventListener('click', () => {
+  tiles.forEach((t, ti) => t.targetH = notes[ti] ? MARK : REST);
+  closeEditor();
+});
+document.getElementById('clearLinks').addEventListener('click', () => {
+  links = [];
+  persistLinks();
+  refreshLinks();
+});
+
+// BACKUP: notes and links live only in this browser's storage, so
+// export writes them to a json file you own, and import reads one back.
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const data = { app: 'hexnote', format: 1, exported: Date.now(), notes, links };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'hexnote-backup-' + fmtStamp(Date.now()).replace(' ', '-').replace(':', '') + '.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+});
+
+const importFile = document.getElementById('importFile');
+document.getElementById('importBtn').addEventListener('click', () => importFile.click());
+importFile.addEventListener('change', () => {
+  const f = importFile.files[0];
+  importFile.value = '';
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    let data;
+    try { data = JSON.parse(reader.result); } catch (e) { alert('That file is not valid JSON.'); return; }
+    if (!data || data.app !== 'hexnote' || typeof data.notes !== 'object') {
+      alert('That file is not a HEXNOTE backup.');
+      return;
+    }
+    if (!confirm('Replace current notes and links with this backup?')) return;
+    applyBackup(data);
+  };
+  reader.readAsText(f);
+});
+
+function applyBackup(data) {
+  closeEditor();
+  // clear every current note marker
+  Object.keys(notes).forEach(idStr => {
+    const ti = parseInt(idStr, 10);
+    if (!tiles[ti]) return;
+    setNoted(ti, 0);
+    removeLabel(ti);
+    tiles[ti].targetH = REST;
+  });
+  notes = {};
+  Object.keys(data.notes).forEach(idStr => {
+    const ti = parseInt(idStr, 10);
+    const n = data.notes[idStr];
+    if (!tiles[ti] || !n || typeof n.text !== 'string') return;
+    notes[ti] = { text: n.text, ts: n.ts || Date.now() };
+    setNoted(ti, 1);
+    addOrUpdateLabel(ti);
+    tiles[ti].targetH = MARK;
+  });
+  links = Array.isArray(data.links)
+    ? data.links.filter(l => Array.isArray(l) && tiles[l[0]] && tiles[l[1]])
+    : [];
+  persistNotes();
+  persistLinks();
+  refreshLinks();
+  buildDiscs();
+}
+
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && editorTile >= 0) closeEditor();
+});
+
+let dragging = false, lastX = 0, lastY = 0;
+let downTime = 0, moved = 0;
+let lpTimer = null, suppressTap = false;
+
+function handleLongPress() {
+  if (hiliteTile < 0) return;
+  if (navigator.vibrate) navigator.vibrate(30);
+  linkAnchor = (linkAnchor === hiliteTile) ? -1 : hiliteTile;
+  uniforms.uAnchor.value = linkAnchor;
+}
+
+canvas.addEventListener('pointerdown', e => {
+  dragging = true;
+  lastX = e.clientX;
+  lastY = e.clientY;
+  downTime = performance.now();
+  moved = 0;
+  suppressTap = false;
+  clearTimeout(lpTimer);
+  lpTimer = setTimeout(() => {
+    if (mode === 'fp' && editorTile < 0 && moved < 10 && hiliteTile >= 0) {
+      suppressTap = true;
+      handleLongPress();
+    }
+  }, 500);
+});
+window.addEventListener('pointermove', e => {
+  if (!dragging) return;
+  const dx = e.clientX - lastX, dy = e.clientY - lastY;
+  moved += Math.abs(dx) + Math.abs(dy);
+  if (moved >= 10) { clearTimeout(lpTimer); aimYaw = null; aimPitch = null; }
+  if (mode === 'fp') {
+    yaw -= dx * 0.0035;
+    pitch -= dy * 0.0028;
+    pitch = Math.max(-1.45, Math.min(1.45, pitch));
+  } else {
+    yaw += dx * 0.004;
+    pitch += dy * 0.003;
+    pitch = Math.max(-1.0, Math.min(1.0, pitch));
+  }
+  lastX = e.clientX;
+  lastY = e.clientY;
+});
+window.addEventListener('pointerup', e => {
+  if (!dragging) return;
+  dragging = false;
+  clearTimeout(lpTimer);
+  if (suppressTap) { suppressTap = false; return; }
+  const quick = performance.now() - downTime < 400;
+  if (mode === 'space' && quick && moved < 10 && editorTile < 0) {
+    const ti = pickDisc(e.clientX, e.clientY);
+    if (ti >= 0) openEditor(ti);
+    return;
+  }
+  if (mode === 'fp' && quick && moved < 10 && hiliteTile >= 0 && editorTile < 0) {
+    if (linkAnchor >= 0) {
+      // a thread is live: pin it here, or cancel on the same hex
+      if (hiliteTile !== linkAnchor) toggleLink(linkAnchor, hiliteTile);
+      linkAnchor = -1;
+      uniforms.uAnchor.value = -1;
+    } else {
+      openEditor(hiliteTile);
+    }
+  }
+});
+
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+applyMode();
+
+// raycaster for picking floating discs in space view: shoots a ray
+// from the camera through the tapped point and returns what it hits
+const raycaster = new THREE.Raycaster();
+const ndc = new THREE.Vector2();
+
+function pickDisc(clientX, clientY) {
+  ndc.x = (clientX / window.innerWidth) * 2 - 1;
+  ndc.y = -(clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(ndc, camera);
+  const hits = raycaster.intersectObjects(discGroup.children, false);
+  if (!hits.length) return -1;
+  const mesh = hits[0].object;
+  const found = discs.find(d => d.mesh === mesh);
+  return found ? found.ti : -1;
+}
+
+// ==================================================================
+// PART 7: ANIMATE
+// ==================================================================
+
+const clock = new THREE.Clock();
+const lookDir = new THREE.Vector3();
+const projPos = new THREE.Vector3();
+const camSpace = new THREE.Vector3();
+let frame = 0;
+
+// projects each noted hex into screen space and moves its label
+function updateLabels() {
+  const hideAll = spaceT > 0.02;
+  for (const idStr in labels) {
+    const ti = parseInt(idStr, 10);
+    const el = labels[idStr];
+    const tile = tiles[ti];
+    if (hideAll || ti === editorTile) { el.style.display = 'none'; continue; }
+
+    projPos.copy(tile.center).multiplyScalar(RADIUS - tile.h);
+
+    // hide labels for hexes behind the camera
+    camSpace.copy(projPos).applyMatrix4(camera.matrixWorldInverse);
+    if (camSpace.z > 0) { el.style.display = 'none'; continue; }
+
+    projPos.project(camera);
+    if (Math.abs(projPos.x) > 1.05 || Math.abs(projPos.y) > 1.05) {
+      el.style.display = 'none';
+      continue;
+    }
+    el.style.display = 'block';
+    el.style.left = ((projPos.x * 0.5 + 0.5) * window.innerWidth) + 'px';
+    el.style.top  = ((-projPos.y * 0.5 + 0.5) * window.innerHeight) + 'px';
+  }
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  const t = clock.elapsedTime;
+
+  uniforms.uTime.value = t;
+  uniforms.uPulse.value = reducedMotion ? 0 : pulseInput.value / 100;
+  uniforms.uAccentFrac.value = accentInput.value / 100 * 0.35;
+
+  let needsRewrite = false;
+  tiles.forEach(tile => {
+    if (Math.abs(tile.h - tile.targetH) > 0.01) {
+      tile.h += (tile.targetH - tile.h) * Math.min(1, dt * 6);
+      if (Math.abs(tile.h - tile.targetH) <= 0.01) tile.h = tile.targetH;
+      writeTile(tile);
+      needsRewrite = true;
+    }
+  });
+  if (needsRewrite) {
+    geo.attributes.position.needsUpdate = true;
+    updateLinkPositions();      // strings stay pinned to moving hexes
+  }
+
+  // ease the space transition toward its target every frame
+  const spaceTarget = mode === 'space' ? 1 : 0;
+  spaceT += (spaceTarget - spaceT) * Math.min(1, dt * 2.2);
+  if (Math.abs(spaceT - spaceTarget) < 0.001) spaceT = spaceTarget;
+  const ease = spaceT * spaceT * (3 - 2 * spaceT);   // smoothstep
+
+  // fade the shell open and reveal the stars as we go out
+  uniforms.uOpacity.value = 1 - 0.82 * ease;
+  // a see-through shell must not write depth, or its front hexes
+  // erase the back hexes and links behind them (the muddy look)
+  hexMat.depthWrite = ease < 0.01;
+  stars.material.opacity = ease;
+  spokeMat.opacity = 0.35 * ease;
+
+  // the OTHER blocks slider gently scales the whole shell outward,
+  // only while exploded, so the plain hexes spread without redrawing
+  const hexSpread = hexExpInput.value / 100;
+  const shellScale = 1 + hexSpread * 0.9 * ease;
+  hexSphere.scale.setScalar(shellScale);
+  linkGroup.scale.setScalar(shellScale);
+  pendingLine.scale.setScalar(shellScale);
+
+  // drift the discs out from the surface and grow them in
+  const noteSpread = noteExpInput.value / 100;   // slider drives distance
+  const spokeArr = discs.length ? spokes.geometry.attributes.position : null;
+  discs.forEach((disc, i) => {
+    const on = ease > 0.01;
+    disc.mesh.visible = on;
+    if (!on) return;
+    const explR = RADIUS + (disc.explR - RADIUS) * noteSpread;
+    const r = RADIUS + (explR - RADIUS) * ease;
+    disc.mesh.position.copy(disc.dir).multiplyScalar(r);
+    const sel = disc.ti === editorTile;
+    const s = (0.2 + 0.8 * ease) * (sel ? 1.5 : 1);
+    disc.mesh.scale.setScalar(s);
+    disc.mesh.material.opacity = ease;
+    disc.mesh.material.emissiveIntensity = sel ? 1.1 : 0.5;
+    // no spin: the coin keeps the fixed outward facing of its hex
+    if (spokeArr) {
+      spokeArr.setXYZ(i * 2, 0, 0, 0);
+      spokeArr.setXYZ(i * 2 + 1, disc.mesh.position.x, disc.mesh.position.y, disc.mesh.position.z);
+    }
+  });
+  if (spokeArr) spokeArr.needsUpdate = true;
+  spokes.visible = ease > 0.01;
+  discGroup.visible = ease > 0.01;
+
+  if (spaceT > 0.01) {
+    // SPACE VIEW: fly from the center out to a distant orbit
+    if (!reducedMotion) orbitAngle += dt * 0.08;
+    const a = orbitAngle + yaw;
+    const p = THREE.MathUtils.clamp(0.2 + pitch * 0.8, -1.35, 1.35);
+    const r = 0.5 + ease * 135;
+    camera.position.set(
+      Math.sin(a) * Math.cos(p) * r,
+      Math.sin(p) * r,
+      Math.cos(a) * Math.cos(p) * r
+    );
+    // only reveal the figure once we are clearly outside the shell,
+    // otherwise its back faces show through from inside
+    const outside = r > RADIUS + 6;
+    figure.visible = outside;
+    figure.position.set(0, 0, 0);
+    figure.rotation.y = t * 0.2;
+    const fs = 1 + ease * 5;                  // grow you so you read from afar
+    figure.scale.setScalar(fs);
+    camera.lookAt(0, 0, 0);
+
+    if (outside && frame % 6 === 0) {
+      figure.visible = false;
+      cubeCam.position.set(0, 0, 0);
+      cubeCam.update(renderer, scene);
+      figure.visible = true;
+    }
+  } else if (mode === 'fp') {
+    figure.visible = false;
+    figure.scale.setScalar(1);
+
+    // glide toward a note picked from the menu list
+    if (aimYaw !== null) {
+      const k = Math.min(1, dt * 5);
+      yaw += (aimYaw - yaw) * k;
+      pitch += (aimPitch - pitch) * k;
+      if (Math.abs(aimYaw - yaw) < 0.002 && Math.abs(aimPitch - pitch) < 0.002) {
+        yaw = aimYaw; pitch = aimPitch;
+        aimYaw = null; aimPitch = null;
+      }
+    }
+
+    camera.position.set(0, 0, 0);
+    lookDir.set(
+      Math.sin(yaw) * Math.cos(pitch),
+      Math.sin(pitch),
+      Math.cos(yaw) * Math.cos(pitch)
+    );
+    camera.lookAt(lookDir);
+
+    if (frame % 2 === 0 && editorTile < 0) {
+      let best = -1, bestDot = 0.0;
+      for (let i = 0; i < tiles.length; i++) {
+        const d = lookDir.dot(tiles[i].center);
+        if (d > bestDot) { bestDot = d; best = i; }
+      }
+      hiliteTile = best;
+      uniforms.uHilite.value = best;
+    }
+
+    // live thread: follows your gaze until you pin it on a hex
+    if (linkAnchor >= 0) {
+      pendingLine.visible = true;
+      let endDir = lookDir, endR = RADIUS - 1.0;
+      if (hiliteTile >= 0 && hiliteTile !== linkAnchor) {
+        endDir = tiles[hiliteTile].center;
+        endR = tileRadius(hiliteTile);
+      }
+      writeArc(pendingLine.geometry.attributes.position,
+        tiles[linkAnchor].center, tileRadius(linkAnchor), endDir, endR);
+    } else {
+      pendingLine.visible = false;
+    }
+  } else {
+    figure.scale.setScalar(1);
+    if (!reducedMotion) orbitAngle += dt * 0.15;
+    const a = orbitAngle + yaw;
+    const p = THREE.MathUtils.clamp(0.15 + pitch, -1.35, 1.35);
+    const r = 7.5;
+    camera.position.set(
+      Math.sin(a) * Math.cos(p) * r,
+      Math.sin(p) * r + 0.5,
+      Math.cos(a) * Math.cos(p) * r
+    );
+    figure.position.y = Math.sin(t * 0.7) * 0.4;
+    figure.rotation.y = t * 0.15;
+    camera.lookAt(figure.position);
+
+    if (frame % 4 === 0) {
+      figure.visible = false;
+      cubeCam.position.copy(figure.position);
+      cubeCam.update(renderer, scene);
+      figure.visible = true;
+    }
+  }
+
+  frame++;
+  updateLabels();
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>

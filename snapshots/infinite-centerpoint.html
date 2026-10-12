@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Infinite Counterpoint</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body, #root { width: 100%; height: 100%; overflow: hidden; background: #000; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useCallback } = React;
+
+    // GREEN PHONE EDIT — converted from JSX artifact to standalone HTML for Vercel deploy
+
+    const MATHEMATICIANS = {
+      mandelbrot: {
+        name: "Mandelbrot",
+        full: "Benoit Mandelbrot",
+        years: "1924-2010",
+        color: { primary: "#00fff7", secondary: "#ff006e", bg: "#0a0010" },
+        signature: "z -> z^2 + c",
+        soul: "The boundary is where all life lives. The interior is silence.",
+      },
+      ramanujan: {
+        name: "Ramanujan",
+        full: "Srinivasa Ramanujan",
+        years: "1887-1920",
+        color: { primary: "#ff9933", secondary: "#8B0082", bg: "#0d0005" },
+        signature: "sum -> inf -> 1",
+        soul: "An equation has no meaning unless it expresses a thought of God.",
+      },
+    };
+
+    const CONVERSATION_SEEDS = [
+      {
+        mandelbrot: "I begin at zero. I iterate. The question is never where I start — it is whether I escape.",
+        ramanujan: "But escape to where? I found that 1 + 2 + 3 + 4 forever... arrives at -1/12. Escape is an illusion. Everything converges somewhere sacred.",
+        params: { iterations: 80, zoom: 1.0, colorShift: 0, spiralDensity: 7 },
+      },
+      {
+        mandelbrot: "The boundary of my set has infinite complexity. Zoom in forever — it never simplifies.",
+        ramanujan: "Yes. Like the partition function. p(200) = 3,972,999,029,388. The closer you look at integers, the more structure blooms.",
+        params: { iterations: 120, zoom: 2.5, colorShift: 60, spiralDensity: 12 },
+      },
+      {
+        mandelbrot: "Self-similarity. At every scale, the same shapes return. The universe is recursive.",
+        ramanujan: "The taxicab number. 1729. Hardy thought it unremarkable. I saw it was the smallest number expressible as two cubes in two ways. Nothing is unremarkable.",
+        params: { iterations: 160, zoom: 5.0, colorShift: 120, spiralDensity: 17 },
+      },
+      {
+        mandelbrot: "Fractal dimension. Between 1 and 2. Neither line nor plane. A new kind of existence.",
+        ramanujan: "Mock theta functions. Neither modular nor not-modular. I wrote them to Hardy from my deathbed. A new kind of existence indeed.",
+        params: { iterations: 200, zoom: 8.0, colorShift: 180, spiralDensity: 22 },
+      },
+      {
+        mandelbrot: "Chaos is not disorder. It is order too complex for the tools we were given.",
+        ramanujan: "The goddess Namagiri gave me these formulas in dreams. Perhaps your chaos and my dreams are the same transmission.",
+        params: { iterations: 256, zoom: 12.0, colorShift: 240, spiralDensity: 28 },
+      },
+    ];
+
+    function renderCanvas(canvas, phase, params, tick) {
+      const ctx = canvas.getContext("2d");
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+      const { iterations, zoom, colorShift, spiralDensity } = params;
+      const blendMandelbrot = Math.sin(tick * 0.008) * 0.5 + 0.5;
+      const blendRamanujan = 1 - blendMandelbrot;
+
+      const bgGrad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * 0.8);
+      bgGrad.addColorStop(0, `hsla(${270 + colorShift * 0.1}, 80%, 5%, 1)`);
+      bgGrad.addColorStop(1, "#000000");
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, W, H);
+
+      const imgData = ctx.createImageData(W, H);
+      const data = imgData.data;
+      const cx = -0.745 + Math.sin(tick * 0.003) * 0.01;
+      const cy = 0.1 + Math.cos(tick * 0.002) * 0.005;
+      const scale = (3.5 / zoom) / Math.min(W, H);
+
+      for (let px = 0; px < W; px += 2) {
+        for (let py = 0; py < H; py += 2) {
+          let x0 = (px - W / 2) * scale + cx;
+          let y0 = (py - H / 2) * scale + cy;
+          let x = 0, y = 0, i = 0;
+          while (x * x + y * y <= 4 && i < iterations) {
+            let xn = x * x - y * y + x0;
+            y = 2 * x * y + y0;
+            x = xn;
+            i++;
+          }
+          if (i < iterations) {
+            const smooth = i - Math.log2(Math.log2(x * x + y * y));
+            const hue = (smooth * 8 + colorShift) % 360;
+            const sat = 90;
+            const lit = 45 + smooth * 0.3;
+            const alpha = blendMandelbrot * 200;
+            const c = (1 - Math.abs(2 * lit / 100 - 1)) * sat / 100;
+            const xc = c * (1 - Math.abs((hue / 60) % 2 - 1));
+            const m = lit / 100 - c / 2;
+            let r = 0, g = 0, b = 0;
+            if (hue < 60) { r = c; g = xc; }
+            else if (hue < 120) { r = xc; g = c; }
+            else if (hue < 180) { g = c; b = xc; }
+            else if (hue < 240) { g = xc; b = c; }
+            else if (hue < 300) { r = xc; b = c; }
+            else { r = c; b = xc; }
+            const idx = (py * W + px) * 4;
+            data[idx] = (r + m) * 255;
+            data[idx + 1] = (g + m) * 255;
+            data[idx + 2] = (b + m) * 255;
+            data[idx + 3] = alpha;
+            if (px + 1 < W) { const i2 = (py * W + px + 1) * 4; data[i2] = data[idx]; data[i2+1] = data[idx+1]; data[i2+2] = data[idx+2]; data[i2+3] = data[idx+3]; }
+            if (py + 1 < H) { const i3 = ((py+1) * W + px) * 4; data[i3] = data[idx]; data[i3+1] = data[idx+1]; data[i3+2] = data[idx+2]; data[i3+3] = data[idx+3]; }
+          }
+        }
+      }
+      ctx.putImageData(imgData, 0, 0);
+
+      ctx.save();
+      ctx.translate(W / 2, H / 2);
+      const spiralAlpha = blendRamanujan * 0.85;
+
+      for (let arm = 0; arm < spiralDensity; arm++) {
+        const armAngle = (arm / spiralDensity) * Math.PI * 2;
+        ctx.beginPath();
+        for (let t = 0; t < 8 * Math.PI; t += 0.05) {
+          const partition = Math.sin(t * 1.618 + tick * 0.01 + arm) * 0.3 + 1;
+          const rad = (t * 18 * partition) / zoom * 0.8;
+          const angle = t + armAngle + tick * 0.005;
+          const px2 = rad * Math.cos(angle);
+          const py2 = rad * Math.sin(angle);
+          if (t === 0) ctx.moveTo(px2, py2);
+          else ctx.lineTo(px2, py2);
+        }
+        const hue = (arm * (360 / spiralDensity) + colorShift + tick * 0.3) % 360;
+        ctx.strokeStyle = `hsla(${hue}, 90%, 65%, ${spiralAlpha * 0.6})`;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+
+      for (let k = 0; k < 5; k++) {
+        const petalCount = 6 + k * 2;
+        const radius = (60 + k * 55) / zoom * 0.9;
+        for (let p = 0; p < petalCount; p++) {
+          const angle = (p / petalCount) * Math.PI * 2 + tick * 0.003 * (k % 2 === 0 ? 1 : -1);
+          const px2 = radius * Math.cos(angle);
+          const py2 = radius * Math.sin(angle);
+          ctx.beginPath();
+          ctx.arc(px2, py2, radius * 0.18, 0, Math.PI * 2);
+          const hue2 = (20 + k * 35 + p * 15 + colorShift) % 360;
+          ctx.fillStyle = `hsla(${hue2}, 95%, 60%, ${spiralAlpha * 0.15})`;
+          ctx.fill();
+          ctx.strokeStyle = `hsla(${hue2}, 95%, 75%, ${spiralAlpha * 0.4})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+
+      const mergeRadius = 30 + Math.sin(tick * 0.02) * 10;
+      const mergeGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, mergeRadius);
+      mergeGrad.addColorStop(0, `hsla(${(colorShift + 180) % 360}, 100%, 95%, 0.9)`);
+      mergeGrad.addColorStop(0.4, `hsla(${colorShift}, 100%, 70%, 0.4)`);
+      mergeGrad.addColorStop(1, "transparent");
+      ctx.beginPath();
+      ctx.arc(0, 0, mergeRadius, 0, Math.PI * 2);
+      ctx.fillStyle = mergeGrad;
+      ctx.fill();
+      ctx.restore();
+
+      ctx.save();
+      const sheepCount = 40;
+      for (let s = 0; s < sheepCount; s++) {
+        const angle = (s / sheepCount) * Math.PI * 2 + tick * 0.004;
+        const orbit = 80 + Math.sin(tick * 0.015 + s) * 40 + (W * 0.25);
+        const px2 = W / 2 + orbit * Math.cos(angle);
+        const py2 = H / 2 + orbit * Math.sin(angle) * 0.6;
+        const alive = Math.sin(tick * 0.02 + s * 0.8) > -0.3;
+        if (alive) {
+          const hue = (s * 9 + colorShift + tick * 0.5) % 360;
+          const size = 2 + Math.sin(tick * 0.03 + s) * 1.5;
+          ctx.beginPath();
+          ctx.arc(px2, py2, size, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${hue}, 100%, 70%, 0.8)`;
+          ctx.fill();
+          ctx.beginPath();
+          ctx.moveTo(px2, py2);
+          ctx.lineTo(W / 2, H / 2);
+          ctx.strokeStyle = `hsla(${hue}, 80%, 60%, 0.05)`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+    }
+
+    function App() {
+      const canvasRef = useRef(null);
+      const tickRef = useRef(0);
+      const rafRef = useRef(null);
+      const [phase, setPhase] = useState(0);
+      const [isPlaying, setIsPlaying] = useState(true);
+      const [dialogue, setDialogue] = useState(null);
+      const [showDialogue, setShowDialogue] = useState(false);
+      const [generating, setGenerating] = useState(false);
+      const [conversationHistory, setConversationHistory] = useState([]);
+      const [apiKey, setApiKey] = useState("");
+      const [keyInput, setKeyInput] = useState("");
+      const [showKeyPanel, setShowKeyPanel] = useState(true);
+      const [showInfo, setShowInfo] = useState(false);
+
+      const currentConvo = CONVERSATION_SEEDS[phase];
+      const params = currentConvo.params;
+
+      useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const animate = () => {
+          if (isPlaying) {
+            tickRef.current += 1;
+            renderCanvas(canvas, phase, params, tickRef.current);
+          }
+          rafRef.current = requestAnimationFrame(animate);
+        };
+        rafRef.current = requestAnimationFrame(animate);
+        return () => cancelAnimationFrame(rafRef.current);
+      }, [isPlaying, phase, params]);
+
+      useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
+        resize();
+        window.addEventListener("resize", resize);
+        return () => window.removeEventListener("resize", resize);
+      }, []);
+
+      const generateDialogue = useCallback(async () => {
+        setGenerating(true);
+        setShowDialogue(true);
+        const systemPrompt = `You are simulating a private conversation between Benoit Mandelbrot and Srinivasa Ramanujan. They have been tasked — somewhat against their will — with generating beautiful mathematical art together. They are deeply themselves: Mandelbrot is precise, geometric, obsessed with complexity at boundaries, slightly sardonic. Ramanujan is mystical, intuitive, sees numbers as sacred, references his goddess Namagiri. They are currently at dialogue phase ${phase + 1} of 5, meaning their collaboration is ${["just beginning","finding common ground","deepening","reaching transcendence","at the apex"][phase]}. Their current equations: Mandelbrot is working with iteration depth ${params.iterations} and zoom ${params.zoom}x. Ramanujan is working with spiral density ${params.spiralDensity}. Respond ONLY with a JSON object: {"mandelbrot": "his line (1-2 sentences, mathematical, sardonic)", "ramanujan": "his line (1-2 sentences, mystical, mathematical)", "equation_note": "one line describing what their merged equation is producing visually right now"}`;
+        const newMessage = { role: "user", content: `Generate dialogue for phase ${phase + 1}. The canvas is alive. What are they saying to each other right now?` };
+        const messages = [...conversationHistory, newMessage];
+        try {
+          const response = await fetch("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": apiKey,
+              "anthropic-version": "2023-06-01",
+              "anthropic-dangerous-direct-browser-access": "true",
+            },
+            body: JSON.stringify({
+              model: "claude-sonnet-4-6",
+              max_tokens: 1000,
+              system: systemPrompt,
+              messages,
+            }),
+          });
+          const data = await response.json();
+          const text = data.content?.find(b => b.type === "text")?.text || "";
+          const clean = text.replace(/```json|```/g, "").trim();
+          const parsed = JSON.parse(clean);
+          setDialogue(parsed);
+          setConversationHistory([...messages, { role: "assistant", content: text }]);
+        } catch (e) {
+          setDialogue(currentConvo);
+        }
+        setGenerating(false);
+      }, [phase, params, conversationHistory, currentConvo, apiKey]);
+
+      const advance = () => { setPhase(p => (p + 1) % CONVERSATION_SEEDS.length); setDialogue(null); setShowDialogue(false); };
+      const M = MATHEMATICIANS.mandelbrot;
+      const R = MATHEMATICIANS.ramanujan;
+
+      return (
+        <div style={{ width:"100%", height:"100vh", background:"#000", fontFamily:"Georgia, Times New Roman, serif", display:"flex", flexDirection:"column", overflow:"hidden", position:"relative" }}>
+
+          <canvas ref={canvasRef} style={{ position:"absolute", inset:0, width:"100%", height:"100%" }} />
+
+          <div style={{ position:"relative", zIndex:10, display:"flex", justifyContent:"space-between", alignItems:"flex-start", padding:"20px 28px 0", background:"linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%)" }}>
+            <div>
+              <div style={{ color:"#ffffff", fontSize:"11px", letterSpacing:"0.3em", textTransform:"uppercase", opacity:0.5, marginBottom:4 }}>Generative Mathematics</div>
+              <div style={{ color:"#ffffff", fontSize:"22px", fontWeight:"300", letterSpacing:"0.05em" }}>Infinite Counterpoint</div>
+            </div>
+            <div style={{ textAlign:"right", display:"flex", flexDirection:"column", alignItems:"flex-end", gap:6 }}>
+              <div style={{ color:M.color.primary, fontSize:"11px", letterSpacing:"0.2em", marginBottom:2 }}>{M.name} <span style={{ opacity:0.5 }}>{M.years}</span></div>
+              <div style={{ color:R.color.primary, fontSize:"11px", letterSpacing:"0.2em" }}>{R.name} <span style={{ opacity:0.5 }}>{R.years}</span></div>
+              <div style={{ display:"flex", gap:6, alignItems:"center", marginTop:4 }}>
+                <button onClick={() => { setKeyInput(apiKey); setShowKeyPanel(true); }} style={{ background: apiKey ? "rgba(0,255,200,0.08)" : "rgba(255,100,100,0.08)", border:`1px solid ${apiKey ? "rgba(0,255,200,0.2)" : "rgba(255,100,100,0.2)"}`, color: apiKey ? "rgba(0,255,200,0.6)" : "rgba(255,120,120,0.7)", padding:"4px 10px", fontSize:9, letterSpacing:"0.2em", textTransform:"uppercase", cursor:"pointer", fontFamily:"Georgia, serif" }}>{apiKey ? "Key Active" : "No Key"}</button>
+                <button onClick={() => setShowInfo(true)} style={{ width:20, height:20, borderRadius:"50%", background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.15)", color:"rgba(255,255,255,0.4)", fontSize:11, cursor:"pointer", fontFamily:"Georgia, serif", display:"flex", alignItems:"center", justifyContent:"center" }}>i</button>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ position:"absolute", top:"50%", left:"20px", transform:"translateY(-50%)", zIndex:10, display:"flex", flexDirection:"column", gap:8 }}>
+            {CONVERSATION_SEEDS.map((_, i) => (
+              <div key={i} onClick={() => { setPhase(i); setDialogue(null); setShowDialogue(false); }} style={{ width:6, height: i === phase ? 28 : 6, borderRadius:3, background: i === phase ? `linear-gradient(to bottom, ${M.color.primary}, ${R.color.primary})` : "rgba(255,255,255,0.2)", cursor:"pointer", transition:"all 0.4s ease" }} />
+            ))}
+          </div>
+
+          {showDialogue && (
+            <div style={{ position:"absolute", bottom:100, left:"50%", transform:"translateX(-50%)", width:"min(680px, 90vw)", zIndex:20, background:"rgba(0,0,0,0.85)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:2, padding:"24px 28px", backdropFilter:"blur(12px)" }}>
+              {generating ? (
+                <div style={{ color:"rgba(255,255,255,0.4)", fontSize:13, textAlign:"center", letterSpacing:"0.2em" }}>transmitting...</div>
+              ) : dialogue ? (
+                <>
+                  <div style={{ marginBottom:16 }}>
+                    <div style={{ color:M.color.primary, fontSize:"10px", letterSpacing:"0.3em", marginBottom:6, textTransform:"uppercase" }}>Mandelbrot</div>
+                    <div style={{ color:"rgba(255,255,255,0.85)", fontSize:14, lineHeight:1.7, fontStyle:"italic" }}>"{dialogue.mandelbrot}"</div>
+                  </div>
+                  <div style={{ borderTop:"1px solid rgba(255,255,255,0.08)", paddingTop:16, marginBottom: dialogue.equation_note ? 16 : 0 }}>
+                    <div style={{ color:R.color.primary, fontSize:"10px", letterSpacing:"0.3em", marginBottom:6, textTransform:"uppercase" }}>Ramanujan</div>
+                    <div style={{ color:"rgba(255,255,255,0.85)", fontSize:14, lineHeight:1.7, fontStyle:"italic" }}>"{dialogue.ramanujan}"</div>
+                  </div>
+                  {dialogue.equation_note && (
+                    <div style={{ borderTop:"1px solid rgba(255,255,255,0.08)", paddingTop:12, color:"rgba(255,255,255,0.35)", fontSize:11, letterSpacing:"0.15em", textAlign:"center" }}>{dialogue.equation_note}</div>
+                  )}
+                </>
+              ) : null}
+            </div>
+          )}
+
+          <div style={{ position:"absolute", bottom:28, left:"50%", transform:"translateX(-50%)", zIndex:20, display:"flex", gap:12, alignItems:"center" }}>
+            <button onClick={() => setIsPlaying(p => !p)} style={{ background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.15)", color:"rgba(255,255,255,0.7)", padding:"8px 20px", fontSize:11, letterSpacing:"0.2em", textTransform:"uppercase", cursor:"pointer", borderRadius:1, fontFamily:"inherit" }}>{isPlaying ? "Pause" : "Resume"}</button>
+            <button onClick={generateDialogue} disabled={generating} style={{ background: generating ? "rgba(255,255,255,0.03)" : `linear-gradient(135deg, ${M.color.primary}22, ${R.color.primary}22)`, border:`1px solid ${generating ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.25)"}`, color: generating ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.85)", padding:"8px 24px", fontSize:11, letterSpacing:"0.2em", textTransform:"uppercase", cursor: generating ? "default" : "pointer", borderRadius:1, fontFamily:"inherit" }}>{generating ? "Transmitting..." : "Let Them Speak"}</button>
+            <button onClick={advance} style={{ background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.15)", color:"rgba(255,255,255,0.7)", padding:"8px 20px", fontSize:11, letterSpacing:"0.2em", textTransform:"uppercase", cursor:"pointer", borderRadius:1, fontFamily:"inherit" }}>Deepen</button>
+          </div>
+
+          <div style={{ position:"absolute", bottom:28, right:24, zIndex:10, textAlign:"right" }}>
+            <div style={{ color:M.color.primary, fontSize:"10px", letterSpacing:"0.15em", opacity:0.6, marginBottom:2 }}>iter: {params.iterations} · zoom: {params.zoom}x</div>
+            <div style={{ color:R.color.primary, fontSize:"10px", letterSpacing:"0.15em", opacity:0.6 }}>spirals: {params.spiralDensity} · phase: {phase + 1}/5</div>
+          </div>
+
+          {showInfo && (
+            <div style={{ position:"absolute", inset:0, zIndex:60, background:"rgba(0,0,0,0.92)", display:"flex", alignItems:"center", justifyContent:"center", backdropFilter:"blur(10px)" }}>
+              <div style={{ width:"min(560px, 88vw)", border:"1px solid rgba(255,255,255,0.1)", padding:"40px 44px", background:"rgba(0,0,0,0.5)", position:"relative" }}>
+                <button onClick={() => setShowInfo(false)} style={{ position:"absolute", top:16, right:16, background:"none", border:"none", color:"rgba(255,255,255,0.3)", fontSize:18, cursor:"pointer", fontFamily:"Georgia, serif", lineHeight:1 }}>x</button>
+                <div style={{ color:"rgba(255,255,255,0.3)", fontSize:10, letterSpacing:"0.35em", textTransform:"uppercase", marginBottom:10 }}>About</div>
+                <div style={{ color:"#ffffff", fontSize:22, fontWeight:300, fontFamily:"Georgia, serif", marginBottom:24 }}>Infinite Counterpoint</div>
+                <div style={{ color:"rgba(255,255,255,0.65)", fontSize:13, lineHeight:1.9, marginBottom:20 }}>Infinite Counterpoint is a generative art engine that simulates a working session between two of history's greatest mathematicians. Each mathematician carries their own mathematical vocabulary and color logic. Their equations are layered onto a shared canvas and allowed to negotiate, compete, and merge in real time. The result is not illustration. It is what their mathematics actually looks like when it runs.</div>
+                <div style={{ color:"rgba(255,255,255,0.65)", fontSize:13, lineHeight:1.9, marginBottom:20 }}>The current pairing is Mandelbrot and Ramanujan. Mandelbrot's layer is built from his escape velocity iteration, the same mathematics that produces the Mandelbrot set. Ramanujan's layer is built from golden-ratio spirals modulated by his partition function. Where the two layers meet at the center is where the art lives.</div>
+                <div style={{ color:"rgba(255,255,255,0.65)", fontSize:13, lineHeight:1.9, marginBottom:28 }}>Pressing Let Them Speak generates an in-character conversation between the two mathematicians using the Claude API. This is the only feature that requires an API key.</div>
+                <div style={{ borderTop:"1px solid rgba(255,255,255,0.08)", paddingTop:20 }}>
+                  <div style={{ color:"rgba(0,255,200,0.7)", fontSize:10, letterSpacing:"0.3em", textTransform:"uppercase", marginBottom:10 }}>About Your API Key</div>
+                  <div style={{ color:"rgba(255,255,255,0.5)", fontSize:12, lineHeight:1.9 }}>Your Anthropic API key is held only in your browser's active memory for this session. It is sent directly from your device to Anthropic's servers and nowhere else. The creator of this application has no server, no database, and no mechanism to receive, log, or access your key in any form. When you close this tab your key is gone. You can verify this by inspecting the network requests your browser makes when the dialogue generates: the only destination is api.anthropic.com.</div>
+                </div>
+                <button onClick={() => setShowInfo(false)} style={{ marginTop:24, width:"100%", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", color:"rgba(255,255,255,0.5)", padding:"10px 0", fontSize:11, letterSpacing:"0.2em", textTransform:"uppercase", cursor:"pointer", fontFamily:"Georgia, serif" }}>Close</button>
+              </div>
+            </div>
+          )}
+
+          {showKeyPanel && (
+            <div style={{ position:"absolute", inset:0, zIndex:50, background:"rgba(0,0,0,0.88)", display:"flex", alignItems:"center", justifyContent:"center", backdropFilter:"blur(8px)" }}>
+              <div style={{ width:"min(480px, 88vw)", border:"1px solid rgba(255,255,255,0.12)", padding:"36px 40px", background:"rgba(0,0,0,0.6)" }}>
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:8 }}>
+                  <div style={{ color:"rgba(255,255,255,0.35)", fontSize:10, letterSpacing:"0.35em", textTransform:"uppercase" }}>Generative Mathematics</div>
+                  <button onClick={() => setShowInfo(true)} style={{ width:22, height:22, borderRadius:"50%", background:"rgba(255,255,255,0.07)", border:"1px solid rgba(255,255,255,0.2)", color:"rgba(255,255,255,0.55)", fontSize:12, cursor:"pointer", fontFamily:"Georgia, serif", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>i</button>
+                </div>
+                <div style={{ color:"#ffffff", fontSize:20, fontWeight:300, marginBottom:8, fontFamily:"Georgia, serif" }}>Infinite Counterpoint</div>
+                <div style={{ color:"rgba(255,255,255,0.4)", fontSize:12, lineHeight:1.7, marginBottom:28 }}>The dialogue engine requires an Anthropic API key. Your key is used only for direct calls to the Claude API and is never stored or transmitted elsewhere. The canvas runs without a key — only the spoken conversation between mathematicians requires one.</div>
+                <input type="password" placeholder="sk-ant-..." value={keyInput} onChange={e => setKeyInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && keyInput.startsWith("sk-")) { setApiKey(keyInput); setShowKeyPanel(false); } }} style={{ width:"100%", boxSizing:"border-box", background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.15)", color:"#ffffff", padding:"10px 14px", fontSize:13, fontFamily:"monospace", outline:"none", marginBottom:12 }} />
+                <div style={{ display:"flex", gap:10 }}>
+                  <button onClick={() => { if (keyInput.startsWith("sk-")) { setApiKey(keyInput); setShowKeyPanel(false); } }} style={{ flex:1, background:"rgba(0,255,200,0.1)", border:"1px solid rgba(0,255,200,0.3)", color:"#00ffc8", padding:"10px 0", fontSize:11, letterSpacing:"0.2em", textTransform:"uppercase", cursor:"pointer", fontFamily:"Georgia, serif" }}>Activate Engine</button>
+                  {apiKey && <button onClick={() => setShowKeyPanel(false)} style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", color:"rgba(255,255,255,0.4)", padding:"10px 18px", fontSize:11, letterSpacing:"0.2em", textTransform:"uppercase", cursor:"pointer", fontFamily:"Georgia, serif" }}>Cancel</button>}
+                </div>
+                <div style={{ marginTop:16, color:"rgba(255,255,255,0.2)", fontSize:10, letterSpacing:"0.1em" }}>Without a key the canvas and all five phases still animate. Only the live conversation is gated.</div>
+              </div>
+            </div>
+          )}
+
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

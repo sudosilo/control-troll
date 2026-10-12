@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<!-- BLUE CODE: source device Blue Phone -->
+<title>Grillbert's Drive-Thru Crew Portal</title>
+<style>
+
+:root { color-scheme: only light; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { background: #FFF6E0; }
+body {
+  margin: 0; min-height: 100vh; color: #2A1A12;
+  font-family: "Helvetica Neue", Arial, system-ui, sans-serif;
+  display: flex; flex-direction: column; align-items: center;
+}
+.topbar {
+  width: 100%; background: #D62718; border-bottom: 6px solid #FFC72C;
+  padding: 16px 18px; display: flex; align-items: center; gap: 12px;
+}
+.logo { width: 46px; height: 46px; flex-shrink: 0; }
+.brand { font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 21px; color: #FFFFFF; letter-spacing: 0.5px; text-transform: uppercase; line-height: 1.05; }
+.brand-sub { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #FFC72C; margin-top: 3px; }
+.ribbon { width: 100%; background: #2A1A12; color: #FFC72C; text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; padding: 6px 10px; }
+.wrap { width: 100%; max-width: 440px; padding: 26px 18px 44px; }
+.card { background: #FFFFFF; border: 3px solid #2A1A12; border-radius: 6px; padding: 24px 22px; box-shadow: 6px 6px 0 #FFC72C; }
+.card-title { font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif; font-size: 20px; text-transform: uppercase; margin: 0 0 4px; }
+.card-sub { font-size: 13px; color: #7A6A5E; margin: 0 0 14px; }
+.divider { border: none; border-top: 2px dashed #E2CFA0; margin: 0 0 18px; }
+label { display: block; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; color: #2A1A12; margin-bottom: 6px; }
+input[type="text"] {
+  width: 100%; padding: 12px 14px; margin-bottom: 18px; border: 2px solid #2A1A12; border-radius: 4px;
+  background: #FFFDF5; color: #2A1A12; font-family: "Courier New", monospace; font-size: 16px;
+}
+input[type="text"]:focus { outline: none; box-shadow: 0 0 0 3px #FFC72C; }
+button {
+  width: 100%; padding: 15px; background: #D62718; color: #FFC72C; border: 3px solid #2A1A12; border-radius: 4px;
+  font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif; font-size: 16px; letter-spacing: 2px; cursor: pointer;
+}
+button:hover:not(:disabled) { background: #A81C10; }
+button:disabled { background: #D9A9A3; color: #FFF6E0; cursor: default; }
+.strength-row { display: flex; align-items: center; gap: 8px; margin-top: -8px; margin-bottom: 14px; }
+.strength-bar { flex: 1; height: 8px; background: #F0DFB8; border: 1px solid #2A1A12; border-radius: 2px; overflow: hidden; }
+.strength-fill { height: 100%; width: 0%; background: #D62718; transition: width 0.2s ease, background 0.2s ease; }
+.strength-label { font-size: 10px; font-weight: 800; letter-spacing: 1px; color: #7A6A5E; min-width: 70px; text-align: right; }
+.reset-row { text-align: right; margin-top: -4px; margin-bottom: 16px; }
+.reset-row a { font-size: 12px; color: #A81C10; text-decoration: none; border-bottom: 1px dotted #A81C10; }
+.result { display: none; margin-top: 18px; padding: 12px 14px; border-radius: 4px; font-size: 14px; line-height: 1.5; }
+.result.show { display: block; }
+.result.new { background: #FFF3C4; border: 2px solid #2A1A12; color: #2A1A12; }
+.result.success { background: #E6F4E8; border: 2px solid #2E8B3E; color: #1B5A27; }
+.result.fail { background: #FCE9E6; border: 2px solid #D62718; color: #8A1A10; }
+.foot { text-align: center; font-size: 11px; letter-spacing: 1.5px; font-weight: 700; color: #7A6A5E; margin-top: 22px; }
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <svg class="logo" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5 20 Q5 6 20 6 Q35 6 35 20 Z" fill="#F2A33A"/>
+    <ellipse cx="14" cy="12" rx="1.8" ry="1" fill="#FFF3D6"/>
+    <ellipse cx="20" cy="10" rx="1.8" ry="1" fill="#FFF3D6"/>
+    <ellipse cx="26" cy="12" rx="1.8" ry="1" fill="#FFF3D6"/>
+    <path d="M4 22 Q8 25 12 22 Q16 25 20 22 Q24 25 28 22 Q32 25 36 22 L36 24 L4 24 Z" fill="#4CAF50"/>
+    <rect x="4" y="24" width="32" height="6" rx="3" fill="#5B3A29"/>
+    <path d="M5 31 H35 Q35 36 30 36 H10 Q5 36 5 31 Z" fill="#F2A33A"/>
+  </svg>
+  <div>
+    <div class="brand">Grillbert's Drive-Thru</div>
+    <div class="brand-sub">CREW PORTAL</div>
+  </div>
+</div>
+<div class="ribbon">NOW SERVING | ORDER UP</div>
+
+<div class="wrap">
+  <div class="card">
+    <div class="card-title">Clock In</div>
+    <div class="card-sub">Enter your crew credentials to start your shift.</div>
+    <hr class="divider">
+
+    <label for="username">EMPLOYEE ID</label>
+    <input type="text" id="username" autocomplete="off" spellcheck="false">
+
+    <label for="password">PASSCODE</label>
+    <input type="text" id="password" autocomplete="off" spellcheck="false">
+
+    <div class="strength-row">
+      <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+      <span class="strength-label" id="strengthLabel"></span>
+    </div>
+
+    <div class="reset-row">
+      <a href="#" id="resetLink">forgot passcode?</a>
+    </div>
+
+    <button id="submitBtn">CLOCK IN</button>
+
+    <div class="result" id="result"></div>
+  </div>
+  <div class="foot">DRIVE-THRU OPEN | SHIFT TIME <span id="clock"></span></div>
+</div>
+
+<script>
+
+const LEVELS = [["COLD", "#D62718"], ["WARM", "#E8871E"], ["HOT", "#B8860B"], ["FRESH", "#2E8B3E"], ["ORDER UP", "#2A1A12"]];
+const EMPTY = '#F0DFB8';
+
+function tickClock() {
+  const c = document.getElementById('clock');
+  if (c) c.textContent = new Date().toLocaleTimeString();
+}
+tickClock();
+setInterval(tickClock, 1000);
+
+function scoreStrength(u, p) {
+  const combined = u + p;
+  if (!combined) return { pct: 0, label: '', color: EMPTY };
+
+  const uniqueChars = new Set(combined.toLowerCase()).size;
+  const lengthScore = Math.min(combined.length / 16, 1);
+  const varietyScore = Math.min(uniqueChars / 10, 1);
+  const hasLower = /[a-z]/.test(combined);
+  const hasUpper = /[A-Z]/.test(combined);
+  const hasDigit = /[0-9]/.test(combined);
+  const hasSymbol = /[^a-zA-Z0-9]/.test(combined);
+  const classCount = [hasLower, hasUpper, hasDigit, hasSymbol].filter(Boolean).length;
+  const classScore = classCount / 4;
+
+  const raw = (lengthScore * 0.4) + (varietyScore * 0.35) + (classScore * 0.25);
+  const pct = Math.round(raw * 100);
+  const idx = pct < 20 ? 0 : pct < 45 ? 1 : pct < 70 ? 2 : pct < 90 ? 3 : 4;
+
+  return { pct, label: LEVELS[idx][0], color: LEVELS[idx][1] };
+}
+
+function updateStrength() {
+  const u = document.getElementById('username').value;
+  const p = document.getElementById('password').value;
+  const { pct, label, color } = scoreStrength(u, p);
+
+  const fill = document.getElementById('strengthFill');
+  const lbl = document.getElementById('strengthLabel');
+  fill.style.width = pct + '%';
+  fill.style.background = color;
+  lbl.textContent = label;
+}
+
+document.getElementById('username').addEventListener('input', updateStrength);
+document.getElementById('password').addEventListener('input', updateStrength);
+
+function showResult(text, cls) {
+  const el = document.getElementById('result');
+  el.textContent = text;
+  el.className = 'result show ' + cls;
+}
+
+const resultClassMap = {
+  welcome_back: 'success',
+  password_wrong: 'fail',
+  username_wrong: 'fail',
+  enrolled: 'new'
+};
+
+function passwordMeetsRequirements(p) {
+  const hasUpper = /[A-Z]/.test(p);
+  const hasDigit = /[0-9]/.test(p);
+  const hasSymbol = /[^a-zA-Z0-9]/.test(p);
+  return hasUpper && hasDigit && hasSymbol;
+}
+
+document.getElementById('submitBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('submitBtn');
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value.trim();
+
+  if (!u || !p) {
+    showResult('employee ID and passcode are both required.', 'fail');
+    return;
+  }
+
+  if (!passwordMeetsRequirements(p)) {
+    showResult('passcode needs a capital letter, a number, and a special character.', 'fail');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'CLOCKING IN...';
+
+  try {
+    const res = await fetch('/api/attempt', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p })
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      showResult(data.error || 'order dropped. try again.', 'fail');
+    } else {
+      showResult(data.message, resultClassMap[data.result] || 'fail');
+    }
+  } catch (e) {
+    showResult('the register could not be reached.', 'fail');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'CLOCK IN';
+});
+
+document.getElementById('password').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') document.getElementById('submitBtn').click();
+});
+
+document.getElementById('resetLink').addEventListener('click', async (e) => {
+  e.preventDefault();
+  const u = document.getElementById('username').value.trim();
+
+  if (!u) {
+    showResult('enter an employee ID first.', 'fail');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u })
+    });
+    const data = await res.json();
+    showResult(data.message || 'ask your shift manager.', 'fail');
+  } catch (err) {
+    showResult('the register could not be reached.', 'fail');
+  }
+});
+</script>
+</body>
+</html>

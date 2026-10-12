@@ -1,0 +1,2400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RESTACK v2 -- Restaurant Technology Stack Explorer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap');
+
+  :root {
+    --bg: #0a0c0f;
+    --surface: #111418;
+    --surface2: #181c22;
+    --border: #2a3040;
+    --border-bright: #3d4f6b;
+    --text: #c8d8f0;
+    --text-dim: #6a7d99;
+    --text-bright: #e8f0ff;
+    --accent: #00c8ff;
+    --accent2: #ff6b35;
+    --accent3: #39ff7a;
+    --warn: #ffb830;
+    --known: #39ff7a;
+    --partial: #ffb830;
+    --unknown: #ff4455;
+    --custom: #c87eff;
+    --mono: 'Share Tech Mono', monospace;
+    --display: 'Barlow Condensed', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--accent);
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 0 40px rgba(0,200,255,0.08);
+    gap: 12px;
+  }
+
+  .logo {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: 5px;
+    color: var(--accent);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .logo span {
+    color: var(--text-dim);
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 2px;
+    display: block;
+    margin-top: -4px;
+  }
+
+  /* SITE SELECTOR IN HEADER */
+  .site-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    max-width: 340px;
+  }
+
+  .site-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .site-select {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border-bright);
+    color: var(--accent);
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 4px 8px;
+    outline: none;
+    cursor: pointer;
+    height: 32px;
+  }
+
+  .site-select option { background: var(--surface2); color: var(--text); font-family: var(--mono); font-size: 13px; }
+
+  .header-stats {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .stat { text-align: center; }
+
+  .stat-val {
+    font-family: var(--display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    color: var(--text-dim);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .btn {
+    background: transparent;
+    border: 1px solid var(--border-bright);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 5px 12px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,200,255,0.05);
+  }
+
+  .btn-primary { border-color: var(--accent); color: var(--accent); }
+  .btn-danger { border-color: var(--unknown); color: var(--unknown); }
+  .btn-custom { border-color: var(--custom); color: var(--custom); }
+  .btn-warn { border-color: var(--warn); color: var(--warn); }
+
+  /* LAYOUT */
+  .layout {
+    display: flex;
+    height: calc(100vh - 56px);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sidebar-section {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-title {
+    font-family: var(--display);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 0;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot-known { background: var(--known); }
+  .dot-partial { background: var(--partial); }
+  .dot-unknown { background: var(--unknown); }
+  .dot-custom { background: var(--custom); }
+  .dot-empty { background: var(--border); }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    margin-top: 8px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    transition: width 0.4s ease;
+  }
+
+  .search-box {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 7px 10px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .search-box:focus { border-color: var(--accent); }
+  .search-box::placeholder { color: var(--text-dim); }
+
+  .filter-btns {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 7px;
+  }
+
+  .filter-btn {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 7px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.15s;
+  }
+
+  .filter-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,200,255,0.07);
+  }
+
+  .domain-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 0;
+  }
+
+  .domain-list::-webkit-scrollbar { width: 4px; }
+  .domain-list::-webkit-scrollbar-thumb { background: var(--border); }
+
+  .domain-item {
+    padding: 6px 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: background 0.1s;
+    border-left: 3px solid transparent;
+  }
+
+  .domain-item:hover { background: var(--surface2); }
+
+  .domain-item.active {
+    background: rgba(0,200,255,0.05);
+    border-left-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .domain-code { font-size: 10px; color: var(--text-dim); min-width: 24px; }
+  .domain-name { font-size: 11px; flex: 1; }
+
+  .domain-bar {
+    width: 36px;
+    height: 3px;
+    background: var(--border);
+    overflow: hidden;
+  }
+
+  .domain-bar-fill {
+    height: 100%;
+    background: var(--accent3);
+    transition: width 0.3s;
+  }
+
+  /* MAIN */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .toolbar {
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    flex-wrap: wrap;
+  }
+
+  .toolbar-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .tree-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+  }
+
+  .tree-area::-webkit-scrollbar { width: 6px; }
+  .tree-area::-webkit-scrollbar-thumb { background: var(--border); }
+
+  /* TREE NODES */
+  .tree-node { margin-bottom: 2px; }
+
+  .node-row {
+    display: flex;
+    align-items: stretch;
+    cursor: pointer;
+  }
+
+  .node-indent { display: flex; align-items: stretch; }
+
+  .indent-line {
+    width: 20px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border);
+  }
+
+  .node-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 8px;
+    border: 1px solid transparent;
+    transition: all 0.12s;
+    min-width: 0;
+  }
+
+  .node-content:hover { background: var(--surface2); border-color: var(--border); }
+  .node-content.selected { background: rgba(0,200,255,0.06); border-color: var(--accent); }
+  .node-content.is-custom { border-left: 2px solid var(--custom); }
+
+  .node-toggle {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    font-size: 9px;
+    transition: transform 0.15s;
+  }
+
+  .node-toggle.open { transform: rotate(90deg); }
+
+  .node-status {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .node-label {
+    flex: 1;
+    font-size: 12px;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .node-label.layer-0 {
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .node-label.layer-1 {
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .node-label.layer-2 { color: var(--text); }
+  .node-label.layer-3 { color: var(--text-dim); font-size: 11px; }
+  .node-label.layer-4 { color: var(--border-bright); font-size: 11px; font-style: italic; }
+
+  .node-label.custom-node { color: var(--custom); }
+
+  .node-meta {
+    font-size: 9px;
+    color: var(--text-dim);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .node-add-btn {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--border-bright);
+    cursor: pointer;
+    transition: color 0.15s;
+    opacity: 0;
+  }
+
+  .node-content:hover .node-add-btn { opacity: 1; }
+  .node-add-btn:hover { color: var(--custom); }
+
+  .node-del-btn {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--border-bright);
+    cursor: pointer;
+    transition: color 0.15s;
+    opacity: 0;
+  }
+
+  .node-content:hover .node-del-btn { opacity: 1; }
+  .node-del-btn:hover { color: var(--unknown); }
+
+  .node-children { padding-left: 20px; display: none; }
+  .node-children.open { display: block; }
+
+  /* DETAIL PANEL */
+  .detail-panel {
+    width: 340px;
+    min-width: 340px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .detail-header {
+    padding: 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .detail-path {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    word-break: break-all;
+    line-height: 1.4;
+  }
+
+  .detail-title {
+    font-family: var(--display);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text-bright);
+    line-height: 1.1;
+    margin-bottom: 3px;
+  }
+
+  .detail-vendor { font-size: 11px; color: var(--accent2); letter-spacing: 1px; line-height: 1.4; }
+
+  .detail-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px;
+  }
+
+  .detail-body::-webkit-scrollbar { width: 4px; }
+  .detail-body::-webkit-scrollbar-thumb { background: var(--border); }
+
+  .field-group { margin-bottom: 14px; }
+
+  .field-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+
+  .field-value { font-size: 12px; color: var(--text); line-height: 1.5; }
+
+  textarea.field-input, input.field-input, select.field-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 7px 10px;
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.15s;
+    min-height: 60px;
+  }
+
+  input.field-input, select.field-input {
+    min-height: unset;
+    height: 32px;
+    resize: none;
+  }
+
+  textarea.field-input:focus, input.field-input:focus, select.field-input:focus {
+    border-color: var(--accent);
+  }
+
+  select.field-input option { background: var(--surface2); }
+
+  .status-selector { display: flex; gap: 5px; margin-bottom: 10px; }
+
+  .status-btn {
+    flex: 1;
+    padding: 6px 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 10px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .status-btn[data-status="known"].active { border-color: var(--known); color: var(--known); background: rgba(57,255,122,0.08); }
+  .status-btn[data-status="partial"].active { border-color: var(--partial); color: var(--partial); background: rgba(255,184,48,0.08); }
+  .status-btn[data-status="unknown"].active { border-color: var(--unknown); color: var(--unknown); background: rgba(255,68,85,0.08); }
+
+  .detail-footer {
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .save-indicator { font-size: 10px; color: var(--text-dim); flex: 1; letter-spacing: 1px; }
+  .save-indicator.saved { color: var(--known); }
+  .save-indicator.unsaved { color: var(--partial); }
+
+  /* EMPTY STATE */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 10px;
+    color: var(--text-dim);
+    padding: 40px;
+    text-align: center;
+  }
+
+  .empty-icon { font-size: 40px; opacity: 0.3; }
+
+  .empty-title {
+    font-family: var(--display);
+    font-size: 16px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+  }
+
+  .empty-sub { font-size: 11px; line-height: 1.6; max-width: 200px; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border-bright);
+    width: 520px;
+    max-width: 95vw;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 80px rgba(0,200,255,0.1);
+  }
+
+  .modal-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .modal-title {
+    font-family: var(--display);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+
+  .modal-body { padding: 18px; overflow-y: auto; flex: 1; }
+
+  .modal-footer {
+    padding: 10px 18px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* SITE LIST IN MODAL */
+  .site-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+
+  .site-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+
+  .site-row:hover { border-color: var(--accent); }
+  .site-row.active-site { border-color: var(--accent); background: rgba(0,200,255,0.05); }
+
+  .site-row-name {
+    flex: 1;
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-bright);
+    letter-spacing: 1px;
+  }
+
+  .site-row-meta { font-size: 10px; color: var(--text-dim); }
+
+  .site-row-del {
+    font-size: 14px;
+    color: var(--text-dim);
+    cursor: pointer;
+    padding: 2px 6px;
+    transition: color 0.15s;
+  }
+
+  .site-row-del:hover { color: var(--unknown); }
+  .site-row-act { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 2px 6px; }
+
+  /* IMPORT DROP ZONE */
+  .drop-zone {
+    border: 2px dashed var(--border-bright);
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    color: var(--text-dim);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .drop-zone:hover, .drop-zone.dragover { border-color: var(--accent); color: var(--accent); }
+  .drop-zone input[type=file] { display: none; }
+
+  /* SCANLINES */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1000px) { .detail-panel { display: none; } }
+  @media (max-width: 750px) { .sidebar { width: 200px; min-width: 200px; } .header-stats { display: none; } }
+  @media (max-width: 550px) { .sidebar { display: none; } .logo span { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    RESTACK
+    <span>Tech Stack Explorer v2</span>
+  </div>
+
+  <div class="site-bar">
+    <span class="site-label">Site:</span>
+    <select class="site-select" id="site-select" onchange="switchSite(this.value)"></select>
+    <button class="btn btn-custom" onclick="openSiteManager()" style="padding:4px 10px">Sites</button>
+  </div>
+  <div style="font-size:10px;letter-spacing:1px;flex-shrink:0" id="api-status"></div>
+
+  <div class="header-stats">
+    <div class="stat">
+      <div class="stat-val" id="stat-total">0</div>
+      <div class="stat-label">Nodes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val" id="stat-known" style="color:var(--known)">0</div>
+      <div class="stat-label">Known</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val" id="stat-partial" style="color:var(--partial)">0</div>
+      <div class="stat-label">Partial</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val" id="stat-unknown" style="color:var(--unknown)">0</div>
+      <div class="stat-label">Gaps</div>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <button class="btn" onclick="expandAll()">Expand</button>
+    <button class="btn" onclick="collapseAll()">Collapse</button>
+    <button class="btn btn-warn" onclick="openImport()">Import</button>
+    <button class="btn btn-primary" onclick="exportData()">Export</button>
+    <button class="btn btn-danger" onclick="confirmReset()">Reset</button>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Knowledge Status</div>
+      <div class="legend-item"><div class="dot dot-known"></div>Known / Documented</div>
+      <div class="legend-item"><div class="dot dot-partial"></div>Partial / Guessed</div>
+      <div class="legend-item"><div class="dot dot-unknown"></div>Gap / Unresearched</div>
+      <div class="legend-item"><div class="dot dot-custom"></div>Custom Node</div>
+      <div class="legend-item"><div class="dot dot-empty"></div>Not assessed</div>
+      <div class="progress-bar" style="margin-top:10px">
+        <div class="progress-fill" id="global-progress" style="width:0%"></div>
+      </div>
+      <div style="text-align:right;font-size:10px;color:var(--text-dim);margin-top:3px" id="progress-label">0% covered</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Filter</div>
+      <input class="search-box" type="text" id="search-input" placeholder="Search nodes, vendors, notes..." oninput="handleSearch(this.value)">
+      <div class="filter-btns">
+        <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">All</button>
+        <button class="filter-btn" data-filter="known" onclick="setFilter('known',this)">Known</button>
+        <button class="filter-btn" data-filter="partial" onclick="setFilter('partial',this)">Partial</button>
+        <button class="filter-btn" data-filter="unknown" onclick="setFilter('unknown',this)">Gaps</button>
+        <button class="filter-btn" data-filter="unset" onclick="setFilter('unset',this)">Unset</button>
+        <button class="filter-btn" data-filter="custom" onclick="setFilter('custom',this)">Custom</button>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Domains</div>
+    </div>
+    <div class="domain-list" id="domain-list"></div>
+  </div>
+
+  <div class="main">
+    <div class="toolbar">
+      <span class="toolbar-label">Tree Actions:</span>
+      <button class="btn btn-custom" onclick="openAddRootNode()" style="font-size:10px;padding:4px 10px">+ Add Domain</button>
+      <button class="btn btn-primary" onclick="openProfile()" style="font-size:10px;padding:4px 10px">Site Profile</button>
+      <span style="color:var(--text-dim);font-size:10px;letter-spacing:1px">Hover any node to add child or delete</span>
+    </div>
+    <div class="tree-area" id="tree-area"></div>
+  </div>
+
+  <div class="detail-panel">
+    <div id="detail-panel-content">
+      <div class="empty-state">
+        <div class="empty-icon">&#9707;</div>
+        <div class="empty-title">Select a Node</div>
+        <div class="empty-sub">Click any item in the tree to view and edit its knowledge record.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Dialog</div>
+      <button class="modal-close" onclick="closeModal()">x</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+
+<script>
+// ==================== CANONICAL TREE ====================
+const TREE_TEMPLATE = {
+  id: 'root',
+  label: 'RESTAURANT',
+  type: 'root',
+  desc: 'Top-level restaurant operation. All technology, firmware, and software assets descend from this node.',
+  vendor: 'Generic / Multi-brand',
+  custom: false,
+  children: [
+    {
+      id: 'network', label: 'Network Infrastructure', type: 'domain',
+      desc: 'The physical and logical backbone connecting all restaurant systems. Every device in the building is either wired or wireless through this layer.',
+      vendor: 'Cisco Meraki (dominant in enterprise QSR)', custom: false,
+      children: [
+        {
+          id: 'net-wan', label: 'WAN / Internet Gateway', type: 'system',
+          desc: 'The internet connection termination point. Typically a business-grade cable or fiber modem with failover LTE.',
+          vendor: 'Comcast Business / AT&T / Cradlepoint IBR-series (LTE failover)', custom: false,
+          children: [
+            {
+              id: 'net-wan-modem-fw', label: 'Modem Firmware', type: 'firmware',
+              desc: 'Embedded firmware on the ISP-provided or self-managed modem/ONT. Usually locked and managed by ISP.',
+              vendor: 'Arris SB8200 / Nokia G-010G-P ONT / Calix 844G', custom: false,
+              children: [
+                { id: 'net-wan-modem-fw-kernel', label: 'Embedded Linux Kernel', type: 'layer', desc: 'The OS kernel running inside the modem. Usually a stripped Linux variant.', vendor: 'OpenWrt or proprietary BSP', custom: false, children: [] },
+                { id: 'net-wan-modem-fw-diag', label: 'SNMP / Diagnostics Agent', type: 'layer', desc: 'ISP-side remote monitoring and provisioning interface built into modem firmware.', vendor: 'ISP proprietary', custom: false, children: [] }
+              ]
+            },
+            {
+              id: 'net-wan-lte', label: 'LTE Failover Firmware', type: 'firmware',
+              desc: 'Firmware on the LTE failover device that monitors primary WAN health and switches automatically.',
+              vendor: 'Cradlepoint NCM / Peplink InControl2', custom: false,
+              children: [
+                { id: 'net-wan-lte-cloud', label: 'Cloud Management Portal', type: 'software', desc: 'Web-based dashboard for managing all LTE devices across locations. Remote diagnostics, SIM management.', vendor: 'Cradlepoint NetCloud Manager (NCM)', custom: false, children: [] }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'net-fw', label: 'Firewall', type: 'system',
+          desc: 'Security gateway between WAN and internal network. Enforces PCI-DSS segmentation, blocks threats, manages VPN tunnels back to corporate.',
+          vendor: 'Cisco Meraki MX-series (MX67 / MX68 typical for single-unit)', custom: false,
+          children: [
+            {
+              id: 'net-fw-os', label: 'Meraki MX Firmware', type: 'firmware',
+              desc: 'Cisco-signed firmware running on the MX appliance. Auto-updated via Meraki Dashboard. No local CLI access by design.',
+              vendor: 'Cisco Meraki (MX 18.x firmware train)', custom: false,
+              children: [
+                { id: 'net-fw-os-ips', label: 'IPS / AMP Engine', type: 'layer', desc: 'Intrusion Prevention and Advanced Malware Protection module. Subscription-based Snort ruleset via Cisco Talos.', vendor: 'Cisco Talos + Snort engine', custom: false, children: [] },
+                { id: 'net-fw-os-vpn', label: 'Auto VPN Engine', type: 'layer', desc: 'Meraki proprietary mesh VPN auto-establishing tunnels between all MX devices in the same org.', vendor: 'Meraki Auto VPN (Cisco proprietary)', custom: false, children: [] },
+                { id: 'net-fw-os-sd', label: 'SD-WAN Engine', type: 'layer', desc: 'Traffic shaping and path selection. Can prioritize POS traffic over guest WiFi.', vendor: 'Meraki MX SD-WAN', custom: false, children: [] }
+              ]
+            },
+            {
+              id: 'net-fw-dashboard', label: 'Meraki Dashboard', type: 'software',
+              desc: 'Cloud-based management portal. ALL Meraki configuration -- firewall rules, VLANs, content filtering -- lives here. No on-prem controller.',
+              vendor: 'Cisco Meraki Dashboard (dashboard.meraki.com)', custom: false,
+              children: [
+                { id: 'net-fw-dashboard-api', label: 'Meraki Dashboard API', type: 'layer', desc: 'REST API for programmatic config of all Meraki devices. Used by MSPs for automation.', vendor: 'Cisco Meraki REST API v1', custom: false, children: [] },
+                { id: 'net-fw-dashboard-org', label: 'MSP / Org Layer', type: 'layer', desc: 'Multi-org abstraction allowing a managed service provider to administer hundreds of restaurant locations from one login.', vendor: 'Meraki MSP Dashboard', custom: false, children: [] }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'net-sw', label: 'Managed Switch', type: 'system',
+          desc: 'Distributes wired connections to all hardwired devices. Supports VLANs to segment POS from guest and management traffic.',
+          vendor: 'Cisco Meraki MS-series (MS120-8FP typical)', custom: false,
+          children: [
+            {
+              id: 'net-sw-fw', label: 'Switch Firmware', type: 'firmware',
+              desc: 'Meraki-managed firmware on the physical switch. Handles VLAN tagging, PoE budget, spanning tree, port mirroring.',
+              vendor: 'Cisco Meraki MS Firmware', custom: false,
+              children: [
+                { id: 'net-sw-poe', label: 'PoE Controller Layer', type: 'layer', desc: 'Manages power delivery to PoE-powered devices. Budget managed per-port.', vendor: 'IEEE 802.3at/bt embedded in switch ASIC', custom: false, children: [] }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'net-ap', label: 'Wireless Access Points', type: 'system',
+          desc: 'Serves internal WiFi for tablets, handhelds, kiosks, and a separate SSID for guest WiFi.',
+          vendor: 'Cisco Meraki MR-series (MR36 / MR46 typical)', custom: false,
+          children: [
+            {
+              id: 'net-ap-fw', label: 'AP Firmware', type: 'firmware',
+              desc: 'Radio firmware controlling dual-band 802.11ax, SSID isolation, band steering, and roaming.',
+              vendor: 'Cisco Meraki MR Firmware', custom: false,
+              children: [
+                { id: 'net-ap-captive', label: 'Captive Portal Engine', type: 'layer', desc: 'Redirects unauthenticated clients on guest SSID to a splash page. Can collect emails or require social login.', vendor: 'Meraki built-in or Radius-based third-party', custom: false, children: [] }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'pos', label: 'Point of Sale', type: 'domain',
+      desc: 'The transaction core. Every customer payment, order, and modifier routes through the POS. The hub most other systems integrate into.',
+      vendor: 'Toast POS (dominant in full-service) / Square (independents)', custom: false,
+      children: [
+        {
+          id: 'pos-terminal', label: 'POS Terminal', type: 'system',
+          desc: 'The physical register -- touchscreen, cash drawer port, receipt printer port. May be countertop or handheld.',
+          vendor: 'Toast Terminal / Toast Go 2 / Square Terminal', custom: false,
+          children: [
+            {
+              id: 'pos-terminal-os', label: 'Terminal OS', type: 'firmware',
+              desc: 'Locked-down Android or proprietary Linux running on the POS hardware. Kiosk-mode enforced.',
+              vendor: 'Toast: Android AOSP locked / Square: Square Linux', custom: false,
+              children: [
+                {
+                  id: 'pos-terminal-app', label: 'POS Application', type: 'software',
+                  desc: 'Order-taking software. Menu management, modifiers, discounts, comps, split checks, voids, refunds, shift management.',
+                  vendor: 'Toast POS App (Android) / Square POS App', custom: false,
+                  children: [
+                    { id: 'pos-terminal-app-menu', label: 'Menu Management Engine', type: 'layer', desc: 'Manages items, modifiers, pricing, 86ing. Synced from cloud. Changes propagate to all terminals and online ordering.', vendor: 'Toast Menu Manager / Square Item Library', custom: false, children: [] },
+                    { id: 'pos-terminal-app-loyalty', label: 'Loyalty Integration Layer', type: 'layer', desc: 'Hooks into loyalty platform at checkout. Looks up account, applies rewards, posts points.', vendor: 'Toast Loyalty / Paytronix API / Punchh API', custom: false, children: [] }
+                  ]
+                },
+                { id: 'pos-terminal-fw', label: 'Terminal Bootloader / Secure Firmware', type: 'firmware', desc: 'Low-level firmware below the OS. Controls hardware init, secure boot, tamper detection.', vendor: 'OEM (Ingenico/PAX parent hardware) or Toast custom', custom: false, children: [] }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'pos-pinpad', label: 'Pin Pad / Payment Terminal', type: 'system',
+          desc: 'PCI-certified device that handles card data. Completely isolated from POS OS -- card data never touches POS software.',
+          vendor: 'Ingenico Lane 3000 / PAX A80 / Verifone P400', custom: false,
+          children: [
+            {
+              id: 'pos-pinpad-fw', label: 'Payment Terminal Firmware', type: 'firmware',
+              desc: 'PCI PTS certified firmware. Manages EMV chip, NFC, magstripe, PIN encryption. Remotely keyed by payment processor.',
+              vendor: 'Ingenico TeliumPass / PAX PayDroid (Android-based)', custom: false,
+              children: [
+                { id: 'pos-pinpad-emv', label: 'EMV Kernel', type: 'layer', desc: 'The chip card processing library. Handles card authentication, transaction authorization, offline data auth.', vendor: 'Multos / Visa-MC certified kernel', custom: false, children: [] },
+                { id: 'pos-pinpad-gateway', label: 'Payment Gateway Client', type: 'layer', desc: 'Encrypted tunnel to payment processor data center. Sends auth requests, receives approval codes.', vendor: 'Heartland / Worldpay / Stripe Terminal / TSYS', custom: false, children: [] }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'pos-cloud', label: 'POS Cloud Backend', type: 'system',
+          desc: 'Server-side of the POS platform. Stores all transaction data, menu config, employee records. Real-time sync to all terminals.',
+          vendor: 'Toast Cloud (AWS-hosted) / Square backend', custom: false,
+          children: [
+            { id: 'pos-cloud-reporting', label: 'Reporting Portal', type: 'software', desc: 'Web dashboard for owners/managers. Sales by hour, item, server. Labor vs sales. End-of-day reports.', vendor: 'Toast Web Portal (app.toasttab.com) / Square Dashboard', custom: false, children: [] },
+            { id: 'pos-cloud-api', label: 'POS API / Integration Layer', type: 'software', desc: 'REST/webhook API used by third-party integrations -- online ordering, delivery, accounting, inventory.', vendor: 'Toast Platform API / Square Connect API', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'pos-printer', label: 'Receipt / Order Printer', type: 'system',
+          desc: 'Thermal printer for customer receipts and kitchen order tickets where KDS is not used.',
+          vendor: 'Epson TM-T88VII / Star Micronics TSP-series', custom: false,
+          children: [
+            { id: 'pos-printer-fw', label: 'Printer Firmware', type: 'firmware', desc: 'Controls thermal head, cutter, paper detection, Ethernet/USB/Bluetooth connectivity.', vendor: 'Epson TM Firmware (ePOS-Print SDK target)', custom: false, children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'kitchen', label: 'Kitchen Systems', type: 'domain',
+      desc: 'All technology between order placement and food delivery. KDS replaces paper tickets and drives speed-of-service metrics.',
+      vendor: 'Toast KDS / QSR Automations ConnectSmart / Expedient', custom: false,
+      children: [
+        {
+          id: 'kds-display', label: 'Kitchen Display System (KDS)', type: 'system',
+          desc: 'Touchscreen mounted at cook stations. Shows incoming orders, timers, modifiers.',
+          vendor: 'Toast KDS / Bematech LD1600A / QSR Automations ConnectSmart', custom: false,
+          children: [
+            {
+              id: 'kds-display-fw', label: 'KDS Hardware Firmware', type: 'firmware',
+              desc: 'Embedded OS on the KDS unit. Usually locked Android or embedded Linux. Runs KDS app in kiosk mode.',
+              vendor: 'Toast KDS: Android AOSP / QSR Automations: Linux', custom: false,
+              children: [
+                {
+                  id: 'kds-app', label: 'KDS Application', type: 'software',
+                  desc: 'The display software. Color-coded timers, bump to expo, multi-station routing rules.',
+                  vendor: 'Toast KDS App / QSR ConnectSmart Kitchen', custom: false,
+                  children: [
+                    { id: 'kds-routing', label: 'Order Routing Engine', type: 'layer', desc: 'Decides which items route to which KDS station. Configured in POS backend.', vendor: 'Toast routing rules / QSR routing engine', custom: false, children: [] }
+                  ]
+                }
+              ]
+            },
+            { id: 'kds-bumpbar-fw', label: 'Bump Bar Firmware', type: 'firmware', desc: 'Firmware on the physical bump bar buttons cooks use to advance/bump tickets.', vendor: 'QSR Automations bump bar / Bematech bump bar', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'expo-display', label: 'Expo / Expediter Display', type: 'system',
+          desc: 'Summary view at the pass/window showing all in-progress orders across all stations.',
+          vendor: 'QSR Automations ConnectSmart Expo / Toast Expo Mode', custom: false,
+          children: [
+            { id: 'expo-app', label: 'Expo Application', type: 'software', desc: 'Aggregates all station statuses. Color coding by table, order age. Allows expo to fire items to next station.', vendor: 'QSR ConnectSmart Expo / Toast Expo Screen', custom: false, children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'ordering', label: 'Ordering Systems', type: 'domain',
+      desc: 'All channels through which orders enter the restaurant -- digital, physical, kiosk, and third-party aggregator.',
+      vendor: 'Olo / Toast Online Ordering / DoorDash / Uber Eats', custom: false,
+      children: [
+        {
+          id: 'online-ordering', label: 'Online Ordering Platform', type: 'system',
+          desc: 'First-party web/app ordering. Customer places order directly -- avoids 30% aggregator commission.',
+          vendor: 'Olo (enterprise) / Toast Online Ordering / Owner.com', custom: false,
+          children: [
+            { id: 'olo-app', label: 'Ordering Web App / Mobile App', type: 'software', desc: 'Customer-facing ordering interface. Menu browsing, cart, checkout, scheduled pickup.', vendor: 'Olo Rails + Expo / Toast branded ordering site', custom: false, children: [] },
+            { id: 'olo-inject', label: 'Order Injection API', type: 'layer', desc: 'Pushes confirmed orders from Olo directly into POS as if a cashier rang them. No manual re-entry.', vendor: 'Olo Dispatch / Toast POS Inject API', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'delivery-aggregators', label: 'Third-Party Delivery Aggregators', type: 'system',
+          desc: 'DoorDash, Uber Eats, Grubhub each provide a separate tablet. Without middleware, staff must manually re-enter into POS.',
+          vendor: 'DoorDash Merchant Portal / Uber Eats Manager / Grubhub for Restaurants', custom: false,
+          children: [
+            { id: 'agg-tablet-fw', label: 'Aggregator Tablet Firmware', type: 'firmware', desc: 'Each aggregator ships a locked Android tablet. OS managed by the aggregator, not the restaurant.', vendor: 'Android + aggregator MDM lock', custom: false, children: [] },
+            { id: 'agg-middleware', label: 'Aggregator Middleware', type: 'software', desc: 'Consolidates all delivery tablets into one and injects orders into POS. Eliminates manual re-entry.', vendor: 'Otter / ItsaCheckmate / Deliverect / Omnivore', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'kiosk', label: 'Self-Service Kiosk', type: 'system',
+          desc: 'Touchscreen ordering station for dine-in or counter-service. Reduces labor, increases average check via upsell.',
+          vendor: 'Toast Kiosk / Square Kiosk / ACRELEC', custom: false,
+          children: [
+            { id: 'kiosk-hw-fw', label: 'Kiosk Hardware Firmware', type: 'firmware', desc: 'Firmware on kiosk enclosure -- touchscreen controller, thermal printer module, embedded payment terminal.', vendor: 'OEM firmware (Elo Touch / Mimo Monitors)', custom: false, children: [] },
+            { id: 'kiosk-app', label: 'Kiosk Application', type: 'software', desc: 'The ordering UI. Branded, upsell-prompting, integrates with loyalty lookup, sends orders to KDS or POS.', vendor: 'Toast Kiosk App / ACRELEC ROBIN software', custom: false, children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'drive-thru', label: 'Drive-Thru Systems', type: 'domain',
+      desc: 'All technology unique to the drive-thru lane. Speed, accuracy, and throughput are the KPIs this stack serves.',
+      vendor: 'HME (dominant) / Panasonic / Nexeo', custom: false,
+      children: [
+        {
+          id: 'headset', label: 'Headset / Intercom System', type: 'system',
+          desc: 'Wireless headset system connecting order takers to the drive-thru speaker post.',
+          vendor: 'HME NEXEO HD / HME PRO 9000 / Panasonic 1500-series', custom: false,
+          children: [
+            { id: 'headset-fw', label: 'Headset Firmware', type: 'firmware', desc: 'Firmware on the physical headset unit. Controls DECT radio link, audio processing, battery management.', vendor: 'HME proprietary firmware', custom: false, children: [] },
+            { id: 'headset-base-fw', label: 'Base Station Firmware', type: 'firmware', desc: 'Firmware on the base station handling channel routing, multi-headset assignment, intercom features.', vendor: 'HME NEXEO base firmware', custom: false, children: [] },
+            { id: 'headset-cloud', label: 'Headset Management Portal', type: 'software', desc: 'Cloud interface for managing headset settings, diagnostics, firmware updates across locations.', vendor: 'HME Cloud / HME ZOOM Dashboard', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'dttimer', label: 'Drive-Thru Timer System', type: 'system',
+          desc: 'Measures time at each detection point -- arrival, order, pull-forward, window. Reports speed-of-service metrics.',
+          vendor: 'HME ZOOM / Inpixon / Delphi Display Systems', custom: false,
+          children: [
+            { id: 'dttimer-sensor-fw', label: 'Vehicle Sensor Firmware', type: 'firmware', desc: 'Firmware on buried loop detectors or radar/IR sensors at each lane position.', vendor: 'Reno A&E loop detector / Sensata radar', custom: false, children: [] },
+            { id: 'dttimer-app', label: 'Timer Display Application', type: 'software', desc: 'In-store display showing current car times at each station. Alerts when thresholds exceeded.', vendor: 'HME ZOOM Timer Display App', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'ocb', label: 'Order Confirmation Board', type: 'system',
+          desc: 'Customer-facing display at order point showing their order as it is spoken. Reduces errors.',
+          vendor: 'Delphi Display Systems / WINCOR NIXDORF', custom: false,
+          children: [
+            { id: 'ocb-fw', label: 'OCB Display Firmware', type: 'firmware', desc: 'Firmware on the outdoor ruggedized display. Handles weather-resistant touchscreen, auto brightness.', vendor: 'Delphi A22 / D5200 firmware', custom: false, children: [] },
+            { id: 'ocb-app', label: 'OCB Software', type: 'software', desc: 'Pulls live order data from POS and renders it for the customer. May show upsell imagery.', vendor: 'Delphi MenuVision / Nanonation', custom: false, children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'signage', label: 'Digital Signage & Menu Boards', type: 'domain',
+      desc: 'All customer-visible display systems. Interior menu boards, lobby screens, and outdoor LED signs.',
+      vendor: 'BrightSign (most common player) / Scala / Mood Media', custom: false,
+      children: [
+        {
+          id: 'menuboard', label: 'Digital Menu Board', type: 'system',
+          desc: 'Large-format displays behind the counter. May be dayparted and updated remotely.',
+          vendor: 'Samsung QM-series / LG UH5F-series + BrightSign player', custom: false,
+          children: [
+            {
+              id: 'tv-fw', label: 'Commercial Display Firmware', type: 'firmware',
+              desc: 'LG webOS or Samsung Tizen firmware on the panel. Manages input switching, brightness scheduling, network.',
+              vendor: 'LG webOS 4.0+ / Samsung Tizen 6.x (SSSP)', custom: false,
+              children: [
+                { id: 'tv-mgmt', label: 'Display Management Software', type: 'software', desc: 'Cloud platform for remote control, content scheduling, brightness, and health monitoring across all screens.', vendor: 'LG ConnectedCare / Samsung VXT / PPDS Wave', custom: false, children: [] }
+              ]
+            },
+            {
+              id: 'brightsign-fw', label: 'BrightSign OS (Media Player)', type: 'firmware',
+              desc: 'BrightOS on the BrightSign player plugged into the display. Receives and plays CMS content.',
+              vendor: 'BrightSign OS 8.x / 9.x', custom: false,
+              children: [
+                { id: 'cms-app', label: 'Content Management System', type: 'software', desc: 'Cloud CMS for scheduling what plays on which screen. Dayparting, pricing updates, promotions.', vendor: 'BrightSign Network / Scala Content Manager / Stratacache', custom: false, children: [] }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'lobby-tv', label: 'Lobby / Bar TVs', type: 'system',
+          desc: 'General entertainment TVs. Same panel hardware as menu boards but running streaming apps or cable.',
+          vendor: 'Samsung QM / LG UM (same hardware family, different config)', custom: false,
+          children: [
+            { id: 'tv-stream-app', label: 'Streaming / Cable App', type: 'software', desc: 'DirecTV Stream, YouTube TV, or Fubo on smart TV OS. May be managed by Fan Control Center in sports bar environments.', vendor: 'DirecTV Stream / YouTube TV / FanControlCenter', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'outdoor-led', label: 'Outdoor LED / Scrolling Sign', type: 'system',
+          desc: 'Programmable LED matrix sign visible from the street. Specials, hours, seasonal messages.',
+          vendor: 'Daktronics / Watchfire Signs / YESCO', custom: false,
+          children: [
+            { id: 'led-ctrl-fw', label: 'LED Controller Firmware', type: 'firmware', desc: 'Firmware on the sign controller board managing pixel mapping, brightness, animation scheduling.', vendor: 'Daktronics Vanguard controller firmware', custom: false, children: [] },
+            { id: 'led-software', label: 'Sign Management Software', type: 'software', desc: 'Desktop or web app for creating and scheduling messages on the LED sign.', vendor: 'Daktronics Show Control / Watchfire Ignite', custom: false, children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'music', label: 'Music / Ambient Audio', type: 'domain',
+      desc: 'Licensed background music. Commercial spaces cannot use Spotify -- a commercial license is required.',
+      vendor: 'Mood Media (largest) / Rockbot / Soundtrack Your Brand', custom: false,
+      children: [
+        {
+          id: 'music-player', label: 'Music Player / Receiver', type: 'system',
+          desc: 'Hardware device that streams licensed music. May be a dedicated appliance or app on an existing tablet.',
+          vendor: 'Mood Media Harmony player / Rockbot Box / Soundtrack app', custom: false,
+          children: [
+            { id: 'music-player-fw', label: 'Player Firmware', type: 'firmware', desc: 'Embedded firmware on the Mood Media or Rockbot hardware appliance. Manages audio streaming, zone control, scheduling.', vendor: 'Mood Media Harmony firmware', custom: false, children: [] },
+            { id: 'music-portal', label: 'Music Management Portal', type: 'software', desc: 'Web portal for selecting playlists, daypart scheduling, volume rules. Corporate can push to all locations.', vendor: 'Mood Media Portal / Rockbot Dashboard', custom: false, children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'surveillance', label: 'Surveillance & Security', type: 'domain',
+      desc: 'Camera, access control, and alarm systems. Increasingly integrated with POS for loss prevention overlays.',
+      vendor: 'Verkada (cloud-managed) / Avigilon / Hanwha', custom: false,
+      children: [
+        {
+          id: 'cameras', label: 'IP Camera System', type: 'system',
+          desc: 'Network cameras recording continuously. May be cloud-managed with no on-site NVR.',
+          vendor: 'Verkada CD52 / Axis M-series / Hanwha QNV-series', custom: false,
+          children: [
+            {
+              id: 'camera-fw', label: 'Camera Firmware', type: 'firmware',
+              desc: 'Firmware on each camera. Controls image sensor, H.265 encoding, IR illuminator, onboard analytics.',
+              vendor: 'Axis AXIS OS / Verkada firmware / Hanwha firmware', custom: false,
+              children: [
+                { id: 'camera-analytics', label: 'Onboard Analytics Engine', type: 'layer', desc: 'Edge AI on the camera processor. Line crossing, people counting, vehicle detection -- processed without cloud.', vendor: 'Axis ARTPEC chip + ACAP apps / Verkada ML models', custom: false, children: [] }
+              ]
+            },
+            {
+              id: 'vms', label: 'Video Management Software (VMS)', type: 'software',
+              desc: 'Cloud or on-prem software for viewing, searching, and exporting camera footage. Multi-location access.',
+              vendor: 'Verkada Command (cloud) / Avigilon Control Center / Milestone XProtect', custom: false,
+              children: [
+                { id: 'lp-integration', label: 'POS Exception / Loss Prevention Integration', type: 'layer', desc: 'Links camera timestamps to POS transactions. Pull footage of any specific void, discount, or cash drawer open.', vendor: 'Solink / Verkada Alarms / LPRC integrations', custom: false, children: [] }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'alarm', label: 'Alarm System', type: 'system',
+          desc: 'Intrusion detection, door contacts, motion sensors. Monitored 24/7 by central station.',
+          vendor: 'ADT Commercial / Brinks / Tyco (JCI)', custom: false,
+          children: [
+            { id: 'alarm-panel-fw', label: 'Alarm Panel Firmware', type: 'firmware', desc: 'Firmware on the main alarm control panel. Manages zones, arm/disarm codes, communicator module.', vendor: 'DSC PowerSeries Pro / Bosch B-series panel firmware', custom: false, children: [] },
+            { id: 'alarm-portal', label: 'Alarm Management Portal', type: 'software', desc: 'Web portal for adding/removing user codes, viewing event history, managing schedules.', vendor: 'ADT Control / Brinks Home app / Alarm.com', custom: false, children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'hvac', label: 'HVAC & Facilities', type: 'domain',
+      desc: 'Building environment systems. Increasingly networked for remote monitoring, energy management, and health code compliance.',
+      vendor: 'Siemens / Honeywell / Emerson / Mamac', custom: false,
+      children: [
+        {
+          id: 'hvac-thermo', label: 'Thermostat / Building Controller', type: 'system',
+          desc: 'Zone-based climate control. Commercial units allow scheduling, remote override, and multi-zone management.',
+          vendor: 'Ecobee SmartThermostat Commercial / Honeywell T9 Pro / Siemens CLIMATIX', custom: false,
+          children: [
+            { id: 'thermo-fw', label: 'Thermostat Firmware', type: 'firmware', desc: 'Embedded firmware managing HVAC relay control, scheduling, sensor input, and remote connectivity.', vendor: 'Ecobee firmware / Honeywell ProSeries firmware', custom: false, children: [] },
+            { id: 'bms', label: 'Building Management System (BMS)', type: 'software', desc: 'Central platform managing all HVAC zones, lighting, and refrigeration across the building.', vendor: 'Siemens Desigo CC / Honeywell EBI / Johnson Controls Metasys', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'refrigeration', label: 'Refrigeration Monitoring', type: 'system',
+          desc: 'Remote monitoring of walk-in coolers, freezers, reach-ins. Alerts on temp excursions before product is lost.',
+          vendor: 'Emerson Luminate / Powerhouse Dynamics / Copeland E2', custom: false,
+          children: [
+            { id: 'ref-ctrl-fw', label: 'Refrigeration Controller Firmware', type: 'firmware', desc: 'Firmware on the case controller managing compressor cycling, defrost scheduling, alarm outputs.', vendor: 'Copeland E2 / Emerson EC3 controller firmware', custom: false, children: [] },
+            { id: 'ref-portal', label: 'Refrigeration Monitoring Portal', type: 'software', desc: 'Cloud dashboard for all temperature sensors across all units and locations. Email/SMS alerts on excursions.', vendor: 'Emerson Luminate / Powerhouse Dynamics SiteSage', custom: false, children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'workforce', label: 'Workforce Management', type: 'domain',
+      desc: 'All software managing labor -- scheduling, time tracking, payroll, training, and HR compliance.',
+      vendor: 'HotSchedules / Fourth / 7shifts / ADP', custom: false,
+      children: [
+        {
+          id: 'scheduling', label: 'Scheduling Software', type: 'system',
+          desc: 'Manager builds weekly schedule. Employees view and swap shifts via mobile app. Integrates with POS for labor vs sales reporting.',
+          vendor: 'HotSchedules (Fourth) / 7shifts / When I Work', custom: false,
+          children: [
+            { id: 'sched-app', label: 'Scheduling Application', type: 'software', desc: 'Web and mobile app for building and publishing schedules. Auto-scheduler builds from forecasted sales.', vendor: 'Fourth HotSchedules / 7shifts web + iOS/Android', custom: false, children: [] },
+            { id: 'timeclock', label: 'Time Clock Application', type: 'software', desc: 'Employees clock in/out via POS terminal or dedicated tablet. May require photo verification or fingerprint.', vendor: 'Toast Time Clock (POS-integrated) / Deputy Kiosk / 7punches', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'payroll', label: 'Payroll Software', type: 'system',
+          desc: 'Processes wages, tax withholding, tip distribution, and direct deposit on a pay period basis.',
+          vendor: 'ADP Workforce Now / Gusto / Paychex Flex', custom: false,
+          children: [
+            { id: 'payroll-app', label: 'Payroll Platform', type: 'software', desc: 'Web portal where payroll is processed each period. Imports hours from scheduling/timeclock. Handles garnishments, W-2s.', vendor: 'ADP Workforce Now / Gusto web app', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'training', label: 'Training Platform', type: 'system',
+          desc: 'Digital training and certification management. Required for health code compliance and brand standards.',
+          vendor: 'Wisetail / Jolt / Learn2Serve / Schoox', custom: false,
+          children: [
+            { id: 'training-app', label: 'LMS Application', type: 'software', desc: 'Learning Management System with video training, quizzes, certification tracking, and completion reporting.', vendor: 'Wisetail LMS / Jolt / Schoox', custom: false, children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'inventory', label: 'Inventory & Supply Chain', type: 'domain',
+      desc: 'Tracking food cost, managing vendor orders, and ensuring product availability.',
+      vendor: 'MarketMan / BlueCart / Craftable / Restaurant365', custom: false,
+      children: [
+        {
+          id: 'inv-mgmt', label: 'Inventory Management Software', type: 'system',
+          desc: 'Tracks on-hand quantities, theoretical vs actual usage, waste, and vendor pricing.',
+          vendor: 'MarketMan / Craftable / Bevager (bar) / BlueCart', custom: false,
+          children: [
+            { id: 'inv-app', label: 'Inventory App', type: 'software', desc: 'Mobile and web app for doing counts, receiving deliveries, and running food cost reports. Syncs from POS.', vendor: 'MarketMan iOS/Android + web portal', custom: false, children: [] },
+            { id: 'vendor-portal', label: 'Vendor Ordering Portals', type: 'software', desc: 'Each broadline distributor has its own web portal for placing orders. Separate login per vendor.', vendor: 'Sysco Shop / US Foods CHEF Store / PFG OrderNow', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'food-safety', label: 'Food Safety & Compliance', type: 'system',
+          desc: 'Digital checklists replacing paper logs for temp checks, cleaning tasks, and HACCP compliance.',
+          vendor: 'Jolt / Squadle / Hazel Analytics', custom: false,
+          children: [
+            { id: 'food-safety-app', label: 'Food Safety App', type: 'software', desc: 'Tablet-based app guiding employees through opening/closing checklists, temp logs, corrective actions. Timestamped.', vendor: 'Jolt / Squadle iOS/Android', custom: false, children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'marketing', label: 'Marketing & Guest Engagement', type: 'domain',
+      desc: 'Software managing the guest relationship from first visit through repeat purchase and review.',
+      vendor: 'Paytronix / Fishbowl / Klaviyo / Podium', custom: false,
+      children: [
+        {
+          id: 'loyalty', label: 'Loyalty / CRM Platform', type: 'system',
+          desc: 'Captures guest data, manages points/rewards, and enables targeted marketing based on visit history.',
+          vendor: 'Paytronix / Punchh (PAR) / Square Loyalty / Fishbowl', custom: false,
+          children: [
+            { id: 'loyalty-app', label: 'Loyalty App / Platform', type: 'software', desc: 'Guest-facing app or card-based program. Points balance, rewards, push notifications, birthday offers.', vendor: 'Paytronix mobile app + CRM portal', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'reputation', label: 'Review Management Software', type: 'system',
+          desc: 'Aggregates Google, Yelp, and TripAdvisor reviews into one dashboard.',
+          vendor: 'Podium / Birdeye / Reputation.com', custom: false,
+          children: [
+            { id: 'rep-app', label: 'Review Management Portal', type: 'software', desc: 'Web dashboard showing all reviews across platforms. AI-assisted response drafts. Sentiment trending.', vendor: 'Podium Inbox / Birdeye platform', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'reservations', label: 'Reservations / Waitlist', type: 'system',
+          desc: 'Manages table availability, guest reservations, and walk-in waitlist. Integrates with POS for table status.',
+          vendor: 'OpenTable / Resy / Yelp Waitlist / Tock', custom: false,
+          children: [
+            { id: 'res-app', label: 'Reservation Platform', type: 'software', desc: 'Web and mobile app for guest reservations. Floor management for host stand. 2-way POS table status sync.', vendor: 'OpenTable web + iPad app', custom: false, children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'backoffice', label: 'Back Office & Finance', type: 'domain',
+      desc: 'Accounting, reporting, and corporate oversight software.',
+      vendor: 'Restaurant365 / QuickBooks / Compeat', custom: false,
+      children: [
+        {
+          id: 'accounting', label: 'Accounting Software', type: 'system',
+          desc: 'General ledger, AP, AR, bank reconciliation. May be restaurant-specific or generic small-business.',
+          vendor: 'Restaurant365 / QuickBooks Online / Sage Intacct', custom: false,
+          children: [
+            { id: 'accounting-app', label: 'Accounting Platform', type: 'software', desc: 'Web-based accounting. Imports POS daily sales summaries, handles vendor invoices from inventory system.', vendor: 'Restaurant365 (purpose-built) / QuickBooks Online', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'corp-reporting', label: 'Above-Store Reporting', type: 'system',
+          desc: 'Multi-unit enterprise reporting. Aggregates data from all locations for ownership/corporate review.',
+          vendor: 'Toast Enterprise / Olo analytics / Compeat Radar / Crunchtime', custom: false,
+          children: [
+            { id: 'corp-dash', label: 'Enterprise Dashboard', type: 'software', desc: 'Corporate-facing portal showing all-store KPIs -- same-store sales, labor%, food cost, throughput.', vendor: 'Toast Enterprise Portal / Crunchtime / Compeat Radar', custom: false, children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'communications', label: 'Communications', type: 'domain',
+      desc: 'Voice, messaging, and coordination tools used by restaurant staff and corporate teams.',
+      vendor: 'RingCentral / Google Workspace / Motorola Solutions', custom: false,
+      children: [
+        {
+          id: 'voip', label: 'VoIP / Phone System', type: 'system',
+          desc: 'Business phone for taking reservations, handling complaints, and vendor calls.',
+          vendor: 'RingCentral / 8x8 / Nextiva / Ooma Office', custom: false,
+          children: [
+            { id: 'voip-phone-fw', label: 'VoIP Phone Firmware', type: 'firmware', desc: 'Firmware on the desk phone handset. Manages SIP stack, audio codecs, button mapping.', vendor: 'Poly CCX series firmware / Yealink T5 series firmware', custom: false, children: [] },
+            { id: 'voip-platform', label: 'VoIP Platform / Cloud PBX', type: 'software', desc: 'Cloud PBX managing call routing, voicemail, auto-attendant, and call recording.', vendor: 'RingCentral MVP / 8x8 Work / Nextiva Office', custom: false, children: [] }
+          ]
+        },
+        {
+          id: 'email', label: 'Email & Collaboration', type: 'system',
+          desc: 'Corporate email, calendar, and documents for managers and corporate staff.',
+          vendor: 'Google Workspace / Microsoft 365', custom: false,
+          children: [
+            { id: 'email-platform', label: 'Email Platform', type: 'software', desc: 'Gmail or Outlook with calendar, Drive/SharePoint, and video conferencing (Meet/Teams).', vendor: 'Google Workspace Business / Microsoft 365 Business', custom: false, children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'mdm', label: 'Device Management (MDM)', type: 'domain',
+      desc: 'Centralized management of all tablets, handhelds, and general-purpose Android/iOS devices in the restaurant.',
+      vendor: 'Jamf (iOS focus) / Hexnode / Meraki MDM', custom: false,
+      children: [
+        {
+          id: 'mdm-platform', label: 'MDM Platform', type: 'system',
+          desc: 'Enrolls all managed devices, pushes apps, enforces kiosk mode, wipes lost devices, manages WiFi profiles.',
+          vendor: 'Jamf Now / Meraki MDM / Hexnode UEM', custom: false,
+          children: [
+            { id: 'mdm-app', label: 'MDM Management Console', type: 'software', desc: 'Web console showing all enrolled devices, their health, installed apps, and compliance status.', vendor: 'Jamf Pro / Meraki Dashboard MDM section', custom: false, children: [] }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+// ==================== SITE + STATE ====================
+// sites: { siteId: { name, created, nodeData: {}, customNodes: {} } }
+let appState = {};
+let activeSiteId = null;
+
+const STATUS_COLORS = {
+  known: 'var(--known)',
+  partial: 'var(--partial)',
+  unknown: 'var(--unknown)',
+  '': 'var(--border)'
+};
+
+function generateId() {
+  return 'custom-' + Math.random().toString(36).slice(2,9);
+}
+
+// Deep clone template
+function cloneTree(node) {
+  return JSON.parse(JSON.stringify(node));
+}
+
+// ==================== RIE API ====================
+const API = 'https://rie-api-production.up.railway.app';
+
+async function apiFetch(path, method, body) {
+  const opts = { method: method || 'GET', headers: { 'Content-Type': 'application/json' } };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(API + path, opts);
+  if (!res.ok) throw new Error('API error ' + res.status);
+  return res.json();
+}
+
+function showStatus(msg, color) {
+  const el = document.getElementById('api-status');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = color || 'var(--text-dim)';
+  if (color === 'var(--known)') setTimeout(() => { el.textContent = ''; }, 3000);
+}
+
+// ==================== PERSISTENCE ====================
+async function loadApp() {
+  showStatus('Connecting to RIE API...', 'var(--partial)');
+  try {
+    const sites = await apiFetch('/sites');
+    appState.sites = {};
+    sites.forEach(s => {
+      appState.sites[s.id] = { name: s.name, created: s.created_at, nodeData: {}, customNodes: {} };
+    });
+
+    let savedActive = null;
+    try { savedActive = localStorage.getItem('rie_activeSite'); } catch(e) {}
+    activeSiteId = (savedActive && appState.sites[savedActive]) ? savedActive : (Object.keys(appState.sites)[0] || null);
+    appState.activeSiteId = activeSiteId;
+
+    if (!activeSiteId) {
+      showStatus('Create a site', 'var(--partial)');
+      setTimeout(openSiteManager, 0);
+      return;
+    }
+    await loadSiteData(activeSiteId);
+    showStatus('Connected', 'var(--known)');
+  } catch(e) {
+    showStatus('API offline', 'var(--unknown)');
+  }
+}
+
+async function loadSiteData(siteId) {
+  try {
+    const [nodeRows, customRows] = await Promise.all([
+      apiFetch('/sites/' + siteId + '/nodes'),
+      apiFetch('/sites/' + siteId + '/custom-nodes')
+    ]);
+    const site = appState.sites[siteId];
+    if (!site) return;
+    site.nodeData = {};
+    nodeRows.forEach(r => {
+      site.nodeData[r.node_id] = { status: r.status, version: r.version, confirmed: r.confirmed, notes: r.notes };
+    });
+    site.customNodes = {};
+    customRows.forEach(r => {
+      site.customNodes[r.id] = { id: r.id, label: r.label, type: r.type, vendor: r.vendor, desc: r.desc, parentId: r.parent_id, custom: true, children: [] };
+    });
+  } catch(e) {
+    showStatus('Load error', 'var(--unknown)');
+  }
+}
+
+function saveApp() {
+  try { localStorage.setItem('rie_activeSite', activeSiteId || ''); } catch(e) {}
+}
+
+async function saveNodeToApi(siteId, nodeId, rec) {
+  if (!siteId) { showStatus('Create a site first', 'var(--unknown)'); return; }
+  try {
+    await apiFetch('/sites/' + siteId + '/nodes/' + nodeId, 'PUT', rec);
+  } catch(e) {
+    showStatus('Save failed', 'var(--unknown)');
+  }
+}
+
+function getSite() {
+  return appState.sites[activeSiteId] || { name: 'Unknown', nodeData: {}, customNodes: {} };
+}
+
+function getNodeRecord(id) {
+  const site = getSite();
+  if (!site.nodeData[id]) site.nodeData[id] = { status: '', notes: '', version: '', confirmed: '' };
+  return site.nodeData[id];
+}
+
+function getCustomNodes() {
+  return getSite().customNodes || {};
+}
+
+// ==================== MERGED TREE ====================
+// Build a merged tree: canonical TREE + custom nodes injected as children
+let _mergedTree = null;
+
+function getMergedTree() {
+  if (_mergedTree) return _mergedTree;
+  _mergedTree = buildMergedTree();
+  return _mergedTree;
+}
+
+function invalidateTree() { _mergedTree = null; }
+
+function buildMergedTree() {
+  const base = cloneTree(TREE_TEMPLATE);
+  const customs = getCustomNodes();
+
+  // customs is { nodeId: { id, label, type, desc, vendor, parentId, custom:true, children:[] } }
+  // We need to inject them into the right parent
+  const allNodes = {};
+  function indexNodes(node) {
+    allNodes[node.id] = node;
+    (node.children || []).forEach(indexNodes);
+  }
+  indexNodes(base);
+
+  // Also pre-create custom nodes in allNodes so parents can find them
+  Object.values(customs).forEach(cn => {
+    allNodes[cn.id] = Object.assign({}, cn, { children: [] });
+  });
+
+  // Inject custom nodes under their parents
+  Object.values(customs).forEach(cn => {
+    const parent = allNodes[cn.parentId];
+    if (parent) {
+      parent.children = parent.children || [];
+      // Avoid duplicates
+      if (!parent.children.find(c => c.id === cn.id)) {
+        parent.children.push(allNodes[cn.id]);
+      }
+    }
+  });
+
+  return base;
+}
+
+// ==================== TREE HELPERS ====================
+function getAllNodes(node, arr = []) {
+  arr.push(node);
+  (node.children || []).forEach(c => getAllNodes(c, arr));
+  return arr;
+}
+
+function findNode(id, node) {
+  if (!node) node = getMergedTree();
+  if (node.id === id) return node;
+  for (const c of (node.children || [])) {
+    const found = findNode(id, c);
+    if (found) return found;
+  }
+  return null;
+}
+
+function getPathTo(targetId, node, path = []) {
+  if (!node) node = getMergedTree();
+  if (node.id === targetId) return [...path, node];
+  for (const c of (node.children || [])) {
+    const result = getPathTo(targetId, c, [...path, node]);
+    if (result) return result;
+  }
+  return null;
+}
+
+// ==================== SITE MANAGEMENT ====================
+let selectedNodeId = null;
+let activeFilter = 'all';
+let searchQuery = '';
+let expandedNodes = new Set(['root','network','pos','kitchen','ordering','drive-thru','signage','music','surveillance','hvac','workforce','inventory','marketing','backoffice','communications','mdm']);
+
+function buildSiteSelect() {
+  const sel = document.getElementById('site-select');
+  sel.innerHTML = '';
+  Object.entries(appState.sites).forEach(([id, site]) => {
+    const opt = document.createElement('option');
+    opt.value = id;
+    opt.textContent = site.name;
+    opt.selected = id === activeSiteId;
+    sel.appendChild(opt);
+  });
+}
+
+async function switchSite(id) {
+  activeSiteId = id;
+  appState.activeSiteId = id;
+  invalidateTree();
+  selectedNodeId = null;
+  saveApp();
+  showStatus('Loading site...', 'var(--partial)');
+  await loadSiteData(id);
+  showStatus('', '');
+  fullRender();
+  document.getElementById('detail-panel-content').innerHTML = emptyState();
+}
+
+function openSiteManager() {
+  document.getElementById('modal-title').textContent = 'SITE PROFILES';
+  document.getElementById('modal-body').innerHTML = `
+    <div style="margin-bottom:14px">
+      <div class="field-label" style="margin-bottom:6px">Existing Sites</div>
+      <div class="site-list" id="modal-site-list"></div>
+    </div>
+    <div style="margin-bottom:14px">
+      <div class="field-label" style="margin-bottom:6px">Create New Site</div>
+      <div style="display:flex;gap:8px">
+        <input class="field-input" type="text" id="new-site-name" placeholder="Site name (e.g. Kingman #2, Test Location)" style="flex:1">
+        <button class="btn btn-primary" onclick="createSite()">Create</button>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text-dim);line-height:1.6">
+      Each site maintains its own independent knowledge database.<br>
+      All sites share the same base technology tree structure.
+    </div>
+  `;
+  document.getElementById('modal-footer').innerHTML = `<button class="btn" onclick="closeModal()">Done</button>`;
+  renderModalSiteList();
+  openModal();
+}
+
+function renderModalSiteList() {
+  const container = document.getElementById('modal-site-list');
+  if (!container) return;
+  container.innerHTML = '';
+  Object.entries(appState.sites).forEach(([id, site]) => {
+    let meta = '';
+    if (id === activeSiteId) {
+      const all = getAllNodes(getMergedTree()).filter(n => n.id !== 'root');
+      const covered = all.filter(n => {
+        const s = (site.nodeData[n.id] || {}).status || '';
+        return s === 'known' || s === 'partial';
+      }).length;
+      meta = (all.length > 0 ? Math.round(covered / all.length * 100) : 0) + '% covered';
+    }
+    const row = document.createElement('div');
+    row.className = 'site-row' + (id === activeSiteId ? ' active-site' : '');
+    row.innerHTML = `
+      <div class="site-row-name"></div>
+      <div class="site-row-meta">${meta}</div>
+      <div class="site-row-del site-row-act" title="Rename site" onclick="renameSite('${id}')">rename</div>
+      <div class="site-row-del site-row-act" title="Delete site" onclick="deleteSite('${id}')">delete</div>
+    `;
+    row.querySelector('.site-row-name').textContent = site.name;
+    row.onclick = (e) => {
+      if (e.target.classList.contains('site-row-act')) return;
+      switchSite(id);
+      buildSiteSelect();
+      renderModalSiteList();
+    };
+    container.appendChild(row);
+  });
+}
+
+async function createSite() {
+  const inp = document.getElementById('new-site-name');
+  const name = (inp.value || '').trim();
+  if (!name) return;
+  const id = 'site-' + Date.now();
+  try {
+    await apiFetch('/sites', 'POST', { id, name });
+    appState.sites[id] = { name, created: Date.now(), nodeData: {}, customNodes: {} };
+    inp.value = '';
+    await switchSite(id);
+    buildSiteSelect();
+    renderModalSiteList();
+  } catch(e) {
+    showStatus('Failed to create site', 'var(--unknown)');
+  }
+}
+
+async function renameSite(id) {
+  const site = appState.sites[id];
+  if (!site) return;
+  const name = (prompt('Rename site', site.name) || '').trim();
+  if (!name || name === site.name) return;
+  try {
+    await apiFetch('/sites/' + id, 'PUT', { name });
+    site.name = name;
+    buildSiteSelect();
+    renderModalSiteList();
+  } catch(e) {
+    showStatus('Rename failed', 'var(--unknown)');
+  }
+}
+
+async function deleteSite(id) {
+  const site = appState.sites[id];
+  if (!site) return;
+  if (!confirm('Delete ' + site.name + ' and everything saved for it in RESTACK, RTSS and RDSS? This cannot be undone.')) return;
+  try {
+    await apiFetch('/sites/' + id, 'DELETE');
+  } catch(e) {
+    showStatus('Delete failed', 'var(--unknown)');
+    return;
+  }
+  delete appState.sites[id];
+  if (activeSiteId === id) {
+    const next = Object.keys(appState.sites)[0] || null;
+    if (next) {
+      await switchSite(next);
+    } else {
+      activeSiteId = null;
+      appState.activeSiteId = null;
+      saveApp();
+      invalidateTree();
+      fullRender();
+      showStatus('Create a site', 'var(--partial)');
+    }
+  }
+  buildSiteSelect();
+  renderModalSiteList();
+}
+
+// ==================== CUSTOM NODES ====================
+function openAddNodeModal(parentId) {
+  const parent = findNode(parentId);
+  document.getElementById('modal-title').textContent = 'ADD CHILD NODE';
+  document.getElementById('modal-body').innerHTML = `
+    <div style="margin-bottom:10px;font-size:11px;color:var(--text-dim)">
+      Adding child to: <span style="color:var(--accent)">${parent ? parent.label : parentId}</span>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Label *</div>
+      <input class="field-input" type="text" id="cn-label" placeholder="e.g. Custom Integration Layer">
+    </div>
+    <div class="field-group">
+      <div class="field-label">Type</div>
+      <select class="field-input" id="cn-type">
+        <option value="software">software</option>
+        <option value="firmware">firmware</option>
+        <option value="layer">layer</option>
+        <option value="system">system</option>
+        <option value="domain">domain</option>
+        <option value="custom">custom</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Vendor / Product</div>
+      <input class="field-input" type="text" id="cn-vendor" placeholder="e.g. Proprietary / Unknown">
+    </div>
+    <div class="field-group">
+      <div class="field-label">Description</div>
+      <textarea class="field-input" id="cn-desc" placeholder="What does this node do?"></textarea>
+    </div>
+  `;
+  document.getElementById('modal-footer').innerHTML = `
+    <button class="btn" onclick="closeModal()">Cancel</button>
+    <button class="btn btn-custom" onclick="createCustomNode('${parentId}')">Add Node</button>
+  `;
+  openModal();
+}
+
+function openAddRootNode() {
+  openAddNodeModal('root');
+}
+
+async function createCustomNode(parentId) {
+  const label = (document.getElementById('cn-label').value || '').trim();
+  if (!label) { alert('Label is required.'); return; }
+  const type = document.getElementById('cn-type').value;
+  const vendor = document.getElementById('cn-vendor').value.trim();
+  const desc = document.getElementById('cn-desc').value.trim();
+  const id = generateId();
+  const site = getSite();
+  try {
+    await apiFetch('/sites/' + activeSiteId + '/custom-nodes', 'POST', { id, parent_id: parentId, label, type, vendor, desc });
+    site.customNodes[id] = { id, label, type, vendor, desc, parentId, custom: true, children: [] };
+    invalidateTree();
+    saveApp();
+    closeModal();
+    fullRender();
+    selectNode(id);
+  } catch(e) {
+    showStatus('Failed to save node', 'var(--unknown)');
+  }
+}
+
+async function deleteCustomNode(id) {
+  const site = getSite();
+  try {
+    await apiFetch('/sites/' + activeSiteId + '/custom-nodes/' + id, 'DELETE');
+    delete site.customNodes[id];
+    Object.keys(site.customNodes).forEach(cid => {
+      if (site.customNodes[cid].parentId === id) delete site.customNodes[cid];
+    });
+    invalidateTree();
+    saveApp();
+    if (selectedNodeId === id) {
+      selectedNodeId = null;
+      document.getElementById('detail-panel-content').innerHTML = emptyState();
+    }
+    fullRender();
+  } catch(e) {
+    showStatus('Delete failed', 'var(--unknown)');
+  }
+}
+
+// ==================== STATS ====================
+function computeStats() {
+  const all = getAllNodes(getMergedTree()).filter(n => n.id !== 'root');
+  const total = all.length;
+  const site = getSite();
+  let known = 0, partial = 0, unknown = 0;
+  all.forEach(n => {
+    const s = (site.nodeData[n.id] || {}).status || '';
+    if (s === 'known') known++;
+    else if (s === 'partial') partial++;
+    else if (s === 'unknown') unknown++;
+  });
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-known').textContent = known;
+  document.getElementById('stat-partial').textContent = partial;
+  document.getElementById('stat-unknown').textContent = unknown;
+  const covered = known + partial;
+  const pct = total > 0 ? Math.round(covered / total * 100) : 0;
+  document.getElementById('global-progress').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = pct + '% covered';
+}
+
+// ==================== DOMAIN SIDEBAR ====================
+function renderDomainList() {
+  const container = document.getElementById('domain-list');
+  container.innerHTML = '';
+  const site = getSite();
+  getMergedTree().children.forEach((domain, i) => {
+    const nodes = getAllNodes(domain).filter(n => n.id !== domain.id);
+    const total = nodes.length;
+    const known = nodes.filter(n => (site.nodeData[n.id] || {}).status === 'known').length;
+    const pct = total > 0 ? Math.round(known / total * 100) : 0;
+    const item = document.createElement('div');
+    item.className = 'domain-item' + (selectedNodeId === domain.id ? ' active' : '');
+    item.innerHTML = `
+      <span class="domain-code">${String(i+1).padStart(2,'0')}</span>
+      <span class="domain-name">${domain.label}</span>
+      <div class="domain-bar"><div class="domain-bar-fill" style="width:${pct}%"></div></div>
+    `;
+    item.onclick = () => {
+      selectNode(domain.id);
+      const el = document.getElementById(domain.id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+    container.appendChild(item);
+  });
+}
+
+// ==================== FILTER / SEARCH ====================
+function matchesFilter(node) {
+  if (activeFilter === 'all') return true;
+  const site = getSite();
+  const s = (site.nodeData[node.id] || {}).status || '';
+  if (activeFilter === 'unset') return s === '';
+  if (activeFilter === 'custom') return !!node.custom;
+  return s === activeFilter;
+}
+
+function matchesSearch(node) {
+  if (!searchQuery) return true;
+  const q = searchQuery.toLowerCase();
+  const site = getSite();
+  return node.label.toLowerCase().includes(q) ||
+    (node.vendor || '').toLowerCase().includes(q) ||
+    (node.desc || '').toLowerCase().includes(q) ||
+    ((site.nodeData[node.id] || {}).notes || '').toLowerCase().includes(q);
+}
+
+function nodeVisible(node) {
+  if (node.id === 'root') return true;
+  return matchesFilter(node) && matchesSearch(node);
+}
+
+function subtreeVisible(node) {
+  if (nodeVisible(node)) return true;
+  return (node.children || []).some(c => subtreeVisible(c));
+}
+
+// ==================== TREE RENDER ====================
+function renderTree(node, depth, parentEl) {
+  if (node === undefined) node = getMergedTree();
+  if (depth === undefined) depth = 0;
+  const container = parentEl || document.getElementById('tree-area');
+  if (!parentEl) container.innerHTML = '';
+
+  if (!subtreeVisible(node)) return;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'tree-node';
+  wrapper.id = 'treenode-' + node.id;
+
+  const row = document.createElement('div');
+  row.className = 'node-row';
+
+  const indentDiv = document.createElement('div');
+  indentDiv.className = 'node-indent';
+  for (let i = 0; i < depth; i++) {
+    const line = document.createElement('div');
+    line.className = 'indent-line';
+    indentDiv.appendChild(line);
+  }
+  row.appendChild(indentDiv);
+
+  const content = document.createElement('div');
+  content.className = 'node-content' + (selectedNodeId === node.id ? ' selected' : '') + (node.custom ? ' is-custom' : '');
+  content.id = node.id;
+
+  const hasChildren = node.children && node.children.length > 0;
+  const isOpen = expandedNodes.has(node.id);
+  const site = getSite();
+  const rec = site.nodeData[node.id] || {};
+  const status = rec.status || '';
+
+  const toggle = document.createElement('div');
+  toggle.className = 'node-toggle' + (isOpen ? ' open' : '');
+  toggle.textContent = hasChildren ? '>' : '';
+  content.appendChild(toggle);
+
+  const statusDot = document.createElement('div');
+  statusDot.className = 'node-status';
+  if (node.custom) {
+    statusDot.style.background = 'var(--custom)';
+    statusDot.style.boxShadow = '0 0 5px var(--custom)';
+  } else {
+    statusDot.style.background = STATUS_COLORS[status];
+    statusDot.style.boxShadow = status ? '0 0 5px ' + STATUS_COLORS[status] : 'none';
+  }
+  content.appendChild(statusDot);
+
+  const label = document.createElement('div');
+  label.className = 'node-label layer-' + Math.min(depth, 4) + (node.custom ? ' custom-node' : '');
+  label.textContent = node.label;
+  content.appendChild(label);
+
+  const meta = document.createElement('div');
+  meta.className = 'node-meta';
+  meta.textContent = node.type ? node.type.toUpperCase() : '';
+  content.appendChild(meta);
+
+  // Add child button (visible on hover via CSS)
+  const addBtn = document.createElement('div');
+  addBtn.className = 'node-add-btn';
+  addBtn.title = 'Add child node';
+  addBtn.textContent = '+';
+  addBtn.onclick = (e) => { e.stopPropagation(); openAddNodeModal(node.id); };
+  content.appendChild(addBtn);
+
+  // Delete button (only for custom nodes)
+  if (node.custom) {
+    const delBtn = document.createElement('div');
+    delBtn.className = 'node-del-btn';
+    delBtn.title = 'Delete this node';
+    delBtn.textContent = 'x';
+    delBtn.onclick = (e) => { e.stopPropagation(); confirmDeleteNode(node.id, node.label); };
+    content.appendChild(delBtn);
+  }
+
+  content.onclick = (e) => {
+    e.stopPropagation();
+    if (hasChildren) {
+      if (expandedNodes.has(node.id)) expandedNodes.delete(node.id);
+      else expandedNodes.add(node.id);
+    }
+    selectNode(node.id);
+    renderTree();
+    renderDomainList();
+  };
+
+  row.appendChild(content);
+  wrapper.appendChild(row);
+
+  if (hasChildren) {
+    const childrenEl = document.createElement('div');
+    childrenEl.className = 'node-children' + (isOpen ? ' open' : '');
+    node.children.forEach(child => renderTree(child, depth + 1, childrenEl));
+    wrapper.appendChild(childrenEl);
+  }
+
+  container.appendChild(wrapper);
+}
+
+// ==================== SELECT + DETAIL PANEL ====================
+function selectNode(id) {
+  selectedNodeId = id;
+  renderDetailPanel(id);
+  renderDomainList();
+}
+
+function emptyState() {
+  return `<div class="empty-state"><div class="empty-icon">&#9707;</div><div class="empty-title">Select a Node</div><div class="empty-sub">Click any item in the tree to view and edit its knowledge record.</div></div>`;
+}
+
+function renderDetailPanel(id) {
+  const node = findNode(id);
+  const panel = document.getElementById('detail-panel-content');
+  if (!node) { panel.innerHTML = emptyState(); return; }
+
+  const site = getSite();
+  const rec = getNodeRecord(id);
+  const path = getPathTo(id) || [];
+  const pathStr = path.map(n => n.label).join(' > ');
+
+  panel.innerHTML = `
+    <div class="detail-header">
+      <div class="detail-path">${pathStr}</div>
+      <div class="detail-title">${node.label}${node.custom ? ' <span style="color:var(--custom);font-size:12px;font-weight:400">[custom]</span>' : ''}</div>
+      <div class="detail-vendor">${node.vendor || ''}</div>
+    </div>
+    <div class="detail-body">
+      <div class="field-group">
+        <div class="field-label">Description</div>
+        <div class="field-value">${node.desc || 'No description available.'}</div>
+      </div>
+      ${node.custom ? `
+      <div class="field-group">
+        <div class="field-label">Edit Node Info</div>
+        <input class="field-input" type="text" id="edit-cn-label" placeholder="Label" value="${node.label || ''}" oninput="markUnsaved()" style="margin-bottom:6px">
+        <input class="field-input" type="text" id="edit-cn-vendor" placeholder="Vendor / Product" value="${node.vendor || ''}" oninput="markUnsaved()" style="margin-bottom:6px">
+        <textarea class="field-input" id="edit-cn-desc" placeholder="Description" oninput="markUnsaved()">${node.desc || ''}</textarea>
+      </div>
+      ` : ''}
+      <div class="field-group">
+        <div class="field-label">Knowledge Status</div>
+        <div class="status-selector">
+          <button class="status-btn ${rec.status === 'known' ? 'active' : ''}" data-status="known" onclick="setStatus('${id}','known')">Known</button>
+          <button class="status-btn ${rec.status === 'partial' ? 'active' : ''}" data-status="partial" onclick="setStatus('${id}','partial')">Partial</button>
+          <button class="status-btn ${rec.status === 'unknown' ? 'active' : ''}" data-status="unknown" onclick="setStatus('${id}','unknown')">Gap</button>
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Specific Version / Revision</div>
+        <input class="field-input" type="text" id="field-version" placeholder="e.g. Meraki MX 18.211.2" value="${rec.version || ''}" oninput="markUnsaved()">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Confirmed Vendor / Product (this site)</div>
+        <input class="field-input" type="text" id="field-confirmed" placeholder="e.g. Toast POS 4.22 -- verified on-site 2025-01" value="${rec.confirmed || ''}" oninput="markUnsaved()">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Notes / Integration Details</div>
+        <textarea class="field-input" id="field-notes" placeholder="Integration details, known quirks, config notes, gaps to investigate..." oninput="markUnsaved()">${rec.notes || ''}</textarea>
+      </div>
+    </div>
+    <div class="detail-footer">
+      <div class="save-indicator" id="save-indicator">-- no changes --</div>
+      ${node.custom ? `<button class="btn btn-danger" onclick="confirmDeleteNode('${id}','${node.label.replace(/'/g,'')}')">Delete</button>` : ''}
+      <button class="btn btn-primary" onclick="saveNode('${id}')">Save</button>
+    </div>
+  `;
+}
+
+async function setStatus(id, status) {
+  const rec = getNodeRecord(id);
+  rec.status = rec.status === status ? '' : status;
+  renderDetailPanel(id);
+  renderTree();
+  renderDomainList();
+  computeStats();
+  await saveNodeToApi(activeSiteId, id, rec);
+}
+
+function markUnsaved() {
+  const ind = document.getElementById('save-indicator');
+  if (ind) { ind.textContent = 'Unsaved changes'; ind.className = 'save-indicator unsaved'; }
+}
+
+async function saveNode(id) {
+  const site = getSite();
+  const node = findNode(id);
+  const rec = getNodeRecord(id);
+  rec.version = (document.getElementById('field-version') || {}).value || '';
+  rec.confirmed = (document.getElementById('field-confirmed') || {}).value || '';
+  rec.notes = (document.getElementById('field-notes') || {}).value || '';
+
+  if (node && node.custom && site.customNodes[id]) {
+    const newLabel = (document.getElementById('edit-cn-label') || {}).value || '';
+    const newVendor = (document.getElementById('edit-cn-vendor') || {}).value || '';
+    const newDesc = (document.getElementById('edit-cn-desc') || {}).value || '';
+    if (newLabel) site.customNodes[id].label = newLabel;
+    site.customNodes[id].vendor = newVendor;
+    site.customNodes[id].desc = newDesc;
+    invalidateTree();
+    const cn = site.customNodes[id];
+    try {
+      await apiFetch('/sites/' + activeSiteId + '/custom-nodes', 'POST', {
+        id, parent_id: cn.parentId, label: cn.label, type: cn.type, vendor: cn.vendor, desc: cn.desc
+      });
+    } catch(e) {
+      showStatus('Node edit failed to save', 'var(--unknown)');
+    }
+  }
+
+  showStatus('Saving...', 'var(--partial)');
+  await saveNodeToApi(activeSiteId, id, rec);
+  showStatus('Saved', 'var(--known)');
+
+  const ind = document.getElementById('save-indicator');
+  if (ind) { ind.textContent = 'Saved'; ind.className = 'save-indicator saved'; }
+  computeStats();
+  renderDomainList();
+  if (node && node.custom) renderTree();
+}
+
+function confirmDeleteNode(id, label) {
+  document.getElementById('modal-title').textContent = 'DELETE NODE';
+  document.getElementById('modal-body').innerHTML = `<p style="color:var(--text);line-height:1.7">Delete custom node "<span style="color:var(--custom)">${label}</span>" and all its children?<br><br>This cannot be undone.</p>`;
+  document.getElementById('modal-footer').innerHTML = `
+    <button class="btn" onclick="closeModal()">Cancel</button>
+    <button class="btn btn-danger" onclick="deleteCustomNode('${id}');closeModal()">Delete</button>
+  `;
+  openModal();
+}
+
+// ==================== CONTROLS ====================
+function expandAll() {
+  getAllNodes(getMergedTree()).forEach(n => expandedNodes.add(n.id));
+  renderTree();
+}
+
+function collapseAll() {
+  expandedNodes.clear();
+  expandedNodes.add('root');
+  renderTree();
+}
+
+function setFilter(filter, btn) {
+  activeFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTree();
+}
+
+function handleSearch(val) {
+  searchQuery = val.trim();
+  if (searchQuery) expandAll();
+  renderTree();
+}
+
+// ==================== EXPORT ====================
+function exportData() {
+  const site = getSite();
+  const all = getAllNodes(getMergedTree());
+  const out = {
+    exportVersion: 2,
+    exportedAt: new Date().toISOString(),
+    siteName: site.name,
+    nodeData: {},
+    customNodes: site.customNodes || {}
+  };
+  all.forEach(n => {
+    const rec = site.nodeData[n.id];
+    if (rec && (rec.status || rec.notes || rec.version || rec.confirmed)) {
+      out.nodeData[n.id] = { label: n.label, type: n.type, vendor: n.vendor, ...rec };
+    }
+  });
+  const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'restack-' + site.name.replace(/\s+/g,'-').toLowerCase() + '-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+}
+
+// ==================== IMPORT ====================
+function openImport() {
+  document.getElementById('modal-title').textContent = 'IMPORT JSON';
+  document.getElementById('modal-body').innerHTML = `
+    <div style="margin-bottom:12px;font-size:12px;color:var(--text);line-height:1.7">
+      Import a previously exported RESTACK JSON file into the <span style="color:var(--accent)">${getSite().name}</span> site profile.<br>
+      Node data and custom nodes will be merged into the current site.
+    </div>
+    <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-inp').click()">
+      <input type="file" id="file-inp" accept=".json" onchange="handleFileSelect(this)">
+      <div style="font-size:24px;margin-bottom:8px;opacity:0.5">&#8659;</div>
+      Tap to select a .json file<br>
+      <span style="font-size:10px;letter-spacing:1px;text-transform:uppercase;opacity:0.6">or drag and drop here</span>
+    </div>
+    <div id="import-status" style="margin-top:12px;font-size:11px;color:var(--text-dim)"></div>
+  `;
+  document.getElementById('modal-footer').innerHTML = `
+    <button class="btn" onclick="closeModal()">Close</button>
+  `;
+
+  const dz = document.getElementById('drop-zone');
+  if (dz) {
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+    dz.addEventListener('drop', e => {
+      e.preventDefault();
+      dz.classList.remove('dragover');
+      if (e.dataTransfer.files[0]) processImportFile(e.dataTransfer.files[0]);
+    });
+  }
+
+  openModal();
+}
+
+function handleFileSelect(input) {
+  if (input.files[0]) processImportFile(input.files[0]);
+}
+
+function processImportFile(file) {
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    try {
+      if (!activeSiteId) throw new Error('no site');
+      const data = JSON.parse(e.target.result);
+      const site = getSite();
+
+      // Merge nodeData
+      let nodesImported = 0;
+      if (data.nodeData) {
+        Object.entries(data.nodeData).forEach(([id, rec]) => {
+          if (!site.nodeData[id]) site.nodeData[id] = {};
+          Object.assign(site.nodeData[id], rec);
+          nodesImported++;
+        });
+      }
+
+      // Merge customNodes
+      let customImported = 0;
+      if (data.customNodes) {
+        site.customNodes = site.customNodes || {};
+        Object.entries(data.customNodes).forEach(([id, cn]) => {
+          site.customNodes[id] = cn;
+          customImported++;
+        });
+      }
+
+      const statusEl = document.getElementById('import-status');
+      if (statusEl) { statusEl.style.color = 'var(--partial)'; statusEl.textContent = 'Saving to cloud...'; }
+      const keep = ['status', 'version', 'confirmed', 'notes'];
+      for (const id of Object.keys(data.nodeData || {})) {
+        const rec = site.nodeData[id];
+        const body = {};
+        keep.forEach(k => { body[k] = rec[k] || ''; });
+        site.nodeData[id] = body;
+        await apiFetch('/sites/' + activeSiteId + '/nodes/' + encodeURIComponent(id), 'PUT', body);
+      }
+      for (const [id, cn] of Object.entries(data.customNodes || {})) {
+        await apiFetch('/sites/' + activeSiteId + '/custom-nodes', 'POST', {
+          id, parent_id: cn.parentId || cn.parent_id || 'root', label: cn.label,
+          type: cn.type, vendor: cn.vendor, desc: cn.desc
+        });
+      }
+
+      invalidateTree();
+      saveApp();
+      fullRender();
+
+      const status = document.getElementById('import-status');
+      if (status) {
+        status.style.color = 'var(--known)';
+        status.textContent = 'Imported: ' + nodesImported + ' node records, ' + customImported + ' custom nodes.';
+      }
+    } catch(err) {
+      const status = document.getElementById('import-status');
+      if (status) {
+        status.style.color = 'var(--unknown)';
+        status.textContent = err.message === 'no site' ? 'Create a site first.' : 'Import failed. Check the file is a RESTACK export and the API is online.';
+      }
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ==================== RESET ====================
+function confirmReset() {
+  document.getElementById('modal-title').textContent = 'RESET SITE DATA';
+  document.getElementById('modal-body').innerHTML = `<p style="color:var(--text);line-height:1.7">This will erase all saved status, notes, versions, confirmed fields, and custom nodes for the <span style="color:var(--accent)">${getSite().name}</span> site.<br><br>Other sites are not affected. This cannot be undone.</p>`;
+  document.getElementById('modal-footer').innerHTML = `
+    <button class="btn" onclick="closeModal()">Cancel</button>
+    <button class="btn btn-danger" onclick="doReset()">Reset This Site</button>
+  `;
+  openModal();
+}
+
+async function doReset() {
+  if (!activeSiteId) { closeModal(); return; }
+  try {
+    await Promise.all([
+      apiFetch('/sites/' + activeSiteId + '/nodes', 'DELETE'),
+      apiFetch('/sites/' + activeSiteId + '/custom-nodes', 'DELETE')
+    ]);
+  } catch(e) {
+    closeModal();
+    showStatus('Reset failed', 'var(--unknown)');
+    return;
+  }
+  const site = getSite();
+  site.nodeData = {};
+  site.customNodes = {};
+  invalidateTree();
+  closeModal();
+  selectedNodeId = null;
+  await loadSiteData(activeSiteId);
+  fullRender();
+  document.getElementById('detail-panel-content').innerHTML = emptyState();
+}
+
+
+// ==================== SHARED SITE PROFILE ====================
+const PROFILE_FIELDS = [
+  ['business_name', 'Business Name'], ['brand', 'Brand / Chain'], ['concept', 'Concept'],
+  ['address', 'Address'], ['city', 'City'], ['state', 'State'], ['phone', 'Phone'],
+  ['website', 'Website / Domain'], ['pos_brand', 'POS Brand'], ['ordering_platform', 'Online Ordering Platform'],
+  ['isp', 'ISP'], ['firewall_vendor', 'Firewall / Router Vendor']
+];
+
+async function openProfile() {
+  if (!activeSiteId) { openSiteManager(); return; }
+  document.getElementById('modal-title').textContent = 'SITE PROFILE';
+  document.getElementById('modal-body').innerHTML = '<div style="color:var(--text-dim);font-size:12px">Loading...</div>';
+  document.getElementById('modal-footer').innerHTML = '';
+  openModal();
+  let profile = {};
+  try { profile = await apiFetch('/sites/' + activeSiteId + '/profile'); } catch(e) {
+    document.getElementById('modal-body').innerHTML = '<div style="color:var(--unknown);font-size:12px">Could not load the profile.</div>';
+    return;
+  }
+  const body = document.getElementById('modal-body');
+  body.innerHTML = '<div style="font-size:11px;color:var(--text-dim);line-height:1.6;margin-bottom:12px">Shared with RTSS and RDSS. A change here shows up in the other two.</div>';
+  PROFILE_FIELDS.forEach(([key, label]) => {
+    const g = document.createElement('div');
+    g.className = 'field-group';
+    g.innerHTML = '<div class="field-label"></div><input class="field-input" type="text">';
+    g.querySelector('.field-label').textContent = label;
+    const inp = g.querySelector('input');
+    inp.id = 'pf-' + key;
+    inp.value = profile[key] || '';
+    body.appendChild(g);
+  });
+  document.getElementById('modal-footer').innerHTML =
+    '<span id="pf-status" style="font-size:11px;color:var(--text-dim);margin-right:auto"></span>' +
+    '<button class="btn" onclick="closeModal()">Close</button>' +
+    '<button class="btn btn-primary" onclick="saveProfile()">Save</button>';
+}
+
+async function saveProfile() {
+  const patch = {};
+  PROFILE_FIELDS.forEach(([key]) => {
+    const el = document.getElementById('pf-' + key);
+    if (el) patch[key] = el.value.trim();
+  });
+  const st = document.getElementById('pf-status');
+  if (st) { st.textContent = 'Saving...'; st.style.color = 'var(--partial)'; }
+  try {
+    await apiFetch('/sites/' + activeSiteId + '/profile', 'PATCH', patch);
+    if (st) { st.textContent = 'Saved'; st.style.color = 'var(--known)'; }
+  } catch(e) {
+    if (st) { st.textContent = 'Save failed'; st.style.color = 'var(--unknown)'; }
+  }
+}
+
+// ==================== MODAL ====================
+function openModal() { document.getElementById('modal').classList.add('open'); }
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+// ==================== FULL RENDER ====================
+function fullRender() {
+  renderTree();
+  renderDomainList();
+  computeStats();
+}
+
+// ==================== INIT ====================
+async function init() {
+  await loadApp();
+  buildSiteSelect();
+  fullRender();
+}
+init();
+</script>
+</body>
+</html>

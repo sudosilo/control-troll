@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWH Stumbler</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --panel: #ffffff;
+    --ink: #1b2430;
+    --ink-dim: #5b6572;
+    --blue: #2b6cb0;
+    --blue-dark: #1e4e82;
+    --amber: #c9962a;
+    --line: #dde2e8;
+    --mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--mono);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 20px 16px 40px; }
+  header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    border-bottom: 2px solid var(--blue); padding-bottom: 10px; margin-bottom: 16px;
+  }
+  header h1 { font-size: 15px; letter-spacing: 0.02em; margin: 0; color: var(--blue-dark); font-weight: 700; }
+  header .tag { font-size: 11px; color: var(--ink-dim); }
+  .controls { display: flex; gap: 8px; margin-bottom: 14px; }
+  input[type=text] {
+    flex: 1; font-family: var(--mono); font-size: 13px; padding: 10px;
+    border: 1px solid var(--line); border-radius: 4px; background: var(--panel); color: var(--ink);
+  }
+  button {
+    font-family: var(--mono); font-size: 13px; font-weight: 700; padding: 10px 16px;
+    border: none; border-radius: 4px; background: var(--blue); color: #fff; cursor: pointer; white-space: nowrap;
+  }
+  button:active { background: var(--blue-dark); }
+  button:disabled { background: #a9b6c4; cursor: default; }
+  .seedbar { font-size: 11px; color: var(--ink-dim); margin-bottom: 16px; line-height: 1.5; word-break: break-all; }
+  .seedbar button.seed {
+    background: none; border: 1px solid var(--line); color: var(--blue-dark); font-weight: 400;
+    padding: 3px 7px; font-size: 11px; margin: 2px 4px 2px 0; display: inline-block;
+  }
+  .log { font-size: 11px; color: var(--ink-dim); min-height: 18px; margin-bottom: 10px; }
+  .log .step::before { content: "> "; color: var(--blue); }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--amber);
+    border-radius: 4px; padding: 14px; margin-bottom: 14px;
+  }
+  .meta-row { display: flex; font-size: 12px; padding: 3px 0; border-bottom: 1px dashed var(--line); }
+  .meta-row:last-child { border-bottom: none; }
+  .meta-row .k { width: 90px; flex-shrink: 0; color: var(--blue-dark); font-weight: 700; }
+  .meta-row .v { color: var(--ink); word-break: break-all; }
+  .meta-row .v a { color: var(--blue-dark); text-decoration: underline; }
+  pre.code {
+    background: #0f1620; color: #d7e2ec; font-size: 11.5px; line-height: 1.5; padding: 14px;
+    border-radius: 4px; overflow-x: auto; white-space: pre; max-height: 60vh; overflow-y: auto;
+  }
+  .empty {
+    color: var(--ink-dim); font-size: 12px; padding: 30px 10px; text-align: center;
+    border: 1px dashed var(--line); border-radius: 4px;
+  }
+  .err { color: #b3261e; font-size: 12px; padding: 10px 0; }
+  .cursor {
+    display: inline-block; width: 8px; height: 13px; background: var(--blue);
+    animation: blink 1s steps(1) infinite; vertical-align: middle; margin-left: 4px;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  footer { text-align: center; font-size: 10px; color: var(--ink-dim); margin-top: 24px; }
+
+  .tagform {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px;
+  }
+  .tagform input[type=text] { flex: 1 1 120px; font-size: 12px; padding: 8px; }
+  .tagform button.save { background: var(--amber); }
+  .tagform button.save:active { background: #a67a1e; }
+  .section-title {
+    font-size: 12px; color: var(--blue-dark); font-weight: 700;
+    margin: 22px 0 8px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .section-title button.export {
+    font-size: 10px; padding: 5px 10px; font-weight: 400;
+  }
+  .hit {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 4px;
+    padding: 10px 12px; margin-bottom: 8px; font-size: 11.5px;
+  }
+  .hit .hit-top { display: flex; justify-content: space-between; gap: 8px; }
+  .hit .hit-type { color: #fff; background: var(--blue); border-radius: 3px; padding: 1px 7px; font-size: 10px; font-weight: 700; }
+  .hit .hit-path { color: var(--blue-dark); font-weight: 700; margin-top: 4px; word-break: break-all; }
+  .hit .hit-claims { color: var(--ink-dim); margin-top: 3px; }
+  .hit .hit-origin { color: var(--ink-dim); font-size: 10px; margin-top: 4px; word-break: break-all; }
+  .hit .hit-origin a { color: var(--ink-dim); text-decoration: underline; }
+  .hit button.del {
+    background: none; color: #b3261e; border: 1px solid #e3b3b0; padding: 2px 8px; font-size: 10px; font-weight: 400;
+  }
+  .code-wrap { position: relative; }
+  button.copy {
+    position: absolute; top: 8px; right: 8px;
+    background: #1e2733; color: #9fb3c8; border: 1px solid #2c3a4a;
+    padding: 5px 9px; font-size: 10px; font-weight: 400;
+    display: flex; align-items: center; gap: 5px;
+  }
+  button.copy svg { width: 12px; height: 12px; }
+  button.copy.copied { background: var(--blue); color: #fff; border-color: var(--blue); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>SWH_STUMBLER</h1>
+    <span class="tag">softwareheritage.org</span>
+  </header>
+
+  <div class="controls">
+    <input id="seedInput" type="text" placeholder="origin URL (optional)">
+    <button id="stumbleBtn">STUMBLE</button>
+  </div>
+
+  <div class="seedbar" id="seedbar"></div>
+
+  <div class="log" id="log"></div>
+
+  <div id="output">
+    <div class="empty">no dig yet — press STUMBLE<span class="cursor"></span></div>
+  </div>
+
+  <div class="section-title">
+    <span>SAVED_HITS (<span id="hitCount">0</span>)</span>
+    <button class="export" id="exportBtn">export json</button>
+  </div>
+  <div id="hitsList"></div>
+
+  <footer>Built by Blue &middot; source archive walk via Software Heritage API</footer>
+</div>
+
+<script>
+const SEEDS = [
+  "https://github.com/dspinellis/unix-history-repo",
+  "https://github.com/rminnich/v6root",
+  "https://github.com/simh/simh",
+  "https://github.com/larsbrinkhoff/its",
+  "https://github.com/mit-pdos/xv6-public",
+  "https://github.com/9fans/plan9port",
+  "https://github.com/gcc-mirror/gcc",
+  "https://github.com/openbsd/src",
+  "https://github.com/torvalds/linux",
+  "https://github.com/freebsd/freebsd-src"
+];
+
+const seedbar = document.getElementById('seedbar');
+seedbar.innerHTML = 'seeds: ' + SEEDS.map(s => {
+  const name = s.replace('https://github.com/', '');
+  return `<button class="seed" data-url="${s}">${name}</button>`;
+}).join('');
+seedbar.querySelectorAll('.seed').forEach(b => {
+  b.addEventListener('click', () => {
+    document.getElementById('seedInput').value = b.dataset.url;
+  });
+});
+
+const logEl = document.getElementById('log');
+const outputEl = document.getElementById('output');
+const btn = document.getElementById('stumbleBtn');
+const hitsListEl = document.getElementById('hitsList');
+const hitCountEl = document.getElementById('hitCount');
+const exportBtn = document.getElementById('exportBtn');
+
+const STORE_KEY = 'swh_stumbler_hits';
+let lastResult = null;
+
+function logStep(msg) {
+  logEl.innerHTML = `<span class="step">${msg}</span>`;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function loadHits() {
+  try {
+    return JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+  } catch {
+    return [];
+  }
+}
+
+function saveHits(hits) {
+  localStorage.setItem(STORE_KEY, JSON.stringify(hits));
+}
+
+function renderHits() {
+  const hits = loadHits();
+  hitCountEl.textContent = hits.length;
+  if (!hits.length) {
+    hitsListEl.innerHTML = '<div class="empty">nothing saved yet</div>';
+    return;
+  }
+  hitsListEl.innerHTML = hits.slice().reverse().map((h) => `
+    <div class="hit" data-id="${h.id}">
+      <div class="hit-top">
+        <span class="hit-type">${escapeHtml(h.type || 'untagged')}</span>
+        <button class="del" data-id="${h.id}">delete</button>
+      </div>
+      <div class="hit-path">${escapeHtml(h.path)}</div>
+      ${h.claims ? `<div class="hit-claims">${escapeHtml(h.claims)}</div>` : ''}
+      <div class="hit-origin"><a href="${escapeHtml(h.origin)}" target="_blank" rel="noopener">${escapeHtml(h.origin)}</a></div>
+    </div>
+  `).join('');
+  hitsListEl.querySelectorAll('button.del').forEach((b) => {
+    b.addEventListener('click', () => {
+      const id = b.dataset.id;
+      saveHits(loadHits().filter((h) => h.id !== id));
+      renderHits();
+    });
+  });
+}
+
+function saveCurrentHit() {
+  if (!lastResult) return;
+  const type = document.getElementById('tagType').value.trim();
+  const claims = document.getElementById('tagClaims').value.trim();
+  const hits = loadHits();
+  hits.push({
+    id: `${lastResult.sha1 || Date.now()}_${Date.now()}`,
+    origin: lastResult.origin,
+    path: lastResult.path,
+    sha1: lastResult.sha1,
+    date: lastResult.date,
+    length: lastResult.length,
+    language: lastResult.language,
+    type: type || 'untagged',
+    claims,
+    savedAt: new Date().toISOString()
+  });
+  saveHits(hits);
+  renderHits();
+  logStep('saved');
+}
+
+exportBtn.addEventListener('click', () => {
+  const hits = loadHits();
+  const blob = new Blob([JSON.stringify(hits, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  const stamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  a.href = URL.createObjectURL(blob);
+  a.download = `stumbler-hits-${stamp}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+function copyCode(text) {
+  const btnEl = document.getElementById('copyBtn');
+  const done = () => {
+    btnEl.classList.add('copied');
+    btnEl.lastChild.textContent = ' copied';
+    setTimeout(() => {
+      btnEl.classList.remove('copied');
+      btnEl.lastChild.textContent = ' copy';
+    }, 1500);
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+
+function fallbackCopy(text, done) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); done(); } catch {}
+  document.body.removeChild(ta);
+}
+
+async function stumble() {
+  btn.disabled = true;
+  outputEl.innerHTML = '';
+  lastResult = null;
+  logStep('walking archive...');
+
+  const manual = document.getElementById('seedInput').value.trim();
+  const url = '/api/stumble' + (manual ? `?seed=${encodeURIComponent(manual)}` : '');
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+
+    lastResult = data;
+    logStep('done');
+    outputEl.innerHTML = `
+      <div class="card">
+        <div class="meta-row"><span class="k">origin</span><span class="v"><a href="${escapeHtml(data.origin)}" target="_blank" rel="noopener">${escapeHtml(data.origin)}</a></span></div>
+        <div class="meta-row"><span class="k">path</span><span class="v">${escapeHtml(data.path)}</span></div>
+        <div class="meta-row"><span class="k">language</span><span class="v">${escapeHtml(data.language || 'unknown')}</span></div>
+        <div class="meta-row"><span class="k">visit date</span><span class="v">${escapeHtml(data.date || 'unknown')}</span></div>
+        <div class="meta-row"><span class="k">length</span><span class="v">${data.length} bytes</span></div>
+        <div class="meta-row"><span class="k">sha1</span><span class="v">${data.sha1 || ''}</span></div>
+      </div>
+      <div class="tagform">
+        <input type="text" id="tagType" placeholder="type (e.g. kernel, driver, game)" value="${escapeHtml(data.language || '')}">
+        <input type="text" id="tagClaims" placeholder="what it claims to do">
+        <button class="save" id="saveBtn">SAVE</button>
+      </div>
+      <div class="code-wrap">
+        <button class="copy" id="copyBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="1.5"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+          copy
+        </button>
+        <pre class="code">${escapeHtml(data.content)}</pre>
+      </div>
+    `;
+    document.getElementById('saveBtn').addEventListener('click', saveCurrentHit);
+    document.getElementById('copyBtn').addEventListener('click', () => copyCode(data.content));
+  } catch (err) {
+    logStep('failed');
+    outputEl.innerHTML = `<div class="err">${escapeHtml(err.message)}</div>
+      <div class="empty">try a different seed — some origins have thin snapshots</div>`;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+btn.addEventListener('click', stumble);
+renderHits();
+</script>
+</body>
+</html>
