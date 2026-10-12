@@ -33,14 +33,44 @@ async function checkApp(browser, app) {
   return result;
 }
 
+// The project index site is the source of truth. Every vercel.app link on it gets checked.
+const INDEX_URL = "https://mohave.wtf";
+const WORKERS = 4;
+
+async function discover(browser) {
+  const page = await browser.newPage();
+  await page.goto(INDEX_URL, { waitUntil: "load", timeout: TIMEOUT });
+  await page.waitForTimeout(2000);
+  const html = await page.content();
+  await page.close();
+  const found = html.match(/https:\/\/[a-z0-9-]+\.vercel\.app/gi) || [];
+  return [...new Set(found.map((u) => u.toLowerCase()))].map((url) => ({
+    name: url.replace("https://", "").replace(".vercel.app", ""),
+    url,
+  }));
+}
+
 (async () => {
-  const list = JSON.parse(fs.readFileSync("apps.json", "utf8")).apps || [];
   const browser = await chromium.launch();
-  const apps = [];
-  for (const app of list) {
-    apps.push(await checkApp(browser, app));
-    console.log((apps[apps.length - 1].up ? "UP   " : "DOWN ") + app.name);
+  let list = [];
+  try { list = await discover(browser); } catch (e) { console.log("index load failed: " + e.message); }
+  // apps.json adds extra apps or health endpoints. Same url overrides the discovered entry.
+  const extra = JSON.parse(fs.readFileSync("apps.json", "utf8")).apps || [];
+  for (const x of extra) {
+    const i = list.findIndex((a) => a.url === x.url);
+    if (i >= 0) list[i] = { ...list[i], ...x }; else list.push(x);
   }
+  console.log("checking " + list.length + " apps");
+  const apps = new Array(list.length);
+  let next = 0;
+  async function worker() {
+    while (next < list.length) {
+      const i = next++;
+      apps[i] = await checkApp(browser, list[i]);
+      console.log((apps[i].up ? "UP   " : "DOWN ") + list[i].name);
+    }
+  }
+  await Promise.all(Array.from({ length: WORKERS }, worker));
   await browser.close();
   fs.writeFileSync("status.json", JSON.stringify({ checkedAt: new Date().toISOString(), apps }, null, 2) + "\n");
 })();
