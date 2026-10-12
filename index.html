@@ -43,6 +43,32 @@ h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
 .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;margin-left:6px}
 .tag.no{background:var(--warnbg);color:var(--warn)}
 .tag.yes{background:var(--okbg);color:var(--ok)}
+.hist{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:16px}
+.hhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.hhead b{font-size:15px}
+.hhead button{font:inherit;font-size:14px;padding:4px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .dow{font-size:11px;color:var(--muted);text-align:center;font-weight:600}
+.cal .day{aspect-ratio:1/1;border-radius:6px;background:#efede6;font-size:11px;padding:3px;display:flex;flex-direction:column;justify-content:space-between;cursor:default;min-width:0}
+.cal .day.has{cursor:pointer}
+.cal .day.o{background:var(--okbg)}
+.cal .day.f{background:var(--warnbg)}
+.cal .day.d{background:var(--badbg)}
+.cal .day.sel{outline:2px solid var(--ink)}
+.cal .day .n{font-weight:700;font-size:10.5px;line-height:1.1}
+.cal .day .n .r{color:var(--bad)}
+.cal .day .n .y{color:var(--warn)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.dayinfo{margin-top:10px;font-size:13px}
+.dayinfo p{margin:4px 0}
+.strip{display:flex;gap:2px;margin-top:8px}
+.strip span{flex:1;height:14px;border-radius:2px;background:#efede6;cursor:pointer;min-width:0}
+.strip span.o{background:#7cc79a}
+.strip span.e{background:#b9dcc6}
+.strip span.f{background:#e8b04a}
+.strip span.d{background:#d9675a}
+.stripnote{font-size:12px;color:var(--muted);margin-top:4px;min-height:1em}
 .empty{background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:20px;color:var(--muted);text-align:center}
 </style>
 </head>
@@ -51,6 +77,7 @@ h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
   <h1>CONTROL TROLL</h1>
   <div class="sub" id="when">Loading status...</div>
   <div class="tally" id="tally"></div>
+  <div class="hist" id="hist"></div>
   <div class="filters" id="filters">
     <button data-f="all" class="on">All</button>
     <button data-f="bad">Down</button>
@@ -62,7 +89,10 @@ h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
 <script>
 var SRC = "https://raw.githubusercontent.com/sudosilo/control-troll/main/status.json";
 var SPECS = "https://raw.githubusercontent.com/sudosilo/control-troll/main/specs/all.json";
-var data = null, specs = {}, filter = "all";
+var HIST = "https://raw.githubusercontent.com/sudosilo/control-troll/main/history.json";
+var data = null, specs = {}, hist = {days:{}}, filter = "all";
+var STATE_WORD = {o:"healthy", e:"console errors", f:"tests failing", d:"down"};
+var calMonth = null, calSel = null;
 
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
 
@@ -97,7 +127,7 @@ function render(){
     var meta = a.url.replace(/^https?:\/\//,"")+" . status "+(a.status||"none")+" . "+(a.ms!=null?a.ms+" ms":"no load")+(tt.length?" . tests "+(tt.length-f.length)+"/"+tt.length:"");
     var errs = f.map(function(t){return "FAIL "+esc(t.name)+": "+esc(t.error||"");}).concat((a.errors||[]).slice(0,5).map(esc)).join("\n");
     return '<div class="app '+k+'"><div class="row"><span class="name">'+esc(a.name)+'</span><span class="state">'+label+'</span></div>'+
-      '<div class="meta">'+esc(meta)+'</div>'+(errs?'<div class="errs">'+errs+'</div>':'')+testBlock(a)+specBlock(a.name)+'</div>';
+      '<div class="meta">'+esc(meta)+'</div>'+(errs?'<div class="errs">'+errs+'</div>':'')+stripBlock(a.name)+testBlock(a)+specBlock(a.name)+'</div>';
   }).join("");
 }
 
@@ -108,6 +138,73 @@ function testBlock(a){
   }).join("");
   return '<details class="spec"><summary>Tests '+(tt.length-failing(a).length)+' of '+tt.length+' passing</summary>'+rows+'</details>';
 }
+
+function azToday(){return new Date(Date.now()-7*3600*1000).toISOString().slice(0,10);}
+function addDays(key,n){var d=new Date(key+"T12:00:00Z");d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);}
+function niceDate(key){var d=new Date(key+"T12:00:00Z");return d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric",timeZone:"UTC"});}
+
+function dayWorst(key){
+  var day=hist.days[key]; if(!day) return null;
+  var down=0,fail=0;
+  for(var n in day.apps){var s=day.apps[n].s; if(s==="d")down++; else if(s==="f")fail++;}
+  return {down:down,fail:fail,cls:down?"d":fail?"f":"o"};
+}
+
+function renderHist(){
+  var box=document.getElementById("hist");
+  var keys=Object.keys(hist.days||{}).sort();
+  if(!keys.length){box.innerHTML='<div class="hhead"><b>History</b></div><div class="stripnote">No history yet. It fills in after each daily run.</div>';return;}
+  if(!calMonth) calMonth=azToday().slice(0,7);
+  var y=+calMonth.slice(0,4), m=+calMonth.slice(5,7);
+  var first=new Date(Date.UTC(y,m-1,1)), dim=new Date(Date.UTC(y,m,0)).getUTCDate();
+  var label=first.toLocaleDateString(undefined,{month:"long",year:"numeric",timeZone:"UTC"});
+  var h='<div class="hhead"><button id="calPrev" aria-label="Previous month">&lsaquo;</button><b>'+label+'</b><button id="calNext" aria-label="Next month">&rsaquo;</button></div><div class="cal">';
+  ["S","M","T","W","T","F","S"].forEach(function(d){h+='<div class="dow">'+d+'</div>';});
+  for(var i=0;i<first.getUTCDay();i++) h+='<div></div>';
+  for(var d=1;d<=dim;d++){
+    var key=calMonth+"-"+(d<10?"0":"")+d, w=dayWorst(key);
+    var n=w?('<span class="n">'+(w.down?'<span class="r">'+w.down+' down</span><br>':'')+(w.fail?'<span class="y">'+w.fail+' fail</span>':'')+'</span>'):'';
+    h+='<div class="day'+(w?' has '+w.cls:'')+(key===calSel?' sel':'')+'" data-k="'+key+'"><span>'+d+'</span>'+n+'</div>';
+  }
+  h+='</div><div class="legend"><span><i style="background:var(--okbg)"></i>all up</span><span><i style="background:var(--warnbg)"></i>tests failing</span><span><i style="background:var(--badbg)"></i>something down</span><span>Tap a day for details</span></div>';
+  h+='<div class="dayinfo" id="dayinfo">'+dayInfo(calSel)+'</div>';
+  box.innerHTML=h;
+  document.getElementById("calPrev").onclick=function(){shiftMonth(-1);};
+  document.getElementById("calNext").onclick=function(){shiftMonth(1);};
+  Array.prototype.forEach.call(box.querySelectorAll(".day.has"),function(el){
+    el.onclick=function(){calSel=el.getAttribute("data-k");renderHist();};
+  });
+}
+function shiftMonth(n){var y=+calMonth.slice(0,4),m=+calMonth.slice(5,7)-1+n;var d=new Date(Date.UTC(y,m,1));calMonth=d.toISOString().slice(0,7);renderHist();}
+
+function dayInfo(key){
+  if(!key||!hist.days[key]) return "";
+  var day=hist.days[key], rows=[];
+  Object.keys(day.apps).sort().forEach(function(n){
+    var a=day.apps[n]; if(a.s!=="d"&&a.s!=="f") return;
+    rows.push('<p><b style="color:'+(a.s==="d"?'var(--bad)':'var(--warn)')+'">'+STATE_WORD[a.s]+'</b> '+esc(n)+(a.x&&a.x.length?' : '+esc(a.x.join(", ")):'')+'</p>');
+  });
+  var total=Object.keys(day.apps).length;
+  return '<p><b>'+niceDate(key)+'</b>, '+day.runs+' check'+(day.runs===1?'':'s')+', '+total+' apps</p>'+(rows.length?rows.join(""):'<p>Every app was up and passing.</p>');
+}
+
+function stripBlock(name){
+  var keys=Object.keys(hist.days||{}); if(!keys.length) return "";
+  var end=azToday(), cells="";
+  for(var i=29;i>=0;i--){
+    var k=addDays(end,-i), a=hist.days[k]&&hist.days[k].apps[name];
+    cells+='<span class="'+(a?a.s:'')+'" data-k="'+k+'" data-n="'+esc(name)+'"></span>';
+  }
+  return '<div class="strip">'+cells+'</div><div class="stripnote">Last 30 days. Tap a square.</div>';
+}
+
+document.getElementById("list").addEventListener("click",function(e){
+  var sq=e.target.closest(".strip span"); if(!sq) return;
+  var k=sq.getAttribute("data-k"), n=sq.getAttribute("data-n");
+  var a=hist.days[k]&&hist.days[k].apps[n];
+  var note=sq.parentNode.nextElementSibling;
+  note.textContent=niceDate(k)+": "+(a?STATE_WORD[a.s]+(a.t?", tests "+a.p+" of "+a.t:"")+(a.x&&a.x.length?", "+a.x.join(", "):""):"not checked");
+});
 
 function specBlock(n){
   var sp = specs[n]; if(!sp) return "";
@@ -124,6 +221,7 @@ document.getElementById("filters").addEventListener("click",function(e){
   render();
 });
 
+fetch(HIST+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():{days:{}};}).then(function(j){hist=j||{days:{}};renderHist();render();}).catch(function(){renderHist();});
 fetch(SPECS+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():{};}).then(function(j){specs=j||{};render();}).catch(function(){});
 fetch(SRC+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
   data = j;
