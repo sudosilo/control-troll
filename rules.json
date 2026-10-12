@@ -1,0 +1,8 @@
+{
+  "keepSeparate": {
+    "access-terminal family": {
+      "match": "access-term",
+      "reason": "Intentionally separate. The access terminal family is kept apart for experimentation and may grow. The merge layer skips it."
+    }
+  }
+}
