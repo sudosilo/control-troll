@@ -4,6 +4,7 @@ const fs = require("fs");
 const { chromium } = require("playwright");
 
 const TIMEOUT = 30000;
+const MAX_SNAPSHOT = 3 * 1024 * 1024;
 
 async function checkApp(browser, app) {
   const result = { name: app.name, url: app.url, up: false, status: null, ms: null, errors: [] };
@@ -16,6 +17,15 @@ async function checkApp(browser, app) {
     result.status = res ? res.status() : null;
     result.ms = Date.now() - start;
     result.up = !!res && res.status() < 400;
+    // Save the served source so the spec agent can read it later without network access.
+    if (res && result.up) {
+      try {
+        const body = await res.text();
+        result.bytes = body.length;
+        if (body.length <= MAX_SNAPSHOT) fs.writeFileSync("snapshots/" + app.name + ".html", body);
+        else result.errors.push("snapshot skipped: " + Math.round(body.length / 1024) + " KB is over the limit");
+      } catch (e) {}
+    }
     await page.waitForTimeout(2000);
   } catch (e) {
     result.errors.push("load: " + String(e.message || e).split("\n")[0].slice(0, 300));
@@ -51,6 +61,7 @@ async function discover(browser) {
 }
 
 (async () => {
+  fs.mkdirSync("snapshots", { recursive: true });
   const browser = await chromium.launch();
   let list = [];
   try { list = await discover(browser); } catch (e) { console.log("index load failed: " + e.message); }
