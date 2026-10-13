@@ -69,12 +69,22 @@ h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
 .strip span.f{background:#e8b04a}
 .strip span.d{background:#d9675a}
 .stripnote{font-size:12px;color:var(--muted);margin-top:4px;min-height:1em}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.infobtn{font:inherit;font-size:14px;font-weight:700;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;flex:none}
+.modal{position:fixed;inset:0;background:rgba(29,29,27,.35);display:none;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto;z-index:50}
+.modal.open{display:flex}
+.sheet{background:var(--card);border-radius:12px;max-width:640px;width:100%;padding:18px 18px 8px;margin:16px 0;box-shadow:0 8px 30px rgba(0,0,0,.15)}
+.sheet .shead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.sheet h2{font-size:18px;margin:0}
+.sheet h3{font-size:14px;margin:16px 0 4px;color:var(--muted);letter-spacing:.4px;text-transform:uppercase}
+.sheet p{margin:0 0 10px;font-size:14.5px}
+.sheet code{font:13px ui-monospace,Menlo,Consolas,monospace;background:#efede6;padding:1px 5px;border-radius:4px}
 .empty{background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:20px;color:var(--muted);text-align:center}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>CONTROL TROLL</h1>
+  <div class="top"><h1>CONTROL TROLL</h1><button class="infobtn" id="infoOpen" aria-label="How Control Troll works">i</button></div>
   <div class="sub" id="when">Loading status...</div>
   <div class="tally" id="tally"></div>
   <div class="hist" id="hist"></div>
@@ -86,6 +96,37 @@ h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
   </div>
   <div id="list"></div>
 </div>
+<div class="modal" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+ <div class="sheet">
+  <div class="shead"><h2 id="infoTitle">How Control Troll works</h2><button class="infobtn" id="infoClose" aria-label="Close">&times;</button></div>
+
+  <h3>What it is</h3>
+  <p>Control Troll watches every app linked on the project index site. It checks them every morning, keeps a history, and hands broken apps to a fix agent. The goal is to maintain far more apps than one person could by hand. Healthy apps cost nothing to keep. Only broken ones use Claude.</p>
+
+  <h3>The morning check</h3>
+  <p>A GitHub workflow runs between 6:17 and 9:47 Arizona time. GitHub sometimes delays scheduled runs, so it tries every 30 minutes and stops after the first one lands. It also runs any time the check code or a test changes. It reads every vercel.app link on the project index site, so a new app gets watched the day it is linked there.</p>
+  <p>Each app loads in a headless browser. The check records the status code, load time, and browser errors, and saves a copy of the served code in the snapshots folder. Then it runs that app's tests. The check uses no Claude tokens.</p>
+
+  <h3>Specs and tests</h3>
+  <p>Every app has a spec in the specs folder, a short plain list of what the app is supposed to do. Every app also gets a render test that confirms the page shows text or draws something. Many apps also have feature tests in the tests folder. These click buttons, fill forms, start games, and check the result, like a person using the app. A failing test names the step that broke.</p>
+  <p>The rules file lists app families that stay separate on purpose. The access terminal pages are one of them.</p>
+
+  <h3>Colors</h3>
+  <p>Green means healthy. Yellow means a feature test failed or the browser logged errors. Red means the app is down. Apps with problems sort to the top.</p>
+
+  <h3>History</h3>
+  <p>Every run is folded into history.json, one entry per app per day. A day keeps its worst moment, so an outage at 6 AM still shows even if the app came back by noon. The calendar shows each day with counts of down and failing apps. Tap a day to see which apps and what broke. Each app card has a 30 day strip. Tap a square to see that day.</p>
+
+  <h3>The fix agent</h3>
+  <p>After each check, every broken app becomes a job in fixes.json, down apps first and the longest broken first. A scheduled Claude task called Control Troll fixer runs at 10:20 each morning. It works up to three jobs, about 15 minutes each. It finds the app's repo, fixes the cause on a branch, and opens a pull request. It never pushes to main and never merges its own work, so nothing goes live until you merge it. If the app works and the test was wrong, it fixes the test instead. Backends with no home page get a health route. Every attempt is written to fix-log.json, and a phone notification arrives when it finishes.</p>
+
+  <h3>Files in the repo</h3>
+  <p><code>check.js</code> runs the morning check. <code>tests.js</code> runs the scripted tests. <code>history.js</code> keeps the daily record. <code>queue.js</code> builds the fix list. <code>status.json</code> holds the latest results. <code>history.json</code> holds the daily record. <code>fixes.json</code> is the job list. <code>fix-log.json</code> records what the fix agent did. <code>apps.json</code> adds apps or health URLs the index site does not link.</p>
+
+  <h3>Not built yet</h3>
+  <p>A weekly merge pass that finds apps doing the same job and proposes combining them. Phone alerts when an app goes down or recovers. Health routes for every backend. Testing at phone size in Firefox. Daily screenshots. Secret scanning of the saved code. An uptime and speed report card for each app.</p>
+ </div>
+</div>
 <script>
 var SRC = "https://raw.githubusercontent.com/sudosilo/control-troll/main/status.json";
 var SPECS = "https://raw.githubusercontent.com/sudosilo/control-troll/main/specs/all.json";
@@ -93,6 +134,14 @@ var HIST = "https://raw.githubusercontent.com/sudosilo/control-troll/main/histor
 var data = null, specs = {}, hist = {days:{}}, filter = "all";
 var STATE_WORD = {o:"healthy", e:"console errors", f:"tests failing", d:"down"};
 var calMonth = null, calSel = null;
+
+(function(){
+  var m=document.getElementById("infoModal");
+  document.getElementById("infoOpen").onclick=function(){m.classList.add("open");};
+  document.getElementById("infoClose").onclick=function(){m.classList.remove("open");};
+  m.addEventListener("click",function(e){if(e.target===m)m.classList.remove("open");});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")m.classList.remove("open");});
+})();
 
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
 
