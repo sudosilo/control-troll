@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tractor Services Toolkit</title>
+<meta name="description" content="Blueprint, rate calculator, quote builder, lead intake, and a grading game for tractor and land services work.">
 <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;800&family=Public+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   :root {
     --paper: #FAF7EF;
@@ -445,7 +448,7 @@
   }
   @media print {
     body { background: #fff; padding: 0; }
-    .controls, .info-overlay, .tabs, .tool-btn, .game-wrap, .game-hud { display: none !important; }
+    .controls, .info-overlay, .tabs, .tool-btn, .game-wrap, .game-hud, .lead-steps, .lead-page, .lead-done, #leadMap { display: none !important; }
     .panel { display: none !important; }
     .panel.show { display: block !important; }
     .tool-sheet { box-shadow: none; border-width: 2px; }
@@ -643,6 +646,59 @@
     background: #FAF7EF;
     padding: 10px 12px;
   }
+
+  /* ===== Lead form ===== */
+  .lead-steps {
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px;
+    max-width: 220px;
+  }
+  .lead-step-dot {
+    width: 28px; height: 28px;
+    border: 2px solid var(--ink);
+    background: #FCF9F1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  .lead-step-dot.active { background: var(--hivis); }
+  .lead-step-dot.done { background: var(--go); border-color: var(--go); color: #fff; }
+  .lead-step-line { flex: 1; height: 2px; background: var(--line); }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    padding: 8px 12px;
+    background: #FCF9F1;
+    border: 2px solid var(--ink);
+    cursor: pointer;
+  }
+  .chip.picked { background: var(--hivis); }
+  .chip:focus-visible { outline: 3px solid var(--steel); outline-offset: 2px; }
+  #leadMap {
+    height: 220px;
+    border: 2px solid var(--ink);
+    margin-top: 4px;
+  }
+  .lead-done {
+    border: 3px solid var(--go);
+    background: #ECEEDD;
+    padding: 16px 18px;
+  }
+  .lead-done h3 {
+    font-family: 'Saira Condensed', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 22px;
+    color: var(--go);
+    margin-bottom: 6px;
+  }
 </style>
 </head>
 <body>
@@ -652,6 +708,7 @@
   <button class="tab" id="tabRate" role="tab" aria-selected="false" data-panel="panelRate">RATE</button>
   <button class="tab" id="tabQuote" role="tab" aria-selected="false" data-panel="panelQuote">QUOTE</button>
   <button class="tab" id="tabGame" role="tab" aria-selected="false" data-panel="panelGame">GAME</button>
+  <button class="tab" id="tabLead" role="tab" aria-selected="false" data-panel="panelLead">LEAD</button>
   <button id="infoBtn" aria-label="About this app" aria-haspopup="dialog">i</button>
 </nav>
 
@@ -914,7 +971,7 @@
 
   <div class="footer">
     <span>TRACTOR SERVICES SYSTEMS BLUEPRINT</span>
-    <span>REV A // FIELD ISSUE</span>
+    <span>REV B // OCT 2026 // FIELD ISSUE</span>
   </div>
 </div>
   </section>
@@ -970,7 +1027,7 @@
   </div>
   <div class="quote-doc" id="quoteDoc">
     <h3>Estimate</h3>
-    <div class="qd-meta" id="qdMeta">MATERIAL OPERATORS // MOHAVE COUNTY, AZ</div>
+    <div class="qd-meta" id="qdMeta">FIELD ESTIMATE // LAND &amp; TRACTOR SERVICES</div>
     <p><strong>Prepared for:</strong> <span id="qdClient">&nbsp;</span></p>
     <p><strong>Job address:</strong> <span id="qdAddr">&nbsp;</span></p>
     <p><strong>Scope:</strong> <span id="qdScope">&nbsp;</span></p>
@@ -995,6 +1052,60 @@
       <button class="tool-btn quiet" id="gReset" style="margin:0">RESTART</button>
     </div>
     <div class="game-msg" id="gMsg">Hold to lower the blade. Release to raise it. The dashed line is target grade.</div>
+  </div>
+</section>
+  </section>
+
+  <section class="panel" id="panelLead" role="tabpanel">
+<section class="tool-sheet">
+  <div class="tool-eyebrow">Tool T-04 // Feeds stage S-03, live intake</div>
+  <h2>Get A Quote</h2>
+  <p class="tool-intro">This is the live intake form. Every step saves as it goes, so even a form someone abandons halfway through leaves you a partial lead with whatever they entered.</p>
+
+  <div class="lead-steps" id="leadSteps">
+    <span class="lead-step-dot active" data-step="1">1</span>
+    <span class="lead-step-line"></span>
+    <span class="lead-step-dot" data-step="2">2</span>
+    <span class="lead-step-line"></span>
+    <span class="lead-step-dot" data-step="3">3</span>
+  </div>
+
+  <div class="lead-page" id="leadPage1">
+    <div class="field">
+      <label>What do you need done?</label>
+      <div class="chip-row" id="leadServiceChips">
+        <button type="button" class="chip" data-val="Land clearing">Land clearing</button>
+        <button type="button" class="chip" data-val="Grading">Grading</button>
+        <button type="button" class="chip" data-val="Gravel">Gravel</button>
+        <button type="button" class="chip" data-val="Driveway">Driveway</button>
+        <button type="button" class="chip" data-val="Other">Other</button>
+      </div>
+    </div>
+    <div class="field"><label for="leadSize">Rough size of the area</label><input id="leadSize" type="text" placeholder="e.g. 400 ft driveway, or half acre"></div>
+    <button class="tool-btn" id="leadNext1">NEXT</button>
+  </div>
+
+  <div class="lead-page" id="leadPage2" style="display:none">
+    <div class="field">
+      <label>Drop a pin on the property</label>
+      <div id="leadMap"></div>
+      <div class="hint" id="leadPinHint">Tap the map to place a pin. Drag it to adjust.</div>
+    </div>
+    <button class="tool-btn quiet" id="leadUseGps" type="button">USE MY CURRENT LOCATION</button>
+    <button class="tool-btn" id="leadNext2">NEXT</button>
+  </div>
+
+  <div class="lead-page" id="leadPage3" style="display:none">
+    <div class="field"><label for="leadName">Name</label><input id="leadName" type="text" placeholder="xxxxxxxx"></div>
+    <div class="field"><label for="leadPhone">Phone</label><input id="leadPhone" type="tel" placeholder="xxxxxxxxxx"></div>
+    <div class="field"><label for="leadEmail">Email (optional)</label><input id="leadEmail" type="email" placeholder="xxxxxxxx"></div>
+    <div class="field"><label for="leadNotes">Anything else we should know</label><textarea id="leadNotes" rows="2"></textarea></div>
+    <button class="tool-btn" id="leadSubmit">SEND REQUEST</button>
+  </div>
+
+  <div class="lead-done" id="leadDone" style="display:none">
+    <h3>Request sent.</h3>
+    <p>Your info is in and the operator will reach out to confirm the job.</p>
   </div>
 </section>
   </section>
@@ -1290,6 +1401,107 @@
     var gameStarted = false;
     document.getElementById('tabGame').addEventListener('click', function() {
       if (!gameStarted) { gameStarted = true; reset(); }
+    });
+  })();
+
+  /* ===== Lead form: wired to the live Material Operators backend ===== */
+  (function() {
+    var API = 'https://matop-railway-production.up.railway.app/api/lead';
+    var sessionId = 'w-' + Date.now() + '-' + Math.floor(Math.random() * 100000);
+    var leadData = {};
+    var map, marker, mapBuilt = false;
+
+    function sendLead(page) {
+      fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId: sessionId, page: page, data: leadData })
+      }).catch(function() { /* silent: a failed background save should never block the visitor */ });
+    }
+
+    function setStep(n) {
+      document.querySelectorAll('.lead-step-dot').forEach(function(dot) {
+        var d = parseInt(dot.dataset.step, 10);
+        dot.classList.toggle('active', d === n);
+        dot.classList.toggle('done', d < n);
+      });
+      document.getElementById('leadPage1').style.display = n === 1 ? 'block' : 'none';
+      document.getElementById('leadPage2').style.display = n === 2 ? 'block' : 'none';
+      document.getElementById('leadPage3').style.display = n === 3 ? 'block' : 'none';
+      if (n === 2) { buildMap(); }
+    }
+
+    document.querySelectorAll('#leadServiceChips .chip').forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        document.querySelectorAll('#leadServiceChips .chip').forEach(function(c) { c.classList.remove('picked'); });
+        chip.classList.add('picked');
+        leadData.service = chip.dataset.val;
+      });
+    });
+
+    document.getElementById('leadNext1').addEventListener('click', function() {
+      leadData.size = document.getElementById('leadSize').value;
+      sendLead(1);
+      setStep(2);
+    });
+
+    function buildMap() {
+      if (mapBuilt) { map.invalidateSize(); return; }
+      mapBuilt = true;
+      map = L.map('leadMap').setView([35.4, -114.1], 9);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 18
+      }).addTo(map);
+      map.on('click', function(e) {
+        dropPin(e.latlng.lat, e.latlng.lng);
+      });
+    }
+
+    function dropPin(lat, lng) {
+      leadData.lat = lat;
+      leadData.lng = lng;
+      if (marker) { marker.setLatLng([lat, lng]); }
+      else {
+        marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+        marker.on('dragend', function() {
+          var p = marker.getLatLng();
+          leadData.lat = p.lat;
+          leadData.lng = p.lng;
+        });
+      }
+      map.setView([lat, lng], 15);
+      document.getElementById('leadPinHint').textContent = 'Pin set. Drag it to fine-tune the spot.';
+    }
+
+    document.getElementById('leadUseGps').addEventListener('click', function() {
+      if (!navigator.geolocation) { return; }
+      document.getElementById('leadPinHint').textContent = 'Finding your location...';
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        dropPin(pos.coords.latitude, pos.coords.longitude);
+      }, function() {
+        document.getElementById('leadPinHint').textContent = 'Could not get location. Tap the map to drop a pin instead.';
+      });
+    });
+
+    document.getElementById('leadNext2').addEventListener('click', function() {
+      sendLead(2);
+      setStep(3);
+    });
+
+    document.getElementById('leadSubmit').addEventListener('click', function() {
+      leadData.name = document.getElementById('leadName').value;
+      leadData.phone = document.getElementById('leadPhone').value;
+      leadData.email = document.getElementById('leadEmail').value;
+      leadData.notes = document.getElementById('leadNotes').value;
+      sendLead(3);
+      document.getElementById('leadPage3').style.display = 'none';
+      document.getElementById('leadSteps').style.display = 'none';
+      document.getElementById('leadDone').style.display = 'block';
+    });
+
+    document.getElementById('tabLead').addEventListener('click', function() {
+      if (document.getElementById('leadPage2').style.display === 'block') { buildMap(); }
     });
   })();
 
