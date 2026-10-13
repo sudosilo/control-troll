@@ -1,8 +1,9 @@
 name: daily-check
 on:
   schedule:
-    - cron: "17 13 * * *"
-    - cron: "47 13 * * *"
+    # GitHub delays or drops scheduled runs when busy, so the morning check tries
+    # every 30 minutes from 6:17 to 9:47 Arizona time and stops once one has run.
+    - cron: "17,47 13-16 * * *"
   workflow_dispatch:
   push:
     branches: [main]
@@ -14,15 +15,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Skip if this morning already ran
+        id: gate
+        env:
+          EV: ${{ github.event_name }}
+        run: |
+          node -e '
+            const s = require("./status.json");
+            const az = (d) => new Date(new Date(d).getTime() - 7*3600e3).toISOString();
+            const now = az(Date.now()), last = az(s.checkedAt);
+            const done = process.env.EV === "schedule" && last.slice(0,10) === now.slice(0,10) && last.slice(11,13) >= "06";
+            console.log(done ? "already ran this morning at " + last : "running");
+            require("fs").appendFileSync(process.env.GITHUB_OUTPUT, "skip=" + (done ? "yes" : "no") + "\n");
+          '
+      - if: steps.gate.outputs.skip != 'yes'
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm install --no-save playwright
-      - run: npx playwright install --with-deps chromium
-      - run: node check.js
-      - run: |
+      - if: steps.gate.outputs.skip != 'yes'
+        run: npm install --no-save playwright
+      - if: steps.gate.outputs.skip != 'yes'
+        run: npx playwright install --with-deps chromium
+      - if: steps.gate.outputs.skip != 'yes'
+        run: node check.js
+      - if: steps.gate.outputs.skip != 'yes'
+        run: |
           git config user.name "control-troll-bot"
           git config user.email "control-troll-bot@users.noreply.github.com"
           git add status.json history.json snapshots
           git diff --cached --quiet || git commit -m "daily status"
+          git pull --rebase origin main
           git push
