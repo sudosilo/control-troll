@@ -4,6 +4,7 @@ const fs = require("fs");
 const { chromium } = require("playwright");
 const { runTests } = require("./tests");
 const history = require("./history");
+const queue = require("./queue");
 
 const TIMEOUT = 30000;
 const MAX_SNAPSHOT = 3 * 1024 * 1024;
@@ -91,5 +92,8 @@ async function discover(browser) {
   await browser.close();
   const status = { checkedAt: new Date().toISOString(), apps };
   fs.writeFileSync("status.json", JSON.stringify(status, null, 2) + "\n");
-  fs.writeFileSync("history.json", JSON.stringify(history.record(history.load("history.json"), status)) + "\n");
+  const hist = history.record(history.load("history.json"), status);
+  fs.writeFileSync("history.json", JSON.stringify(hist) + "\n");
+  const readJson = (f, d) => { try { return JSON.parse(fs.readFileSync(f, "utf8")); } catch (e) { return d; } };
+  fs.writeFileSync("fixes.json", JSON.stringify(queue.build(status, hist, readJson("specs/all.json", {}), readJson("rules.json", {})), null, 2) + "\n");
 })();

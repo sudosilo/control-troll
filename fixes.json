@@ -1,0 +1,62 @@
+{
+  "builtAt": "2026-10-13T14:44:00.094Z",
+  "budget": {
+    "minutes": 15,
+    "note": "Stop when the budget runs out, log what was found, move to the next job."
+  },
+  "rules": [
+    "Work on a branch in the app's repo and open a pull request. Never push to main.",
+    "If the app works and the test is wrong, fix the test in control-troll instead, on a branch with a pull request.",
+    "Add one line to fix-log.json in control-troll for every job touched, fixed or not."
+  ],
+  "jobs": [
+    {
+      "app": "snapshot-engine-pied",
+      "url": "https://snapshot-engine-pied.vercel.app",
+      "kind": "down",
+      "since": "2026-10-11",
+      "status": 404,
+      "failing": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "features": [
+        "Snapshot engine responds instead of returning an error."
+      ],
+      "knownProblem": "Returns 404 at the root URL. If it is a backend, it needs a health endpoint. If it is a frontend, the deploy is missing.",
+      "snapshot": "snapshots/snapshot-engine-pied.html"
+    },
+    {
+      "app": "topo-wars-server",
+      "url": "https://topo-wars-server.vercel.app",
+      "kind": "down",
+      "since": "2026-10-11",
+      "status": 404,
+      "failing": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "features": [
+        "Topo Wars server answers requests for friend games."
+      ],
+      "knownProblem": "Returns 404 at the root URL. A backend with no home page does that normally, so it needs a health endpoint added to tell real downtime apart.",
+      "snapshot": "snapshots/topo-wars-server.html"
+    },
+    {
+      "app": "invoice-green-tau",
+      "url": "https://invoice-green-tau.vercel.app",
+      "kind": "down",
+      "since": "2026-10-12",
+      "status": 404,
+      "failing": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "features": [
+        "Invoice app loads its script bundle and renders past the blank shell."
+      ],
+      "knownProblem": null,
+      "snapshot": "snapshots/invoice-green-tau.html"
+    }
+  ]
+}
