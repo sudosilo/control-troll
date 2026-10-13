@@ -120,6 +120,9 @@ h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
   <h3>The fix agent</h3>
   <p>After each check, every broken app becomes a job in fixes.json, down apps first and the longest broken first. A scheduled Claude task called Control Troll fixer runs at 10:20 each morning. It works up to three jobs, about 15 minutes each. It finds the app's repo, fixes the cause on a branch, and opens a pull request. It never pushes to main and never merges its own work, so nothing goes live until you merge it. If the app works and the test was wrong, it fixes the test instead. Backends with no home page get a health route. Every attempt is written to fix-log.json, and a phone notification arrives when it finishes.</p>
 
+  <h3>The scribe</h3>
+  <p>A second scheduled Claude task called Control Troll scribe runs at 11:40 every night. For every repo that changed that day, it writes a changelog entry, publishes a GitHub release, refreshes the README, and fills in the repo description, website link, and topic tags. It then rebuilds the profile page in the sudosilo repo, grouping every app by category with recent changes. Its rules are in scribe/rules.md. It works through older repos 12 a night until every repo has its history written.</p>
+
   <h3>Files in the repo</h3>
   <p><code>check.js</code> runs the morning check. <code>tests.js</code> runs the scripted tests. <code>history.js</code> keeps the daily record. <code>queue.js</code> builds the fix list. <code>status.json</code> holds the latest results. <code>history.json</code> holds the daily record. <code>fixes.json</code> is the job list. <code>fix-log.json</code> records what the fix agent did. <code>apps.json</code> adds apps or health URLs the index site does not link.</p>
 
