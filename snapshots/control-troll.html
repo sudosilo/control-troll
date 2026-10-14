@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Control Troll</title>
+<style>
+:root{
+  --bg:#f6f5f1;--card:#ffffff;--ink:#1d1d1b;--muted:#6b6a64;--line:#e2e0d8;
+  --ok:#1f8a4c;--okbg:#e6f4ec;--bad:#c0392b;--badbg:#fbe9e7;--warn:#a86a00;--warnbg:#fdf3e1;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
+.sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+.tally{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.pill{padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--card)}
+.pill.ok{background:var(--okbg);color:var(--ok);border-color:transparent}
+.pill.bad{background:var(--badbg);color:var(--bad);border-color:transparent}
+.pill.warn{background:var(--warnbg);color:var(--warn);border-color:transparent}
+.filters{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.filters button{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.filters button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.app{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+.app.ok{border-left-color:var(--ok)}
+.app.bad{border-left-color:var(--bad)}
+.app.warn{border-left-color:var(--warn)}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.name{font-weight:650;word-break:break-word}
+.state{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;white-space:nowrap}
+.app.ok .state{color:var(--ok)}
+.app.bad .state{color:var(--bad)}
+.app.warn .state{color:var(--warn)}
+.meta{color:var(--muted);font-size:12.5px;margin-top:4px;word-break:break-all}
+.errs{margin-top:8px;font:12px/1.4 ui-monospace,Menlo,Consolas,monospace;color:var(--bad);background:var(--badbg);border-radius:6px;padding:8px;white-space:pre-wrap;word-break:break-word}
+.spec{margin-top:8px;border-top:1px solid var(--line);padding-top:8px;font-size:13px}
+.spec summary{cursor:pointer;color:var(--muted);font-weight:600}
+.spec p{margin:6px 0 0}
+.spec .tp{color:var(--ok)}
+.spec .tf{color:var(--bad)}
+.spec .ov{color:var(--warn)}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;margin-left:6px}
+.tag.no{background:var(--warnbg);color:var(--warn)}
+.tag.yes{background:var(--okbg);color:var(--ok)}
+.hist{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:16px}
+.hhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.hhead b{font-size:15px}
+.hhead button{font:inherit;font-size:14px;padding:4px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .dow{font-size:11px;color:var(--muted);text-align:center;font-weight:600}
+.cal .day{aspect-ratio:1/1;border-radius:6px;background:#efede6;font-size:11px;padding:3px;display:flex;flex-direction:column;justify-content:space-between;cursor:default;min-width:0}
+.cal .day.has{cursor:pointer}
+.cal .day.o{background:var(--okbg)}
+.cal .day.f{background:var(--warnbg)}
+.cal .day.d{background:var(--badbg)}
+.cal .day.sel{outline:2px solid var(--ink)}
+.cal .day .n{font-weight:700;font-size:10.5px;line-height:1.1}
+.cal .day .n .r{color:var(--bad)}
+.cal .day .n .y{color:var(--warn)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.dayinfo{margin-top:10px;font-size:13px}
+.dayinfo p{margin:4px 0}
+.strip{display:flex;gap:2px;margin-top:8px}
+.strip span{flex:1;height:14px;border-radius:2px;background:#efede6;cursor:pointer;min-width:0}
+.strip span.o{background:#7cc79a}
+.strip span.e{background:#b9dcc6}
+.strip span.f{background:#e8b04a}
+.strip span.d{background:#d9675a}
+.stripnote{font-size:12px;color:var(--muted);margin-top:4px;min-height:1em}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.infobtn{font:inherit;font-size:14px;font-weight:700;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;flex:none}
+.modal{position:fixed;inset:0;background:rgba(29,29,27,.35);display:none;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto;z-index:50}
+.modal.open{display:flex}
+.sheet{background:var(--card);border-radius:12px;max-width:640px;width:100%;padding:18px 18px 8px;margin:16px 0;box-shadow:0 8px 30px rgba(0,0,0,.15)}
+.sheet .shead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.sheet h2{font-size:18px;margin:0}
+.sheet h3{font-size:14px;margin:16px 0 4px;color:var(--muted);letter-spacing:.4px;text-transform:uppercase}
+.sheet p{margin:0 0 10px;font-size:14.5px}
+.sheet code{font:13px ui-monospace,Menlo,Consolas,monospace;background:#efede6;padding:1px 5px;border-radius:4px}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:20px;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><h1>CONTROL TROLL</h1><button class="infobtn" id="infoOpen" aria-label="How Control Troll works">i</button></div>
+  <div class="sub" id="when">Loading status...</div>
+  <div class="tally" id="tally"></div>
+  <div class="hist" id="hist"></div>
+  <div class="filters" id="filters">
+    <button data-f="all" class="on">All</button>
+    <button data-f="bad">Down</button>
+    <button data-f="warn">Errors</button>
+    <button data-f="ok">Healthy</button>
+  </div>
+  <div id="list"></div>
+</div>
+<div class="modal" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+ <div class="sheet">
+  <div class="shead"><h2 id="infoTitle">How Control Troll works</h2><button class="infobtn" id="infoClose" aria-label="Close">&times;</button></div>
+
+  <h3>What it is</h3>
+  <p>Control Troll watches every app linked on the project index site. It checks them every morning, keeps a history, and hands broken apps to a fix agent. The goal is to maintain far more apps than one person could by hand. Healthy apps cost nothing to keep. Only broken ones use Claude.</p>
+
+  <h3>The morning check</h3>
+  <p>A GitHub workflow runs between 6:17 and 9:47 Arizona time. GitHub sometimes delays scheduled runs, so it tries every 30 minutes and stops after the first one lands. It also runs any time the check code or a test changes. It reads every vercel.app link on the project index site, so a new app gets watched the day it is linked there.</p>
+  <p>Each app loads in a headless browser. The check records the status code, load time, and browser errors, and saves a copy of the served code in the snapshots folder. Then it runs that app's tests. The check uses no Claude tokens.</p>
+
+  <h3>Specs and tests</h3>
+  <p>Every app has a spec in the specs folder, a short plain list of what the app is supposed to do. Every app also gets a render test that confirms the page shows text or draws something. Many apps also have feature tests in the tests folder. These click buttons, fill forms, start games, and check the result, like a person using the app. A failing test names the step that broke.</p>
+  <p>The rules file lists app families that stay separate on purpose. The access terminal pages are one of them.</p>
+
+  <h3>Colors</h3>
+  <p>Green means healthy. Yellow means a feature test failed or the browser logged errors. Red means the app is down. Apps with problems sort to the top.</p>
+
+  <h3>History</h3>
+  <p>Every run is folded into history.json, one entry per app per day. A day keeps its worst moment, so an outage at 6 AM still shows even if the app came back by noon. The calendar shows each day with counts of down and failing apps. Tap a day to see which apps and what broke. Each app card has a 30 day strip. Tap a square to see that day.</p>
+
+  <h3>The fix agent</h3>
+  <p>After each check, every broken app becomes a job in fixes.json, down apps first and the longest broken first. A scheduled Claude task called Control Troll fixer runs at 10:20 each morning. It works up to three jobs, about 15 minutes each. It finds the app's repo, fixes the cause on a branch, and opens a pull request. It never pushes to main and never merges its own work, so nothing goes live until you merge it. If the app works and the test was wrong, it fixes the test instead. Backends with no home page get a health route. Every attempt is written to fix-log.json, and a phone notification arrives when it finishes.</p>
+
+  <h3>The scribe</h3>
+  <p>A second scheduled Claude task called Control Troll scribe runs at 11:40 every night. For every repo that changed that day, it writes a changelog entry, publishes a GitHub release, refreshes the README, and fills in the repo description, website link, and topic tags. It then rebuilds the profile page in the sudosilo repo, grouping every app by category with recent changes. Its rules are in scribe/rules.md. It works through older repos 12 a night until every repo has its history written.</p>
+
+  <h3>Files in the repo</h3>
+  <p><code>check.js</code> runs the morning check. <code>tests.js</code> runs the scripted tests. <code>history.js</code> keeps the daily record. <code>queue.js</code> builds the fix list. <code>status.json</code> holds the latest results. <code>history.json</code> holds the daily record. <code>fixes.json</code> is the job list. <code>fix-log.json</code> records what the fix agent did. <code>apps.json</code> adds apps or health URLs the index site does not link.</p>
+
+  <h3>Not built yet</h3>
+  <p>A weekly merge pass that finds apps doing the same job and proposes combining them. Phone alerts when an app goes down or recovers. Health routes for every backend. Testing at phone size in Firefox. Daily screenshots. Secret scanning of the saved code. An uptime and speed report card for each app.</p>
+ </div>
+</div>
+<script>
+var SRC = "https://raw.githubusercontent.com/sudosilo/control-troll/main/status.json";
+var SPECS = "https://raw.githubusercontent.com/sudosilo/control-troll/main/specs/all.json";
+var HIST = "https://raw.githubusercontent.com/sudosilo/control-troll/main/history.json";
+var data = null, specs = {}, hist = {days:{}}, filter = "all";
+var STATE_WORD = {o:"healthy", e:"console errors", f:"tests failing", d:"down"};
+var calMonth = null, calSel = null;
+
+(function(){
+  var m=document.getElementById("infoModal");
+  document.getElementById("infoOpen").onclick=function(){m.classList.add("open");};
+  document.getElementById("infoClose").onclick=function(){m.classList.remove("open");};
+  m.addEventListener("click",function(e){if(e.target===m)m.classList.remove("open");});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")m.classList.remove("open");});
+})();
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+
+function failing(a){return (a.tests||[]).filter(function(t){return !t.pass;});}
+function klass(a){
+  if(!a.up) return "bad";
+  if(failing(a).length) return "warn";
+  if(a.errors && a.errors.length) return "warn";
+  return "ok";
+}
+
+function render(){
+  var list = document.getElementById("list");
+  if(!data || !data.apps || !data.apps.length){
+    list.innerHTML = '<div class="empty">No apps checked yet. The first daily run fills this in.</div>';
+    document.getElementById("tally").innerHTML = "";
+    return;
+  }
+  var c = {ok:0,warn:0,bad:0};
+  data.apps.forEach(function(a){c[klass(a)]++;});
+  document.getElementById("tally").innerHTML =
+    '<span class="pill">'+data.apps.length+' apps</span>'+
+    '<span class="pill ok">'+c.ok+' healthy</span>'+
+    '<span class="pill warn">'+c.warn+' errors</span>'+
+    '<span class="pill bad">'+c.bad+' down</span>';
+  var order = {bad:0,warn:1,ok:2};
+  var rows = data.apps.slice().sort(function(x,y){return order[klass(x)]-order[klass(y)];});
+  list.innerHTML = rows.filter(function(a){return filter==="all"||klass(a)===filter;}).map(function(a){
+    var k = klass(a);
+    var f = failing(a), tt = a.tests||[];
+    var label = k==="ok"?"Healthy":k==="warn"?(f.length?"Tests failing":"Errors"):"Down";
+    var meta = a.url.replace(/^https?:\/\//,"")+" . status "+(a.status||"none")+" . "+(a.ms!=null?a.ms+" ms":"no load")+(tt.length?" . tests "+(tt.length-f.length)+"/"+tt.length:"");
+    var errs = f.map(function(t){return "FAIL "+esc(t.name)+": "+esc(t.error||"");}).concat((a.errors||[]).slice(0,5).map(esc)).join("\n");
+    return '<div class="app '+k+'"><div class="row"><span class="name">'+esc(a.name)+'</span><span class="state">'+label+'</span></div>'+
+      '<div class="meta">'+esc(meta)+'</div>'+(errs?'<div class="errs">'+errs+'</div>':'')+stripBlock(a.name)+testBlock(a)+specBlock(a.name)+'</div>';
+  }).join("");
+}
+
+function testBlock(a){
+  var tt = a.tests||[]; if(!tt.length) return "";
+  var rows = tt.map(function(t){
+    return '<p class="'+(t.pass?'tp':'tf')+'">'+(t.pass?'PASS ':'FAIL ')+esc(t.name)+(t.error?' : '+esc(t.error):'')+'</p>';
+  }).join("");
+  return '<details class="spec"><summary>Tests '+(tt.length-failing(a).length)+' of '+tt.length+' passing</summary>'+rows+'</details>';
+}
+
+function azToday(){return new Date(Date.now()-7*3600*1000).toISOString().slice(0,10);}
+function addDays(key,n){var d=new Date(key+"T12:00:00Z");d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);}
+function niceDate(key){var d=new Date(key+"T12:00:00Z");return d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric",timeZone:"UTC"});}
+
+function dayWorst(key){
+  var day=hist.days[key]; if(!day) return null;
+  var down=0,fail=0;
+  for(var n in day.apps){var s=day.apps[n].s; if(s==="d")down++; else if(s==="f")fail++;}
+  return {down:down,fail:fail,cls:down?"d":fail?"f":"o"};
+}
+
+function renderHist(){
+  var box=document.getElementById("hist");
+  var keys=Object.keys(hist.days||{}).sort();
+  if(!keys.length){box.innerHTML='<div class="hhead"><b>History</b></div><div class="stripnote">No history yet. It fills in after each daily run.</div>';return;}
+  if(!calMonth) calMonth=azToday().slice(0,7);
+  var y=+calMonth.slice(0,4), m=+calMonth.slice(5,7);
+  var first=new Date(Date.UTC(y,m-1,1)), dim=new Date(Date.UTC(y,m,0)).getUTCDate();
+  var label=first.toLocaleDateString(undefined,{month:"long",year:"numeric",timeZone:"UTC"});
+  var h='<div class="hhead"><button id="calPrev" aria-label="Previous month">&lsaquo;</button><b>'+label+'</b><button id="calNext" aria-label="Next month">&rsaquo;</button></div><div class="cal">';
+  ["S","M","T","W","T","F","S"].forEach(function(d){h+='<div class="dow">'+d+'</div>';});
+  for(var i=0;i<first.getUTCDay();i++) h+='<div></div>';
+  for(var d=1;d<=dim;d++){
+    var key=calMonth+"-"+(d<10?"0":"")+d, w=dayWorst(key);
+    var n=w?('<span class="n">'+(w.down?'<span class="r">'+w.down+' down</span><br>':'')+(w.fail?'<span class="y">'+w.fail+' fail</span>':'')+'</span>'):'';
+    h+='<div class="day'+(w?' has '+w.cls:'')+(key===calSel?' sel':'')+'" data-k="'+key+'"><span>'+d+'</span>'+n+'</div>';
+  }
+  h+='</div><div class="legend"><span><i style="background:var(--okbg)"></i>all up</span><span><i style="background:var(--warnbg)"></i>tests failing</span><span><i style="background:var(--badbg)"></i>something down</span><span>Tap a day for details</span></div>';
+  h+='<div class="dayinfo" id="dayinfo">'+dayInfo(calSel)+'</div>';
+  box.innerHTML=h;
+  document.getElementById("calPrev").onclick=function(){shiftMonth(-1);};
+  document.getElementById("calNext").onclick=function(){shiftMonth(1);};
+  Array.prototype.forEach.call(box.querySelectorAll(".day.has"),function(el){
+    el.onclick=function(){calSel=el.getAttribute("data-k");renderHist();};
+  });
+}
+function shiftMonth(n){var y=+calMonth.slice(0,4),m=+calMonth.slice(5,7)-1+n;var d=new Date(Date.UTC(y,m,1));calMonth=d.toISOString().slice(0,7);renderHist();}
+
+function dayInfo(key){
+  if(!key||!hist.days[key]) return "";
+  var day=hist.days[key], rows=[];
+  Object.keys(day.apps).sort().forEach(function(n){
+    var a=day.apps[n]; if(a.s!=="d"&&a.s!=="f") return;
+    rows.push('<p><b style="color:'+(a.s==="d"?'var(--bad)':'var(--warn)')+'">'+STATE_WORD[a.s]+'</b> '+esc(n)+(a.x&&a.x.length?' : '+esc(a.x.join(", ")):'')+'</p>');
+  });
+  var total=Object.keys(day.apps).length;
+  return '<p><b>'+niceDate(key)+'</b>, '+day.runs+' check'+(day.runs===1?'':'s')+', '+total+' apps</p>'+(rows.length?rows.join(""):'<p>Every app was up and passing.</p>');
+}
+
+function stripBlock(name){
+  var keys=Object.keys(hist.days||{}); if(!keys.length) return "";
+  var end=azToday(), cells="";
+  for(var i=29;i>=0;i--){
+    var k=addDays(end,-i), a=hist.days[k]&&hist.days[k].apps[name];
+    cells+='<span class="'+(a?a.s:'')+'" data-k="'+k+'" data-n="'+esc(name)+'"></span>';
+  }
+  return '<div class="strip">'+cells+'</div><div class="stripnote">Last 30 days. Tap a square.</div>';
+}
+
+document.getElementById("list").addEventListener("click",function(e){
+  var sq=e.target.closest(".strip span"); if(!sq) return;
+  var k=sq.getAttribute("data-k"), n=sq.getAttribute("data-n");
+  var a=hist.days[k]&&hist.days[k].apps[n];
+  var note=sq.parentNode.nextElementSibling;
+  note.textContent=niceDate(k)+": "+(a?STATE_WORD[a.s]+(a.t?", tests "+a.p+" of "+a.t:"")+(a.x&&a.x.length?", "+a.x.join(", "):""):"not checked");
+});
+
+function specBlock(n){
+  var sp = specs[n]; if(!sp) return "";
+  var tag = sp.problem ? '<span class="tag no">problem</span>' : (sp.note ? '<span class="tag no">needs source</span>' : '<span class="tag yes">active</span>');
+  var f = sp.features.map(function(x){return '<p>'+esc(x)+'</p>';}).join("");
+  var ov = (sp.overlap ? '<p class="ov">'+esc(sp.overlap)+'</p>' : "")+(sp.keepSeparate ? '<p>'+esc(sp.keepSeparate)+'</p>' : "")+(sp.futureIdea ? '<p>'+esc(sp.futureIdea)+'</p>' : "")+(sp.problem ? '<p class="ov">'+esc(sp.problem)+'</p>' : "")+(sp.note ? '<p class="ov">'+esc(sp.note)+'</p>' : "");
+  return '<details class="spec"><summary>Spec'+tag+'</summary>'+f+ov+'</details>';
+}
+
+document.getElementById("filters").addEventListener("click",function(e){
+  var b = e.target.closest("button"); if(!b) return;
+  filter = b.getAttribute("data-f");
+  Array.prototype.forEach.call(this.children,function(x){x.classList.toggle("on",x===b);});
+  render();
+});
+
+fetch(HIST+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():{days:{}};}).then(function(j){hist=j||{days:{}};renderHist();render();}).catch(function(){renderHist();});
+fetch(SPECS+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():{};}).then(function(j){specs=j||{};render();}).catch(function(){});
+fetch(SRC+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+  data = j;
+  document.getElementById("when").textContent = j && j.checkedAt ? "Last check: "+new Date(j.checkedAt).toLocaleString() : "No checks have run yet.";
+  render();
+}).catch(function(){
+  document.getElementById("when").textContent = "Status file not found yet.";
+  render();
+});
+</script>
+</body>
+</html>

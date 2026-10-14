@@ -3,13 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>[Offset Listener]</title>
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
-<link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#1a4fa0">
+<title>Song Offset Listener</title>
 <style>
   body {
     font-family: Georgia, serif;
@@ -107,137 +101,25 @@
     cursor: pointer;
   }
   #nudgeValue { font-size: 0.85rem; }
-  #appHeader {
-    width: 100%;
-    max-width: 500px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    margin: 0 auto 10px;
-    padding: 4px 44px;
-    box-sizing: border-box;
-  }
-  #appHeader h1 {
-    margin: 0;
-    font-size: 1.3rem;
-    text-align: center;
-  }
-  #infoBtn {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 2px solid #1a4fa0;
-    background: #eaf1fb;
-    color: #1a4fa0;
-    font-family: Georgia, serif;
-    font-style: italic;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    line-height: 1;
-  }
-  #infoOverlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(20,20,20,0.55);
-    z-index: 1000;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 30px 16px;
-    overflow-y: auto;
-  }
-  #infoPanel {
-    background: #fffdf8;
-    border: 2px solid #1a4fa0;
-    border-radius: 14px;
-    max-width: 460px;
-    width: 100%;
-    padding: 22px 22px 26px;
-    text-align: left;
-    position: relative;
-  }
-  #infoPanel h2 {
-    font-size: 1.05rem;
-    color: #1a4fa0;
-    margin: 18px 0 6px;
-  }
-  #infoPanel h2:first-of-type { margin-top: 0; }
-  #infoPanel p, #infoPanel li { font-size: 0.9rem; line-height: 1.5; color: #333; }
-  #infoPanel ul { margin: 4px 0; padding-left: 20px; }
-  #infoCloseBtn {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    border: none;
-    background: none;
-    font-size: 1.3rem;
-    color: #999;
-    cursor: pointer;
-  }
-  #infoStatusBanner {
-    background: #f4e9d6;
-    border: 1px solid #c9b088;
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 0.85rem;
-    color: #5a4a2a;
-    margin-bottom: 14px;
-  }
+  #modeMenuBtn { position: fixed; top: 12px; right: 12px; width: 38px; height: 38px; border-radius: 8px; border: 2px solid #1a4fa0; background: #eaf1fb; padding: 0; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  #modeMenuBtn i { display: block; width: 16px; height: 2px; background: #1a4fa0; margin: 2px 0; }
+  #modeMenu { position: fixed; top: 56px; right: 12px; background: #fff; border: 2px solid #1a4fa0; border-radius: 10px; display: none; z-index: 50; text-align: left; min-width: 190px; overflow: hidden; }
+  #modeMenu.open { display: block; }
+  #modeMenu a { display: block; padding: 12px 14px; color: #1a4fa0; text-decoration: none; border-bottom: 1px solid #ddd; }
+  #modeMenu a:last-child { border-bottom: 0; }
 </style>
 </head>
 <body>
-  <div id="appHeader">
-    <h1>[Offset Listener]</h1>
-    <button id="infoBtn" aria-label="About this app">i</button>
-  </div>
-
-  <div id="infoOverlay">
-    <div id="infoPanel">
-      <button id="infoCloseBtn" aria-label="Close">&times;</button>
-
-      <div id="infoStatusBanner">
-        This is a real, working, in-progress build, not a finished product. Some pieces below work reliably, others are still being tuned or are only partially wired up. Nothing here is a promise, it's an honest account of where things actually stand right now.
-      </div>
-
-      <h2>What this is supposed to do</h2>
-      <p>Phones become speakers for whatever song is already playing in a room. One phone identifies a song from ambient sound, and every other phone with this page open joins in sync automatically, no button press on their end, no shared account, no app store install. The idea is closer to radio than to a streaming service: reach is by rough location, not by identity.</p>
-
-      <h2>How it actually works right now</h2>
-      <ul>
-        <li>A phone's microphone captures a few seconds of audio and sends it off to be identified.</li>
-        <li>The result, song, artist, and the exact position in the track, gets written to a small shared record keyed to a rough geographic region, not the whole world at once.</li>
-        <li>Every phone nearby polls that same region every second and a half. When it changes, it computes exactly where the song should be right now and starts playing there, using real elapsed time, not a cached guess.</li>
-        <li>A song can also be picked manually by search and broadcast the same way, which tends to be the most accurate path since the position comes straight from the player itself, not from an audio match.</li>
-      </ul>
-
-      <h2>What's real and tested versus still rough</h2>
-      <ul>
-        <li>Core sync between phones, the manual search and broadcast path, and the acoustic drift-measurement tool have all been tested against real audio and confirmed working.</li>
-        <li>Automatic tempo-matched handoff between two songs exists and has fired successfully at least once, but hasn't been tested widely.</li>
-        <li>A voting system for rating whether a given song-to-song handoff actually sounded good exists but is brand new and largely unproven.</li>
-        <li>Location permission is currently required for anything to work at all. If it's denied, nothing can be read or written.</li>
-      </ul>
-
-      <h2>Technologies and services involved</h2>
-      <ul>
-        <li>AudD, for identifying a song from a short ambient recording.</li>
-        <li>MusicBrainz and the YouTube Data API, for finding a matching video to actually play.</li>
-        <li>GetSongBPM, plus a locally built tempo detector that runs right in the browser, for figuring out a song's tempo without needing an external service.</li>
-        <li>Vercel Edge Functions and Upstash Redis, for the small shared record every phone reads and writes, no audio ever passes through either of them.</li>
-        <li>The Web Audio API, for measuring acoustic drift directly from a live recording, no external service involved.</li>
-      </ul>
-
-      <h2>The thinking behind it</h2>
-      <p>Nothing here needs an account, a login, or a dedicated app, on purpose. The server never touches actual audio, only a tiny piece of text describing what's playing and when, so there's nothing to relay and nothing to decode continuously, which is also why it doesn't drain a phone's battery the way a real streaming relay would. The goal was always sharing a moment already happening in a room, not building a platform around it.</p>
-    </div>
-  </div>
-
+  <button id="modeMenuBtn" aria-label="Menu"><i></i><i></i><i></i></button>
+  <nav id="modeMenu">
+    <a href="/" style="color:#333;">Song Offset Listener</a>
+    <a href="/zone">Zone Director</a>
+  </nav>
+  <script>
+    document.getElementById('modeMenuBtn').addEventListener('click', function (e) { e.stopPropagation(); document.getElementById('modeMenu').classList.toggle('open'); });
+    document.addEventListener('click', function () { document.getElementById('modeMenu').classList.remove('open'); });
+  </script>
+  <h1>Song Offset Listener</h1>
   <button id="listenBtn">Listen</button>
   <div id="status"></div>
 
@@ -332,15 +214,6 @@
   </details>
 
 <script>
-const infoBtn = document.getElementById('infoBtn');
-const infoOverlay = document.getElementById('infoOverlay');
-const infoCloseBtn = document.getElementById('infoCloseBtn');
-infoBtn.addEventListener('click', () => { infoOverlay.style.display = 'flex'; });
-infoCloseBtn.addEventListener('click', () => { infoOverlay.style.display = 'none'; });
-infoOverlay.addEventListener('click', (e) => {
-  if (e.target === infoOverlay) infoOverlay.style.display = 'none';
-});
-
 const listenBtn = document.getElementById('listenBtn');
 const statusEl = document.getElementById('status');
 const resultEl = document.getElementById('result');
@@ -1553,7 +1426,7 @@ function renderPositions(devices) {
     if (isMe) row.style.cursor = 'default';
     const nameColor = isMe ? '#333' : '#1a4fa0';
     row.innerHTML = '<div style="color:' + nameColor + ';font-weight:bold;">' + escapeHtml(d.deviceId) + (isMe ? ' (this phone)' : '') + '</div>' +
-      '<div class="fa">' + escapeHtml(d.title || '') + (d.paused ? ' — paused' : '') + '</div>' +
+      '<div class="fa">' + escapeHtml(d.title || '') + (d.paused ? ', paused' : '') + '</div>' +
       '<div class="fs">' + formatOffset(d.position || 0) + ' · updated ' + staleSec + 's ago · nudge ' +
       (d.nudgeMs >= 0 ? '+' : '') + (d.nudgeMs / 1000).toFixed(1) + 's</div>';
     if (!isMe && d.videoId) {
@@ -1736,7 +1609,7 @@ function firePendingFeedEntry() {
   const e = pendingFeedEntry;
   const elapsedSinceHeard = Math.max(0, (Date.now() - e.epochMs) / 1000);
   const position = (e.offsetSeconds || 0) + elapsedSinceHeard;
-  feedPlayerStatus.textContent = 'playing: ' + e.title + ' — ' + e.artist;
+  feedPlayerStatus.textContent = 'playing: ' + e.title + ' by ' + e.artist;
   feedPlayer.loadVideoById(e.videoId, Math.max(position, 0));
   feedPauseBtn.style.display = 'inline-block';
   feedPaused = false;
