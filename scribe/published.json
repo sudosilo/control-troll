@@ -1,0 +1,144 @@
+{
+ "releases": [
+  "sudosilo/groundcore@v2026.04.05",
+  "sudosilo/mission-operator@v2026.03.26",
+  "sudosilo/suno-forge@v2026.04.05",
+  "sudosilo/gridmark@v2026.04.14",
+  "sudosilo/nota-city@v2026.04.20",
+  "sudosilo/graceland-diagram@v2026.05.08",
+  "sudosilo/spaceout@v2026.05.09",
+  "sudosilo/edmia@v2026.05.21",
+  "sudosilo/matops-backend@v2026.06.04",
+  "sudosilo/coffeekit@v2026.06.21",
+  "sudosilo/dronecamp@v2026.07.03",
+  "sudosilo/tanks-and-zombies@v2026.07.03"
+ ],
+ "settings": {
+  "sudosilo/groundcore": {
+   "d": "Desert planting planner with row spacing, plant lookup, and a map sandbox for laying out rows.",
+   "h": "https://groundcore-nine.vercel.app",
+   "t": [
+    "gardening",
+    "leaflet",
+    "map",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/mission-operator": {
+   "d": "Location aware scanner console for nearby aircraft, radios, mesh nodes, and towers.",
+   "h": "https://mission-operator.vercel.app",
+   "t": [
+    "aviation",
+    "radio",
+    "react",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/suno-forge": {
+   "d": "Song builder that drafts lyrics and style tags for AI music generators.",
+   "h": "https://suno-forge-kappa.vercel.app",
+   "t": [
+    "ai",
+    "music",
+    "react",
+    "songwriting",
+    "vercel"
+   ]
+  },
+  "sudosilo/gridmark": {
+   "d": "GPS location marker and heatmap that sorts places into work and personal.",
+   "h": "",
+   "t": [
+    "gps",
+    "heatmap",
+    "map",
+    "tool"
+   ]
+  },
+  "sudosilo/nota-city": {
+   "d": "Shared city builder on a 32 by 32 grid with a backend tick engine.",
+   "h": "",
+   "t": [
+    "city-builder",
+    "express",
+    "game",
+    "postgres",
+    "railway",
+    "react"
+   ]
+  },
+  "sudosilo/graceland-diagram": {
+   "d": "3D exploded view of a 14 by 20 kitchen shed build.",
+   "h": "",
+   "t": [
+    "3d",
+    "construction",
+    "diagram",
+    "threejs"
+   ]
+  },
+  "sudosilo/spaceout": {
+   "d": "Paddle and ball brick breaker with waves and touch controls.",
+   "h": "https://spaceout-mu.vercel.app",
+   "t": [
+    "arcade",
+    "canvas",
+    "game",
+    "vercel"
+   ]
+  },
+  "sudosilo/edmia": {
+   "d": "Falling block color match game where every move adds to the music.",
+   "h": "https://edmia.vercel.app",
+   "t": [
+    "game",
+    "music",
+    "puzzle",
+    "vercel",
+    "web-audio"
+   ]
+  },
+  "sudosilo/matops-backend": {
+   "d": "Lead capture backend that stores form submissions and sends email alerts.",
+   "h": "",
+   "t": [
+    "backend",
+    "email",
+    "express"
+   ]
+  },
+  "sudosilo/coffeekit": {
+   "d": "Audio reactive screensaver with seven visual modes.",
+   "h": "https://screensaver-musicfx.vercel.app",
+   "t": [
+    "canvas",
+    "music",
+    "vercel",
+    "visualizer",
+    "web-audio"
+   ]
+  },
+  "sudosilo/dronecamp": {
+   "d": "Landing page for a Part 107 drone pilot training program in northern Arizona.",
+   "h": "https://dronecamp.vercel.app",
+   "t": [
+    "drones",
+    "landing-page",
+    "vercel",
+    "website"
+   ]
+  },
+  "sudosilo/tanks-and-zombies": {
+   "d": "Tank versus zombie horde wave shooter with unlockable skins.",
+   "h": "https://tanksandzombies.vercel.app",
+   "t": [
+    "canvas",
+    "game",
+    "shooter",
+    "vercel"
+   ]
+  }
+ }
+}
