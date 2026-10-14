@@ -1,3 +1,28 @@
 {
-  "entries": []
+  "entries": [
+    {
+      "date": "2026-10-14",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Could not reach the app repo because the list_repos and add_repo tools were missing from this session, so no fix was attempted. Root returns 404 and no snapshot was saved, so it may be a backend needing a health route or a missing deploy."
+    },
+    {
+      "date": "2026-10-14",
+      "app": "topo-wars-server",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Could not reach the app repo because the list_repos and add_repo tools were missing from this session, so no fix was attempted. Root returns 404, likely a backend with no home page that needs a GET /health route."
+    },
+    {
+      "date": "2026-10-14",
+      "app": "groundcore-nine",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Could not reach the app repo because the list_repos and add_repo tools were missing from this session, so no fix was attempted. Root returned 404 today though the saved snapshot shows a full page, so the deploy likely broke or was removed."
+    }
+  ]
 }
