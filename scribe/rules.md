@@ -20,9 +20,11 @@ Newest entries at the top. Each entry is one paragraph that starts with the date
 
 For a backfill, read the full commit history once, group commits by day in Arizona time (UTC minus 7), and write one entry per day that had changes. A first commit entry says the app was created and what it did at the start.
 
-Releases
+Releases and repo settings
 
-Every changelog entry gets a GitHub release. The tag is v followed by the date as YYYY.MM.DD. If a tag for that date exists, add -2, -3, and so on. Tag the last commit of that day. The release title is the app name and the date. The release notes are the same paragraph as the changelog entry. During a backfill, create releases only for the 5 most recent days, so old history does not flood the releases page.
+Claude sessions cannot create releases, tags, or change repo settings. GitHub blocks it. Instead, write that work into scribe/publish.json in control-troll, and the scribe-publish workflow carries it out with the account token. Replace publish.json each run with this run's jobs only. Each job looks like this: {"repo": "name", "releases": [{"tag": "v2026.10.12", "target": "full commit sha", "name": "App Name 2026-10-12", "body": "the changelog paragraph without the date and tag"}], "description": "one sentence", "homepage": "https://live-url or empty", "topics": ["game", "vercel"]}.
+
+The tag is v followed by the date as YYYY.MM.DD. If that repo already has a release for that date in scribe/published.json, add -2, -3, and so on. The target is the last commit of that day that is not a scribe commit. During a backfill, include releases only for the 5 most recent days, so old history does not flood the releases page.
 
 README.md
 
@@ -30,7 +32,7 @@ Structure, all plain prose paragraphs: the app's name on the first line by itsel
 
 Repo settings
 
-Set the description to one sentence under 120 characters. Set the website to the first live URL. Set three to six lowercase topic tags, for example game, music, restaurant-tech, tool, map, simulator, backend, vercel, railway, threejs. Write the chosen summary and category into scribe/repos.json so the profile page can use them. Categories: Games, Music and Visualizers, Restaurant Tech, Field and Equipment, Maps and Research, Tools, Pajamastan, Backends and Infrastructure.
+The description is one sentence under 120 characters. The homepage is the first live URL. Topics are three to six lowercase tags, for example game, music, restaurant-tech, tool, map, simulator, backend, vercel, railway, threejs. Put them in the publish.json job. Also write name, summary, and category into the repo's entry in scribe/repos.json, plus latest, which holds the date and text of the newest changelog entry. Categories: Games, Music and Visualizers, Restaurant Tech, Field and Equipment, Maps and Research, Tools, Pajamastan, Backends and Infrastructure.
 
 Commits
 
@@ -38,8 +40,8 @@ Put all documentation changes for a repo into one commit per run, with the messa
 
 Profile page
 
-After the repos are done, rebuild README.md in the sudosilo/sudosilo repo if any repo changed. Structure, plain prose: one opening paragraph saying this account holds a large set of small web apps, games, tools, and backends, all deployed and checked every morning by an automated test system called Control Troll. Then one paragraph per category, starting with the category name and a period, then each public app as "name, one line summary, live link" in sentences. Then a paragraph titled "Recent changes" listing the ten newest changelog entries across all repos as short sentences with the repo name and date. Skip private repos and repos with no summary yet.
+After the repos are done, if any repo changed, run node scribe/profile.js from the control-troll folder and write its output to README.md in the sudosilo/sudosilo repo. Commit it there with the message "docs: scribe update" and push. Do not hand write the profile. Change scribe/profile.js only if its output breaks these style rules.
 
 State
 
-After each repo, write lastSha, lastSeenPush, lastTag, and documentedAt into scribe/state.json under the repo name. Commit state.json and repos.json to control-troll main at the end with the message "scribe state". Pull first.
+After each repo, write lastSha, lastSeenPush, lastTag, and documentedAt into scribe/state.json under the repo name. Commit state.json, repos.json, and publish.json to control-troll main at the end with the message "scribe state". Pull first.

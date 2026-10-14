@@ -970,8 +970,13 @@
     "https://tanksandzombies.vercel.app"
    ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Games",
+   "summary": "Tank versus zombie horde wave shooter with unlockable skins.",
+   "name": "Tanks and Zombies",
+   "latest": {
+    "date": "2026-07-03",
+    "text": "First release. A tank versus zombie horde wave shooter with cannon, sea ram, and rocket weapons, a charged shot, and skins that unlock by score. Added a weapon bar and a high score table."
+   }
   },
   "dronecamp": {
    "apps": [
@@ -981,26 +986,41 @@
     "https://dronecamp.vercel.app"
    ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Field and Equipment",
+   "summary": "Landing page for a Part 107 drone pilot training program in northern Arizona.",
+   "name": "Drone Training Page",
+   "latest": {
+    "date": "2026-07-03",
+    "text": "First release. A landing page for a Part 107 drone pilot training program. Replaced a wrong page that went up first."
+   }
   },
   "coffeekit": {
    "apps": [
-    "coffeekit1"
+    "screensaver-musicfx"
    ],
    "urls": [
-    "https://coffeekit1.vercel.app"
+    "https://screensaver-musicfx.vercel.app"
    ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Music and Visualizers",
+   "summary": "Audio reactive screensaver with seven visual modes.",
+   "name": "Screensaver",
+   "latest": {
+    "date": "2026-06-21",
+    "text": "First release. An audio reactive screensaver with seven modes: plasma, lines, stars, pipes, matrix, blob, and DVD. It reacts to the microphone or an uploaded song."
+   }
   },
   "matops-backend": {
    "apps": [],
    "urls": [],
    "private": true,
-   "category": null,
-   "summary": null
+   "category": "Backends and Infrastructure",
+   "summary": "Lead capture backend that stores form submissions and sends email alerts.",
+   "name": "Lead Capture Backend",
+   "latest": {
+    "date": "2026-06-04",
+    "text": "First release. A lead capture endpoint that stores each submission and sends an email alert."
+   }
   },
   "edmia": {
    "apps": [
@@ -1010,8 +1030,13 @@
     "https://edmia.vercel.app"
    ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Games",
+   "summary": "Falling block color match game where every move adds to the music.",
+   "name": "EDMIA",
+   "latest": {
+    "date": "2026-05-21",
+    "text": "First release. A falling block color match game where clearing squares drives the soundtrack. Includes slide, rotate, drop, and boost controls, song sections that change with level, and a high score table with initials."
+   }
   },
   "spaceout": {
    "apps": [
@@ -1021,33 +1046,49 @@
     "https://spaceout-mu.vercel.app"
    ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Games",
+   "summary": "Paddle and ball brick breaker with waves and touch controls.",
+   "name": "SpaceOut",
+   "latest": {
+    "date": "2026-05-09",
+    "text": "First release. A brick breaker game with waves, lives, and a saved high score. Swipe, drag, or the on screen buttons move the paddle."
+   }
   },
   "graceland-diagram": {
-   "apps": [
-    "cabin-viewer"
-   ],
-   "urls": [
-    "https://cabin-viewer.vercel.app"
-   ],
+   "apps": [],
+   "urls": [],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Field and Equipment",
+   "summary": "3D exploded view of a 14 by 20 kitchen shed build.",
+   "name": "Kitchen Shed Diagram",
+   "latest": {
+    "date": "2026-05-08",
+    "text": "First release. A 3D exploded view of a 14 by 20 kitchen shed with toggles for shell, loft, water, electrical, kitchen, and restroom layers."
+   }
   },
   "nota-city": {
    "apps": [],
    "urls": [],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Games",
+   "summary": "Shared city builder on a 32 by 32 grid with a backend tick engine.",
+   "name": "Nota City",
+   "latest": {
+    "date": "2026-04-20",
+    "text": "First release. A shared city builder with a 32 by 32 grid, zone, road, power, and water layers, and a backend tick engine that grows population and funds. Added placement rules, a bulldozer, and drag to paint. Roads now show under every layer. Fixed road placement on empty tiles and page loading on refresh."
+   }
   },
   "gridmark": {
    "apps": [],
    "urls": [],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Maps and Research",
+   "summary": "GPS location marker and heatmap that sorts places into work and personal.",
+   "name": "Gridmark",
+   "latest": {
+    "date": "2026-04-14",
+    "text": "First release. A map tool that saves work and personal locations with notes, draws a heatmap, and records a GPS track every 10 seconds. All data stays on the device."
+   }
   },
   "suno-forge": {
    "apps": [
@@ -1057,8 +1098,13 @@
     "https://suno-forge-kappa.vercel.app"
    ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Music and Visualizers",
+   "summary": "Song builder that drafts lyrics and style tags for AI music generators.",
+   "name": "Suno Forge",
+   "latest": {
+    "date": "2026-04-05",
+    "text": "First release. A song builder that drafts lyrics and a style string from a genre, mood, and structure, with EDM drop and pump options and copy buttons for each part. Fixed the left panel sitting under other content."
+   }
   },
   "drivethru-sim": {
    "apps": [],
@@ -1075,8 +1121,13 @@
     "https://mission-operator.vercel.app"
    ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Maps and Research",
+   "summary": "Location aware scanner console for nearby aircraft, radios, mesh nodes, and towers.",
+   "name": "Mission Operator",
+   "latest": {
+    "date": "2026-03-26",
+    "text": "First release. A scanner console that uses the device location to list nearby aircraft from live flight data, along with cell towers, Wi-Fi, Bluetooth, ham repeaters, and mesh nodes. Includes a logbook and settings."
+   }
   },
   "groundcore": {
    "apps": [
@@ -1086,8 +1137,13 @@
     "https://groundcore-nine.vercel.app"
    ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Field and Equipment",
+   "summary": "Desert planting planner with row spacing, plant lookup, and a map sandbox for laying out rows.",
+   "name": "GroundCore",
+   "latest": {
+    "date": "2026-04-05",
+    "text": "First release. A planting planner for the Mohave Valley desert region with a row spacing calculator, a plant lookup that fills in recommended spacing, a plant browser with category filters, and a map sandbox for laying out rows, structures, and drives."
+   }
   }
  }
 }
