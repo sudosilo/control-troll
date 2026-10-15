@@ -618,6 +618,30 @@
   #actionBar.three #updateBtn, #actionBar.three #receiptDockBtn { padding: 0 14px; }
   .mi-day { margin-top: 14px; padding-top: 10px; border-top: 2px solid var(--text); font-weight: 800; }
   .mi-row { padding: 8px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+
+  /* ---- twin tabs: switch between the Teal map and the Violet inventory ---- */
+  :root { --tabs-h: 46px; }
+  #map { top: calc(var(--head-h) + var(--tabs-h)); }
+  #twinTabs {
+    position: absolute; top: var(--head-h); left: 0; right: 0; height: var(--tabs-h);
+    display: flex; background: var(--tint); border-bottom: 2px solid var(--text); z-index: 1000;
+  }
+  #twinTabs button {
+    flex: 1; min-height: 0; height: 100%; border: 0; border-radius: 0; background: transparent;
+    color: var(--text-dim); font-size: 15px; font-weight: 800; text-transform: none; letter-spacing: 0.3px; box-shadow: none;
+  }
+  #twinTabs button::first-letter { text-transform: none; }
+  #twinTabs button.on { color: var(--accent); box-shadow: inset 0 -4px 0 var(--accent); background: #ffffff; }
+  #violetView {
+    position: absolute; top: calc(var(--head-h) + var(--tabs-h)); left: 0; right: 0; bottom: 0;
+    background: #eef4fb; z-index: 1005; display: none;
+  }
+  #violetView.open { display: block; }
+  #violetView iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .hz-label { display: block; margin: 8px 14px 2px 14px; font-size: 12px; color: var(--text-dim); }
+  #hzDays, #hzYears { display: block; width: calc(100% - 28px); margin: 0 14px 6px 14px; }
+  .hz-pop b { color: var(--accent); }
+  .here-btn { display: flex !important; align-items: center; justify-content: center; color: var(--accent) !important; }
 </style>
 </head>
 <body>
@@ -630,6 +654,12 @@
   </div>
   <button id="infoBtn">i</button>
 </header>
+
+<div id="twinTabs">
+  <button id="tabTeal" class="on">Field map</button>
+  <button id="tabViolet">Inventory</button>
+</div>
+<div id="violetView"></div>
 
 <div id="actionBar">
   <div class="radar" id="radar">
@@ -648,8 +678,10 @@
   <h3>Capture</h3>
   <button class="secondary" id="receiptBtn">NEW RECEIPT</button>
   <button class="secondary" id="milesToggleBtn">ODOMETER BUTTON IS OFF</button>
+  <button class="secondary" id="hereToggleBtn">MY LOCATION DOT IS ON</button>
   <h3>Look things up</h3>
   <button class="secondary" id="searchBtn">SEARCH</button>
+  <button class="secondary" id="dayLogBtn">DAY LOG</button>
   <button class="secondary" id="historyBtn">HISTORY</button>
   <button class="secondary" id="spendBtn">SPEND</button>
   <button class="secondary" id="mileageBtn">MILEAGE</button>
@@ -661,6 +693,18 @@
   <button class="secondary" id="roadQualityBtn">ROAD QUALITY IS OFF</button>
   <button class="secondary" id="roadHeatBtn">TRAVEL HEAT MAP IS OFF</button>
   <button class="secondary" id="openCqBtn">OPEN CHASSISQUIVER</button>
+  <h3>Inventory</h3>
+  <button class="secondary" id="openVioletBtn">OPEN FIELD TWIN VIOLET</button>
+  <h3>Road hazards</h3>
+  <button class="secondary" id="hzCrashBtn">CRASHES ARE OFF</button>
+  <button class="secondary" id="hzWorkBtn">CONSTRUCTION IS OFF</button>
+  <label class="hz-label" for="hzDays">Crashes and construction from the last</label>
+  <select id="hzDays"><option value="1">day</option><option value="7">week</option><option value="30" selected>thirty days</option><option value="90">three months</option><option value="365">year</option><option value="730">two years</option></select>
+  <label class="hz-label" for="hzArea">Show hazards</label>
+  <select id="hzArea"><option value="vegas" selected>within a hundred miles of Las Vegas</option><option value="me">within a hundred miles of where I am</option><option value="all">everywhere</option></select>
+  <button class="secondary" id="hzFatalBtn">FATAL CRASH HISTORY IS OFF</button>
+  <label class="hz-label" for="hzYears">Fatal crashes from the last</label>
+  <select id="hzYears"><option value="1">year on record</option><option value="3">three years on record</option><option value="5" selected>five years on record</option><option value="8">eight years on record</option></select>
   <h3>Your data</h3>
   <button class="secondary" id="accountBtn">ACCOUNT AND PROFILE</button>
   <button class="secondary" id="exportBtn">EXPORT</button>
@@ -1129,10 +1173,20 @@ function showAccount() {
     html += '<button id="syncNowBtn">SYNC NOW</button>';
     html += '<button class="secondary" id="signOutBtn">SIGN OUT</button>';
     html += '</div>';
+    html += '<div class="question">Set or change your password</div>';
+    html += '<div class="meta-line">This password belongs to your Field Twin account, the same one Inventory uses. After you set it here, it signs you in on any phone, in Field Twin and in Inventory.</div>';
+    html += '<input type="password" id="newPass" autocomplete="new-password">';
+    html += '<div class="meta-line" id="passMsg"></div>';
+    html += '<div class="panel-actions"><button class="secondary" id="savePassBtn">SAVE PASSWORD</button></div>';
   } else {
-    html += '<div>Enter your email. A sign in link arrives in your inbox. Opening that link on this phone signs you in, and every entry on this phone uploads to your account.</div>';
+    html += '<div>This is your own Field Twin account, stored on your Field Twin server, and the same account Inventory uses. It is not tied to any outside sign in service. Your email is the account name, and it works on every phone.</div>';
+    html += '<div class="question">Email</div>';
     html += '<input type="text" id="authEmail" inputmode="email" autocomplete="email">';
-    html += '<div class="panel-actions"><button id="sendLinkBtn">SEND LINK</button></div>';
+    html += '<div class="question">Password</div>';
+    html += '<input type="password" id="authPass" autocomplete="current-password">';
+    html += '<div class="meta-line" id="authMsg"></div>';
+    html += '<div class="panel-actions"><button id="passSignInBtn">SIGN IN</button><button class="secondary" id="sendLinkBtn">EMAIL ME A LINK</button></div>';
+    html += '<div class="meta-line">If the password is refused, the account may never have had one set. Press Email me a link, open the link on this phone, then set a password on this page.</div>';
   }
   if (cloudUser) {
     html += '<div class="meta-line">Your points and trophies are counted from the entries saved to this email, so they follow you to any phone you sign in on.</div>';
@@ -1160,12 +1214,49 @@ function showAccount() {
       });
       if (res.error) {
         sendBtn.disabled = false;
-        sendBtn.textContent = 'SEND LINK';
+        sendBtn.textContent = 'EMAIL ME A LINK';
         setStatus('link failed, ' + res.error.message);
       } else {
         sendBtn.textContent = 'LINK SENT';
         setStatus('check your email for the sign in link');
       }
+    });
+  }
+  const passIn = document.getElementById('passSignInBtn');
+  if (passIn) {
+    passIn.addEventListener('click', async () => {
+      const email = (document.getElementById('authEmail').value || '').trim();
+      const pass = document.getElementById('authPass').value || '';
+      const msg = document.getElementById('authMsg');
+      if (!email || !pass) { msg.textContent = 'Type your email and password.'; return; }
+      passIn.disabled = true;
+      passIn.textContent = 'SIGNING IN';
+      const res = await sb.auth.signInWithPassword({ email: email, password: pass });
+      if (res.error) {
+        passIn.disabled = false;
+        passIn.textContent = 'SIGN IN';
+        msg.textContent = /invalid/i.test(res.error.message) ? 'That email and password did not match. If this account was made with an email link, it has no password yet. Press Email me a link instead.' : res.error.message;
+        return;
+      }
+      cloudUser = res.data.user;
+      setStatus('signed in, syncing');
+      await cloudPull();
+      await cloudPush();
+      showAccount();
+    });
+  }
+  const savePass = document.getElementById('savePassBtn');
+  if (savePass) {
+    savePass.addEventListener('click', async () => {
+      const pass = document.getElementById('newPass').value || '';
+      const msg = document.getElementById('passMsg');
+      if (pass.length < 6) { msg.textContent = 'Use at least six characters.'; return; }
+      savePass.disabled = true;
+      const res = await sb.auth.updateUser({ password: pass });
+      savePass.disabled = false;
+      if (res.error) { msg.textContent = res.error.message; return; }
+      document.getElementById('newPass').value = '';
+      msg.textContent = 'Password saved. It now works on every phone, in Field Twin and in Inventory.';
     });
   }
   const syncBtn = document.getElementById('syncNowBtn');
@@ -1282,7 +1373,7 @@ function initMap() {
 }
 
 function hasPos(e) {
-  return typeof e.lat === 'number' && typeof e.lon === 'number' && isFinite(e.lat) && isFinite(e.lon);
+  return typeof e.lat === 'number' && typeof e.lon === 'number' && isFinite(e.lat) && isFinite(e.lon) && !(Math.abs(e.lat) < 0.5 && Math.abs(e.lon) < 0.5);
 }
 
 function siteKey(e) {
@@ -2135,11 +2226,97 @@ async function checkMilitary(lat, lon) {
 
 function getPosition() {
   return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(resolve, reject, {
+    navigator.geolocation.getCurrentPosition(pos => { hereShow(pos); resolve(pos); }, reject, {
       enableHighAccuracy: true,
       timeout: 15000
     });
   });
+}
+
+const HERE_EVERY_MS = 5 * 60 * 1000;
+let hereOn = true, hereDot = null, hereRing = null, hereAt = 0, hereTimer = null, hereBusy = false;
+
+function hereAgo() {
+  if (!hereAt) return 'not found yet';
+  const m = Math.round((Date.now() - hereAt) / 60000);
+  return m < 1 ? 'just now' : m === 1 ? 'a minute ago' : m + ' minutes ago';
+}
+
+function hereShow(pos) {
+  if (!hereOn || !map || !pos || !pos.coords) return;
+  const ll = [pos.coords.latitude, pos.coords.longitude];
+  const acc = Math.min(pos.coords.accuracy || 0, 3000);
+  hereAt = pos.timestamp || Date.now();
+  if (!hereRing) hereRing = L.circle(ll, { radius: acc, color: '#0b4ea2', weight: 1, opacity: 0.4, fillColor: '#0b4ea2', fillOpacity: 0.08, interactive: false }).addTo(map);
+  else hereRing.setLatLng(ll).setRadius(acc);
+  if (!hereDot) {
+    hereDot = L.circleMarker(ll, { radius: 8, color: '#ffffff', weight: 3, fillColor: '#0b4ea2', fillOpacity: 1 }).addTo(map);
+    hereDot.bindPopup(() => 'You were here ' + hereAgo() + '. The dot moves each time the app checks your position, about every five minutes while the app is open.');
+  } else hereDot.setLatLng(ll);
+  hereDot.bringToFront();
+}
+
+function hereCheck(center) {
+  if (!hereOn || hereBusy || !navigator.geolocation) return;
+  if (document.visibilityState === 'hidden') return;
+  hereBusy = true;
+  navigator.geolocation.getCurrentPosition(pos => {
+    hereBusy = false;
+    hereShow(pos);
+    if (center) map.setView([pos.coords.latitude, pos.coords.longitude], Math.max(map.getZoom(), 14));
+  }, () => { hereBusy = false; if (center) setStatus('position not available'); }, {
+    enableHighAccuracy: Boolean(center),
+    timeout: 20000,
+    maximumAge: center ? 0 : 4 * 60 * 1000
+  });
+}
+
+function hereSchedule() {
+  if (hereTimer) { clearInterval(hereTimer); hereTimer = null; }
+  if (!hereOn) return;
+  hereTimer = setInterval(() => hereCheck(false), HERE_EVERY_MS);
+}
+
+function hereApply() {
+  document.getElementById('hereToggleBtn').textContent = hereOn ? 'MY LOCATION DOT IS ON' : 'MY LOCATION DOT IS OFF';
+  if (!hereOn) {
+    if (hereDot) { map.removeLayer(hereDot); hereDot = null; }
+    if (hereRing) { map.removeLayer(hereRing); hereRing = null; }
+  }
+  hereSchedule();
+}
+
+function initHere() {
+  try { hereOn = localStorage.getItem('hereOn') !== '0'; } catch (e) {}
+  const Locate = L.Control.extend({
+    options: { position: 'topleft' },
+    onAdd: function () {
+      const bar = L.DomUtil.create('div', 'leaflet-bar');
+      const a = L.DomUtil.create('a', 'here-btn', bar);
+      a.href = '#';
+      a.title = 'Show where I am';
+      a.setAttribute('aria-label', 'Show where I am');
+      a.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>';
+      L.DomEvent.on(a, 'click', ev => {
+        L.DomEvent.stop(ev);
+        if (!hereOn) { hereOn = true; try { localStorage.setItem('hereOn', '1'); } catch (e) {} hereApply(); }
+        hereCheck(true);
+      });
+      return bar;
+    }
+  });
+  map.addControl(new Locate());
+  document.getElementById('hereToggleBtn').addEventListener('click', () => {
+    hereOn = !hereOn;
+    try { localStorage.setItem('hereOn', hereOn ? '1' : '0'); } catch (e) {}
+    hereApply();
+    if (hereOn) hereCheck(false);
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && hereOn && Date.now() - hereAt > HERE_EVERY_MS) hereCheck(false);
+  });
+  hereApply();
+  hereCheck(false);
 }
 
 async function forceUpdate() {
@@ -2403,8 +2580,23 @@ function setApiToken(v) {
   try { localStorage.setItem('apiToken', v); } catch (e) {}
 }
 
+const DEFAULT_API_BASE = 'https://fieldtwin-api-production.up.railway.app';
+
 function getApiBase() {
-  try { return localStorage.getItem(API_BASE_KEY) || ''; } catch (e) { return ''; }
+  try { return localStorage.getItem(API_BASE_KEY) || DEFAULT_API_BASE; } catch (e) { return DEFAULT_API_BASE; }
+}
+
+async function apiAuthHeaders(headers) {
+  const tok = getApiToken();
+  if (tok) { headers['Authorization'] = 'Bearer ' + tok; return 'token'; }
+  if (sb && cloudUser) {
+    try {
+      const r = await sb.auth.getSession();
+      const at = r.data && r.data.session ? r.data.session.access_token : '';
+      if (at) { headers['Authorization'] = 'Bearer ' + at; return 'account'; }
+    } catch (e) {}
+  }
+  return 'none';
 }
 
 function setApiBase(v) {
@@ -2538,9 +2730,9 @@ async function toggleCameras() {
 function showCameraKeyPanel() {
   const panel = document.getElementById('panel');
   let html = '<h2>CAMERA SOURCE</h2>';
-  html += '<div>Address of the Field Twin camera service. No key is stored on this phone, the service holds it.</div>';
-  html += '<input type="text" id="apiBaseInput" placeholder="xxxxxxxx.up.railway.app" value="' + escapeHtml(getApiBase()) + '">';
-  html += '<div class="question">Access token, leave blank if the service does not require one</div>';
+  html += '<div>Address of the Field Twin service. Leave it blank to use the address built into the app. No key is stored on this phone, the service holds it.</div>';
+  html += '<input type="text" id="apiBaseInput" placeholder="xxxxxxxx.up.railway.app" value="' + escapeHtml((() => { try { return localStorage.getItem(API_BASE_KEY) || ''; } catch (e) { return ''; } })()) + '">';
+  html += '<div class="question">Access token. Leave it blank when you are signed in under Account and profile, the receipt reader accepts your account instead.</div>';
   html += '<input type="text" id="apiTokenInput" value="' + escapeHtml(getApiToken()) + '">';
   html += '<div class="panel-actions">';
   html += '<button id="saveApiBaseBtn">SAVE</button>';
@@ -2569,8 +2761,10 @@ async function serviceCheck() {
   const base = getApiBase().replace(/\/+$/, '');
   const tok = getApiToken();
   let html = '<h2>SERVICE CHECK</h2>';
-  html += '<div class="meta-line">' + escapeHtml(base || 'no address set') + '</div>';
-  html += '<div class="meta-line">token ' + (tok ? 'saved, ' + tok.length + ' characters' : 'not set') + '</div>';
+  let stored = '';
+  try { stored = localStorage.getItem(API_BASE_KEY) || ''; } catch (e) {}
+  html += '<div class="meta-line">' + escapeHtml(base) + (stored ? ', typed in on this phone' : ', built into the app') + '</div>';
+  html += '<div class="meta-line">receipt reader access: ' + (tok ? 'access token saved on this phone' : (cloudUser ? 'your signed in account' : 'none, sign in under Account and profile')) + '</div>';
   html += '<div id="checkRows"></div>';
   html += '<div class="panel-actions"><button class="secondary" id="closeCheckBtn">CLOSE</button></div>';
   panel.innerHTML = html;
@@ -2605,13 +2799,13 @@ async function serviceCheck() {
   const pixel = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
   try {
     const headers = { 'Content-Type': 'application/json' };
-    if (tok) headers['Authorization'] = 'Bearer ' + tok;
+    await apiAuthHeaders(headers);
     const r = await fetch(base + '/receipts/extract', {
       method: 'POST', headers: headers, body: JSON.stringify({ image: pixel })
     });
     let detail = '';
     try { const j = await r.json(); detail = j.error ? ', ' + j.error : ''; } catch (e2) {}
-    if (r.status === 401) detail = ', token rejected';
+    if (r.status === 401) detail = tok ? ', access token rejected' : (cloudUser ? ', account not accepted, the service needs the latest update' : ', not signed in');
     if (r.status === 404) detail = ', endpoint not deployed';
     if (r.status === 413) detail = ', payload too large';
     row('extract call', 'status ' + r.status + detail);
@@ -2642,14 +2836,14 @@ async function extractWithVision(photoData) {
   if (!base) throw new Error('no service address set');
   const root = base.replace(/\/+$/, '');
   const headers = { 'Content-Type': 'application/json' };
-  const tok = getApiToken();
-  if (tok) headers['Authorization'] = 'Bearer ' + tok;
+  const how = await apiAuthHeaders(headers);
   const small = await shrinkDataUrl(photoData, 1100, 0.6);
   const res = await fetch(root + '/receipts/extract', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify({ image: small })
   });
+  if (res.status === 401) throw new Error(how === 'none' ? 'sign in under Account and profile so the receipt reader knows it is you' : 'the receipt reader did not accept this phone, sign in again under Account and profile');
   if (!res.ok) throw new Error('service returned ' + res.status);
   const data = await res.json();
   return data.receipt || {};
@@ -3311,6 +3505,7 @@ function showMileage() {
 const CQ_URL = 'https://vogxdikogfaxhwcgajfg.supabase.co';
 const CQ_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvZ3hkaWtvZ2ZheGh3Y2dhamZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzOTk4MDAsImV4cCI6MjEwNjk3NTgwMH0.fUosu3JdsUI5GFnQjDbOxfYCWO1hfijQO3O8lJVsU98';
 const CQ_SITE = 'https://chassisquiver.vercel.app/';
+const VIOLET_SITE = 'https://field-twin-violet.vercel.app/';
 let cqClient = null, cqRuns = null, cqLoading = null;
 let roadLayer = null, heatLayer = null;
 const roadView = { quality: false, heat: false };
@@ -3429,7 +3624,210 @@ function initRoadButtons() {
   document.getElementById('roadQualityBtn').addEventListener('click', () => { roadView.quality = !roadView.quality; refreshRoadLayers(); });
   document.getElementById('roadHeatBtn').addEventListener('click', () => { roadView.heat = !roadView.heat; refreshRoadLayers(); });
   document.getElementById('openCqBtn').addEventListener('click', () => { window.open(CQ_SITE, '_blank', 'noopener'); });
+  document.getElementById('openVioletBtn').addEventListener('click', () => { window.open(VIOLET_SITE, '_blank', 'noopener'); });
   if (roadView.quality || roadView.heat) refreshRoadLayers();
+}
+
+const hz = { crashes: false, work: false, fatal: false, days: 30, years: 5, area: 'vegas' };
+const HZ_VEGAS = [36.1699, -115.1398];
+const HZ_RADIUS_MI = 100;
+let hzCenter = HZ_VEGAS;
+let hzEvents = null, hzEventsAt = 0, hzEventsDays = 0, hzFatal = null, hzFatalYears = 0, hzInfo = null;
+let hzCrashLayer = null, hzWorkLayer = null, hzFatalLayer = null, hzTimer = null;
+
+function hzBase() { return getApiBase().replace(/\/+$/, ''); }
+
+function decodePolyline(str) {
+  const pts = [];
+  let i = 0, lat = 0, lon = 0;
+  while (i < str.length) {
+    let b, shift = 0, res = 0;
+    do { b = str.charCodeAt(i++) - 63; res |= (b & 31) << shift; shift += 5; } while (b >= 32 && i < str.length);
+    lat += (res & 1) ? ~(res >> 1) : (res >> 1);
+    shift = 0; res = 0;
+    do { b = str.charCodeAt(i++) - 63; res |= (b & 31) << shift; shift += 5; } while (b >= 32 && i < str.length);
+    lon += (res & 1) ? ~(res >> 1) : (res >> 1);
+    pts.push([lat / 1e5, lon / 1e5]);
+  }
+  return pts;
+}
+
+function milesBetween(a, b, c, d) {
+  const R = 3958.8, t = Math.PI / 180;
+  const h = Math.sin((c - a) * t / 2) ** 2 + Math.cos(a * t) * Math.cos(c * t) * Math.sin((d - b) * t / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+function hzRiskLine(lat, lon) {
+  const near = (list, r) => (list || []).filter(x => Math.abs(x.lat - lat) < 0.02 && Math.abs(x.lon - lon) < 0.02 && milesBetween(lat, lon, x.lat, x.lon) <= r).length;
+  const crashes = hzEvents ? near(hzEvents.filter(e => e.type === 'accidentsAndIncidents'), 0.5) : null;
+  const fatal = hzFatal ? near(hzFatal, 0.5) : null;
+  let out = '';
+  if (crashes !== null) out += '<br>Crashes and incidents within half a mile in this window: <b>' + crashes + '</b>';
+  if (fatal !== null) out += '<br>Fatal crashes on record within half a mile: <b>' + fatal + '</b>';
+  return out;
+}
+
+function hzWhen(ms) { return ms ? new Date(ms).toLocaleString([], { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : ''; }
+
+function hzEventPopup(e) {
+  const kind = e.type === 'accidentsAndIncidents' ? 'Crash or incident' : e.type === 'closures' ? 'Closure' : 'Construction';
+  return '<div class="hz-pop"><b>' + kind + '</b>' + (e.active ? ', happening now' : ', cleared') +
+    '<br>' + escapeHtml([e.road, e.dir].filter(Boolean).join(' ')) +
+    (e.desc ? '<br>' + escapeHtml(e.desc) : '') +
+    (e.lanes ? '<br>Lanes: ' + escapeHtml(e.lanes) : '') +
+    (e.closure ? '<br>Full closure' : '') +
+    '<br>Reported ' + hzWhen(e.reported || e.start || e.firstSeen) +
+    (e.end ? '<br>Planned end ' + hzWhen(e.end) : '') +
+    (!e.active ? '<br>Last listed ' + hzWhen(e.lastSeen) : '') +
+    '<br>Source: ' + (e.src === 'az' ? 'Arizona' : 'Nevada') + ' state road department' +
+    hzRiskLine(e.lat, e.lon) + '</div>';
+}
+
+function hzFatalPopup(c) {
+  return '<div class="hz-pop"><b>Fatal crash</b><br>' + escapeHtml(c.date) + (c.time ? ' at ' + c.time : '') +
+    (c.road ? '<br>' + escapeHtml(c.road) : '') +
+    '<br>' + c.fatals + (c.fatals === 1 ? ' death' : ' deaths') + (c.vehicles ? ', ' + c.vehicles + ' vehicles' : '') +
+    '<br>Source: federal fatal crash records' + hzRiskLine(c.lat, c.lon) + '</div>';
+}
+
+async function hzLoadEvents(force) {
+  const base = hzBase();
+  if (!base) throw new Error('set the service address under Camera source first');
+  if (!force && hzEvents && hzEventsDays === hz.days && Date.now() - hzEventsAt < 5 * 60 * 1000) return;
+  const r = await fetch(base + '/events?days=' + hz.days);
+  if (r.status === 404) throw new Error('the service needs the latest update');
+  if (!r.ok) throw new Error('service status ' + r.status);
+  const j = await r.json();
+  hzEvents = j.events || [];
+  hzInfo = j;
+  hzEventsAt = Date.now();
+  hzEventsDays = hz.days;
+}
+
+async function hzLoadFatal() {
+  if (hzFatal && hzFatalYears === hz.years) return;
+  const base = hzBase();
+  if (!base) throw new Error('set the service address under Camera source first');
+  const r = await fetch(base + '/crashes?years=' + hz.years);
+  if (r.status === 404) throw new Error('the service needs the latest update');
+  if (!r.ok) throw new Error('service status ' + r.status);
+  const j = await r.json();
+  hzFatal = j.crashes || [];
+  hzFatalYears = hz.years;
+}
+
+function hzOkPoint(lat, lon) {
+  return Number.isFinite(lat) && Number.isFinite(lon) && !(Math.abs(lat) < 0.5 && Math.abs(lon) < 0.5) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180;
+}
+
+function hzInArea(lat, lon) {
+  if (!hzOkPoint(lat, lon)) return false;
+  if (hz.area === 'all' || !hzCenter) return true;
+  return milesBetween(hzCenter[0], hzCenter[1], lat, lon) <= HZ_RADIUS_MI;
+}
+
+function hzLine(e) {
+  let pts = null;
+  if (e.poly) { try { pts = decodePolyline(e.poly); } catch (err) { pts = null; } }
+  if ((!pts || pts.length < 2) && hzOkPoint(e.lat2, e.lon2) && (e.lat2 !== e.lat || e.lon2 !== e.lon)) pts = [[e.lat, e.lon], [e.lat2, e.lon2]];
+  if (!pts || pts.length < 2) return null;
+  if (pts.some(p => !hzOkPoint(p[0], p[1]) || milesBetween(e.lat, e.lon, p[0], p[1]) > 150)) return null;
+  return pts;
+}
+
+async function hzSetCenter() {
+  if (hz.area === 'vegas') { hzCenter = HZ_VEGAS; return; }
+  if (hz.area === 'all') { hzCenter = null; return; }
+  try {
+    const pos = await getPosition();
+    hzCenter = [pos.coords.latitude, pos.coords.longitude];
+  } catch (e) {
+    hzCenter = HZ_VEGAS;
+    setStatus('no position, showing hazards near Las Vegas');
+  }
+}
+
+function hzDraw() {
+  [hzCrashLayer, hzWorkLayer, hzFatalLayer].forEach(l => { if (l) map.removeLayer(l); });
+  hzCrashLayer = hzWorkLayer = hzFatalLayer = null;
+  if (hz.fatal && hzFatal) {
+    hzFatalLayer = L.layerGroup();
+    hzFatal.filter(c => hzInArea(c.lat, c.lon)).forEach(c => {
+      L.circleMarker([c.lat, c.lon], { radius: 4 + Math.min(4, c.fatals), color: '#0a1b2e', weight: 1.5, fillColor: '#7a1020', fillOpacity: 0.75 })
+        .bindPopup(() => hzFatalPopup(c)).addTo(hzFatalLayer);
+    });
+    hzFatalLayer.addTo(map);
+  }
+  if (hz.work && hzEvents) {
+    hzWorkLayer = L.layerGroup();
+    hzEvents.filter(e => e.type !== 'accidentsAndIncidents' && hzInArea(e.lat, e.lon)).forEach(e => {
+      const color = e.type === 'closures' ? '#b00020' : '#e07b00';
+      const style = { color: color, weight: 6, opacity: e.active ? 0.9 : 0.4, dashArray: e.active ? null : '6 8', lineCap: 'round' };
+      const pts = hzLine(e);
+      const line = pts ? L.polyline(pts, style) : null;
+      const dot = L.circleMarker([e.lat, e.lon], { radius: 7, color: '#0a1b2e', weight: 2, fillColor: color, fillOpacity: e.active ? 0.95 : 0.45 });
+      if (line) line.bindPopup(() => hzEventPopup(e)).addTo(hzWorkLayer);
+      dot.bindPopup(() => hzEventPopup(e)).addTo(hzWorkLayer);
+    });
+    hzWorkLayer.addTo(map);
+  }
+  if (hz.crashes && hzEvents) {
+    hzCrashLayer = L.layerGroup();
+    hzEvents.filter(e => e.type === 'accidentsAndIncidents' && hzInArea(e.lat, e.lon)).forEach(e => {
+      L.circleMarker([e.lat, e.lon], { radius: e.active ? 8 : 6, color: '#0a1b2e', weight: 2, fillColor: '#d32f2f', fillOpacity: e.active ? 0.95 : 0.4 })
+        .bindPopup(() => hzEventPopup(e)).addTo(hzCrashLayer);
+    });
+    hzCrashLayer.addTo(map);
+  }
+}
+
+function hzButtons() {
+  document.getElementById('hzCrashBtn').textContent = hz.crashes ? 'CRASHES ARE ON' : 'CRASHES ARE OFF';
+  document.getElementById('hzWorkBtn').textContent = hz.work ? 'CONSTRUCTION IS ON' : 'CONSTRUCTION IS OFF';
+  document.getElementById('hzFatalBtn').textContent = hz.fatal ? 'FATAL CRASH HISTORY IS ON' : 'FATAL CRASH HISTORY IS OFF';
+  document.getElementById('hzDays').value = String(hz.days);
+  document.getElementById('hzYears').value = String(hz.years);
+  document.getElementById('hzArea').value = hz.area;
+}
+
+async function hzRefresh(force) {
+  hzButtons();
+  try { localStorage.setItem('hazardView', JSON.stringify(hz)); } catch (e) {}
+  if (hzTimer) { clearInterval(hzTimer); hzTimer = null; }
+  if (!hz.crashes && !hz.work && !hz.fatal) { hzDraw(); return; }
+  const msgs = [];
+  if (hz.crashes || hz.work) {
+    setStatus('loading crashes and construction');
+    try {
+      await hzLoadEvents(force);
+      await hzSetCenter();
+      const inside = hzEvents.filter(e => hzInArea(e.lat, e.lon));
+      const c = inside.filter(e => e.type === 'accidentsAndIncidents').length;
+      const w = inside.length - c;
+      if (hz.crashes) msgs.push(c + ' crashes');
+      if (hz.work) msgs.push(w + ' construction');
+      hzTimer = setInterval(() => hzRefresh(true), 10 * 60 * 1000);
+    } catch (e) { msgs.push('hazards did not load, ' + e.message); }
+  }
+  if (hz.fatal) {
+    setStatus('loading fatal crash history');
+    try { await hzLoadFatal(); await hzSetCenter(); msgs.push(hzFatal.filter(c => hzInArea(c.lat, c.lon)).length + ' fatal crashes'); } catch (e) { msgs.push('fatal history did not load, ' + e.message); }
+  }
+  hzDraw();
+  setStatus(msgs.join(', '));
+}
+
+function initHazards() {
+  try { Object.assign(hz, JSON.parse(localStorage.getItem('hazardView') || '{}')); } catch (e) {}
+  hzButtons();
+  document.getElementById('hzCrashBtn').addEventListener('click', () => { hz.crashes = !hz.crashes; hzRefresh(false); });
+  document.getElementById('hzWorkBtn').addEventListener('click', () => { hz.work = !hz.work; hzRefresh(false); });
+  document.getElementById('hzFatalBtn').addEventListener('click', () => { hz.fatal = !hz.fatal; hzRefresh(false); });
+  document.getElementById('hzDays').addEventListener('change', e => { hz.days = Number(e.target.value) || 30; hzRefresh(true); });
+  document.getElementById('hzArea').addEventListener('change', e => { hz.area = e.target.value; hzRefresh(false); });
+  document.getElementById('hzYears').addEventListener('change', e => { hz.years = Number(e.target.value) || 5; hzFatal = null; hzRefresh(false); });
+  if (hz.crashes || hz.work || hz.fatal) hzRefresh(false);
 }
 
 function showSpend() {
@@ -3468,6 +3866,206 @@ function showSpend() {
   panel.scrollTop = 0;
   panel.classList.add('open');
   document.getElementById('closeSpendBtn').addEventListener('click', closePanel);
+}
+
+function dayLogN(n, word) {
+  return n + ' ' + word + (n === 1 ? '' : 's');
+}
+
+function dayLogTime(ts) {
+  return new Date(ts).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+}
+
+function dayLogGap(mins) {
+  if (mins < 60) return mins + ' min';
+  const h = Math.floor(mins / 60), m = mins % 60;
+  return h + ' hr' + (m ? ' ' + m + ' min' : '');
+}
+
+function dayLogDays() {
+  const set = {};
+  entries.forEach(e => { if (e.timestamp) set[localDay(e.timestamp)] = (set[localDay(e.timestamp)] || 0) + 1; });
+  return set;
+}
+
+function dayLogDetail(e) {
+  if (e.category === 'receipt' && e.receipt) {
+    return (e.receipt.store || 'unnamed store') + ', $' + (Number(e.receipt.total) || 0).toFixed(2) + (e.receipt.work ? ', work' : ', personal');
+  }
+  if (e.category === 'odometer' && e.odometer) {
+    const n = (e.answers || [])[3];
+    return 'odometer ' + e.odometer.reading + (e.odometer.vehicle ? ', ' + e.odometer.vehicle : '') + (e.odometer.work ? ', work' : ', personal') + (n ? ', note: ' + n : '');
+  }
+  const asked = (e.questions || []).length;
+  let d = asked ? dayLogAnswered(e) + ' of ' + asked + ' questions answered' : 'no form';
+  if (e.context) d += ', note: ' + (e.context.length > 90 ? e.context.slice(0, 90) + '...' : e.context);
+  return d;
+}
+
+function dayLogAnswered(e) {
+  return (e.answers || []).filter(a => a && String(a).trim() !== '').length;
+}
+
+function buildDayLog(dk) {
+  entries.forEach(odoFromAnswers);
+  const list = entries.filter(e => e.timestamp && localDay(e.timestamp) === dk)
+    .slice().sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  const label = new Date(dk + 'T12:00:00').toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const r = { dk: dk, label: label, list: list, lines: [], gaps: [] };
+  if (!list.length) return r;
+
+  const first = list[0], last = list[list.length - 1];
+  const spanMin = Math.round((new Date(last.timestamp) - new Date(first.timestamp)) / 60000);
+  const cats = {};
+  const sites = {};
+  let ground = 0, prevPos = null, photos = 0, asked = 0, answered = 0, noPos = 0;
+  list.forEach(e => {
+    const c = e.category || 'general';
+    cats[c] = (cats[c] || 0) + 1;
+    if (hasPos(e)) {
+      sites[siteKey(e)] = true;
+      if (prevPos) ground += milesBetween(prevPos.lat, prevPos.lon, e.lat, e.lon);
+      prevPos = e;
+    } else noPos++;
+    if (e.photo || e.photoPath) photos++;
+    if (c !== 'receipt' && c !== 'odometer') {
+      asked += (e.questions || []).length;
+      answered += dayLogAnswered(e);
+    }
+  });
+
+  const rs = list.filter(e => e.category === 'receipt' && e.receipt);
+  let spent = 0, work = 0, personal = 0, saved = 0, tax = 0;
+  const byStore = {};
+  rs.forEach(e => {
+    const t = Number(e.receipt.total) || 0;
+    spent += t;
+    saved += Number(e.receipt.saved) || 0;
+    tax += Number(e.receipt.tax) || 0;
+    if (e.receipt.work) work += t; else personal += t;
+    const k = e.receipt.store || 'unnamed store';
+    byStore[k] = (byStore[k] || 0) + t;
+  });
+
+  const legs = mileageLegs().filter(g => localDay(g.entry.timestamp) === dk);
+  let workMi = 0, persMi = 0;
+  legs.forEach(g => { if (g.miles > 0) { if (g.entry.odometer.work) workMi += g.miles; else persMi += g.miles; } });
+  const odos = list.filter(e => e.category === 'odometer');
+
+  r.summary = [
+    (list.length === 1 ? '1 entry' : list.length + ' entries') + ' from ' + dayLogTime(first.timestamp) + ' to ' + dayLogTime(last.timestamp) + ', ' + dayLogGap(spanMin) + ' on the clock',
+    dayLogN(Object.keys(sites).length, 'distinct place') + ', ' + (Math.round(ground * 10) / 10) + ' miles between entries in a straight line',
+    'Miles driven by odometer: ' + (odos.length ? (Math.round((workMi + persMi) * 10) / 10) + ' (work ' + (Math.round(workMi * 10) / 10) + ', personal ' + (Math.round(persMi * 10) / 10) + ')' : 'unknown'),
+    'Spent: $' + spent.toFixed(2) + ' on ' + dayLogN(rs.length, 'receipt') + ' (work $' + work.toFixed(2) + ', personal $' + personal.toFixed(2) + ', tax $' + tax.toFixed(2) + ', saved $' + saved.toFixed(2) + ')',
+    'Questions answered: ' + answered + ' of ' + asked + ', photos: ' + photos
+  ];
+  r.kinds = Object.keys(cats).sort((a, b) => cats[b] - cats[a]).map(k => ((CATEGORIES[k] || CATEGORIES.general).label) + ' ' + cats[k]);
+  r.stores = Object.keys(byStore).sort((a, b) => byStore[b] - byStore[a]).map(k => k + ' $' + byStore[k].toFixed(2));
+
+  let prevT = null;
+  list.forEach(e => {
+    const t = new Date(e.timestamp);
+    const gap = prevT === null ? null : Math.round((t - prevT) / 60000);
+    if (gap !== null && gap >= 120) r.gaps.push('Nothing logged for ' + dayLogGap(gap) + ', from ' + dayLogTime(prevT) + ' to ' + dayLogTime(t));
+    prevT = t;
+    const m = CATEGORIES[e.category || 'general'] || CATEGORIES.general;
+    r.lines.push({ entry: e, time: dayLogTime(e.timestamp), gap: gap, kind: m.label, icon: m.icon, place: e.addressLabel || 'no address', detail: dayLogDetail(e) });
+  });
+
+  if (!odos.length) r.gaps.push('No odometer readings, so miles driven are unknown');
+  else if (!legs.some(g => g.miles > 0)) r.gaps.push('Odometer readings exist but none follows an earlier reading on the same vehicle, so miles driven are unknown');
+  if (!rs.length) r.gaps.push('No receipts captured');
+  const badRs = rs.filter(e => !e.receipt.store || !(Number(e.receipt.total) > 0)).length;
+  if (badRs) r.gaps.push(dayLogN(badRs, 'receipt') + ' missing a store name or total');
+  const seen = {};
+  let dupes = 0;
+  rs.forEach(e => {
+    const k = (e.receipt.store || '') + '|' + (Number(e.receipt.total) || 0).toFixed(2) + '|' + dayLogTime(e.timestamp);
+    if (seen[k]) dupes++; else seen[k] = true;
+  });
+  if (dupes) r.gaps.push(dayLogN(dupes, 'receipt') + ' matching another on store, total and time, likely duplicate');
+  const blank = list.filter(e => ['receipt', 'odometer', 'none'].indexOf(e.category) === -1 && (e.questions || []).length && dayLogAnswered(e) === 0).length;
+  if (blank) r.gaps.push(dayLogN(blank, 'stop') + ' with no questions answered');
+  if (noPos) r.gaps.push((noPos === 1 ? '1 entry' : noPos + ' entries') + ' with no location');
+  return r;
+}
+
+function dayLogText(r) {
+  const out = ['FIELD TWIN DAY LOG', r.label, ''];
+  if (!r.list.length) { out.push('No entries on this day.'); return out.join('\n'); }
+  out.push('SUMMARY');
+  r.summary.forEach(s => out.push(s));
+  out.push('Kinds of stops: ' + r.kinds.join(', '));
+  if (r.stores.length) out.push('By store: ' + r.stores.join(', '));
+  out.push('', 'TIMELINE');
+  r.lines.forEach(l => {
+    out.push(l.time + (l.gap !== null ? ' (+' + dayLogGap(l.gap) + ')' : '') + ', ' + l.kind + ', ' + l.place + ', ' + l.detail);
+  });
+  out.push('', 'NOT CAPTURED');
+  if (r.gaps.length) r.gaps.forEach(g => out.push(g)); else out.push('Nothing flagged.');
+  return out.join('\n');
+}
+
+function showDayLog(dk) {
+  const panel = document.getElementById('panel');
+  dk = dk || localDay(new Date());
+  const days = dayLogDays();
+  const keys = Object.keys(days).sort();
+  const prev = keys.filter(k => k < dk).pop() || '';
+  const next = keys.filter(k => k > dk)[0] || '';
+  const r = buildDayLog(dk);
+
+  let html = '<h2>DAY LOG</h2>';
+  html += '<div class="meta-line">' + escapeHtml(r.label) + '</div>';
+  html += '<input type="date" id="dlDate" value="' + dk + '" style="width:100%;padding:10px;font:inherit;margin:6px 0;border:1px solid var(--line);background:var(--panel);color:var(--text);">';
+  html += '<div class="panel-actions" style="margin-top:6px;"><button class="secondary" id="dlPrev"' + (prev ? '' : ' disabled') + '>EARLIER DAY</button><button class="secondary" id="dlNext"' + (next ? '' : ' disabled') + '>LATER DAY</button></div>';
+  html += '<div class="meta-line">The earlier and later buttons skip to the nearest day that has entries. ' + keys.length + ' days have entries.</div>';
+
+  if (!r.list.length) {
+    html += '<div class="question">No entries on this day</div>';
+  } else {
+    html += '<div style="font-size:30px;color:var(--accent);margin:10px 0 0;">' + r.list.length + '</div><div class="meta-line">entries</div>';
+    html += '<div class="question">Summary</div>';
+    r.summary.forEach(s => { html += '<div class="meta-line">' + escapeHtml(s) + '</div>'; });
+    html += '<div class="meta-line">Kinds of stops: ' + escapeHtml(r.kinds.join(', ')) + '</div>';
+    if (r.stores.length) html += '<div class="meta-line">By store: ' + escapeHtml(r.stores.join(', ')) + '</div>';
+    html += '<div class="question">Timeline</div>';
+    r.lines.forEach((l, i) => {
+      html += '<div class="mi-row" data-dl="' + i + '">' + l.icon + ' ' + l.time + (l.gap !== null ? ', ' + dayLogGap(l.gap) + ' after the last entry' : ', first entry') +
+        '<br>' + escapeHtml(l.kind) + ', ' + escapeHtml(l.detail) + '<br><span class="meta-line">' + escapeHtml(l.place) + '</span></div>';
+    });
+    html += '<div class="question">Not captured</div>';
+    if (r.gaps.length) r.gaps.forEach(g => { html += '<div class="meta-line" style="color:#b00020;">' + escapeHtml(g) + '</div>'; });
+    else html += '<div class="meta-line">Nothing flagged.</div>';
+  }
+  html += '<div class="meta-line" id="dlMsg"></div>';
+  html += '<div class="panel-actions"><button id="dlCopyBtn">COPY LOG</button><button class="secondary" id="dlCloseBtn">CLOSE</button></div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+
+  document.getElementById('dlCloseBtn').addEventListener('click', closePanel);
+  document.getElementById('dlDate').addEventListener('change', ev => { if (ev.target.value) showDayLog(ev.target.value); });
+  document.getElementById('dlPrev').addEventListener('click', () => { if (prev) showDayLog(prev); });
+  document.getElementById('dlNext').addEventListener('click', () => { if (next) showDayLog(next); });
+  panel.querySelectorAll('[data-dl]').forEach(el => {
+    el.addEventListener('click', () => showEntry(r.lines[parseInt(el.getAttribute('data-dl'), 10)].entry, true));
+  });
+  document.getElementById('dlCopyBtn').addEventListener('click', async () => {
+    const text = dayLogText(r);
+    const msg = document.getElementById('dlMsg');
+    try {
+      await navigator.clipboard.writeText(text);
+      msg.textContent = 'Day log copied.';
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); msg.textContent = 'Day log copied.'; } catch (x) { msg.textContent = 'Copy blocked by the browser.'; }
+      ta.remove();
+    }
+  });
 }
 
 function profileHtml() {
@@ -3525,6 +4123,8 @@ function showInfo() {
   html += '<div>Every item line is saved with the receipt and can be searched. On the Edit screen of a receipt, the items box has one item per line, the name, then a bar, then the price. Read items from the photo sends the saved photo to the reading service again and fills the box.</div>';
   html += '<div class="question">Mileage</div>';
   html += '<div>In the menu under Capture, the Odometer button switch turns the Miles button on and off. Press Miles any time during the day and type the number on the odometer, plus the vehicle, work or personal, and a note if you want. The app saves that number with the time and one reading of where the phone is. It does not follow the phone between readings, so it does not drain the battery or heat the phone. Mileage in the menu lists every reading by day, the miles driven since the reading before it on the same vehicle, the straight line distance between those two spots, work and personal totals, and Save spreadsheet writes all of it to a file. Miles between two readings count as work or personal according to the later reading.</div>';
+  html += '<div class="question">Your location dot</div>';
+  html += '<div>A blue dot shows where you are, with a faint blue ring showing how close the reading is. To save battery and keep the phone cool, the app does not follow you live. It checks your position once when the app opens, then about every five minutes while the app is on screen, and not at all while it is in the background. The dot also moves whenever Log, Receipt or Miles reads your position. The target button under the zoom buttons checks your position right away and centers the map on you. Tap the dot to see how long ago it was placed. My location dot in the menu under Capture turns the dot and the checks on and off.</div>';
   html += '<div class="question">Map</div>';
   html += '<div>Each entry is drawn as a road sign shape with a picture inside. The shape and tint show the kind of place, and every one is listed under Color key at the bottom of the menu. Receipts show as a price tag with the total. Odometer readings show as a blue rectangle sign. Signs that sit close together merge into a blue circle with a count. Tap the circle to zoom in and spread them apart. Tap any sign to open that entry.</div>';
   html += '<div class="question">Opening, editing, moving and deleting</div>';
@@ -3533,14 +4133,19 @@ function showInfo() {
   html += '<div>Search in the menu looks through store names, addresses, notes, answers and receipt items. You can narrow it by kind of place, by a date range, by work or personal, by a lowest and highest receipt amount, and by whether it has a photo, and you can change the sort order. Show on map draws only the results on the map, and Show all on the bar at the top of the map brings everything back. Save as sheet writes the results to a spreadsheet file. Reset clears every filter.</div>';
   html += '<div class="question">History</div>';
   html += '<div>History lists every entry, newest first. Tap a line to open it.</div>';
+  html += '<div class="question">Day log</div>';
+  html += '<div>Day log in the menu shows one day at a time, today first. It adds up the entries, the hours between the first and last, distinct places, straight line miles between entries, miles driven from odometer readings, money spent by work and personal and by store, and questions answered. The timeline lists every entry in order with the time since the one before it. Tap a line to open that entry. Not captured lists what the day is missing, such as stretches of two hours or more with no entries, no odometer readings, no receipts, receipts without a store or total, stops with no answers, and entries with no location. Earlier day and Later day skip to the nearest day with entries, and the date box jumps to any day. Copy log puts the whole day on the clipboard as plain text.</div>';
   html += '<div class="question">Spend</div>';
   html += '<div>Spend adds up every receipt: the total spent, work and personal totals, money saved, and a list by store with visits and amounts.</div>';
   html += '<div class="question">Traffic cameras</div>';
-  html += '<div>Cameras shows Nevada highway cameras on the map. Tap a camera to watch it. The camera list comes from the Field Twin service on Railway, which checks the cameras once a day. Camera source holds the address of that service and its access token. The same address and token are used to read receipts. Service check shows whether the service is reachable, whether its receipt reader is set up, and whether a test receipt read goes through.</div>';
+  html += '<div>Cameras shows Nevada highway cameras on the map. Tap a camera to watch it. The camera list comes from the Field Twin service on Railway, which checks the cameras once a day. The address of that service is built into the app, so every phone finds it without setup. Camera source can point a phone at a different address, and can hold an access token. The receipt reader only works for someone signed in under Account and profile, or for a phone that has the access token saved, so strangers cannot spend your reading credits. Service check shows whether the service is reachable, whether its receipt reader is set up, and whether a test receipt read goes through.</div>';
   html += '<div class="question">Roads from Chassisquiver</div>';
   html += '<div>Chassisquiver is a companion app at chassisquiver.vercel.app that rates road roughness from a phone mounted on the steering wheel. Road quality draws every shared Chassisquiver run on this map, colored from red for rough to green for smooth. Tap a colored road to see its name, score, rating and date. Travel heat map shades roads and stops by how often they show up, light blue for once and dark blue for often, using Chassisquiver runs and the entries in this app. Both switches stay the way you left them. Open Chassisquiver opens that app so you can set it up and record your own roads. Only runs saved as shared in Chassisquiver appear here.</div>';
+  html += '<div>The two tabs under the title switch between this map and Inventory. Inventory is Field Twin Violet, the parts and tools tracker, loaded right inside this page so you can flip back and forth without leaving. The tab you were on last opens next time. Open Field Twin Violet in the menu opens it on its own page.</div>';
+  html += '<div class="question">Road hazards</div>';
+  html += '<div>Under Road hazards in the menu, Crashes shows crashes and other incidents reported by the Nevada and Arizona state road departments, as red dots. Construction shows road work in orange and full closures in dark red, drawn along the affected stretch of road when the state provides it. A solid mark is happening now, and a faded or dashed mark has cleared. The first list under those switches picks how far back to show, from a day up to two years. Show hazards picks the area: within a hundred miles of Las Vegas, within a hundred miles of where the phone is, or everywhere. The area applies to crashes, construction and fatal crashes. The state road departments only publish what is happening right now, so the Field Twin service checks them every ten minutes and saves every report it sees. History builds up from the day that service update went live, which is why longer spans fill in over time. Fatal crash history shows fatal crashes from federal crash records as dark red dots, going back as many years as you pick. Those records are released about a year or more after the year ends, so the newest year is never the current one. Tap any dot or line to read the details, plus a count of crashes and fatal crashes within half a mile of that spot, which is a quick way to judge how risky a stretch of road is. Arizona crashes and construction show up once an Arizona road department key is added to the service.</div>';
   html += '<div class="question">Account and profile</div>';
-  html += '<div>Account and profile is one page. Type your email and a sign in link arrives in your inbox. Opening that link on this phone signs you in. Once signed in, every entry, photo, receipt and odometer reading is saved to your account and comes back on any phone where you sign in. Sync now uploads and downloads right away. Below that are your points, coverage, a count for each kind of place, and trophies.</div>';
+  html += '<div>Account and profile is one page. The account is your own Field Twin account on your Field Twin server, the same one Inventory uses, and it is not tied to any outside sign in service. Sign in with your email and password, or press Email me a link and open the link on this phone. Once signed in, you can set or change your password on the same page, and that password then works on every phone. Once signed in, every entry, photo, receipt and odometer reading is saved to your account and comes back on any phone where you sign in. Sync now uploads and downloads right away. Below that are your points, coverage, a count for each kind of place, and trophies.</div>';
   html += '<div class="question">Points and trophies</div>';
   html += '<div>Each entry earns points for being saved, more for each answered question, more for a photo, and a large bonus the first time you reach a place. Going back to a place you already logged earns half. Airstrips, airports, government buildings and roadside memorials earn extra. A place with enough answers across visits counts as fully documented and earns a bonus. Trophies are awarded for counts of entries, places, photos, miles of ground covered and kinds of places logged. Points and trophies are counted from your saved entries, so they belong to your account.</div>';
   html += '<div class="question">Using the app without an account</div>';
@@ -3981,7 +4586,9 @@ async function init() {
   document.getElementById('pinPlaceCancel').addEventListener('click', cancelPinPlacement);
 
   applyMilesToggle();
+  initHere();
   initRoadButtons();
+  initHazards();
   document.getElementById('milesToggleBtn').addEventListener('click', () => {
     try { localStorage.setItem('milesOn', milesOn() ? '0' : '1'); } catch (e) {}
     applyMilesToggle();
@@ -3990,6 +4597,11 @@ async function init() {
   document.getElementById('mileageBtn').addEventListener('click', () => {
     closeMenu();
     showMileage();
+  });
+
+  document.getElementById('dayLogBtn').addEventListener('click', () => {
+    closeMenu();
+    showDayLog();
   });
 
   document.getElementById('spendBtn').addEventListener('click', () => {
@@ -4044,6 +4656,35 @@ window.addEventListener('unhandledrejection', (e) => {
 });
 
 init();
+</script>
+<script>
+// Twin tabs: Field map is this app, Inventory is Field Twin Violet loaded in place so switching never leaves the page.
+(function () {
+  const TAB_KEY = 'fieldTwinTab';
+  const teal = document.getElementById('tabTeal');
+  const violet = document.getElementById('tabViolet');
+  const view = document.getElementById('violetView');
+  function show(which) {
+    const inv = which === 'violet';
+    teal.classList.toggle('on', !inv);
+    violet.classList.toggle('on', inv);
+    if (inv && !view.firstChild) {
+      const f = document.createElement('iframe');
+      f.src = VIOLET_SITE;
+      f.title = 'Field Twin Violet inventory';
+      f.allow = 'camera; clipboard-write; geolocation';
+      view.appendChild(f);
+    }
+    view.classList.toggle('open', inv);
+    try { localStorage.setItem(TAB_KEY, which); } catch (e) {}
+    if (!inv && typeof map !== 'undefined' && map && map.invalidateSize) setTimeout(() => map.invalidateSize(), 50);
+  }
+  teal.addEventListener('click', () => show('teal'));
+  violet.addEventListener('click', () => show('violet'));
+  let start = 'teal';
+  try { start = localStorage.getItem(TAB_KEY) || 'teal'; } catch (e) {}
+  show(start);
+})();
 </script>
 </body>
 </html>

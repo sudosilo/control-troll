@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-14T16:33:36.504Z",
+  "builtAt": "2026-10-15T17:49:48.809Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -61,26 +61,6 @@
       ],
       "knownProblem": null,
       "snapshot": "snapshots/groundcore-nine.html"
-    },
-    {
-      "app": "kat-chat-flame",
-      "url": "https://kat-chat-flame.vercel.app",
-      "kind": "down",
-      "since": "2026-10-14",
-      "status": null,
-      "failing": [],
-      "errors": [
-        "load: page.goto: Timeout 30000ms exceeded."
-      ],
-      "features": [
-        "Connects to the chat backend and shows messages between members with names and colors.",
-        "Sends text and GIFs, and shows a reload banner when a new version is ready.",
-        "Appearance picks day, night, kat or orbit themes with a background picture and dimming.",
-        "Sound picks ding, meow or off, and notifications pick all, mentions or off, with ntfy connect.",
-        "Install app adds it to the home screen, and account status shows."
-      ],
-      "knownProblem": null,
-      "snapshot": "snapshots/kat-chat-flame.html"
     },
     {
       "app": "mission-operator",

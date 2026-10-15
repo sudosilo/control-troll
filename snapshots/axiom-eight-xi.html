@@ -17,7 +17,7 @@
     Keys release on window blur, mouseleave no longer spams note offs into the recorder.
     Canvas resize no longer stacks scale transforms. Arpeggio and call and response patterns no longer multiply per row.
     External font import removed. Alerts replaced with status line text.
-  ORANGE PHONE: v3 band sync.
+  BLUE PHONE: v3 band sync.
     Band panel with a room code. Phones that type the same room code share one server clock and one tempo,
     including phones running other apps on the same server.
     While the band loop runs, the step sequencer starts every pattern on the shared bar line.
@@ -373,7 +373,7 @@
   .status-dot.on { background: var(--accent3); box-shadow: 0 0 6px var(--accent3); }
   #status-note { color: var(--accent); }
 
-  /* ORANGE PHONE: v3 band panel */
+  /* BLUE PHONE: v3 band panel */
   .band-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
   .band-room { width: 150px; text-align: left; padding: 7px 10px; }
   .band-status { font-size: 0.7rem; color: var(--dim); letter-spacing: 0.06em; display: flex; align-items: center; gap: 6px; }
@@ -1017,7 +1017,7 @@ function startSeq() {
   const b = document.getElementById('btn-play-seq');
   b.textContent = '■ STOP';
   b.classList.add('playing');
-  // ORANGE PHONE: v3 the Band panel has its own copy of the play button
+  // BLUE PHONE: v3 the Band panel has its own copy of the play button
   const b2 = document.getElementById('band-play');
   b2.textContent = '■ STOP';
   b2.classList.add('playing');
@@ -1497,7 +1497,7 @@ function fireDemo() {
 
   const template = DEMO_TEMPLATES[(demoCount - 1) % DEMO_TEMPLATES.length];
 
-  // ORANGE PHONE: v3 while the band loop runs, a demo song leaves the shared tempo alone
+  // BLUE PHONE: v3 while the band loop runs, a demo song leaves the shared tempo alone
   if (!bandLocked()) {
     bpm = Math.floor(template.bpmRange[0] + Math.random() * (template.bpmRange[1] - template.bpmRange[0] + 1));
     bpmInput.value = bpm;
@@ -1537,7 +1537,7 @@ document.getElementById('btn-demo').addEventListener('click', fireDemo);
 
 // ─────────────────────────────────────────────
 // BAND SYNC
-// ORANGE PHONE: v3 shared room on the sync server. The server sends a clock and a loop state:
+// BLUE PHONE: v3 shared room on the sync server. The server sends a clock and a loop state:
 // tempo, epoch (server time where bar barOffset begins) and a pending change that lands on a bar line.
 // While the loop runs, each sequencer pattern is one bar and starts on the shared bar line.
 // ─────────────────────────────────────────────

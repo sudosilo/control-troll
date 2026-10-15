@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>LOOPER v2</title>
 <!--
-  ORANGE PHONE: v2 band sync.
+  BLUE PHONE: v2 band sync.
     Band panel with a room code. Phones that type the same room code share one server clock and one tempo,
     including phones running other apps on the same server.
     While the band loop runs, a loop starts on the shared bar line, a new recording is trimmed to whole bars,
     and each pass of the loop is started fresh from the server clock so it cannot drift.
-  ORANGE PHONE: v3 band grooves. Drum and bass presets built from the Looper sound bank, played on the band clock
+  BLUE PHONE: v3 band grooves. Drum and bass presets built from the Looper sound bank, played on the band clock
     in double time against the band tempo, with a sub bass line in the key of the groove the room is playing.
     A loop follows tempo changes by changing its playback speed.
 -->
@@ -190,7 +190,7 @@
     margin-top: 3px;
   }
 
-  /* ORANGE PHONE: v2 band panel */
+  /* BLUE PHONE: v2 band panel */
   .band-box {
     background: var(--panel);
     border: 1px solid var(--border);
@@ -1296,7 +1296,7 @@ function firePad(id, el) {
   src.start();
 
   if (state === 'recording' || state === 'overdub') {
-    // ORANGE PHONE: v2 while the band plays the loop, a tap is filed at the spot of the loop it landed on
+    // BLUE PHONE: v2 while the band plays the loop, a tap is filed at the spot of the loop it landed on
     const when = bandPlay ? bandPos() : ctx.currentTime - recSessionStart;
     if (when != null) recEvents.push({ soundId: id, time: when });
   }
@@ -1497,7 +1497,7 @@ function startRecording() {
   const ctx = getCtx();
   recEvents = [];
   recSessionStart = ctx.currentTime;
-  // ORANGE PHONE: v2 while the band loop runs, the recording counts from the bar line just passed
+  // BLUE PHONE: v2 while the band loop runs, the recording counts from the bar line just passed
   bandRec = null;
   if (bandLocked()) {
     const bar = bandBarAt(bandRoom, bandClock.now());
@@ -1521,7 +1521,7 @@ function stopRecording() {
     return;
   }
 
-  // ORANGE PHONE: v2 a recording made with the band is trimmed to whole bars
+  // BLUE PHONE: v2 a recording made with the band is trimmed to whole bars
   let bars = 0, anchor = null;
   if (bandRec) {
     const barSec = bandBarMs(bandRec.tempo) / 1000;
@@ -1638,7 +1638,7 @@ function startPlayback() {
   if (!slots[activeSlot].buffer) return;
   stopPlayback(false);
 
-  // ORANGE PHONE: v2 in a room the band clock starts the loop
+  // BLUE PHONE: v2 in a room the band clock starts the loop
   if (bandReady()) { bandStartPlayback(); return; }
 
   const ctx = getCtx();
@@ -1787,7 +1787,7 @@ btnDownload.addEventListener('click', exportWav);
 
 // ============================================================
 //  BAND SYNC
-//  ORANGE PHONE: v2 shared room on the sync server. The server sends a clock and a loop state:
+//  BLUE PHONE: v2 shared room on the sync server. The server sends a clock and a loop state:
 //  tempo, epoch (server time where bar barOffset begins) and a pending change that lands on a bar line.
 // ============================================================
 
@@ -1797,7 +1797,7 @@ let bandPhones = 0;
 let bandTrim = 0;
 let bandPlay = null;   // the loop the band clock is playing right now, or null
 let bandRec = null;    // set while a recording counts from a band bar line
-let bandJoined = false; // ORANGE PHONE: v2 set by the Band panel PLAY button, this phone counts as a player
+let bandJoined = false; // BLUE PHONE: v2 set by the Band panel PLAY button, this phone counts as a player
 
 const bandBarMs = tempo => 240000 / tempo;
 function bandPendingAt(s) { return s.epoch + (s.pending.atBar - s.barOffset) * bandBarMs(s.tempo); }
@@ -1915,7 +1915,7 @@ function bandPos() {
 
 // ============================================================
 //  BAND GROOVES
-//  ORANGE PHONE: v3 drum and bass presets. Each pattern is two band bars of 32 steps,
+//  BLUE PHONE: v3 drum and bass presets. Each pattern is two band bars of 32 steps,
 //  so it runs in double time against the band tempo. x is a full hit, o is a soft hit.
 //  The bass line uses digits for steps of the minor scale above the root of the room groove.
 // ============================================================
@@ -2084,7 +2084,7 @@ function renderBand() {
   setTrim(saved);
   document.getElementById('band-trim-dn').addEventListener('click', () => setTrim(bandTrim - 5));
   document.getElementById('band-trim-up').addEventListener('click', () => setTrim(bandTrim + 5));
-  // ORANGE PHONE: v2 the Band panel PLAY button works with or without a recorded loop.
+  // BLUE PHONE: v2 the Band panel PLAY button works with or without a recorded loop.
   // It starts the band when it is stopped, and plays the loop of the open slot on the band clock when there is one.
   document.getElementById('band-play').addEventListener('click', () => {
     getCtx();
