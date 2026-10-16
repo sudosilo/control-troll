@@ -23,6 +23,14 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "Could not reach the app repo because the list_repos and add_repo tools were missing from this session, so no fix was attempted. Root returned 404 today though the saved snapshot shows a full page, so the deploy likely broke or was removed."
+    },
+    {
+      "date": "2026-10-16",
+      "app": "mission-operator",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Could not reach the app repo because list_repos and add_repo are still missing from this session, and vercel.app is unreachable from the sandbox; the snapshot is a Vite shell loading /assets/index-Cd--pKmp.js, so the 404 is likely a missing hashed bundle from a broken or partial deploy."
     }
   ]
 }
