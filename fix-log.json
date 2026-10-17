@@ -31,6 +31,30 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "Could not reach the app repo because list_repos and add_repo are still missing from this session, and vercel.app is unreachable from the sandbox; the snapshot is a Vite shell loading /assets/index-Cd--pKmp.js, so the 404 is likely a missing hashed bundle from a broken or partial deploy."
+    },
+    {
+      "date": "2026-10-17",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "list_repos and add_repo are still missing from this session and account wide search is out of scope, so the app repo could not be reached and no fix was attempted; root still returns 404 and no snapshot exists, so it is either a backend needing GET /health or a missing deploy."
+    },
+    {
+      "date": "2026-10-17",
+      "app": "topo-wars-server",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "list_repos and add_repo are still missing from this session and account wide search is out of scope, so the app repo could not be reached and no fix was attempted; root still returns 404 with no snapshot, likely a backend that needs a GET /health route."
+    },
+    {
+      "date": "2026-10-17",
+      "app": "groundcore-nine",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "list_repos and add_repo are still missing from this session and account wide search is out of scope, so the app repo could not be reached and no fix was attempted; root returns 404 though the saved snapshot is a full GroundCore page, so the deploy likely broke or was removed."
     }
   ]
 }
