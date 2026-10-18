@@ -11,7 +11,26 @@
   "sudosilo/matops-backend@v2026.06.04",
   "sudosilo/coffeekit@v2026.06.21",
   "sudosilo/dronecamp@v2026.07.03",
-  "sudosilo/tanks-and-zombies@v2026.07.03"
+  "sudosilo/tanks-and-zombies@v2026.07.03",
+  "sudosilo/termbeat@v2026.07.19",
+  "sudosilo/threat-poller@v2026.08.01",
+  "sudosilo/threat-dash@v2026.08.06",
+  "sudosilo/aerophin-twin@v2026.08.29",
+  "sudosilo/skwiggle-backend@v2026.08.31",
+  "sudosilo/skwiggle-mint-pin@v2026.09.01",
+  "sudosilo/skwiggle-v105@v2026.09.02",
+  "sudosilo/skwiggle-v105@v2026.09.01",
+  "sudosilo/tower-builder@v2026.09.02",
+  "sudosilo/tower2@v2026.09.02",
+  "sudosilo/shitty-ass-trading-app@v2026.09.05",
+  "sudosilo/shitty-ass-trading-app@v2026.09.04",
+  "sudosilo/shitty-ass-trading-app@v2026.09.03",
+  "sudosilo/shitty-ass-trading-app@v2026.09.01",
+  "sudosilo/shitty-ass-trading-app@v2026.08.30",
+  "sudosilo/bitfield-synth@v2026.09.08",
+  "sudosilo/bitfield-synth@v2026.09.05",
+  "sudosilo/bitfield-synth@v2026.06.12",
+  "sudosilo/mohavetech-contracts@v2026.09.10"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -137,6 +156,128 @@
     "canvas",
     "game",
     "shooter",
+    "vercel"
+   ]
+  },
+  "sudosilo/termbeat": {
+   "d": "Audio reactive terminal that reacts to music or the microphone, with themes and small games.",
+   "h": "https://termbeat.vercel.app",
+   "t": [
+    "music",
+    "terminal",
+    "vercel",
+    "visualizer",
+    "web-audio"
+   ]
+  },
+  "sudosilo/threat-poller": {
+   "d": "Background poller that watches GitHub repos by category, saves alerts to Postgres, and serves them over a read API.",
+   "h": "",
+   "t": [
+    "backend",
+    "monitoring",
+    "postgres",
+    "railway",
+    "redis"
+   ]
+  },
+  "sudosilo/threat-dash": {
+   "d": "Dashboard page for the threat poller, with a watchlist you can add to and remove from.",
+   "h": "",
+   "t": [
+    "dashboard",
+    "github",
+    "monitoring",
+    "tool"
+   ]
+  },
+  "sudosilo/aerophin-twin": {
+   "d": "Drawing set and interactive 3D part models for two coffee machine designs.",
+   "h": "https://aerophin-twin.vercel.app",
+   "t": [
+    "3d",
+    "coffee",
+    "drawings",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/skwiggle-backend": {
+   "d": "Small Express backend for the Skwiggle drawing game, set up to run on Railway.",
+   "h": "",
+   "t": [
+    "backend",
+    "express",
+    "railway"
+   ]
+  },
+  "sudosilo/skwiggle-mint-pin": {
+   "d": "Proxy service that pins Skwiggle art to IPFS so it can be minted.",
+   "h": "",
+   "t": [
+    "backend",
+    "express",
+    "ipfs",
+    "railway"
+   ]
+  },
+  "sudosilo/skwiggle-v105": {
+   "d": "Never ending line drawing game with mint support, later replaced by a Vercel host stumbler.",
+   "h": "https://skwiggle.vercel.app",
+   "t": [
+    "drawing",
+    "game",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/tower-builder": {
+   "d": "Beam building tower game that tests your design against wind and earthquakes.",
+   "h": "https://tower-builder-five.vercel.app",
+   "t": [
+    "game",
+    "simulator",
+    "vercel"
+   ]
+  },
+  "sudosilo/tower2": {
+   "d": "Second version of the tower builder game, with an info button explaining the rules.",
+   "h": "",
+   "t": [
+    "game",
+    "simulator",
+    "vercel"
+   ]
+  },
+  "sudosilo/shitty-ass-trading-app": {
+   "d": "Stock tracker for restaurant and food industry tickers with news, recalls, filings, and sentiment.",
+   "h": "https://shitty-ass-trading.vercel.app",
+   "t": [
+    "finance",
+    "pwa",
+    "restaurant-tech",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/bitfield-synth": {
+   "d": "Pixel field visualizer driven by math expressions, audio, and images.",
+   "h": "https://bitfield-synth.vercel.app",
+   "t": [
+    "canvas",
+    "music",
+    "vercel",
+    "visualizer",
+    "web-audio"
+   ]
+  },
+  "sudosilo/mohavetech-contracts": {
+   "d": "Draft a contract, sign it with a finger or mouse, and record its fingerprint on Polygon.",
+   "h": "https://mohavetech-contracts.vercel.app",
+   "t": [
+    "contracts",
+    "polygon",
+    "tool",
     "vercel"
    ]
   }
