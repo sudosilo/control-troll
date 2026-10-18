@@ -55,6 +55,22 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "list_repos and add_repo are still missing from this session and account wide search is out of scope, so the app repo could not be reached and no fix was attempted; root returns 404 though the saved snapshot is a full GroundCore page, so the deploy likely broke or was removed."
+    },
+    {
+      "date": "2026-10-18",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "repo not found",
+      "pullRequest": null,
+      "note": "No sudosilo repo matches snapshot-engine, and scribe/repos.json has no entry, so no fix was attempted."
+    },
+    {
+      "date": "2026-10-18",
+      "app": "topo-wars-server",
+      "kind": "down",
+      "outcome": "fixed",
+      "pullRequest": "https://github.com/sudosilo/topo-wars-server/pull/1",
+      "note": "Backend has no home page, so I added a GET /health route that pings Redis; add https://topo-wars-server.vercel.app/health to apps.json after merge."
     }
   ]
 }
