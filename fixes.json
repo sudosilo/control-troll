@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-18T18:36:44.480Z",
+  "builtAt": "2026-10-18T20:47:30.728Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -41,6 +41,29 @@
       ],
       "knownProblem": "Returns 404 at the root URL. A backend with no home page does that normally, so it needs a health endpoint added to tell real downtime apart.",
       "snapshot": "snapshots/topo-wars-server.html"
+    },
+    {
+      "app": "termbeat",
+      "url": "https://termbeat.vercel.app",
+      "kind": "test-failing",
+      "since": "2026-10-18",
+      "status": 200,
+      "failing": [
+        {
+          "test": "theme menu switches theme",
+          "error": "locator.click: Timeout 6000ms exceeded.",
+          "testFile": "tests/termbeat.json"
+        }
+      ],
+      "errors": [],
+      "features": [
+        "Audio from a file or the microphone makes the terminal react to sound.",
+        "Terminal themes include paper, hacker, Kali, Android, Linux, Windows and PowerShell.",
+        "Modes switch between terminal, visualizer, bars, tetris, snake and pong.",
+        "Build mode types source code, and the info panel explains the vision."
+      ],
+      "knownProblem": null,
+      "snapshot": "snapshots/termbeat.html"
     }
   ]
 }
