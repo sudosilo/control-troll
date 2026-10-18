@@ -1,0 +1,70 @@
+name: heckler
+# HeckleTroll: roasts every new commit across the account as a commit comment.
+# Runs on the Claude subscription. Skips without starting Claude when nothing new was pushed.
+on:
+  schedule:
+    - cron: "23 */3 * * *"
+  workflow_dispatch:
+concurrency:
+  group: heckler
+  cancel-in-progress: false
+permissions:
+  contents: write
+  id-token: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.SCRIBE_TOKEN }}
+      - name: Sign git in as the account
+        env:
+          TOKEN: ${{ secrets.SCRIBE_TOKEN }}
+        run: |
+          git config --global user.name "control-troll-heckler"
+          git config --global user.email "control-troll-heckler@users.noreply.github.com"
+          git config --global url."https://x-access-token:${TOKEN}@github.com/".insteadOf "https://github.com/"
+          git config --global pull.rebase true
+      - name: Anything new to heckle
+        id: new
+        env:
+          GH_TOKEN: ${{ secrets.SCRIBE_TOKEN }}
+        run: |
+          since=$(node -e 'console.log(require("./heckle/state.json").lastChecked)')
+          n=$(gh repo list sudosilo --limit 300 --json name,pushedAt,isFork \
+            --jq "[.[] | select(.isFork|not) | select(.name != \"control-troll\" and .name != \"sudosilo\") | select(.pushedAt > \"$since\")] | length")
+          echo "repos pushed since $since: $n"
+          if [ "${n:-0}" -gt 0 ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then echo "go=yes" >> "$GITHUB_OUTPUT"; else echo "go=no" >> "$GITHUB_OUTPUT"; fi
+      - uses: anthropics/claude-code-action@v1
+        id: claude
+        if: steps.new.outputs.go == 'yes'
+        env:
+          GH_TOKEN: ${{ secrets.SCRIBE_TOKEN }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.SCRIBE_TOKEN }}
+          prompt: ${{ format('Read agents/heckler.md in the current folder and carry out every step in it. This run started at {0}.', github.run_started_at) }}
+          claude_args: |
+            --max-turns 80
+            --allowedTools "Bash,Read,Write,Edit,Glob,Grep"
+      - name: Save the run result for review
+        if: always() && steps.claude.outcome != 'skipped'
+        env:
+          EXEC: ${{ steps.claude.outputs.execution_file }}
+        run: |
+          mkdir -p agents/runs
+          if [ -f "$EXEC" ]; then
+            python3 -c "
+          import json,sys
+          d=json.load(open(sys.argv[1]))
+          last=[m for m in d if m.get('type')=='result']
+          json.dump(last[-1] if last else d[-3:], open('agents/runs/heckler-last.json','w'), indent=1)
+          " "$EXEC"
+          else
+            echo '{"note":"no execution file"}' > agents/runs/heckler-last.json
+          fi
+          git add agents/runs/heckler-last.json
+          git commit -m "heckler run result" || true
+          git pull --rebase origin main && git push || true

@@ -88,6 +88,7 @@ h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
   <div class="sub" id="when">Loading status...</div>
   <div class="tally" id="tally"></div>
   <div class="hist" id="hist"></div>
+  <details class="hist" id="heck"><summary style="cursor:pointer;font-weight:700">HeckleTroll</summary><div id="heckBody" class="dayinfo">No heckles yet.</div></details>
   <div class="filters" id="filters">
     <button data-f="all" class="on">All</button>
     <button data-f="bad">Down</button>
@@ -123,6 +124,9 @@ h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
   <h3>The scribe</h3>
   <p>A second scheduled Claude task called Control Troll scribe runs at 11:40 every night. For every repo that changed that day, it writes a changelog entry, publishes a GitHub release, refreshes the README, and fills in the repo description, website link, and topic tags. It then rebuilds the profile page in the sudosilo repo, grouping every app by category with recent changes. Its rules are in scribe/rules.md. It works through older repos 12 a night until every repo has its history written.</p>
 
+  <h3>HeckleTroll</h3>
+  <p>A third agent checks for new pushes every three hours. Each new commit gets a short roast posted as a comment on the commit, ending with a Fix it paragraph of concrete fixes. Once a week it writes a fleet verdict naming clones to merge, apps to finish or kill, and apps worth polishing. Both show in the HeckleTroll panel on this page. Put [no heckle] in a commit message to skip one. When nothing new was pushed, it stops before starting Claude, so it costs nothing.</p>
+
   <h3>Files in the repo</h3>
   <p><code>check.js</code> runs the morning check. <code>tests.js</code> runs the scripted tests. <code>history.js</code> keeps the daily record. <code>queue.js</code> builds the fix list. <code>status.json</code> holds the latest results. <code>history.json</code> holds the daily record. <code>fixes.json</code> is the job list. <code>fix-log.json</code> records what the fix agent did. <code>apps.json</code> adds apps or health URLs the index site does not link.</p>
 
@@ -137,6 +141,7 @@ var HIST = "https://raw.githubusercontent.com/sudosilo/control-troll/main/histor
 var data = null, specs = {}, hist = {days:{}}, filter = "all";
 var STATE_WORD = {o:"healthy", e:"console errors", f:"tests failing", d:"down"};
 var calMonth = null, calSel = null;
+var HECK = "https://raw.githubusercontent.com/sudosilo/control-troll/main/heckle/";
 
 (function(){
   var m=document.getElementById("infoModal");
@@ -273,6 +278,15 @@ document.getElementById("filters").addEventListener("click",function(e){
   render();
 });
 
+Promise.all([
+  fetch(HECK+"log.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():{heckles:[]};}).catch(function(){return {heckles:[]};}),
+  fetch(HECK+"fleet.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
+]).then(function(v){
+  var h=(v[0].heckles||[]).slice(0,10), f=v[1], out="";
+  if(f&&f.verdict) out+='<p><b>Fleet verdict, '+esc(f.date||"")+'</b></p>'+String(f.verdict).split(/\n\s*\n/).map(function(p){return '<p>'+esc(p)+'</p>';}).join("");
+  if(h.length) out+='<p><b>Latest commit heckles</b></p>'+h.map(function(x){return '<p><b>'+esc(x.repo)+'</b> '+esc(String(x.date||"").slice(0,10))+': '+esc(x.heckle)+'</p>';}).join("");
+  if(out) document.getElementById("heckBody").innerHTML=out;
+});
 fetch(HIST+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():{days:{}};}).then(function(j){hist=j||{days:{}};renderHist();render();}).catch(function(){renderHist();});
 fetch(SPECS+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():{};}).then(function(j){specs=j||{};render();}).catch(function(){});
 fetch(SRC+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
