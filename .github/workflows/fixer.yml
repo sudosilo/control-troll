@@ -42,6 +42,9 @@ jobs:
           done=$(gh run list -R sudosilo/control-troll -w fixer --status success --limit 20 --json createdAt \
             --jq "[.[] | select((.createdAt | fromdateiso8601 - 25200 | strftime(\"%Y-%m-%d\")) == \"$today\")] | length")
           if [ "$EV" != "workflow_dispatch" ] && [ "${done:-0}" -gt 0 ]; then echo "skip=yes" >> "$GITHUB_OUTPUT"; echo "already ran today"; else echo "skip=no" >> "$GITHUB_OUTPUT"; fi
+      - name: Note the start time
+        id: now
+        run: echo "t=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
       - uses: anthropics/claude-code-action@v1
         id: claude
         if: steps.once.outputs.skip != 'yes'
@@ -50,7 +53,7 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.SCRIBE_TOKEN }}
-          prompt: ${{ format('Read agents/fixer.md in the current folder and carry out every step in it. Today is {0}.', github.run_started_at) }}
+          prompt: ${{ format('Read agents/fixer.md in the current folder and carry out every step in it. Today is {0}.', steps.now.outputs.t) }}
           claude_args: |
             --max-turns 120
             --allowedTools "Bash,Read,Write,Edit,Glob,Grep"

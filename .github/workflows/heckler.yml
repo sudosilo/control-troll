@@ -37,6 +37,9 @@ jobs:
             --jq "[.[] | select(.isFork|not) | select(.name != \"control-troll\" and .name != \"sudosilo\") | select(.pushedAt > \"$since\")] | length")
           echo "repos pushed since $since: $n"
           if [ "${n:-0}" -gt 0 ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then echo "go=yes" >> "$GITHUB_OUTPUT"; else echo "go=no" >> "$GITHUB_OUTPUT"; fi
+      - name: Note the start time
+        id: now
+        run: echo "t=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
       - uses: anthropics/claude-code-action@v1
         id: claude
         if: steps.new.outputs.go == 'yes'
@@ -45,7 +48,7 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.SCRIBE_TOKEN }}
-          prompt: ${{ format('Read agents/heckler.md in the current folder and carry out every step in it. This run started at {0}.', github.run_started_at) }}
+          prompt: ${{ format('Read agents/heckler.md in the current folder and carry out every step in it. This run started at {0}.', steps.now.outputs.t) }}
           claude_args: |
             --max-turns 80
             --allowedTools "Bash,Read,Write,Edit,Glob,Grep"
