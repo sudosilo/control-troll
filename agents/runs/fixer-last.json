@@ -1,33 +1,74 @@
 {
- "duration_api_ms": 0,
- "stop_reason": "stop_sequence",
- "session_id": "31323849-9b32-4f27-864f-b2bdf13f2953",
- "total_cost_usd": 0,
+ "duration_api_ms": 21798,
+ "stop_reason": "end_turn",
+ "session_id": "61c7dccc-8f09-4481-a294-453f1f48b045",
+ "total_cost_usd": 0.09734270000000002,
  "usage": {
+  "input_tokens": 18,
+  "cache_creation_input_tokens": 13912,
+  "cache_read_input_tokens": 192495,
+  "output_tokens": 2228,
   "output_tokens_details": {
-   "thinking_tokens": 0
+   "thinking_tokens": 142
   },
-  "input_tokens": 0,
-  "cache_creation_input_tokens": 0,
-  "cache_read_input_tokens": 0,
-  "output_tokens": 0,
   "server_tool_use": {
    "web_search_requests": 0,
    "web_fetch_requests": 0
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 13912,
    "ephemeral_5m_input_tokens": 0
   },
-  "inference_geo": "",
-  "iterations": [],
+  "inference_geo": "global",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 282,
+    "cache_read_input_tokens": 26212,
+    "cache_creation_input_tokens": 491,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 491
+    },
+    "type": "message"
+   }
+  ],
   "speed": "standard",
   "fallback_credit": null
  },
- "modelUsage": {},
+ "modelUsage": {
+  "claude-haiku-5-5": {
+   "inputTokens": 1192,
+   "outputTokens": 20,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "webSearchRequests": 0,
+   "costUSD": 0.0001292,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 18,
+   "outputTokens": 2228,
+   "cacheReadInputTokens": 192495,
+   "cacheCreationInputTokens": 13912,
+   "webSearchRequests": 0,
+   "costUSD": 0.09721350000000001,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 142,
+   "canonicalModel": "claude-sonnet-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
  "permission_denials": [],
- "terminal_reason": "api_error",
+ "terminal_reason": "completed",
  "fast_mode_state": "off",
  "fast_mode_disabled_reason": "sdk_opt_in_required",
  "subagent_stats": {
@@ -55,15 +96,18 @@
   "by_type": {}
  },
  "safety_stops": 0,
- "is_error": true,
- "num_turns": 1,
+ "is_error": false,
+ "num_turns": 9,
  "subtype": "success",
- "api_error_status": 401,
- "api_error_origin": "first_party",
- "result": "Failed to authenticate. API Error: 401 OAuth access token is invalid.",
+ "api_error_status": null,
+ "result": "I worked two apps, fixed one, and couldn't find a repo for the other.\n\nFor topo-wars-server, the root URL returns 404 because the backend has no home page. I added a health route that returns 200 with a small JSON body and pings Redis if Redis is configured. I ran the handler locally, but only the \"not configured\" path, so the Redis ping is untested. I also added a vercel.json rewrite so /health works as well as /api/health. The pull request is github.com/sudosilo/topo-wars-server/pull/1. After it is merged, topo-wars-server.vercel.app/health can be added to apps.json.\n\nFor snapshot-engine-pied, no sudosilo repo matches the name and scribe/repos.json has no entry for it. I logged it as repo not found and changed nothing.\n\nBoth jobs are logged in fix-log.json, which I pushed to main.",
+ "ttft_ms": 1972,
  "type": "result",
- "duration_ms": 2221,
- "uuid": "f3272af7-60df-4ead-aa92-94eebd166e86",
+ "duration_ms": 29179,
+ "uuid": "d5f65f70-4c76-4ed6-b304-d544be80bcbb",
+ "ttft_stream_ms": 1728,
+ "time_to_request_ms": 151,
+ "first_content_frame_ms": 1729,
  "queued_turn_count": 0,
  "result_index": 0
 }
