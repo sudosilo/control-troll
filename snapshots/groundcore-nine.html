@@ -5,23 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GroundCore -- Mohave Valley Horticulture Platform</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Inconsolata:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root {
-  --bg: #e8e8e8;
-  --panel: #f2f2f2;
-  --border: #c0c0c0;
-  --accent: #2e7d32;
-  --accent2: #558b2f;
-  --gold: #b8860b;
+  --bg: #0d1a0e;
+  --panel: #111f12;
+  --border: #1e3a20;
+  --accent: #4caf50;
+  --accent2: #8bc34a;
+  --gold: #d4a843;
   --red: #c0392b;
-  --blue: #1565c0;
-  --text: #1a1a1a;
-  --muted: #555555;
-  --soil: #8d6e63;
-  --soilbright: #a1887f;
-  --white: #111111;
+  --blue: #2980b9;
+  --text: #d8e8d0;
+  --muted: #6b8c6d;
+  --soil: #3e2a1a;
+  --soilbright: #6b4226;
+  --white: #eef5ec;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,8 +38,8 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    radial-gradient(ellipse at 20% 50%, rgba(46,125,50,0.04) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(85,139,47,0.03) 0%, transparent 50%);
+    radial-gradient(ellipse at 20% 50%, rgba(76,175,80,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(139,195,74,0.03) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -51,15 +49,13 @@ nav {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(232,232,232,0.96);
+  background: rgba(13,26,14,0.96);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
-  overflow-x: auto;
-  gap: 8px;
+  padding: 10px 20px;
 }
 
 .nav-brand {
@@ -151,7 +147,7 @@ label {
 input[type="number"],
 select {
   width: 100%;
-  background: #f5f5f5;
+  background: #080f09;
   border: 1px solid var(--border);
   border-radius: 5px;
   color: var(--text);
@@ -166,7 +162,7 @@ select {
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
 input[type="number"]:focus, select:focus { border-color: var(--accent); }
-select option { background: #f0f0f0; }
+select option { background: #111f12; }
 
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
@@ -207,7 +203,7 @@ select option { background: #f0f0f0; }
 }
 
 .stat {
-  background: #f5f5f5;
+  background: #080f09;
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 12px 10px;
@@ -282,7 +278,7 @@ select option { background: #f0f0f0; }
 }
 
 .pos-item {
-  background: #f5f5f5;
+  background: #080f09;
   border: 1px solid var(--border);
   border-radius: 5px;
   padding: 8px 10px;
@@ -303,7 +299,7 @@ select option { background: #f0f0f0; }
   border: 1px solid var(--red);
   border-radius: 5px;
   padding: 9px 12px;
-  color: #8b0000;
+  color: #e88;
   font-size: 0.8rem;
   margin-top: 10px;
 }
@@ -316,7 +312,7 @@ select option { background: #f0f0f0; }
 
 .plant-search-input {
   width: 100%;
-  background: #f5f5f5;
+  background: #080f09;
   border: 1px solid var(--border);
   border-radius: 5px;
   color: var(--text);
@@ -333,7 +329,7 @@ select option { background: #f0f0f0; }
   position: absolute;
   top: 100%;
   left: 0; right: 0;
-  background: #e8e8e8;
+  background: #0d1a0e;
   border: 1px solid var(--accent);
   border-top: none;
   border-radius: 0 0 6px 6px;
@@ -408,11 +404,11 @@ select option { background: #f0f0f0; }
   font-weight: 700;
 }
 
-.tag-native { background: rgba(46,125,50,0.15); color: #1b5e20; border: 1px solid rgba(46,125,50,0.4); }
-.tag-drought { background: rgba(184,134,11,0.12); color: #7a5000; border: 1px solid rgba(184,134,11,0.4); }
-.tag-invasive { background: rgba(192,57,43,0.12); color: #8b0000; border: 1px solid rgba(192,57,43,0.4); }
-.tag-edible { background: rgba(21,101,192,0.1); color: #0d47a1; border: 1px solid rgba(21,101,192,0.3); }
-.tag-ornamental { background: rgba(106,27,154,0.1); color: #4a148c; border: 1px solid rgba(106,27,154,0.25); }
+.tag-native { background: rgba(76,175,80,0.15); color: var(--accent); border: 1px solid rgba(76,175,80,0.3); }
+.tag-drought { background: rgba(212,168,67,0.12); color: var(--gold); border: 1px solid rgba(212,168,67,0.3); }
+.tag-invasive { background: rgba(192,57,43,0.12); color: #e88; border: 1px solid rgba(192,57,43,0.3); }
+.tag-edible { background: rgba(41,128,185,0.12); color: #7bc; border: 1px solid rgba(41,128,185,0.3); }
+.tag-ornamental { background: rgba(155,89,182,0.1); color: #c7a0e0; border: 1px solid rgba(155,89,182,0.25); }
 
 /* INFO GRID */
 .info-grid {
@@ -427,7 +423,7 @@ select option { background: #f0f0f0; }
 }
 
 .info-box {
-  background: #f5f5f5;
+  background: #080f09;
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 12px;
@@ -464,7 +460,7 @@ select option { background: #f0f0f0; }
 
 .meter-bar {
   height: 8px;
-  background: #f5f5f5;
+  background: #080f09;
   border-radius: 4px;
   border: 1px solid var(--border);
   overflow: hidden;
@@ -483,7 +479,7 @@ select option { background: #f0f0f0; }
 
 /* NOTES BLOCK */
 .notes-block {
-  background: #f5f5f5;
+  background: #080f09;
   border-left: 3px solid var(--accent);
   border-radius: 0 6px 6px 0;
   padding: 12px 14px;
@@ -638,32 +634,13 @@ footer {
 .sandbox-toolbar {
   background: var(--panel);
   border-bottom: 1px solid var(--border);
-  padding: 6px 10px;
+  padding: 8px 12px;
   display: flex;
-  flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
   flex-shrink: 0;
   z-index: 10;
-}
-
-.tb-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-}
-
-.tb-check {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-  font-size: 0.72rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  white-space: nowrap;
 }
 
 .sb-group {
@@ -685,7 +662,7 @@ footer {
 }
 
 .sb-input {
-  background: #f5f5f5;
+  background: #080f09;
   border: 1px solid var(--border);
   border-radius: 4px;
   color: var(--text);
@@ -736,7 +713,7 @@ footer {
   flex: 1;
   overflow: hidden;
   position: relative;
-  background: #d0d8d0;
+  background: #0a1a0b;
   cursor: crosshair;
 }
 
@@ -756,7 +733,7 @@ footer {
   left: 12px;
   font-size: 0.68rem;
   color: var(--muted);
-  background: rgba(240,240,240,0.9);
+  background: rgba(13,26,14,0.85);
   padding: 3px 8px;
   border-radius: 3px;
   border: 1px solid var(--border);
@@ -791,7 +768,7 @@ footer {
 /* PLANT PALETTE */
 .palette-search {
   width: 100%;
-  background: #f5f5f5;
+  background: #080f09;
   border: 1px solid var(--border);
   border-radius: 4px;
   color: var(--text);
@@ -860,7 +837,7 @@ footer {
 
 .autorow-panel input {
   width: 100%;
-  background: #f5f5f5;
+  background: #080f09;
   border: 1px solid var(--border);
   border-radius: 4px;
   color: var(--text);
@@ -888,7 +865,7 @@ footer {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(240,240,240,0.92);
+  background: rgba(13,26,14,0.9);
   border: 1px solid var(--border);
   border-radius: 5px;
   padding: 6px 10px;
@@ -904,7 +881,7 @@ footer {
   position: absolute;
   top: 10px;
   left: 12px;
-  background: rgba(240,240,240,0.92);
+  background: rgba(13,26,14,0.9);
   border: 1px solid var(--accent);
   border-radius: 4px;
   padding: 3px 10px;
@@ -916,32 +893,14 @@ footer {
   font-family: 'Inconsolata', monospace;
 }
 
-/* MOBILE: stack side panel below canvas as scrollable strip */
-@media (max-width: 700px) {
-  .sandbox-layout { height: auto; min-height: calc(100vh - 52px); }
-  .sandbox-main { flex-direction: column; height: auto; }
-  .canvas-wrap { height: 52vw; min-height: 240px; flex: none; }
-  #sandboxCanvas { width: 100% !important; }
-  .sandbox-side {
-    width: 100%;
-    height: auto;
-    flex-direction: column;
-    border-left: none;
-    border-top: 1px solid var(--border);
-    overflow-y: auto;
-    max-height: 55vh;
-  }
-  .palette-list {
-    flex-direction: row;
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 8px;
-    flex: none;
-  }
-  .palette-item { flex-direction: column; min-width: 80px; text-align: center; flex-shrink: 0; }
-  .side-section { width: 100%; flex-shrink: 0; }
+/* MOBILE: stack palette below canvas */
+@media (max-width: 600px) {
+  .sandbox-main { flex-direction: column; }
+  .sandbox-side { width: 100%; height: 220px; flex-direction: row; border-left: none; border-top: 1px solid var(--border); }
+  .palette-list { flex-direction: row; display: flex; gap: 6px; overflow-x: auto; overflow-y: hidden; padding: 8px; }
+  .palette-item { flex-direction: column; min-width: 70px; text-align: center; }
+  .side-section { width: 160px; flex-shrink: 0; }
+  .autorow-panel, .inspect-panel, .selected-info { display: none; }
 }
 
 /* FADE IN ANIM */
@@ -953,16 +912,11 @@ footer {
 
 /* MOBILE */
 @media (max-width: 480px) {
-  .nav-brand { font-size: 1.1rem; }
-  .nav-tabs { gap: 2px; flex-shrink: 0; }
-  .nav-tab { font-size: 0.65rem; padding: 4px 7px; }
+  .nav-tabs { gap: 2px; }
+  .nav-tab { font-size: 0.68rem; padding: 4px 8px; }
   .row2, .row3 { grid-template-columns: 1fr; }
   .info-grid { grid-template-columns: 1fr 1fr; }
-  .page { padding: 12px 10px; }
 }
-
-/* PREVENT HORIZONTAL OVERFLOW GLOBALLY */
-html, body { max-width: 100%; overflow-x: hidden; }
 </style>
 </head>
 <body>
@@ -1108,43 +1062,45 @@ html, body { max-width: 100%; overflow-x: hidden; }
   <div class="sandbox-layout">
 
     <div class="sandbox-toolbar">
-      <div class="tb-row">
-        <div class="sb-group">
-          <span class="sb-label">W</span>
-          <input class="sb-input" type="number" id="sbWidth" value="100" min="10" max="1000" inputmode="numeric">
-          <span class="sb-label">H</span>
-          <input class="sb-input" type="number" id="sbHeight" value="60" min="10" max="1000" inputmode="numeric">
-          <span class="sb-label">ft</span>
-        </div>
-        <div class="sb-group">
-          <button class="sb-btn active" id="btnPlace" onclick="setMode('place')">Place</button>
-          <button class="sb-btn" id="btnSelect" onclick="setMode('select')">Move</button>
-          <button class="sb-btn" id="btnPan" onclick="setMode('pan')">Pan</button>
-        </div>
-        <div class="sb-group">
-          <button class="sb-btn sb-btn-icon" onclick="zoomSb(1.25)">+</button>
-          <button class="sb-btn sb-btn-icon" onclick="zoomSb(0.8)">-</button>
-          <button class="sb-btn sb-btn-icon" onclick="resetView()">[ ]</button>
-        </div>
+      <div class="sb-group">
+        <span class="sb-label">Plot W</span>
+        <input class="sb-input" type="number" id="sbWidth" value="100" min="10" max="1000" inputmode="numeric">
+        <span class="sb-label">ft</span>
       </div>
-      <div class="tb-row">
-        <div class="sb-group">
-          <label class="tb-check"><input type="checkbox" id="cbSnap" checked style="accent-color:var(--accent);"> Snap</label>
-          <label class="tb-check"><input type="checkbox" id="cbCanopy" checked style="accent-color:var(--accent);"> Canopy</label>
-        </div>
-        <div class="sb-group">
-          <button class="sb-btn" onclick="startDrawShape('structure')" style="border-color:rgba(184,134,11,0.6);color:#7a5000;">+Struct</button>
-          <button class="sb-btn" onclick="startDrawShape('driveway')" style="border-color:rgba(21,101,192,0.5);color:#1565c0;">+Drive</button>
-          <button class="sb-btn danger" onclick="clearAllPlants()">Clear</button>
-        </div>
+      <div class="sb-group">
+        <span class="sb-label">Plot H</span>
+        <input class="sb-input" type="number" id="sbHeight" value="60" min="10" max="1000" inputmode="numeric">
+        <span class="sb-label">ft</span>
+      </div>
+      <div class="sb-group">
+        <button class="sb-btn active" id="btnPlace" onclick="setMode('place')">Place</button>
+        <button class="sb-btn" id="btnSelect" onclick="setMode('select')">Select</button>
+        <button class="sb-btn" id="btnPan" onclick="setMode('pan')">Pan</button>
+      </div>
+      <div class="sb-group">
+        <button class="sb-btn sb-btn-icon" onclick="zoomSb(1.25)" title="Zoom In">+</button>
+        <button class="sb-btn sb-btn-icon" onclick="zoomSb(0.8)" title="Zoom Out">-</button>
+        <button class="sb-btn sb-btn-icon" onclick="resetView()" title="Fit to Screen">[ ]</button>
+      </div>
+      <div class="sb-group">
+        <label style="margin:0;display:flex;align-items:center;gap:5px;cursor:pointer;font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;">
+          <input type="checkbox" id="cbSnap" checked style="accent-color:var(--accent);cursor:pointer;"> Snap 1ft
+        </label>
+      </div>
+      <div class="sb-group">
+        <label style="margin:0;display:flex;align-items:center;gap:5px;cursor:pointer;font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;">
+          <input type="checkbox" id="cbCanopy" checked style="accent-color:var(--accent);cursor:pointer;"> Canopy
+        </label>
+      </div>
+      <div class="sb-group">
+        <button class="sb-btn danger" onclick="clearAllPlants()">Clear All</button>
       </div>
     </div>
 
     <div class="sandbox-main">
 
       <div class="canvas-wrap" id="canvasWrap">
-        <div id="mapLayer" style="display:none;position:absolute;inset:0;z-index:0;"></div>
-        <canvas id="sandboxCanvas" style="position:relative;z-index:1;"></canvas>
+        <canvas id="sandboxCanvas"></canvas>
         <div class="mode-badge" id="modeBadge">Place Mode</div>
         <div class="coords-display" id="coordsDisplay">0 ft, 0 ft</div>
         <div class="sb-legend">
@@ -1179,12 +1135,12 @@ html, body { max-width: 100%; overflow-x: hidden; }
             <label>Plant Count</label>
             <input type="number" id="arCount" value="4" min="1" inputmode="numeric">
             <label>Style</label>
-            <select id="arStyle" style="width:100%;background:#f5f5f5;border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Inconsolata',monospace;font-size:0.8rem;padding:5px 8px;margin-bottom:6px;outline:none;">
+            <select id="arStyle" style="width:100%;background:#080f09;border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Inconsolata',monospace;font-size:0.8rem;padding:5px 8px;margin-bottom:6px;outline:none;">
               <option value="interior">Interior (no corners)</option>
               <option value="corners">Include corners</option>
             </select>
             <label>Direction</label>
-            <select id="arOrientation" style="width:100%;background:#f5f5f5;border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Inconsolata',monospace;font-size:0.8rem;padding:5px 8px;margin-bottom:8px;outline:none;">
+            <select id="arOrientation" style="width:100%;background:#080f09;border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Inconsolata',monospace;font-size:0.8rem;padding:5px 8px;margin-bottom:8px;outline:none;">
               <option value="h">Horizontal</option>
               <option value="v">Vertical</option>
             </select>
@@ -1198,19 +1154,6 @@ html, body { max-width: 100%; overflow-x: hidden; }
           <input class="palette-search" type="text" placeholder="Filter plants..." oninput="filterPalette(this.value)" id="paletteSearch">
         </div>
         <div class="palette-list" id="paletteList"></div>
-
-        <div class="side-section" style="border-top:1px solid var(--border);flex-shrink:0;">
-          <div class="side-title" style="color:#1565c0;">Map Anchor</div>
-          <div style="font-size:0.65rem;color:var(--muted);margin-bottom:6px;line-height:1.4;">Set lat/lon of plot top-left corner to overlay on OpenStreetMap.</div>
-          <div style="font-size:0.62rem;color:#1565c0;margin-bottom:8px;padding:4px 6px;background:rgba(21,101,192,0.08);border-radius:3px;border:1px solid rgba(21,101,192,0.2);">Preloaded: Mohave Co. Courthouse, Kingman AZ</div>
-          <label>Latitude</label>
-          <input type="number" id="mapLat" step="0.000001" value="35.18976" inputmode="decimal" style="width:100%;background:#f5f5f5;border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Inconsolata',monospace;font-size:0.82rem;padding:5px 8px;margin-bottom:6px;outline:none;">
-          <label>Longitude</label>
-          <input type="number" id="mapLon" step="0.000001" value="-114.05301" inputmode="decimal" style="width:100%;background:#f5f5f5;border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Inconsolata',monospace;font-size:0.82rem;padding:5px 8px;margin-bottom:8px;outline:none;">
-          <button class="sb-btn" id="btnMapToggle" style="width:100%;margin-bottom:4px;" onclick="toggleMapLayer()">Show Map</button>
-          <button class="sb-btn" style="width:100%;font-size:0.68rem;" onclick="useMyLocation()">Use My GPS</button>
-          <div id="mapStatus" style="font-size:0.65rem;color:var(--muted);margin-top:5px;line-height:1.4;"></div>
-        </div>
 
       </div>
     </div>
@@ -2223,7 +2166,7 @@ function sbDraw() {
   c.clearRect(0, 0, W, H);
 
   // background
-  c.fillStyle = '#d0d8d0';
+  c.fillStyle = '#0a1a0b';
   c.fillRect(0, 0, W, H);
 
   // clip to canvas area
@@ -2235,13 +2178,13 @@ function sbDraw() {
   var pH = SB.plotH * SB.scale;
 
   // soil background
-  c.fillStyle = '#e8f0e8';
+  c.fillStyle = '#1a2e0e';
   c.fillRect(p0.x, p0.y, pW, pH);
 
   // grid -- minor (1 ft) only when zoomed enough
   var minorVisible = SB.scale >= 14;
   if (minorVisible) {
-    c.strokeStyle = 'rgba(100,140,100,0.5)';
+    c.strokeStyle = 'rgba(30,58,32,0.6)';
     c.lineWidth = 0.5;
     for (var gx = 0; gx <= SB.plotW; gx++) {
       if (gx % 5 === 0) continue;
@@ -2256,7 +2199,7 @@ function sbDraw() {
   }
 
   // major grid (5 ft)
-  c.strokeStyle = 'rgba(46,125,50,0.45)';
+  c.strokeStyle = 'rgba(76,175,80,0.18)';
   c.lineWidth = 1;
   for (var mgx = 0; mgx <= SB.plotW; mgx += 5) {
     var mlx = p0.x + mgx * SB.scale;
@@ -2268,12 +2211,12 @@ function sbDraw() {
   }
 
   // plot border
-  c.strokeStyle = '#2e7d32';
+  c.strokeStyle = '#4caf50';
   c.lineWidth = 2;
   c.strokeRect(p0.x, p0.y, pW, pH);
 
   // axis labels
-  c.fillStyle = '#333333';
+  c.fillStyle = 'rgba(107,140,109,0.7)';
   c.font = '10px Inconsolata, monospace';
   c.textAlign = 'center';
   var labelStep = SB.scale >= 20 ? 5 : (SB.scale >= 8 ? 10 : 20);
@@ -2305,10 +2248,10 @@ function sbDraw() {
       c.beginPath();
       c.arc(pc.x, pc.y, radiusPx, 0, Math.PI * 2);
       c.fillStyle = isSelected
-        ? 'rgba(46,125,50,0.2)'
-        : 'rgba(46,125,50,0.08)';
+        ? 'rgba(76,175,80,0.18)'
+        : 'rgba(76,175,80,0.07)';
       c.fill();
-      c.strokeStyle = isSelected ? 'rgba(46,125,50,0.8)' : 'rgba(46,125,50,0.35)';
+      c.strokeStyle = isSelected ? 'rgba(76,175,80,0.7)' : 'rgba(76,175,80,0.25)';
       c.lineWidth = isSelected ? 1.5 : 1;
       c.setLineDash(isSelected ? [] : [3, 3]);
       c.stroke();
@@ -2319,7 +2262,7 @@ function sbDraw() {
     if (isSelected) {
       c.beginPath();
       c.arc(pc.x, pc.y, 14, 0, Math.PI * 2);
-      c.strokeStyle = '#2e7d32';
+      c.strokeStyle = '#4caf50';
       c.lineWidth = 2;
       c.stroke();
     }
@@ -2334,7 +2277,7 @@ function sbDraw() {
     // name label when zoomed in enough
     if (SB.scale >= 12) {
       c.font = 'bold ' + Math.max(8, Math.min(11, SB.scale * 0.35)) + 'px Inconsolata, monospace';
-      c.fillStyle = isSelected ? '#2e7d32' : '#222222';
+      c.fillStyle = isSelected ? '#4caf50' : 'rgba(216,232,208,0.8)';
       c.textBaseline = 'top';
       c.fillText(plant.name, pc.x, pc.y + fontSize / 2 + 2);
     }
@@ -2701,152 +2644,6 @@ function setMode(m) {
   if (m !== 'select') deselectPlant();
   sbDraw();
 }
-
-// ============================================================
-// MAP LAYER -- OpenStreetMap via Leaflet
-// ============================================================
-var MAP = {
-  instance: null,
-  active: false,
-  lat: null,
-  lon: null,
-  // 1 degree latitude in feet (approximate, good enough for property scale)
-  FT_PER_DEG_LAT: 364000,
-  // 1 degree longitude in feet varies by latitude -- computed dynamically
-  ftPerDegLon: function(lat) {
-    return Math.cos(lat * Math.PI / 180) * 364000;
-  }
-};
-
-function toggleMapLayer() {
-  if (MAP.active) {
-    hideMapLayer();
-  } else {
-    showMapLayer();
-  }
-}
-
-function showMapLayer() {
-  var lat = parseFloat(document.getElementById('mapLat').value);
-  var lon = parseFloat(document.getElementById('mapLon').value);
-
-  if (isNaN(lat) || isNaN(lon)) {
-    document.getElementById('mapStatus').textContent = 'Enter lat/lon first.';
-    return;
-  }
-
-  MAP.lat = lat;
-  MAP.lon = lon;
-  MAP.active = true;
-
-  var mapDiv = document.getElementById('mapLayer');
-  mapDiv.style.display = 'block';
-
-  // make canvas transparent so map shows through background
-  SB.canvas.style.background = 'transparent';
-
-  if (!MAP.instance) {
-    MAP.instance = L.map('mapLayer', {
-      zoomControl: false,
-      attributionControl: false
-    });
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 21,
-      maxNativeZoom: 19
-    }).addTo(MAP.instance);
-
-    // keep sandbox scale in sync when leaflet zooms
-    MAP.instance.on('zoom move', function() {
-      syncCanvasToMap();
-    });
-  }
-
-  // compute center of plot from corner + plot size
-  var plotCenterLat = lat - (SB.plotH / 2) / MAP.FT_PER_DEG_LAT;
-  var plotCenterLon = lon + (SB.plotW / 2) / MAP.ftPerDegLon(lat);
-
-  // zoom level: fit plot width to canvas width
-  var canvasW = SB.canvas.width;
-  var ftPerPixel = SB.plotW / canvasW;
-  var metersPerPixel = ftPerPixel * 0.3048;
-  // leaflet zoom from meters per pixel at this latitude
-  var zoom = Math.round(Math.log2(156543.03392 * Math.cos(lat * Math.PI / 180) / metersPerPixel));
-  zoom = Math.max(15, Math.min(21, zoom));
-
-  MAP.instance.setView([plotCenterLat, plotCenterLon], zoom);
-  MAP.instance.invalidateSize();
-
-  syncCanvasToMap();
-
-  document.getElementById('btnMapToggle').textContent = 'Hide Map';
-  document.getElementById('btnMapToggle').style.borderColor = '#7bc';
-  document.getElementById('btnMapToggle').style.color = '#7bc';
-  document.getElementById('mapStatus').textContent = 'Map active. Showing plot at (' + lat.toFixed(5) + ', ' + lon.toFixed(5) + ')';
-}
-
-function hideMapLayer() {
-  MAP.active = false;
-  document.getElementById('mapLayer').style.display = 'none';
-  SB.canvas.style.background = '';
-  document.getElementById('btnMapToggle').textContent = 'Show Map';
-  document.getElementById('btnMapToggle').style.borderColor = '';
-  document.getElementById('btnMapToggle').style.color = '';
-  document.getElementById('mapStatus').textContent = '';
-  // restore sandbox view
-  resetView();
-}
-
-function syncCanvasToMap() {
-  if (!MAP.instance || !MAP.active) return;
-
-  var lat = MAP.lat;
-  var lon = MAP.lon;
-
-  // convert plot corner lat/lon to pixel position on the leaflet map
-  var cornerPx = MAP.instance.latLngToContainerPoint([lat, lon]);
-
-  // compute scale: how many pixels per foot at current map zoom
-  var oneFtEastLon = lon + 1.0 / MAP.ftPerDegLon(lat);
-  var oneFtEastPx = MAP.instance.latLngToContainerPoint([lat, oneFtEastLon]);
-  var pxPerFt = Math.abs(oneFtEastPx.x - cornerPx.x);
-
-  // update sandbox transform to match
-  SB.offsetX = cornerPx.x;
-  SB.offsetY = cornerPx.y;
-  SB.scale = pxPerFt;
-
-  sbDraw();
-}
-
-function useMyLocation() {
-  var statusEl = document.getElementById('mapStatus');
-  if (!navigator.geolocation) {
-    statusEl.textContent = 'GPS not available in this browser.';
-    return;
-  }
-  statusEl.textContent = 'Getting GPS...';
-  navigator.geolocation.getCurrentPosition(function(pos) {
-    var lat = Math.round(pos.coords.latitude * 1000000) / 1000000;
-    var lon = Math.round(pos.coords.longitude * 1000000) / 1000000;
-    document.getElementById('mapLat').value = lat;
-    document.getElementById('mapLon').value = lon;
-    statusEl.textContent = 'Got location: ' + lat + ', ' + lon;
-  }, function(err) {
-    statusEl.textContent = 'GPS error: ' + err.message;
-  }, { enableHighAccuracy: true, timeout: 10000 });
-}
-
-// keep map in sync when sandbox is panned/zoomed manually
-var _origZoomSb = zoomSb;
-zoomSb = function(factor) {
-  if (MAP.active && MAP.instance) {
-    var dir = factor > 1 ? 1 : -1;
-    MAP.instance.zoomBy(dir);
-  } else {
-    _origZoomSb(factor);
-  }
-};
 
 // ---- INIT SANDBOX WHEN TAB OPENS ----
 // (handled by showPage above)

@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-18T16:36:00.675Z",
+  "builtAt": "2026-10-18T18:36:44.480Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -41,26 +41,6 @@
       ],
       "knownProblem": "Returns 404 at the root URL. A backend with no home page does that normally, so it needs a health endpoint added to tell real downtime apart.",
       "snapshot": "snapshots/topo-wars-server.html"
-    },
-    {
-      "app": "groundcore-nine",
-      "url": "https://groundcore-nine.vercel.app",
-      "kind": "down",
-      "since": "2026-10-14",
-      "status": 404,
-      "failing": [],
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 ()"
-      ],
-      "features": [
-        "Spacer tab calculates row spacing from row configuration, with an optional plant pick that auto fills spacing.",
-        "Plants tab looks up a plant profile and sends it to the spacer with use in spacer.",
-        "Browse tab filters plants by category.",
-        "Sandbox tab places, moves and deletes rows, structures and drives on a map, with zoom and pan.",
-        "Show map and use my GPS put the layout on a real map."
-      ],
-      "knownProblem": null,
-      "snapshot": "snapshots/groundcore-nine.html"
     }
   ]
 }
