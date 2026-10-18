@@ -652,8 +652,8 @@
   #settingsBtn[aria-expanded="true"] .chev { transform: rotate(-135deg); margin-top: -3px; }
   #settingsBox { background: var(--tint); padding: 4px 0 8px 0; border-bottom: 1px solid var(--line); }
   #settingsBox button.secondary { background: var(--tint); }
-  .ext-row { display: flex; gap: 8px; padding: 6px 14px 10px 14px; }
-  #sideMenu .ext-row button.ext { flex: 1 1 0; text-transform: none; width: auto; min-height: 46px; padding: 6px 8px; text-align: center; font-size: 14px; line-height: 1.15; font-weight: 800; background: var(--accent); color: #ffffff; border: 2px solid var(--text); border-radius: 8px; box-shadow: 3px 3px 0 var(--text); }
+  .ext-row { display: flex; flex-direction: column; gap: 10px; padding: 6px 14px 12px 14px; }
+  #sideMenu .ext-row button.ext { flex: 0 0 auto; width: 100%; height: 46px; text-transform: none; width: auto; min-height: 46px; padding: 6px 8px; text-align: center; font-size: 14px; line-height: 1.15; font-weight: 800; background: var(--accent); color: #ffffff; border: 2px solid var(--text); border-radius: 8px; box-shadow: 3px 3px 0 var(--text); }
   #sideMenu .ext-row button.ext:active { box-shadow: none; transform: translate(3px, 3px); }
   #sideMenu .ext-row button.ext::first-letter { text-transform: none; }
 </style>
@@ -672,6 +672,7 @@
 <div id="twinTabs">
   <button id="tabTeal" class="on">Field map</button>
   <button id="tabViolet">Inventory</button>
+  <button id="tabRoads">Roads</button>
 </div>
 <div id="violetView"></div>
 
@@ -693,6 +694,13 @@
   <button class="secondary" id="receiptBtn">RECEIPT</button>
   <button class="secondary tg" id="milesToggleBtn" aria-pressed="false"><span>ODOMETER</span><i class="tg-sw" aria-hidden="true"></i></button>
   <button class="secondary tg" id="hereToggleBtn" aria-pressed="false"><span>LOCATION</span><i class="tg-sw" aria-hidden="true"></i></button>
+  <h3>Roads</h3>
+  <button class="secondary tg" id="roadQualityBtn" aria-pressed="false"><span>QUALITY</span><i class="tg-sw" aria-hidden="true"></i></button>
+  <button class="secondary tg" id="roadHeatBtn" aria-pressed="false"><span>HEAT MAP</span><i class="tg-sw" aria-hidden="true"></i></button>
+  <h3>Road hazards</h3>
+  <button class="secondary tg" id="hzCrashBtn" aria-pressed="false"><span>CRASHES</span><i class="tg-sw" aria-hidden="true"></i></button>
+  <button class="secondary tg" id="hzWorkBtn" aria-pressed="false"><span>CONSTRUCTION</span><i class="tg-sw" aria-hidden="true"></i></button>
+  <button class="secondary tg" id="hzFatalBtn" aria-pressed="false"><span>CRASH HISTORY</span><i class="tg-sw" aria-hidden="true"></i></button>
   <h3>Look things up</h3>
   <button class="secondary" id="searchBtn">SEARCH</button>
   <button class="secondary" id="dayLogBtn">DAY LOG</button>
@@ -701,15 +709,8 @@
   <button class="secondary" id="mileageBtn">MILEAGE</button>
   <h3>Traffic cameras</h3>
   <button class="secondary" id="camerasBtn">CAMERAS</button>
-  <h3>Roads</h3>
-  <button class="secondary tg" id="roadQualityBtn" aria-pressed="false"><span>QUALITY</span><i class="tg-sw" aria-hidden="true"></i></button>
-  <button class="secondary tg" id="roadHeatBtn" aria-pressed="false"><span>HEAT MAP</span><i class="tg-sw" aria-hidden="true"></i></button>
-  <h3>Road hazards</h3>
-  <button class="secondary tg" id="hzCrashBtn" aria-pressed="false"><span>CRASHES</span><i class="tg-sw" aria-hidden="true"></i></button>
-  <button class="secondary tg" id="hzWorkBtn" aria-pressed="false"><span>CONSTRUCTION</span><i class="tg-sw" aria-hidden="true"></i></button>
-  <button class="secondary tg" id="hzFatalBtn" aria-pressed="false"><span>CRASH HISTORY</span><i class="tg-sw" aria-hidden="true"></i></button>
   <h3>Other apps</h3>
-  <div class="ext-row"><button class="ext" id="openCqBtn">Chassisquiver</button><button class="ext" id="openVioletBtn">Field Twin Violet</button></div>
+  <div class="ext-row"><button class="ext" id="openCqBtn">Field Twin Glaucous</button><button class="ext" id="openVioletBtn">Field Twin Violet</button></div>
   <h3>Your data</h3>
   <button class="secondary" id="accountBtn">ACCOUNT AND PROFILE</button>
   <button class="secondary" id="exportBtn">EXPORT</button>
@@ -3279,11 +3280,30 @@ function showReceiptForm(p, photoData, lat, lon, addressLabel) {
 
   document.getElementById('cancelReceiptBtn').addEventListener('click', closePanel);
 
+  let dupeOk = false;
   document.getElementById('saveReceiptBtn').addEventListener('click', async function () {
     const btn = this;
     if (btn.disabled) return;
-    btn.disabled = true;
     const v = id => (document.getElementById(id).value || '').trim();
+    if (!dupeOk) {
+      const dupes = receiptDupes({ total: parseFloat(v('rTotal')), store: v('rStore'), date: v('rDate'), time: v('rTime'), lat: lat, lon: lon }, null);
+      if (dupes.length) {
+        dupeOk = true;
+        let box = document.getElementById('dupeBox');
+        if (!box) {
+          box = document.createElement('div');
+          box.id = 'dupeBox';
+          box.style.cssText = 'margin:10px 0;padding:10px;border:2px solid #b00020;border-radius:8px;background:#fff4f4;font-size:14px;';
+          btn.closest('.panel-actions').before(box);
+        }
+        box.innerHTML = '<b style="color:#b00020;">This looks like a receipt you already saved.</b><br>' + dupes.map(d => receiptLine(d)).join('<br>') +
+          '<br>Press Save receipt again to save it anyway, or Cancel to drop this one.';
+        box.scrollIntoView({ block: 'center' });
+        setStatus('possible duplicate receipt');
+        return;
+      }
+    }
+    btn.disabled = true;
 
     let useLat = lat, useLon = lon, useLabel = addressLabel, locSrc = lat === null ? 'none' : 'phone';
     const typedAddr = v('rAddr');
@@ -3555,7 +3575,7 @@ function showMileage() {
 
 const CQ_URL = 'https://vogxdikogfaxhwcgajfg.supabase.co';
 const CQ_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvZ3hkaWtvZ2ZheGh3Y2dhamZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzOTk4MDAsImV4cCI6MjEwNjk3NTgwMH0.fUosu3JdsUI5GFnQjDbOxfYCWO1hfijQO3O8lJVsU98';
-const CQ_SITE = 'https://chassisquiver.vercel.app/';
+const CQ_SITE = 'https://field-twin-glaucous.vercel.app/';
 const VIOLET_SITE = 'https://field-twin-violet.vercel.app/';
 let cqClient = null, cqRuns = null, cqLoading = null;
 let roadLayer = null, heatLayer = null;
@@ -3596,7 +3616,7 @@ function roadPopup(r) {
     (typeof r.rating === 'number' ? '<br>Your rating ' + r.rating + ' of ten' : '') +
     '<br>' + d.toLocaleDateString() + (r.miles ? ', ' + Number(r.miles).toFixed(1) + ' miles' : '') +
     (r.vehicle && r.vehicle.type ? '<br>' + escapeHtml(String(r.vehicle.type)) : '') +
-    '<br><a href="' + CQ_SITE + '" target="_blank" rel="noopener">Open in Chassisquiver</a>';
+    '<br><a href="' + CQ_SITE + '" target="_blank" rel="noopener">Open in Field Twin Glaucous</a>';
 }
 
 function drawRoadQuality(runs) {
@@ -3658,12 +3678,12 @@ async function refreshRoadLayers() {
   applyRoadButtons();
   try { localStorage.setItem('roadView', JSON.stringify(roadView)); } catch (e) {}
   if (!roadView.quality && !roadView.heat) { drawRoadQuality([]); drawTravelHeat([]); return; }
-  setStatus('loading roads from Chassisquiver');
+  setStatus('loading roads from Field Twin Glaucous');
   try {
     const runs = await loadCqRuns();
     drawTravelHeat(runs);
     drawRoadQuality(runs);
-    setStatus(runs.length ? runs.length + ' road runs from Chassisquiver' : 'no shared road runs in Chassisquiver yet');
+    setStatus(runs.length ? runs.length + ' road runs from Field Twin Glaucous' : 'no shared road runs in Field Twin Glaucous yet');
   } catch (err) {
     setStatus('roads did not load, ' + err.message);
   }
@@ -3881,6 +3901,56 @@ function initHazards() {
   if (hz.crashes || hz.work || hz.fatal) hzRefresh(false);
 }
 
+function storeKey(s) {
+  return String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function sameStore(a, b) {
+  const x = storeKey(a), y = storeKey(b);
+  if (!x || !y) return false;
+  return x === y || (x.length >= 4 && y.length >= 4 && (x.indexOf(y) !== -1 || y.indexOf(x) !== -1));
+}
+
+// A receipt counts as a likely duplicate when the total matches to the cent and one more thing lines up:
+// the printed date and time, the printed date and the store, or (no date) the store within a quarter mile.
+function receiptDupes(r, skipId) {
+  const cents = Math.round((Number(r.total) || 0) * 100);
+  if (!cents) return [];
+  return entries.filter(e => {
+    if (e.id === skipId || e.category !== 'receipt' || !e.receipt) return false;
+    if (Math.round((Number(e.receipt.total) || 0) * 100) !== cents) return false;
+    const a = e.answers || [];
+    const d = String(a[4] || '').trim(), t = String(a[5] || '').trim();
+    const store = sameStore(e.receipt.store, r.store);
+    if (r.date && d && r.date === d) {
+      if (r.time && t) return r.time.slice(0, 5) === t.slice(0, 5);
+      return store || !r.store || !e.receipt.store;
+    }
+    if (r.date && d) return false;
+    if (!store) return false;
+    if (hasPos(e) && Number.isFinite(r.lat) && Number.isFinite(r.lon)) return milesBetween(e.lat, e.lon, r.lat, r.lon) <= 0.25;
+    return true;
+  });
+}
+
+function receiptDupePairs() {
+  const rs = entries.filter(e => e.category === 'receipt' && e.receipt);
+  const pairs = [], seen = new Set();
+  rs.forEach(e => {
+    const a = e.answers || [];
+    receiptDupes({ total: e.receipt.total, store: e.receipt.store, date: String(a[4] || '').trim(), time: String(a[5] || '').trim(), lat: e.lat, lon: e.lon }, e.id).forEach(o => {
+      const k = [e.id, o.id].sort().join('|');
+      if (!seen.has(k)) { seen.add(k); pairs.push([e, o]); }
+    });
+  });
+  return pairs;
+}
+
+function receiptLine(e) {
+  const a = e.answers || [];
+  return escapeHtml((e.receipt.store || 'Unnamed store') + ', $' + (Number(e.receipt.total) || 0).toFixed(2) + ', ' + ([a[4], a[5]].filter(Boolean).join(' ') || new Date(e.timestamp).toLocaleDateString()));
+}
+
 function showSpend() {
   const panel = document.getElementById('panel');
   const rs = entries.filter(e => e.category === 'receipt' && e.receipt);
@@ -3912,11 +3982,23 @@ function showSpend() {
             (s.saved ? ', saved $' + s.saved.toFixed(2) : '') + '</div>';
   });
   if (!rs.length) html += '<div class="meta-line">no receipts captured yet</div>';
+  const pairs = receiptDupePairs();
+  if (pairs.length) {
+    html += '<div class="question">Possible duplicates</div>';
+    html += '<div class="meta-line">Same total to the cent, plus the same printed date and time, or the same date and store. Tap one to open it, and delete the extra from its Edit screen.</div>';
+    pairs.forEach(([a, b]) => {
+      html += '<div style="padding:8px 0;border-bottom:1px solid var(--line);"><div class="meta-line" data-dupe="' + a.id + '" style="cursor:pointer;color:var(--accent);">' + receiptLine(a) + '</div><div class="meta-line" data-dupe="' + b.id + '" style="cursor:pointer;color:var(--accent);">' + receiptLine(b) + '</div></div>';
+    });
+  }
   html += '<div class="panel-actions"><button class="secondary" id="closeSpendBtn">CLOSE</button></div>';
   panel.innerHTML = html;
   panel.scrollTop = 0;
   panel.classList.add('open');
   document.getElementById('closeSpendBtn').addEventListener('click', closePanel);
+  panel.querySelectorAll('[data-dupe]').forEach(el => el.addEventListener('click', () => {
+    const e = entries.find(x => x.id === el.getAttribute('data-dupe'));
+    if (e) showEntry(e, true);
+  }));
 }
 
 function dayLogN(n, word) {
@@ -4165,7 +4247,7 @@ function showInfo() {
   html += '<div class="question">Bottom buttons</div>';
   html += '<div>Log saves where you are and opens a short form for that kind of place. Receipt photographs a receipt and reads the store, totals, date, address and items. Miles saves an odometer reading, and appears when Odometer is switched on in the menu.</div>';
   html += '<div class="question">Receipts</div>';
-  html += '<div>Fields the reader was unsure of are highlighted. The pin goes at your location or the receipt address, your choice. The entry is filed under the date printed on the receipt.</div>';
+  html += '<div>Fields the reader was unsure of are highlighted. The pin goes at your location or the receipt address, your choice. The entry is filed under the date printed on the receipt. Before saving, the app checks for a receipt you already saved with the same total plus the same printed date and time, or the same date and store, or with no date the same store nearby, and warns you. Spend lists any likely duplicates already saved.</div>';
   html += '<div class="question">Map</div>';
   html += '<div>Sign shapes show the kind of place, listed under Color key. Receipts show as price tags. Nearby signs merge into a numbered circle, tap to spread them out. The blue dot is you, checked about every five minutes while the app is open, and the target button checks right now.</div>';
   html += '<div class="question">Entries</div>';
@@ -4175,7 +4257,7 @@ function showInfo() {
   html += '<div class="question">Road hazards</div>';
   html += '<div>Crashes and construction come from the Nevada and Arizona road departments, saved every few minutes by the Field Twin server, so history builds from the day collection started. Crash history is fatal crashes from federal records, which run about a year behind.</div>';
   html += '<div class="question">Your account and the other apps</div>';
-  html += '<div>Field Twin Violet and Chassisquiver are separate apps that feed this map. Field Twin and Field Twin Violet share one Supabase project and one account, the same email and password, not any outside sign in service. Chassisquiver runs on its own Supabase project with its own account, and Field Twin reads the runs shared there. The blue buttons under Other apps open the other two, and the Inventory tab shows Field Twin Violet inside this page.</div>';
+  html += '<div>Field Twin Violet (Inventory) and Field Twin Glaucous (Roads, first built as Chassisquiver) are separate apps that feed this map. The tabs under the title move between all three, and the same tabs sit at the top of the other two. Field Twin and Field Twin Violet share one Supabase project and one account, the same email and password, not any outside sign in service. Field Twin Glaucous runs on its own Supabase project with its own account, and this map reads the road runs shared there. The blue buttons under Other apps open the other two in a new page.</div>';
   html += '<div class="question">Sync</div>';
   html += '<div>Signed in, everything saves to your account and matches across phones, deletes included. Account and profile shows the counts, your points and trophies, and where to set a password. Without an account, entries stay on this phone for thirty days, and Export and Import move them by file.</div>';
   html += '<div class="panel-actions"><button class="secondary" id="closeInfoBtn">CLOSE</button></div>';
@@ -4710,9 +4792,12 @@ init();
     if (!inv && typeof map !== 'undefined' && map && map.invalidateSize) setTimeout(() => map.invalidateSize(), 50);
   }
   teal.addEventListener('click', () => show('teal'));
+  document.getElementById('tabRoads').addEventListener('click', () => { window.location.href = CQ_SITE; });
   violet.addEventListener('click', () => show('violet'));
   let start = 'teal';
   try { start = localStorage.getItem(TAB_KEY) || 'teal'; } catch (e) {}
+  if (location.hash === '#map') start = 'teal';
+  if (location.hash === '#inventory') start = 'violet';
   show(start);
 })();
 </script>
