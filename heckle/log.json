@@ -1,3 +1,25 @@
 {
- "heckles": []
+ "heckles": [
+  {
+   "date": "2026-10-18T22:01:52Z",
+   "repo": "fogwarren-vx",
+   "sha": "f76482cd3f035e6f3279bf2ca2aa8d21cf7c1844",
+   "message": "FogWarren v1: Win98 fog of war maze with mines, pitfalls, flares, color warps, compass, hidden picture reveal",
+   "heckle": "Eight hundred ninety one lines of HTML, CSS and JS in one index.html, dropped in a single commit like a pallet off a truck. Congratulations, you built a Minesweeper in a Windows 98 costume and called it a maze. The teal desktop and gray bevels are a nostalgia cosplay that will look cramped on a phone, with a title bar, menu bar, LED counters, a smiley and a control pad all fighting for a viewport you locked with user-scalable=no. The dialog helper in dialog() glues title and html into innerHTML, which is fine until someone feeds it a filename. The compass and flare logic is all stuffed in global functions with no tests in sight.\n\nFix it: Split the CSS and script out of index.html into their own files. Escape the title and html arguments in dialog() or switch them to textContent. Drop user-scalable=no from the viewport meta so people can zoom. Check the control pad and HUD on a 320 pixel wide screen and shrink them until nothing overlaps. Make the maze more than a Minesweeper reskin."
+  },
+  {
+   "date": "2026-10-18T22:01:52Z",
+   "repo": "field-twin",
+   "sha": "a28b8e2767b2c96b79332231c2935092c9253182",
+   "message": "duplicate receipt check on save, and likely duplicates listed on Spend",
+   "heckle": "A duplicate receipt check, finally, because saving the same grocery run twice is how a ledger turns to soup. Grudgingly fine idea. But the execution is held together with duct tape. The dupeOk flag in the saveReceiptBtn handler is a module level boolean that is set on the first warning and never reset, so after one warning every later save in the session skips the check entirely. The warning box is built with inline cssText and innerHTML, and the receiptLine output goes straight into that string, so a store name with markup in it gets rendered as markup. And sameStore treats any substring as a match, so a four letter store name will happily collide with half the town.\n\nFix it: Reset dupeOk to false in closePanel and after a successful save in the saveReceiptBtn handler. Escape the receiptLine output before it goes into dupeBox.innerHTML. Tighten sameStore so a substring match needs a much longer overlap. Move the dupeBox inline styles into the stylesheet."
+  },
+  {
+   "date": "2026-10-18T22:01:52Z",
+   "repo": "rosetta-pone",
+   "sha": "24e7c7ffa3075d28ecf74921a42a8ff03271fbe7",
+   "message": "Show English meaning on every sign keyboard key",
+   "heckle": "Seven lines changed and you actually made the keyboard readable, which is more than most of your commits manage. Putting the English meaning on every key is the right call and I hate that it is right. Still, you bumped the grid minimum from 64 to 100 pixels, so on a narrow phone you now get two or three keys across and a whole lot of scrolling through the sign list. The .key .g rule has white-space:nowrap with overflow:hidden, so any long sign string will get chopped with no hint it was clipped. The title attribute on each key now duplicates the visible meaning text for no reason.\n\nFix it: Test the .grid in index.html at 320 pixels wide and drop the minmax value if it only fits two columns. Replace the nowrap and overflow hidden on .key .g with something that shrinks or wraps long signs. Remove the redundant k.title assignment in the render loop."
+  }
+ ]
 }
