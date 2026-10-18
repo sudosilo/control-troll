@@ -127,6 +127,9 @@ h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
   <h3>HeckleTroll</h3>
   <p>A third agent checks for new pushes every three hours. Each new commit gets a short roast posted as a comment on the commit, ending with a Fix it paragraph of concrete fixes. Once a week it writes a fleet verdict naming clones to merge, apps to finish or kill, and apps worth polishing. Both show in the HeckleTroll panel on this page. Put [no heckle] in a commit message to skip one. When nothing new was pushed, it stops before starting Claude, so it costs nothing.</p>
 
+  <h3>Shared notes</h3>
+  <p>The three agents share one notebook in the agents/notes folder. Every run starts fresh, so the notebook is how they get smarter. Each agent reads the general notes when it starts and reads an app's own notes before touching that app. At the end of a run it writes down anything that would save the next agent time or stop a mistake, like how a repo deploys or which repo serves which app. Files stay short because the agents condense them when they grow past 40 lines.</p>
+
   <h3>Files in the repo</h3>
   <p><code>check.js</code> runs the morning check. <code>tests.js</code> runs the scripted tests. <code>history.js</code> keeps the daily record. <code>queue.js</code> builds the fix list. <code>status.json</code> holds the latest results. <code>history.json</code> holds the daily record. <code>fixes.json</code> is the job list. <code>fix-log.json</code> records what the fix agent did. <code>apps.json</code> adds apps or health URLs the index site does not link.</p>
 

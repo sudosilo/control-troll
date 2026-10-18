@@ -58,6 +58,6 @@ jobs:
           else
             echo '{"note":"no execution file"}' > agents/runs/scribe-last.json
           fi
-          git add agents/runs/scribe-last.json
+          git add agents/runs/scribe-last.json agents/notes
           git commit -m "scribe run result" || true
           git pull --rebase origin main && git push || true
