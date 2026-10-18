@@ -1,0 +1,55 @@
+name: fixer
+# Runs the Control Troll fixer agent with Claude Code on the account's Claude subscription.
+# CLAUDE_CODE_OAUTH_TOKEN comes from claude setup-token. SCRIBE_TOKEN gives git and gh access to every repo.
+on:
+  workflow_run:
+    workflows: [daily-check]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: fixer
+  cancel-in-progress: false
+permissions:
+  contents: write
+  id-token: write
+jobs:
+  run:
+    # Only after a morning check (scheduled or started by hand), not after test edits.
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.event == 'schedule' || github.event.workflow_run.event == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.SCRIBE_TOKEN }}
+          fetch-depth: 0
+      - name: Sign git in as the account
+        env:
+          TOKEN: ${{ secrets.SCRIBE_TOKEN }}
+        run: |
+          git config --global user.name "control-troll-fixer"
+          git config --global user.email "control-troll-fixer@users.noreply.github.com"
+          git config --global url."https://x-access-token:${TOKEN}@github.com/".insteadOf "https://github.com/"
+          git config --global pull.rebase true
+      - name: Run once per day
+        id: once
+        env:
+          GH_TOKEN: ${{ secrets.SCRIBE_TOKEN }}
+          EV: ${{ github.event_name }}
+        run: |
+          today=$(TZ=America/Phoenix date +%Y-%m-%d)
+          done=$(gh run list -R sudosilo/control-troll -w fixer --status success --limit 20 --json createdAt \
+            --jq "[.[] | select((.createdAt | fromdateiso8601 - 25200 | strftime(\"%Y-%m-%d\")) == \"$today\")] | length")
+          if [ "$EV" != "workflow_dispatch" ] && [ "${done:-0}" -gt 0 ]; then echo "skip=yes" >> "$GITHUB_OUTPUT"; echo "already ran today"; else echo "skip=no" >> "$GITHUB_OUTPUT"; fi
+      - uses: anthropics/claude-code-action@v1
+        if: steps.once.outputs.skip != 'yes'
+        env:
+          GH_TOKEN: ${{ secrets.SCRIBE_TOKEN }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.SCRIBE_TOKEN }}
+          prompt: ${{ format('Read agents/fixer.md in the current folder and carry out every step in it. Today is {0}.', github.run_started_at) }}
+          claude_args: |
+            --max-turns 120
+            --allowedTools "Bash,Read,Write,Edit,Glob,Grep"

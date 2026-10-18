@@ -1,0 +1,40 @@
+name: scribe
+# Runs the Control Troll scribe agent with Claude Code on the account's Claude subscription.
+# CLAUDE_CODE_OAUTH_TOKEN comes from claude setup-token. SCRIBE_TOKEN gives git and gh access to every repo.
+on:
+  schedule:
+    - cron: "40 6 * * *"
+  workflow_dispatch:
+concurrency:
+  group: scribe
+  cancel-in-progress: false
+permissions:
+  contents: write
+  id-token: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.SCRIBE_TOKEN }}
+          fetch-depth: 0
+      - name: Sign git in as the account
+        env:
+          TOKEN: ${{ secrets.SCRIBE_TOKEN }}
+        run: |
+          git config --global user.name "control-troll-scribe"
+          git config --global user.email "control-troll-scribe@users.noreply.github.com"
+          git config --global url."https://x-access-token:${TOKEN}@github.com/".insteadOf "https://github.com/"
+          git config --global pull.rebase true
+      - uses: anthropics/claude-code-action@v1
+        env:
+          GH_TOKEN: ${{ secrets.SCRIBE_TOKEN }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.SCRIBE_TOKEN }}
+          prompt: ${{ format('Read agents/scribe.md in the current folder and carry out every step in it. Today is {0}.', github.run_started_at) }}
+          claude_args: |
+            --max-turns 250
+            --allowedTools "Bash,Read,Write,Edit,Glob,Grep"
