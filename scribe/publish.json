@@ -1,236 +1,274 @@
 {
  "jobs": [
   {
-   "repo": "groundcore",
+   "repo": "termbeat",
    "releases": [
     {
-     "tag": "v2026.04.05",
-     "target": "485e8561cff8fde56f39a5d43ca6a9298b4ede31",
-     "name": "GroundCore 2026-04-05",
-     "body": "First release. A planting planner for the Mohave Valley desert region with a row spacing calculator, a plant lookup that fills in recommended spacing, a plant browser with category filters, and a map sandbox for laying out rows, structures, and drives."
+     "tag": "v2026.07.19",
+     "target": "711040c0166ba27f56d992cdd863a888b567e387",
+     "name": "Termbeat 2026-07-19",
+     "body": "First version. Termbeat is a terminal that reacts to audio from a file or the microphone. It shipped with several terminal themes and modes for a visualizer, bars, and a few small games."
     }
    ],
-   "description": "Desert planting planner with row spacing, plant lookup, and a map sandbox for laying out rows.",
-   "homepage": "https://groundcore-nine.vercel.app",
-   "topics": [
-    "tool",
-    "gardening",
-    "map",
-    "leaflet",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "mission-operator",
-   "releases": [
-    {
-     "tag": "v2026.03.26",
-     "target": "9e6bc191f549b8bb32bd8c9ae2b74ce787a9b52e",
-     "name": "Mission Operator 2026-03-26",
-     "body": "First release. A scanner console that uses the device location to list nearby aircraft from live flight data, along with cell towers, Wi-Fi, Bluetooth, ham repeaters, and mesh nodes. Includes a logbook and settings."
-    }
-   ],
-   "description": "Location aware scanner console for nearby aircraft, radios, mesh nodes, and towers.",
-   "homepage": "https://mission-operator.vercel.app",
-   "topics": [
-    "tool",
-    "aviation",
-    "radio",
-    "react",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "suno-forge",
-   "releases": [
-    {
-     "tag": "v2026.04.05",
-     "target": "6ec212e427206eec8242769034120e2a179bb6d7",
-     "name": "Suno Forge 2026-04-05",
-     "body": "First release. A song builder that drafts lyrics and a style string from a genre, mood, and structure, with EDM drop and pump options and copy buttons for each part. Fixed the left panel sitting under other content."
-    }
-   ],
-   "description": "Song builder that drafts lyrics and style tags for AI music generators.",
-   "homepage": "https://suno-forge-kappa.vercel.app",
+   "description": "Audio reactive terminal that reacts to music or the microphone, with themes and small games.",
+   "homepage": "https://termbeat.vercel.app",
    "topics": [
     "music",
-    "songwriting",
-    "ai",
-    "react",
+    "visualizer",
+    "web-audio",
+    "terminal",
     "vercel"
    ]
   },
   {
-   "repo": "gridmark",
+   "repo": "threat-poller",
    "releases": [
     {
-     "tag": "v2026.04.14",
-     "target": "702853bf44d51094838ea37e22a872b46ccd5dbe",
-     "name": "Gridmark 2026-04-14",
-     "body": "First release. A map tool that saves work and personal locations with notes, draws a heatmap, and records a GPS track every 10 seconds. All data stays on the device."
+     "tag": "v2026.08.01",
+     "target": "dfd6b33f60a64f8eeec11836f00222c41fd4b35e",
+     "name": "Threat Poller 2026-08-01",
+     "body": "Created the threat intel poller with three category rules for watched repos. Alerts now save to Postgres so they persist between runs. Added a read API that returns the latest alerts for the dashboard."
     }
    ],
-   "description": "GPS location marker and heatmap that sorts places into work and personal.",
+   "description": "Background poller that watches GitHub repos by category, saves alerts to Postgres, and serves them over a read API.",
    "homepage": "",
    "topics": [
-    "tool",
-    "map",
-    "gps",
-    "heatmap"
-   ]
-  },
-  {
-   "repo": "nota-city",
-   "releases": [
-    {
-     "tag": "v2026.04.20",
-     "target": "a2e323d978cebceee7f1ad4baa69ed2aeab8cd9f",
-     "name": "Nota City 2026-04-20",
-     "body": "First release. A shared city builder with a 32 by 32 grid, zone, road, power, and water layers, and a backend tick engine that grows population and funds. Added placement rules, a bulldozer, and drag to paint. Roads now show under every layer. Fixed road placement on empty tiles and page loading on refresh."
-    }
-   ],
-   "description": "Shared city builder on a 32 by 32 grid with a backend tick engine.",
-   "homepage": "",
-   "topics": [
-    "game",
-    "city-builder",
-    "react",
-    "express",
+    "backend",
     "postgres",
+    "redis",
+    "monitoring",
     "railway"
    ]
   },
   {
-   "repo": "graceland-diagram",
+   "repo": "threat-dash",
    "releases": [
     {
-     "tag": "v2026.05.08",
-     "target": "4778ef2e77ba4c219879e96fdd7784542079d79d",
-     "name": "Kitchen Shed Diagram 2026-05-08",
-     "body": "First release. A 3D exploded view of a 14 by 20 kitchen shed with toggles for shell, loft, water, electrical, kitchen, and restroom layers."
+     "tag": "v2026.08.06",
+     "target": "7f152f58c895889ab0293414b15bcdf524c85285",
+     "name": "Threat Dash 2026-08-06",
+     "body": "First version of the threat dashboard. It shows poller results and lets you add and remove repos on the watchlist."
     }
    ],
-   "description": "3D exploded view of a 14 by 20 kitchen shed build.",
+   "description": "Dashboard page for the threat poller, with a watchlist you can add to and remove from.",
    "homepage": "",
    "topics": [
+    "dashboard",
+    "monitoring",
+    "github",
+    "tool"
+   ]
+  },
+  {
+   "repo": "aerophin-twin",
+   "releases": [
+    {
+     "tag": "v2026.08.29",
+     "target": "52533deec267705fb89dd3a965af151bfa8277a5",
+     "name": "Aerophin Twin 2026-08-29",
+     "body": "Created the drawing set for two coffee machines and added parts lists for each part. Added a part drawings page with interactive 3D models."
+    }
+   ],
+   "description": "Drawing set and interactive 3D part models for two coffee machine designs.",
+   "homepage": "https://aerophin-twin.vercel.app",
+   "topics": [
+    "drawings",
     "3d",
-    "threejs",
-    "construction",
-    "diagram"
-   ]
-  },
-  {
-   "repo": "spaceout",
-   "releases": [
-    {
-     "tag": "v2026.05.09",
-     "target": "d483cd518078659e3345a4304e4e63a332c76ff2",
-     "name": "SpaceOut 2026-05-09",
-     "body": "First release. A brick breaker game with waves, lives, and a saved high score. Swipe, drag, or the on screen buttons move the paddle."
-    }
-   ],
-   "description": "Paddle and ball brick breaker with waves and touch controls.",
-   "homepage": "https://spaceout-mu.vercel.app",
-   "topics": [
-    "game",
-    "arcade",
-    "canvas",
+    "coffee",
+    "tool",
     "vercel"
    ]
   },
   {
-   "repo": "edmia",
+   "repo": "skwiggle-backend",
    "releases": [
     {
-     "tag": "v2026.05.21",
-     "target": "14d278f17a4c231a6cce78fa718205cc4f546fe4",
-     "name": "EDMIA 2026-05-21",
-     "body": "First release. A falling block color match game where clearing squares drives the soundtrack. Includes slide, rotate, drop, and boost controls, song sections that change with level, and a high score table with initials."
+     "tag": "v2026.08.31",
+     "target": "a64fa09a77cd03123280955f47b9d0c241e44911",
+     "name": "Skwiggle Backend 2026-08-31",
+     "body": "Created the backend with a basic running check. Added a Railway config so it can deploy and restart on failure."
     }
    ],
-   "description": "Falling block color match game where every move adds to the music.",
-   "homepage": "https://edmia.vercel.app",
-   "topics": [
-    "game",
-    "music",
-    "puzzle",
-    "web-audio",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "matops-backend",
-   "releases": [
-    {
-     "tag": "v2026.06.04",
-     "target": "69cf26d5eae8ee8ed529aaeff534cf3795920bcf",
-     "name": "Lead Capture Backend 2026-06-04",
-     "body": "First release. A lead capture endpoint that stores each submission and sends an email alert."
-    }
-   ],
-   "description": "Lead capture backend that stores form submissions and sends email alerts.",
+   "description": "Small Express backend for the Skwiggle drawing game, set up to run on Railway.",
    "homepage": "",
    "topics": [
     "backend",
     "express",
-    "email"
+    "railway"
    ]
   },
   {
-   "repo": "coffeekit",
+   "repo": "skwiggle-mint-pin",
    "releases": [
     {
-     "tag": "v2026.06.21",
-     "target": "f615454aa89de913bcae7e3f4aab3dcfcf3f355a",
-     "name": "Screensaver 2026-06-21",
-     "body": "First release. An audio reactive screensaver with seven modes: plasma, lines, stars, pipes, matrix, blob, and DVD. It reacts to the microphone or an uploaded song."
+     "tag": "v2026.09.01",
+     "target": "02632f01b0f9a421689cbbe0b8e2c74e075594b5",
+     "name": "Skwiggle Mint Pin 2026-09-01",
+     "body": "Created the pin proxy for minting. It now accepts two kinds of credentials, adds a health check that tests the credential, and logs the real cause when pinning fails. Triggered a redeploy on Railway."
     }
    ],
-   "description": "Audio reactive screensaver with seven visual modes.",
-   "homepage": "https://screensaver-musicfx.vercel.app",
+   "description": "Proxy service that pins Skwiggle art to IPFS so it can be minted.",
+   "homepage": "",
    "topics": [
-    "visualizer",
+    "backend",
+    "express",
+    "railway",
+    "ipfs"
+   ]
+  },
+  {
+   "repo": "skwiggle-v105",
+   "releases": [
+    {
+     "tag": "v2026.09.02",
+     "target": "7784614d258d9d7b04485a38fb9121d703d17e29",
+     "name": "Skwiggle 2026-09-02",
+     "body": "Version 107 rebuilds the wallet connection on the right network after a switch and shows the real reason when a mint fails. Version 3.9 replaced the page with the Vercel Stumbler and added Netlify as a platform."
+    },
+    {
+     "tag": "v2026.09.01",
+     "target": "023111355831a267c2f9dde82c16723fc1bd422a",
+     "name": "Skwiggle 2026-09-01",
+     "body": "Version 105 pointed minting at the live pin service and added a transfer event to the contract data. Version 106 cropped the phone frame off slideshow images and removed the AI filter button."
+    }
+   ],
+   "description": "Never ending line drawing game with mint support, later replaced by a Vercel host stumbler.",
+   "homepage": "https://skwiggle.vercel.app",
+   "topics": [
+    "game",
+    "drawing",
+    "vercel",
+    "tool"
+   ]
+  },
+  {
+   "repo": "tower-builder",
+   "releases": [
+    {
+     "tag": "v2026.09.02",
+     "target": "78319955fcde39ccacd011882d9ed46a28b42d5a",
+     "name": "Tower Builder 2026-09-02",
+     "body": "First version of the tower builder game. This repo holds only the Vercel settings for now."
+    }
+   ],
+   "description": "Beam building tower game that tests your design against wind and earthquakes.",
+   "homepage": "https://tower-builder-five.vercel.app",
+   "topics": [
+    "game",
+    "simulator",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "tower2",
+   "releases": [
+    {
+     "tag": "v2026.09.02",
+     "target": "63025183b82b03de1c03d76d4259e2905fa81370",
+     "name": "Tower Builder 2 2026-09-02",
+     "body": "First version of the second tower builder. It adds an info button that explains the rules."
+    }
+   ],
+   "description": "Second version of the tower builder game, with an info button explaining the rules.",
+   "homepage": "",
+   "topics": [
+    "game",
+    "simulator",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "shitty-ass-trading-app",
+   "releases": [
+    {
+     "tag": "v2026.09.05",
+     "target": "b29a284b42ab8fab08637c22bd809ac5b52ca54c",
+     "name": "Shitty Ass Trading App 2026-09-05",
+     "body": "Updated the app icon and header mark. Merged the magazine tabs into one, loaded leadership info on start, and added a way to dismiss wrong entries."
+    },
+    {
+     "tag": "v2026.09.04",
+     "target": "45865e195b87cd1fff50ba6546e2a178e21a6737",
+     "name": "Shitty Ass Trading App 2026-09-04",
+     "body": "The trading search now uses a real picker with all 539 members of congress."
+    },
+    {
+     "tag": "v2026.09.03",
+     "target": "8cb5ac5830b4098fcb6dfc31ca2494a2dfce8519",
+     "name": "Shitty Ass Trading App 2026-09-03",
+     "body": "Added a food network panel and button, and a congressional trading search in the menu."
+    },
+    {
+     "tag": "v2026.09.01",
+     "target": "b11e8ae5dd3356344e0a8b4058602cfe487ee0f8",
+     "name": "Shitty Ass Trading App 2026-09-01",
+     "body": "Added an insider filings panel, deep links that copy a chain URL, and a visible build number. Refreshes now run every two minutes and back off only when limits are really hit."
+    },
+    {
+     "tag": "v2026.08.30",
+     "target": "423cbcf5f279a8539161443879d141def3ac0bd6",
+     "name": "Shitty Ass Trading App 2026-08-30",
+     "body": "Let people skip setup and use a shared key. Sped up quotes and history by batching requests, and added a one day sparkline to each tile. Added backoff after rate limit errors and an orange title accent."
+    }
+   ],
+   "description": "Stock tracker for restaurant and food industry tickers with news, recalls, filings, and sentiment.",
+   "homepage": "https://shitty-ass-trading.vercel.app",
+   "topics": [
+    "finance",
+    "restaurant-tech",
+    "tool",
+    "pwa",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "bitfield-synth",
+   "releases": [
+    {
+     "tag": "v2026.09.08",
+     "target": "a103be30aa3b345192694ad134c4783e60cbe2d0",
+     "name": "Bitfield Synth 2026-09-08",
+     "body": "Version 8 adds a hamburger drawer and a full bleed canvas. Version 9 follows with further refinements."
+    },
+    {
+     "tag": "v2026.09.05",
+     "target": "e2da1a47993a5236c29e83ec370e5efc7212933c",
+     "name": "Bitfield Synth 2026-09-05",
+     "body": "Version 7 adds image presets that are built into the page."
+    },
+    {
+     "tag": "v2026.06.12",
+     "target": "23fef20d80404a1052734e5d5e6b635382ec6e15",
+     "name": "Bitfield Synth 2026-06-12",
+     "body": "First version of the synth as a single page. The canvas is now clean, with a blue accent on the frame."
+    }
+   ],
+   "description": "Pixel field visualizer driven by math expressions, audio, and images.",
+   "homepage": "https://bitfield-synth.vercel.app",
+   "topics": [
     "music",
+    "visualizer",
     "web-audio",
     "canvas",
     "vercel"
    ]
   },
   {
-   "repo": "dronecamp",
+   "repo": "mohavetech-contracts",
    "releases": [
     {
-     "tag": "v2026.07.03",
-     "target": "add131fcce795b0a37a6279d062f7c00992bcb19",
-     "name": "Drone Training Page 2026-07-03",
-     "body": "First release. A landing page for a Part 107 drone pilot training program. Replaced a wrong page that went up first."
+     "tag": "v2026.09.10",
+     "target": "edf03394a21a879272bfe0249a2b9213d1331c01",
+     "name": "Contracts 2026-09-10",
+     "body": "First draft of the contract app. A missing page file was restored so the app loads."
     }
    ],
-   "description": "Landing page for a Part 107 drone pilot training program in northern Arizona.",
-   "homepage": "https://dronecamp.vercel.app",
+   "description": "Draft a contract, sign it with a finger or mouse, and record its fingerprint on Polygon.",
+   "homepage": "https://mohavetech-contracts.vercel.app",
    "topics": [
-    "website",
-    "drones",
-    "landing-page",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "tanks-and-zombies",
-   "releases": [
-    {
-     "tag": "v2026.07.03",
-     "target": "5c0088b0fa77be3ae6ffbe7e874ee94632853427",
-     "name": "Tanks and Zombies 2026-07-03",
-     "body": "First release. A tank versus zombie horde wave shooter with cannon, sea ram, and rocket weapons, a charged shot, and skins that unlock by score. Added a weapon bar and a high score table."
-    }
-   ],
-   "description": "Tank versus zombie horde wave shooter with unlockable skins.",
-   "homepage": "https://tanksandzombies.vercel.app",
-   "topics": [
-    "game",
-    "shooter",
-    "canvas",
+    "contracts",
+    "polygon",
+    "tool",
     "vercel"
    ]
   }

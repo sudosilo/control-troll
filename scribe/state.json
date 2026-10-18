@@ -1,77 +1,149 @@
 {
- "profileBuilt": null,
- "repos": {
-  "groundcore": {
-   "lastSha": "4dc4f1eb5e65c84d599ff021655a9572c1758231",
-   "lastSeenPush": "2026-10-14T00:15:48.491110Z",
-   "lastTag": "v2026.04.05",
-   "documentedAt": "2026-10-14T00:15:48.491810Z"
-  },
-  "mission-operator": {
-   "lastSha": "73b4f78a37f21d8558021cfa263455443e32a705",
-   "lastSeenPush": "2026-10-14T00:15:51.225795Z",
-   "lastTag": "v2026.03.26",
-   "documentedAt": "2026-10-14T00:15:51.225820Z"
-  },
-  "suno-forge": {
-   "lastSha": "405a5c95aa042e7992a21b169bf324fd981359cc",
-   "lastSeenPush": "2026-10-14T00:15:53.684658Z",
-   "lastTag": "v2026.04.05",
-   "documentedAt": "2026-10-14T00:15:53.684681Z"
-  },
-  "gridmark": {
-   "lastSha": "75cc70152108ad5fe7291f11f15e4b706974b388",
-   "lastSeenPush": "2026-10-14T00:15:56.279429Z",
-   "lastTag": "v2026.04.14",
-   "documentedAt": "2026-10-14T00:15:56.279454Z"
-  },
-  "nota-city": {
-   "lastSha": "a0843c50bd47790dba0845fc59715d46158f5c08",
-   "lastSeenPush": "2026-10-14T00:15:58.938177Z",
-   "lastTag": "v2026.04.20",
-   "documentedAt": "2026-10-14T00:15:58.938200Z"
-  },
-  "graceland-diagram": {
-   "lastSha": "9a91f016b980d3bcd2814f877c2c35daeba9f5a8",
-   "lastSeenPush": "2026-10-14T00:16:01.481722Z",
-   "lastTag": "v2026.05.08",
-   "documentedAt": "2026-10-14T00:16:01.481747Z"
-  },
-  "spaceout": {
-   "lastSha": "8287d4d272540fdc0e7a006b99500696282d4647",
-   "lastSeenPush": "2026-10-14T00:16:04.018181Z",
-   "lastTag": "v2026.05.09",
-   "documentedAt": "2026-10-14T00:16:04.018207Z"
-  },
-  "edmia": {
-   "lastSha": "8ad2d6212f371c382bc2eead7af5facdfe625dd8",
-   "lastSeenPush": "2026-10-14T00:16:06.418923Z",
-   "lastTag": "v2026.05.21",
-   "documentedAt": "2026-10-14T00:16:06.418949Z"
-  },
-  "matops-backend": {
-   "lastSha": "feac3f8bbb8e5a594ba1d990ddd132e92ae3b513",
-   "lastSeenPush": "2026-10-14T00:16:08.709405Z",
-   "lastTag": "v2026.06.04",
-   "documentedAt": "2026-10-14T00:16:08.709437Z"
-  },
-  "coffeekit": {
-   "lastSha": "21eac799731b4dca1d578978e5d93271288fb000",
-   "lastSeenPush": "2026-10-14T00:16:11.279711Z",
-   "lastTag": "v2026.06.21",
-   "documentedAt": "2026-10-14T00:16:11.279758Z"
-  },
-  "dronecamp": {
-   "lastSha": "08cc706908a8280bb2fdd1c679ebfbf6e4d6927a",
-   "lastSeenPush": "2026-10-14T00:16:13.767611Z",
-   "lastTag": "v2026.07.03",
-   "documentedAt": "2026-10-14T00:16:13.767634Z"
-  },
-  "tanks-and-zombies": {
-   "lastSha": "365eb327cea8a1eaaeb4801c5f99162538f7e5c2",
-   "lastSeenPush": "2026-10-14T00:16:16.349898Z",
-   "lastTag": "v2026.07.03",
-   "documentedAt": "2026-10-14T00:16:16.349922Z"
+  "profileBuilt": "2026-10-18T20:47:40.482Z",
+  "repos": {
+    "groundcore": {
+      "lastSha": "4dc4f1eb5e65c84d599ff021655a9572c1758231",
+      "lastSeenPush": "2026-10-14T00:15:48.491110Z",
+      "lastTag": "v2026.04.05",
+      "documentedAt": "2026-10-14T00:15:48.491810Z"
+    },
+    "mission-operator": {
+      "lastSha": "73b4f78a37f21d8558021cfa263455443e32a705",
+      "lastSeenPush": "2026-10-14T00:15:51.225795Z",
+      "lastTag": "v2026.03.26",
+      "documentedAt": "2026-10-14T00:15:51.225820Z"
+    },
+    "suno-forge": {
+      "lastSha": "405a5c95aa042e7992a21b169bf324fd981359cc",
+      "lastSeenPush": "2026-10-14T00:15:53.684658Z",
+      "lastTag": "v2026.04.05",
+      "documentedAt": "2026-10-14T00:15:53.684681Z"
+    },
+    "gridmark": {
+      "lastSha": "75cc70152108ad5fe7291f11f15e4b706974b388",
+      "lastSeenPush": "2026-10-14T00:15:56.279429Z",
+      "lastTag": "v2026.04.14",
+      "documentedAt": "2026-10-14T00:15:56.279454Z"
+    },
+    "nota-city": {
+      "lastSha": "a0843c50bd47790dba0845fc59715d46158f5c08",
+      "lastSeenPush": "2026-10-14T00:15:58.938177Z",
+      "lastTag": "v2026.04.20",
+      "documentedAt": "2026-10-14T00:15:58.938200Z"
+    },
+    "graceland-diagram": {
+      "lastSha": "9a91f016b980d3bcd2814f877c2c35daeba9f5a8",
+      "lastSeenPush": "2026-10-14T00:16:01.481722Z",
+      "lastTag": "v2026.05.08",
+      "documentedAt": "2026-10-14T00:16:01.481747Z"
+    },
+    "spaceout": {
+      "lastSha": "8287d4d272540fdc0e7a006b99500696282d4647",
+      "lastSeenPush": "2026-10-14T00:16:04.018181Z",
+      "lastTag": "v2026.05.09",
+      "documentedAt": "2026-10-14T00:16:04.018207Z"
+    },
+    "edmia": {
+      "lastSha": "8ad2d6212f371c382bc2eead7af5facdfe625dd8",
+      "lastSeenPush": "2026-10-14T00:16:06.418923Z",
+      "lastTag": "v2026.05.21",
+      "documentedAt": "2026-10-14T00:16:06.418949Z"
+    },
+    "matops-backend": {
+      "lastSha": "feac3f8bbb8e5a594ba1d990ddd132e92ae3b513",
+      "lastSeenPush": "2026-10-14T00:16:08.709405Z",
+      "lastTag": "v2026.06.04",
+      "documentedAt": "2026-10-14T00:16:08.709437Z"
+    },
+    "coffeekit": {
+      "lastSha": "21eac799731b4dca1d578978e5d93271288fb000",
+      "lastSeenPush": "2026-10-14T00:16:11.279711Z",
+      "lastTag": "v2026.06.21",
+      "documentedAt": "2026-10-14T00:16:11.279758Z"
+    },
+    "dronecamp": {
+      "lastSha": "08cc706908a8280bb2fdd1c679ebfbf6e4d6927a",
+      "lastSeenPush": "2026-10-14T00:16:13.767611Z",
+      "lastTag": "v2026.07.03",
+      "documentedAt": "2026-10-14T00:16:13.767634Z"
+    },
+    "tanks-and-zombies": {
+      "lastSha": "365eb327cea8a1eaaeb4801c5f99162538f7e5c2",
+      "lastSeenPush": "2026-10-14T00:16:16.349898Z",
+      "lastTag": "v2026.07.03",
+      "documentedAt": "2026-10-14T00:16:16.349922Z"
+    },
+    "termbeat": {
+      "lastSha": "711040c0166ba27f56d992cdd863a888b567e387",
+      "lastSeenPush": "2026-07-19T16:38:20Z",
+      "lastTag": "v2026.07.19",
+      "documentedAt": "2026-10-18T20:47:06.784Z"
+    },
+    "threat-poller": {
+      "lastSha": "dfd6b33f60a64f8eeec11836f00222c41fd4b35e",
+      "lastSeenPush": "2026-08-01T19:37:09Z",
+      "lastTag": "v2026.08.01",
+      "documentedAt": "2026-10-18T20:47:08.662Z"
+    },
+    "threat-dash": {
+      "lastSha": "7f152f58c895889ab0293414b15bcdf524c85285",
+      "lastSeenPush": "2026-08-07T04:13:18Z",
+      "lastTag": "v2026.08.06",
+      "documentedAt": "2026-10-18T20:47:10.644Z"
+    },
+    "aerophin-twin": {
+      "lastSha": "52533deec267705fb89dd3a965af151bfa8277a5",
+      "lastSeenPush": "2026-08-30T03:00:23Z",
+      "lastTag": "v2026.08.29",
+      "documentedAt": "2026-10-18T20:47:12.556Z"
+    },
+    "skwiggle-backend": {
+      "lastSha": "a64fa09a77cd03123280955f47b9d0c241e44911",
+      "lastSeenPush": "2026-08-31T20:03:11Z",
+      "lastTag": "v2026.08.31",
+      "documentedAt": "2026-10-18T20:47:14.618Z"
+    },
+    "skwiggle-mint-pin": {
+      "lastSha": "02632f01b0f9a421689cbbe0b8e2c74e075594b5",
+      "lastSeenPush": "2026-09-01T21:44:33Z",
+      "lastTag": "v2026.09.01",
+      "documentedAt": "2026-10-18T20:47:16.627Z"
+    },
+    "skwiggle-v105": {
+      "lastSha": "7784614d258d9d7b04485a38fb9121d703d17e29",
+      "lastSeenPush": "2026-09-02T20:19:54Z",
+      "lastTag": "v2026.09.02",
+      "documentedAt": "2026-10-18T20:47:18.506Z"
+    },
+    "tower-builder": {
+      "lastSha": "78319955fcde39ccacd011882d9ed46a28b42d5a",
+      "lastSeenPush": "2026-09-02T21:26:56Z",
+      "lastTag": "v2026.09.02",
+      "documentedAt": "2026-10-18T20:47:20.452Z"
+    },
+    "tower2": {
+      "lastSha": "63025183b82b03de1c03d76d4259e2905fa81370",
+      "lastSeenPush": "2026-09-02T22:06:50Z",
+      "lastTag": "v2026.09.02",
+      "documentedAt": "2026-10-18T20:47:22.347Z"
+    },
+    "shitty-ass-trading-app": {
+      "lastSha": "b29a284b42ab8fab08637c22bd809ac5b52ca54c",
+      "lastSeenPush": "2026-09-05T19:51:03Z",
+      "lastTag": "v2026.09.05",
+      "documentedAt": "2026-10-18T20:47:24.227Z"
+    },
+    "bitfield-synth": {
+      "lastSha": "a103be30aa3b345192694ad134c4783e60cbe2d0",
+      "lastSeenPush": "2026-09-09T04:26:32Z",
+      "lastTag": "v2026.09.08",
+      "documentedAt": "2026-10-18T20:47:26.183Z"
+    },
+    "mohavetech-contracts": {
+      "lastSha": "edf03394a21a879272bfe0249a2b9213d1331c01",
+      "lastSeenPush": "2026-09-10T18:31:08Z",
+      "lastTag": "v2026.09.10",
+      "documentedAt": "2026-10-18T20:47:28.045Z"
+    }
   }
- }
 }

@@ -1,1149 +1,1300 @@
 {
- "note": "Repo map for the scribe. apps are Control Troll app names, which are Vercel subdomains. category and summary are filled in by the scribe the first time it documents a repo. Repos with no apps are backends, archives, or tools with no live page.",
- "repos": {
-  "control-troll": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "gladhand-dockyard": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "parcelsun-kq": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "chassisquiver": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "anthropic-percentage-pop-up-game": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "tractor-tool": {
-   "apps": [
-    "tractor-tool"
-   ],
-   "urls": [
-    "https://tractor-tool.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "pajamastan": {
-   "apps": [
-    "pajamastan"
-   ],
-   "urls": [
-    "https://pajamastan.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "parkingten": {
-   "apps": [
-    "parkingten"
-   ],
-   "urls": [
-    "https://parkingten.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "irrigation-demo": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "torque-converter": {
-   "apps": [
-    "torque-converter"
-   ],
-   "urls": [
-    "https://torque-converter.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "pajamastan-invoices": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "field-twin": {
-   "apps": [
-    "field-twin-teal"
-   ],
-   "urls": [
-    "https://field-twin-teal.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "mohavetech-website": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "ether-wand": {
-   "apps": [
-    "ether-wand"
-   ],
-   "urls": [
-    "https://ether-wand.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "stompbox-lab": {
-   "apps": [
-    "stompbox-lab"
-   ],
-   "urls": [
-    "https://stompbox-lab.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "spectral-engine": {
-   "apps": [
-    "spectral-engine"
-   ],
-   "urls": [
-    "https://spectral-engine.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "looper": {
-   "apps": [
-    "looper-sooty"
-   ],
-   "urls": [
-    "https://looper-sooty.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "axiom": {
-   "apps": [
-    "axiom-eight-xi"
-   ],
-   "urls": [
-    "https://axiom-eight-xi.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "synth": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "aliens-win": {
-   "apps": [
-    "aliens-win"
-   ],
-   "urls": [
-    "https://aliens-win.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "pixelcoop-farm": {
-   "apps": [
-    "pixelcoop-farm"
-   ],
-   "urls": [
-    "https://pixelcoop-farm.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "page-wide-pof": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "birdix": {
-   "apps": [
-    "birdix"
-   ],
-   "urls": [
-    "https://birdix.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "coffee-autosim": {
-   "apps": [
-    "coffee-autosim"
-   ],
-   "urls": [
-    "https://coffee-autosim.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "pixelmill": {
-   "apps": [
-    "pixelmill"
-   ],
-   "urls": [
-    "https://pixelmill.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "cockpit-racer": {
-   "apps": [
-    "cockpit-racer"
-   ],
-   "urls": [
-    "https://cockpit-racer.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "ebutuoy-backend": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "ebutuoy-frontend": {
-   "apps": [
-    "ebutuoy"
-   ],
-   "urls": [
-    "https://ebutuoy.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "mill-ionaire": {
-   "apps": [
-    "mill-ionaire"
-   ],
-   "urls": [
-    "https://mill-ionaire.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "tinewood-keys": {
-   "apps": [
-    "tinewood-keys"
-   ],
-   "urls": [
-    "https://tinewood-keys.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "free-as-in-links": {
-   "apps": [
-    "free-as-in-links"
-   ],
-   "urls": [
-    "https://free-as-in-links.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "restack": {
-   "apps": [
-    "restack-wheat"
-   ],
-   "urls": [
-    "https://restack-wheat.vercel.app"
-   ],
-   "private": true,
-   "category": null,
-   "summary": null
-  },
-  "ghost-kitchen-builder": {
-   "apps": [
-    "ghost-kitchen-builder"
-   ],
-   "urls": [
-    "https://ghost-kitchen-builder.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "RTSS": {
-   "apps": [
-    "rtss-sigma"
-   ],
-   "urls": [
-    "https://rtss-sigma.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "rie-api": {
-   "apps": [],
-   "urls": [],
-   "private": true,
-   "category": null,
-   "summary": null
-  },
-  "mind-globe": {
-   "apps": [
-    "ming-globe"
-   ],
-   "urls": [
-    "https://ming-globe.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "ordersim": {
-   "apps": [
-    "ordersim"
-   ],
-   "urls": [
-    "https://ordersim.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "checkin-kiosk": {
-   "apps": [
-    "checkin-kiosk-bice"
-   ],
-   "urls": [
-    "https://checkin-kiosk-bice.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "kvs-roulette": {
-   "apps": [
-    "kvs-sigma"
-   ],
-   "urls": [
-    "https://kvs-sigma.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "rogue-rail": {
-   "apps": [
-    "rogue-rail"
-   ],
-   "urls": [
-    "https://rogue-rail.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "kat-chat": {
-   "apps": [
-    "kat-chat-flame"
-   ],
-   "urls": [
-    "https://kat-chat-flame.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "datacenter-osint": {
-   "apps": [
-    "datacenter-osint"
-   ],
-   "urls": [
-    "https://datacenter-osint.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "cross-venue-equivalence-engine": {
-   "apps": [
-    "equivalence-engine"
-   ],
-   "urls": [
-    "https://equivalence-engine.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "androids": {
-   "apps": [
-    "androids"
-   ],
-   "urls": [
-    "https://androids.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "qsr-receipt-sim": {
-   "apps": [
-    "qsr-receipt-sim"
-   ],
-   "urls": [
-    "https://qsr-receipt-sim.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "67-press-proccessor": {
-   "apps": [
-    "67-press-proccessor"
-   ],
-   "urls": [
-    "https://67-press-proccessor.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "secureops": {
-   "apps": [
-    "secureops-pi"
-   ],
-   "urls": [
-    "https://secureops-pi.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "field-study": {
-   "apps": [
-    "field-study-pi"
-   ],
-   "urls": [
-    "https://field-study-pi.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "rat": {
-   "apps": [
-    "rat-site-gilt"
-   ],
-   "urls": [
-    "https://rat-site-gilt.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "repofind": {
-   "apps": [
-    "repofind-delta"
-   ],
-   "urls": [
-    "https://repofind-delta.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "nanoverse": {
-   "apps": [
-    "nanoverse-psi"
-   ],
-   "urls": [
-    "https://nanoverse-psi.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "x": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "daily-outline": {
-   "apps": [
-    "daily-outline"
-   ],
-   "urls": [
-    "https://daily-outline.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "topdown-pixeltowns": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "topdown-pixeltown": {
-   "apps": [
-    "topdown-pixeltown"
-   ],
-   "urls": [
-    "https://topdown-pixeltown.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "carchive": {
-   "apps": [
-    "carchive-nine"
-   ],
-   "urls": [
-    "https://carchive-nine.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "final-vector": {
-   "apps": [
-    "final-vector-six"
-   ],
-   "urls": [
-    "https://final-vector-six.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "stumbler": {
-   "apps": [
-    "stumbler"
-   ],
-   "urls": [
-    "https://stumbler.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "hackercons-roulette-api": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "hackercons-roulette": {
-   "apps": [
-    "hackercons-roulette"
-   ],
-   "urls": [
-    "https://hackercons-roulette.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "pancake-orange": {
-   "apps": [
-    "pancake-orange"
-   ],
-   "urls": [
-    "https://pancake-orange.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "topo-wars": {
-   "apps": [
-    "topo-wars"
-   ],
-   "urls": [
-    "https://topo-wars.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "topo-wars-server": {
-   "apps": [
-    "topo-wars-server"
-   ],
-   "urls": [
-    "https://topo-wars-server.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "paycheck-hub": {
-   "apps": [
-    "shitty-ass-finance"
-   ],
-   "urls": [
-    "https://shitty-ass-finance.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "pajamastan-warrants": {
-   "apps": [
-    "pajamastan-warrants"
-   ],
-   "urls": [
-    "https://pajamastan-warrants.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "note-note-note": {
-   "apps": [
-    "note-note-note"
-   ],
-   "urls": [
-    "https://note-note-note.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "topo-war": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "signal-snapshot-backend": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "signal-snapshot": {
-   "apps": [
-    "virality-snapshot"
-   ],
-   "urls": [
-    "https://virality-snapshot.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "diamond-driller": {
-   "apps": [
-    "diamond-driller"
-   ],
-   "urls": [
-    "https://diamond-driller.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "web-press-simulator": {
-   "apps": [],
-   "urls": [],
-   "private": true,
-   "category": null,
-   "summary": null
-  },
-  "scope-listener": {
-   "apps": [
-    "scope-listener"
-   ],
-   "urls": [
-    "https://scope-listener.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "song-offset-listener": {
-   "apps": [
-    "offset-listener"
-   ],
-   "urls": [
-    "https://offset-listener.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "phasewell-scope": {
-   "apps": [
-    "phasewell-scope"
-   ],
-   "urls": [
-    "https://phasewell-scope.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "engine-companion": {
-   "apps": [
-    "engine-companion"
-   ],
-   "urls": [
-    "https://engine-companion.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "qsr-tracker-backend": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "mohave-browser": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "arcade-backend": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "tilespinneratlas": {
-   "apps": [
-    "tile-spinner"
-   ],
-   "urls": [
-    "https://tile-spinner.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "threat-atlas-v3": {
-   "apps": [
-    "threat-atlas-two"
-   ],
-   "urls": [
-    "https://threat-atlas-two.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "dronesim": {
-   "apps": [
-    "dronesim-blue"
-   ],
-   "urls": [
-    "https://dronesim-blue.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "boba-breakeven-x8k4": {
-   "apps": [
-    "boba-breakeven-x8k4"
-   ],
-   "urls": [
-    "https://boba-breakeven-x8k4.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "beesim-green": {
-   "apps": [
-    "beesim-green"
-   ],
-   "urls": [
-    "https://beesim-green.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "mohavetech-contracts-api": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "ascend": {
-   "apps": [
-    "ascend-pearl-ten"
-   ],
-   "urls": [
-    "https://ascend-pearl-ten.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "mohavetech-contracts": {
-   "apps": [
-    "mohavetech-contracts"
-   ],
-   "urls": [
-    "https://mohavetech-contracts.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "bitfield-synth": {
-   "apps": [
-    "bitfield-synth"
-   ],
-   "urls": [
-    "https://bitfield-synth.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "shitty-ass-trading-app": {
-   "apps": [
-    "shitty-ass-trading"
-   ],
-   "urls": [
-    "https://shitty-ass-trading.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "tower2": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "tower-builder": {
-   "apps": [
-    "tower-builder-five",
-    "tower-builder-one"
-   ],
-   "urls": [
-    "https://tower-builder-five.vercel.app",
-    "https://tower-builder-one.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "skwiggle-v105": {
-   "apps": [
-    "skwiggle"
-   ],
-   "urls": [
-    "https://skwiggle.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "skwiggle-mint-pin": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "skwiggle-backend": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "aerophin-twin": {
-   "apps": [
-    "aerophin-twin"
-   ],
-   "urls": [
-    "https://aerophin-twin.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "threat-dash": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "threat-poller": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "termbeat": {
-   "apps": [
-    "termbeat"
-   ],
-   "urls": [
-    "https://termbeat.vercel.app"
-   ],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "tanks-and-zombies": {
-   "apps": [
-    "tanksandzombies"
-   ],
-   "urls": [
-    "https://tanksandzombies.vercel.app"
-   ],
-   "private": false,
-   "category": "Games",
-   "summary": "Tank versus zombie horde wave shooter with unlockable skins.",
-   "name": "Tanks and Zombies",
-   "latest": {
-    "date": "2026-07-03",
-    "text": "First release. A tank versus zombie horde wave shooter with cannon, sea ram, and rocket weapons, a charged shot, and skins that unlock by score. Added a weapon bar and a high score table."
-   }
-  },
-  "dronecamp": {
-   "apps": [
-    "dronecamp"
-   ],
-   "urls": [
-    "https://dronecamp.vercel.app"
-   ],
-   "private": false,
-   "category": "Field and Equipment",
-   "summary": "Landing page for a Part 107 drone pilot training program in northern Arizona.",
-   "name": "Drone Training Page",
-   "latest": {
-    "date": "2026-07-03",
-    "text": "First release. A landing page for a Part 107 drone pilot training program. Replaced a wrong page that went up first."
-   }
-  },
-  "coffeekit": {
-   "apps": [
-    "screensaver-musicfx"
-   ],
-   "urls": [
-    "https://screensaver-musicfx.vercel.app"
-   ],
-   "private": false,
-   "category": "Music and Visualizers",
-   "summary": "Audio reactive screensaver with seven visual modes.",
-   "name": "Screensaver",
-   "latest": {
-    "date": "2026-06-21",
-    "text": "First release. An audio reactive screensaver with seven modes: plasma, lines, stars, pipes, matrix, blob, and DVD. It reacts to the microphone or an uploaded song."
-   }
-  },
-  "matops-backend": {
-   "apps": [],
-   "urls": [],
-   "private": true,
-   "category": "Backends and Infrastructure",
-   "summary": "Lead capture backend that stores form submissions and sends email alerts.",
-   "name": "Lead Capture Backend",
-   "latest": {
-    "date": "2026-06-04",
-    "text": "First release. A lead capture endpoint that stores each submission and sends an email alert."
-   }
-  },
-  "edmia": {
-   "apps": [
-    "edmia"
-   ],
-   "urls": [
-    "https://edmia.vercel.app"
-   ],
-   "private": false,
-   "category": "Games",
-   "summary": "Falling block color match game where every move adds to the music.",
-   "name": "EDMIA",
-   "latest": {
-    "date": "2026-05-21",
-    "text": "First release. A falling block color match game where clearing squares drives the soundtrack. Includes slide, rotate, drop, and boost controls, song sections that change with level, and a high score table with initials."
-   }
-  },
-  "spaceout": {
-   "apps": [
-    "spaceout-mu"
-   ],
-   "urls": [
-    "https://spaceout-mu.vercel.app"
-   ],
-   "private": false,
-   "category": "Games",
-   "summary": "Paddle and ball brick breaker with waves and touch controls.",
-   "name": "SpaceOut",
-   "latest": {
-    "date": "2026-05-09",
-    "text": "First release. A brick breaker game with waves, lives, and a saved high score. Swipe, drag, or the on screen buttons move the paddle."
-   }
-  },
-  "graceland-diagram": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": "Field and Equipment",
-   "summary": "3D exploded view of a 14 by 20 kitchen shed build.",
-   "name": "Kitchen Shed Diagram",
-   "latest": {
-    "date": "2026-05-08",
-    "text": "First release. A 3D exploded view of a 14 by 20 kitchen shed with toggles for shell, loft, water, electrical, kitchen, and restroom layers."
-   }
-  },
-  "nota-city": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": "Games",
-   "summary": "Shared city builder on a 32 by 32 grid with a backend tick engine.",
-   "name": "Nota City",
-   "latest": {
-    "date": "2026-04-20",
-    "text": "First release. A shared city builder with a 32 by 32 grid, zone, road, power, and water layers, and a backend tick engine that grows population and funds. Added placement rules, a bulldozer, and drag to paint. Roads now show under every layer. Fixed road placement on empty tiles and page loading on refresh."
-   }
-  },
-  "gridmark": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": "Maps and Research",
-   "summary": "GPS location marker and heatmap that sorts places into work and personal.",
-   "name": "Gridmark",
-   "latest": {
-    "date": "2026-04-14",
-    "text": "First release. A map tool that saves work and personal locations with notes, draws a heatmap, and records a GPS track every 10 seconds. All data stays on the device."
-   }
-  },
-  "suno-forge": {
-   "apps": [
-    "suno-forge-kappa"
-   ],
-   "urls": [
-    "https://suno-forge-kappa.vercel.app"
-   ],
-   "private": false,
-   "category": "Music and Visualizers",
-   "summary": "Song builder that drafts lyrics and style tags for AI music generators.",
-   "name": "Suno Forge",
-   "latest": {
-    "date": "2026-04-05",
-    "text": "First release. A song builder that drafts lyrics and a style string from a genre, mood, and structure, with EDM drop and pump options and copy buttons for each part. Fixed the left panel sitting under other content."
-   }
-  },
-  "drivethru-sim": {
-   "apps": [],
-   "urls": [],
-   "private": false,
-   "category": null,
-   "summary": null
-  },
-  "mission-operator": {
-   "apps": [
-    "mission-operator"
-   ],
-   "urls": [
-    "https://mission-operator.vercel.app"
-   ],
-   "private": false,
-   "category": "Maps and Research",
-   "summary": "Location aware scanner console for nearby aircraft, radios, mesh nodes, and towers.",
-   "name": "Mission Operator",
-   "latest": {
-    "date": "2026-03-26",
-    "text": "First release. A scanner console that uses the device location to list nearby aircraft from live flight data, along with cell towers, Wi-Fi, Bluetooth, ham repeaters, and mesh nodes. Includes a logbook and settings."
-   }
-  },
-  "groundcore": {
-   "apps": [
-    "groundcore-nine"
-   ],
-   "urls": [
-    "https://groundcore-nine.vercel.app"
-   ],
-   "private": false,
-   "category": "Field and Equipment",
-   "summary": "Desert planting planner with row spacing, plant lookup, and a map sandbox for laying out rows.",
-   "name": "GroundCore",
-   "latest": {
-    "date": "2026-04-05",
-    "text": "First release. A planting planner for the Mohave Valley desert region with a row spacing calculator, a plant lookup that fills in recommended spacing, a plant browser with category filters, and a map sandbox for laying out rows, structures, and drives."
-   }
+  "note": "Repo map for the scribe. apps are Control Troll app names, which are Vercel subdomains. category and summary are filled in by the scribe the first time it documents a repo. Repos with no apps are backends, archives, or tools with no live page.",
+  "repos": {
+    "control-troll": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "gladhand-dockyard": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "parcelsun-kq": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "chassisquiver": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "anthropic-percentage-pop-up-game": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "tractor-tool": {
+      "apps": [
+        "tractor-tool"
+      ],
+      "urls": [
+        "https://tractor-tool.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "pajamastan": {
+      "apps": [
+        "pajamastan"
+      ],
+      "urls": [
+        "https://pajamastan.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "parkingten": {
+      "apps": [
+        "parkingten"
+      ],
+      "urls": [
+        "https://parkingten.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "irrigation-demo": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "torque-converter": {
+      "apps": [
+        "torque-converter"
+      ],
+      "urls": [
+        "https://torque-converter.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "pajamastan-invoices": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "field-twin": {
+      "apps": [
+        "field-twin-teal"
+      ],
+      "urls": [
+        "https://field-twin-teal.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "mohavetech-website": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "ether-wand": {
+      "apps": [
+        "ether-wand"
+      ],
+      "urls": [
+        "https://ether-wand.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "stompbox-lab": {
+      "apps": [
+        "stompbox-lab"
+      ],
+      "urls": [
+        "https://stompbox-lab.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "spectral-engine": {
+      "apps": [
+        "spectral-engine"
+      ],
+      "urls": [
+        "https://spectral-engine.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "looper": {
+      "apps": [
+        "looper-sooty"
+      ],
+      "urls": [
+        "https://looper-sooty.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "axiom": {
+      "apps": [
+        "axiom-eight-xi"
+      ],
+      "urls": [
+        "https://axiom-eight-xi.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "synth": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "aliens-win": {
+      "apps": [
+        "aliens-win"
+      ],
+      "urls": [
+        "https://aliens-win.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "pixelcoop-farm": {
+      "apps": [
+        "pixelcoop-farm"
+      ],
+      "urls": [
+        "https://pixelcoop-farm.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "page-wide-pof": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "birdix": {
+      "apps": [
+        "birdix"
+      ],
+      "urls": [
+        "https://birdix.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "coffee-autosim": {
+      "apps": [
+        "coffee-autosim"
+      ],
+      "urls": [
+        "https://coffee-autosim.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "pixelmill": {
+      "apps": [
+        "pixelmill"
+      ],
+      "urls": [
+        "https://pixelmill.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "cockpit-racer": {
+      "apps": [
+        "cockpit-racer"
+      ],
+      "urls": [
+        "https://cockpit-racer.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "ebutuoy-backend": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "ebutuoy-frontend": {
+      "apps": [
+        "ebutuoy"
+      ],
+      "urls": [
+        "https://ebutuoy.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "mill-ionaire": {
+      "apps": [
+        "mill-ionaire"
+      ],
+      "urls": [
+        "https://mill-ionaire.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "tinewood-keys": {
+      "apps": [
+        "tinewood-keys"
+      ],
+      "urls": [
+        "https://tinewood-keys.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "free-as-in-links": {
+      "apps": [
+        "free-as-in-links"
+      ],
+      "urls": [
+        "https://free-as-in-links.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "restack": {
+      "apps": [
+        "restack-wheat"
+      ],
+      "urls": [
+        "https://restack-wheat.vercel.app"
+      ],
+      "private": true,
+      "category": null,
+      "summary": null
+    },
+    "ghost-kitchen-builder": {
+      "apps": [
+        "ghost-kitchen-builder"
+      ],
+      "urls": [
+        "https://ghost-kitchen-builder.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "RTSS": {
+      "apps": [
+        "rtss-sigma"
+      ],
+      "urls": [
+        "https://rtss-sigma.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "rie-api": {
+      "apps": [],
+      "urls": [],
+      "private": true,
+      "category": null,
+      "summary": null
+    },
+    "mind-globe": {
+      "apps": [
+        "ming-globe"
+      ],
+      "urls": [
+        "https://ming-globe.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "ordersim": {
+      "apps": [
+        "ordersim"
+      ],
+      "urls": [
+        "https://ordersim.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "checkin-kiosk": {
+      "apps": [
+        "checkin-kiosk-bice"
+      ],
+      "urls": [
+        "https://checkin-kiosk-bice.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "kvs-roulette": {
+      "apps": [
+        "kvs-sigma"
+      ],
+      "urls": [
+        "https://kvs-sigma.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "rogue-rail": {
+      "apps": [
+        "rogue-rail"
+      ],
+      "urls": [
+        "https://rogue-rail.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "kat-chat": {
+      "apps": [
+        "kat-chat-flame"
+      ],
+      "urls": [
+        "https://kat-chat-flame.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "datacenter-osint": {
+      "apps": [
+        "datacenter-osint"
+      ],
+      "urls": [
+        "https://datacenter-osint.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "cross-venue-equivalence-engine": {
+      "apps": [
+        "equivalence-engine"
+      ],
+      "urls": [
+        "https://equivalence-engine.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "androids": {
+      "apps": [
+        "androids"
+      ],
+      "urls": [
+        "https://androids.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "qsr-receipt-sim": {
+      "apps": [
+        "qsr-receipt-sim"
+      ],
+      "urls": [
+        "https://qsr-receipt-sim.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "67-press-proccessor": {
+      "apps": [
+        "67-press-proccessor"
+      ],
+      "urls": [
+        "https://67-press-proccessor.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "secureops": {
+      "apps": [
+        "secureops-pi"
+      ],
+      "urls": [
+        "https://secureops-pi.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "field-study": {
+      "apps": [
+        "field-study-pi"
+      ],
+      "urls": [
+        "https://field-study-pi.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "rat": {
+      "apps": [
+        "rat-site-gilt"
+      ],
+      "urls": [
+        "https://rat-site-gilt.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "repofind": {
+      "apps": [
+        "repofind-delta"
+      ],
+      "urls": [
+        "https://repofind-delta.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "nanoverse": {
+      "apps": [
+        "nanoverse-psi"
+      ],
+      "urls": [
+        "https://nanoverse-psi.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "x": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "daily-outline": {
+      "apps": [
+        "daily-outline"
+      ],
+      "urls": [
+        "https://daily-outline.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "topdown-pixeltowns": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "topdown-pixeltown": {
+      "apps": [
+        "topdown-pixeltown"
+      ],
+      "urls": [
+        "https://topdown-pixeltown.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "carchive": {
+      "apps": [
+        "carchive-nine"
+      ],
+      "urls": [
+        "https://carchive-nine.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "final-vector": {
+      "apps": [
+        "final-vector-six"
+      ],
+      "urls": [
+        "https://final-vector-six.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "stumbler": {
+      "apps": [
+        "stumbler"
+      ],
+      "urls": [
+        "https://stumbler.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "hackercons-roulette-api": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "hackercons-roulette": {
+      "apps": [
+        "hackercons-roulette"
+      ],
+      "urls": [
+        "https://hackercons-roulette.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "pancake-orange": {
+      "apps": [
+        "pancake-orange"
+      ],
+      "urls": [
+        "https://pancake-orange.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "topo-wars": {
+      "apps": [
+        "topo-wars"
+      ],
+      "urls": [
+        "https://topo-wars.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "topo-wars-server": {
+      "apps": [
+        "topo-wars-server"
+      ],
+      "urls": [
+        "https://topo-wars-server.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "paycheck-hub": {
+      "apps": [
+        "shitty-ass-finance"
+      ],
+      "urls": [
+        "https://shitty-ass-finance.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "pajamastan-warrants": {
+      "apps": [
+        "pajamastan-warrants"
+      ],
+      "urls": [
+        "https://pajamastan-warrants.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "note-note-note": {
+      "apps": [
+        "note-note-note"
+      ],
+      "urls": [
+        "https://note-note-note.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "topo-war": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "signal-snapshot-backend": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "signal-snapshot": {
+      "apps": [
+        "virality-snapshot"
+      ],
+      "urls": [
+        "https://virality-snapshot.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "diamond-driller": {
+      "apps": [
+        "diamond-driller"
+      ],
+      "urls": [
+        "https://diamond-driller.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "web-press-simulator": {
+      "apps": [],
+      "urls": [],
+      "private": true,
+      "category": null,
+      "summary": null
+    },
+    "scope-listener": {
+      "apps": [
+        "scope-listener"
+      ],
+      "urls": [
+        "https://scope-listener.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "song-offset-listener": {
+      "apps": [
+        "offset-listener"
+      ],
+      "urls": [
+        "https://offset-listener.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "phasewell-scope": {
+      "apps": [
+        "phasewell-scope"
+      ],
+      "urls": [
+        "https://phasewell-scope.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "engine-companion": {
+      "apps": [
+        "engine-companion"
+      ],
+      "urls": [
+        "https://engine-companion.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "qsr-tracker-backend": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "mohave-browser": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "arcade-backend": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "tilespinneratlas": {
+      "apps": [
+        "tile-spinner"
+      ],
+      "urls": [
+        "https://tile-spinner.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "threat-atlas-v3": {
+      "apps": [
+        "threat-atlas-two"
+      ],
+      "urls": [
+        "https://threat-atlas-two.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "dronesim": {
+      "apps": [
+        "dronesim-blue"
+      ],
+      "urls": [
+        "https://dronesim-blue.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "boba-breakeven-x8k4": {
+      "apps": [
+        "boba-breakeven-x8k4"
+      ],
+      "urls": [
+        "https://boba-breakeven-x8k4.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "beesim-green": {
+      "apps": [
+        "beesim-green"
+      ],
+      "urls": [
+        "https://beesim-green.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "mohavetech-contracts-api": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "ascend": {
+      "apps": [
+        "ascend-pearl-ten"
+      ],
+      "urls": [
+        "https://ascend-pearl-ten.vercel.app"
+      ],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "mohavetech-contracts": {
+      "apps": [
+        "mohavetech-contracts"
+      ],
+      "urls": [
+        "https://mohavetech-contracts.vercel.app"
+      ],
+      "private": false,
+      "category": "Tools",
+      "summary": "Draft a contract, sign it with a finger or mouse, and record its fingerprint on Polygon.",
+      "name": "Contracts",
+      "latest": {
+        "date": "2026-09-10",
+        "text": "First draft of the contract app. A missing page file was restored so the app loads."
+      }
+    },
+    "bitfield-synth": {
+      "apps": [
+        "bitfield-synth"
+      ],
+      "urls": [
+        "https://bitfield-synth.vercel.app"
+      ],
+      "private": false,
+      "category": "Music and Visualizers",
+      "summary": "Pixel field visualizer driven by math expressions, audio, and images.",
+      "name": "Bitfield Synth",
+      "latest": {
+        "date": "2026-09-08",
+        "text": "Version 8 adds a hamburger drawer and a full bleed canvas. Version 9 follows with further refinements."
+      }
+    },
+    "shitty-ass-trading-app": {
+      "apps": [
+        "shitty-ass-trading"
+      ],
+      "urls": [
+        "https://shitty-ass-trading.vercel.app"
+      ],
+      "private": false,
+      "category": "Restaurant Tech",
+      "summary": "Stock tracker for restaurant and food industry tickers with news, recalls, filings, and sentiment.",
+      "name": "Shitty Ass Trading App",
+      "latest": {
+        "date": "2026-09-05",
+        "text": "Updated the app icon and header mark. Merged the magazine tabs into one, loaded leadership info on start, and added a way to dismiss wrong entries."
+      }
+    },
+    "tower2": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": "Games",
+      "summary": "Second version of the tower builder game, with an info button explaining the rules.",
+      "name": "Tower Builder 2",
+      "latest": {
+        "date": "2026-09-02",
+        "text": "First version of the second tower builder. It adds an info button that explains the rules."
+      }
+    },
+    "tower-builder": {
+      "apps": [
+        "tower-builder-five",
+        "tower-builder-one"
+      ],
+      "urls": [
+        "https://tower-builder-five.vercel.app",
+        "https://tower-builder-one.vercel.app"
+      ],
+      "private": false,
+      "category": "Games",
+      "summary": "Beam building tower game that tests your design against wind and earthquakes.",
+      "name": "Tower Builder",
+      "latest": {
+        "date": "2026-09-02",
+        "text": "First version of the tower builder game. This repo holds only the Vercel settings for now."
+      }
+    },
+    "skwiggle-v105": {
+      "apps": [
+        "skwiggle"
+      ],
+      "urls": [
+        "https://skwiggle.vercel.app"
+      ],
+      "private": false,
+      "category": "Games",
+      "summary": "Never ending line drawing game with mint support, later replaced by a Vercel host stumbler.",
+      "name": "Skwiggle",
+      "latest": {
+        "date": "2026-09-02",
+        "text": "Version 107 rebuilds the wallet connection on the right network after a switch and shows the real reason when a mint fails. Version 3.9 replaced the page with the Vercel Stumbler and added Netlify as a platform."
+      }
+    },
+    "skwiggle-mint-pin": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": "Backends and Infrastructure",
+      "summary": "Proxy service that pins Skwiggle art to IPFS so it can be minted.",
+      "name": "Skwiggle Mint Pin",
+      "latest": {
+        "date": "2026-09-01",
+        "text": "Created the pin proxy for minting. It now accepts two kinds of credentials, adds a health check that tests the credential, and logs the real cause when pinning fails. Triggered a redeploy on Railway."
+      }
+    },
+    "skwiggle-backend": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": "Backends and Infrastructure",
+      "summary": "Small Express backend for the Skwiggle drawing game, set up to run on Railway.",
+      "name": "Skwiggle Backend",
+      "latest": {
+        "date": "2026-08-31",
+        "text": "Created the backend with a basic running check. Added a Railway config so it can deploy and restart on failure."
+      }
+    },
+    "aerophin-twin": {
+      "apps": [
+        "aerophin-twin"
+      ],
+      "urls": [
+        "https://aerophin-twin.vercel.app"
+      ],
+      "private": false,
+      "category": "Field and Equipment",
+      "summary": "Drawing set and interactive 3D part models for two coffee machine designs.",
+      "name": "Aerophin Twin",
+      "latest": {
+        "date": "2026-08-29",
+        "text": "Created the drawing set for two coffee machines and added parts lists for each part. Added a part drawings page with interactive 3D models."
+      }
+    },
+    "threat-dash": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": "Tools",
+      "summary": "Dashboard page for the threat poller, with a watchlist you can add to and remove from.",
+      "name": "Threat Dash",
+      "latest": {
+        "date": "2026-08-06",
+        "text": "First version of the threat dashboard. It shows poller results and lets you add and remove repos on the watchlist."
+      }
+    },
+    "threat-poller": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": "Backends and Infrastructure",
+      "summary": "Background poller that watches GitHub repos by category, saves alerts to Postgres, and serves them over a read API.",
+      "name": "Threat Poller",
+      "latest": {
+        "date": "2026-08-01",
+        "text": "Created the threat intel poller with three category rules for watched repos. Alerts now save to Postgres so they persist between runs. Added a read API that returns the latest alerts for the dashboard."
+      }
+    },
+    "termbeat": {
+      "apps": [
+        "termbeat"
+      ],
+      "urls": [
+        "https://termbeat.vercel.app"
+      ],
+      "private": false,
+      "category": "Music and Visualizers",
+      "summary": "Audio reactive terminal that reacts to music or the microphone, with themes and small games.",
+      "name": "Termbeat",
+      "latest": {
+        "date": "2026-07-19",
+        "text": "First version. Termbeat is a terminal that reacts to audio from a file or the microphone. It shipped with several terminal themes and modes for a visualizer, bars, and a few small games."
+      }
+    },
+    "tanks-and-zombies": {
+      "apps": [
+        "tanksandzombies"
+      ],
+      "urls": [
+        "https://tanksandzombies.vercel.app"
+      ],
+      "private": false,
+      "category": "Games",
+      "summary": "Tank versus zombie horde wave shooter with unlockable skins.",
+      "name": "Tanks and Zombies",
+      "latest": {
+        "date": "2026-07-03",
+        "text": "First release. A tank versus zombie horde wave shooter with cannon, sea ram, and rocket weapons, a charged shot, and skins that unlock by score. Added a weapon bar and a high score table."
+      }
+    },
+    "dronecamp": {
+      "apps": [
+        "dronecamp"
+      ],
+      "urls": [
+        "https://dronecamp.vercel.app"
+      ],
+      "private": false,
+      "category": "Field and Equipment",
+      "summary": "Landing page for a Part 107 drone pilot training program in northern Arizona.",
+      "name": "Drone Training Page",
+      "latest": {
+        "date": "2026-07-03",
+        "text": "First release. A landing page for a Part 107 drone pilot training program. Replaced a wrong page that went up first."
+      }
+    },
+    "coffeekit": {
+      "apps": [
+        "screensaver-musicfx"
+      ],
+      "urls": [
+        "https://screensaver-musicfx.vercel.app"
+      ],
+      "private": false,
+      "category": "Music and Visualizers",
+      "summary": "Audio reactive screensaver with seven visual modes.",
+      "name": "Screensaver",
+      "latest": {
+        "date": "2026-06-21",
+        "text": "First release. An audio reactive screensaver with seven modes: plasma, lines, stars, pipes, matrix, blob, and DVD. It reacts to the microphone or an uploaded song."
+      }
+    },
+    "matops-backend": {
+      "apps": [],
+      "urls": [],
+      "private": true,
+      "category": "Backends and Infrastructure",
+      "summary": "Lead capture backend that stores form submissions and sends email alerts.",
+      "name": "Lead Capture Backend",
+      "latest": {
+        "date": "2026-06-04",
+        "text": "First release. A lead capture endpoint that stores each submission and sends an email alert."
+      }
+    },
+    "edmia": {
+      "apps": [
+        "edmia"
+      ],
+      "urls": [
+        "https://edmia.vercel.app"
+      ],
+      "private": false,
+      "category": "Games",
+      "summary": "Falling block color match game where every move adds to the music.",
+      "name": "EDMIA",
+      "latest": {
+        "date": "2026-05-21",
+        "text": "First release. A falling block color match game where clearing squares drives the soundtrack. Includes slide, rotate, drop, and boost controls, song sections that change with level, and a high score table with initials."
+      }
+    },
+    "spaceout": {
+      "apps": [
+        "spaceout-mu"
+      ],
+      "urls": [
+        "https://spaceout-mu.vercel.app"
+      ],
+      "private": false,
+      "category": "Games",
+      "summary": "Paddle and ball brick breaker with waves and touch controls.",
+      "name": "SpaceOut",
+      "latest": {
+        "date": "2026-05-09",
+        "text": "First release. A brick breaker game with waves, lives, and a saved high score. Swipe, drag, or the on screen buttons move the paddle."
+      }
+    },
+    "graceland-diagram": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": "Field and Equipment",
+      "summary": "3D exploded view of a 14 by 20 kitchen shed build.",
+      "name": "Kitchen Shed Diagram",
+      "latest": {
+        "date": "2026-05-08",
+        "text": "First release. A 3D exploded view of a 14 by 20 kitchen shed with toggles for shell, loft, water, electrical, kitchen, and restroom layers."
+      }
+    },
+    "nota-city": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": "Games",
+      "summary": "Shared city builder on a 32 by 32 grid with a backend tick engine.",
+      "name": "Nota City",
+      "latest": {
+        "date": "2026-04-20",
+        "text": "First release. A shared city builder with a 32 by 32 grid, zone, road, power, and water layers, and a backend tick engine that grows population and funds. Added placement rules, a bulldozer, and drag to paint. Roads now show under every layer. Fixed road placement on empty tiles and page loading on refresh."
+      }
+    },
+    "gridmark": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": "Maps and Research",
+      "summary": "GPS location marker and heatmap that sorts places into work and personal.",
+      "name": "Gridmark",
+      "latest": {
+        "date": "2026-04-14",
+        "text": "First release. A map tool that saves work and personal locations with notes, draws a heatmap, and records a GPS track every 10 seconds. All data stays on the device."
+      }
+    },
+    "suno-forge": {
+      "apps": [
+        "suno-forge-kappa"
+      ],
+      "urls": [
+        "https://suno-forge-kappa.vercel.app"
+      ],
+      "private": false,
+      "category": "Music and Visualizers",
+      "summary": "Song builder that drafts lyrics and style tags for AI music generators.",
+      "name": "Suno Forge",
+      "latest": {
+        "date": "2026-04-05",
+        "text": "First release. A song builder that drafts lyrics and a style string from a genre, mood, and structure, with EDM drop and pump options and copy buttons for each part. Fixed the left panel sitting under other content."
+      }
+    },
+    "drivethru-sim": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "mission-operator": {
+      "apps": [
+        "mission-operator"
+      ],
+      "urls": [
+        "https://mission-operator.vercel.app"
+      ],
+      "private": false,
+      "category": "Maps and Research",
+      "summary": "Location aware scanner console for nearby aircraft, radios, mesh nodes, and towers.",
+      "name": "Mission Operator",
+      "latest": {
+        "date": "2026-03-26",
+        "text": "First release. A scanner console that uses the device location to list nearby aircraft from live flight data, along with cell towers, Wi-Fi, Bluetooth, ham repeaters, and mesh nodes. Includes a logbook and settings."
+      }
+    },
+    "groundcore": {
+      "apps": [
+        "groundcore-nine"
+      ],
+      "urls": [
+        "https://groundcore-nine.vercel.app"
+      ],
+      "private": false,
+      "category": "Field and Equipment",
+      "summary": "Desert planting planner with row spacing, plant lookup, and a map sandbox for laying out rows.",
+      "name": "GroundCore",
+      "latest": {
+        "date": "2026-04-05",
+        "text": "First release. A planting planner for the Mohave Valley desert region with a row spacing calculator, a plant lookup that fills in recommended spacing, a plant browser with category filters, and a map sandbox for laying out rows, structures, and drives."
+      }
+    },
+    "fogwarren-vx": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "rosetta-pone": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "tickle-boxie": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "chromahum-zq": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "mohave-wtf": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "tapperator": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "inkrunner": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "field-twin-violet-api": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "five-minute-momentum-engine": {
+      "apps": [],
+      "urls": [],
+      "private": true,
+      "category": null,
+      "summary": null
+    },
+    "hoofer-sync": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "field-twin-viridian": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "heckle-troll": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "sudosilo": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    }
   }
- }
 }
