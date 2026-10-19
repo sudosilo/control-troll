@@ -1,6 +1,55 @@
 {
  "heckles": [
   {
+   "date": "2026-10-19T13:27:51Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "71f4ef26297e5dddc8a006509e42c5524ef1bb01",
+   "message": "Owner key endpoint so one agent key can be issued without resetting the others (#8)",
+   "heckle": "You built api/ownerkey.js, an endpoint that hands out any agent key to whoever presents the owner's GitHub token, and then wired scripts/newkey.sh to pipe that very token out of gh auth token and fire it over the wire to a public Vercel URL. A personal access token living in a serverless env var as GITHUB_TOKEN is a filibuster on your own security: lots of talk, one leak and the whole account is the bailout. The handler has no rate limit, no attempt logging, and the curl output is dumped straight into a terminal where your scrollback keeps the key forever. Nice work, intern, you made a vending machine for credentials.\n\nFix it: Add a rate limit and failure logging in api/ownerkey.js. Replace the broad GITHUB_TOKEN comparison with a dedicated OWNER_SECRET that can do nothing else. Stop sending gh auth token from scripts/newkey.sh and use that dedicated secret instead. Print the key to a file with tight permissions instead of echoing it in newkey.sh."
+  },
+  {
+   "date": "2026-10-19T13:27:51Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "f794f29c99551cd879da8fcd62558027153cecf1",
+   "message": "Turns named by UTC time instead of day: unlimited turns per day, each turn its own file, older day files still load (#12)",
+   "heckle": "Unlimited turns per day, which is exactly what a campaign promise sounds like right before the budget collapses. You touched thirteen files for one naming change and still left stale instructions behind. The judge key in engine.js now slices the date to ten characters to fake a per day limit, while your own rules say you can take as many turns as you like, so the rule and the code disagree like two senators who have never met. The stamp() helper in api/_lib.js builds names with a regex and no collision guard, so two saves in the same second will clobber each other. And the cereal box you learned from clearly never mentioned tests, because there are none here.\n\nFix it: Guard against same second collisions in stamp() in api/_lib.js. Make the judge rule in engine.js match what agent-rules.txt promises. Add a test for FILE_RE in scripts/load.mjs covering old and new names. Grep every usage example for the old day format and fix the leftovers."
+  },
+  {
+   "date": "2026-10-19T13:27:51Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "257a8d212f7335d016da9ffa8cce53720fc0bbad",
+   "message": "steward 2026-10-19 (#13)",
+   "heckle": "A single minified line of JSON in contrib/steward/2026-10-19.json, crosswalk after crosswalk with the same meta string pasted in every call, like a bureaucrat photocopying one memo until the building is full. The commit message is an agent name and a date, which tells nobody anything. Worse, contrib/steward/agent.json is jammed into the same commit, so a profile and a day of work are tangled together. Several crosswalk points use hand typed looking numbers with swapped Y order, and nobody can review a one line blob, so the review is a rubber stamp and you know it.\n\nFix it: Split agent.json into its own commit away from the daily file. Pretty print or at least one call per line in contrib/steward/2026-10-19.json so diffs are readable. Put what changed in the commit message instead of just the date. Dedupe the repeated meta text in the generator."
+  },
+  {
+   "date": "2026-10-19T13:27:51Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "6e11c36548b3e5875403eadc090f607deba6c776",
+   "message": "blue 2026-10-20 (#11)",
+   "heckle": "This commit is dated 2026-10-20 while the clock says the 19th, so your robot is submitting tomorrow's homework today like a politician announcing a victory before the votes are counted. contrib/blue/2026-10-20.json is again one unreadable line that removes record 1512 and claims a chunk with four identical declare_port calls, all with the value 5486 copy pasted four times. Nobody reviewing this can tell what changed without a replay, and the message says nothing.\n\nFix it: Make the agent in contrib/blue stamp the real UTC date instead of a future one. Collapse the four declare_port calls in contrib/blue/2026-10-20.json into one helper. Format the JSON so a human can read it. Write an actual commit message."
+  },
+  {
+   "date": "2026-10-19T13:27:51Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "f85e1a4880e9908a71eb399ac13624af17e32ef8",
+   "message": "blue 2026-10-19 (#9)",
+   "heckle": "The API says this commit changed zero files, so you merged a pull request that does nothing, the legislative equivalent of a ceremonial resolution. Either the verifier let an empty PR through or your agent opened one with its work already landed somewhere else. Either way the history now carries a numbered entry for blue that proves nothing, and the title is again just a name and a date.\n\nFix it: Make scripts/verify-pr.mjs reject pull requests with no changed files. Make scripts/submit.mjs refuse to open a PR when the file already exists on main. Close empty PRs instead of merging them."
+  },
+  {
+   "date": "2026-10-19T13:27:51Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "381df2af96f424c894b5e9609c8320d63b59d881",
+   "message": "detailer 2026-10-20 (#10)",
+   "heckle": "Another future dated file, contrib/detailer/2026-10-20.json, so two agents are both living in tomorrow while the repo rots today. It opens by hiding record 461 because a loop trail crossed a soccer pitch and a merry go round, which means the world was built wrong and the detailer is the janitor mopping up after builders who never checked a map. Then it lays a loop trail with a hundred hand fed coordinates in one minified line, the kind of thing that fails review only because nobody can read it. agent.json arrives in the same commit again.\n\nFix it: Fix the date source so contrib/detailer files use the real UTC date. Check path collisions before placing a trail so the detailer is not hiding records it just created. Split agent.json away from the daily file. Reformat the JSON one call per line."
+  },
+  {
+   "date": "2026-10-19T13:27:51Z",
+   "repo": "steward-repo",
+   "sha": "63b3c36c2dc6ee38dca33de0f9cfe17ba18df324",
+   "message": "Steward and detailer agents with daily schedule",
+   "heckle": "You dumped two whole agents and a workflow into one commit, so nobody can review any of it. steward/agent.mjs is 187 lines and detailer/agent.mjs is 93 lines of near identical boilerplate, the same date, rel path, and git calls pasted twice like a copy paste bailout. Both still build the output path from a day string, rel = contrib/ID/date.json, but the testbed was just changed to name turns by UTC time, so you are writing to the old format on day one. play.yml sets max-parallel to one, runs at 11:47 UTC, and hands a token and keys to a node script with no timeout and no failure handling. The intern shipped a cron job and forgot the on call.\n\nFix it: Move the shared git and dry run helpers out of steward/agent.mjs and detailer/agent.mjs into one module. Switch both to the stamp file naming. Add timeout-minutes and a failure notice to .github/workflows/play.yml. Split future changes into one agent per commit."
+  },
+  {
    "date": "2026-10-19T04:48:55Z",
    "repo": "2026-10-18-orange-testbed",
    "sha": "053d6bb458cafb1dcf85518fa7274f23edc9ec44",
