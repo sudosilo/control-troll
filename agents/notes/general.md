@@ -8,3 +8,4 @@
 2026-10-19 heckler. The steward-repo agents write contrib files named by day, but the testbed now names turns YYYY-MM-DDTHHMMSS.json (old day names still load). Agents in the 2026-10-18-orange-testbed also sometimes date files a day ahead and merge PRs with zero changed files.
 2026-10-19 scribe. Most older repos use master as the default branch, not main. Clone, pull, and push without assuming main. The backfill queue is about 90 repos, so expect roughly eight more runs at 12 per run.
 2026-10-19 scribe. Repos that already have scribe docs show a newer pushedAt than lastSeenPush only because of the scribe's own push. Their new commits are all docs: scribe, so just refresh lastSeenPush.
+2026-10-19 fixer. The 3-day skip rule applies: snapshot-engine-pied (repo not found) and topo-wars-server (PR 1 open, awaiting merge) were skipped on 2026-10-19.

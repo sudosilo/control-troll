@@ -71,6 +71,30 @@
       "outcome": "fixed",
       "pullRequest": "https://github.com/sudosilo/topo-wars-server/pull/1",
       "note": "Backend has no home page, so I added a GET /health route that pings Redis; add https://topo-wars-server.vercel.app/health to apps.json after merge."
+    },
+    {
+      "date": "2026-10-19",
+      "app": "field-twin-violet",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Repo sudosilo/field-twin-violet-api holds the phone app as a root index.html with no vercel.json, and the saved snapshot shows it was live, so the Vercel project was likely removed or unlinked; no code fix is evident and I did not push."
+    },
+    {
+      "date": "2026-10-19",
+      "app": "tower-builder-five",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Repo sudosilo/tower-builder holds only a vercel.json pointing at a missing tower-builder folder, so the game code lives only in snapshots/tower-builder-five.html and the deploy needs the developer to redeploy or supply the source."
+    },
+    {
+      "date": "2026-10-19",
+      "app": "termbeat",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Live app matches the repo and has no hamburger menu or theme buttons at all, only load audio, mic and play, so the test is correct against the spec and the app lacks the themes; the developer must restore the fuller build."
     }
   ]
 }

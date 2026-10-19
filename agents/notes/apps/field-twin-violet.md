@@ -1,0 +1,1 @@
+2026-10-19 fixer. Served from repo field-twin-violet-api (root index.html, no vercel.json, supabase folder). Repo field-twin is a different app in the same family. Live URL went 404 on 2026-10-19 though the snapshot was a full page.
