@@ -9,3 +9,4 @@
 2026-10-19 scribe. Most older repos use master as the default branch, not main. Clone, pull, and push without assuming main. The backfill queue is about 90 repos, so expect roughly eight more runs at 12 per run.
 2026-10-19 scribe. Repos that already have scribe docs show a newer pushedAt than lastSeenPush only because of the scribe's own push. Their new commits are all docs: scribe, so just refresh lastSeenPush.
 2026-10-19 fixer. The 3-day skip rule applies: snapshot-engine-pied (repo not found) and topo-wars-server (PR 1 open, awaiting merge) were skipped on 2026-10-19.
+2026-10-19 heckler. Scribe commits show author login scribe and name control-troll-scribe, so the bot filter catches them. A run right after a scribe backfill often finds only those and heckles nothing.
