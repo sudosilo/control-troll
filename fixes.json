@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-18T20:47:30.728Z",
+  "builtAt": "2026-10-19T19:23:16.919Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -41,6 +41,39 @@
       ],
       "knownProblem": "Returns 404 at the root URL. A backend with no home page does that normally, so it needs a health endpoint added to tell real downtime apart.",
       "snapshot": "snapshots/topo-wars-server.html"
+    },
+    {
+      "app": "field-twin-violet",
+      "url": "https://field-twin-violet.vercel.app",
+      "kind": "down",
+      "since": "2026-10-19",
+      "status": 404,
+      "failing": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "features": [],
+      "knownProblem": null,
+      "snapshot": "snapshots/field-twin-violet.html"
+    },
+    {
+      "app": "tower-builder-five",
+      "url": "https://tower-builder-five.vercel.app",
+      "kind": "down",
+      "since": "2026-10-19",
+      "status": 404,
+      "failing": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "features": [
+        "Build mode places beams of steel, wood or reinforced concrete between grid nodes within the budget.",
+        "Delete removes beams, and pan and zoom move the view.",
+        "Test runs a wind test then an earthquake against the target height.",
+        "Budget, spent, target height, score and level show, and clear resets."
+      ],
+      "knownProblem": null,
+      "snapshot": "snapshots/tower-builder-five.html"
     },
     {
       "app": "termbeat",

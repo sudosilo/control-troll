@@ -4,15 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>mohavetech.wtf/contracts</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-serif@5.3.0/400.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-serif@5.3.0/400-italic.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-serif@5.3.0/500.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans@5.3.0/400.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans@5.3.0/500.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-mono@5.3.0/400.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-mono@5.3.0/500.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
+
   :root{
     --paper:#F1F0EC;
     --paper-raised:#FAFAF8;
@@ -24,162 +20,444 @@
     --verified:#2C6E49;
     --verified-dim:#EDF3EE;
   }
+
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans', sans-serif; -webkit-font-smoothing:antialiased;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
   a{color:var(--seal);}
+
   ::selection{background:var(--seal); color:var(--paper);}
+
   .rule{border:none; border-top:1px solid var(--rule); margin:0;}
-  [hidden]{display:none !important;}
 
-  .info-btn{width:22px; height:22px; border-radius:50%; border:1px solid var(--seal); color:var(--seal); background:transparent; font-family:'IBM Plex Mono', monospace; font-size:12px; line-height:1; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; flex:none; position:relative;}
+  /* ---------- info button + popover ---------- */
+  .info-btn{
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    border:1px solid var(--seal);
+    color:var(--seal);
+    background:transparent;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    line-height:1;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    flex:none;
+    position:relative;
+  }
   .info-btn:hover, .info-btn.open{background:var(--seal); color:var(--paper-raised);}
-  .info-pop{display:none; position:fixed; z-index:200; width:240px; max-width:78vw; background:var(--paper-raised); color:var(--ink); padding:14px 16px; font-family:'IBM Plex Sans', sans-serif; font-size:13px; line-height:1.55; border:1px solid var(--seal); box-shadow:0 10px 24px rgba(28,29,32,0.16);}
+  .info-pop{
+    display:none;
+    position:fixed;
+    z-index:200;
+    width:240px;
+    max-width:78vw;
+    background:var(--paper-raised);
+    color:var(--ink);
+    padding:14px 16px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:13px;
+    line-height:1.55;
+    border:1px solid var(--seal);
+    box-shadow:0 10px 24px rgba(28,29,32,0.16);
+  }
   .info-pop.open{display:block;}
-  .info-pop .pop-label{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--seal); display:block; margin-bottom:8px;}
+  .info-pop .pop-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--seal);
+    display:block;
+    margin-bottom:8px;
+  }
 
-  .topstrip{padding:18px 32px 22px; border-bottom:1px solid var(--rule); font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-dim);}
-  .topstrip .brand{display:flex; align-items:center; gap:10px; color:var(--ink); font-weight:500; min-width:0; text-decoration:none;}
+  /* ---------- top strip ---------- */
+  .topstrip{
+    padding:18px 32px 22px;
+    border-bottom:1px solid var(--rule);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--ink-dim);
+  }
+  .topstrip .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--ink);
+    font-weight:500;
+    min-width:0;
+  }
   .topstrip .mark{flex:none;}
-  .topstrip .bracket{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; letter-spacing:0.01em;}
+  .topstrip .bracket{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    letter-spacing:0.01em;
+  }
   .topstrip .right{display:flex; align-items:center; gap:16px; flex:none; position:relative;}
-  .topstrip-row{display:flex; align-items:center; justify-content:space-between;}
-  .tagline{font-family:'IBM Plex Sans', sans-serif; font-size:13px; color:var(--ink-dim); margin-top:10px; max-width:480px; line-height:1.5;}
-  .menu-btn{width:40px; height:40px; border:1px solid var(--ink); background:transparent; display:inline-flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; cursor:pointer; flex:none; padding:0;}
-  .menu-btn span{display:block; width:18px; height:1.5px; background:var(--ink);}
-  .menu-btn[aria-expanded="true"]{background:var(--ink);}
-  .menu-btn[aria-expanded="true"] span{background:var(--paper-raised);}
-  .menu-panel{margin-top:16px; border-top:1px solid var(--rule);}
-  .menu-item{display:flex; justify-content:space-between; align-items:center; width:100%; padding:16px 2px; border:none; border-bottom:1px solid var(--rule); background:transparent; font-family:'IBM Plex Sans', sans-serif; font-size:16px; color:var(--ink); text-decoration:none; text-align:left; cursor:pointer;}
-  .menu-item:hover{color:var(--seal);}
-  .info-dot{width:22px; height:22px; border-radius:50%; border:1px solid var(--seal); color:var(--seal); font-family:'IBM Plex Mono', monospace; font-size:12px; display:inline-flex; align-items:center; justify-content:center;}
-  .menu-about[aria-expanded="true"] .info-dot{background:var(--seal); color:var(--paper-raised);}
-  .menu-about-text{font-family:'IBM Plex Sans', sans-serif; font-size:14px; line-height:1.6; color:var(--ink-dim); padding:14px 2px 16px; border-bottom:1px solid var(--rule); max-width:560px;}
 
-  .btn{font-family:'IBM Plex Sans', sans-serif; font-size:15px; font-weight:500; padding:14px 26px; border:1px solid var(--ink); background:transparent; color:var(--ink); cursor:pointer; text-decoration:none; display:inline-block;}
-  .btn-small{font-size:13px; padding:9px 16px;}
-  .btn-primary{background:var(--seal); border-color:var(--seal); color:var(--paper-raised);}
+  /* ---------- top area ---------- */
+  .topstrip-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .tagline{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:13px;
+    color:var(--ink-dim);
+    margin-top:10px;
+    max-width:480px;
+    line-height:1.5;
+  }
+  .quick-actions{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  .btn-small{
+    font-size:13px;
+    padding:9px 16px;
+  }
+  .btn{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:15px;
+    font-weight:500;
+    padding:14px 26px;
+    border:1px solid var(--ink);
+    background:transparent;
+    color:var(--ink);
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
+  }
+  .btn-primary{
+    background:var(--seal);
+    border-color:var(--seal);
+    color:var(--paper-raised);
+  }
   .btn-primary:hover{background:#631f16;}
   .btn:not(.btn-primary):hover{background:var(--rule);}
-  .btn:disabled{opacity:0.4; cursor:not-allowed;}
-  .btn-mini{font-family:'IBM Plex Mono', monospace; font-size:12.5px; padding:8px 14px; border:1px solid var(--ink-dim); background:transparent; color:var(--ink-dim); cursor:pointer;}
-  .btn-mini:hover{border-color:var(--seal); color:var(--seal);}
-  .btn-mini:disabled{opacity:0.45; cursor:wait;}
 
-  .section{max-width:1180px; margin:0 auto; padding:64px 32px;}
-  .section-head{display:flex; justify-content:space-between; align-items:baseline; gap:16px; border-bottom:1px solid var(--rule); padding-bottom:18px; margin-bottom:44px; position:relative; flex-wrap:wrap;}
-  .section-head h2{font-family:'IBM Plex Serif', serif; font-weight:500; font-size:28px; margin:0; display:flex; align-items:center; gap:12px;}
-  .section-head .tag{font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-dim);}
+  /* ---------- how it works ---------- */
+  .section{
+    max-width:1180px;
+    margin:0 auto;
+    padding:64px 32px;
+  }
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    border-bottom:1px solid var(--rule);
+    padding-bottom:18px;
+    margin-bottom:44px;
+    position:relative;
+  }
+  .section-head h2{
+    font-family:'IBM Plex Serif', serif;
+    font-weight:500;
+    font-size:28px;
+    margin:0;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .section-head .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--ink-dim);
+  }
 
-  .steps{display:grid; grid-template-columns:repeat(4, 1fr); gap:0;}
-  .step{padding:0 24px 0 0; border-right:1px solid var(--rule); position:relative;}
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:0;
+  }
+  .step{
+    padding:0 24px 0 0;
+    border-right:1px solid var(--rule);
+    position:relative;
+  }
   .step:last-child{border-right:none; padding-right:0;}
-  .step .icon-slot{width:56px; height:56px; display:flex; align-items:center; justify-content:center; margin-bottom:16px;}
-  .step .num{font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--seal); margin-bottom:10px;}
-  .step h3{font-family:'IBM Plex Serif', serif; font-weight:500; font-size:19px; margin:0; display:flex; align-items:center; gap:10px;}
+  .step .icon-slot{
+    width:56px;
+    height:56px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:16px;
+  }
+  .step .num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--seal);
+    margin-bottom:10px;
+  }
+  .step h3{
+    font-family:'IBM Plex Serif', serif;
+    font-weight:500;
+    font-size:19px;
+    margin:0;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
 
-  .composer{background:var(--paper-raised); border:1px solid var(--rule);}
-  .composer-head{padding:28px 32px; border-bottom:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; position:relative;}
+  /* ---------- contract composer ---------- */
+  .composer{
+    background:var(--paper-raised);
+    border:1px solid var(--rule);
+  }
+  .composer-head{
+    padding:28px 32px;
+    border-bottom:1px solid var(--rule);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:relative;
+  }
   .composer-head .htitle{display:flex; align-items:center; gap:12px;}
-  .composer-head h2{font-family:'IBM Plex Serif', serif; font-weight:500; font-size:22px; margin:0;}
-  .idline{font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--ink-dim);}
-  .idline.err{color:var(--seal);}
-  .field-row{padding:26px 32px; border-bottom:1px solid var(--rule);}
-  .flabel{font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--ink-dim); margin-bottom:10px; display:flex; align-items:center; gap:10px;}
-  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
-  .party{display:flex; flex-direction:column; gap:10px;}
-  input[type=text], input[type=email], select, textarea{width:100%; font-family:'IBM Plex Sans', sans-serif; font-size:15px; padding:12px 14px; border:1px solid var(--rule); background:var(--paper); color:var(--ink); border-radius:0;}
-  input:focus, select:focus, textarea:focus{outline:2px solid var(--seal); outline-offset:1px;}
-  textarea{min-height:160px; resize:vertical; line-height:1.6; font-family:'IBM Plex Serif', serif;}
+  .composer-head h2{
+    font-family:'IBM Plex Serif', serif;
+    font-weight:500;
+    font-size:22px;
+    margin:0;
+  }
+  .composer-head .idline{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-dim);
+  }
+
+  .field-row{
+    padding:26px 32px;
+    border-bottom:1px solid var(--rule);
+  }
+  .field-row .flabel{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-dim);
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+  }
+  input[type=text], input[type=email], select, textarea{
+    width:100%;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:15px;
+    padding:12px 14px;
+    border:1px solid var(--rule);
+    background:var(--paper);
+    color:var(--ink);
+  }
+  input:focus, select:focus, textarea:focus{
+    outline:2px solid var(--seal);
+    outline-offset:1px;
+  }
+  textarea{min-height:140px; resize:vertical; line-height:1.6; font-family:'IBM Plex Serif', serif;}
+
   .type-row{display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap;}
   .type-row select{flex:1 1 220px;}
-  .custom-type{flex:1 1 220px;}
-  .assist-row{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; align-items:center;}
-  .assist-msg{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-dim);}
-  .assist-msg.err{color:var(--seal);}
-  .proposal{margin-top:16px; border:1px solid var(--seal); background:var(--paper);}
-  .proposal .plabel{font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--seal); padding:12px 16px 0;}
-  .proposal .ptext{font-family:'IBM Plex Serif', serif; font-size:15px; line-height:1.7; padding:10px 16px 14px; white-space:pre-wrap;}
-  .proposal .pbuttons{display:flex; gap:10px; padding:0 16px 16px;}
-  .share-row{padding:18px 32px; border-bottom:1px solid var(--rule); display:flex; gap:12px; align-items:center; flex-wrap:wrap;}
-  .share-row .idline{flex:1 1 220px;}
+  .custom-type{flex:1 1 220px; display:none;}
+  .custom-type.show{display:block;}
 
-  .preview-block{padding:32px; background:var(--paper); position:relative;}
-  .preview-doc{font-family:'IBM Plex Serif', serif; font-size:15.5px; line-height:1.75; color:var(--ink); border-left:2px solid var(--seal); padding-left:22px; white-space:pre-wrap; margin:0;}
-  .preview-doc .dim{color:var(--ink-dim);}
-  .sign-row{padding:28px 32px; display:grid; grid-template-columns:1fr 1fr; gap:24px;}
-  .sign-box{border:1px dashed var(--ink-dim); padding:20px; text-align:center;}
-  .sign-box .slabel{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-dim); margin-bottom:8px;}
-  .sign-box .sname{font-family:'IBM Plex Serif', serif; font-style:italic; font-size:19px; color:var(--ink); min-height:28px;}
-  .sign-box{text-align:left;}
+  .assist-row{
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+  }
+  .btn-mini{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    padding:8px 14px;
+    border:1px solid var(--ink-dim);
+    background:transparent;
+    color:var(--ink-dim);
+    cursor:pointer;
+  }
+  .btn-mini:hover{border-color:var(--seal); color:var(--seal);}
+
+  .preview-block{
+    padding:32px;
+    background:var(--paper);
+    position:relative;
+  }
+  .preview-doc{
+    font-family:'IBM Plex Serif', serif;
+    font-size:15.5px;
+    line-height:1.75;
+    color:var(--ink-dim);
+    border-left:2px solid var(--seal);
+    padding-left:22px;
+  }
+
+  .sign-row{
+    padding:28px 32px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+  }
+  .sign-box{
+    border:1px dashed var(--ink-dim);
+    padding:20px;
+    text-align:center;
+  }
+  .sign-box .slabel{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-dim);
+    margin-bottom:8px;
+  }
+  .sign-box .sname{
+    font-family:'IBM Plex Serif', serif;
+    font-style:italic;
+    font-size:19px;
+    color:var(--ink);
+    min-height:28px;
+  }
   .sign-box.signed{border-style:solid; border-color:var(--verified); background:var(--verified-dim);}
   .sign-box.signed .slabel{color:var(--verified);}
-  .sign-box .consent{display:flex; gap:10px; align-items:flex-start; font-size:12.5px; line-height:1.5; color:var(--ink-dim); margin:10px 0 12px;}
-  .sign-box .consent input{margin-top:3px; width:18px; height:18px; flex:none; accent-color:var(--seal);}
-  .sign-box input[type=text]{font-family:'IBM Plex Serif', serif; font-style:italic; font-size:17px;}
-  .pad-wrap{position:relative; margin-top:10px; border:1px solid var(--rule); background:var(--paper-raised);}
-  .pad-wrap canvas{display:block; width:100%; height:150px; touch-action:none; cursor:crosshair;}
-  .pad-wrap .pad-hint{position:absolute; left:12px; bottom:10px; font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--ink-dim); pointer-events:none; border-top:1px solid var(--rule); right:12px; padding-top:4px;}
-  .sign-actions{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; align-items:center;}
-  .signed-view img{max-width:100%; height:90px; object-fit:contain; display:block; margin:6px 0;}
-  .signed-view .when{font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--verified);}
-  .result{margin:0 32px 28px; border:1px solid var(--verified); background:var(--verified-dim); padding:20px;}
-  .result .rlabel{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--verified); margin-bottom:10px;}
-  .result .bigpin{font-family:'IBM Plex Mono', monospace; font-size:30px; letter-spacing:0.2em; color:var(--ink); margin:6px 0 10px;}
-  .result p{font-size:14px; line-height:1.6; color:var(--ink); margin:0 0 14px;}
-  .result .ractions{display:flex; gap:10px; flex-wrap:wrap;}
-  .sig-list{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:22px;}
-  .sig-list .sig{border:1px solid var(--rule); padding:14px; background:var(--paper);}
-  .sig-list .sig img{max-width:100%; height:80px; object-fit:contain; display:block; margin:6px 0;}
-  .sig-list .k{font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-dim);}
-  .sig-list .n{font-family:'IBM Plex Serif', serif; font-style:italic; font-size:16px;}
-  .composer-foot{padding:24px 32px; display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap; border-top:1px solid var(--rule);}
 
-  .record{background:var(--paper-raised); border:1px solid var(--rule); padding:32px;}
-  .vgrid{display:grid; grid-template-columns:repeat(4, 1fr); gap:24px;}
-  .vcell .vk{font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-dim); margin-bottom:8px;}
-  .vcell .vv{font-family:'IBM Plex Mono', monospace; font-size:13.5px; color:var(--ink); word-break:break-all;}
-  .vv.ok{color:var(--verified);}
-  .notice{font-family:'IBM Plex Mono', monospace; font-size:12.5px; line-height:1.6; padding:12px 16px; margin-bottom:24px; border:1px solid var(--seal); color:var(--seal); background:var(--paper);}
-  .notice.ok{border-color:var(--verified); color:var(--verified); background:var(--verified-dim);}
-  .unlock{margin-top:32px; padding-top:28px; border-top:1px solid var(--rule);}
-  .pin-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:12px;}
-  .pin-row input{max-width:220px; font-family:'IBM Plex Mono', monospace; font-size:18px; letter-spacing:0.18em; text-transform:uppercase;}
-  .unlocked .meta{font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--ink-dim); line-height:1.8; margin-bottom:18px;}
-  .unlocked .meta b{font-weight:500; color:var(--ink);}
+  .composer-foot{
+    padding:24px 32px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
 
-  .cardwrap{display:flex; gap:40px; align-items:center; flex-wrap:wrap;}
-  .physical-card{width:400px; max-width:100%; aspect-ratio:8 / 5; background:var(--paper-raised); border:1px solid var(--ink); display:flex; box-shadow:6px 6px 0 var(--rule);}
-  .card-qr{width:52%; display:flex; align-items:center; justify-content:center; border-right:1px solid var(--rule); padding:18px;}
-  #qrcode{line-height:0; width:100%;}
-  #qrcode img, #qrcode canvas{width:100% !important; height:auto !important; image-rendering:pixelated;}
-  .card-info{width:48%; padding:18px 16px; display:flex; flex-direction:column; justify-content:space-between; gap:6px; min-width:0;}
-  .card-info .cbrand{font-family:'IBM Plex Serif', serif; font-weight:500; font-size:15px;}
-  .card-info .curl{font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--seal); word-break:break-all;}
-  .card-info .cinstruct{font-size:11px; line-height:1.45; color:var(--ink-dim);}
-  .card-info .cpin{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink); border-top:1px solid var(--rule); padding-top:8px; letter-spacing:0.08em;}
-  .card-note{font-size:14px; color:var(--ink-dim); max-width:340px; line-height:1.6;}
-  .card-note .lbl{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--seal); display:block; margin-bottom:8px;}
+  /* ---------- verification strip ---------- */
+  .verify{
+    background:var(--ink);
+    color:var(--paper-raised);
+  }
+  .verify .section-head{border-color:#3a3b3f;}
+  .verify .section-head h2{color:var(--paper-raised);}
+  .verify .section-head .tag{color:#8c8e94;}
+  .vgrid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:24px;
+  }
+  .vcell .vk{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:#8c8e94;
+    margin-bottom:8px;
+  }
+  .vcell .vv{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13.5px;
+    color:var(--paper-raised);
+    word-break:break-all;
+  }
+  .vv.ok{color:#7fc79a;}
 
-  footer{padding:32px; text-align:center; font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-dim); border-top:1px solid var(--rule);}
+  /* ---------- card preview ---------- */
+  .cardwrap{
+    display:flex;
+    gap:40px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .physical-card{
+    width:400px;
+    height:250px;
+    background:var(--paper-raised);
+    border:1px solid var(--ink);
+    display:flex;
+    box-shadow:6px 6px 0 var(--rule);
+  }
+  .card-qr{
+    width:52%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-right:1px solid var(--rule);
+    padding:18px;
+  }
+  #qrcode{line-height:0;}
+  #qrcode img{width:100% !important; height:auto !important; image-rendering:pixelated;}
+  .card-info{
+    width:48%;
+    padding:20px 18px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .card-info .cbrand{
+    font-family:'IBM Plex Serif', serif;
+    font-weight:500;
+    font-size:15px;
+  }
+  .card-info .curl{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--seal);
+  }
+  .card-info .cinstruct{
+    font-size:11.5px;
+    line-height:1.5;
+    color:var(--ink-dim);
+  }
+  .card-info .cpin{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--ink-dim);
+    border-top:1px solid var(--rule);
+    padding-top:8px;
+  }
+  .card-note{
+    font-size:14px;
+    color:var(--ink-dim);
+    max-width:340px;
+    line-height:1.6;
+  }
+  .card-note .lbl{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--seal);
+    display:block;
+    margin-bottom:8px;
+  }
+
+  footer{
+    padding:32px;
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-dim);
+    border-top:1px solid var(--rule);
+  }
 
   @media (max-width: 860px){
-    .section{padding:48px 20px;}
-    .topstrip{padding:18px 20px 22px;}
     .steps{grid-template-columns:1fr 1fr; row-gap:32px;}
     .step{border-right:none; padding-right:0;}
     .grid-2{grid-template-columns:1fr;}
     .sign-row{grid-template-columns:1fr;}
-    .sig-list{grid-template-columns:1fr;}
-    .result{margin:0 20px 22px;}
     .vgrid{grid-template-columns:1fr 1fr; row-gap:20px;}
     .cardwrap{flex-direction:column; align-items:flex-start;}
-    .field-row, .composer-head, .share-row, .sign-row, .composer-foot{padding-left:20px; padding-right:20px;}
-    .preview-block, .record{padding:22px 20px;}
   }
 </style>
 </head>
 <body>
+
   <svg width="0" height="0" style="position:absolute; overflow:hidden;" aria-hidden="true">
     <defs>
       <symbol id="mtgSealSym" viewBox="0 0 120 120">
@@ -203,27 +481,110 @@
 
   <div class="topstrip">
     <div class="topstrip-row">
-      <a class="brand" href="/">
+      <div class="brand">
         <svg class="mark" viewBox="0 0 120 120" width="24" height="24"><use href="#mtgSealSym"></use></svg>
-        <span class="bracket">[mohavetech.wtf/contracts]</span>
-      </a>
-      <button class="menu-btn" id="menuBtn" aria-label="menu" aria-expanded="false" aria-controls="menuPanel">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-    <div class="tagline">A contract two people can sign by hand, timestamped on the blockchain.</div>
-    <nav class="menu-panel" id="menuPanel" hidden>
-      <a class="menu-item" href="/#composer">Draft a contract</a>
-      <a class="menu-item" id="demoLink" href="/contracts/2026-09-10/8fHTmfr5F66fz5CJ">See a verified record</a>
-      <button class="menu-item menu-about" id="aboutBtn" aria-expanded="false">About this service <span class="info-dot">i</span></button>
-      <div class="menu-about-text" id="aboutText" hidden>
-        Write the agreement, both parties sign it in the browser, the signed agreement's fingerprint is recorded on the blockchain, then a card gets printed for a physical signature. Nobody touches a wallet.
+        <span class="bracket">[mohave.wtf/contracts]</span>
       </div>
-    </nav>
+      <div class="right">
+        <button class="info-btn" data-pop="pop-about">i</button>
+        <div class="info-pop" id="pop-about">
+          <span class="pop-label">notarization — e-signature — on-chain record</span>
+          Write the agreement, both parties sign it in the browser, the signed text is hashed and notarized on chain, then a card gets printed for a physical signature. Nobody touches a wallet.
+        </div>
+      </div>
+    </div>
+    <div class="tagline">A contract two people can sign by hand, proven on the blockchain.</div>
+    <div class="quick-actions">
+      <a class="btn btn-primary btn-small" href="#composer">Draft a contract</a>
+      <a class="btn btn-small" href="#verify">See a verified record</a>
+    </div>
   </div>
 
-  <main id="homeView" hidden>
+  <hr class="rule">
+
+  <section class="section">
+    <div class="section-head">
+      <h2>How a contract gets made</h2>
+      <span class="tag">four steps, one session</span>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="icon-slot">
+          <svg viewBox="65 85 220 220" width="56" height="56">
+            <defs><clipPath id="clipWrite"><circle cx="175" cy="195" r="105"/></clipPath></defs>
+            <g clip-path="url(#clipWrite)">
+              <circle cx="175" cy="195" r="105" fill="#4A2C0A"/>
+              <text x="175" y="195" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="34" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">WRITE</text>
+            </g>
+          </svg>
+        </div>
+        <div class="num">01</div>
+        <h3>Write it <button class="info-btn" data-pop="pop-step1">i</button></h3>
+        <div class="info-pop" id="pop-step1">
+          <span class="pop-label">step 01</span>
+          Pick a contract type, fill in the terms, let the assistant clean up the wording. Both parties read the same screen.
+        </div>
+      </div>
+      <div class="step">
+        <div class="icon-slot">
+          <svg viewBox="315 85 220 220" width="56" height="56">
+            <defs><clipPath id="clipSign"><circle cx="425" cy="195" r="105"/></clipPath></defs>
+            <g clip-path="url(#clipSign)">
+              <circle cx="425" cy="195" r="105" fill="#8B4513"/>
+              <text x="425" y="195" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="34" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">SIGN</text>
+            </g>
+          </svg>
+        </div>
+        <div class="num">02</div>
+        <h3>Sign it <button class="info-btn" data-pop="pop-step2">i</button></h3>
+        <div class="info-pop" id="pop-step2">
+          <span class="pop-label">step 02</span>
+          Each party applies an e-signature in the browser. The signed document is locked the moment both signatures land.
+        </div>
+      </div>
+      <div class="step">
+        <div class="icon-slot">
+          <svg viewBox="65 355 220 220" width="56" height="56">
+            <defs><clipPath id="clipNotarize"><circle cx="175" cy="465" r="105"/></clipPath></defs>
+            <g clip-path="url(#clipNotarize)">
+              <circle cx="175" cy="465" r="105" fill="#A0522D"/>
+              <text x="175" y="465" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="27" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">NOTARIZE</text>
+            </g>
+          </svg>
+        </div>
+        <div class="num">03</div>
+        <h3>Notarize it <button class="info-btn" data-pop="pop-step3">i</button></h3>
+        <div class="info-pop" id="pop-step3">
+          <span class="pop-label">step 03</span>
+          The signed document is hashed and the hash is written to the chain. A transaction record comes back as proof.
+        </div>
+      </div>
+      <div class="step">
+        <div class="icon-slot">
+          <svg viewBox="315 355 220 220" width="56" height="56">
+            <defs><clipPath id="clipPrint"><circle cx="425" cy="465" r="105"/></clipPath></defs>
+            <g clip-path="url(#clipPrint)">
+              <circle cx="425" cy="465" r="105" fill="#C04000"/>
+              <text x="425" y="465" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="34" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">PRINT</text>
+            </g>
+          </svg>
+        </div>
+        <div class="num">04</div>
+        <h3>Print it <button class="info-btn" data-pop="pop-step4">i</button></h3>
+        <div class="info-pop" id="pop-step4">
+          <span class="pop-label">step 04</span>
+          A card is generated with a QR code to the record and a PIN. Both parties sign the back by hand.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
   <section class="section" id="composer">
+    <div class="section-head">
+      <h2>Draft a contract</h2>
+    </div>
 
     <div class="composer">
       <div class="composer-head">
@@ -232,164 +593,116 @@
           <button class="info-btn" data-pop="pop-composer">i</button>
           <div class="info-pop" id="pop-composer">
             <span class="pop-label">about this form</span>
-            Everything entered here saves to the draft as you type. The first signature locks the text, and the second signature records the agreement on Polygon.
+            Everything entered here stays in the draft until both parties sign. Nothing is written to the chain until the notarize step runs.
           </div>
         </div>
-        <div class="idline" id="saveStatus">status: drafting, not saved yet</div>
+        <div class="idline">status: drafting</div>
       </div>
 
       <div class="field-row">
         <span class="flabel">contract type</span>
         <div class="type-row">
-          <select id="typeSelect">
-            <option value="Sale of an item">Sale of an item</option>
-            <option value="Exchange of work">Exchange of work</option>
-            <option value="Agreement for money owed">Agreement for money owed</option>
+          <select id="typeSelect" onchange="document.getElementById('customType').classList.toggle('show', this.value==='custom')">
+            <option>Sale of an item</option>
+            <option>Exchange of work</option>
+            <option>Agreement for money owed</option>
             <option value="custom">Type my own...</option>
           </select>
-          <input class="custom-type" id="customType" type="text" maxlength="100" placeholder="Name this contract type" hidden>
+          <input class="custom-type" id="customType" type="text" placeholder="Name this contract type">
         </div>
       </div>
 
       <div class="field-row">
-        <span class="flabel">parties <button class="info-btn" data-pop="pop-parties">i</button></span>
-        <div class="info-pop" id="pop-parties">
-          <span class="pop-label">why the email</span>
-          The signing service records each signer's email in the audit trail that proves who signed. It is never shown on the public record.
-        </div>
+        <span class="flabel">parties</span>
         <div class="grid-2">
-          <div class="party">
-            <input id="partyAName" type="text" maxlength="200" placeholder="Party A, full name" autocomplete="off">
-            <input id="partyAEmail" type="email" maxlength="320" placeholder="Party A, email" autocomplete="off">
-          </div>
-          <div class="party">
-            <input id="partyBName" type="text" maxlength="200" placeholder="Party B, full name" autocomplete="off">
-            <input id="partyBEmail" type="email" maxlength="320" placeholder="Party B, email" autocomplete="off">
-          </div>
+          <input type="text" placeholder="Party A — full name">
+          <input type="text" placeholder="Party B — full name">
         </div>
       </div>
 
       <div class="field-row">
         <span class="flabel">terms</span>
-        <textarea id="terms" maxlength="20000" placeholder="Describe what is being exchanged, the amount, and the conditions. Plain words are fine."></textarea>
+        <textarea placeholder="Describe what is being exchanged, the amount, and the conditions..."></textarea>
         <div class="assist-row">
-          <button class="btn-mini" id="cleanupBtn">clean up wording</button>
-          <button class="btn-mini" id="draftBtn">draft from a plain description</button>
-          <span class="assist-msg" id="assistMsg"></span>
+          <button class="btn-mini">clean up wording</button>
+          <button class="btn-mini">draft from a plain description</button>
         </div>
-        <div class="proposal" id="proposal" hidden>
-          <div class="plabel" id="proposalLabel">suggested wording</div>
-          <div class="ptext" id="proposalText"></div>
-          <div class="pbuttons">
-            <button class="btn btn-primary btn-small" id="acceptBtn">Use this wording</button>
-            <button class="btn btn-small" id="discardBtn">Keep mine</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="share-row" id="shareRow" hidden>
-        <span class="idline">draft link: anyone holding it can edit this draft, so share it only with the other party</span>
-        <button class="btn-mini" id="copyLinkBtn">copy draft link</button>
       </div>
 
       <div class="preview-block">
-        <span class="flabel">assembled agreement <button class="info-btn" data-pop="pop-preview">i</button></span>
-        <div class="info-pop" id="pop-preview">
-          <span class="pop-label">what prints on the card</span>
-          None of this text is printed. The card only carries a QR code to the record and a PIN, so the agreement can be as long as it needs to be.
-        </div>
-        <p class="preview-doc" id="previewDoc"></p>
+        <span class="flabel">assembled agreement <button class="info-btn" data-pop="pop-preview">i</button>
+          <div class="info-pop" id="pop-preview">
+            <span class="pop-label">what prints on the card</span>
+            None of this text is printed. The card only carries a QR code to this record and a PIN, so the agreement can be as long as it needs to be.
+          </div>
+        </span>
+        <p class="preview-doc">This agreement is entered into between Party A and Party B on the date it is signed. The terms entered by the drafting party will render here exactly as written, in full, with no length restriction, since the printed card carries only a reference to this record rather than the record itself.</p>
       </div>
 
       <div class="sign-row">
-        <div class="sign-box" id="signBoxA" data-party="a">
-          <div class="slabel">party a: awaiting signature</div>
-          <div class="sign-form">
-            <label class="consent"><input type="checkbox" class="consent-box"><span class="consent-text">I agree to sign this agreement electronically.</span></label>
-            <input type="text" class="typed-name" maxlength="200" placeholder="Type your full name exactly as above" autocomplete="off">
-            <div class="pad-wrap"><canvas class="pad"></canvas><div class="pad-hint">draw your signature</div></div>
-            <div class="sign-actions">
-              <button class="btn btn-primary btn-small sign-btn">Sign as party A</button>
-              <button class="btn-mini clear-btn">clear</button>
-              <span class="assist-msg sign-msg"></span>
-            </div>
-          </div>
-          <div class="signed-view" hidden></div>
+        <div class="sign-box">
+          <div class="slabel">party a — awaiting signature</div>
+          <div class="sname">&nbsp;</div>
         </div>
-        <div class="sign-box" id="signBoxB" data-party="b">
-          <div class="slabel">party b: awaiting signature</div>
-          <div class="sign-form">
-            <label class="consent"><input type="checkbox" class="consent-box"><span class="consent-text">I agree to sign this agreement electronically.</span></label>
-            <input type="text" class="typed-name" maxlength="200" placeholder="Type your full name exactly as above" autocomplete="off">
-            <div class="pad-wrap"><canvas class="pad"></canvas><div class="pad-hint">draw your signature</div></div>
-            <div class="sign-actions">
-              <button class="btn btn-primary btn-small sign-btn">Sign as party B</button>
-              <button class="btn-mini clear-btn">clear</button>
-              <span class="assist-msg sign-msg"></span>
-            </div>
-          </div>
-          <div class="signed-view" hidden></div>
+        <div class="sign-box">
+          <div class="slabel">party b — awaiting signature</div>
+          <div class="sname">&nbsp;</div>
         </div>
-      </div>
-
-      <div class="result" id="resultBox" hidden>
-        <div class="rlabel" id="resultLabel">recorded on polygon</div>
-        <div id="resultBody"></div>
       </div>
 
       <div class="composer-foot">
-        <span class="idline" id="footNote">the first signature locks the text, the second records it on Polygon</span>
-        <button class="btn btn-small" id="retryBtn" hidden>Retry recording on Polygon</button>
+        <span class="idline">both signatures required before notarization</span>
+        <button class="btn btn-primary" disabled style="opacity:0.4; cursor:not-allowed;">Notarize on chain</button>
       </div>
     </div>
   </section>
-  </main>
 
-  <main id="recordView" hidden>
-  <section class="section" id="record">
+  <hr class="rule">
+
+  <section class="section verify" id="verify">
     <div class="section-head">
       <h2>On-chain record <button class="info-btn" data-pop="pop-verify">i</button></h2>
       <div class="info-pop" id="pop-verify">
         <span class="pop-label">what's public</span>
-        The blockchain fields below are open to anyone with the link, so they can be checked against a block explorer. The contract text stays locked behind the PIN printed on the physical card.
+        The blockchain fields below are open to anyone with the link. The contract text stays locked behind the PIN printed on the physical card.
       </div>
-      <span class="tag">public, no pin required</span>
+      <span class="tag">public — no pin required</span>
     </div>
-    <div class="record">
-      <div class="notice" id="recordNotice" hidden></div>
-      <div class="vgrid" id="recordGrid">
-        <div class="vcell"><div class="vk">chain</div><div class="vv" id="rChain">loading</div></div>
-        <div class="vcell"><div class="vk">status</div><div class="vv" id="rStatus">loading</div></div>
-        <div class="vcell"><div class="vk">transaction hash</div><div class="vv" id="rTx">loading</div></div>
-        <div class="vcell"><div class="vk">document hash</div><div class="vv" id="rDoc">loading</div></div>
-        <div class="vcell"><div class="vk">block</div><div class="vv" id="rBlock">loading</div></div>
-        <div class="vcell"><div class="vk">timestamp</div><div class="vv" id="rTime">loading</div></div>
-        <div class="vcell"><div class="vk">gas paid</div><div class="vv" id="rGas">loading</div></div>
-        <div class="vcell"><div class="vk">contract text</div><div class="vv" id="rText">locked, enter the pin to view</div></div>
+    <div class="vgrid">
+      <div class="vcell">
+        <div class="vk">chain</div>
+        <div class="vv">Polygon</div>
       </div>
-
-      <div class="unlock" id="unlockBox">
-        <span class="flabel">unlock the agreement <button class="info-btn" data-pop="pop-pin">i</button></span>
-        <div class="info-pop" id="pop-pin">
-          <span class="pop-label">the pin</span>
-          Six characters, printed on the front of the card next to the QR code. After five wrong tries the record locks for fifteen minutes.
-        </div>
-        <div class="pin-row">
-          <input id="pinInput" type="text" maxlength="12" placeholder="PIN" autocomplete="off" autocapitalize="characters" spellcheck="false">
-          <button class="btn btn-primary btn-small" id="unlockBtn">Unlock</button>
-          <span class="assist-msg" id="pinMsg"></span>
-        </div>
+      <div class="vcell">
+        <div class="vk">status</div>
+        <div class="vv ok">confirmed</div>
       </div>
-
-      <div class="unlocked unlock" id="unlockedBox" hidden>
-        <span class="flabel">the agreement</span>
-        <div class="meta" id="unlockedMeta"></div>
-        <p class="preview-doc" id="unlockedText"></p>
-        <div class="sig-list" id="unlockedSigs"></div>
+      <div class="vcell">
+        <div class="vk">transaction hash</div>
+        <div class="vv">0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+      </div>
+      <div class="vcell">
+        <div class="vk">document hash</div>
+        <div class="vv">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+      </div>
+      <div class="vcell">
+        <div class="vk">block</div>
+        <div class="vv">xxxxxxxx</div>
+      </div>
+      <div class="vcell">
+        <div class="vk">timestamp</div>
+        <div class="vv">2026-09-10 xx:xx UTC</div>
+      </div>
+      <div class="vcell">
+        <div class="vk">gas paid</div>
+        <div class="vv">xxxxxx</div>
+      </div>
+      <div class="vcell">
+        <div class="vk">contract text</div>
+        <div class="vv">locked — enter pin to view</div>
       </div>
     </div>
   </section>
-  </main>
 
   <hr class="rule">
 
@@ -400,7 +713,6 @@
         <span class="pop-label">why the back stays blank</span>
         The printer only prints the front, so the QR code, the explanation, and the PIN all live on this side. The back is reserved entirely for the two physical signatures.
       </div>
-      <span class="tag" id="cardTag">sample card</span>
     </div>
     <div class="cardwrap">
       <div class="physical-card">
@@ -408,36 +720,27 @@
         <div class="card-info">
           <div>
             <div class="cbrand">mohavetech.wtf</div>
-            <div class="curl" id="cardUrl"></div>
+            <div class="curl">/contracts/2026-09-10/xxxxxxxxxxxxxxxx</div>
           </div>
-          <div class="cinstruct">This card links to an agreement whose fingerprint is recorded on the blockchain. Scan the code to read and verify it. Sign the back to complete it.</div>
-          <div class="cpin" id="cardPin">pin xxxxxx</div>
+          <div class="cinstruct">This card represents a smart contract connected to the blockchain. Scan the code to read and verify the full agreement. Sign the back of this card to complete it.</div>
+          <div class="cpin">pin xxxx</div>
         </div>
       </div>
-      <div class="card-note" id="cardNote">
-        <span class="lbl">sample</span>
-        This card points at the sample record. Scan it with a phone camera to open the record, then unlock it with the sample PIN.
-      </div>
-      <button class="btn btn-small" id="downloadCardBtn" hidden>Download card image</button>
     </div>
   </section>
 
-  <footer>mohavetech.wtf, a mohave technology group service</footer>
+  <footer>mohavetech.wtf — a mohave technology group service</footer>
 
 <script>
-  var API = "/api";
-  var DEMO = { date: "2026-09-10", id: "8fHTmfr5F66fz5CJ", pin: "2B7NTT" };
-
-  function $(id){ return document.getElementById(id); }
-
   function closeAllInfoPops(){
-    document.querySelectorAll('.info-pop.open').forEach(function(p){ p.classList.remove('open'); });
-    document.querySelectorAll('.info-btn.open').forEach(function(b){ b.classList.remove('open'); });
+    document.querySelectorAll('.info-pop.open').forEach(function(p){p.classList.remove('open');});
+    document.querySelectorAll('.info-btn.open').forEach(function(b){b.classList.remove('open');});
   }
+
   document.querySelectorAll('.info-btn').forEach(function(btn){
     btn.addEventListener('click', function(e){
       e.stopPropagation();
-      var pop = $(btn.getAttribute('data-pop'));
+      var pop = document.getElementById(btn.getAttribute('data-pop'));
       var wasOpen = pop.classList.contains('open');
       closeAllInfoPops();
       if(!wasOpen){
@@ -456,674 +759,14 @@
   window.addEventListener('scroll', closeAllInfoPops, {passive:true});
   window.addEventListener('resize', closeAllInfoPops);
 
-  function api(method, path, body, headers){
-    var opts = { method: method, headers: headers || {} };
-    if(body !== undefined){
-      opts.headers['Content-Type'] = 'application/json';
-      opts.body = JSON.stringify(body);
-    }
-    return fetch(API + path, opts).then(function(res){
-      return res.json().catch(function(){ return {}; }).then(function(data){
-        return { ok: res.ok, status: res.status, data: data };
-      });
-    }, function(){
-      return { ok: false, status: 0, data: { error: "no connection" } };
-    });
-  }
-
-  function drawCard(url, pin, isSample){
-    $('cardUrl').textContent = url.replace(/^https?:\/\//, '');
-    $('cardPin').textContent = 'pin ' + pin;
-    $('qrcode').innerHTML = '';
-    if(typeof QRCode !== 'undefined'){
-      new QRCode($('qrcode'), {
-        text: url, width: 220, height: 220,
-        colorDark: "#1C1D20", colorLight: "#FAFAF8",
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    }
-    if(!isSample){
-      $('cardTag').textContent = 'card for this record';
-      $('cardNote').innerHTML = '<span class="lbl">this record</span>This is the front of the card for this record. The PIN appears only on the printed card.';
-    }
-  }
-
-  var recordMatch = location.pathname.match(/^\/contracts\/(\d{4}-\d{2}-\d{2})\/([A-Za-z0-9_-]{8,64})\/?$/);
-
-
-  /* ---------- record view ---------- */
-
-  function formatTime(iso){
-    if(!iso) return 'not yet';
-    var d = new Date(iso);
-    if(isNaN(d)) return iso;
-    return d.toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
-  }
-
-  function showRecord(date, id){
-    $('recordView').hidden = false;
-    document.title = 'record ' + id + ' | mohavetech.wtf/contracts';
-    var isDemo = id === DEMO.id;
-    drawCard(location.origin + '/contracts/' + date + '/' + id, isDemo ? DEMO.pin : 'on printed card', isDemo);
-    if(isDemo){
-      $('cardNote').innerHTML = '<span class="lbl">sample</span>This is the sample record. Its PIN is printed on the sample card: ' + DEMO.pin + '.';
-    }
-
-    api('GET', '/contracts/' + encodeURIComponent(id) + '/record').then(function(r){
-      if(!r.ok){
-        $('recordGrid').hidden = true;
-        $('unlockBox').hidden = true;
-        showNotice(r.status === 404 ? 'No record exists at this address. Check the link or scan the card again.' : 'The record could not be loaded right now. Try again in a moment.', false);
-        return;
-      }
-      var d = r.data;
-      $('rChain').textContent = d.chain || 'not yet written';
-      $('rStatus').textContent = d.status;
-      $('rStatus').className = 'vv' + (d.status === 'notarized' ? ' ok' : '');
-      $('rTx').textContent = d.tx_hash || 'not yet written';
-      $('rDoc').textContent = d.doc_hash || 'not yet computed';
-      $('rBlock').textContent = d.block_number || 'not yet written';
-      $('rTime').textContent = formatTime(d.notarized_at);
-      $('rGas').textContent = d.gas_paid || 'none yet';
-      if(d.chain && d.chain.indexOf('simulated') !== -1){
-        showNotice('Simulated record. These chain fields are test data and were not written to a real blockchain.', false);
-      } else if(d.status === 'notarized'){
-        if(d.chain === 'polygon'){ $('rChain').textContent = 'Polygon'; }
-        showNotice('Confirmed on Polygon. ', true);
-        if(d.chain === 'polygon' && d.tx_hash){
-          var a = document.createElement('a');
-          a.href = 'https://polygonscan.com/tx/' + d.tx_hash;
-          a.target = '_blank';
-          a.rel = 'noopener';
-          a.textContent = 'Check the transaction on polygonscan';
-          a.style.color = 'inherit';
-          $('recordNotice').appendChild(a);
-        }
-      }
-    });
-
-    $('unlockBtn').addEventListener('click', function(){ tryUnlock(id); });
-    $('pinInput').addEventListener('keydown', function(e){ if(e.key === 'Enter') tryUnlock(id); });
-  }
-
-  function showNotice(text, ok){
-    var n = $('recordNotice');
-    n.textContent = text;
-    n.className = 'notice' + (ok ? ' ok' : '');
-    n.hidden = false;
-  }
-
-  function tryUnlock(id){
-    var pin = $('pinInput').value.trim();
-    var msg = $('pinMsg');
-    if(!pin){ msg.textContent = 'enter the pin from the card'; msg.className = 'assist-msg err'; return; }
-    $('unlockBtn').disabled = true;
-    msg.textContent = 'checking...';
-    msg.className = 'assist-msg';
-    api('POST', '/contracts/' + encodeURIComponent(id) + '/unlock', { pin: pin }).then(function(r){
-      $('unlockBtn').disabled = false;
-      if(r.ok){
-        var c = r.data;
-        var type = c.contract_type === 'custom' ? c.custom_type : c.contract_type;
-        $('unlockedMeta').innerHTML = '';
-        [['type', type], ['party a', c.party_a_name], ['party b', c.party_b_name], ['drafted', c.date], ['notarized', formatTime(c.notarized_at)]].forEach(function(pair){
-          var line = document.createElement('div');
-          var k = document.createElement('span');
-          k.textContent = pair[0] + ': ';
-          var v = document.createElement('b');
-          v.textContent = pair[1] || 'not given';
-          line.appendChild(k); line.appendChild(v);
-          $('unlockedMeta').appendChild(line);
-        });
-        $('unlockedText').textContent = c.terms || '';
-        $('unlockedSigs').innerHTML = '';
-        (c.signatures || []).forEach(function(sig){
-          var box = document.createElement('div');
-          box.className = 'sig';
-          var k = document.createElement('div');
-          k.className = 'k';
-          k.textContent = 'party ' + sig.party + ', signed ' + formatTime(sig.signed_at);
-          var img = document.createElement('img');
-          img.src = sig.drawing;
-          img.alt = 'signature of ' + sig.typed_name;
-          var n = document.createElement('div');
-          n.className = 'n';
-          n.textContent = sig.typed_name;
-          box.appendChild(k); box.appendChild(img); box.appendChild(n);
-          $('unlockedSigs').appendChild(box);
-        });
-        $('rText').textContent = 'unlocked below';
-        $('unlockBox').hidden = true;
-        $('unlockedBox').hidden = false;
-        return;
-      }
-      msg.className = 'assist-msg err';
-      if(r.status === 403){
-        msg.textContent = 'wrong pin, ' + r.data.tries_left + (r.data.tries_left === 1 ? ' try' : ' tries') + ' left';
-      } else if(r.status === 429){
-        var mins = Math.ceil((r.data.retry_after_seconds || 900) / 60);
-        msg.textContent = 'too many wrong pins, locked for about ' + mins + (mins === 1 ? ' minute' : ' minutes');
-      } else if(r.status === 404){
-        msg.textContent = 'this record has no pin yet';
-      } else {
-        msg.textContent = 'could not check the pin right now, try again';
-      }
-    });
-  }
-
-  /* ---------- home view ---------- */
-
-  var draft = null;
-  var saveTimer = null;
-  var saving = false;
-  var pendingSave = false;
-
-  function showHome(){
-    $('homeView').hidden = false;
-    drawCard(location.origin + '/contracts/' + DEMO.date + '/' + DEMO.id, DEMO.pin, true);
-
-    $('typeSelect').addEventListener('change', function(){
-      $('customType').hidden = this.value !== 'custom';
-      onEdit();
-    });
-    ['customType', 'partyAName', 'partyAEmail', 'partyBName', 'partyBEmail', 'terms'].forEach(function(id){
-      $(id).addEventListener('input', onEdit);
-    });
-    $('cleanupBtn').addEventListener('click', function(){ runAssist('cleanup'); });
-    $('draftBtn').addEventListener('click', function(){ runAssist('draft'); });
-    $('acceptBtn').addEventListener('click', acceptProposal);
-    $('discardBtn').addEventListener('click', function(){ $('proposal').hidden = true; });
-    $('copyLinkBtn').addEventListener('click', copyDraftLink);
-    ['a', 'b'].forEach(function(party){
-      var box = $(party === 'a' ? 'signBoxA' : 'signBoxB');
-      pads[party] = setupPad(box);
-      box.querySelector('.clear-btn').addEventListener('click', function(){ pads[party].clear(); });
-      box.querySelector('.sign-btn').addEventListener('click', function(){ signParty(party); });
-    });
-    $('retryBtn').addEventListener('click', retryNotarize);
-    $('downloadCardBtn').addEventListener('click', downloadCard);
-    api('GET', '/consent').then(function(r){
-      if(r.ok && r.data.consent_text){
-        document.querySelectorAll('.consent-text').forEach(function(el){ el.textContent = r.data.consent_text; });
-      }
-    });
-
-    var m = location.hash.match(/^#draft=([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]+)$/);
-    if(m){
-      draft = { id: m[1], token: m[2] };
-      loadDraft();
-    }
-    renderPreview();
-  }
-
-  function formFields(){
-    var type = $('typeSelect').value;
-    return {
-      contract_type: type,
-      custom_type: type === 'custom' ? $('customType').value : '',
-      party_a_name: $('partyAName').value,
-      party_a_email: $('partyAEmail').value,
-      party_b_name: $('partyBName').value,
-      party_b_email: $('partyBEmail').value,
-      terms: $('terms').value
-    };
-  }
-
-  function setStatus(text, isErr){
-    $('saveStatus').textContent = text;
-    $('saveStatus').className = 'idline' + (isErr ? ' err' : '');
-  }
-
-  function loadDraft(){
-    setStatus('status: loading draft...');
-    api('GET', '/contracts/' + encodeURIComponent(draft.id) + '/draft', undefined, { 'X-Edit-Token': draft.token }).then(function(r){
-      if(!r.ok){
-        draft = null;
-        history.replaceState(null, '', location.pathname);
-        setStatus('that draft link did not open, starting a new draft', true);
-        return;
-      }
-      var d = r.data;
-      var known = ['Sale of an item', 'Exchange of work', 'Agreement for money owed', 'custom'];
-      $('typeSelect').value = known.indexOf(d.contract_type) !== -1 ? d.contract_type : 'Sale of an item';
-      $('customType').hidden = $('typeSelect').value !== 'custom';
-      $('customType').value = d.custom_type || '';
-      $('partyAName').value = d.party_a_name || '';
-      $('partyAEmail').value = d.party_a_email || '';
-      $('partyBName').value = d.party_b_name || '';
-      $('partyBEmail').value = d.party_b_email || '';
-      $('terms').value = d.terms || '';
-      $('shareRow').hidden = false;
-      renderPreview();
-      (d.signatures || []).forEach(function(sig){ markSigned(sig.party, sig.typed_name, sig.signed_at, null); });
-      applyStatus(d.status, d);
-    });
-  }
-
-  function onEdit(){
-    renderPreview();
-    setStatus('status: drafting, saving...');
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(save, 900);
-  }
-
-  function save(){
-    if(saving){ pendingSave = true; return Promise.resolve(); }
-    var fields = formFields();
-    var hasContent = fields.party_a_name || fields.party_b_name || fields.terms || fields.custom_type;
-    if(!hasContent && !draft){ setStatus('status: drafting, not saved yet'); return Promise.resolve(); }
-    saving = true;
-    var request = draft
-      ? api('PATCH', '/contracts/' + encodeURIComponent(draft.id) + '/draft', fields, { 'X-Edit-Token': draft.token })
-      : api('POST', '/contracts', fields);
-    return request.then(function(r){
-      saving = false;
-      if(r.ok){
-        if(!draft){
-          draft = { id: r.data.id, token: r.data.editToken };
-          history.replaceState(null, '', location.pathname + '#draft=' + draft.id + '.' + draft.token);
-          $('shareRow').hidden = false;
-        }
-        setStatus('status: drafting, saved');
-      } else if(r.status === 409){
-        setStatus('this draft is locked and can no longer be edited', true);
-      } else {
-        setStatus('not saved: ' + (r.data.error || 'connection problem') + ', will retry on the next change', true);
-      }
-      if(pendingSave){ pendingSave = false; return save(); }
-    });
-  }
-
-  function flushSave(){
-    if(saveTimer){ clearTimeout(saveTimer); saveTimer = null; return save(); }
-    if(saving){ return new Promise(function(resolve){ setTimeout(function(){ resolve(flushSave()); }, 300); }); }
-    return Promise.resolve();
-  }
-
-  /* ---------- signing ---------- */
-
-  var pads = {};
-  var lastPin = null;
-
-  function setupPad(box){
-    var canvas = box.querySelector('.pad');
-    var ctx = canvas.getContext('2d');
-    var state = { canvas: canvas, ctx: ctx, drawing: false, inked: false, last: null };
-    function size(){
-      var rect = canvas.getBoundingClientRect();
-      if(!rect.width) return;
-      var ratio = 2;
-      var snapshot = state.inked ? canvas.toDataURL() : null;
-      canvas.width = Math.round(rect.width * ratio);
-      canvas.height = Math.round(rect.height * ratio);
-      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-      ctx.lineWidth = 2.2;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.strokeStyle = '#1C1D20';
-      if(snapshot){
-        var img = new Image();
-        img.onload = function(){ ctx.drawImage(img, 0, 0, rect.width, rect.height); };
-        img.src = snapshot;
-      }
-    }
-    function point(e){
-      var rect = canvas.getBoundingClientRect();
-      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-    }
-    canvas.addEventListener('pointerdown', function(e){
-      if(box.classList.contains('disabled')) return;
-      e.preventDefault();
-      canvas.setPointerCapture(e.pointerId);
-      state.drawing = true;
-      state.last = point(e);
-      ctx.beginPath();
-      ctx.arc(state.last.x, state.last.y, 1, 0, Math.PI * 2);
-      ctx.fillStyle = '#1C1D20';
-      ctx.fill();
-    });
-    canvas.addEventListener('pointermove', function(e){
-      if(!state.drawing) return;
-      e.preventDefault();
-      var p = point(e);
-      ctx.beginPath();
-      ctx.moveTo(state.last.x, state.last.y);
-      ctx.lineTo(p.x, p.y);
-      ctx.stroke();
-      state.last = p;
-      state.inked = true;
-      box.querySelector('.pad-hint').style.visibility = 'hidden';
-    });
-    ['pointerup', 'pointercancel', 'pointerleave'].forEach(function(t){
-      canvas.addEventListener(t, function(){ state.drawing = false; });
-    });
-    state.clear = function(){
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      state.inked = false;
-      box.querySelector('.pad-hint').style.visibility = 'visible';
-    };
-    state.size = size;
-    window.addEventListener('resize', size);
-    size();
-    return state;
-  }
-
-  function exportDrawing(state){
-    var src = state.canvas;
-    var out = document.createElement('canvas');
-    var w = Math.min(600, Math.round(src.width / 2));
-    var h = Math.round(w * src.height / src.width);
-    out.width = w;
-    out.height = h;
-    out.getContext('2d').drawImage(src, 0, 0, w, h);
-    return out.toDataURL('image/png');
-  }
-
-  function markSigned(party, typedName, signedAt, drawing){
-    var box = $(party === 'a' ? 'signBoxA' : 'signBoxB');
-    box.classList.add('signed');
-    box.querySelector('.slabel').textContent = 'party ' + party + ': signed';
-    box.querySelector('.sign-form').hidden = true;
-    var view = box.querySelector('.signed-view');
-    view.innerHTML = '';
-    if(drawing){
-      var img = document.createElement('img');
-      img.src = drawing;
-      img.alt = 'signature';
-      view.appendChild(img);
-    }
-    var name = document.createElement('div');
-    name.className = 'sname';
-    name.textContent = typedName;
-    var when = document.createElement('div');
-    when.className = 'when';
-    when.textContent = 'signed ' + formatTime(signedAt);
-    view.appendChild(name);
-    view.appendChild(when);
-    view.hidden = false;
-  }
-
-  function lockFields(){
-    document.querySelectorAll('#composer .field-row input, #composer .field-row select, #composer .field-row textarea, #cleanupBtn, #draftBtn').forEach(function(el){ el.disabled = true; });
-  }
-
-  function applyStatus(status, d){
-    if(status === 'drafting'){ setStatus('status: drafting, saved'); return; }
-    lockFields();
-    if(status === 'awaiting_signatures'){
-      setStatus('status: awaiting the second signature, text locked');
-    } else if(status === 'signed'){
-      setStatus('status: signed by both, not yet recorded', true);
-      $('retryBtn').hidden = false;
-    } else if(status === 'notarizing'){
-      setStatus('status: recording on Polygon...');
-    } else if(status === 'notarized'){
-      setStatus('status: signed and recorded on Polygon');
-      $('footNote').textContent = 'this agreement is complete';
-      showResult(d ? { id: d.id, date: d.date } : null);
-    } else {
-      setStatus('status: ' + status);
-    }
-  }
-
-  function showResult(result){
-    var body = $('resultBody');
-    body.innerHTML = '';
-    var link = '/contracts/' + (result ? result.date : '') + '/' + (result ? result.id : '');
-    if(result && result.pin){
-      lastPin = result.pin;
-      var p1 = document.createElement('p');
-      p1.textContent = 'Both signatures are in and the agreement is recorded on Polygon. This is the PIN for the card. It is shown only this once, so write it down or download the card now.';
-      var pin = document.createElement('div');
-      pin.className = 'bigpin';
-      pin.textContent = result.pin;
-      body.appendChild(p1);
-      body.appendChild(pin);
-      drawCard(location.origin + link, result.pin, false);
-      $('cardTag').textContent = 'your card';
-      $('cardNote').innerHTML = '<span class="lbl">your card</span>Print this on the front of the card. Both parties sign the back by hand.';
-      $('downloadCardBtn').hidden = false;
-    } else {
-      var p2 = document.createElement('p');
-      p2.textContent = 'This agreement is signed and recorded on Polygon. The PIN was shown once when it was recorded and is printed on the card.';
-      body.appendChild(p2);
-    }
-    var actions = document.createElement('div');
-    actions.className = 'ractions';
-    if(result){
-      var open = document.createElement('a');
-      open.className = 'btn btn-primary btn-small';
-      open.href = link;
-      open.textContent = 'Open the public record';
-      actions.appendChild(open);
-    }
-    if(result && result.pin){
-      var dl = document.createElement('button');
-      dl.className = 'btn btn-small';
-      dl.textContent = 'Download card image';
-      dl.addEventListener('click', downloadCard);
-      actions.appendChild(dl);
-    }
-    body.appendChild(actions);
-    $('resultBox').hidden = false;
-  }
-
-  function signParty(party){
-    var box = $(party === 'a' ? 'signBoxA' : 'signBoxB');
-    var msg = box.querySelector('.sign-msg');
-    var err = function(text){ msg.textContent = text; msg.className = 'assist-msg sign-msg err'; };
-    var f = formFields();
-    var expected = (party === 'a' ? f.party_a_name : f.party_b_name).trim();
-    var typed = box.querySelector('.typed-name').value.trim();
-    if(!f.party_a_name.trim() || !f.party_b_name.trim() || !f.terms.trim()){ return err('fill in both names and the terms first'); }
-    if(!box.querySelector('.consent-box').checked){ return err('tick the consent box first'); }
-    if(!typed){ return err('type your full name'); }
-    if(typed.toLowerCase() !== expected.toLowerCase()){ return err('the typed name must match ' + expected); }
-    if(!pads[party].inked){ return err('draw your signature in the box'); }
-    var otherSigned = $(party === 'a' ? 'signBoxB' : 'signBoxA').classList.contains('signed');
-    if(!otherSigned && !confirm('Signing locks the agreement text so it can no longer be edited. Sign now?')){ return; }
-
-    var drawing = exportDrawing(pads[party]);
-    var btn = box.querySelector('.sign-btn');
-    btn.disabled = true;
-    msg.className = 'assist-msg sign-msg';
-    msg.textContent = otherSigned ? 'signing and recording on Polygon, this takes a few seconds...' : 'signing...';
-
-    flushSave().then(function(){
-      if(!draft){ btn.disabled = false; return err('the draft has not saved yet, try again'); }
-      return api('POST', '/contracts/' + encodeURIComponent(draft.id) + '/sign',
-        { party: party, typed_name: typed, drawing: drawing, consent: true },
-        { 'X-Edit-Token': draft.token });
-    }).then(function(r){
-      if(!r) return;
-      btn.disabled = false;
-      if(!r.ok){ return err(r.data.error || 'could not sign right now, try again'); }
-      msg.textContent = '';
-      markSigned(party, typed, new Date().toISOString(), drawing);
-      lockFields();
-      if(r.data.status === 'awaiting_signatures'){
-        setStatus('status: awaiting the second signature, text locked');
-        $('footNote').textContent = 'hand the phone to the other party to sign';
-      } else if(r.data.status === 'notarized'){
-        setStatus('status: signed and recorded on Polygon');
-        $('footNote').textContent = 'this agreement is complete';
-        showResult(r.data);
-      } else if(r.data.status === 'signed'){
-        setStatus('status: signed by both, recording on Polygon did not finish', true);
-        $('retryBtn').hidden = false;
-      }
-    });
-  }
-
-  function retryNotarize(){
-    $('retryBtn').disabled = true;
-    setStatus('status: recording on Polygon...');
-    api('POST', '/contracts/' + encodeURIComponent(draft.id) + '/notarize', {}, { 'X-Edit-Token': draft.token }).then(function(r){
-      $('retryBtn').disabled = false;
-      if(r.ok){
-        $('retryBtn').hidden = true;
-        setStatus('status: signed and recorded on Polygon');
-        showResult(r.data);
-      } else {
-        setStatus('recording did not finish: ' + (r.data.error || 'connection problem') + ', try again', true);
-      }
-    });
-  }
-
-  function downloadCard(){
-    if(!lastPin || !draft) return;
-    var W = 1011, H = 638;
-    var c = document.createElement('canvas');
-    c.width = W; c.height = H;
-    var g = c.getContext('2d');
-    g.fillStyle = '#FAFAF8'; g.fillRect(0, 0, W, H);
-    g.strokeStyle = '#1C1D20'; g.lineWidth = 3; g.strokeRect(1.5, 1.5, W - 3, H - 3);
-    var qrSource = document.querySelector('#qrcode canvas') || document.querySelector('#qrcode img');
-    var qrSize = 470;
-    if(qrSource){ g.imageSmoothingEnabled = false; g.drawImage(qrSource, 50, (H - qrSize) / 2, qrSize, qrSize); }
-    g.strokeStyle = '#D8D5CC'; g.lineWidth = 2;
-    g.beginPath(); g.moveTo(570, 40); g.lineTo(570, H - 40); g.stroke();
-    var x = 600, maxW = W - x - 40;
-    g.fillStyle = '#1C1D20';
-    g.font = '500 40px "IBM Plex Serif", Georgia, serif';
-    g.fillText('mohavetech.wtf', x, 100);
-    g.fillStyle = '#7A2E22';
-    g.font = '24px "IBM Plex Mono", monospace';
-    var url = ($('cardUrl').textContent || '');
-    wrapText(g, url, x, 145, maxW, 30, true);
-    g.fillStyle = '#5B5D63';
-    g.font = '27px "IBM Plex Sans", Arial, sans-serif';
-    wrapText(g, 'This card links to an agreement whose fingerprint is recorded on the blockchain. Scan the code to read and verify it. Sign the back to complete it.', x, 300, maxW, 36, false);
-    g.strokeStyle = '#D8D5CC'; g.beginPath(); g.moveTo(x, H - 110); g.lineTo(W - 40, H - 110); g.stroke();
-    g.fillStyle = '#1C1D20';
-    g.font = '500 44px "IBM Plex Mono", monospace';
-    g.fillText('pin ' + lastPin, x, H - 55);
-    var a = document.createElement('a');
-    a.download = 'contract-card-' + draft.id + '.png';
-    a.href = c.toDataURL('image/png');
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  }
-
-  function wrapText(g, text, x, y, maxW, lineH, breakAnywhere){
-    var parts = breakAnywhere ? text.split('') : text.split(' ');
-    var line = '';
-    for(var i = 0; i < parts.length; i++){
-      var test = line + (breakAnywhere || !line ? '' : ' ') + parts[i];
-      if(g.measureText(test).width > maxW && line){
-        g.fillText(line, x, y);
-        line = parts[i];
-        y += lineH;
-      } else {
-        line = test;
-      }
-    }
-    if(line) g.fillText(line, x, y);
-  }
-
-  function copyDraftLink(){
-    var link = location.origin + '/#draft=' + draft.id + '.' + draft.token;
-    var done = function(){ $('copyLinkBtn').textContent = 'copied'; setTimeout(function(){ $('copyLinkBtn').textContent = 'copy draft link'; }, 2000); };
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(link).then(done, function(){ prompt('Copy this draft link:', link); });
-    } else {
-      prompt('Copy this draft link:', link);
-    }
-  }
-
-  function renderPreview(){
-    var f = formFields();
-    var a = f.party_a_name.trim() || 'Party A';
-    var b = f.party_b_name.trim() || 'Party B';
-    var type = f.contract_type === 'custom' ? (f.custom_type.trim() || 'agreement of their own description') : f.contract_type.toLowerCase();
-    var doc = $('previewDoc');
-    doc.innerHTML = '';
-    var article = /^[aeiou]/i.test(type) ? 'an ' : 'a ';
-    doc.appendChild(document.createTextNode('This agreement, ' + article + type + ', is entered into between ' + a + ' and ' + b + ' on the date it is signed.\n\n'));
-    if(f.terms.trim()){
-      doc.appendChild(document.createTextNode(f.terms.trim()));
-    } else {
-      var dim = document.createElement('span');
-      dim.className = 'dim';
-      dim.textContent = 'The terms will appear here exactly as written, with no length limit, since the printed card carries only a reference to this record.';
-      doc.appendChild(dim);
-    }
-  }
-
-  var proposalKind = null;
-
-  function runAssist(kind){
-    var f = formFields();
-    var msg = $('assistMsg');
-    if(!f.terms.trim()){
-      msg.textContent = kind === 'cleanup' ? 'write some terms first' : 'describe the agreement in the terms box first';
-      msg.className = 'assist-msg err';
-      return;
-    }
-    var body = { contract_type: f.contract_type === 'custom' ? f.custom_type : f.contract_type, party_a_name: f.party_a_name, party_b_name: f.party_b_name };
-    if(kind === 'cleanup'){ body.terms = f.terms; } else { body.description = f.terms; }
-    $('cleanupBtn').disabled = true;
-    $('draftBtn').disabled = true;
-    msg.textContent = 'working...';
-    msg.className = 'assist-msg';
-    api('POST', '/assist/' + kind, body).then(function(r){
-      $('cleanupBtn').disabled = false;
-      $('draftBtn').disabled = false;
-      if(r.ok && r.data.suggestion){
-        msg.textContent = '';
-        proposalKind = kind;
-        $('proposalLabel').textContent = kind === 'cleanup'
-          ? 'suggested wording: read it before using it, the meaning should not have changed'
-          : 'suggested terms: fill in any [bracketed] blanks before signing';
-        $('proposalText').textContent = r.data.suggestion;
-        $('proposal').hidden = false;
-        return;
-      }
-      msg.className = 'assist-msg err';
-      if(r.status === 429){ msg.textContent = 'assistant limit reached, try again in an hour'; }
-      else if(r.status === 503){ msg.textContent = 'assistant is not set up yet'; }
-      else { msg.textContent = 'assistant could not answer right now, try again'; }
-    });
-  }
-
-  function acceptProposal(){
-    $('terms').value = $('proposalText').textContent;
-    $('proposal').hidden = true;
-    onEdit();
-  }
-
-  function setMenu(open){
-    $('menuPanel').hidden = !open;
-    $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
-  }
-  $('menuBtn').addEventListener('click', function(e){
-    e.stopPropagation();
-    setMenu($('menuPanel').hidden);
+  new QRCode(document.getElementById("qrcode"), {
+    text: "https://mohavetech.wtf/contracts/2026-09-10/xxxxxxxxxxxxxxxx",
+    width: 220,
+    height: 220,
+    colorDark: "#1C1D20",
+    colorLight: "#FAFAF8",
+    correctLevel: QRCode.CorrectLevel.M
   });
-  $('aboutBtn').addEventListener('click', function(e){
-    e.stopPropagation();
-    var open = $('aboutText').hidden;
-    $('aboutText').hidden = !open;
-    $('aboutBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-  document.querySelectorAll('#menuPanel a').forEach(function(a){
-    a.addEventListener('click', function(e){
-      setMenu(false);
-      if(a.getAttribute('href') === '/#composer' && !$('homeView').hidden){
-        e.preventDefault();
-        $('composer').scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  });
-  $('menuPanel').addEventListener('click', function(e){ e.stopPropagation(); });
-  document.addEventListener('click', function(){ if(!$('menuPanel').hidden) setMenu(false); });
-
-  if(recordMatch){
-    showRecord(recordMatch[1], recordMatch[2]);
-  } else {
-    showHome();
-  }
 </script>
 
 </body>
