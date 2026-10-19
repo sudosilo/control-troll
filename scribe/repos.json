@@ -740,8 +740,13 @@
         "https://phasewell-scope.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Music and Visualizers",
+      "summary": "Dual channel browser scope that compares a song file with the microphone.",
+      "name": "Phasewell Scope",
+      "latest": {
+        "date": "2026-09-22",
+        "text": "First release. The scope compares a song file with the microphone in several views. Seven updates the same day refined the controls."
+      }
     },
     "engine-companion": {
       "apps": [
@@ -751,29 +756,49 @@
         "https://engine-companion.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Tools",
+      "summary": "Phone friendly status and command page for a trading engine.",
+      "name": "Engine Companion",
+      "latest": {
+        "date": "2026-09-17",
+        "text": "First release. The companion shows engine status and lets the owner pause, resume, or flatten from one page."
+      }
     },
     "qsr-tracker-backend": {
       "apps": [],
       "urls": [],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Backends and Infrastructure",
+      "summary": "Data relay for the restaurant industry tracker: filings, news, quotes, futures, and engine routes.",
+      "name": "QSR Tracker Backend",
+      "latest": {
+        "date": "2026-09-16",
+        "text": "Added engine routes for a snapshot, a ledger, a heartbeat, and a two way command queue."
+      }
     },
     "mohave-browser": {
       "apps": [],
       "urls": [],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Tools",
+      "summary": "Small Android web browser built on the Gecko engine.",
+      "name": "Mohave Browser",
+      "latest": {
+        "date": "2026-09-16",
+        "text": "First build of the browser. The build setup was trimmed and updated for the newest Gecko engine."
+      }
     },
     "arcade-backend": {
       "apps": [],
       "urls": [],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Backends and Infrastructure",
+      "summary": "Score server for the arcade games, with locks, cooldowns, and on chain writes.",
+      "name": "Arcade Backend",
+      "latest": {
+        "date": "2026-09-14",
+        "text": "Version 2 now locks every on chain write so two scores can never reuse the same number. Each game and each player has a lock, and players wait through a cooldown between submissions. Every submission is logged with its outcome for audit."
+      }
     },
     "tilespinneratlas": {
       "apps": [
@@ -783,8 +808,13 @@
         "https://tile-spinner.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Tile rotating puzzle where closed loops score, with regional tile styles.",
+      "name": "Atlas of Tiles",
+      "latest": {
+        "date": "2026-09-11",
+        "text": "First release. Atlas of Tiles lets players rotate tiles to close loops, with several regional tile styles."
+      }
     },
     "threat-atlas-v3": {
       "apps": [
@@ -794,8 +824,13 @@
         "https://threat-atlas-two.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Maps and Research",
+      "summary": "Interactive globe of security threats with layers, filters, and country intel.",
+      "name": "Threat Atlas",
+      "latest": {
+        "date": "2026-09-11",
+        "text": "First release. Threat Atlas shows a rotating globe with layered threat data and country intel."
+      }
     },
     "dronesim": {
       "apps": [
@@ -805,8 +840,13 @@
         "https://dronesim-blue.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Music and Visualizers",
+      "summary": "Pixel art drone show simulator with a timeline editor and image based formations.",
+      "name": "Dronesim",
+      "latest": {
+        "date": "2026-09-11",
+        "text": "First release. Dronesim is an operator console for drone shows with a timeline, formations, and optional audio."
+      }
     },
     "boba-breakeven-x8k4": {
       "apps": [
@@ -816,8 +856,13 @@
         "https://boba-breakeven-x8k4.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Restaurant Tech",
+      "summary": "Break-even calculator and seven day shop game for a bubble tea shop.",
+      "name": "Boba Break-Even",
+      "latest": {
+        "date": "2026-09-11",
+        "text": "First release. Boba Break-Even calculates cups needed to cover costs. A second update on the same day polished the page."
+      }
     },
     "beesim-green": {
       "apps": [
@@ -827,15 +872,25 @@
         "https://beesim-green.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Browser bee strategy game with generated terrain, zones, and a mosaic mode.",
+      "name": "Bee Sim",
+      "latest": {
+        "date": "2026-09-10",
+        "text": "First release. Bee Sim shipped as a single static page. The deploy setup was reworked several times until the page loaded from the root of the site."
+      }
     },
     "mohavetech-contracts-api": {
       "apps": [],
       "urls": [],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Backends and Infrastructure",
+      "summary": "Backend for the contract app: drafts, PIN unlock, e-signatures, and Polygon notarization.",
+      "name": "Contracts API",
+      "latest": {
+        "date": "2026-09-10",
+        "text": "Created the contracts backend in six stages. It started with health and draft routes, then added a public record, PIN unlock, and a Redis lockout after bad guesses. Assistant routes, real Polygon notarization, and in-house e-signatures followed. The assistant now gives clear errors, times out, and limits each visitor. Signing no longer mints automatically, and minting is its own step."
+      }
     },
     "ascend": {
       "apps": [
@@ -845,8 +900,13 @@
         "https://ascend-pearl-ten.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Endless vertical platformer with moving platforms, powerups, and touch controls for phones.",
+      "name": "Ascend",
+      "latest": {
+        "date": "2026-09-10",
+        "text": "First release. Ascend is a vertical climbing game with generated platforms, coins, gems, and powerups. It works with touch controls on a phone."
+      }
     },
     "mohavetech-contracts": {
       "apps": [
@@ -1290,6 +1350,41 @@
       "summary": null
     },
     "sudosilo": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "2026-10-18-orange-testbed": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "steward-repo": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "doctrine-duel-qx": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "doctrine-duel-qx-sandbox": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "stackloom-meta": {
       "apps": [],
       "urls": [],
       "private": false,

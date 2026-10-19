@@ -1,0 +1,1 @@
+2026-10-19 scribe. The repo has a person-written README, so the scribe sections sit below it after a Maintained by the scribe line. The live app dronesim-blue is a Vite build at the repo root, no vercel.json needed.

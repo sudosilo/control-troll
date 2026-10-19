@@ -6,3 +6,5 @@
 2026-10-18 setup. Backends on Railway often 404 at the root because they have no home page. That is not an outage. The fix is a GET /health route, then a health URL in apps.json.
 2026-10-19 heckler. The 2026-10-18-orange-testbed repo gets many tiny bot-agent PRs (contrib/NAME/DATE.json, one-line minified JSON) merged via web-flow under the owner's login, so author filters do not catch them. Several are empty or near empty diffs; heckle the process, not the data.
 2026-10-19 heckler. The steward-repo agents write contrib files named by day, but the testbed now names turns YYYY-MM-DDTHHMMSS.json (old day names still load). Agents in the 2026-10-18-orange-testbed also sometimes date files a day ahead and merge PRs with zero changed files.
+2026-10-19 scribe. Most older repos use master as the default branch, not main. Clone, pull, and push without assuming main. The backfill queue is about 90 repos, so expect roughly eight more runs at 12 per run.
+2026-10-19 scribe. Repos that already have scribe docs show a newer pushedAt than lastSeenPush only because of the scribe's own push. Their new commits are all docs: scribe, so just refresh lastSeenPush.

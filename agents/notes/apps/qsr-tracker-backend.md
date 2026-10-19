@@ -1,0 +1,1 @@
+2026-10-19 scribe. This Railway backend also hosts the engine routes (snapshot, ledger, heartbeat, commands) that engine-companion reads. A commit message mentions a phone code name; keep it out of public docs.
