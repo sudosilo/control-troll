@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 36288,
+ "duration_api_ms": 54174,
  "stop_reason": "end_turn",
- "session_id": "6a931d49-ac20-4227-b661-506fa6e4c6bf",
- "total_cost_usd": 0.1219122,
+ "session_id": "8c1568eb-2c5d-4c95-b606-4b27cf7681c9",
+ "total_cost_usd": 0.15803029999999998,
  "usage": {
   "input_tokens": 16,
-  "cache_creation_input_tokens": 18109,
-  "cache_read_input_tokens": 185204,
-  "output_tokens": 3079,
+  "cache_creation_input_tokens": 21503,
+  "cache_read_input_tokens": 186225,
+  "output_tokens": 5323,
   "output_tokens_details": {
-   "thinking_tokens": 198
+   "thinking_tokens": 503
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 18109,
+   "ephemeral_1h_input_tokens": 21503,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 62,
-    "cache_read_input_tokens": 30907,
-    "cache_creation_input_tokens": 1702,
+    "output_tokens": 136,
+    "cache_read_input_tokens": 33709,
+    "cache_creation_input_tokens": 585,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 1702
+     "ephemeral_1h_input_tokens": 585
     },
     "type": "message"
    }
@@ -54,14 +54,14 @@
   },
   "claude-sonnet-5-5": {
    "inputTokens": 16,
-   "outputTokens": 3079,
-   "cacheReadInputTokens": 185204,
-   "cacheCreationInputTokens": 18109,
+   "outputTokens": 5323,
+   "cacheReadInputTokens": 186225,
+   "cacheCreationInputTokens": 21503,
    "webSearchRequests": 0,
-   "costUSD": 0.12177840000000001,
+   "costUSD": 0.15789649999999997,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 198,
+   "thinkingTokens": 503,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
@@ -97,17 +97,17 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 8,
+ "num_turns": 9,
  "subtype": "success",
  "api_error_status": null,
- "result": "I heckled 3 commits (one each in fogwarren-vx, field-twin and rosetta-pone). I did not write a fleet verdict, because the last one is less than 7 days old.",
- "ttft_ms": 2215,
+ "result": "I heckled 10 commits (9 in `2026-10-18-orange-testbed`, 1 in `doctrine-duel-qx`) and did not write a fleet verdict, because the last one is under 7 days old.\n\nI added a note to `agents/notes/general.md` about the agent PRs in `2026-10-18-orange-testbed`. The log, state and notes are committed and pushed to main as \"heckle log\".",
+ "ttft_ms": 2469,
  "type": "result",
- "duration_ms": 51676,
- "uuid": "08fd32d6-2fb9-4025-b7ea-908888e70411",
- "ttft_stream_ms": 1959,
- "time_to_request_ms": 183,
- "first_content_frame_ms": 1960,
+ "duration_ms": 71678,
+ "uuid": "602dee2d-47eb-41a6-b7fb-faf2c24a3f29",
+ "ttft_stream_ms": 2214,
+ "time_to_request_ms": 667,
+ "first_content_frame_ms": 2214,
  "queued_turn_count": 0,
  "result_index": 0
 }
