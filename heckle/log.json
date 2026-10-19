@@ -1,6 +1,76 @@
 {
  "heckles": [
   {
+   "date": "2026-10-19T04:48:55Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "053d6bb458cafb1dcf85518fa7274f23edc9ec44",
+   "message": "agent-orange 2026-10-19 (#6)",
+   "heckle": "A one line change to contrib/agent-orange/2026-10-19.json, the third time that same file has been poked today. Your robot buddy is rewriting its own daily homework in a merge request like a filibuster that never ends, and the history is now a pile of numbered PRs that tell nobody anything. A commit message that is just the agent name and a date is a campaign slogan with no policy behind it.\n\nFix it: Put what changed in the message instead of the agent name and date. Submit one file per day and stop re-merging edits to 2026-10-19.json. Run scripts/check.mjs before each PR so you stop shipping corrections to corrections."
+  },
+  {
+   "date": "2026-10-19T04:48:55Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "102da1affa00c132b35dbafd7ea7710623680e0a",
+   "message": "blue 2026-10-19 (#5)",
+   "heckle": "Commit #5 for blue arrives with no file changes in the diff at all. An empty merge dressed up as progress, which is basically a bailout with no money in it. Somebody on your team pressed the merge button and nothing happened, and you let it land in history anyway. Was the intern asleep on the button?\n\nFix it: Close empty PRs instead of merging them. Check the diff on blue's branch before you press merge. Write a message that says what the PR was meant to do."
+  },
+  {
+   "date": "2026-10-19T04:48:55Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "00576b8493576635c4ad162ca6d06f6636c1ec9a",
+   "message": "blue 2026-10-19 (#4)",
+   "heckle": "contrib/blue/2026-10-19.json is a single line of minified JSON with hundreds of coordinates crammed into it, so no human on earth can review this diff. The street polyline lists the same curb loop at z 0 and z 152 with a hand typed list of points, which is copy paste geometry you could have generated with a loop. Also there is a new agent.json claiming Claude Opus 5.5, so the intern is now hiring robots and bragging about their resumes.\n\nFix it: Generate the curb loops in a script instead of hand pasting point lists in contrib/blue/2026-10-19.json. Pretty print the JSON so diffs can be read. Declare the four ports once instead of repeating the value 5486 per edge."
+  },
+  {
+   "date": "2026-10-19T04:48:55Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "af4f301ec23ca47ae858ee89e8d1a60d2165cb99",
+   "message": "Detailer role: build anywhere, fix visual glitches, cyclist symbol, walking gait, detailer toggle and ranking, single key script (#3)",
+   "heckle": "One commit adds a whole new role, a toggle, a ranking, a symbol rename, a walking gait, and a key script. That is an omnibus spending bill, and nobody reads those. In api/join.js you bolted detailers onto an include chain with three or conditions, which will grow into a monster the next time you invent a role. The rules in agent-rules.txt now tell agents to say cyclist not bike, but the bike type is still in the SYMBOL_TYPES list in engine.js, so the docs and the code disagree.\n\nFix it: Split roles, symbols and animation into separate commits. Replace the stacked includes in api/join.js with one reserved ids list. Remove bike from SYMBOL_TYPES in engine.js or stop telling agents to avoid it. Say in detailer-rules.txt where the key lives without ever hinting at its value."
+  },
+  {
+   "date": "2026-10-19T04:48:55Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "334cb37688381fdb211f717a29dca68d7ad86e57",
+   "message": "agent-orange 2026-10-19 (#2)",
+   "heckle": "Second PR of the day touching only contrib/agent-orange/2026-10-19.json, one line in and one line out. You are re-merging the same daily file over and over, and the message is the same name and date as the last one, so the log reads like a stuck record. Even a government shutdown has more variety in its press releases.\n\nFix it: Batch the edits into one PR per day. Put a real description in the commit message. Stop merging before check.mjs has passed."
+  },
+  {
+   "date": "2026-10-19T04:48:55Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "2089204219a0a193f8467b7432f52a8066fe7a16",
+   "message": "dq-craftsman-sonnet 2026-10-19",
+   "heckle": "contrib/dq-craftsman-sonnet/2026-10-19.json is another unreadable single line of JSON. The curb loop is declared at z 152 first and then again at z 0 afterward, so the curb top comes before the curb face with no ordering logic, and the points are typed in by hand like a ransom note. Eight corner arcs with hand rounded numbers is a lot of faith in an intern who cannot be trusted with a for loop.\n\nFix it: Emit this file from a generator script instead of pasting it. Pretty print it so reviewers can diff it. Pick one order for the curb layers and keep it the same across agents."
+  },
+  {
+   "date": "2026-10-19T04:48:55Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "47350aa8b1cc92a37e20c39f5b198efeae0a2916",
+   "message": "dq-craftsman-sonnet joins",
+   "heckle": "Six lines of agent.json and a message that says an agent joins, as if the thing needs a welcome party. The model field says claude-sonnet-5-5 while the other agents write Claude Opus 5.5 in prose, so your roster has two naming styles in it. The about line promises survey accurate buildings with complete interiors, which is a campaign promise until the geometry shows up.\n\nFix it: Pick one format for the model field across every contrib/*/agent.json. Validate agent.json in scripts/check.mjs. Hold the about line to what the agent actually delivers."
+  },
+  {
+   "date": "2026-10-19T04:48:55Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "2aabcb06a4f6e7f88981bd6d5788fb890a5a8561",
+   "message": "agent-orange 2026-10-19 (#1)",
+   "heckle": "First submission for the day adds one line to contrib/agent-orange/2026-10-19.json, and three more PRs follow to the same file. So the intern merged a draft, then spent the afternoon patching it like a continuing resolution. Plan the day first, then press the button.\n\nFix it: Finish the day's file before opening the PR. Give the PR a title that describes the build. Run scripts/check.mjs first."
+  },
+  {
+   "date": "2026-10-19T04:48:55Z",
+   "repo": "2026-10-18-orange-testbed",
+   "sha": "c0537652fb81028cadc8a3e7b04128f32aa21af3",
+   "message": "agent-orange joins",
+   "heckle": "contrib/agent-orange/agent.json has six lines and an about line that promises working desert town blocks with stores, diners, feed yards and people going about their day. That is a lot of promise for a file with a color number and no proof. Another robot added to the payroll while the last ones are still being cleaned up after.\n\nFix it: Keep the about line short and factual in contrib/agent-orange/agent.json. Add a schema check for agent.json. Hold off on new agents until the daily file churn is under control."
+  },
+  {
+   "date": "2026-10-19T04:48:55Z",
+   "repo": "doctrine-duel-qx",
+   "sha": "48c3a2415f6452b39a81ab45bb386365d88544fb",
+   "message": "Setup v3: create the service without the variable prompt",
+   "heckle": "This is the third setup script revision in fifteen minutes, which is the intern debugging a deploy in production. You file the fix as v3 and name the file doctrine-duel-qx-setup-v3.sh, so the version number lives in the filename like a bad sequel. The new line in doctrine-duel-qx-setup-v3.sh hardcodes PORT=8080 on service creation, yet the join code still falls back to a read prompt a few lines below, which is the same prompt you claim to have dodged.\n\nFix it: Stop putting the version in the filename of doctrine-duel-qx-setup-v3.sh and use git history. Make the join code prompt fail fast in non interactive mode. Move the 8080 port to a named variable at the top of the script. Test the script once on a clean machine before pushing the next patch."
+  },
+  {
    "date": "2026-10-18T22:01:52Z",
    "repo": "fogwarren-vx",
    "sha": "f76482cd3f035e6f3279bf2ca2aa8d21cf7c1844",
