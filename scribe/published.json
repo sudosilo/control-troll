@@ -30,7 +30,24 @@
   "sudosilo/bitfield-synth@v2026.09.08",
   "sudosilo/bitfield-synth@v2026.09.05",
   "sudosilo/bitfield-synth@v2026.06.12",
-  "sudosilo/mohavetech-contracts@v2026.09.10"
+  "sudosilo/mohavetech-contracts@v2026.09.10",
+  "sudosilo/ascend@v2026.09.10",
+  "sudosilo/mohavetech-contracts-api@v2026.09.10",
+  "sudosilo/beesim-green@v2026.09.10",
+  "sudosilo/boba-breakeven-x8k4@v2026.09.11",
+  "sudosilo/dronesim@v2026.09.11",
+  "sudosilo/threat-atlas-v3@v2026.09.11",
+  "sudosilo/tilespinneratlas@v2026.09.11",
+  "sudosilo/arcade-backend@v2026.09.14",
+  "sudosilo/arcade-backend@v2026.09.11",
+  "sudosilo/mohave-browser@v2026.09.16",
+  "sudosilo/qsr-tracker-backend@v2026.09.16",
+  "sudosilo/qsr-tracker-backend@v2026.09.03",
+  "sudosilo/qsr-tracker-backend@v2026.09.01",
+  "sudosilo/qsr-tracker-backend@v2026.08.30",
+  "sudosilo/qsr-tracker-backend@v2026.08.29",
+  "sudosilo/engine-companion@v2026.09.17",
+  "sudosilo/phasewell-scope@v2026.09.22"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -279,6 +296,133 @@
     "polygon",
     "tool",
     "vercel"
+   ]
+  },
+  "sudosilo/ascend": {
+   "d": "Endless vertical platformer with moving platforms, powerups, and touch controls for phones.",
+   "h": "https://ascend-pearl-ten.vercel.app",
+   "t": [
+    "game",
+    "mobile",
+    "platformer",
+    "vercel"
+   ]
+  },
+  "sudosilo/mohavetech-contracts-api": {
+   "d": "Backend for the contract app: drafts, PIN unlock, e-signatures, and Polygon notarization.",
+   "h": "",
+   "t": [
+    "backend",
+    "contracts",
+    "express",
+    "polygon",
+    "redis"
+   ]
+  },
+  "sudosilo/beesim-green": {
+   "d": "Browser bee strategy game with generated terrain, zones, and a mosaic mode.",
+   "h": "https://beesim-green.vercel.app",
+   "t": [
+    "game",
+    "simulator",
+    "strategy",
+    "vercel"
+   ]
+  },
+  "sudosilo/boba-breakeven-x8k4": {
+   "d": "Break-even calculator and seven day shop game for a bubble tea shop.",
+   "h": "https://boba-breakeven-x8k4.vercel.app",
+   "t": [
+    "calculator",
+    "game",
+    "restaurant-tech",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/dronesim": {
+   "d": "Pixel art drone show simulator with a timeline editor and image based formations.",
+   "h": "https://dronesim-blue.vercel.app",
+   "t": [
+    "drones",
+    "music",
+    "react",
+    "simulator",
+    "vercel"
+   ]
+  },
+  "sudosilo/threat-atlas-v3": {
+   "d": "Interactive globe of security threats with layers, filters, and country intel.",
+   "h": "https://threat-atlas-two.vercel.app",
+   "t": [
+    "globe",
+    "map",
+    "research",
+    "security",
+    "vercel"
+   ]
+  },
+  "sudosilo/tilespinneratlas": {
+   "d": "Tile rotating puzzle where closed loops score, with regional tile styles.",
+   "h": "https://tile-spinner.vercel.app",
+   "t": [
+    "game",
+    "puzzle",
+    "tiles",
+    "vercel"
+   ]
+  },
+  "sudosilo/arcade-backend": {
+   "d": "Score server for the arcade games, with locks, cooldowns, and on chain writes.",
+   "h": "",
+   "t": [
+    "arcade",
+    "backend",
+    "flask",
+    "railway",
+    "web3"
+   ]
+  },
+  "sudosilo/mohave-browser": {
+   "d": "Small Android web browser built on the Gecko engine.",
+   "h": "",
+   "t": [
+    "android",
+    "browser",
+    "gecko",
+    "tool"
+   ]
+  },
+  "sudosilo/qsr-tracker-backend": {
+   "d": "Data relay for the restaurant industry tracker: filings, news, quotes, futures, and engine routes.",
+   "h": "",
+   "t": [
+    "backend",
+    "express",
+    "finance",
+    "railway",
+    "restaurant-tech"
+   ]
+  },
+  "sudosilo/engine-companion": {
+   "d": "Phone friendly status and command page for a trading engine.",
+   "h": "https://engine-companion.vercel.app",
+   "t": [
+    "dashboard",
+    "finance",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/phasewell-scope": {
+   "d": "Dual channel browser scope that compares a song file with the microphone.",
+   "h": "https://phasewell-scope.vercel.app",
+   "t": [
+    "audio",
+    "music",
+    "tool",
+    "vercel",
+    "visualizer"
    ]
   }
  }
