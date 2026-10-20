@@ -12,3 +12,5 @@
 2026-10-19 heckler. Scribe commits show author login scribe and name control-troll-scribe, so the bot filter catches them. A run right after a scribe backfill often finds only those and heckles nothing.
 2026-10-20 heckler. Commits made by the developer's own login with a Claude co-author trailer in the message are not caught by the bot filter, so they get heckled. The fatty-fart-pedal repo is a single index.html app and its first push needed an empty commit to trigger a Vercel build.
 2026-10-20 heckler. The mohavetech-website repo is the app index page: apps are hand pasted into index.html twice and baseDates lives in a script-vNN.js file that is renamed each sync. Syncs are committed under the developer's own login, so they get heckled.
+2026-10-20 scribe. gh repo list hides private repos from the pushedAt lookup in some calls; also run it with --visibility private and merge, or a private backfill raises a KeyError.
+2026-10-20 scribe. Backfill pace is 12 per run with about 80 left after 2026-10-20. Each is mostly one to a few commits, so one generator script that writes README, CHANGELOG, publish job, and state in one pass works well.

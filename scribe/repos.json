@@ -587,8 +587,13 @@
       "apps": [],
       "urls": [],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Backends and Infrastructure",
+      "summary": "Catalog service that serves random playable conference clips to the player.",
+      "name": "Hackercons Roulette API",
+      "latest": {
+        "date": "2026-10-04",
+        "text": "Created the clip catalog backend. A fix the same day made the random pick truly random."
+      }
     },
     "hackercons-roulette": {
       "apps": [
@@ -598,8 +603,13 @@
         "https://hackercons-roulette.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Music and Visualizers",
+      "summary": "Player that serves random short clips from hacker conference talks.",
+      "name": "Hackercons Roulette",
+      "latest": {
+        "date": "2026-10-04",
+        "text": "Created the clip player, version two, with stumble and guess modes."
+      }
     },
     "pancake-orange": {
       "apps": [
@@ -609,8 +619,13 @@
         "https://pancake-orange.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Tap pancakes before they burn in a growing grill game.",
+      "name": "Pancake Orange",
+      "latest": {
+        "date": "2026-10-04",
+        "text": "Created the pancake game."
+      }
     },
     "topo-wars": {
       "apps": [
@@ -620,8 +635,13 @@
         "https://topo-wars.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Turn based war game played on real map terrain with computer, friend, and zombie modes.",
+      "name": "Topo Wars",
+      "latest": {
+        "date": "2026-10-03",
+        "text": "Added a commander aura and a howitzer fortress. Computer opponents now scout and grab land, and up to four can play at once. Added tanks, mine drones, a chinook, and two kill grenades. The enemy commander now hides with no last seen marker."
+      }
     },
     "topo-wars-server": {
       "apps": [
@@ -642,8 +662,13 @@
         "https://shitty-ass-finance.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Tools",
+      "summary": "Splits a paycheck into bills and spending buckets with fixed rules.",
+      "name": "Paycheck Hub",
+      "latest": {
+        "date": "2026-10-02",
+        "text": "First deploy of the paycheck hub."
+      }
     },
     "pajamastan-warrants": {
       "apps": [
@@ -653,8 +678,13 @@
         "https://pajamastan-warrants.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Pajamastan",
+      "summary": "Public record page that lists the active warrants docket and checks for new ones.",
+      "name": "Pajamastan Warrants",
+      "latest": {
+        "date": "2026-10-02",
+        "text": "First deploy of the warrants page and the backend that keeps its docket current."
+      }
     },
     "note-note-note": {
       "apps": [
@@ -664,22 +694,37 @@
         "https://note-note-note.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Tools",
+      "summary": "Turns a picture into colored squares you group into notes and connect with lines.",
+      "name": "Note Note Note",
+      "latest": {
+        "date": "2026-09-29",
+        "text": "Added lines, a mind map, undo for deleted notes, and storage protection. Line colors now show in the top bar while connecting."
+      }
     },
     "topo-war": {
       "apps": [],
       "urls": [],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Early first version of a map based territory war game.",
+      "name": "Territory Control",
+      "latest": {
+        "date": "2026-09-29",
+        "text": "Created the first version of the territory control war game."
+      }
     },
     "signal-snapshot-backend": {
       "apps": [],
       "urls": [],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Backends and Infrastructure",
+      "summary": "Backend that checks price bars for patterns and grades the signals it logs.",
+      "name": "Signal Snapshot Backend",
+      "latest": {
+        "date": "2026-09-28",
+        "text": "Created the signal snapshot backend. It takes in price bars, detects patterns, logs snapshots, grades them, and serves a report. A small deploy fix followed the same day."
+      }
     },
     "signal-snapshot": {
       "apps": [
@@ -689,8 +734,13 @@
         "https://virality-snapshot.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Tools",
+      "summary": "Panel that shows trading signals checked by the signal snapshot backend.",
+      "name": "Signal Snapshot",
+      "latest": {
+        "date": "2026-09-28",
+        "text": "Created the signal snapshot panel with live, graded, and report views."
+      }
     },
     "diamond-driller": {
       "apps": [
@@ -700,15 +750,25 @@
         "https://diamond-driller.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Tools",
+      "summary": "Turns a picture into a numbered color-by-number drill pattern with printable pages.",
+      "name": "Diamond Driller",
+      "latest": {
+        "date": "2026-09-25",
+        "text": "Created the spot pattern maker. Added the 447 color standard and smaller patterns and pages. Sheets now fill exactly with a centered crop and a true size PDF. Millimeter rulers now run along the top and left edges."
+      }
     },
     "web-press-simulator": {
       "apps": [],
       "urls": [],
       "private": true,
-      "category": null,
-      "summary": null
+      "category": "Field and Equipment",
+      "summary": "Training simulator for a web printing press with settings, dryers, alarms, and maintenance screens.",
+      "name": "Web Press Simulator",
+      "latest": {
+        "date": "2026-09-25",
+        "text": "Created the web press simulator. It showed press settings, dryers, alarms, and preventive maintenance, in English and French."
+      }
     },
     "scope-listener": {
       "apps": [
@@ -1385,6 +1445,13 @@
       "summary": null
     },
     "stackloom-meta": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "fatty-fart-pedal": {
       "apps": [],
       "urls": [],
       "private": false,

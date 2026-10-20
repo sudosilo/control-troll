@@ -1,243 +1,54 @@
 {
  "jobs": [
   {
-   "repo": "ascend",
+   "repo": "web-press-simulator",
    "releases": [
     {
-     "tag": "v2026.09.10",
-     "target": "65afcee198e28ef63e047769e61eb1a35e0ef8e0",
-     "name": "Ascend 2026-09-10",
-     "body": "First release. Ascend is a vertical climbing game with generated platforms, coins, gems, and powerups. It works with touch controls on a phone."
+     "tag": "v2026.09.25",
+     "target": "f0a7a3f52f3d972f86e5a68e2a6c0d63152b6433",
+     "name": "Web Press Simulator 2026-09-25",
+     "body": "Created the web press simulator. It showed press settings, dryers, alarms, and preventive maintenance, in English and French."
     }
    ],
-   "description": "Endless vertical platformer with moving platforms, powerups, and touch controls for phones.",
-   "homepage": "https://ascend-pearl-ten.vercel.app",
-   "topics": [
-    "game",
-    "platformer",
-    "mobile",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "mohavetech-contracts-api",
-   "releases": [
-    {
-     "tag": "v2026.09.10",
-     "target": "1bbe431748a26c5f91e3c40c29c5af7262f2aff6",
-     "name": "Contracts API 2026-09-10",
-     "body": "Created the contracts backend in six stages. It started with health and draft routes, then added a public record, PIN unlock, and a Redis lockout after bad guesses. Assistant routes, real Polygon notarization, and in-house e-signatures followed. The assistant now gives clear errors, times out, and limits each visitor. Signing no longer mints automatically, and minting is its own step."
-    }
-   ],
-   "description": "Backend for the contract app: drafts, PIN unlock, e-signatures, and Polygon notarization.",
+   "description": "Private training simulator for a web printing press, in English and French.",
    "homepage": "",
-   "topics": [
-    "backend",
-    "contracts",
-    "polygon",
-    "redis",
-    "express"
-   ]
-  },
-  {
-   "repo": "beesim-green",
-   "releases": [
-    {
-     "tag": "v2026.09.10",
-     "target": "bec2586d0dc012b17cfde02a337c9c39b2fb298b",
-     "name": "Bee Sim 2026-09-10",
-     "body": "First release. Bee Sim shipped as a single static page. The deploy setup was reworked several times until the page loaded from the root of the site."
-    }
-   ],
-   "description": "Browser bee strategy game with generated terrain, zones, and a mosaic mode.",
-   "homepage": "https://beesim-green.vercel.app",
-   "topics": [
-    "game",
-    "simulator",
-    "strategy",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "boba-breakeven-x8k4",
-   "releases": [
-    {
-     "tag": "v2026.09.11",
-     "target": "c18b9ea9a29a7232a7698758feebaae371abddac",
-     "name": "Boba Break-Even 2026-09-11",
-     "body": "First release. Boba Break-Even calculates cups needed to cover costs. A second update on the same day polished the page."
-    }
-   ],
-   "description": "Break-even calculator and seven day shop game for a bubble tea shop.",
-   "homepage": "https://boba-breakeven-x8k4.vercel.app",
-   "topics": [
-    "restaurant-tech",
-    "tool",
-    "calculator",
-    "game",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "dronesim",
-   "releases": [
-    {
-     "tag": "v2026.09.11",
-     "target": "91f34d503b36d0c1c2cd8cd7358d267e0ff94d97",
-     "name": "Dronesim 2026-09-11",
-     "body": "First release. Dronesim is an operator console for drone shows with a timeline, formations, and optional audio."
-    }
-   ],
-   "description": "Pixel art drone show simulator with a timeline editor and image based formations.",
-   "homepage": "https://dronesim-blue.vercel.app",
    "topics": [
     "simulator",
-    "drones",
-    "music",
-    "react",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "threat-atlas-v3",
-   "releases": [
-    {
-     "tag": "v2026.09.11",
-     "target": "a26cc44843b71d1e20868bed8928817dc1e0fd41",
-     "name": "Threat Atlas 2026-09-11",
-     "body": "First release. Threat Atlas shows a rotating globe with layered threat data and country intel."
-    }
-   ],
-   "description": "Interactive globe of security threats with layers, filters, and country intel.",
-   "homepage": "https://threat-atlas-two.vercel.app",
-   "topics": [
-    "map",
-    "research",
-    "security",
-    "globe",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "tilespinneratlas",
-   "releases": [
-    {
-     "tag": "v2026.09.11",
-     "target": "5ca27dbb0320f9fa4349e94cb0464c54922273bd",
-     "name": "Atlas of Tiles 2026-09-11",
-     "body": "First release. Atlas of Tiles lets players rotate tiles to close loops, with several regional tile styles."
-    }
-   ],
-   "description": "Tile rotating puzzle where closed loops score, with regional tile styles.",
-   "homepage": "https://tile-spinner.vercel.app",
-   "topics": [
-    "game",
-    "puzzle",
-    "tiles",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "arcade-backend",
-   "releases": [
-    {
-     "tag": "v2026.09.14",
-     "target": "6000eecb6b3a51b29d3699a3d54cc7453144f106",
-     "name": "Arcade Backend 2026-09-14",
-     "body": "Version 2 now locks every on chain write so two scores can never reuse the same number. Each game and each player has a lock, and players wait through a cooldown between submissions. Every submission is logged with its outcome for audit."
-    },
-    {
-     "tag": "v2026.09.11",
-     "target": "2a91d55b0dbd0aa8ce0c8ebae38efc7549d0ad13",
-     "name": "Arcade Backend 2026-09-11",
-     "body": "First release. The arcade backend accepts scores for registered games and writes them on chain."
-    }
-   ],
-   "description": "Score server for the arcade games, with locks, cooldowns, and on chain writes.",
-   "homepage": "",
-   "topics": [
-    "backend",
-    "railway",
-    "flask",
-    "arcade",
-    "web3"
-   ]
-  },
-  {
-   "repo": "mohave-browser",
-   "releases": [
-    {
-     "tag": "v2026.09.16",
-     "target": "11dff3961b13c7414e504d548dfdaaea3fa5f6c2",
-     "name": "Mohave Browser 2026-09-16",
-     "body": "First build of the browser. The build setup was trimmed and updated for the newest Gecko engine."
-    }
-   ],
-   "description": "Small Android web browser built on the Gecko engine.",
-   "homepage": "",
-   "topics": [
-    "android",
-    "browser",
     "tool",
-    "gecko"
+    "training"
    ]
   },
   {
-   "repo": "qsr-tracker-backend",
+   "repo": "diamond-driller",
    "releases": [
     {
-     "tag": "v2026.09.16",
-     "target": "a1669d33ff5c2d6ea7a14a26db616379fd4a9676",
-     "name": "QSR Tracker Backend 2026-09-16",
-     "body": "Added engine routes for a snapshot, a ledger, a heartbeat, and a two way command queue."
-    },
-    {
-     "tag": "v2026.09.03",
-     "target": "134e594f5ad01f47a20a98485af1d1649f9fdb54",
-     "name": "QSR Tracker Backend 2026-09-03",
-     "body": "Added a food network news relay and a congressional trading disclosure relay. Fixed a lockfile problem that was blocking the last deploy."
-    },
-    {
-     "tag": "v2026.09.01",
-     "target": "d824e58daa11ad9d389889d800591d42fa5a4f75",
-     "name": "QSR Tracker Backend 2026-09-01",
-     "body": "Added insider filing support to the SEC relay."
-    },
-    {
-     "tag": "v2026.08.30",
-     "target": "4ffc8e3565b90907db3754cb818367c5d038090d",
-     "name": "QSR Tracker Backend 2026-08-30",
-     "body": "Added a shared quote relay that stretches across visitors. Quote and history requests now batch into one call and warm the whole ticker list on open. Batches cap at the free credit limit and defer the rest."
-    },
-    {
-     "tag": "v2026.08.29",
-     "target": "3214f936fd76ad615d450331bc70b6e14d66d8f4",
-     "name": "QSR Tracker Backend 2026-08-29",
-     "body": "Created the backend. It started with SEC filings, economic data, tariffs, and magazine news. Added device sync and a scheduled refresh. Fixed filing numbers, feed titles, and filing links. Added futures prices for commodities with a real exchange contract."
+     "tag": "v2026.09.25",
+     "target": "cc806dea731ae43e4c2cd08c23b738e2783a2f16",
+     "name": "Diamond Driller 2026-09-25",
+     "body": "Created the spot pattern maker. Added the 447 color standard and smaller patterns and pages. Sheets now fill exactly with a centered crop and a true size PDF. Millimeter rulers now run along the top and left edges."
     }
    ],
-   "description": "Data relay for the restaurant industry tracker: filings, news, quotes, futures, and engine routes.",
-   "homepage": "",
+   "description": "Turns a picture into a numbered DMC color drill pattern with printable pages.",
+   "homepage": "https://diamond-driller.vercel.app",
    "topics": [
-    "backend",
-    "railway",
-    "restaurant-tech",
-    "finance",
-    "express"
+    "tool",
+    "crafts",
+    "pattern",
+    "vercel"
    ]
   },
   {
-   "repo": "engine-companion",
+   "repo": "signal-snapshot",
    "releases": [
     {
-     "tag": "v2026.09.17",
-     "target": "992f760c1dfa8fbf7a404b4c228a8e120330d52f",
-     "name": "Engine Companion 2026-09-17",
-     "body": "First release. The companion shows engine status and lets the owner pause, resume, or flatten from one page."
+     "tag": "v2026.09.28",
+     "target": "586d0d03b0e83adb7ce4bcfca2a51811628adf0f",
+     "name": "Signal Snapshot 2026-09-28",
+     "body": "Created the signal snapshot panel with live, graded, and report views."
     }
    ],
-   "description": "Phone friendly status and command page for a trading engine.",
-   "homepage": "https://engine-companion.vercel.app",
+   "description": "Panel that shows live, graded, and report views of market signals.",
+   "homepage": "https://virality-snapshot.vercel.app",
    "topics": [
     "tool",
     "finance",
@@ -246,23 +57,197 @@
    ]
   },
   {
-   "repo": "phasewell-scope",
+   "repo": "signal-snapshot-backend",
    "releases": [
     {
-     "tag": "v2026.09.22",
-     "target": "9ea4e9b2744e0f0ca82d06f5f1363b49208d318d",
-     "name": "Phasewell Scope 2026-09-22",
-     "body": "First release. The scope compares a song file with the microphone in several views. Seven updates the same day refined the controls."
+     "tag": "v2026.09.28",
+     "target": "ac7bcc8a1b0120ddf82e2048e0a000d2796f4294",
+     "name": "Signal Snapshot Backend 2026-09-28",
+     "body": "Created the signal snapshot backend. It takes in price bars, detects patterns, logs snapshots, grades them, and serves a report. A small deploy fix followed the same day."
     }
    ],
-   "description": "Dual channel browser scope that compares a song file with the microphone.",
-   "homepage": "https://phasewell-scope.vercel.app",
+   "description": "Backend that checks price bars for patterns, logs signals, and grades them.",
+   "homepage": "",
    "topics": [
-    "music",
-    "visualizer",
-    "audio",
+    "backend",
+    "finance",
+    "railway",
+    "python"
+   ]
+  },
+  {
+   "repo": "topo-war",
+   "releases": [
+    {
+     "tag": "v2026.09.29",
+     "target": "da0144e24d0d5624de498642f79d7eb4877a8a43",
+     "name": "Territory Control 2026-09-29",
+     "body": "Created the first version of the territory control war game."
+    }
+   ],
+   "description": "First version of a map based turn strategy game that became Topo Wars.",
+   "homepage": "",
+   "topics": [
+    "game",
+    "strategy",
+    "map"
+   ]
+  },
+  {
+   "repo": "note-note-note",
+   "releases": [
+    {
+     "tag": "v2026.09.29",
+     "target": "4cf6608004db41e9f44463d0711f5e707b58ee37",
+     "name": "Note Note Note 2026-09-29",
+     "body": "Added lines, a mind map, undo for deleted notes, and storage protection. Line colors now show in the top bar while connecting."
+    },
+    {
+     "tag": "v2026.09.28",
+     "target": "36771670264aba785a0b2ca4bedd0e07d3fc4f41",
+     "name": "Note Note Note 2026-09-28",
+     "body": "Created shaped sticky notes on a picture with notes inside notes. Added huge grids, database storage, picture adjust, and DMC colors. Touching notes of the same color now join. Added an Out button and a pinch out to leave a note. Added a search menu, and text now continues into the square below."
+    }
+   ],
+   "description": "Turns a picture into colored squares you group into notes and link with lines.",
+   "homepage": "https://note-note-note.vercel.app",
+   "topics": [
     "tool",
+    "notes",
+    "mobile",
     "vercel"
+   ]
+  },
+  {
+   "repo": "pajamastan-warrants",
+   "releases": [
+    {
+     "tag": "v2026.10.02",
+     "target": "fce6e90458b7fd6b4fa298b3ff7c2a41493c25d4",
+     "name": "Pajamastan Warrants 2026-10-02",
+     "body": "First deploy of the warrants page and the backend that keeps its docket current."
+    }
+   ],
+   "description": "Public record page listing the active warrants docket with new entries flagged.",
+   "homepage": "https://pajamastan-warrants.vercel.app",
+   "topics": [
+    "pajamastan",
+    "public-records",
+    "backend",
+    "python"
+   ]
+  },
+  {
+   "repo": "paycheck-hub",
+   "releases": [
+    {
+     "tag": "v2026.10.02",
+     "target": "cc823494d654536e10b398100d008520d36d3946",
+     "name": "Paycheck Hub 2026-10-02",
+     "body": "First deploy of the paycheck hub."
+    }
+   ],
+   "description": "Splits a paycheck into bills and spending buckets with fixed rules.",
+   "homepage": "https://shitty-ass-finance.vercel.app",
+   "topics": [
+    "tool",
+    "finance",
+    "budget",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "topo-wars",
+   "releases": [
+    {
+     "tag": "v2026.10.03",
+     "target": "4c38f6fe4bd57aa29659b19f7611283e6217a070",
+     "name": "Topo Wars 2026-10-03",
+     "body": "Added a commander aura and a howitzer fortress. Computer opponents now scout and grab land, and up to four can play at once. Added tanks, mine drones, a chinook, and two kill grenades. The enemy commander now hides with no last seen marker."
+    },
+    {
+     "tag": "v2026.10.01",
+     "target": "a5436f50a4d1325a0e6b64834d9850d7513a4f92",
+     "name": "Topo Wars 2026-10-01",
+     "body": "Added a bomber with a send bomber button. You can keep playing zombies, and tapping hitches and boards units."
+    },
+    {
+     "tag": "v2026.09.30",
+     "target": "af016601a0b900dc3fa12543aa66fde685a06940",
+     "name": "Topo Wars 2026-09-30",
+     "body": "Added offline play, supply crates, and structures on buildings. Added zombie mode and a machine gun nest. Added buildings, a howitzer, piece pictures, and a gun range square. Placing several pieces in a row and group orders now work. The setup panel is cleaner."
+    },
+    {
+     "tag": "v2026.09.29",
+     "target": "034f81f8f597921051df0a418f2c7ef3a48e8f8a",
+     "name": "Topo Wars 2026-09-29",
+     "body": "Added territory income, jeep drivers, commanders that ride, and road and tread fixes. Added play a friend, surrender, structures, paved roads, and join by code. Pieces, marks, barricades, and structures now face the right way. You can keep playing after a win."
+    }
+   ],
+   "description": "Turn based war game played on real map terrain with computer, friend, and zombie modes.",
+   "homepage": "https://topo-wars.vercel.app",
+   "topics": [
+    "game",
+    "strategy",
+    "map",
+    "simulator",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "pancake-orange",
+   "releases": [
+    {
+     "tag": "v2026.10.04",
+     "target": "19f5722ae392fba85120e746f859ec7d8a1dd138",
+     "name": "Pancake Orange 2026-10-04",
+     "body": "Created the pancake game."
+    }
+   ],
+   "description": "Tap pancakes before they burn in a growing grill game.",
+   "homepage": "https://pancake-orange.vercel.app",
+   "topics": [
+    "game",
+    "arcade",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "hackercons-roulette",
+   "releases": [
+    {
+     "tag": "v2026.10.04",
+     "target": "36e7bdad947bdc626deeab3017c71619bcccc4d3",
+     "name": "Hackercons Roulette 2026-10-04",
+     "body": "Created the clip player, version two, with stumble and guess modes."
+    }
+   ],
+   "description": "Plays random short clips from hacker conference talks with a guessing mode.",
+   "homepage": "https://hackercons-roulette.vercel.app",
+   "topics": [
+    "video",
+    "game",
+    "conferences",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "hackercons-roulette-api",
+   "releases": [
+    {
+     "tag": "v2026.10.04",
+     "target": "5357f9a6e0ecad155470698ddbfdcff96afcf008",
+     "name": "Hackercons Roulette API 2026-10-04",
+     "body": "Created the clip catalog backend. A fix the same day made the random pick truly random."
+    }
+   ],
+   "description": "Catalog service that serves random playable conference clips to the player.",
+   "homepage": "",
+   "topics": [
+    "backend",
+    "railway",
+    "node",
+    "video"
    ]
   }
  ]

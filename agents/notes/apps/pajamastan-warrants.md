@@ -1,0 +1,1 @@
+2026-10-20 scribe. The repo is a Docker FastAPI backend (Playwright scraper) that serves its own HTML page, with no index.html or vercel.json and no GitHub deployments, so a docs push does not touch the live site.
