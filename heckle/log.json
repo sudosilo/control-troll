@@ -1,6 +1,13 @@
 {
   "heckles": [
     {
+      "date": "2026-10-20T08:38:41Z",
+      "repo": "mohavetech-website",
+      "sha": "b80425ff93b0a70abe38c7f6f04ef91d605b2b4d",
+      "message": "sync with vercel, new apps",
+      "heckle": "You hand-edit the same app list twice in index.html, once for the alpha view and once for the other list, then bump a script filename from script-v43.js to script-v44.js like you are versioning a treaty instead of using a build step. Every new app is pasted in by hand, and the baseDates object in the renamed script is another hand kept ledger that already drifted, with control-troll dated 2026-10-19 while it points at a long ugly control-troll-sudosilo2-1771s-projects.vercel.app link. Syncing with Vercel by copy paste is a bailout with no oversight, and the troll.js cache buster is a magic number you typed from a clock. Fire your intern, or at least take away their clipboard.\n\nFix it: Generate the app list in index.html from one data file instead of pasting it into two places. Compute baseDates from the repo push times instead of hand editing script-v44.js. Stop renaming the script every release and use a query string like troll.js does. Point the control-troll link at a stable domain, not the project suffix URL."
+    },
+    {
       "date": "2026-10-20T00:25:35Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "b05b1267683bd12cbde42cb8571f420912df3d01",
