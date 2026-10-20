@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 29172,
+ "duration_api_ms": 89260,
  "stop_reason": "end_turn",
- "session_id": "ba886680-440d-41b1-913c-78404932db7e",
- "total_cost_usd": 0.072269,
+ "session_id": "c23324ed-3aef-4fd2-aa20-5ca51fef938b",
+ "total_cost_usd": 0.22461430000000002,
  "usage": {
-  "input_tokens": 12,
-  "cache_creation_input_tokens": 12011,
-  "cache_read_input_tokens": 123222,
-  "output_tokens": 1165,
+  "input_tokens": 22,
+  "cache_creation_input_tokens": 32144,
+  "cache_read_input_tokens": 311650,
+  "output_tokens": 6470,
   "output_tokens_details": {
-   "thinking_tokens": 44
+   "thinking_tokens": 545
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 12011,
+   "ephemeral_1h_input_tokens": 32144,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 112,
-    "cache_read_input_tokens": 24436,
-    "cache_creation_input_tokens": 366,
+    "output_tokens": 116,
+    "cache_read_input_tokens": 44269,
+    "cache_creation_input_tokens": 666,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 366
+     "ephemeral_1h_input_tokens": 666
     },
     "type": "message"
    }
@@ -40,28 +40,28 @@
  "modelUsage": {
   "claude-haiku-5-5": {
    "inputTokens": 1208,
-   "outputTokens": 216,
+   "outputTokens": 17,
    "cacheReadInputTokens": 0,
    "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.0002288,
+   "costUSD": 0.0001293,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 197,
+   "thinkingTokens": 0,
    "canonicalModel": "claude-haiku-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   },
   "claude-sonnet-5-5": {
-   "inputTokens": 12,
-   "outputTokens": 1165,
-   "cacheReadInputTokens": 123222,
-   "cacheCreationInputTokens": 12011,
+   "inputTokens": 22,
+   "outputTokens": 6470,
+   "cacheReadInputTokens": 311650,
+   "cacheCreationInputTokens": 32144,
    "webSearchRequests": 0,
-   "costUSD": 0.0720402,
+   "costUSD": 0.22448500000000002,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 44,
+   "thinkingTokens": 545,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
@@ -97,17 +97,17 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 6,
+ "num_turns": 11,
  "subtype": "success",
  "api_error_status": null,
- "result": "I heckled 0 commits and wrote no fleet verdict. All 12 repos pushed since the last check had only scribe commits, and the last fleet verdict is under 7 days old.\n\nI set `lastChecked` to this run's start time, added a note to `agents/notes/general.md`, and pushed both to control-troll main as \"heckle log\".",
- "ttft_ms": 2179,
+ "result": "I heckled 10 commits this run and did not write a fleet verdict, since the last one is under 7 days old. The commits are posted as comments and logged in `heckle/log.json`. The `heckle log` commit is pushed to control-troll main.\n\nThere were 17 eligible commits, so the 7 oldest went unheckled because of the 10 per run cap.",
+ "ttft_ms": 2952,
  "type": "result",
- "duration_ms": 37529,
- "uuid": "e50dcee8-67c8-41a5-8d89-473de134dad0",
- "ttft_stream_ms": 1924,
- "time_to_request_ms": 181,
- "first_content_frame_ms": 1924,
+ "duration_ms": 114202,
+ "uuid": "2dffc7c3-a5ef-43cc-8ec7-5ec23b17007c",
+ "ttft_stream_ms": 2696,
+ "time_to_request_ms": 138,
+ "first_content_frame_ms": 2696,
  "queued_turn_count": 0,
  "result_index": 0
 }
