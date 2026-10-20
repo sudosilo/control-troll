@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-19T19:23:16.919Z",
+  "builtAt": "2026-10-20T18:02:01.637Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -74,6 +74,23 @@
       ],
       "knownProblem": null,
       "snapshot": "snapshots/tower-builder-five.html"
+    },
+    {
+      "app": "pajamastan-warrants",
+      "url": "https://pajamastan-warrants.vercel.app",
+      "kind": "down",
+      "since": "2026-10-20",
+      "status": 404,
+      "failing": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "features": [
+        "Page loads the active warrants docket from the backend with count, new in the last 24 hours and last checked time.",
+        "Each warrant lists as a public record entry."
+      ],
+      "knownProblem": null,
+      "snapshot": "snapshots/pajamastan-warrants.html"
     },
     {
       "app": "termbeat",
