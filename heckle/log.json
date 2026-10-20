@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-20T19:17:59Z",
+      "repo": "2026-10-20-orange-dialbeat",
+      "sha": "9d8b20f5dbcb22cca8e3c37b5e99014297773573",
+      "message": "Row preset picker, instrument families with sub menus, new glass wood metal ceramic bass reed fx voices",
+      "heckle": "Four commits in three hours on one index.html and you are still pasting the whole instrument library into a single file like a ransom note. This one drops a ROWLIB object with a hundred hand typed L('ratchet','list','6,8,5,7') calls, which is not a preset system, it is a stress test for whoever has to read it after you. The new .rh vertical label button uses writing-mode plus a 180 degree rotate on a 28px strip, so tapping it on a phone is a coin flip. The .sheet rule got bolted onto #infobox instead of being a real component, so you now have two overlays sharing one selector like a coalition government nobody voted for.\n\nFix it: Split ROWLIB and the voice table out of index.html into their own script file. Make .rh at least 44px wide with a real tap target. Give .sheet its own rule instead of piggybacking on #infobox. Replace the copy pasted wineglass, bottle, and chime voice lines with one generator function."
+    },
+    {
+      "date": "2026-10-20T19:01:05Z",
+      "repo": "2026-10-20-orange-dialbeat",
+      "sha": "7fb0a0b92934d1d3e4e44bb28185d2c8f33cde06",
+      "message": "Sound colors, per-section info buttons, preset menu shows loaded preset",
+      "heckle": "Info buttons, sound colors, and a preset menu that now shows what is loaded, all crammed into one more index.html edit with no thought for the guy on a small phone. You added a 30px round .info button, which is under every sane tap target guideline, and then stacked a fixed full screen #infobox on top that hides with a bare [hidden] override like it is 2009. The .blk.hit rule now uses !important to beat .blk.sel, which tells me you lost a specificity fight with your own stylesheet and decided to cheat. The .hint class you deleted probably still has callers. Great work, the filibuster of CSS.\n\nFix it: Remove the !important on .blk.hit and sort out the selector order. Raise .info to a 44px tap target. Search index.html for leftover .hint markup that lost its style. Move the infobox markup into one reusable sheet element."
+    },
+    {
+      "date": "2026-10-20T18:45:50Z",
+      "repo": "2026-10-20-orange-dialbeat",
+      "sha": "a6c8e0cf2efbea531ca0d5a21b5a9f0f4069aaa9",
+      "message": "Struck materials, gate, choke, chance, follow wheels, advance, row lengths, room, spread, WAV recording",
+      "heckle": "Struck materials, gate, choke, chance, follow wheels, advance, row lengths, room, spread, and WAV recording in one commit. That is not a commit, that is a bailout bill with nine riders stapled to it, and nobody can bisect it when it breaks. The diff rewrites the .qrow grid, moves the .head playhead inside each row, and adds button.rec, all in the same blob as the audio engine changes. Dropping main padding from 24px to 20px for no reason is the kind of fidgeting I expect from someone who cannot sit still during a code review. If WAV recording fails on a browser without the right audio node, I see nothing that tells the user why.\n\nFix it: Split features into separate commits starting with WAV recording in index.html. Show a visible error when recording is unsupported. Test the per row playhead on a narrow phone width. Stop tweaking padding values in drive by edits."
+    },
+    {
+      "date": "2026-10-20T18:33:03Z",
+      "repo": "2026-10-20-orange-dialbeat",
+      "sha": "1555ca077757c3ad4e84df0e065f8aa23187b36b",
+      "message": "Add rows, orange theme, ratchet effects, new sounds, fast presets",
+      "heckle": "You built a drum machine in the first commit, then forty minutes later threw out the entire blue palette for orange like a campaign that rebrands after the polls turn. The :root block in index.html now carries --acc, --accd, --sel, and --hit, and the leftover --blue and --purple names are gone, so I hope you grepped for every var(--blue) because I did not see you do it. Rows are now stacked qrow grids, yet the playhead logic that used one #head element is the kind of thing that breaks silently. Ratchet effects and new sounds shoved into the same commit as a theme swap means a bad color change and a bad audio change share one revert.\n\nFix it: Grep index.html for any remaining var(--blue) or var(--purple) uses. Confirm the single #head playhead was fully replaced for every row. Put theme changes in their own commit. Add a test tap on a phone before pushing."
+    },
+    {
+      "date": "2026-10-20T18:17:44Z",
+      "repo": "field-twin",
+      "sha": "fd16c4c164293e74acfd52b9fd3fe5d84a487c7c",
+      "message": "Android app with auto track, automatic stops, GPS miles and odometer prompts that lock the screen",
+      "heckle": "An Android app with GPS tracking and a screen that locks until the user types an odometer number. Congratulations, you built a hostage situation. In index.html the showOdometer(true) path sets odoLocked and the cancel button is removed entirely, so if the reading is due and the person is driving, they are stuck staring at a form with a focus() timer. The wake function runs on a 60 second setInterval with no cleanup I can see, and you replaced geo.watchPosition with a setInterval wrapper, which is a hack that will chew battery. The build-apps.yml workflow tags versions off github.run_number, so every failed rerun burns a version like a politician burning a promise.\n\nFix it: Add a safe escape or skip path to the locked odometer form in showOdometer. Clear the setInterval timers when tracking stops. Replace the fake watchPosition wrapper with the real API. Version releases from a real tag, not run_number, in .github/workflows/build-apps.yml."
+    },
+    {
+      "date": "2026-10-20T16:44:06Z",
+      "repo": "2026-10-20-orange-dialbeat",
+      "sha": "8fec848058fa8ae3ebb78af7fc060053c646b9cd",
+      "message": "Trigger Vercel production build",
+      "heckle": "Trigger Vercel production build. A commit with zero changed files. You pushed nothing, to a repo with one file in it, to poke a deploy button that you could have clicked with your thumb. This is the legislative equivalent of passing a resolution to hold a meeting about a meeting. Every one of these empty commits sits in history forever, and it tells me the deploy hook for this repo is not connected, or you did not know how to redeploy. I know the first push on your last single file app also needed one of these, so this is a habit, not an accident.\n\nFix it: Connect the repo to Vercel properly so the first push builds without help. Use the dashboard redeploy button or the CLI instead of empty commits. Stop padding history with commits that change nothing. Check the Vercel project root and framework settings."
+    },
+    {
+      "date": "2026-10-20T16:41:09Z",
+      "repo": "2026-10-20-orange-dialbeat",
+      "sha": "fc19edbafbe51a9da619a32e6135cc3045ca9202",
+      "message": "Add Dial Queue drum machine",
+      "heckle": "Add Dial Queue drum machine, the whole thing as one 157 line index.html with CSS, markup, and script mashed together. It is a single file app, which is fine, but the first thing I see is a blue and purple palette that you tossed out an hour later, so why did you commit it at all. The #queue uses a repeat(8,1fr) grid with 64px SVGs, which is going to be cramped on a small phone. The #head playhead is an absolutely positioned div poking 10px out of the top and bottom, so on a narrow screen it clips into the header like an unpaid intern. There is no README, no license, no description, nothing for anyone who lands here.\n\nFix it: Add a README with a one line description for the repo. Make the 8 column grid in #queue wrap or shrink on narrow screens. Clip the #head playhead inside its container. Pick a palette before the first commit."
+    },
+    {
+      "date": "2026-10-20T16:15:27Z",
+      "repo": "chromahum-zq",
+      "sha": "618fd2ab6ba68798c3fbb66962f9c59a06950fbb",
+      "message": "ChromaHum v9: pattern backdrops on the infinite canvas",
+      "heckle": "ChromaHum v9 adds pattern backdrops on the infinite canvas, and you hand edit a version string in a footer span every single commit. This is the eighth numbered commit of the day in a repo with one HTML file, so the commit log is just a countdown timer. The new cvBgCanvas is redrawn per frame in the draw path with a drawImage call, and setCvBg calls resetMotion() on every backdrop change, which will wipe whatever the user was doing like a budget reset. The upload backdrop is dropped on reload with k=upload turned back to none, which is quietly lost data. The hint paragraph under the canvas is now a wall of text.\n\nFix it: Drive the footer version from one constant instead of editing the span by hand. Keep the backdrop upload across reloads or tell the user it will vanish. Avoid calling resetMotion() in setCvBg unless the motion truly needs it. Cut the hint text under cvBgSel to one line."
+    },
+    {
+      "date": "2026-10-20T15:57:30Z",
+      "repo": "chromahum-zq",
+      "sha": "90193e8a1a9c97dfe013c5a3c41cc4d4afc2b459",
+      "message": "ChromaHum v8: anti pop audio chain",
+      "heckle": "Anti pop audio chain, where you wrapped the master gain in a highpass, a compressor, a tanh waveshaper built from a 2048 sample loop, and an extra output gain, and still call it v8. The curve array is rebuilt every time startAudio runs, which is fine once, but it shows you copy pasted a distortion recipe without asking if the app needed distortion. The master gain starts at zero and ramps with setTargetAtTime, then later in the start handler you cancel and reschedule it, so two ramps are fighting over one param like two parties over a debt ceiling. Compressor settings of threshold minus 20 and ratio 8 will squash every synth chord you play into mush.\n\nFix it: Build the waveshaper curve once outside startAudio in index.html. Use one gain ramp owner instead of two competing setTargetAtTime calls. Remove the tanh shaper unless a pop actually needs it. Test with a loud chord, not just one quiet voice."
+    },
+    {
+      "date": "2026-10-20T15:52:56Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "f0f28116885f95412dbcae5a3507d3a03c68fa2e",
+      "message": "detailer 2026-10-20 (#22)",
+      "heckle": "Another day, another robot pull request merged by the owner with the web button, this time a detailer run that rewrites one line of minified JSON in contrib/detailer/2026-10-20.json. The file is a single line with a giant place_line array of raw coordinates with zero context in the diff, so a human reviewing it learns nothing and the PR number 22 means nothing. A decomposed granite trail bent around a soccer pitch is a lovely sentence, but it is stored as a thousand integers nobody can eyeball.\n\nFix it: Pretty print the contrib JSON so diffs show per call changes. Have the agent write a short summary line into the PR body. Reject PRs where the calls array is empty or unchanged."
+    },
+    {
       "date": "2026-10-20T08:38:41Z",
       "repo": "mohavetech-website",
       "sha": "b80425ff93b0a70abe38c7f6f04ef91d605b2b4d",
