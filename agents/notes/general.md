@@ -10,3 +10,4 @@
 2026-10-19 scribe. Repos that already have scribe docs show a newer pushedAt than lastSeenPush only because of the scribe's own push. Their new commits are all docs: scribe, so just refresh lastSeenPush.
 2026-10-19 fixer. The 3-day skip rule applies: snapshot-engine-pied (repo not found) and topo-wars-server (PR 1 open, awaiting merge) were skipped on 2026-10-19.
 2026-10-19 heckler. Scribe commits show author login scribe and name control-troll-scribe, so the bot filter catches them. A run right after a scribe backfill often finds only those and heckles nothing.
+2026-10-20 heckler. Commits made by the developer's own login with a Claude co-author trailer in the message are not caught by the bot filter, so they get heckled. The fatty-fart-pedal repo is a single index.html app and its first push needed an empty commit to trigger a Vercel build.

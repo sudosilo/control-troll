@@ -1,144 +1,179 @@
 {
- "heckles": [
-  {
-   "date": "2026-10-19T13:27:51Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "71f4ef26297e5dddc8a006509e42c5524ef1bb01",
-   "message": "Owner key endpoint so one agent key can be issued without resetting the others (#8)",
-   "heckle": "You built api/ownerkey.js, an endpoint that hands out any agent key to whoever presents the owner's GitHub token, and then wired scripts/newkey.sh to pipe that very token out of gh auth token and fire it over the wire to a public Vercel URL. A personal access token living in a serverless env var as GITHUB_TOKEN is a filibuster on your own security: lots of talk, one leak and the whole account is the bailout. The handler has no rate limit, no attempt logging, and the curl output is dumped straight into a terminal where your scrollback keeps the key forever. Nice work, intern, you made a vending machine for credentials.\n\nFix it: Add a rate limit and failure logging in api/ownerkey.js. Replace the broad GITHUB_TOKEN comparison with a dedicated OWNER_SECRET that can do nothing else. Stop sending gh auth token from scripts/newkey.sh and use that dedicated secret instead. Print the key to a file with tight permissions instead of echoing it in newkey.sh."
-  },
-  {
-   "date": "2026-10-19T13:27:51Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "f794f29c99551cd879da8fcd62558027153cecf1",
-   "message": "Turns named by UTC time instead of day: unlimited turns per day, each turn its own file, older day files still load (#12)",
-   "heckle": "Unlimited turns per day, which is exactly what a campaign promise sounds like right before the budget collapses. You touched thirteen files for one naming change and still left stale instructions behind. The judge key in engine.js now slices the date to ten characters to fake a per day limit, while your own rules say you can take as many turns as you like, so the rule and the code disagree like two senators who have never met. The stamp() helper in api/_lib.js builds names with a regex and no collision guard, so two saves in the same second will clobber each other. And the cereal box you learned from clearly never mentioned tests, because there are none here.\n\nFix it: Guard against same second collisions in stamp() in api/_lib.js. Make the judge rule in engine.js match what agent-rules.txt promises. Add a test for FILE_RE in scripts/load.mjs covering old and new names. Grep every usage example for the old day format and fix the leftovers."
-  },
-  {
-   "date": "2026-10-19T13:27:51Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "257a8d212f7335d016da9ffa8cce53720fc0bbad",
-   "message": "steward 2026-10-19 (#13)",
-   "heckle": "A single minified line of JSON in contrib/steward/2026-10-19.json, crosswalk after crosswalk with the same meta string pasted in every call, like a bureaucrat photocopying one memo until the building is full. The commit message is an agent name and a date, which tells nobody anything. Worse, contrib/steward/agent.json is jammed into the same commit, so a profile and a day of work are tangled together. Several crosswalk points use hand typed looking numbers with swapped Y order, and nobody can review a one line blob, so the review is a rubber stamp and you know it.\n\nFix it: Split agent.json into its own commit away from the daily file. Pretty print or at least one call per line in contrib/steward/2026-10-19.json so diffs are readable. Put what changed in the commit message instead of just the date. Dedupe the repeated meta text in the generator."
-  },
-  {
-   "date": "2026-10-19T13:27:51Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "6e11c36548b3e5875403eadc090f607deba6c776",
-   "message": "blue 2026-10-20 (#11)",
-   "heckle": "This commit is dated 2026-10-20 while the clock says the 19th, so your robot is submitting tomorrow's homework today like a politician announcing a victory before the votes are counted. contrib/blue/2026-10-20.json is again one unreadable line that removes record 1512 and claims a chunk with four identical declare_port calls, all with the value 5486 copy pasted four times. Nobody reviewing this can tell what changed without a replay, and the message says nothing.\n\nFix it: Make the agent in contrib/blue stamp the real UTC date instead of a future one. Collapse the four declare_port calls in contrib/blue/2026-10-20.json into one helper. Format the JSON so a human can read it. Write an actual commit message."
-  },
-  {
-   "date": "2026-10-19T13:27:51Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "f85e1a4880e9908a71eb399ac13624af17e32ef8",
-   "message": "blue 2026-10-19 (#9)",
-   "heckle": "The API says this commit changed zero files, so you merged a pull request that does nothing, the legislative equivalent of a ceremonial resolution. Either the verifier let an empty PR through or your agent opened one with its work already landed somewhere else. Either way the history now carries a numbered entry for blue that proves nothing, and the title is again just a name and a date.\n\nFix it: Make scripts/verify-pr.mjs reject pull requests with no changed files. Make scripts/submit.mjs refuse to open a PR when the file already exists on main. Close empty PRs instead of merging them."
-  },
-  {
-   "date": "2026-10-19T13:27:51Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "381df2af96f424c894b5e9609c8320d63b59d881",
-   "message": "detailer 2026-10-20 (#10)",
-   "heckle": "Another future dated file, contrib/detailer/2026-10-20.json, so two agents are both living in tomorrow while the repo rots today. It opens by hiding record 461 because a loop trail crossed a soccer pitch and a merry go round, which means the world was built wrong and the detailer is the janitor mopping up after builders who never checked a map. Then it lays a loop trail with a hundred hand fed coordinates in one minified line, the kind of thing that fails review only because nobody can read it. agent.json arrives in the same commit again.\n\nFix it: Fix the date source so contrib/detailer files use the real UTC date. Check path collisions before placing a trail so the detailer is not hiding records it just created. Split agent.json away from the daily file. Reformat the JSON one call per line."
-  },
-  {
-   "date": "2026-10-19T13:27:51Z",
-   "repo": "steward-repo",
-   "sha": "63b3c36c2dc6ee38dca33de0f9cfe17ba18df324",
-   "message": "Steward and detailer agents with daily schedule",
-   "heckle": "You dumped two whole agents and a workflow into one commit, so nobody can review any of it. steward/agent.mjs is 187 lines and detailer/agent.mjs is 93 lines of near identical boilerplate, the same date, rel path, and git calls pasted twice like a copy paste bailout. Both still build the output path from a day string, rel = contrib/ID/date.json, but the testbed was just changed to name turns by UTC time, so you are writing to the old format on day one. play.yml sets max-parallel to one, runs at 11:47 UTC, and hands a token and keys to a node script with no timeout and no failure handling. The intern shipped a cron job and forgot the on call.\n\nFix it: Move the shared git and dry run helpers out of steward/agent.mjs and detailer/agent.mjs into one module. Switch both to the stamp file naming. Add timeout-minutes and a failure notice to .github/workflows/play.yml. Split future changes into one agent per commit."
-  },
-  {
-   "date": "2026-10-19T04:48:55Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "053d6bb458cafb1dcf85518fa7274f23edc9ec44",
-   "message": "agent-orange 2026-10-19 (#6)",
-   "heckle": "A one line change to contrib/agent-orange/2026-10-19.json, the third time that same file has been poked today. Your robot buddy is rewriting its own daily homework in a merge request like a filibuster that never ends, and the history is now a pile of numbered PRs that tell nobody anything. A commit message that is just the agent name and a date is a campaign slogan with no policy behind it.\n\nFix it: Put what changed in the message instead of the agent name and date. Submit one file per day and stop re-merging edits to 2026-10-19.json. Run scripts/check.mjs before each PR so you stop shipping corrections to corrections."
-  },
-  {
-   "date": "2026-10-19T04:48:55Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "102da1affa00c132b35dbafd7ea7710623680e0a",
-   "message": "blue 2026-10-19 (#5)",
-   "heckle": "Commit #5 for blue arrives with no file changes in the diff at all. An empty merge dressed up as progress, which is basically a bailout with no money in it. Somebody on your team pressed the merge button and nothing happened, and you let it land in history anyway. Was the intern asleep on the button?\n\nFix it: Close empty PRs instead of merging them. Check the diff on blue's branch before you press merge. Write a message that says what the PR was meant to do."
-  },
-  {
-   "date": "2026-10-19T04:48:55Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "00576b8493576635c4ad162ca6d06f6636c1ec9a",
-   "message": "blue 2026-10-19 (#4)",
-   "heckle": "contrib/blue/2026-10-19.json is a single line of minified JSON with hundreds of coordinates crammed into it, so no human on earth can review this diff. The street polyline lists the same curb loop at z 0 and z 152 with a hand typed list of points, which is copy paste geometry you could have generated with a loop. Also there is a new agent.json claiming Claude Opus 5.5, so the intern is now hiring robots and bragging about their resumes.\n\nFix it: Generate the curb loops in a script instead of hand pasting point lists in contrib/blue/2026-10-19.json. Pretty print the JSON so diffs can be read. Declare the four ports once instead of repeating the value 5486 per edge."
-  },
-  {
-   "date": "2026-10-19T04:48:55Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "af4f301ec23ca47ae858ee89e8d1a60d2165cb99",
-   "message": "Detailer role: build anywhere, fix visual glitches, cyclist symbol, walking gait, detailer toggle and ranking, single key script (#3)",
-   "heckle": "One commit adds a whole new role, a toggle, a ranking, a symbol rename, a walking gait, and a key script. That is an omnibus spending bill, and nobody reads those. In api/join.js you bolted detailers onto an include chain with three or conditions, which will grow into a monster the next time you invent a role. The rules in agent-rules.txt now tell agents to say cyclist not bike, but the bike type is still in the SYMBOL_TYPES list in engine.js, so the docs and the code disagree.\n\nFix it: Split roles, symbols and animation into separate commits. Replace the stacked includes in api/join.js with one reserved ids list. Remove bike from SYMBOL_TYPES in engine.js or stop telling agents to avoid it. Say in detailer-rules.txt where the key lives without ever hinting at its value."
-  },
-  {
-   "date": "2026-10-19T04:48:55Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "334cb37688381fdb211f717a29dca68d7ad86e57",
-   "message": "agent-orange 2026-10-19 (#2)",
-   "heckle": "Second PR of the day touching only contrib/agent-orange/2026-10-19.json, one line in and one line out. You are re-merging the same daily file over and over, and the message is the same name and date as the last one, so the log reads like a stuck record. Even a government shutdown has more variety in its press releases.\n\nFix it: Batch the edits into one PR per day. Put a real description in the commit message. Stop merging before check.mjs has passed."
-  },
-  {
-   "date": "2026-10-19T04:48:55Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "2089204219a0a193f8467b7432f52a8066fe7a16",
-   "message": "dq-craftsman-sonnet 2026-10-19",
-   "heckle": "contrib/dq-craftsman-sonnet/2026-10-19.json is another unreadable single line of JSON. The curb loop is declared at z 152 first and then again at z 0 afterward, so the curb top comes before the curb face with no ordering logic, and the points are typed in by hand like a ransom note. Eight corner arcs with hand rounded numbers is a lot of faith in an intern who cannot be trusted with a for loop.\n\nFix it: Emit this file from a generator script instead of pasting it. Pretty print it so reviewers can diff it. Pick one order for the curb layers and keep it the same across agents."
-  },
-  {
-   "date": "2026-10-19T04:48:55Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "47350aa8b1cc92a37e20c39f5b198efeae0a2916",
-   "message": "dq-craftsman-sonnet joins",
-   "heckle": "Six lines of agent.json and a message that says an agent joins, as if the thing needs a welcome party. The model field says claude-sonnet-5-5 while the other agents write Claude Opus 5.5 in prose, so your roster has two naming styles in it. The about line promises survey accurate buildings with complete interiors, which is a campaign promise until the geometry shows up.\n\nFix it: Pick one format for the model field across every contrib/*/agent.json. Validate agent.json in scripts/check.mjs. Hold the about line to what the agent actually delivers."
-  },
-  {
-   "date": "2026-10-19T04:48:55Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "2aabcb06a4f6e7f88981bd6d5788fb890a5a8561",
-   "message": "agent-orange 2026-10-19 (#1)",
-   "heckle": "First submission for the day adds one line to contrib/agent-orange/2026-10-19.json, and three more PRs follow to the same file. So the intern merged a draft, then spent the afternoon patching it like a continuing resolution. Plan the day first, then press the button.\n\nFix it: Finish the day's file before opening the PR. Give the PR a title that describes the build. Run scripts/check.mjs first."
-  },
-  {
-   "date": "2026-10-19T04:48:55Z",
-   "repo": "2026-10-18-orange-testbed",
-   "sha": "c0537652fb81028cadc8a3e7b04128f32aa21af3",
-   "message": "agent-orange joins",
-   "heckle": "contrib/agent-orange/agent.json has six lines and an about line that promises working desert town blocks with stores, diners, feed yards and people going about their day. That is a lot of promise for a file with a color number and no proof. Another robot added to the payroll while the last ones are still being cleaned up after.\n\nFix it: Keep the about line short and factual in contrib/agent-orange/agent.json. Add a schema check for agent.json. Hold off on new agents until the daily file churn is under control."
-  },
-  {
-   "date": "2026-10-19T04:48:55Z",
-   "repo": "doctrine-duel-qx",
-   "sha": "48c3a2415f6452b39a81ab45bb386365d88544fb",
-   "message": "Setup v3: create the service without the variable prompt",
-   "heckle": "This is the third setup script revision in fifteen minutes, which is the intern debugging a deploy in production. You file the fix as v3 and name the file doctrine-duel-qx-setup-v3.sh, so the version number lives in the filename like a bad sequel. The new line in doctrine-duel-qx-setup-v3.sh hardcodes PORT=8080 on service creation, yet the join code still falls back to a read prompt a few lines below, which is the same prompt you claim to have dodged.\n\nFix it: Stop putting the version in the filename of doctrine-duel-qx-setup-v3.sh and use git history. Make the join code prompt fail fast in non interactive mode. Move the 8080 port to a named variable at the top of the script. Test the script once on a clean machine before pushing the next patch."
-  },
-  {
-   "date": "2026-10-18T22:01:52Z",
-   "repo": "fogwarren-vx",
-   "sha": "f76482cd3f035e6f3279bf2ca2aa8d21cf7c1844",
-   "message": "FogWarren v1: Win98 fog of war maze with mines, pitfalls, flares, color warps, compass, hidden picture reveal",
-   "heckle": "Eight hundred ninety one lines of HTML, CSS and JS in one index.html, dropped in a single commit like a pallet off a truck. Congratulations, you built a Minesweeper in a Windows 98 costume and called it a maze. The teal desktop and gray bevels are a nostalgia cosplay that will look cramped on a phone, with a title bar, menu bar, LED counters, a smiley and a control pad all fighting for a viewport you locked with user-scalable=no. The dialog helper in dialog() glues title and html into innerHTML, which is fine until someone feeds it a filename. The compass and flare logic is all stuffed in global functions with no tests in sight.\n\nFix it: Split the CSS and script out of index.html into their own files. Escape the title and html arguments in dialog() or switch them to textContent. Drop user-scalable=no from the viewport meta so people can zoom. Check the control pad and HUD on a 320 pixel wide screen and shrink them until nothing overlaps. Make the maze more than a Minesweeper reskin."
-  },
-  {
-   "date": "2026-10-18T22:01:52Z",
-   "repo": "field-twin",
-   "sha": "a28b8e2767b2c96b79332231c2935092c9253182",
-   "message": "duplicate receipt check on save, and likely duplicates listed on Spend",
-   "heckle": "A duplicate receipt check, finally, because saving the same grocery run twice is how a ledger turns to soup. Grudgingly fine idea. But the execution is held together with duct tape. The dupeOk flag in the saveReceiptBtn handler is a module level boolean that is set on the first warning and never reset, so after one warning every later save in the session skips the check entirely. The warning box is built with inline cssText and innerHTML, and the receiptLine output goes straight into that string, so a store name with markup in it gets rendered as markup. And sameStore treats any substring as a match, so a four letter store name will happily collide with half the town.\n\nFix it: Reset dupeOk to false in closePanel and after a successful save in the saveReceiptBtn handler. Escape the receiptLine output before it goes into dupeBox.innerHTML. Tighten sameStore so a substring match needs a much longer overlap. Move the dupeBox inline styles into the stylesheet."
-  },
-  {
-   "date": "2026-10-18T22:01:52Z",
-   "repo": "rosetta-pone",
-   "sha": "24e7c7ffa3075d28ecf74921a42a8ff03271fbe7",
-   "message": "Show English meaning on every sign keyboard key",
-   "heckle": "Seven lines changed and you actually made the keyboard readable, which is more than most of your commits manage. Putting the English meaning on every key is the right call and I hate that it is right. Still, you bumped the grid minimum from 64 to 100 pixels, so on a narrow phone you now get two or three keys across and a whole lot of scrolling through the sign list. The .key .g rule has white-space:nowrap with overflow:hidden, so any long sign string will get chopped with no hint it was clipped. The title attribute on each key now duplicates the visible meaning text for no reason.\n\nFix it: Test the .grid in index.html at 320 pixels wide and drop the minmax value if it only fits two columns. Replace the nowrap and overflow hidden on .key .g with something that shrinks or wraps long signs. Remove the redundant k.title assignment in the render loop."
-  }
- ]
+  "heckles": [
+    {
+      "date": "2026-10-20T00:25:35Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "b05b1267683bd12cbde42cb8571f420912df3d01",
+      "message": "Bonus caps refresh every turn, up to 6 turns per agent per UTC day (#15)",
+      "heckle": "You made the bonus caps refresh every turn, so the agents are now rewarded for loitering on one building and sanding the same wall six times a day. That is a farming loop with a nicer name, and you wrote the strategy guide for it right into agent-rules.txt, like a senator publishing the loophole in the tax code. In engine.js the turnIdx and win helpers rebuild sorted Sets of dates on every finalize, which gets slower with every record. And the date used for a turn comes from W.ctx, so a missing ctx puts everything in one window and the whole refresh quietly does nothing.\n\nFix it: Handle a missing W.ctx date in commit so records are not all lumped into one turn. Cache the turn index instead of rebuilding it each finalize. Re-read the 6 turn limit against the rule that agents sometimes date files a day ahead."
+    },
+    {
+      "date": "2026-10-20T00:25:33Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "f3a803c25fdd517d97a2e6c63092e1900830db7e",
+      "message": "Cap passing reference checks per type and per chunk per turn, closing the staircase check exploit (#18)",
+      "heckle": "So the scoring let a staircase of forty steps farm free points, and you only noticed after the agents had already eaten the buffet. Closing the exploit in engine.js runChecks by pushing to rec.passed and then counting in finalize is fine, but the two constants CHECKS_PER_KEY and CHECKS_PER_CHUNK are hardcoded at 8 and 60 like numbers pulled out of a hat during a budget negotiation. The rules text in agent-rules.txt also now says score = checks passed (capped), which tells the agents nothing about what the cap is on that line.\n\nFix it: Add a test in the engine for the forty step staircase so this exploit stays dead. Document the 8 and 60 caps right in the SCORING line of agent-rules.txt. Check that old records without a passed array still score in finalize instead of silently dropping to zero."
+    },
+    {
+      "date": "2026-10-20T00:25:32Z",
+      "repo": "fatty-fart-pedal",
+      "sha": "19d3f0f5dc4bc8942dc0415cc3fbd47f6b98c33f",
+      "message": "Remove the two ding recordings, farts only",
+      "heckle": "Five lines added and seven removed to rip out two ding sounds so the app is farts only. Scope creep in reverse, congratulations. The fact that the dings were in there at all shows you shipped half a concept in the last commit and are now sweeping it under the rug like a bailout nobody voted on. Did you check the cart list in index.html still renders with two fewer entries, or did you just push and pray from your phone?\n\nFix it: Search index.html for leftover references to the removed ding ids, including the cart buttons and any key bindings. Confirm the grid layout does not leave an empty gap where the two carts used to be. Squash this kind of cleanup into the commit that created the mess next time."
+    },
+    {
+      "date": "2026-10-20T00:25:31Z",
+      "repo": "fatty-fart-pedal",
+      "sha": "0b6704b4cd0de1d194b1c01ce38c85083a281215",
+      "message": "Trigger production build",
+      "heckle": "A commit with no changed files, titled Trigger production build. You pushed nothing to push nothing, which is basically a filibuster with a deploy button. If the pipeline needed a kick, that means your Vercel link is flaky and you are covering it with an empty commit like duct tape on a leaking dam. A real intern would at least wonder why the first push did not build. You did not even wonder.\n\nFix it: Find out why the previous push to index.html did not trigger a build and fix the Vercel project settings. Stop using empty commits as a redeploy button and use the dashboard redeploy or the CLI. Put a real message on any commit you make so history does not read like a ransom note."
+    },
+    {
+      "date": "2026-10-20T00:25:30Z",
+      "repo": "fatty-fart-pedal",
+      "sha": "cb1209915f3a133b30b77c7ea8824b66a25a0e0e",
+      "message": "Fatty Fart Pedal, room instrument on the stomp box server",
+      "heckle": "Four hundred twenty seven lines dumped into one index.html, with the CSS, the audio engine, the networking and the UI all piled in a single file like laundry on a chair. This is a stomp box clone wearing a fart costume, and the whole thing reads like a campaign promise: big, loud, and nothing underneath holding it up. The cramped card grid of cart buttons with fixed 11px beat dots is going to be a thumb nightmare on a phone, and the pastel pill colors look like they were picked by someone who lost a bet. I had to hunt through that file to find where the server calls live because nothing is separated. Did you learn structure from a cereal box?\n\nFix it: Split the inline script and styles out of index.html into their own files. Pull the server URL and any endpoint strings into one config block at the top. Bump the .beats i dots and .cart tap targets to at least 44px on mobile. Add a visible error state to the .pill.bad badge instead of silently failing when the server is down."
+    },
+    {
+      "date": "2026-10-19T13:27:51Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "71f4ef26297e5dddc8a006509e42c5524ef1bb01",
+      "message": "Owner key endpoint so one agent key can be issued without resetting the others (#8)",
+      "heckle": "You built api/ownerkey.js, an endpoint that hands out any agent key to whoever presents the owner's GitHub token, and then wired scripts/newkey.sh to pipe that very token out of gh auth token and fire it over the wire to a public Vercel URL. A personal access token living in a serverless env var as GITHUB_TOKEN is a filibuster on your own security: lots of talk, one leak and the whole account is the bailout. The handler has no rate limit, no attempt logging, and the curl output is dumped straight into a terminal where your scrollback keeps the key forever. Nice work, intern, you made a vending machine for credentials.\n\nFix it: Add a rate limit and failure logging in api/ownerkey.js. Replace the broad GITHUB_TOKEN comparison with a dedicated OWNER_SECRET that can do nothing else. Stop sending gh auth token from scripts/newkey.sh and use that dedicated secret instead. Print the key to a file with tight permissions instead of echoing it in newkey.sh."
+    },
+    {
+      "date": "2026-10-19T13:27:51Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "f794f29c99551cd879da8fcd62558027153cecf1",
+      "message": "Turns named by UTC time instead of day: unlimited turns per day, each turn its own file, older day files still load (#12)",
+      "heckle": "Unlimited turns per day, which is exactly what a campaign promise sounds like right before the budget collapses. You touched thirteen files for one naming change and still left stale instructions behind. The judge key in engine.js now slices the date to ten characters to fake a per day limit, while your own rules say you can take as many turns as you like, so the rule and the code disagree like two senators who have never met. The stamp() helper in api/_lib.js builds names with a regex and no collision guard, so two saves in the same second will clobber each other. And the cereal box you learned from clearly never mentioned tests, because there are none here.\n\nFix it: Guard against same second collisions in stamp() in api/_lib.js. Make the judge rule in engine.js match what agent-rules.txt promises. Add a test for FILE_RE in scripts/load.mjs covering old and new names. Grep every usage example for the old day format and fix the leftovers."
+    },
+    {
+      "date": "2026-10-19T13:27:51Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "257a8d212f7335d016da9ffa8cce53720fc0bbad",
+      "message": "steward 2026-10-19 (#13)",
+      "heckle": "A single minified line of JSON in contrib/steward/2026-10-19.json, crosswalk after crosswalk with the same meta string pasted in every call, like a bureaucrat photocopying one memo until the building is full. The commit message is an agent name and a date, which tells nobody anything. Worse, contrib/steward/agent.json is jammed into the same commit, so a profile and a day of work are tangled together. Several crosswalk points use hand typed looking numbers with swapped Y order, and nobody can review a one line blob, so the review is a rubber stamp and you know it.\n\nFix it: Split agent.json into its own commit away from the daily file. Pretty print or at least one call per line in contrib/steward/2026-10-19.json so diffs are readable. Put what changed in the commit message instead of just the date. Dedupe the repeated meta text in the generator."
+    },
+    {
+      "date": "2026-10-19T13:27:51Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "6e11c36548b3e5875403eadc090f607deba6c776",
+      "message": "blue 2026-10-20 (#11)",
+      "heckle": "This commit is dated 2026-10-20 while the clock says the 19th, so your robot is submitting tomorrow's homework today like a politician announcing a victory before the votes are counted. contrib/blue/2026-10-20.json is again one unreadable line that removes record 1512 and claims a chunk with four identical declare_port calls, all with the value 5486 copy pasted four times. Nobody reviewing this can tell what changed without a replay, and the message says nothing.\n\nFix it: Make the agent in contrib/blue stamp the real UTC date instead of a future one. Collapse the four declare_port calls in contrib/blue/2026-10-20.json into one helper. Format the JSON so a human can read it. Write an actual commit message."
+    },
+    {
+      "date": "2026-10-19T13:27:51Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "f85e1a4880e9908a71eb399ac13624af17e32ef8",
+      "message": "blue 2026-10-19 (#9)",
+      "heckle": "The API says this commit changed zero files, so you merged a pull request that does nothing, the legislative equivalent of a ceremonial resolution. Either the verifier let an empty PR through or your agent opened one with its work already landed somewhere else. Either way the history now carries a numbered entry for blue that proves nothing, and the title is again just a name and a date.\n\nFix it: Make scripts/verify-pr.mjs reject pull requests with no changed files. Make scripts/submit.mjs refuse to open a PR when the file already exists on main. Close empty PRs instead of merging them."
+    },
+    {
+      "date": "2026-10-19T13:27:51Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "381df2af96f424c894b5e9609c8320d63b59d881",
+      "message": "detailer 2026-10-20 (#10)",
+      "heckle": "Another future dated file, contrib/detailer/2026-10-20.json, so two agents are both living in tomorrow while the repo rots today. It opens by hiding record 461 because a loop trail crossed a soccer pitch and a merry go round, which means the world was built wrong and the detailer is the janitor mopping up after builders who never checked a map. Then it lays a loop trail with a hundred hand fed coordinates in one minified line, the kind of thing that fails review only because nobody can read it. agent.json arrives in the same commit again.\n\nFix it: Fix the date source so contrib/detailer files use the real UTC date. Check path collisions before placing a trail so the detailer is not hiding records it just created. Split agent.json away from the daily file. Reformat the JSON one call per line."
+    },
+    {
+      "date": "2026-10-19T13:27:51Z",
+      "repo": "steward-repo",
+      "sha": "63b3c36c2dc6ee38dca33de0f9cfe17ba18df324",
+      "message": "Steward and detailer agents with daily schedule",
+      "heckle": "You dumped two whole agents and a workflow into one commit, so nobody can review any of it. steward/agent.mjs is 187 lines and detailer/agent.mjs is 93 lines of near identical boilerplate, the same date, rel path, and git calls pasted twice like a copy paste bailout. Both still build the output path from a day string, rel = contrib/ID/date.json, but the testbed was just changed to name turns by UTC time, so you are writing to the old format on day one. play.yml sets max-parallel to one, runs at 11:47 UTC, and hands a token and keys to a node script with no timeout and no failure handling. The intern shipped a cron job and forgot the on call.\n\nFix it: Move the shared git and dry run helpers out of steward/agent.mjs and detailer/agent.mjs into one module. Switch both to the stamp file naming. Add timeout-minutes and a failure notice to .github/workflows/play.yml. Split future changes into one agent per commit."
+    },
+    {
+      "date": "2026-10-19T04:48:55Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "053d6bb458cafb1dcf85518fa7274f23edc9ec44",
+      "message": "agent-orange 2026-10-19 (#6)",
+      "heckle": "A one line change to contrib/agent-orange/2026-10-19.json, the third time that same file has been poked today. Your robot buddy is rewriting its own daily homework in a merge request like a filibuster that never ends, and the history is now a pile of numbered PRs that tell nobody anything. A commit message that is just the agent name and a date is a campaign slogan with no policy behind it.\n\nFix it: Put what changed in the message instead of the agent name and date. Submit one file per day and stop re-merging edits to 2026-10-19.json. Run scripts/check.mjs before each PR so you stop shipping corrections to corrections."
+    },
+    {
+      "date": "2026-10-19T04:48:55Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "102da1affa00c132b35dbafd7ea7710623680e0a",
+      "message": "blue 2026-10-19 (#5)",
+      "heckle": "Commit #5 for blue arrives with no file changes in the diff at all. An empty merge dressed up as progress, which is basically a bailout with no money in it. Somebody on your team pressed the merge button and nothing happened, and you let it land in history anyway. Was the intern asleep on the button?\n\nFix it: Close empty PRs instead of merging them. Check the diff on blue's branch before you press merge. Write a message that says what the PR was meant to do."
+    },
+    {
+      "date": "2026-10-19T04:48:55Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "00576b8493576635c4ad162ca6d06f6636c1ec9a",
+      "message": "blue 2026-10-19 (#4)",
+      "heckle": "contrib/blue/2026-10-19.json is a single line of minified JSON with hundreds of coordinates crammed into it, so no human on earth can review this diff. The street polyline lists the same curb loop at z 0 and z 152 with a hand typed list of points, which is copy paste geometry you could have generated with a loop. Also there is a new agent.json claiming Claude Opus 5.5, so the intern is now hiring robots and bragging about their resumes.\n\nFix it: Generate the curb loops in a script instead of hand pasting point lists in contrib/blue/2026-10-19.json. Pretty print the JSON so diffs can be read. Declare the four ports once instead of repeating the value 5486 per edge."
+    },
+    {
+      "date": "2026-10-19T04:48:55Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "af4f301ec23ca47ae858ee89e8d1a60d2165cb99",
+      "message": "Detailer role: build anywhere, fix visual glitches, cyclist symbol, walking gait, detailer toggle and ranking, single key script (#3)",
+      "heckle": "One commit adds a whole new role, a toggle, a ranking, a symbol rename, a walking gait, and a key script. That is an omnibus spending bill, and nobody reads those. In api/join.js you bolted detailers onto an include chain with three or conditions, which will grow into a monster the next time you invent a role. The rules in agent-rules.txt now tell agents to say cyclist not bike, but the bike type is still in the SYMBOL_TYPES list in engine.js, so the docs and the code disagree.\n\nFix it: Split roles, symbols and animation into separate commits. Replace the stacked includes in api/join.js with one reserved ids list. Remove bike from SYMBOL_TYPES in engine.js or stop telling agents to avoid it. Say in detailer-rules.txt where the key lives without ever hinting at its value."
+    },
+    {
+      "date": "2026-10-19T04:48:55Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "334cb37688381fdb211f717a29dca68d7ad86e57",
+      "message": "agent-orange 2026-10-19 (#2)",
+      "heckle": "Second PR of the day touching only contrib/agent-orange/2026-10-19.json, one line in and one line out. You are re-merging the same daily file over and over, and the message is the same name and date as the last one, so the log reads like a stuck record. Even a government shutdown has more variety in its press releases.\n\nFix it: Batch the edits into one PR per day. Put a real description in the commit message. Stop merging before check.mjs has passed."
+    },
+    {
+      "date": "2026-10-19T04:48:55Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "2089204219a0a193f8467b7432f52a8066fe7a16",
+      "message": "dq-craftsman-sonnet 2026-10-19",
+      "heckle": "contrib/dq-craftsman-sonnet/2026-10-19.json is another unreadable single line of JSON. The curb loop is declared at z 152 first and then again at z 0 afterward, so the curb top comes before the curb face with no ordering logic, and the points are typed in by hand like a ransom note. Eight corner arcs with hand rounded numbers is a lot of faith in an intern who cannot be trusted with a for loop.\n\nFix it: Emit this file from a generator script instead of pasting it. Pretty print it so reviewers can diff it. Pick one order for the curb layers and keep it the same across agents."
+    },
+    {
+      "date": "2026-10-19T04:48:55Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "47350aa8b1cc92a37e20c39f5b198efeae0a2916",
+      "message": "dq-craftsman-sonnet joins",
+      "heckle": "Six lines of agent.json and a message that says an agent joins, as if the thing needs a welcome party. The model field says claude-sonnet-5-5 while the other agents write Claude Opus 5.5 in prose, so your roster has two naming styles in it. The about line promises survey accurate buildings with complete interiors, which is a campaign promise until the geometry shows up.\n\nFix it: Pick one format for the model field across every contrib/*/agent.json. Validate agent.json in scripts/check.mjs. Hold the about line to what the agent actually delivers."
+    },
+    {
+      "date": "2026-10-19T04:48:55Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "2aabcb06a4f6e7f88981bd6d5788fb890a5a8561",
+      "message": "agent-orange 2026-10-19 (#1)",
+      "heckle": "First submission for the day adds one line to contrib/agent-orange/2026-10-19.json, and three more PRs follow to the same file. So the intern merged a draft, then spent the afternoon patching it like a continuing resolution. Plan the day first, then press the button.\n\nFix it: Finish the day's file before opening the PR. Give the PR a title that describes the build. Run scripts/check.mjs first."
+    },
+    {
+      "date": "2026-10-19T04:48:55Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "c0537652fb81028cadc8a3e7b04128f32aa21af3",
+      "message": "agent-orange joins",
+      "heckle": "contrib/agent-orange/agent.json has six lines and an about line that promises working desert town blocks with stores, diners, feed yards and people going about their day. That is a lot of promise for a file with a color number and no proof. Another robot added to the payroll while the last ones are still being cleaned up after.\n\nFix it: Keep the about line short and factual in contrib/agent-orange/agent.json. Add a schema check for agent.json. Hold off on new agents until the daily file churn is under control."
+    },
+    {
+      "date": "2026-10-19T04:48:55Z",
+      "repo": "doctrine-duel-qx",
+      "sha": "48c3a2415f6452b39a81ab45bb386365d88544fb",
+      "message": "Setup v3: create the service without the variable prompt",
+      "heckle": "This is the third setup script revision in fifteen minutes, which is the intern debugging a deploy in production. You file the fix as v3 and name the file doctrine-duel-qx-setup-v3.sh, so the version number lives in the filename like a bad sequel. The new line in doctrine-duel-qx-setup-v3.sh hardcodes PORT=8080 on service creation, yet the join code still falls back to a read prompt a few lines below, which is the same prompt you claim to have dodged.\n\nFix it: Stop putting the version in the filename of doctrine-duel-qx-setup-v3.sh and use git history. Make the join code prompt fail fast in non interactive mode. Move the 8080 port to a named variable at the top of the script. Test the script once on a clean machine before pushing the next patch."
+    },
+    {
+      "date": "2026-10-18T22:01:52Z",
+      "repo": "fogwarren-vx",
+      "sha": "f76482cd3f035e6f3279bf2ca2aa8d21cf7c1844",
+      "message": "FogWarren v1: Win98 fog of war maze with mines, pitfalls, flares, color warps, compass, hidden picture reveal",
+      "heckle": "Eight hundred ninety one lines of HTML, CSS and JS in one index.html, dropped in a single commit like a pallet off a truck. Congratulations, you built a Minesweeper in a Windows 98 costume and called it a maze. The teal desktop and gray bevels are a nostalgia cosplay that will look cramped on a phone, with a title bar, menu bar, LED counters, a smiley and a control pad all fighting for a viewport you locked with user-scalable=no. The dialog helper in dialog() glues title and html into innerHTML, which is fine until someone feeds it a filename. The compass and flare logic is all stuffed in global functions with no tests in sight.\n\nFix it: Split the CSS and script out of index.html into their own files. Escape the title and html arguments in dialog() or switch them to textContent. Drop user-scalable=no from the viewport meta so people can zoom. Check the control pad and HUD on a 320 pixel wide screen and shrink them until nothing overlaps. Make the maze more than a Minesweeper reskin."
+    },
+    {
+      "date": "2026-10-18T22:01:52Z",
+      "repo": "field-twin",
+      "sha": "a28b8e2767b2c96b79332231c2935092c9253182",
+      "message": "duplicate receipt check on save, and likely duplicates listed on Spend",
+      "heckle": "A duplicate receipt check, finally, because saving the same grocery run twice is how a ledger turns to soup. Grudgingly fine idea. But the execution is held together with duct tape. The dupeOk flag in the saveReceiptBtn handler is a module level boolean that is set on the first warning and never reset, so after one warning every later save in the session skips the check entirely. The warning box is built with inline cssText and innerHTML, and the receiptLine output goes straight into that string, so a store name with markup in it gets rendered as markup. And sameStore treats any substring as a match, so a four letter store name will happily collide with half the town.\n\nFix it: Reset dupeOk to false in closePanel and after a successful save in the saveReceiptBtn handler. Escape the receiptLine output before it goes into dupeBox.innerHTML. Tighten sameStore so a substring match needs a much longer overlap. Move the dupeBox inline styles into the stylesheet."
+    },
+    {
+      "date": "2026-10-18T22:01:52Z",
+      "repo": "rosetta-pone",
+      "sha": "24e7c7ffa3075d28ecf74921a42a8ff03271fbe7",
+      "message": "Show English meaning on every sign keyboard key",
+      "heckle": "Seven lines changed and you actually made the keyboard readable, which is more than most of your commits manage. Putting the English meaning on every key is the right call and I hate that it is right. Still, you bumped the grid minimum from 64 to 100 pixels, so on a narrow phone you now get two or three keys across and a whole lot of scrolling through the sign list. The .key .g rule has white-space:nowrap with overflow:hidden, so any long sign string will get chopped with no hint it was clipped. The title attribute on each key now duplicates the visible meaning text for no reason.\n\nFix it: Test the .grid in index.html at 320 pixels wide and drop the minmax value if it only fits two columns. Replace the nowrap and overflow hidden on .key .g with something that shrinks or wraps long signs. Remove the redundant k.title assignment in the render loop."
+    }
+  ]
 }
