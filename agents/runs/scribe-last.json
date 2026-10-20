@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 124980,
+ "duration_api_ms": 99567,
  "stop_reason": "end_turn",
- "session_id": "ae5dfee9-8aac-44b1-8852-154361250b22",
- "total_cost_usd": 0.34418610000000005,
+ "session_id": "f625f73d-e7d5-49f6-88b5-79f5021dde99",
+ "total_cost_usd": 0.34540370000000004,
  "usage": {
-  "input_tokens": 30,
-  "cache_creation_input_tokens": 42536,
-  "cache_read_input_tokens": 553929,
-  "output_tokens": 11836,
+  "input_tokens": 36,
+  "cache_creation_input_tokens": 39146,
+  "cache_read_input_tokens": 642285,
+  "output_tokens": 12439,
   "output_tokens_details": {
-   "thinking_tokens": 1451
+   "thinking_tokens": 1688
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 42536,
+   "ephemeral_1h_input_tokens": 39146,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 375,
-    "cache_read_input_tokens": 56330,
-    "cache_creation_input_tokens": 706,
+    "output_tokens": 389,
+    "cache_read_input_tokens": 51214,
+    "cache_creation_input_tokens": 723,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 706
+     "ephemeral_1h_input_tokens": 723
     },
     "type": "message"
    }
@@ -40,28 +40,28 @@
  "modelUsage": {
   "claude-haiku-5-5": {
    "inputTokens": 1207,
-   "outputTokens": 217,
+   "outputTokens": 17,
    "cacheReadInputTokens": 0,
    "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.0002292,
+   "costUSD": 0.0001292,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 197,
+   "thinkingTokens": 0,
    "canonicalModel": "claude-haiku-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   },
   "claude-sonnet-5-5": {
-   "inputTokens": 30,
-   "outputTokens": 11836,
-   "cacheReadInputTokens": 553929,
-   "cacheCreationInputTokens": 42536,
+   "inputTokens": 36,
+   "outputTokens": 12439,
+   "cacheReadInputTokens": 642285,
+   "cacheCreationInputTokens": 39146,
    "webSearchRequests": 0,
-   "costUSD": 0.3439569,
+   "costUSD": 0.34527450000000004,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 1451,
+   "thinkingTokens": 1688,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
@@ -97,17 +97,17 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 16,
+ "num_turns": 18,
  "subtype": "success",
  "api_error_status": null,
- "result": "I documented 12 repos this run: ascend, mohavetech-contracts-api, beesim-green, boba-breakeven-x8k4, dronesim, threat-atlas-v3, tilespinneratlas, arcade-backend, mohave-browser, qsr-tracker-backend, engine-companion, and phasewell-scope.\n\nEach got a CHANGELOG.md and README.md in one \"docs: scribe update\" commit, pushed to master. Dronesim already had a README written by a person, so I kept it and added the scribe sections below it.\n\nNone of the 12 hide their app in a subfolder, so no root vercel.json was needed.\n\nAbout 91 backfills remain, since 103 repos had no state entry at the start. The remaining repos with new commits are mostly echoes of the scribe's own earlier pushes. I added five new repos to repos.json that it lacked.\n\nEvery repo was reachable. The profile in sudosilo/sudosilo is rebuilt and pushed. State, repos, publish jobs, and the agent notes are in control-troll main as \"scribe state\". The release and topic jobs are queued in publish.json for the publish workflow.",
- "ttft_ms": 2559,
+ "result": "I documented 12 repos this run and pushed all of them. They are web-press-simulator, diamond-driller, signal-snapshot, signal-snapshot-backend, topo-war, note-note-note, pajamastan-warrants, paycheck-hub, topo-wars, pancake-orange, hackercons-roulette, and hackercons-roulette-api.\n\nI did not check the live sites afterward.\n\nEach got a README, a changelog, and a publish job. I also updated the state and repo files. The profile in the sudosilo repo is rebuilt and pushed, and it leaves out the private repo. The control-troll commit is pushed with the notes.\n\nBefore pushing I checked how each repo deploys. The front end repos have a root index.html, so none needed a vercel.json. The pajamastan-warrants repo is a Docker backend with no GitHub deployment connected, so a docs push does not touch its live page.\n\nAbout 80 backfills remain, so roughly seven more runs at 12 per run. Another 36 repos have new pushes since their last documented date. I did not check them this run.\n\nI could reach every repo I tried. The private repos only show up in a separate list query, so I merged the two lists to get their push times.",
+ "ttft_ms": 2015,
  "type": "result",
- "duration_ms": 158732,
- "uuid": "582e6b0e-6fea-47b1-8be8-1af526feea4a",
- "ttft_stream_ms": 2289,
- "time_to_request_ms": 170,
- "first_content_frame_ms": 2289,
+ "duration_ms": 140183,
+ "uuid": "0abf6e61-863c-450c-8c63-558c0c521231",
+ "ttft_stream_ms": 1774,
+ "time_to_request_ms": 223,
+ "first_content_frame_ms": 1774,
  "queued_turn_count": 0,
  "result_index": 0
 }
