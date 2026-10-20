@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 42705,
+ "duration_api_ms": 22742,
  "stop_reason": "end_turn",
- "session_id": "e137f99a-8eed-4f10-9729-1a6018adb538",
- "total_cost_usd": 0.1520121,
+ "session_id": "b82b9bc0-56f7-4625-b158-1ce3eaf27bc1",
+ "total_cost_usd": 0.09604729999999999,
  "usage": {
-  "input_tokens": 18,
-  "cache_creation_input_tokens": 22289,
-  "cache_read_input_tokens": 219633,
-  "output_tokens": 4061,
+  "input_tokens": 16,
+  "cache_creation_input_tokens": 14563,
+  "cache_read_input_tokens": 172405,
+  "output_tokens": 2025,
   "output_tokens_details": {
-   "thinking_tokens": 293
+   "thinking_tokens": 39
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 22289,
+   "ephemeral_1h_input_tokens": 14563,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 158,
-    "cache_read_input_tokens": 34702,
-    "cache_creation_input_tokens": 378,
+    "output_tokens": 45,
+    "cache_read_input_tokens": 26366,
+    "cache_creation_input_tokens": 988,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 378
+     "ephemeral_1h_input_tokens": 988
     },
     "type": "message"
    }
@@ -38,31 +38,31 @@
   "fallback_credit": null
  },
  "modelUsage": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1208,
-   "outputTokens": 252,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
+  "claude-sonnet-5-5": {
+   "inputTokens": 16,
+   "outputTokens": 2025,
+   "cacheReadInputTokens": 172405,
+   "cacheCreationInputTokens": 14563,
    "webSearchRequests": 0,
-   "costUSD": 0.00024680000000000004,
+   "costUSD": 0.0957745,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 233,
-   "canonicalModel": "claude-haiku-5-5",
+   "thinkingTokens": 39,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   },
-  "claude-sonnet-5-5": {
-   "inputTokens": 18,
-   "outputTokens": 4061,
-   "cacheReadInputTokens": 219633,
-   "cacheCreationInputTokens": 22289,
+  "claude-haiku-5-5": {
+   "inputTokens": 1208,
+   "outputTokens": 304,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.1517653,
+   "costUSD": 0.0002728,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 293,
-   "canonicalModel": "claude-sonnet-5-5",
+   "thinkingTokens": 286,
+   "canonicalModel": "claude-haiku-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
@@ -97,17 +97,17 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 10,
+ "num_turns": 8,
  "subtype": "success",
  "api_error_status": null,
- "result": "I heckled 5 commits this run and did not write a fleet verdict. The last one was written on 2026-10-18, which is under 7 days ago.\n\n- **fatty-fart-pedal:** 3 commits.\n- **2026-10-18-orange-testbed:** 2 commits.\n\nI skipped the tiny bot-agent contribution PRs, as the notes advise. The log, state and a new note in `agents/notes/general.md` are committed and pushed to main as \"heckle log\".",
- "ttft_ms": 2072,
+ "result": "I heckled 1 commit (in mohavetech-website) and did not write a fleet verdict, since the last one is only 2 days old.",
+ "ttft_ms": 1586,
  "type": "result",
- "duration_ms": 53333,
- "uuid": "c41ef6e1-8161-4bf1-9db1-3c7919cc8553",
- "ttft_stream_ms": 1834,
- "time_to_request_ms": 205,
- "first_content_frame_ms": 1835,
+ "duration_ms": 27481,
+ "uuid": "a2a0285b-4fd3-4960-84e7-239dcd499ee6",
+ "ttft_stream_ms": 1307,
+ "time_to_request_ms": 167,
+ "first_content_frame_ms": 1307,
  "queued_turn_count": 0,
  "result_index": 0
 }
