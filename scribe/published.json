@@ -47,7 +47,23 @@
   "sudosilo/qsr-tracker-backend@v2026.08.30",
   "sudosilo/qsr-tracker-backend@v2026.08.29",
   "sudosilo/engine-companion@v2026.09.17",
-  "sudosilo/phasewell-scope@v2026.09.22"
+  "sudosilo/phasewell-scope@v2026.09.22",
+  "sudosilo/web-press-simulator@v2026.09.25",
+  "sudosilo/diamond-driller@v2026.09.25",
+  "sudosilo/signal-snapshot@v2026.09.28",
+  "sudosilo/signal-snapshot-backend@v2026.09.28",
+  "sudosilo/topo-war@v2026.09.29",
+  "sudosilo/note-note-note@v2026.09.29",
+  "sudosilo/note-note-note@v2026.09.28",
+  "sudosilo/pajamastan-warrants@v2026.10.02",
+  "sudosilo/paycheck-hub@v2026.10.02",
+  "sudosilo/topo-wars@v2026.10.03",
+  "sudosilo/topo-wars@v2026.10.01",
+  "sudosilo/topo-wars@v2026.09.30",
+  "sudosilo/topo-wars@v2026.09.29",
+  "sudosilo/pancake-orange@v2026.10.04",
+  "sudosilo/hackercons-roulette@v2026.10.04",
+  "sudosilo/hackercons-roulette-api@v2026.10.04"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -423,6 +439,124 @@
     "tool",
     "vercel",
     "visualizer"
+   ]
+  },
+  "sudosilo/web-press-simulator": {
+   "d": "Private training simulator for a web printing press, in English and French.",
+   "h": "",
+   "t": [
+    "simulator",
+    "tool",
+    "training"
+   ]
+  },
+  "sudosilo/diamond-driller": {
+   "d": "Turns a picture into a numbered DMC color drill pattern with printable pages.",
+   "h": "https://diamond-driller.vercel.app",
+   "t": [
+    "crafts",
+    "pattern",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/signal-snapshot": {
+   "d": "Panel that shows live, graded, and report views of market signals.",
+   "h": "https://virality-snapshot.vercel.app",
+   "t": [
+    "dashboard",
+    "finance",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/signal-snapshot-backend": {
+   "d": "Backend that checks price bars for patterns, logs signals, and grades them.",
+   "h": "",
+   "t": [
+    "backend",
+    "finance",
+    "python",
+    "railway"
+   ]
+  },
+  "sudosilo/topo-war": {
+   "d": "First version of a map based turn strategy game that became Topo Wars.",
+   "h": "",
+   "t": [
+    "game",
+    "map",
+    "strategy"
+   ]
+  },
+  "sudosilo/note-note-note": {
+   "d": "Turns a picture into colored squares you group into notes and link with lines.",
+   "h": "https://note-note-note.vercel.app",
+   "t": [
+    "mobile",
+    "notes",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/pajamastan-warrants": {
+   "d": "Public record page listing the active warrants docket with new entries flagged.",
+   "h": "https://pajamastan-warrants.vercel.app",
+   "t": [
+    "backend",
+    "pajamastan",
+    "public-records",
+    "python"
+   ]
+  },
+  "sudosilo/paycheck-hub": {
+   "d": "Splits a paycheck into bills and spending buckets with fixed rules.",
+   "h": "https://shitty-ass-finance.vercel.app",
+   "t": [
+    "budget",
+    "finance",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/topo-wars": {
+   "d": "Turn based war game played on real map terrain with computer, friend, and zombie modes.",
+   "h": "https://topo-wars.vercel.app",
+   "t": [
+    "game",
+    "map",
+    "simulator",
+    "strategy",
+    "vercel"
+   ]
+  },
+  "sudosilo/pancake-orange": {
+   "d": "Tap pancakes before they burn in a growing grill game.",
+   "h": "https://pancake-orange.vercel.app",
+   "t": [
+    "arcade",
+    "game",
+    "vercel"
+   ]
+  },
+  "sudosilo/hackercons-roulette": {
+   "d": "Plays random short clips from hacker conference talks with a guessing mode.",
+   "h": "https://hackercons-roulette.vercel.app",
+   "t": [
+    "conferences",
+    "game",
+    "vercel",
+    "video"
+   ]
+  },
+  "sudosilo/hackercons-roulette-api": {
+   "d": "Catalog service that serves random playable conference clips to the player.",
+   "h": "",
+   "t": [
+    "backend",
+    "node",
+    "railway",
+    "video"
    ]
   }
  }
