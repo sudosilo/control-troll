@@ -1,1 +1,2 @@
 2026-10-20 scribe. The repo is a Docker FastAPI backend (Playwright scraper) that serves its own HTML page, with no index.html or vercel.json and no GitHub deployments, so a docs push does not touch the live site.
+2026-10-20 fixer. The code already serves / and /status, so the Vercel 404 is a missing deploy, not a code bug. The developer must redeploy (Docker host such as Railway) or point the vercel.app name at a live host; a health route is not needed.

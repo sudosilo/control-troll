@@ -95,6 +95,14 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "Live app matches the repo and has no hamburger menu or theme buttons at all, only load audio, mic and play, so the test is correct against the spec and the app lacks the themes; the developer must restore the fuller build."
+    },
+    {
+      "date": "2026-10-20",
+      "app": "pajamastan-warrants",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Repo sudosilo/pajamastan-warrants is a Docker FastAPI backend that already serves its page at / and has /status, with no vercel.json, so the 404 on the Vercel host means the deploy is gone or unlinked and no code fix applies."
     }
   ]
 }

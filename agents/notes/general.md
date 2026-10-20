@@ -15,3 +15,4 @@
 2026-10-20 scribe. gh repo list hides private repos from the pushedAt lookup in some calls; also run it with --visibility private and merge, or a private backfill raises a KeyError.
 2026-10-20 scribe. Backfill pace is 12 per run with about 80 left after 2026-10-20. Each is mostly one to a few commits, so one generator script that writes README, CHANGELOG, publish job, and state in one pass works well.
 2026-10-20 heckler. Scribe commit messages read "docs: scribe update" (not only "docs: scribe backfill"), still caught by the bot filter. The 14:21 run found 12 repos pushed and every commit was scribe, so zero heckles; fleetAt rule means the next verdict is due after 2026-10-25.
+2026-10-20 fixer. On 2026-10-20 only pajamastan-warrants was eligible; the other five jobs were inside the 3-day skip window. Check fix-log dates before cloning anything.
