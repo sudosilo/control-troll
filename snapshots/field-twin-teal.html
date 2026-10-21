@@ -147,6 +147,9 @@
     color: var(--accent);
     margin: 0 0 10px 0;
   }
+  .twin-picks { display: flex; flex-direction: column; gap: 6px; margin: 4px 0 8px; }
+  .twin-pick { display: flex; align-items: center; gap: 10px; font-size: 15px; }
+  .twin-pick input { width: 22px; height: 22px; accent-color: #0b4ea2; }
   .meta-line {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
@@ -640,6 +643,10 @@
   #violetView.open { display: block; }
   #violetView iframe { width: 100%; height: 100%; border: 0; display: block; }
   .hz-label { display: block; margin: 8px 14px 2px 14px; font-size: 12px; color: var(--text-dim); }
+  #devColor { display: block; box-sizing: border-box; width: calc(100% - 28px); margin: 0 14px 6px 14px; }
+  .dev-pin { width: 22px; height: 22px; border-radius: 50%; border: 3px solid #ffffff; box-shadow: 0 0 0 2px #1b2433; }
+  .dev-pin.stale { opacity: 0.45; }
+  .tl-line { padding: 6px 0 6px 10px; border-left: 3px solid var(--accent); margin: 4px 0; font-size: 14px; cursor: pointer; }
   #hzDays, #hzYears, #hzArea { display: block; box-sizing: border-box; max-width: calc(100% - 28px); width: calc(100% - 28px); margin: 0 14px 6px 14px; }
   .hz-pop b { color: var(--accent); }
   .here-btn { display: flex !important; align-items: center; justify-content: center; color: var(--accent) !important; }
@@ -656,6 +663,23 @@
   #sideMenu .ext-row button.ext { flex: 0 0 auto; width: 100%; height: 46px; text-transform: none; width: auto; min-height: 46px; padding: 6px 8px; text-align: center; font-size: 14px; line-height: 1.15; font-weight: 800; background: var(--accent); color: #ffffff; border: 2px solid var(--text); border-radius: 8px; box-shadow: 3px 3px 0 var(--text); }
   #sideMenu .ext-row button.ext:active { box-shadow: none; transform: translate(3px, 3px); }
   #sideMenu .ext-row button.ext::first-letter { text-transform: none; }
+  #panel.odo-lock {
+    position: fixed;
+    top: 0;
+    max-height: none;
+    height: 100%;
+    z-index: 6000;
+    border-radius: 0;
+    border-top: 8px solid var(--accent);
+  }
+  .odo-lock-note {
+    background: var(--accent);
+    color: #ffffff;
+    padding: 10px 12px;
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    border-radius: 8px;
+  }
 </style>
 </head>
 <body>
@@ -694,6 +718,8 @@
   <button class="secondary" id="receiptBtn">RECEIPT</button>
   <button class="secondary tg" id="milesToggleBtn" aria-pressed="false"><span>ODOMETER</span><i class="tg-sw" aria-hidden="true"></i></button>
   <button class="secondary tg" id="hereToggleBtn" aria-pressed="false"><span>LOCATION</span><i class="tg-sw" aria-hidden="true"></i></button>
+  <button class="secondary tg native-only" id="autoTrackBtn" aria-pressed="false" hidden><span>AUTO TRACK</span><i class="tg-sw" aria-hidden="true"></i></button>
+  <button class="secondary tg native-only" id="odoPromptBtn" aria-pressed="false" hidden><span>ODOMETER PROMPTS</span><i class="tg-sw" aria-hidden="true"></i></button>
   <h3>Roads</h3>
   <button class="secondary tg" id="roadQualityBtn" aria-pressed="false"><span>QUALITY</span><i class="tg-sw" aria-hidden="true"></i></button>
   <button class="secondary tg" id="roadHeatBtn" aria-pressed="false"><span>HEAT MAP</span><i class="tg-sw" aria-hidden="true"></i></button>
@@ -703,6 +729,7 @@
   <button class="secondary tg" id="hzFatalBtn" aria-pressed="false"><span>CRASH HISTORY</span><i class="tg-sw" aria-hidden="true"></i></button>
   <h3>Look things up</h3>
   <button class="secondary" id="searchBtn">SEARCH</button>
+  <button class="secondary" id="timelineBtn">TIMELINE</button>
   <button class="secondary" id="dayLogBtn">DAY LOG</button>
   <button class="secondary" id="historyBtn">HISTORY</button>
   <button class="secondary" id="spendBtn">SPEND</button>
@@ -724,6 +751,20 @@
     <select id="hzArea"><option value="vegas" selected>near Las Vegas</option><option value="me">near me</option><option value="all">everywhere</option></select>
     <label class="hz-label" for="hzYears">Crash history from the last</label>
     <select id="hzYears"><option value="1">year on record</option><option value="3">three years on record</option><option value="5" selected>five years on record</option><option value="8">eight years on record</option></select>
+    <div class="native-only" hidden>
+      <label class="hz-label" for="odoFrom">Odometer prompts start at</label>
+      <select id="odoFrom"></select>
+      <label class="hz-label" for="odoUntil">Odometer prompts stop at</label>
+      <select id="odoUntil"></select>
+      <label class="hz-label" for="odoGap">Time between odometer prompts</label>
+      <select id="odoGap"><option value="30,75">half an hour to an hour and a quarter</option><option value="60,150" selected>an hour to two and a half hours</option><option value="120,240">two to four hours</option></select>
+    </div>
+    <label class="hz-label" for="devColor">This phone's color on the map</label>
+    <select id="devColor"><option value="">not picked</option><option value="orange">orange</option><option value="blue">blue</option><option value="green">green</option><option value="red">red</option><option value="teal">teal</option><option value="violet">violet</option><option value="yellow">yellow</option><option value="pink">pink</option></select>
+    <label class="hz-label">Home, where stops and odometer prompts are skipped</label>
+    <div class="hz-label" id="homeText" style="margin-top:0;">No home set.</div>
+    <button class="secondary" id="homeSetBtn">SET HOME HERE</button>
+    <button class="secondary" id="homeClearBtn">CLEAR HOME</button>
     <button class="secondary" id="camKeyBtn">SERVICE ADDRESS</button>
     <button class="secondary" id="checkBtn">SERVICE CHECK</button>
   </div>
@@ -1218,6 +1259,12 @@ function showAccount() {
     html += '<button id="syncNowBtn">SYNC NOW</button>';
     html += '<button class="secondary" id="signOutBtn">SIGN OUT</button>';
     html += '</div>';
+    html += '<div class="question">Sign in the other two apps</div>';
+    html += '<div class="meta-line">Type your password once and the boxes you check are signed in with this same email. Inventory picks it up right away, Roads the next time you open it.</div>';
+    html += '<input type="password" id="twinPass" autocomplete="current-password">';
+    html += twinBoxes(false);
+    html += '<div class="meta-line" id="twinMsg"></div>';
+    html += '<div class="panel-actions"><button class="secondary" id="twinSignBtn">SIGN THEM IN</button></div>';
     html += '<div class="question">Set or change your password</div>';
     html += '<div class="meta-line">This password belongs to your Field Twin account, the same one Inventory uses. After you set it here, it signs you in on any phone, in Field Twin and in Inventory.</div>';
     html += '<input type="password" id="newPass" autocomplete="new-password">';
@@ -1229,6 +1276,7 @@ function showAccount() {
     html += '<input type="text" id="authEmail" inputmode="email" autocomplete="email">';
     html += '<div class="question">Password</div>';
     html += '<input type="password" id="authPass" autocomplete="current-password">';
+    html += twinBoxes(true);
     html += '<div class="meta-line" id="authMsg"></div>';
     html += '<div class="panel-actions"><button id="passSignInBtn">SIGN IN</button><button class="secondary" id="sendLinkBtn">EMAIL ME A LINK</button></div>';
     html += '<div class="meta-line">If the password is refused, the account may never have had one set. Press Email me a link, open the link on this phone, then set a password on this page.</div>';
@@ -1274,8 +1322,18 @@ function showAccount() {
       const pass = document.getElementById('authPass').value || '';
       const msg = document.getElementById('authMsg');
       if (!email || !pass) { msg.textContent = 'Type your email and password.'; return; }
+      const pick = twinReadBoxes(true);
+      if (!pick.teal && !pick.violet && !pick.glaucous) { msg.textContent = 'Check at least one app.'; return; }
       passIn.disabled = true;
       passIn.textContent = 'SIGNING IN';
+      if (!pick.teal) {
+        const failedOnly = await twinSignOthers(email, pass, pick);
+        passIn.disabled = false;
+        passIn.textContent = 'SIGN IN';
+        const okOnly = [pick.violet && !failedOnly.includes('Violet') ? 'Violet' : '', pick.glaucous && !failedOnly.includes('Glaucous') ? 'Glaucous' : ''].filter(Boolean);
+        msg.textContent = (okOnly.length ? 'Signed in to ' + okOnly.join(' and ') + '. ' : '') + (failedOnly.length ? failedOnly.join(' and ') + ' refused that email and password.' : '');
+        return;
+      }
       const res = await sb.auth.signInWithPassword({ email: email, password: pass });
       if (res.error) {
         passIn.disabled = false;
@@ -1284,7 +1342,8 @@ function showAccount() {
         return;
       }
       cloudUser = res.data.user;
-      setStatus('signed in, syncing');
+      const failed = (pick.violet || pick.glaucous) ? await twinSignOthers(email, pass, pick) : [];
+      setStatus(failed.length ? 'signed in, but ' + failed.join(' and ') + ' refused that password' : 'signed in, syncing');
       await cloudPull();
       await cloudPush();
       showAccount();
@@ -1315,9 +1374,28 @@ function showAccount() {
       showAccount();
     });
   }
+  const twinBtn = document.getElementById('twinSignBtn');
+  if (twinBtn) {
+    twinBtn.addEventListener('click', async () => {
+      const pass = document.getElementById('twinPass').value || '';
+      const msg = document.getElementById('twinMsg');
+      const pick = twinReadBoxes(false);
+      if (!pass) { msg.textContent = 'Type your password.'; return; }
+      if (!pick.violet && !pick.glaucous) { msg.textContent = 'Check at least one app.'; return; }
+      twinBtn.disabled = true;
+      twinBtn.textContent = 'SIGNING IN';
+      const failed = await twinSignOthers(cloudUser.email, pass, pick);
+      twinBtn.disabled = false;
+      twinBtn.textContent = 'SIGN THEM IN';
+      document.getElementById('twinPass').value = '';
+      const ok = [pick.violet && !failed.includes('Violet') ? 'Violet' : '', pick.glaucous && !failed.includes('Glaucous') ? 'Glaucous' : ''].filter(Boolean);
+      msg.textContent = (ok.length ? ok.join(' and ') + ' signed in. ' : '') + (failed.length ? failed.join(' and ') + ' refused that password.' : '');
+    });
+  }
   const outBtn = document.getElementById('signOutBtn');
   if (outBtn) {
     outBtn.addEventListener('click', async () => {
+      twinSignOutOthers();
       await sb.auth.signOut();
       cloudUser = null;
       setStatus('signed out');
@@ -2638,16 +2716,42 @@ function getApiBase() {
   try { return localStorage.getItem(API_BASE_KEY) || DEFAULT_API_BASE; } catch (e) { return DEFAULT_API_BASE; }
 }
 
-async function apiAuthHeaders(headers) {
-  const tok = getApiToken();
-  if (tok) { headers['Authorization'] = 'Bearer ' + tok; return 'token'; }
-  if (sb && cloudUser) {
+// Finds this phone's login for the Field Twin service. Waking up from the camera can leave the account
+// half loaded for a moment, so it tries the live session, then a refresh, then the saved copy on the phone.
+function withTimeout(p, ms) { return Promise.race([p, new Promise(r => setTimeout(() => r(null), ms))]); }
+function storedAccessToken() {
+  try {
+    const ref = SUPABASE_URL.replace(/^https:\/\//, '').split('.')[0];
+    const raw = JSON.parse(localStorage.getItem('sb-' + ref + '-auth-token') || 'null');
+    const s = raw && (raw.currentSession || raw);
+    if (s && s.access_token && (!s.expires_at || s.expires_at * 1000 > Date.now() + 30000)) return s.access_token;
+  } catch (e) {}
+  return '';
+}
+async function accountToken(forceRefresh) {
+  if (!sb) return '';
+  if (!forceRefresh) {
     try {
-      const r = await sb.auth.getSession();
-      const at = r.data && r.data.session ? r.data.session.access_token : '';
-      if (at) { headers['Authorization'] = 'Bearer ' + at; return 'account'; }
+      const r = await withTimeout(sb.auth.getSession(), 4000);
+      const s = r && r.data ? r.data.session : null;
+      if (s && s.access_token && (!s.expires_at || s.expires_at * 1000 > Date.now() + 30000)) {
+        if (!cloudUser) cloudUser = s.user;
+        return s.access_token;
+      }
     } catch (e) {}
   }
+  try {
+    const r = await withTimeout(sb.auth.refreshSession(), 8000);
+    const s = r && r.data ? r.data.session : null;
+    if (s && s.access_token) { cloudUser = s.user; return s.access_token; }
+  } catch (e) {}
+  return forceRefresh ? '' : storedAccessToken();
+}
+async function apiAuthHeaders(headers, forceRefresh) {
+  const tok = getApiToken();
+  if (tok) { headers['Authorization'] = 'Bearer ' + tok; return 'token'; }
+  const at = await accountToken(Boolean(forceRefresh));
+  if (at) { headers['Authorization'] = 'Bearer ' + at; return 'account'; }
   return 'none';
 }
 
@@ -2888,14 +2992,28 @@ async function extractWithVision(photoData) {
   if (!base) throw new Error('no service address set');
   const root = base.replace(/\/+$/, '');
   const headers = { 'Content-Type': 'application/json' };
-  const how = await apiAuthHeaders(headers);
+  let how = await apiAuthHeaders(headers);
   const small = await shrinkDataUrl(photoData, 1100, 0.6);
-  const res = await fetch(root + '/receipts/extract', {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify({ image: small })
-  });
-  if (res.status === 401) throw new Error(how === 'none' ? 'sign in under Account and profile so the receipt reader knows it is you' : 'the receipt reader did not accept this phone, sign in again under Account and profile');
+  // Coming back from the camera, Android can hold the network for a few seconds, which shows up as
+  // failed to fetch. Wait and try again up to three more times before giving up on the full reader.
+  const send = async () => {
+    let lastErr = null;
+    for (const wait of [0, 1500, 3000, 6000]) {
+      if (wait) { setStatus('reader not reachable yet, trying again'); await new Promise(r => setTimeout(r, wait)); }
+      try {
+        return await fetch(root + '/receipts/extract', { method: 'POST', headers: headers, body: JSON.stringify({ image: small }) });
+      } catch (e) { lastErr = e; }
+    }
+    throw new Error((lastErr && lastErr.message ? lastErr.message : 'failed to fetch') + ' after four tries, check signal and scan again');
+  };
+  let res = await send();
+  // A stale login gets one fresh try before falling back to the offline reader.
+  if (res.status === 401 && how !== 'token') {
+    const h2 = { 'Content-Type': 'application/json' };
+    const how2 = await apiAuthHeaders(h2, true);
+    if (how2 !== 'none') { Object.assign(headers, h2); how = how2; res = await send(); }
+  }
+  if (res.status === 401) throw new Error(how === 'none' ? (cloudUser ? 'this phone could not load your login, open Account and profile and tap Sync now, then try the receipt again' : 'sign in under Account and profile so the receipt reader knows it is you') : 'the receipt reader did not accept this phone, sign in again under Account and profile');
   if (!res.ok) throw new Error('service returned ' + res.status);
   const data = await res.json();
   return data.receipt || {};
@@ -3396,13 +3514,70 @@ function applyMilesToggle() {
   setToggle('milesToggleBtn', on);
 }
 
+// Calibration: every odometer reading is a fact. Between two readings the odometer says how far the truck went,
+// and the phone's GPS counter says how far GPS counted. Their ratio is the correction, averaged by miles over the
+// most recent stretches, and every new reading becomes the new starting point so errors never pile up.
+const M_PER_MI = 1609.344;
+function gpsAt(t) {
+  try { const v = window.FieldTwinNative ? Number(window.FieldTwinNative.gpsAt(t)) : -1; return isFinite(v) ? v : -1; } catch (e) { return -1; }
+}
+function gpsNowMeters() {
+  try { const v = window.FieldTwinNative ? Number(window.FieldTwinNative.gpsNow()) : -1; return isFinite(v) ? v : -1; } catch (e) { return -1; }
+}
+function calSegments() {
+  if (!window.FieldTwinNative) return [];
+  const list = odoList();
+  const segs = [];
+  for (let i = 1; i < list.length; i++) {
+    const a = list[i - 1], b = list[i];
+    if ((a.odometer.vehicle || '') !== (b.odometer.vehicle || '')) continue;
+    const ta = new Date(a.timestamp).getTime(), tb = new Date(b.timestamp).getTime();
+    const ga = gpsAt(ta), gb = gpsAt(tb);
+    if (ga < 0 || gb < 0) continue;
+    const odoMi = b.odometer.reading - a.odometer.reading;
+    const gpsMi = (gb - ga) / M_PER_MI;
+    const ratio = gpsMi > 0 ? odoMi / gpsMi : 0;
+    const used = odoMi >= 0.5 && odoMi <= 400 && gpsMi >= 0.3 && ratio >= 0.5 && ratio <= 3;
+    segs.push({ from: a, to: b, odoMi: odoMi, gpsMi: gpsMi, ratio: ratio, used: used });
+  }
+  return segs;
+}
+function calFactor() {
+  const used = calSegments().filter(g => g.used).slice(-20);
+  let o = 0, g = 0;
+  used.forEach(x => { o += x.odoMi; g += x.gpsMi; });
+  return { factor: g > 0 ? o / g : 1, count: used.length, odoMi: o, gpsMi: g };
+}
+// The odometer GPS expects at time t, built forward from the last reading at or before t.
+function calEstimate(t) {
+  if (!window.FieldTwinNative) return null;
+  const list = odoList().filter(e => new Date(e.timestamp).getTime() <= t);
+  const last = list[list.length - 1];
+  if (!last) return null;
+  const tl = new Date(last.timestamp).getTime();
+  const gl = gpsAt(tl), gt = t >= Date.now() - 1000 ? gpsNowMeters() : gpsAt(t);
+  if (gl < 0 || gt < 0) return null;
+  const cal = calFactor();
+  const gpsMi = Math.max(0, (gt - gl) / M_PER_MI);
+  return { reading: last.odometer.reading + gpsMi * cal.factor, gpsMi: gpsMi, from: last, factor: cal.factor, count: cal.count };
+}
+function calText() {
+  if (!window.FieldTwinNative) return '';
+  const c = calFactor();
+  if (!c.count) return 'GPS correction: waiting for two odometer readings with GPS tracking between them.';
+  return 'GPS correction: ' + c.factor.toFixed(3) + ', from ' + c.count + (c.count === 1 ? ' stretch' : ' stretches') + ' covering ' + Math.round(c.odoMi) + ' odometer miles.';
+}
+
 function odoList() {
   entries.forEach(odoFromAnswers);
   return entries.filter(e => e.category === 'odometer' && e.odometer && isFinite(e.odometer.reading))
     .slice().sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 }
 
-function showOdometer() {
+function showOdometer(locked) {
+  locked = locked === true;
+  if (odoLocked && !locked) return;
+  odoLocked = false;
   const panel = document.getElementById('panel');
   const list = odoList();
   const last = list[list.length - 1];
@@ -3411,9 +3586,12 @@ function showOdometer() {
   let vehicle = '';
   try { vehicle = localStorage.getItem('milesVehicle') || ''; } catch (e) {}
   let html = '<h2>ODOMETER</h2>';
+  if (locked) html += '<div class="odo-lock-note">Reading due. Field Twin stays on this screen until the number goes in.</div>';
   html += '<div class="meta-line">' + (last ? 'Last reading ' + last.odometer.reading + ' on ' + new Date(last.timestamp).toLocaleString() : 'No readings saved yet') + '</div>';
   html += '<div class="question">Number on the odometer right now</div>';
   html += '<input type="text" id="odoReading" inputmode="decimal" autocomplete="off">';
+  const est = calEstimate(Date.now());
+  if (est) html += '<div class="meta-line">GPS expects about ' + Math.round(est.reading).toLocaleString() + ', ' + (Math.round(est.gpsMi * est.factor * 10) / 10) + ' miles past the last reading. Type what the odometer shows, not this.</div>';
   html += '<div class="question">Vehicle</div>';
   html += '<input type="text" id="odoVehicle" value="' + escapeHtml(vehicle) + '">';
   html += '<div class="question">Work or personal, ' + cls.reason + '</div>';
@@ -3423,10 +3601,11 @@ function showOdometer() {
   html += '</div>';
   html += '<div class="question">Notes</div><textarea id="odoNotes"></textarea>';
   html += '<div class="meta-line" id="odoMsg" style="color:#b00020;"></div>';
-  html += '<div class="panel-actions"><button id="odoSaveBtn">SAVE READING</button><button class="secondary" id="odoCancelBtn">CANCEL</button></div>';
+  html += '<div class="panel-actions"><button id="odoSaveBtn">SAVE READING</button>' + (locked ? '' : '<button class="secondary" id="odoCancelBtn">CANCEL</button>') + '</div>';
   panel.innerHTML = html;
   panel.scrollTop = 0;
   panel.classList.add('open');
+  if (locked) { panel.classList.add('odo-lock'); odoLocked = true; setTimeout(() => { const i = document.getElementById('odoReading'); if (i) i.focus(); }, 300); }
   let isWork = cls.work;
   panel.querySelectorAll('#odoWork .qopt').forEach(el => {
     el.addEventListener('click', () => {
@@ -3435,13 +3614,24 @@ function showOdometer() {
       isWork = el.getAttribute('data-work') === '1';
     });
   });
-  document.getElementById('odoCancelBtn').addEventListener('click', closePanel);
+  if (!locked) document.getElementById('odoCancelBtn').addEventListener('click', closePanel);
   document.getElementById('odoSaveBtn').addEventListener('click', async function () {
     const btn = this;
     const reading = parseFloat((document.getElementById('odoReading').value || '').replace(/,/g, ''));
     if (!isFinite(reading) || reading < 0) {
       document.getElementById('odoMsg').textContent = 'Type the number shown on the odometer.';
       return;
+    }
+    // A typo here would teach the correction a wrong fact, so a reading far from the GPS estimate needs a second tap.
+    const guess = calEstimate(Date.now());
+    if (guess && last && btn.dataset.confirmed !== String(reading)) {
+      const off = Math.abs(reading - guess.reading);
+      const room = Math.max(5, guess.gpsMi * 0.3);
+      if (reading < last.odometer.reading || off > room) {
+        btn.dataset.confirmed = String(reading);
+        document.getElementById('odoMsg').textContent = (reading < last.odometer.reading ? 'That is lower than the last reading of ' + last.odometer.reading + '.' : 'That is ' + Math.round(off) + ' miles away from what GPS expects.') + ' Check the number, then tap SAVE READING again to keep it.';
+        return;
+      }
     }
     btn.disabled = true;
     btn.textContent = 'LOCATING';
@@ -3478,8 +3668,18 @@ function showOdometer() {
     entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     await saveEntries();
     renderMarkers();
+    odoLocked = false;
+    try { if (window.FieldTwinNative) window.FieldTwinNative.odoSaved(); } catch (e) {}
     closePanel();
-    setStatus('odometer ' + reading + ' saved' + (lat === null ? ', no location fix' : ''));
+    let calNote = '';
+    if (window.FieldTwinNative && last) {
+      const seg = calSegments().find(g => g.to.id === entry.id);
+      if (seg) {
+        const c = calFactor();
+        calNote = ', odometer went ' + (Math.round(seg.odoMi * 10) / 10) + ' mi, GPS counted ' + (Math.round(seg.gpsMi * 10) / 10) + (seg.used ? ', correction now ' + c.factor.toFixed(3) : ', too far off to learn from');
+      }
+    }
+    setStatus('odometer ' + reading + ' saved' + (lat === null ? ', no location fix' : '') + calNote);
   });
 }
 
@@ -3577,6 +3777,97 @@ const CQ_URL = 'https://vogxdikogfaxhwcgajfg.supabase.co';
 const CQ_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvZ3hkaWtvZ2ZheGh3Y2dhamZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzOTk4MDAsImV4cCI6MjEwNjk3NTgwMH0.fUosu3JdsUI5GFnQjDbOxfYCWO1hfijQO3O8lJVsU98';
 const CQ_SITE = 'https://field-twin-glaucous.vercel.app/';
 const VIOLET_SITE = 'https://field-twin-violet.vercel.app/';
+const VIOLET_ORIGIN = 'https://field-twin-violet.vercel.app';
+
+// One sign in for all three Field Twin apps. Violet uses this same account system, Glaucous has its own
+// with the same email and password. Each app gets its own fresh login, held here until that app opens.
+const TWIN_HAND_KEY = 'fieldTwinHandoff';
+const TWIN_PICK_KEY = 'fieldTwinSignInto';
+function twinHand() { try { return JSON.parse(localStorage.getItem(TWIN_HAND_KEY) || '{}') || {}; } catch (e) { return {}; } }
+function twinHandSave(h) { try { localStorage.setItem(TWIN_HAND_KEY, JSON.stringify(h)); } catch (e) {} }
+function twinPick() {
+  try { const p = JSON.parse(localStorage.getItem(TWIN_PICK_KEY) || 'null'); if (p) return p; } catch (e) {}
+  return { teal: true, violet: true, glaucous: true };
+}
+function twinPickSave(p) { try { localStorage.setItem(TWIN_PICK_KEY, JSON.stringify(p)); } catch (e) {} }
+function twinBoxes(withTeal) {
+  const p = twinPick();
+  const box = (id, on, label) => '<label class="twin-pick"><input type="checkbox" id="' + id + '"' + (on ? ' checked' : '') + '> ' + label + '</label>';
+  return '<div class="question">Sign in to</div><div class="twin-picks">' +
+    (withTeal ? box('pickTeal', p.teal !== false, 'Field Twin Teal, the map') : '') +
+    box('pickViolet', p.violet !== false, 'Field Twin Violet, the inventory') +
+    box('pickGlaucous', p.glaucous !== false, 'Field Twin Glaucous, the roads') + '</div>';
+}
+function twinReadBoxes(withTeal) {
+  const on = id => { const el = document.getElementById(id); return Boolean(el && el.checked); };
+  const old = twinPick();
+  const p = { teal: withTeal ? on('pickTeal') : old.teal !== false, violet: on('pickViolet'), glaucous: on('pickGlaucous') };
+  twinPickSave(p);
+  return p;
+}
+async function twinLogin(url, key, email, pass) {
+  try {
+    const c = window.supabase.createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false, storageKey: 'fieldtwin-hand-' + Date.now().toString(36) } });
+    const r = await c.auth.signInWithPassword({ email: email, password: pass });
+    if (r.error || !r.data || !r.data.session) return null;
+    return { at: r.data.session.access_token, rt: r.data.session.refresh_token, email: r.data.user.email };
+  } catch (e) { return null; }
+}
+// Signs Violet and Glaucous in with the same email and password. Returns the names that failed.
+async function twinSignOthers(email, pass, pick) {
+  const h = twinHand();
+  const failed = [];
+  if (pick.violet) {
+    const v = await twinLogin(SUPABASE_URL, SUPABASE_ANON, email, pass);
+    if (v) { h.violet = v; delete h.violetOut; } else failed.push('Violet');
+  }
+  if (pick.glaucous) {
+    const g = await twinLogin(CQ_URL, CQ_ANON, email, pass);
+    if (g) { h.glaucous = g; delete h.glaucousOut; } else failed.push('Glaucous');
+  }
+  twinHandSave(h);
+  twinSendViolet();
+  return failed;
+}
+function twinSignOutOthers() {
+  const p = twinPick();
+  const h = twinHand();
+  delete h.violet; delete h.glaucous;
+  if (p.violet !== false) h.violetOut = true;
+  if (p.glaucous !== false) h.glaucousOut = true;
+  twinHandSave(h);
+  twinSendViolet();
+}
+function twinVioletFrame() { const f = document.querySelector('#violetView iframe'); return f && f.contentWindow ? f.contentWindow : null; }
+function twinSendViolet() {
+  const w = twinVioletFrame();
+  if (!w) return;
+  const h = twinHand();
+  if (h.violet) w.postMessage({ type: 'fieldtwin-session', at: h.violet.at, rt: h.violet.rt, email: h.violet.email }, VIOLET_ORIGIN);
+  else if (h.violetOut) w.postMessage({ type: 'fieldtwin-signout' }, VIOLET_ORIGIN);
+}
+window.addEventListener('message', e => {
+  if (e.origin !== VIOLET_ORIGIN || !e.data || typeof e.data !== 'object') return;
+  const h = twinHand();
+  if (e.data.type === 'fieldtwin-ready') twinSendViolet();
+  else if (e.data.type === 'fieldtwin-session-ok') { delete h.violet; twinHandSave(h); }
+  else if (e.data.type === 'fieldtwin-signout-ok') { delete h.violetOut; twinHandSave(h); }
+  else if (e.data.type === 'fieldtwin-session-fail') setStatus('Inventory sign in failed, ' + String(e.data.message || 'no reason given').slice(0, 80));
+});
+// Opens Glaucous and hands it the waiting login, or the sign out, in the part of the address that never leaves the phone.
+function openGlaucous() {
+  const h = twinHand();
+  let url = CQ_SITE;
+  if (h.glaucous) {
+    url += '#ft_at=' + encodeURIComponent(h.glaucous.at) + '&ft_rt=' + encodeURIComponent(h.glaucous.rt) + '&ft_email=' + encodeURIComponent(h.glaucous.email || '');
+    delete h.glaucous;
+  } else if (h.glaucousOut) {
+    url += '#ft_signout=1';
+    delete h.glaucousOut;
+  }
+  twinHandSave(h);
+  window.location.href = url;
+}
 let cqClient = null, cqRuns = null, cqLoading = null;
 let roadLayer = null, heatLayer = null;
 const roadView = { quality: false, heat: false };
@@ -3694,8 +3985,8 @@ function initRoadButtons() {
   applyRoadButtons();
   document.getElementById('roadQualityBtn').addEventListener('click', () => { roadView.quality = !roadView.quality; refreshRoadLayers(); });
   document.getElementById('roadHeatBtn').addEventListener('click', () => { roadView.heat = !roadView.heat; refreshRoadLayers(); });
-  document.getElementById('openCqBtn').addEventListener('click', () => { window.open(CQ_SITE, '_blank', 'noopener'); });
-  document.getElementById('openVioletBtn').addEventListener('click', () => { window.open(VIOLET_SITE, '_blank', 'noopener'); });
+  document.getElementById('openCqBtn').addEventListener('click', openGlaucous);
+  document.getElementById('openVioletBtn').addEventListener('click', () => { const ov = document.getElementById('menuOverlay'); if (ov) ov.click(); document.getElementById('tabViolet').click(); });
   if (roadView.quality || roadView.heat) refreshRoadLayers();
 }
 
@@ -4088,7 +4379,7 @@ function buildDayLog(dk) {
   r.summary = [
     (list.length === 1 ? '1 entry' : list.length + ' entries') + ' from ' + dayLogTime(first.timestamp) + ' to ' + dayLogTime(last.timestamp) + ', ' + dayLogGap(spanMin) + ' on the clock',
     dayLogN(Object.keys(sites).length, 'distinct place') + ', ' + (Math.round(ground * 10) / 10) + ' miles between entries in a straight line',
-    'Miles driven by odometer: ' + (odos.length ? (Math.round((workMi + persMi) * 10) / 10) + ' (work ' + (Math.round(workMi * 10) / 10) + ', personal ' + (Math.round(persMi * 10) / 10) + ')' : 'unknown'),
+    (window.FieldTwinNative ? (() => { try { const raw = Number(window.FieldTwinNative.dayMiles(dk)) || 0; const c = calFactor(); return 'Miles driven by phone GPS: ' + raw + (c.count ? ', corrected ' + (Math.round(raw * c.factor * 10) / 10) : '') + '. '; } catch (e) { return 'Miles driven by phone GPS: unknown. '; } })() : '') + 'Miles driven by odometer: ' + (odos.length ? (Math.round((workMi + persMi) * 10) / 10) + ' (work ' + (Math.round(workMi * 10) / 10) + ', personal ' + (Math.round(persMi * 10) / 10) + ')' : 'unknown'),
     'Spent: $' + spent.toFixed(2) + ' on ' + dayLogN(rs.length, 'receipt') + ' (work $' + work.toFixed(2) + ', personal $' + personal.toFixed(2) + ', tax $' + tax.toFixed(2) + ', saved $' + saved.toFixed(2) + ')',
     'Questions answered: ' + answered + ' of ' + asked + ', photos: ' + photos
   ];
@@ -4249,7 +4540,7 @@ function showInfo() {
   html += '<div class="question">Receipts</div>';
   html += '<div>Fields the reader was unsure of are highlighted. The pin goes at your location or the receipt address, your choice. The entry is filed under the date printed on the receipt. Before saving, the app checks for a receipt you already saved with the same total plus the same printed date and time, or the same date and store, or with no date the same store nearby, and warns you. Spend lists any likely duplicates already saved.</div>';
   html += '<div class="question">Map</div>';
-  html += '<div>Sign shapes show the kind of place, listed under Color key. Receipts show as price tags. Nearby signs merge into a numbered circle, tap to spread them out. The blue dot is you, checked about every five minutes while the app is open, and the target button checks right now.</div>';
+  html += '<div>Sign shapes show the kind of place, listed under Color key. Receipts show as price tags. Nearby signs merge into a numbered circle, tap to spread them out. The blue dot is you, checked about every five minutes in a browser and every five seconds in the phone app, and the target button checks right now.</div>';
   html += '<div class="question">Entries</div>';
   html += '<div>Tap a sign to open it. Edit changes anything, Delete is on the Edit screen, and the four arrows button moves the pin.</div>';
   html += '<div class="question">Menu</div>';
@@ -4258,6 +4549,16 @@ function showInfo() {
   html += '<div>Crashes and construction come from the Nevada and Arizona road departments, saved every few minutes by the Field Twin server, so history builds from the day collection started. Crash history is fatal crashes from federal records, which run about a year behind.</div>';
   html += '<div class="question">Your account and the other apps</div>';
   html += '<div>Field Twin Violet (Inventory) and Field Twin Glaucous (Roads, first built as Chassisquiver) are separate apps that feed this map. The tabs under the title move between all three, and the same tabs sit at the top of the other two. Field Twin and Field Twin Violet share one Supabase project and one account, the same email and password, not any outside sign in service. Field Twin Glaucous runs on its own Supabase project with its own account, and this map reads the road runs shared there. The blue buttons under Other apps open the other two in a new page.</div>';
+  html += '<div class="question">Timeline</div>';
+  html += '<div>New in version 1.0.12. Timeline in the menu splits a day into half hour blocks. Each block says how many reports came in and from which phones, then sums up what happened: where you were parked and for how long, how far you drove, odometer readings, receipts and anything you logged. When two or three phones park at the same spot at the same time, the stop is kept once and lists every phone that saw it, so extra phones back each other up instead of piling up copies. Tap a line to open that entry.</div>';
+  html += '<div class="question">Battery saving with the motion sensor</div>';
+  html += '<div>New in version 1.0.11. GPS now runs only while you are moving. After five minutes parked inside sixty meters, Field Twin turns GPS off and waits on the phone\'s motion sensor, a low power chip that wakes it the moment the truck starts traveling. A cheap network location check every ten minutes backs that up. Stops, departure times and odometer prompts work the same. Tap the blue dot to see whether tracking is moving or parked.</div>';
+  html += '<div class="question">Your phones on the map, and home</div>';
+  html += '<div>New in version 1.0.10. Every phone signed in to your account shows on the map as a round pin in that phone\'s color, so you can see where each phone was last. Pick each phone\'s color under Settings. A phone reports its spot every two minutes while Field Twin is open on it. Tap a pin to see how long ago it reported, and pins older than an hour fade. Under Settings, Set home here saves home as a two hundred meter circle that all your phones share. Inside it, parked stops are not logged and odometer prompts wait until you leave.</div>';
+  html += '<div class="question">GPS calibration from your odometer readings</div>';
+  html += '<div>New in version 1.0.7. In the phone app, GPS keeps its own running mile count. Each odometer reading you save is treated as a fact: the app compares how far the odometer went since the last reading with how far GPS counted, and learns a correction from the last twenty stretches, weighted by miles. Every new reading becomes the new starting point, so GPS error never builds up past one stretch. The odometer form shows what GPS expects, and asks for a second tap when a reading is lower than the last one or far from the estimate, so a typo cannot teach it a wrong fact. The status line after saving shows the stretch and the new correction. The Day log shows raw and corrected GPS miles, auto stops record an estimated odometer on arrival, and tapping the blue dot shows the estimated odometer right now. GPS counting starts with this version, so the first correction appears after two readings with driving between them.</div>';
+  html += '<div class="question">One sign in for all three apps</div>';
+  html += '<div>New in version 1.0.6. The sign in screen under Account and profile has a check box for each app: Teal, the map, Violet, the inventory, and Glaucous, the roads. Check the ones you want and sign in once with your email and password. Violet signs in as soon as the Inventory tab opens, and Glaucous signs in the next time you tap Roads. If you are already signed in here, Account and profile has a Sign the other two in box that does the same with one password. Signing out here signs the checked apps out too. Glaucous keeps its own accounts, so it needs the same email and password as this app.</div>';
   html += '<div class="question">Sync</div>';
   html += '<div>Signed in, everything saves to your account and matches across phones, deletes included. Account and profile shows the counts, your points and trophies, and where to set a password. Without an account, entries stay on this phone for thirty days, and Export and Import move them by file.</div>';
   html += '<div class="panel-actions"><button class="secondary" id="closeInfoBtn">CLOSE</button></div>';
@@ -4577,8 +4878,11 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+let odoLocked = false;
+
 function closePanel() {
-  document.getElementById('panel').classList.remove('open');
+  if (odoLocked) return;
+  document.getElementById('panel').classList.remove('open', 'odo-lock');
   document.getElementById('panel').innerHTML = '';
   pendingEntry = null;
 }
@@ -4767,7 +5071,248 @@ window.addEventListener('unhandledrejection', (e) => {
   setStatus('PROMISE ERROR: ' + msg);
 });
 
-init();
+window.fieldTwinReady = init();
+</script>
+<script>
+// Phone app extras: when Field Twin runs inside its Android app, window.FieldTwinNative is the phone side.
+// It tracks location in the background, turns twenty minute parks into stops, adds up GPS miles,
+// and raises odometer prompts that lock this screen until a reading is saved.
+(function () {
+  const N = window.FieldTwinNative;
+  if (!N) return;
+  try { N.hello(); } catch (e) { return; }
+  document.querySelectorAll('.native-only').forEach(el => { el.hidden = false; });
+
+  // Location comes from the phone service, which keeps running with the screen off.
+  const geo = navigator.geolocation;
+  const realGet = geo && geo.getCurrentPosition ? geo.getCurrentPosition.bind(geo) : null;
+  function nativeFix(maxAgeMs) {
+    try {
+      const f = JSON.parse(N.lastFix() || 'null');
+      if (f && Date.now() - f.t <= maxAgeMs) {
+        return { coords: { latitude: f.lat, longitude: f.lon, accuracy: f.acc, altitude: null, altitudeAccuracy: null, heading: null, speed: f.speed >= 0 ? f.speed : null }, timestamp: f.t };
+      }
+    } catch (e) {}
+    return null;
+  }
+  if (geo) {
+    geo.getCurrentPosition = function (ok, fail, opts) {
+      const now = nativeFix(90000);
+      if (now) { ok(now); return; }
+      let done = false;
+      const started = Date.now();
+      const limit = (opts && opts.timeout) || 20000;
+      const poll = setInterval(() => {
+        const f = nativeFix(90000);
+        if (f && !done) { done = true; clearInterval(poll); ok(f); }
+        else if (Date.now() - started > limit && !done) {
+          done = true; clearInterval(poll);
+          const old = nativeFix(30 * 60000);
+          if (old) ok(old);
+          else if (realGet) realGet(ok, fail, opts);
+          else if (fail) fail({ code: 3, message: 'no location fix yet' });
+        }
+      }, 1000);
+      if (realGet) realGet(p => { if (!done) { done = true; clearInterval(poll); ok(p); } }, () => {}, opts);
+    };
+    geo.watchPosition = function (ok) {
+      let lastT = 0;
+      return setInterval(() => {
+        const f = nativeFix(120000);
+        if (f && f.timestamp !== lastT) { lastT = f.timestamp; ok(f); }
+      }, 5000);
+    };
+    geo.clearWatch = function (id) { clearInterval(id); };
+  }
+
+  // Live dot: in the app the blue dot follows the phone service every five seconds,
+  // and tapping it says how fresh the last fix is and how far the phone has driven today.
+  function ageText(ms) {
+    const s = Math.round(ms / 1000);
+    if (s < 60) return s + ' seconds ago';
+    const m = Math.round(s / 60);
+    return m < 60 ? m + ' minutes ago' : Math.round(m / 60) + ' hours ago';
+  }
+  function trackLine() {
+    let f = null; try { f = JSON.parse(N.lastFix() || 'null'); } catch (e) {}
+    let on = true; try { on = N.isTracking(); } catch (e) {}
+    let mi = 0; try { mi = N.dayMiles((d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'))(new Date())); } catch (e) {}
+    let free = true; try { free = N.batteryFree(); } catch (e) {}
+    if (!on) return 'Auto track is off.';
+    if (!f) return 'Auto track is on and waiting for its first GPS fix.';
+    let mode = 'moving'; try { mode = N.trackMode(); } catch (e) {}
+    if (mode === 'parked') return 'Parked. GPS is off to save battery and turns back on when the motion sensor feels the truck move. Last spot checked ' + ageText(Date.now() - f.t) + '. Phone GPS miles today: ' + mi + '.';
+    const est = calEstimate(Date.now());
+    return 'Last GPS fix ' + ageText(Date.now() - f.t) + ', within ' + Math.round(f.acc) + ' meters. Phone GPS miles today: ' + mi + '.' + (est ? ' Odometer should read about ' + Math.round(est.reading).toLocaleString() + '.' : '') + ' ' + calText() + (free ? '' : ' Battery saving can pause tracking with the screen off.');
+  }
+  let lastDotT = 0;
+  setInterval(() => {
+    if (document.visibilityState === 'hidden') return;
+    const f = nativeFix(30 * 60000);
+    if (f && f.timestamp !== lastDotT && typeof hereShow === 'function') {
+      lastDotT = f.timestamp;
+      hereShow(f);
+      if (hereDot && !hereDot._ftLive) { hereDot._ftLive = true; hereDot.unbindPopup(); hereDot.bindPopup(() => trackLine()); }
+    }
+  }, 5000);
+
+  // Stops: each long park becomes a regular entry, named after the closest place already logged.
+  const SITE_RADIUS_M = 150;
+  function metersApart(aLat, aLon, bLat, bLon) {
+    const R = 6371000, toR = Math.PI / 180;
+    const dLat = (bLat - aLat) * toR, dLon = (bLon - aLon) * toR;
+    const h = Math.sin(dLat / 2) ** 2 + Math.cos(aLat * toR) * Math.cos(bLat * toR) * Math.sin(dLon / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+  function nearestSite(lat, lon) {
+    let best = null, bestD = Infinity;
+    entries.forEach(e => {
+      if (!hasPos(e) || e.category === 'odometer' || e.category === 'receipt' || e.placeType === 'auto stop') return;
+      const d = metersApart(lat, lon, e.lat, e.lon);
+      if (d < bestD && d <= SITE_RADIUS_M) { bestD = d; best = e; }
+    });
+    if (!best) entries.forEach(e => {
+      if (!hasPos(e) || e.placeType !== 'auto stop') return;
+      const d = metersApart(lat, lon, e.lat, e.lon);
+      if (d < bestD && d <= SITE_RADIUS_M) { bestD = d; best = e; }
+    });
+    return best;
+  }
+  function clock(t) { return new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); }
+  let importing = false;
+  async function importStops() {
+    if (importing) return;
+    importing = true;
+    try {
+      let stays = [];
+      try { stays = JSON.parse(N.getStays() || '[]'); } catch (e) { stays = []; }
+      if (!stays.length) return;
+      const have = new Set(entries.map(e => e.id));
+      const done = [];
+      let added = 0;
+      for (const st of stays) {
+        const id = 'stop-' + st.id;
+        done.push(st.id);
+        if (have.has(id)) continue;
+        if (typeof atHomePoint === 'function' && atHomePoint(st.lat, st.lon)) continue;
+        // Another phone already logged this same stop: add this phone as a witness instead of a second entry.
+        const twin = entries.find(e => e.placeType === 'auto stop' && hasPos(e) && e.twinId !== TWIN_ID &&
+          Math.abs(new Date(e.timestamp).getTime() - st.arrivedAt) < 15 * 60000 && metersApart(e.lat, e.lon, st.lat, st.lon) <= SITE_RADIUS_M);
+        if (twin) {
+          const q = twin.questions || (twin.questions = []);
+          const a = twin.answers || (twin.answers = []);
+          let i = q.indexOf('Seen by phones');
+          if (i < 0) { q.push('Seen by phones'); a.push(twin.twinId || ''); i = q.length - 1; }
+          const ids = new Set(String(a[i] || '').split(',').filter(Boolean));
+          ids.add(TWIN_ID);
+          a[i] = Array.from(ids).join(',');
+          const dirty = getDirtyIds(); dirty.add(twin.id); setDirtyIds(dirty);
+          added++;
+          continue;
+        }
+        const site = nearestSite(st.lat, st.lon);
+        let label = site ? (site.addressLabel || '') : '';
+        if (!label) {
+          try { const g = await reverseGeocode(st.lat, st.lon); label = formatAddress(g.address || {}) || 'parked spot'; } catch (e) { label = 'parked spot'; }
+        }
+        const cat = site && CATEGORIES[site.category] && site.category !== 'none' ? site.category : 'general';
+        const mins = Math.max(1, Math.round((st.leftAt - st.arrivedAt) / 60000));
+        entries.unshift({
+          id: id,
+          timestamp: new Date(st.arrivedAt).toISOString(),
+          lat: st.lat, lon: st.lon,
+          addressLabel: label,
+          locSrc: 'phone app',
+          placeType: 'auto stop',
+          confidence: 4,
+          formType: 'category',
+          category: cat,
+          questions: ['Arrived', 'Left', 'Minutes parked', 'GPS miles since the last stop', 'Estimated odometer on arrival', 'Matched a logged place', 'Notes'],
+          answers: [clock(st.arrivedAt), clock(st.leftAt), String(mins), String(st.milesBefore || 0), (() => { const x = calEstimate(st.arrivedAt); return x ? String(Math.round(x.reading)) : 'unknown'; })(), site ? 'Yes' : 'No', ''],
+          context: 'Logged automatically from a stop of ' + mins + ' minutes',
+          icon: (CATEGORIES[cat] || CATEGORIES.general).icon,
+          twinId: TWIN_ID
+        });
+        have.add(id);
+        added++;
+      }
+      if (added) {
+        entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        await saveEntries();
+        renderMarkers();
+        setStatus(added === 1 ? 'one stop logged automatically' : added + ' stops logged automatically');
+      }
+      N.ackStays(JSON.stringify(done));
+    } finally {
+      importing = false;
+    }
+  }
+
+  // Odometer prompts: a tapped prompt, or opening the app while one is due, locks the screen on the odometer form.
+  function checkOdometer() {
+    let action = '';
+    try { action = N.takeAction(); } catch (e) {}
+    let due = false;
+    try { due = N.odoDue(); } catch (e) {}
+    if ((action === 'odo' || due) && !odoLocked) showOdometer(true);
+  }
+
+  function wake() {
+    if (document.visibilityState !== 'visible') return;
+    checkOdometer();
+    importStops();
+  }
+  Promise.resolve(window.fieldTwinReady).catch(() => {}).then(() => {
+    document.addEventListener('visibilitychange', wake);
+    setInterval(wake, 60000);
+    setTimeout(wake, 800);
+  });
+
+  // Menu switches and prompt hours.
+  function readSettings() { try { return JSON.parse(N.getPromptSettings()); } catch (e) { return { on: true, start: 7, end: 18, minGap: 60, maxGap: 150 }; } }
+  function paint() {
+    let t = true;
+    try { t = N.isTracking(); } catch (e) {}
+    setToggle('autoTrackBtn', t);
+    setToggle('odoPromptBtn', readSettings().on !== false);
+  }
+  const hourName = h => h === 0 ? 'midnight' : h === 12 ? 'noon' : h < 12 ? h + ' in the morning' : (h - 12) + (h < 18 ? ' in the afternoon' : ' at night');
+  const from = document.getElementById('odoFrom'), until = document.getElementById('odoUntil'), gap = document.getElementById('odoGap');
+  for (let h = 0; h < 24; h++) {
+    from.add(new Option(hourName(h), String(h)));
+    until.add(new Option(hourName(h), String(h)));
+  }
+  const cur = readSettings();
+  from.value = String(cur.start);
+  until.value = String(cur.end);
+  const gv = cur.minGap + ',' + cur.maxGap;
+  if ([...gap.options].some(o => o.value === gv)) gap.value = gv;
+  function saveSettings(extra) {
+    const s = readSettings();
+    s.start = parseInt(from.value, 10);
+    s.end = parseInt(until.value, 10);
+    const g = gap.value.split(',');
+    s.minGap = parseInt(g[0], 10);
+    s.maxGap = parseInt(g[1], 10);
+    Object.assign(s, extra || {});
+    N.setPromptSettings(JSON.stringify(s));
+    paint();
+  }
+  [from, until, gap].forEach(el => el.addEventListener('change', () => saveSettings()));
+  document.getElementById('autoTrackBtn').addEventListener('click', () => {
+    let t = true;
+    try { t = N.isTracking(); } catch (e) {}
+    N.setTracking(!t);
+    setTimeout(paint, 300);
+    setStatus(t ? 'auto track off' : 'auto track on');
+  });
+  document.getElementById('odoPromptBtn').addEventListener('click', () => {
+    const on = readSettings().on !== false;
+    saveSettings({ on: !on });
+    setStatus(on ? 'odometer prompts off' : 'odometer prompts on');
+  });
+  paint();
+})();
 </script>
 <script>
 // Twin tabs: Field map is this app, Inventory is Field Twin Violet loaded in place so switching never leaves the page.
@@ -4792,7 +5337,7 @@ init();
     if (!inv && typeof map !== 'undefined' && map && map.invalidateSize) setTimeout(() => map.invalidateSize(), 50);
   }
   teal.addEventListener('click', () => show('teal'));
-  document.getElementById('tabRoads').addEventListener('click', () => { window.location.href = CQ_SITE; });
+  document.getElementById('tabRoads').addEventListener('click', openGlaucous);
   violet.addEventListener('click', () => show('violet'));
   let start = 'teal';
   try { start = localStorage.getItem(TAB_KEY) || 'teal'; } catch (e) {}
@@ -4800,6 +5345,193 @@ init();
   if (location.hash === '#inventory') start = 'violet';
   show(start);
 })();
+</script>
+<script>
+// Your phones on the map, and home. Each phone signed in to the account writes its own spot into the account's
+// profile under its own key, so phones never overwrite each other, and reads everyone else's back.
+const DEV_COLORS = { orange: '#f07a1a', blue: '#1265c9', green: '#2e9e4f', red: '#d93636', teal: '#14a3a3', violet: '#8a4fd6', yellow: '#e8c21a', pink: '#e2589c', '': '#8a94a6' };
+const HOME_KEY = 'fieldTwinHome', COLOR_KEY = 'fieldTwinDevColor';
+let devLayer = null, lastDevPost = 0, lastDevSpot = null;
+function homeGet() { try { return JSON.parse(localStorage.getItem(HOME_KEY) || 'null'); } catch (e) { return null; } }
+function homeApply(h) {
+  try { if (h) localStorage.setItem(HOME_KEY, JSON.stringify(h)); else localStorage.removeItem(HOME_KEY); } catch (e) {}
+  try { if (window.FieldTwinNative) window.FieldTwinNative.setHome(h ? JSON.stringify(h) : ''); } catch (e) {}
+  const t = document.getElementById('homeText');
+  if (t) t.textContent = h ? 'Home is set, a ' + h.r + ' meter circle.' : 'No home set.';
+}
+function metersBetween(aLat, aLon, bLat, bLon) {
+  const R = 6371000, k = Math.PI / 180;
+  const x = Math.sin((bLat - aLat) * k / 2) ** 2 + Math.cos(aLat * k) * Math.cos(bLat * k) * Math.sin((bLon - aLon) * k / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(x));
+}
+function atHomePoint(lat, lon) {
+  const h = homeGet();
+  return Boolean(h && isFinite(lat) && isFinite(lon) && metersBetween(h.lat, h.lon, lat, lon) <= (h.r || 200));
+}
+function devColor() { try { return localStorage.getItem(COLOR_KEY) || ''; } catch (e) { return ''; } }
+function mySpot() {
+  try {
+    if (window.FieldTwinNative) {
+      const f = JSON.parse(window.FieldTwinNative.lastFix() || 'null');
+      if (f && f.lat) return { lat: f.lat, lon: f.lon, acc: f.acc, t: f.t };
+    }
+  } catch (e) {}
+  if (typeof hereDot !== 'undefined' && hereDot) { const ll = hereDot.getLatLng(); return { lat: ll.lat, lon: ll.lng, acc: 0, t: hereAt || Date.now() }; }
+  return null;
+}
+function agoWords(ms) {
+  const m = Math.round(ms / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return m + (m === 1 ? ' minute ago' : ' minutes ago');
+  const h = Math.round(m / 60);
+  if (h < 48) return h + (h === 1 ? ' hour ago' : ' hours ago');
+  return Math.round(h / 24) + ' days ago';
+}
+async function devTick(force) {
+  if (!sb || !cloudUser || typeof map === 'undefined' || !map) return;
+  if (document.visibilityState === 'hidden' && !force) return;
+  const me = mySpot();
+  const meta = {};
+  const moved = me && (!lastDevSpot || metersBetween(lastDevSpot.lat, lastDevSpot.lon, me.lat, me.lon) > 100);
+  if (me && (force || moved || Date.now() - lastDevPost > 120000)) {
+    meta['dev_' + TWIN_ID] = { color: devColor(), lat: Math.round(me.lat * 1e5) / 1e5, lon: Math.round(me.lon * 1e5) / 1e5, acc: Math.round(me.acc || 0), t: me.t || Date.now(), app: Boolean(window.FieldTwinNative) };
+  }
+  const h = homeGet();
+  let info = null;
+  try {
+    if (Object.keys(meta).length) {
+      const r = await sb.auth.updateUser({ data: meta });
+      if (!r.error) { lastDevPost = Date.now(); lastDevSpot = me; info = r.data.user; }
+    }
+    if (!info) { const r = await sb.auth.getUser(); info = r.data ? r.data.user : null; }
+  } catch (e) { return; }
+  if (!info) return;
+  const um = info.user_metadata || {};
+  window.twinMeta = um;
+  if (um.home && JSON.stringify(um.home) !== JSON.stringify(h)) homeApply(um.home);
+  if (!um.home && h && h.owner === 'shared') homeApply(null);
+  if (!devLayer) devLayer = L.layerGroup().addTo(map);
+  devLayer.clearLayers();
+  Object.keys(um).filter(k => k.indexOf('dev_') === 0 && k !== 'dev_' + TWIN_ID).forEach(k => {
+    const d = um[k];
+    if (!d || !isFinite(d.lat) || Date.now() - d.t > 14 * 86400000) return;
+    const stale = Date.now() - d.t > 3600000;
+    const color = DEV_COLORS[d.color || ''] || DEV_COLORS[''];
+    const icon = L.divIcon({ className: '', html: '<div class="dev-pin' + (stale ? ' stale' : '') + '" style="background:' + color + '"></div>', iconSize: [22, 22], iconAnchor: [11, 11] });
+    const name = d.color ? d.color + ' phone' : 'A phone with no color picked';
+    L.marker([d.lat, d.lon], { icon: icon, zIndexOffset: 500 }).bindPopup(name + ', reported ' + agoWords(Date.now() - d.t) + (d.app ? ' from the Field Twin app' : ' from a browser') + '.').addTo(devLayer);
+  });
+}
+(function () {
+  const sel = document.getElementById('devColor');
+  sel.value = devColor();
+  sel.addEventListener('change', () => { try { localStorage.setItem(COLOR_KEY, sel.value); } catch (e) {} devTick(true); setStatus(sel.value ? 'this phone is ' + sel.value + ' on the map' : 'phone color cleared'); });
+  homeApply(homeGet());
+  document.getElementById('homeSetBtn').addEventListener('click', async () => {
+    const me = mySpot();
+    if (!me) { setStatus('no location yet, turn on Location and try again'); return; }
+    const h = { lat: Math.round(me.lat * 1e5) / 1e5, lon: Math.round(me.lon * 1e5) / 1e5, r: 200, owner: 'shared' };
+    homeApply(h);
+    try { if (sb && cloudUser) await sb.auth.updateUser({ data: { home: h } }); } catch (e) {}
+    setStatus('home saved for all your phones');
+  });
+  document.getElementById('homeClearBtn').addEventListener('click', async () => {
+    homeApply(null);
+    try { if (sb && cloudUser) await sb.auth.updateUser({ data: { home: null } }); } catch (e) {}
+    setStatus('home cleared');
+  });
+  const start = () => { devTick(true); setInterval(() => devTick(false), 60000); };
+  if (window.fieldTwinReady && window.fieldTwinReady.then) window.fieldTwinReady.then(start, start); else setTimeout(start, 3000);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') devTick(true); });
+})();
+</script>
+<script>
+// Timeline: a day in half hour blocks. Each block counts the reports from each phone and sums up what happened.
+function phoneName(id) {
+  if (!id) return 'unknown phone';
+  if (id === TWIN_ID && devColor()) return devColor();
+  const d = (window.twinMeta || {})['dev_' + id];
+  if (d && d.color) return d.color;
+  return 'phone ' + String(id).slice(-4);
+}
+function seenBy(e) {
+  const i = (e.questions || []).indexOf('Seen by phones');
+  const ids = i >= 0 ? String((e.answers || [])[i] || '').split(',').filter(Boolean) : [];
+  return ids.length ? ids : [e.twinId];
+}
+function tlClock(t) { return new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); }
+function stopSpan(e) {
+  const a = new Date(e.timestamp).getTime();
+  const m = parseFloat((e.answers || [])[2]);
+  return [a, a + (isFinite(m) ? m : 20) * 60000];
+}
+function showTimeline(dk) {
+  const panel = document.getElementById('panel');
+  dk = dk || localDay(new Date());
+  const dayStart = new Date(dk + 'T00:00:00').getTime(), dayEnd = dayStart + 86400000;
+  const list = entries.filter(e => { const t = new Date(e.timestamp).getTime(); return t >= dayStart && t < dayEnd; });
+  const stops = entries.filter(e => e.placeType === 'auto stop').filter(e => { const [a, b] = stopSpan(e); return b > dayStart && a < dayEnd; });
+  const BLOCK = 30 * 60000;
+  const blocks = [];
+  const cal = (typeof calFactor === 'function') ? calFactor() : { factor: 1, count: 0 };
+  for (let t = dayStart; t < dayEnd; t += BLOCK) {
+    const end = t + BLOCK;
+    const inBlock = list.filter(e => { const x = new Date(e.timestamp).getTime(); return x >= t && x < end; });
+    const parked = stops.filter(e => { const [a, b] = stopSpan(e); return a < end && b > t; });
+    let gpsMi = 0;
+    if (window.FieldTwinNative && typeof gpsAt === 'function' && t < Date.now()) {
+      const g1 = gpsAt(t), g2 = end > Date.now() ? gpsNowMeters() : gpsAt(end);
+      if (g1 >= 0 && g2 >= g1) gpsMi = (g2 - g1) / 1609.344 * (cal.count ? cal.factor : 1);
+    }
+    if (!inBlock.length && !parked.length && gpsMi < 0.2) continue;
+    const phones = {};
+    inBlock.forEach(e => seenBy(e).forEach(id => { const n = phoneName(id); phones[n] = (phones[n] || 0) + 1; }));
+    const lines = [];
+    parked.forEach(e => {
+      const [a, b] = stopSpan(e);
+      const from = Math.max(a, t), to = Math.min(b, end);
+      const mins = Math.round((to - from) / 60000);
+      const who = seenBy(e).map(phoneName);
+      lines.push({ id: e.id, text: 'Parked at ' + (e.addressLabel || 'a spot') + (a >= t ? ', arrived ' + tlClock(a) : '') + (b < end ? ', left ' + tlClock(b) : '') + ', ' + mins + ' of 30 minutes' + (who.length > 1 ? ', seen by ' + who.join(' and ') : '') });
+    });
+    if (gpsMi >= 0.2) lines.push({ text: 'Drove about ' + (Math.round(gpsMi * 10) / 10) + ' miles' + (cal.count ? ', corrected' : '') });
+    inBlock.filter(e => e.placeType !== 'auto stop').forEach(e => {
+      let text;
+      if (e.category === 'odometer' && e.odometer) text = 'Odometer ' + Number(e.odometer.reading).toLocaleString() + ' at ' + tlClock(e.timestamp);
+      else if (e.category === 'receipt' && e.receipt) text = 'Receipt $' + (Number(e.receipt.total) || 0).toFixed(2) + (e.receipt.store ? ' at ' + e.receipt.store : '');
+      else text = 'Logged ' + ((CATEGORIES[e.category] || CATEGORIES.general).label || 'an entry').toLowerCase() + ' at ' + (e.addressLabel || 'a spot') + ', ' + tlClock(e.timestamp);
+      lines.push({ id: e.id, text: text });
+    });
+    blocks.push({ t: t, end: end, count: Object.values(phones).reduce((x, y) => x + y, 0), phones: phones, lines: lines });
+  }
+  const prevDay = localDay(dayStart - 3600000), nextDay = localDay(dayEnd + 3600000);
+  let html = '<h2>TIMELINE</h2>';
+  html += '<input type="date" id="tlDate" value="' + dk + '" style="width:100%;padding:10px;font:inherit;margin:6px 0;border:1px solid var(--line);background:var(--panel);color:var(--text);">';
+  html += '<div class="panel-actions" style="margin-top:6px;"><button class="secondary" id="tlPrev">EARLIER DAY</button><button class="secondary" id="tlNext">LATER DAY</button></div>';
+  if (!blocks.length) html += '<div class="question">Nothing logged on this day</div>';
+  blocks.forEach(b => {
+    const who = Object.keys(b.phones).map(n => n + ' ' + b.phones[n]).join(', ');
+    html += '<div class="question">' + tlClock(b.t) + ' to ' + tlClock(b.end) + '</div>';
+    html += '<div class="meta-line">' + (b.count ? b.count + (b.count === 1 ? ' report' : ' reports') + (who ? ', from ' + escapeHtml(who) : '') : 'No new reports') + '</div>';
+    b.lines.forEach(l => { html += '<div class="tl-line"' + (l.id ? ' data-id="' + escapeHtml(l.id) + '"' : '') + '>' + escapeHtml(l.text) + '</div>'; });
+  });
+  html += '<div class="panel-actions"><button class="secondary" id="tlClose">CLOSE</button></div>';
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  panel.classList.add('open');
+  document.getElementById('tlClose').addEventListener('click', closePanel);
+  document.getElementById('tlPrev').addEventListener('click', () => showTimeline(prevDay));
+  document.getElementById('tlNext').addEventListener('click', () => showTimeline(nextDay));
+  document.getElementById('tlDate').addEventListener('change', ev => { if (ev.target.value) showTimeline(ev.target.value); });
+  panel.querySelectorAll('.tl-line[data-id]').forEach(el => el.addEventListener('click', () => {
+    const e = entries.find(x => x.id === el.getAttribute('data-id'));
+    if (e) showEntry(e);
+  }));
+}
+document.getElementById('timelineBtn').addEventListener('click', () => {
+  const ov = document.getElementById('menuOverlay'); if (ov) ov.click();
+  showTimeline();
+});
 </script>
 </body>
 </html>

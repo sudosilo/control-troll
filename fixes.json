@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-20T18:02:01.637Z",
+  "builtAt": "2026-10-21T18:07:13.682Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -43,20 +43,6 @@
       "snapshot": "snapshots/topo-wars-server.html"
     },
     {
-      "app": "field-twin-violet",
-      "url": "https://field-twin-violet.vercel.app",
-      "kind": "down",
-      "since": "2026-10-19",
-      "status": 404,
-      "failing": [],
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 ()"
-      ],
-      "features": [],
-      "knownProblem": null,
-      "snapshot": "snapshots/field-twin-violet.html"
-    },
-    {
       "app": "tower-builder-five",
       "url": "https://tower-builder-five.vercel.app",
       "kind": "down",
@@ -93,6 +79,20 @@
       "snapshot": "snapshots/pajamastan-warrants.html"
     },
     {
+      "app": "field-twin-teal-gold",
+      "url": "https://field-twin-teal-gold.vercel.app",
+      "kind": "down",
+      "since": "2026-10-21",
+      "status": 404,
+      "failing": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "features": [],
+      "knownProblem": null,
+      "snapshot": "snapshots/field-twin-teal-gold.html"
+    },
+    {
       "app": "termbeat",
       "url": "https://termbeat.vercel.app",
       "kind": "test-failing",
@@ -114,6 +114,39 @@
       ],
       "knownProblem": null,
       "snapshot": "snapshots/termbeat.html"
+    },
+    {
+      "app": "mary-jane-man",
+      "url": "https://mary-jane-man.vercel.app",
+      "kind": "test-failing",
+      "since": "2026-10-21",
+      "status": 200,
+      "failing": [
+        {
+          "test": "start shows the maze",
+          "error": "locator.click: Timeout 6000ms exceeded.",
+          "testFile": "tests/mary-jane-man.json"
+        },
+        {
+          "test": "info opens and closes",
+          "error": "locator.click: Timeout 6000ms exceeded.",
+          "testFile": "tests/mary-jane-man.json"
+        }
+      ],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()",
+        "console: Failed to load resource: the server responded with a status of 404 ()",
+        "console: Failed to load resource: the server responded with a status of 404 ()",
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "features": [
+        "Maze chase game starts with the start button, with score, lives and level shown.",
+        "Player moves through the maze eating every nug to clear the level.",
+        "Four pipe enemies chase the player, and a golden nug scares them.",
+        "Info screen opens with back, and game over offers try again."
+      ],
+      "knownProblem": null,
+      "snapshot": "snapshots/mary-jane-man.html"
     }
   ]
 }
