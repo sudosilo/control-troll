@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 48756,
+ "duration_api_ms": 64676,
  "stop_reason": "end_turn",
- "session_id": "32eafebc-5d4a-440c-acb6-fea47a5fe947",
- "total_cost_usd": 0.15364970000000003,
+ "session_id": "ac97cb00-6730-4dd0-96e6-1d0140f7a10c",
+ "total_cost_usd": 0.2131758,
  "usage": {
   "input_tokens": 16,
-  "cache_creation_input_tokens": 22672,
-  "cache_read_input_tokens": 190354,
-  "output_tokens": 4366,
+  "cache_creation_input_tokens": 33336,
+  "cache_read_input_tokens": 215705,
+  "output_tokens": 5810,
   "output_tokens_details": {
-   "thinking_tokens": 239
+   "thinking_tokens": 362
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 22672,
+   "ephemeral_1h_input_tokens": 33336,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 105,
-    "cache_read_input_tokens": 34615,
-    "cache_creation_input_tokens": 848,
+    "output_tokens": 199,
+    "cache_read_input_tokens": 45668,
+    "cache_creation_input_tokens": 459,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 848
+     "ephemeral_1h_input_tokens": 459
     },
     "type": "message"
    }
@@ -38,31 +38,31 @@
   "fallback_credit": null
  },
  "modelUsage": {
-  "claude-sonnet-5-5": {
-   "inputTokens": 16,
-   "outputTokens": 4366,
-   "cacheReadInputTokens": 190354,
-   "cacheCreationInputTokens": 22672,
-   "webSearchRequests": 0,
-   "costUSD": 0.1534154,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 239,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
   "claude-haiku-5-5": {
    "inputTokens": 1208,
-   "outputTokens": 227,
+   "outputTokens": 17,
    "cacheReadInputTokens": 0,
    "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.0002343,
+   "costUSD": 0.0001293,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 208,
+   "thinkingTokens": 0,
    "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 16,
+   "outputTokens": 5810,
+   "cacheReadInputTokens": 215705,
+   "cacheCreationInputTokens": 33336,
+   "webSearchRequests": 0,
+   "costUSD": 0.2130465,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 362,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
@@ -100,14 +100,14 @@
  "num_turns": 8,
  "subtype": "success",
  "api_error_status": null,
- "result": "I heckled 7 commits this run and did not write a fleet verdict. The last one was written on 2026-10-18, so the next is due after 2026-10-25.\n\nI posted all 7 as commit comments, logged them in `heckle/log.json`, and pushed the \"heckle log\" commit with the updated state and agent notes.",
- "ttft_ms": 1952,
+ "result": "I heckled 10 commits this run and did not write a fleet verdict. The last verdict is only 3 days old, so the next one is due after 2026-10-25.\n\nThe cap of 10 left some newer commits unheckled: the rest of the field-twin burst, a dialbeat commit from earlier in the day, and two field-twin-violet-api commits. The forkmill-zx repo has no commits yet, so its commits lookup returned an error and I skipped it.\n\nI added one note to `agents/notes/general.md` about that cap and the empty repo. The log and state update were pushed to control-troll main as \"heckle log\".",
+ "ttft_ms": 2316,
  "type": "result",
- "duration_ms": 59548,
- "uuid": "2b55ce53-2644-4848-aae0-2e096fa4a34f",
- "ttft_stream_ms": 1715,
- "time_to_request_ms": 165,
- "first_content_frame_ms": 1716,
+ "duration_ms": 87336,
+ "uuid": "96a9bb3a-07d8-4ddd-bf75-04258ccdccab",
+ "ttft_stream_ms": 2080,
+ "time_to_request_ms": 171,
+ "first_content_frame_ms": 2080,
  "queued_turn_count": 0,
  "result_index": 0
 }
