@@ -1,211 +1,131 @@
 {
  "jobs": [
   {
-   "repo": "web-press-simulator",
+   "repo": "stumbler",
    "releases": [
     {
-     "tag": "v2026.09.25",
-     "target": "f0a7a3f52f3d972f86e5a68e2a6c0d63152b6433",
-     "name": "Web Press Simulator 2026-09-25",
-     "body": "Created the web press simulator. It showed press settings, dryers, alarms, and preventive maintenance, in English and French."
+     "tag": "v2026.10.05",
+     "target": "7a4ac7f99cb0a5f8099595391766ea347181ae67",
+     "name": "Vercel Stumbler 2026-10-05",
+     "body": "Hits are now grouped by name across platforms. A cross platform check tests a kept name on every other platform it is not yet kept on."
+    },
+    {
+     "tag": "v2026.09.02",
+     "target": "4da759eb609d4b7317c9c1cdab72fd70f51751a8",
+     "name": "Vercel Stumbler 2026-09-02",
+     "body": "Added a Netlify platform to the stumbler."
     }
    ],
-   "description": "Private training simulator for a web printing press, in English and French.",
-   "homepage": "",
+   "description": "Random vercel.app name finder that opens names and keeps the live ones.",
+   "homepage": "https://stumbler.vercel.app",
    "topics": [
-    "simulator",
     "tool",
-    "training"
+    "vercel",
+    "discovery"
    ]
   },
   {
-   "repo": "diamond-driller",
+   "repo": "carchive",
    "releases": [
     {
-     "tag": "v2026.09.25",
-     "target": "cc806dea731ae43e4c2cd08c23b738e2783a2f16",
-     "name": "Diamond Driller 2026-09-25",
-     "body": "Created the spot pattern maker. Added the 447 color standard and smaller patterns and pages. Sheets now fill exactly with a centered crop and a true size PDF. Millimeter rulers now run along the top and left edges."
+     "tag": "v2026.10.06",
+     "target": "a44257a63668f21c319d4ee7215f776c0facefe6",
+     "name": "CARCHIVE 2026-10-06",
+     "body": "Added a deck builder and new cards. Version 7 of the game."
+    },
+    {
+     "tag": "v2026.10.06",
+     "target": "bf28b0c1315d198bb36200ba333769a5be05b1d8",
+     "name": "CARCHIVE 2026-10-06",
+     "body": "First release. Created the card duel game and improved it through versions 4 to 6 the same day. Version 6 added a landing page and a record of past duels."
     }
    ],
-   "description": "Turns a picture into a numbered DMC color drill pattern with printable pages.",
-   "homepage": "https://diamond-driller.vercel.app",
+   "description": "Browser card duel game with a deck builder and duel records.",
+   "homepage": "https://carchive-nine.vercel.app",
    "topics": [
-    "tool",
-    "crafts",
-    "pattern",
+    "game",
+    "cards",
     "vercel"
    ]
   },
   {
-   "repo": "signal-snapshot",
+   "repo": "topdown-pixeltown",
    "releases": [
     {
-     "tag": "v2026.09.28",
-     "target": "586d0d03b0e83adb7ce4bcfca2a51811628adf0f",
-     "name": "Signal Snapshot 2026-09-28",
-     "body": "Created the signal snapshot panel with live, graded, and report views."
+     "tag": "v2026.10.05",
+     "target": "41f26343de05c0e7fdca4bfb5ee1d9da8de8b8b1",
+     "name": "Topdown Pixeltown 2026-10-05",
+     "body": "First release. Created the pixel town game page and packed the game code into one bundle."
     }
    ],
-   "description": "Panel that shows live, graded, and report views of market signals.",
-   "homepage": "https://virality-snapshot.vercel.app",
+   "description": "Top down pixel town game that renders to a canvas.",
+   "homepage": "https://topdown-pixeltown.vercel.app",
    "topics": [
-    "tool",
-    "finance",
-    "dashboard",
+    "game",
+    "pixel-art",
     "vercel"
    ]
   },
   {
-   "repo": "signal-snapshot-backend",
+   "repo": "topdown-pixeltowns",
    "releases": [
     {
-     "tag": "v2026.09.28",
-     "target": "ac7bcc8a1b0120ddf82e2048e0a000d2796f4294",
-     "name": "Signal Snapshot Backend 2026-09-28",
-     "body": "Created the signal snapshot backend. It takes in price bars, detects patterns, logs snapshots, grades them, and serves a report. A small deploy fix followed the same day."
+     "tag": "v2026.10.06",
+     "target": "a3165f83db1a938d7a6fa01d20aa1f1a64d2c2d9",
+     "name": "Topdown Pixeltowns 2026-10-06",
+     "body": "First release. Deployed the pixel town game as a single page."
     }
    ],
-   "description": "Backend that checks price bars for patterns, logs signals, and grades them.",
-   "homepage": "",
-   "topics": [
-    "backend",
-    "finance",
-    "railway",
-    "python"
-   ]
-  },
-  {
-   "repo": "topo-war",
-   "releases": [
-    {
-     "tag": "v2026.09.29",
-     "target": "da0144e24d0d5624de498642f79d7eb4877a8a43",
-     "name": "Territory Control 2026-09-29",
-     "body": "Created the first version of the territory control war game."
-    }
-   ],
-   "description": "First version of a map based turn strategy game that became Topo Wars.",
+   "description": "Top down pixel town game, the single file version of Topdown Pixeltown.",
    "homepage": "",
    "topics": [
     "game",
-    "strategy",
-    "map"
+    "pixel-art",
+    "vercel"
    ]
   },
   {
-   "repo": "note-note-note",
+   "repo": "daily-outline",
    "releases": [
     {
-     "tag": "v2026.09.29",
-     "target": "4cf6608004db41e9f44463d0711f5e707b58ee37",
-     "name": "Note Note Note 2026-09-29",
-     "body": "Added lines, a mind map, undo for deleted notes, and storage protection. Line colors now show in the top bar while connecting."
+     "tag": "v2026.10.08",
+     "target": "38cd3ed06580a9fc8a9b4a81de03daa7bb1dfd46",
+     "name": "Daily Outline 2026-10-08",
+     "body": "Added a sign in wall and locked the calendar feed behind it."
     },
     {
-     "tag": "v2026.09.28",
-     "target": "36771670264aba785a0b2ca4bedd0e07d3fc4f41",
-     "name": "Note Note Note 2026-09-28",
-     "body": "Created shaped sticky notes on a picture with notes inside notes. Added huge grids, database storage, picture adjust, and DMC colors. Touching notes of the same color now join. Added an Out button and a pinch out to leave a note. Added a search menu, and text now continues into the square below."
+     "tag": "v2026.10.06",
+     "target": "39910a2589070c5e6ef9a24d64e9c73e68220faf",
+     "name": "Daily Outline 2026-10-06",
+     "body": "Added a calendar feed card, served by a Vercel function."
+    },
+    {
+     "tag": "v2026.06.01",
+     "target": "d27fc3bb5ee3a1cda0378651dc7100bb030059a9",
+     "name": "Daily Outline 2026-06-01",
+     "body": "First release. Created the daily outline tracker."
     }
    ],
-   "description": "Turns a picture into colored squares you group into notes and link with lines.",
-   "homepage": "https://note-note-note.vercel.app",
+   "description": "Daily goal tracker with a calendar, exports, and email sign in sync.",
+   "homepage": "https://daily-outline.vercel.app",
    "topics": [
     "tool",
-    "notes",
-    "mobile",
+    "productivity",
     "vercel"
    ]
   },
   {
-   "repo": "pajamastan-warrants",
+   "repo": "x",
    "releases": [
     {
-     "tag": "v2026.10.02",
-     "target": "fce6e90458b7fd6b4fa298b3ff7c2a41493c25d4",
-     "name": "Pajamastan Warrants 2026-10-02",
-     "body": "First deploy of the warrants page and the backend that keeps its docket current."
+     "tag": "v2026.10.08",
+     "target": "36e82673d15320e99752aa308771a3a371733810",
+     "name": "Mary Jane-Man 2026-10-08",
+     "body": "First release. Redeployed version 5 of the game over a site that had been overwritten."
     }
    ],
-   "description": "Public record page listing the active warrants docket with new entries flagged.",
-   "homepage": "https://pajamastan-warrants.vercel.app",
-   "topics": [
-    "pajamastan",
-    "public-records",
-    "backend",
-    "python"
-   ]
-  },
-  {
-   "repo": "paycheck-hub",
-   "releases": [
-    {
-     "tag": "v2026.10.02",
-     "target": "cc823494d654536e10b398100d008520d36d3946",
-     "name": "Paycheck Hub 2026-10-02",
-     "body": "First deploy of the paycheck hub."
-    }
-   ],
-   "description": "Splits a paycheck into bills and spending buckets with fixed rules.",
-   "homepage": "https://shitty-ass-finance.vercel.app",
-   "topics": [
-    "tool",
-    "finance",
-    "budget",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "topo-wars",
-   "releases": [
-    {
-     "tag": "v2026.10.03",
-     "target": "4c38f6fe4bd57aa29659b19f7611283e6217a070",
-     "name": "Topo Wars 2026-10-03",
-     "body": "Added a commander aura and a howitzer fortress. Computer opponents now scout and grab land, and up to four can play at once. Added tanks, mine drones, a chinook, and two kill grenades. The enemy commander now hides with no last seen marker."
-    },
-    {
-     "tag": "v2026.10.01",
-     "target": "a5436f50a4d1325a0e6b64834d9850d7513a4f92",
-     "name": "Topo Wars 2026-10-01",
-     "body": "Added a bomber with a send bomber button. You can keep playing zombies, and tapping hitches and boards units."
-    },
-    {
-     "tag": "v2026.09.30",
-     "target": "af016601a0b900dc3fa12543aa66fde685a06940",
-     "name": "Topo Wars 2026-09-30",
-     "body": "Added offline play, supply crates, and structures on buildings. Added zombie mode and a machine gun nest. Added buildings, a howitzer, piece pictures, and a gun range square. Placing several pieces in a row and group orders now work. The setup panel is cleaner."
-    },
-    {
-     "tag": "v2026.09.29",
-     "target": "034f81f8f597921051df0a418f2c7ef3a48e8f8a",
-     "name": "Topo Wars 2026-09-29",
-     "body": "Added territory income, jeep drivers, commanders that ride, and road and tread fixes. Added play a friend, surrender, structures, paved roads, and join by code. Pieces, marks, barricades, and structures now face the right way. You can keep playing after a win."
-    }
-   ],
-   "description": "Turn based war game played on real map terrain with computer, friend, and zombie modes.",
-   "homepage": "https://topo-wars.vercel.app",
-   "topics": [
-    "game",
-    "strategy",
-    "map",
-    "simulator",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "pancake-orange",
-   "releases": [
-    {
-     "tag": "v2026.10.04",
-     "target": "19f5722ae392fba85120e746f859ec7d8a1dd138",
-     "name": "Pancake Orange 2026-10-04",
-     "body": "Created the pancake game."
-    }
-   ],
-   "description": "Tap pancakes before they burn in a growing grill game.",
-   "homepage": "https://pancake-orange.vercel.app",
+   "description": "Small arcade style browser game with a start screen and try again.",
+   "homepage": "",
    "topics": [
     "game",
     "arcade",
@@ -213,41 +133,123 @@
    ]
   },
   {
-   "repo": "hackercons-roulette",
+   "repo": "nanoverse",
    "releases": [
     {
-     "tag": "v2026.10.04",
-     "target": "36e7bdad947bdc626deeab3017c71619bcccc4d3",
-     "name": "Hackercons Roulette 2026-10-04",
-     "body": "Created the clip player, version two, with stumble and guess modes."
+     "tag": "v2026.10.08",
+     "target": "dd13ea96f5c2f989541db014663148852a1c9d35",
+     "name": "NANOVERSE 2026-10-08",
+     "body": "First release. Published version 18 as a single standalone page."
     }
    ],
-   "description": "Plays random short clips from hacker conference talks with a guessing mode.",
-   "homepage": "https://hackercons-roulette.vercel.app",
+   "description": "Cell simulation world that renders to a canvas with audio.",
+   "homepage": "https://nanoverse-psi.vercel.app",
    "topics": [
-    "video",
     "game",
-    "conferences",
+    "simulation",
     "vercel"
    ]
   },
   {
-   "repo": "hackercons-roulette-api",
+   "repo": "repofind",
    "releases": [
     {
-     "tag": "v2026.10.04",
-     "target": "5357f9a6e0ecad155470698ddbfdcff96afcf008",
-     "name": "Hackercons Roulette API 2026-10-04",
-     "body": "Created the clip catalog backend. A fix the same day made the random pick truly random."
+     "tag": "v2026.10.08",
+     "target": "bd681cfbe3e176c6a61098e1972d179e87976ac1",
+     "name": "Repo Find 2026-10-08",
+     "body": "Updated the comic skin."
     }
    ],
-   "description": "Catalog service that serves random playable conference clips to the player.",
-   "homepage": "",
+   "description": "Search and watch tool for code repos, archives, and sites.",
+   "homepage": "https://repofind-delta.vercel.app",
    "topics": [
-    "backend",
-    "railway",
-    "node",
-    "video"
+    "tool",
+    "search",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "rat",
+   "releases": [
+    {
+     "tag": "v2026.10.08",
+     "target": "39cf4e4db323feb95434918d0252e0564cf5f533",
+     "name": "Rogue Analog Transducer 2026-10-08",
+     "body": "Added phone mode and device detection. Tracks now come from a shared library, and a Haunt Me tile was added to the hub."
+    },
+    {
+     "tag": "v2026.04.17",
+     "target": "a48e6bb962068ff8448879e80e3776f1079f5c6b",
+     "name": "Rogue Analog Transducer 2026-04-17",
+     "body": "Added track 07, Haunt Me, with a cyber waifu visualizer."
+    },
+    {
+     "tag": "v2026.04.10",
+     "target": "5cf5bbec404f20a7e16cc73ae4f803f689c9a37b",
+     "name": "Rogue Analog Transducer 2026-04-10",
+     "body": "First release. Created RAT version 1."
+    }
+   ],
+   "description": "Music player with a track hub and a visualizer for each song.",
+   "homepage": "https://rat-site-gilt.vercel.app",
+   "topics": [
+    "music",
+    "visualizer",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "field-study",
+   "releases": [
+    {
+     "tag": "v2026.10.08",
+     "target": "ea6e69dd2da9be88f8bb8f1d716122d560f26137",
+     "name": "Field Study 2026-10-08",
+     "body": "First release. Created Field Study with career and flashcard modes and a comic skin."
+    }
+   ],
+   "description": "Study app with flashcards, quizzes, and drills in career and flashcard modes.",
+   "homepage": "https://field-study-pi.vercel.app",
+   "topics": [
+    "tool",
+    "education",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "secureops",
+   "releases": [
+    {
+     "tag": "v2026.10.08",
+     "target": "69249a7f50f3e124b8e90e85c96091a20744fc56",
+     "name": "SecureOps 2026-10-08",
+     "body": "First release. Published the first live version of SecureOps."
+    }
+   ],
+   "description": "Private operations app with a login, encrypted storage, and a locked down page.",
+   "homepage": "https://secureops-pi.vercel.app",
+   "topics": [
+    "tool",
+    "security",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "67-press-proccessor",
+   "releases": [
+    {
+     "tag": "v2026.10.08",
+     "target": "fd0791de051814b3f1483af3d43c9664990a2025",
+     "name": "67 Press Processor 2026-10-08",
+     "body": "First release. Created the box dieline and press roll tool."
+    }
+   ],
+   "description": "Box dieline designer and press roll layout tool.",
+   "homepage": "https://67-press-proccessor.vercel.app",
+   "topics": [
+    "tool",
+    "packaging",
+    "vercel"
    ]
   }
  ]

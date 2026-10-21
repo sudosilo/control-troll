@@ -456,8 +456,13 @@
         "https://67-press-proccessor.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Field and Equipment",
+      "summary": "Box dieline designer and press roll layout tool",
+      "name": "67 Press Processor",
+      "latest": {
+        "date": "2026-10-08",
+        "text": "First release. Created the box dieline and press roll tool."
+      }
     },
     "secureops": {
       "apps": [
@@ -467,8 +472,13 @@
         "https://secureops-pi.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Tools",
+      "summary": "Private operations app with a login, encrypted storage, and a locked down page",
+      "name": "SecureOps",
+      "latest": {
+        "date": "2026-10-08",
+        "text": "First release. Published the first live version of SecureOps."
+      }
     },
     "field-study": {
       "apps": [
@@ -478,8 +488,13 @@
         "https://field-study-pi.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Field and Equipment",
+      "summary": "Study app with flashcards, quizzes, and drills in career and flashcard modes",
+      "name": "Field Study",
+      "latest": {
+        "date": "2026-10-08",
+        "text": "First release. Created Field Study with career and flashcard modes and a comic skin."
+      }
     },
     "rat": {
       "apps": [
@@ -489,8 +504,13 @@
         "https://rat-site-gilt.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Music and Visualizers",
+      "summary": "Music player with a track hub and a visualizer for each song",
+      "name": "Rogue Analog Transducer",
+      "latest": {
+        "date": "2026-10-08",
+        "text": "Added phone mode and device detection. Tracks now come from a shared library, and a Haunt Me tile was added to the hub."
+      }
     },
     "repofind": {
       "apps": [
@@ -500,8 +520,13 @@
         "https://repofind-delta.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Tools",
+      "summary": "Search and watch tool for code repos, archives, and sites",
+      "name": "Repo Find",
+      "latest": {
+        "date": "2026-10-08",
+        "text": "Updated the comic skin."
+      }
     },
     "nanoverse": {
       "apps": [
@@ -511,15 +536,25 @@
         "https://nanoverse-psi.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Cell simulation world that renders to a canvas with audio",
+      "name": "NANOVERSE",
+      "latest": {
+        "date": "2026-10-08",
+        "text": "First release. Published version 18 as a single standalone page."
+      }
     },
     "x": {
       "apps": [],
       "urls": [],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Small arcade style browser game with a start screen and try again",
+      "name": "Mary Jane-Man",
+      "latest": {
+        "date": "2026-10-08",
+        "text": "First release. Redeployed version 5 of the game over a site that had been overwritten."
+      }
     },
     "daily-outline": {
       "apps": [
@@ -529,15 +564,25 @@
         "https://daily-outline.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Tools",
+      "summary": "Daily goal tracker with a calendar, exports, and email sign in sync",
+      "name": "Daily Outline",
+      "latest": {
+        "date": "2026-10-08",
+        "text": "Added a sign in wall and locked the calendar feed behind it."
+      }
     },
     "topdown-pixeltowns": {
       "apps": [],
       "urls": [],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Top down pixel town game, the single file version of Topdown Pixeltown",
+      "name": "Topdown Pixeltowns",
+      "latest": {
+        "date": "2026-10-06",
+        "text": "First release. Deployed the pixel town game as a single page."
+      }
     },
     "topdown-pixeltown": {
       "apps": [
@@ -547,8 +592,13 @@
         "https://topdown-pixeltown.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Top down pixel town game that renders to a canvas",
+      "name": "Topdown Pixeltown",
+      "latest": {
+        "date": "2026-10-05",
+        "text": "First release. Created the pixel town game page and packed the game code into one bundle."
+      }
     },
     "carchive": {
       "apps": [
@@ -558,8 +608,13 @@
         "https://carchive-nine.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Browser card duel game with a deck builder and duel records",
+      "name": "CARCHIVE",
+      "latest": {
+        "date": "2026-10-06",
+        "text": "Added a deck builder and new cards. Version 7 of the game."
+      }
     },
     "final-vector": {
       "apps": [
@@ -580,8 +635,13 @@
         "https://stumbler.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Tools",
+      "summary": "Random vercel.app name finder that opens names and keeps the live ones",
+      "name": "Vercel Stumbler",
+      "latest": {
+        "date": "2026-10-05",
+        "text": "Hits are now grouped by name across platforms. A cross platform check tests a kept name on every other platform it is not yet kept on."
+      }
     },
     "hackercons-roulette-api": {
       "apps": [],
@@ -1452,6 +1512,13 @@
       "summary": null
     },
     "fatty-fart-pedal": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "2026-10-20-orange-dialbeat": {
       "apps": [],
       "urls": [],
       "private": false,
