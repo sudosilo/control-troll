@@ -103,6 +103,22 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "Repo sudosilo/pajamastan-warrants is a Docker FastAPI backend that already serves its page at / and has /status, with no vercel.json, so the 404 on the Vercel host means the deploy is gone or unlinked and no code fix applies."
+    },
+    {
+      "date": "2026-10-21",
+      "app": "field-twin-teal-gold",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "No sudosilo repo or scribe entry names teal-gold and no snapshot was saved; the field-twin family repos (field-twin, field-twin-violet-api, field-twin-viridian) are all plain index.html apps, so the Vercel project looks removed or deployed from the phone and the developer must say where it lives."
+    },
+    {
+      "date": "2026-10-21",
+      "app": "mary-jane-man",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "The live URL and its saved snapshot both serve the Vercel Stumbler page, not a maze game, and no sudosilo repo matches, so the tests are correct against the spec and the developer must restore the game or say the app was replaced."
     }
   ]
 }

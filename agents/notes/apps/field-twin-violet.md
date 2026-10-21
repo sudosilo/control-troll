@@ -1,1 +1,2 @@
 2026-10-19 fixer. Served from repo field-twin-violet-api (root index.html, no vercel.json, supabase folder). Repo field-twin is a different app in the same family. Live URL went 404 on 2026-10-19 though the snapshot was a full page.
+2026-10-21 fixer. field-twin-teal-gold is another 404 in the field-twin family with no snapshot and no matching repo (field-twin, field-twin-violet-api, field-twin-viridian are all root index.html apps). Needs the developer to say where it lives.
