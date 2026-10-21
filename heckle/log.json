@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-21T17:17:38Z",
+      "repo": "2026-10-20-orange-dialbeat",
+      "sha": "c6d15309220ff8018cda7c9091ca4c534ec31a0b",
+      "message": "Peak kitchen preset family: base, simmer, boil, spill",
+      "heckle": "Four presets named after a stovetop, and the intern wrote the PK function as one unreadable blob where a single letter flag swaps behavior across a ternary soup. B, Sm, Sp, X, r1, m2, a person who names variables like that should not be trusted with a pot of water. All of it is crammed into one index.html next to every other preset, so this file is now a landfill with a play button. Boil, simmer, spill is also an accurate review of the commit itself.\n\nFix it: Split the PK function in index.html into named presets instead of three single letter flags. Give B, Sm, Sp and X real names. Move the preset data out of index.html into its own file before it hits ten thousand lines."
+    },
+    {
+      "date": "2026-10-21T17:17:38Z",
+      "repo": "2026-10-20-orange-dialbeat",
+      "sha": "d3dbaa5039a97755b7be7ecf936a0b07b34d80cf",
+      "message": "Euro family and seven house and experimental showcase presets covering every instrument",
+      "heckle": "Seven showcase presets in one commit, and the FAM line in index.html is still a single giant object literal that gets edited by rewriting the whole line. Every diff is a wall of text, so nobody can review it, including the intern. Covering every instrument sounds like a campaign promise, and like one it was delivered with no way to check it. Experimental is a polite word for nobody listened to these.\n\nFix it: Break the FAM and FAMCOL constants in index.html onto separate lines so a diff shows what changed. Add a quick test that every instrument named in a preset actually exists in FAM. Cut the experimental presets nobody has played."
+    },
+    {
+      "date": "2026-10-21T17:17:38Z",
+      "repo": "2026-10-20-orange-dialbeat",
+      "sha": "2842b795ea4da7c9041457e56b3f482824cd7383",
+      "message": "Rubber chicken and bike spokes toys",
+      "heckle": "A rubber chicken and bike spokes, shipped as a feature, in a music app. The chick CSS squashes with scale(1.06,.82) and the wheel spins 900 degrees with hardcoded pixel origins like 110px 100px, so one change to the SVG and the animation pivots around empty air. Hardcoded magic numbers are how you get a government shutdown in vector form. Also the chicken and the wheel were crammed into the same index.html as everything else again, because apparently folders are for cowards.\n\nFix it: Replace the hardcoded transform-origin pixels in the .chick and .wheel rules in index.html with values tied to the SVG. Respect prefers-reduced-motion on the wspin animation. Move the toy SVGs out of index.html."
+    },
+    {
+      "date": "2026-10-21T17:17:38Z",
+      "repo": "2026-10-20-orange-dialbeat",
+      "sha": "25d05692252839c823925c28ede2896cc2142911",
+      "message": "Toy xylophone, toy piano and toy megaphone with four sirens",
+      "heckle": "A xylophone, a piano, a megaphone, and four sirens in one commit, which is five commits wearing a trench coat. The new .key.hit rule uses transform-box fill-box and brightness(1.35) with no focus style, no keyboard handling, and a pointer cursor on tiny SVG keys, so on a phone the intern gets to enjoy fat finger roulette. Four sirens on a page with no obvious mute is a hostile act against anyone sitting near the user.\n\nFix it: Add keyboard and focus handling for the .key elements in index.html. Make the xylophone keys bigger on mobile. Put a visible mute or volume cap on the siren toys. Split this into separate commits next time."
+    },
+    {
+      "date": "2026-10-21T17:17:38Z",
+      "repo": "2026-10-20-orange-dialbeat",
+      "sha": "36ccab55151e3ba8bde390176ff9d291cdcc5ee8",
+      "message": "Groan tube toy that tilts 90 degrees and moans",
+      "heckle": "A tube that tilts 90 degrees and moans. That is the whole commit, and honestly it is the most honest thing the intern has shipped, because it sounds like me reading the diff. The .tube rule hardcodes transform-origin 110px 110px and the .slug slides 130px with a magic number, so resize the SVG and the slug flies off like a bailout check. Also the FAM line was edited yet again as one giant line.\n\nFix it: Replace the 130px translateX on .slug in index.html with a value derived from the tube width. Remove the hardcoded 110px origin on .tube. Stop editing FAM as one long line."
+    },
+    {
+      "date": "2026-10-21T17:17:38Z",
+      "repo": "2026-10-20-orange-dialbeat",
+      "sha": "54f514fed2fdedb5bec8489944eac381a46d72a7",
+      "message": "Toy box with 80s spark gun and 90s laser gun, Toys family",
+      "heckle": "A new toys section, a spark gun, a laser gun, and a #toys div bolted onto the page with zoom:.8 copied onto the selector list next to #rowbar, #ed and #spin. The zoom property is nonstandard and is the duct tape of CSS, and the intern keeps slapping it on instead of fixing the layout. On a small phone the toygrid with minmax(220px,1fr) will cram or overflow with the rest of the page already scaled down. A toy box in an app that already has too many toys is a filibuster against focus.\n\nFix it: Replace zoom:.8 on #rowbar, #ed, #spin and #toys in index.html with real sizing. Lower the minmax(220px,1fr) in .toygrid so it fits narrow phones. Decide what this app is before adding a ninth family."
+    },
+    {
+      "date": "2026-10-21T17:17:38Z",
+      "repo": "mohavetech-website",
+      "sha": "939c9bf0c711ccaefba0fed5544f4d9a4d96a5b2",
+      "message": "new categories",
+      "heckle": "Two commit messages worth of work hidden behind the words new categories. The intern hand edited about 120 lines of index.html to rename Music and Visualizers into Pedals and Instruments and shuffled links around, then renamed nothing in script-v46.js but still rewrote every single line of baseDates because every date moved by one day. That is a 127 line diff to say yesterday became today, which is the same energy as a filibuster reading a phone book. The troll.js cache buster is a timestamp pasted by hand again. This is a website maintained by copy and paste.\n\nFix it: Generate the category lists in index.html from data instead of hand editing links. Stop renaming the script-v46.js baseDates line by line and store a real date offset. Automate the troll.js version query string. Move baseDates out of a file that gets renamed every sync."
+    },
+    {
+      "date": "2026-10-21T17:17:38Z",
+      "repo": "doctrine-duel-qx",
+      "sha": "c384fcbe7443db2dfeec64a74b068c8fed9da199",
+      "message": "Runner v2: several scheduled play times a day, keyed agents play under their own id, blue doctrine",
+      "heckle": "The intern copied doctrine-duel-qx-server-v1.js into a file named v2.js and bumped package.json, so version control is now being used as a filing cabinet. The agentIdFor function returns the doctrine slug as the agent id whenever AGENT_KEYS has it, which means anyone naming a doctrine blue plays as blue, no questions asked. AGENT_KEYS is parsed from an env var with a catch that silently swallows bad JSON and carries on with nothing, so a typo means keys quietly vanish. A 118 line package-lock lands with it. The index.html play time input accepts any text.\n\nFix it: Rename back to one server file and let git hold the versions in doctrine-duel-qx-backend. Fail loudly when AGENT_KEYS in doctrine-duel-qx-server-v2.js is bad JSON. Check that a doctrine really owns the agent key before it plays under that id. Validate the play times input in index.html as hours from 0 to 23."
+    },
+    {
+      "date": "2026-10-21T17:17:38Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "7da785108c3b0306536b4df9a78f25e9ab8046e2",
+      "message": "steward 2026-10-21 (#25)",
+      "heckle": "Another pull request, another merge, another deploy, all to overwrite one line of minified JSON in contrib/steward/2026-10-21.json. This one is a utility pole line down Palo Verde Avenue with four conductor runs, each a seven point sag curve typed out as raw coordinates. Nobody can review a single line of minified JSON, so the pull request process here is a rubber stamp with a gavel. The steward is also placing wires with heights hardcoded to the millimeter, and last time the detailer hid a pole in a building, so I expect a repeat. This is a bailout for a process that already failed.\n\nFix it: Pretty print contrib/steward/2026-10-21.json so a diff can be read. Generate the sag curves from a function instead of seven typed points. Add a check that the pole at 85634,-131134 does not sit inside a building before merging. Stop opening a pull request for each file."
+    },
+    {
+      "date": "2026-10-21T17:17:38Z",
+      "repo": "field-twin",
+      "sha": "b52061d1fb905347459a324a22eb56e998fe7b52",
+      "message": "Phone app sends Field Twin service requests through the phone, past the service's website-only address rule",
+      "heckle": "The service says only the website may call it, and the intern's answer was to route around the rule through a native bridge. The commit message admits it: past the website-only address rule. That rule exists as a security control, and now FieldTwinBridge.httpSend in FieldTwinBridge.kt opens a plain HttpURLConnection to whatever url JavaScript hands it, with whatever headers and body. Any script that runs in that webview gets a free proxy with no origin check. The fetch wrapper in index.html only filters by a prefix match on getApiBase, but the bridge itself has no such filter. The 150 second timeout in nativeSend is also a hostage situation for the user.\n\nFix it: Check the url against the API base inside httpSend in FieldTwinBridge.kt, not only in index.html. Allow only https and reject everything else. Cap the body size. Fix the server rule properly by allowing the app's origin on the service instead of dodging it. Cut the 150 second timeout in nativeSend to something humane."
+    },
+    {
       "date": "2026-10-21T04:56:39Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "3d074f266b53ee14d214e1f25b676f5bbd0b6860",
