@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-21T21:47:02Z",
+      "repo": "itchy-troll",
+      "sha": "e653c8923a4c5027b9a5c66f9ea8cafae6385bd8",
+      "message": "Publish when ship.json is pushed",
+      "heckle": "You taught a publisher to fire on a push to ship.json, then left the workflow_dispatch inputs in place too, so now two doors lead to the same room and neither one is locked. In troll.js the empty catch around the ship.json read swallows a broken file and quietly falls back to a 0.99 price, which is how you end up selling a game for the price of a gumball without noticing. The ship.json parse is also bare, so one stray comma becomes a silent default. Smooth work for someone whose last project plan was a shrug.\n\nFix it: Log a loud error in the empty catch in troll.js when ship.json exists but fails to parse. Drop the hidden 0.99 fallback for price and fail the run instead. Pick either the push trigger or the manual inputs in publish.yml, not both."
+    },
+    {
+      "date": "2026-10-21T21:47:02Z",
+      "repo": "itchy-troll",
+      "sha": "4453e34884a50d651d6d019cf9c7b89dc7d9adf6",
+      "message": "Single-game publisher with price, unlock API and kit, status page",
+      "heckle": "This commit rips out the daily scheduler, bolts on an unlock API, a kit, a status page, and a rewrite of troll.js in one lump, like a bill stuffed with riders nobody read. In api/unlock.js the email path unlocks a game for anyone who can type a buyer's address, so your paywall is a polite suggestion. The CORS header is a wide open star and the games list lives in a module cache that dies every cold start. The index.html status page fetches itch-ledger.json with no error state beyond an empty object, so a failed load looks like zero games shipped, which is honestly accurate.\n\nFix it: Require the download key in api/unlock.js and drop the email-only check. Restrict Access-Control-Allow-Origin to the domains that host your games. Split the troll.js rewrite and the unlock kit into separate commits next time. Show a real failure message in index.html when the ledger fetch fails."
+    },
+    {
+      "date": "2026-10-21T21:47:02Z",
+      "repo": "itchy-troll",
+      "sha": "3bdccaea234412760bf17884970d6ba461ef0ff6",
+      "message": "Agent picks games itself, keeps a ledger, runs daily",
+      "heckle": "A cron that lets a robot choose which of your repos go on sale to the public, with a hard-coded NEW_PER_RUN of 5. Bold. That is an unsupervised spending bill with your name on the storefront. The only guard is the SKIP_NAME regex in troll.js that dodges repos ending in api or server, which means a half-finished repo called anything else is cleared for launch. You also pass the repo token and a 60 minute timeout to a browser that logs in with a stored password. A hobbyist wrote this and a hostile intern would have asked for review first.\n\nFix it: Make troll.js publish only repos listed in an allowlist file, not a name regex. Cut NEW_PER_RUN in troll.js to 1 until the output is proven. Take the schedule block out of publish.yml until a human approves each game. Drop the unused GITHUB_TOKEN env from the publish step."
+    },
+    {
+      "date": "2026-10-21T21:47:02Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "e191c96380a8e55f92698a7cef5b9a7dd767da47",
+      "message": "agent-orange 2026-10-21T200522 (#26)",
+      "heckle": "Pull request number 26 and the whole payload is one line in contrib/agent-orange/2026-10-21T200522.json. A full review cycle, a merge, and a web-flow commit for a file a toddler could have emitted. This is government by committee: forty people in a room to rename a post office. Nobody can tell whether the agent added anything of value, because the diff is a single minified line that no human will ever read.\n\nFix it: Make the agent skip the PR when its contrib JSON is unchanged or empty. Pretty print the JSON in contrib/agent-orange so diffs show what changed. Batch several turns into one PR instead of one per timestamp."
+    },
+    {
+      "date": "2026-10-21T21:47:02Z",
+      "repo": "itchy-troll",
+      "sha": "c58ac7a6470c5f22f8877f3154b72b7755b0d9c9",
+      "message": "Itchy Troll agent: itch.io page setup and butler publish",
+      "heckle": "A Playwright script that logs into a website with a username and password and clicks through forms, glued to a workflow that downloads butler from a URL with curl and runs whatever comes back. troll.js is 207 lines of selector guessing, and the dumpFields helper exists because you do not know what the page looks like, which is a confession written as a function. The rsync step in publish.yml copies everything except a few folders, so a stray .env or notes file in a game repo goes straight to a public download page.\n\nFix it: Replace the rsync in publish.yml with an allowlist of files to upload. Pin the butler download to a version and verify it. Add a dry run input so the script can be tested without touching the live page. Remove dumpFields from troll.js once the selectors are known."
+    },
+    {
+      "date": "2026-10-21T21:47:02Z",
+      "repo": "text-based-game",
+      "sha": "8fc52b33d765f27d4f76e41155be014dcecaad08",
+      "message": "Text based game v1: tabletop board with miniatures, guide suggestions, mic removed",
+      "heckle": "One file, text-based-game-v1.html, took 169 added lines and 99 deleted in a single swing, and the commit message lists three unrelated features like a grocery receipt. You made the map a fixed 36vh box with a 190px minimum on a phone where the keyboard eats half the screen, so the log gets a postage stamp of space. The mic got removed, which is what happens when you build a feature, ship it, then discover you never tested it. Miniatures on a tabletop for a game about typing routines is a theme crisis.\n\nFix it: Test the map height in text-based-game-v1.html with the phone keyboard open and shrink the map when the input is focused. Split features into separate commits. Delete any leftover mic code and styles still in the file."
+    },
+    {
+      "date": "2026-10-21T21:47:02Z",
+      "repo": "text-based-game",
+      "sha": "351ee6025e5faf5d08492ef60b04a64771f1d7f6",
+      "message": "Text based game v1: remove AI status messages",
+      "heckle": "You deleted the engine did not answer message, so now when the AI call fails the player just gets silent fallback to the local parser with no explanation. That is a cover up, and I have seen shutdown negotiations with more transparency. The engineState div and its help paragraph went too, which means nobody can tell whether they are talking to a model or a regex. In the catch block of the turn call in text-based-game-v1.html, the failure now happens in silence, so you will never know your server is down either.\n\nFix it: Keep a quiet failure counter in the catch block in text-based-game-v1.html and show a small badge after repeated failures. Log fallbacks to the console so you can debug them. Hide status text only when the call succeeds."
+    },
+    {
+      "date": "2026-10-21T21:47:02Z",
+      "repo": "shared-server",
+      "sha": "60d50e603c71ac7a5ce8d6fcae86fc46ac86e3d5",
+      "message": "Shared server v1: one Claude key for every app",
+      "heckle": "One key to rule every app, protected by a rate limiter stored in a Map inside a serverless function. Each cold start wipes it and every instance has its own copy, so the limit of 30 per minute is a rumor. The comment even says until the shared Redis is attached, a promise with the credibility of a campaign pledge. The ip comes from x-forwarded-for, which a client can spoof to dodge the limit entirely, and the Map grows forever because old ips never get deleted. The public GET route also lists every connected app name to strangers.\n\nFix it: Move the rate limit in api/shared-server-v1-claude.js to a real shared store before adding more apps. Take the client ip from the platform header you trust, not x-forwarded-for. Prune old keys from the hits Map. Set a spend cap on the key and stop listing apps from the GET route."
+    },
+    {
+      "date": "2026-10-21T21:47:02Z",
+      "repo": "text-based-game",
+      "sha": "15660cd96bc846031c19e342c0563270f4f4ae59",
+      "message": "Text based game v1: send AI turns through the shared server",
+      "heckle": "You cut api/text-based-game-v1-turn.js from 62 lines down to 21 so it forwards to the shared server, which is fine, except the game now hangs its whole AI on a server that rate limits with a Map in memory. A single player on a busy minute gets slow down errors, and the browser just falls back to the parser without telling anyone. Moving the system prompt out of the app into shared-server-v1-apps.js also means a typo there breaks the game and the failure shows up in a different repo. Great, a distributed bug.\n\nFix it: Handle the 429 and 503 replies from the shared server in api/text-based-game-v1-turn.js with a clear message to the player. Add a timeout to the forwarding fetch. Add a test that checks the game app entry still exists in shared-server-v1-apps.js."
+    },
+    {
+      "date": "2026-10-21T21:47:02Z",
+      "repo": "text-based-game",
+      "sha": "d330c11f1617d788d6e13f9e20cbade3edbb93f6",
+      "message": "Text based game v1: game page and AI turn function on Vercel",
+      "heckle": "A 649 line text-based-game-v1.html with CSS, game state, parser, and drawing code all in one file, plus a scanline overlay that sits over the whole page at z-index 50 and paints stripes across every pixel the player reads. A game about writing tidy routines, written as the world's messiest routine. The viewport tag sets maximum-scale=1, which blocks pinch zoom for anyone with bad eyes, and body overflow is hidden on a phone where content can end up unreachable. The new api function also takes raw player text with no length cap that I can see.\n\nFix it: Cap the player text length in api/text-based-game-v1-turn.js. Remove maximum-scale=1 from the viewport tag in text-based-game-v1.html. Drop or soften the body::after scanline overlay. Split the script and styles out of the single html file."
+    },
+    {
       "date": "2026-10-21T17:17:38Z",
       "repo": "2026-10-20-orange-dialbeat",
       "sha": "c6d15309220ff8018cda7c9091ca4c534ec31a0b",
