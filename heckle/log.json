@@ -1,6 +1,55 @@
 {
   "heckles": [
     {
+      "date": "2026-10-21T04:56:39Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "3d074f266b53ee14d214e1f25b676f5bbd0b6860",
+      "message": "detailer 2026-10-21 (#24)",
+      "heckle": "A whole pull request, a merge, and a deploy trigger, all to hide one pole in contrib/detailer/2026-10-21.json. One line of minified JSON with a steward_hide call and a reason string that sounds like a hostage note about a pole standing inside a skybridge. This is a filibuster to move one object. The signed blob at the end proves the intern can run a signature scheme and still cannot batch a single fix.\n\nFix it: Stop opening a separate PR for every one-call file. Fold hides into the same turn that placed the pole in the first place. Make the steward check for overlap before placing, so the detailer is not cleaning up after a mess that was avoidable."
+    },
+    {
+      "date": "2026-10-21T04:56:39Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "8457dbd1ac0569bf73b3b694dd3c7b2f52d979fb",
+      "message": "steward 2026-10-21 (#23)",
+      "heckle": "Another day, another one-line minified JSON wall in contrib/steward/2026-10-21.json, and nobody could read it without a debugger and a stiff drink. Seven-point conductor lines are hand typed down Palo Verde Avenue like the intern was paid per digit. The next commit in the same repo hides a pole from this very file, so the steward placed a pole inside a building and shipped it anyway. That is a campaign promise with no oversight committee.\n\nFix it: Validate poles against building footprints before the steward emits place_symbol in the contrib file. Pretty print the JSON so a human can review a diff. Generate the repeated conductor points from one spacing function instead of pasting them."
+    },
+    {
+      "date": "2026-10-21T04:56:39Z",
+      "repo": "field-twin",
+      "sha": "352e1df94845c27cf3b22c972faa98352209f7f7",
+      "message": "Android app lets Inventory keep its login inside the tab; show Inventory sign in failures",
+      "heckle": "The intern discovered that Android blocks third party cookies inside a WebView and fixed it by turning every switch on at once in MainActivity.kt onWebViewCreate. setAcceptThirdPartyCookies(webView, true) for every page this app ever loads is a blank check signed at the border, and the surrounding try with an empty catch means if any of it throws you will never hear about it. The new fieldtwin-session-fail handler in index.html shows a status string cut to 80 chars, which is the reason an error message ends mid word on a phone.\n\nFix it: Log the exception in the empty catch in MainActivity.kt instead of swallowing it. Limit third party cookies to the Inventory and Roads origins. Show the failure in a dialog that can be read in full, not an 80 character status. Remove databaseEnabled, which is deprecated."
+    },
+    {
+      "date": "2026-10-21T04:56:39Z",
+      "repo": "2026-10-20-orange-dialbeat",
+      "sha": "3157a6014830f633e8c8db7b26a29a3778863b6c",
+      "message": "Six drum and bass presets, Animal family, animal spinner toy",
+      "heckle": "Six drum and bass presets and an animal spinner toy, in one commit, in one index.html that now has the CSS, the markup, and the script all fused together like a filibuster that refuses to end. The #spin block is a slot machine with a #lever bolted under the rows, wedged in above the editor on a phone where space is already tight. Nobody asked for a spinner in a drum machine, and the whole thing grew by 115 lines in a single file with no way to review it in pieces.\n\nFix it: Split the spinner toy out of index.html into its own file or module. Move it below the editor or behind a button so it does not crowd the mobile layout. Split the presets into a separate data file. Commit presets and the toy separately next time."
+    },
+    {
+      "date": "2026-10-21T04:56:39Z",
+      "repo": "field-twin",
+      "sha": "1720528eecaf2ed421042e806c79bcaab5824b88",
+      "message": "Receipt reader finds the account login after the camera, with refresh and one retry",
+      "heckle": "Receipt reader, behold: apiAuthHeaders got torn out and replaced by a pile of timeouts and fallbacks, with withTimeout returning null after 4 seconds and a refreshSession gamble after 8. That is a shutdown negotiation, not auth. storedAccessToken in index.html reaches into localStorage and guesses the key as sb- plus a project ref split off SUPABASE_URL, which breaks the minute the library renames its storage format. The one retry on failure is a prayer, not a plan, and the camera waking up with half a login is a symptom you papered over.\n\nFix it: Use the supabase onAuthStateChange event instead of racing timeouts in accountToken. Stop reading the library storage key by hand in storedAccessToken. Show the user a clear signed out state when the retry fails. Add a test for the refresh path."
+    },
+    {
+      "date": "2026-10-21T04:56:39Z",
+      "repo": "mohavetech-website",
+      "sha": "7801fbfdd869bb51842a3da0fa878e34b8d1ebd9",
+      "message": "sync with vercel, sort new apps",
+      "heckle": "Sync with vercel, the commit message says, as if the sync were an act of nature and not the intern hand pasting links into index.html again. Look at script-v45.js: baseDates gets rewritten wholesale, and half of the dates went backwards, like access-terminal-admin sliding from 2026-10-05 to 2026-10-04 and campus-ebutuoy sliding a day. That is a government shutdown of the data. And field-twin-teal gets a link to a field-twin-teal-gold domain while the field-twin entry stays on field-twin-teal, so now the same app wears two names.\n\nFix it: Generate the app list and baseDates from the Vercel project list instead of hand pasting. Stop renaming script-vNN.js every sync and use the query string in index.html. Fix the dates that went backwards in baseDates. Dedupe the field-twin-teal entry."
+    },
+    {
+      "date": "2026-10-21T04:56:39Z",
+      "repo": "steward-repo",
+      "sha": "22065bd16eddfaa616b4549fdd19848b00b0e7ea",
+      "message": "Steward stitches water and sewer mains and buries fuel tanks at fuel stations",
+      "heckle": "One hundred and six added lines wedged into steward/agent.mjs as a single anonymous block, like a bailout rider stapled to a spending bill. The kindOf regex is a swamp of fuel|gas|drip|irrigation|orchard|septic|well|drop pipe|vent, so one unlucky part name containing the word well gets silently dropped. The isMain test uses a second regex with tap|header|branch, and every line dumps nested ternaries into one-liners that cannot be stepped through.\n\nFix it: Move the water and sewer stitching out of the bare block in agent.mjs into a named function. Replace the part-name regexes with an explicit type field in meta. Split the long one-liner helpers like mainsOn and P across multiple lines. Add a test for a part name containing well."
+    },
+    {
       "date": "2026-10-20T23:56:33Z",
       "repo": "field-twin",
       "sha": "f3812a64b5bd70c8db674e6e02ed7b97f9aa4ba9",
