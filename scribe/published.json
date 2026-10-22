@@ -80,7 +80,28 @@
   "sudosilo/rat@v2026.04.10",
   "sudosilo/field-study@v2026.10.08",
   "sudosilo/secureops@v2026.10.08",
-  "sudosilo/67-press-proccessor@v2026.10.08"
+  "sudosilo/67-press-proccessor@v2026.10.08",
+  "sudosilo/qsr-receipt-sim@v2026.10.08",
+  "sudosilo/androids@v2026.10.08",
+  "sudosilo/cross-venue-equivalence-engine@v2026.10.09",
+  "sudosilo/datacenter-osint@v2026.10.09",
+  "sudosilo/kat-chat@v2026.10.09",
+  "sudosilo/kat-chat@v2026.10.08",
+  "sudosilo/kat-chat@v2026.10.07",
+  "sudosilo/rogue-rail@v2026.10.09",
+  "sudosilo/kvs-roulette@v2026.10.10",
+  "sudosilo/checkin-kiosk@v2026.10.10",
+  "sudosilo/ordersim@v2026.10.10",
+  "sudosilo/mind-globe@v2026.10.10",
+  "sudosilo/mind-globe@v2026.10.09",
+  "sudosilo/mind-globe@v2026.05.31",
+  "sudosilo/rie-api@v2026.10.10",
+  "sudosilo/rie-api@v2026.04.19",
+  "sudosilo/rie-api@v2026.04.09",
+  "sudosilo/RTSS@v2026.10.10",
+  "sudosilo/RTSS@v2026.04.09",
+  "sudosilo/RTSS@v2026.04.05",
+  "sudosilo/RTSS@v2026.04.02"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -680,6 +701,125 @@
    "h": "https://67-press-proccessor.vercel.app",
    "t": [
     "packaging",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/qsr-receipt-sim": {
+   "d": "Receipt designer for quick service restaurants with a live preview.",
+   "h": "https://qsr-receipt-sim.vercel.app",
+   "t": [
+    "restaurant-tech",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/androids": {
+   "d": "Builds the phone terminal command block that deploys a page to Vercel or Railway.",
+   "h": "https://androids.vercel.app",
+   "t": [
+    "deploy",
+    "railway",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/cross-venue-equivalence-engine": {
+   "d": "Shows which menu items one restaurant could build from another restaurant's ingredients.",
+   "h": "https://equivalence-engine.vercel.app",
+   "t": [
+    "menu",
+    "restaurant-tech",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/datacenter-osint": {
+   "d": "Map of data centers, power plants, heavy industry, and drought with live satellite imagery.",
+   "h": "https://datacenter-osint.vercel.app",
+   "t": [
+    "map",
+    "research",
+    "satellite",
+    "vercel"
+   ]
+  },
+  "sudosilo/kat-chat": {
+   "d": "Private group chat app with reactions, voice notes, chess, GIFs, and notifications.",
+   "h": "https://kat-chat-flame.vercel.app",
+   "t": [
+    "chat",
+    "pwa",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/rogue-rail": {
+   "d": "Drum and bass corridor rail shooter with pause, repair, and best score.",
+   "h": "https://rogue-rail.vercel.app",
+   "t": [
+    "arcade",
+    "game",
+    "music",
+    "vercel"
+   ]
+  },
+  "sudosilo/kvs-roulette": {
+   "d": "Random episode and clip player with season and shuffle modes.",
+   "h": "https://kvs-sigma.vercel.app",
+   "t": [
+    "player",
+    "tool",
+    "vercel",
+    "video"
+   ]
+  },
+  "sudosilo/checkin-kiosk": {
+   "d": "Guest check-in kiosk with walk-ins, reservations, and a staff area.",
+   "h": "https://checkin-kiosk-bice.vercel.app",
+   "t": [
+    "kiosk",
+    "restaurant-tech",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/ordersim": {
+   "d": "Restaurant kitchen rush game with a leaderboard.",
+   "h": "https://ordersim.vercel.app",
+   "t": [
+    "game",
+    "restaurant-tech",
+    "simulator",
+    "vercel"
+   ]
+  },
+  "sudosilo/mind-globe": {
+   "d": "3D globe where your notes become land, with a backend that saves them.",
+   "h": "https://ming-globe.vercel.app",
+   "t": [
+    "3d",
+    "map",
+    "notes",
+    "railway",
+    "vercel"
+   ]
+  },
+  "sudosilo/rie-api": {
+   "d": "Backend that stores restaurant site surveys and shared site profiles.",
+   "h": "",
+   "t": [
+    "api",
+    "backend",
+    "railway"
+   ]
+  },
+  "sudosilo/RTSS": {
+   "d": "Restaurant technology site survey form with cloud sync and CSV export.",
+   "h": "https://rtss-sigma.vercel.app",
+   "t": [
+    "restaurant-tech",
+    "survey",
     "tool",
     "vercel"
    ]
