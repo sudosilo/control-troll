@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-22T04:56:51Z",
+      "repo": "mill-ionaire",
+      "sha": "2ceade5ceb83ec9161d072665e64cdf124cce731",
+      "message": "Running costs cut to a quarter",
+      "heckle": "You built a wages and power system three hours ago and already gutted it to a quarter, like a senator dropping his own bill after the polls came in. In mill-ionaire-v2.html the constants WAGE, FLOORPOWER and MILLPOWER got hand-shaved to 3.75, 2 and 0.75, which are magic numbers with no comment saying why those and not 4, 2 and 1. Then you loosened the assertions in mill-ionaire-v2-test.js to wages above 5 and power above 1, which is moving the goalposts so the test passes, and quadrupled the broke-test runtime from 20000 to 60000 to compensate. That is not balancing a game, that is negotiating with your own test suite.\n\nFix it: Put the cost constants in one tuning object with a comment on the target dollars per minute. Assert against a computed expected value from those constants in mill-ionaire-v2-test.js instead of a vague greater-than. Stop padding the clock in the broke test and seed cash that actually runs out."
+    },
+    {
+      "date": "2026-10-22T04:56:51Z",
+      "repo": "mill-ionaire",
+      "sha": "85dafc1accef3c3260995f8997cde8d4981cf99f",
+      "message": "Prose check hook so replies about this project follow Blue's formatting rules",
+      "heckle": "A Stop hook that reads the chat transcript and yells at the assistant for using bullets, in a game repo. Did you think the shipping crates needed a style cop? In .claude/mill-ionaire-v1-prose-check.py the filename says v1 while the project is v2, so you named it after a corpse. The transcript parsing swallows every exception with a bare except and returns 0, so when the format changes the hook silently does nothing and you will believe it works. It also reads the whole transcript file line by line on every single reply like an intern re-reading the entire inbox to answer one email. And you committed personal tooling into a public game repo, which is a filibuster against your own git history.\n\nFix it: Move this hook to your user settings, not mill-ionaire. Rename .claude/mill-ionaire-v1-prose-check.py to match the project or delete it. Log failures in the except blocks instead of returning 0 silently. Read only the tail of the transcript."
+    },
+    {
+      "date": "2026-10-22T04:56:51Z",
+      "repo": "mill-ionaire",
+      "sha": "083758eb26e220b6a24f64f076be17863a425251",
+      "message": "Wages and power bill, chip conveyor, coolant, cutter and software upgrades, clearer shop buttons",
+      "heckle": "One commit that adds wages, a power bill, four upgrades, and rewrites the shop buttons, because apparently you think git charges per commit. 54 lines added and 19 removed in mill-ionaire-v2.html, bundled with a 35 line test, and none of it small enough to review. The new rules paragraph in the how to play sheet tells players the crew goes home when the cash runs dry, which is a bailout-free shutdown mechanic you then had to nerf in the very next commit because it was unplayable at the numbers you shipped. Also the test seed in mill-ionaire-v2-test.js got cash 5000 bolted on just to dodge your own new bills, a patch over a regression you caused. Did you playtest this or just vibe it?\n\nFix it: Split features into separate commits, one upgrade each. Playtest the bill numbers before shipping them, not after in mill-ionaire-v2.html. Remove the cash 5000 band-aid from the empty-bins test seed and cover the new bills separately. Write the upgrade prices down in one table."
+    },
+    {
+      "date": "2026-10-22T04:56:51Z",
+      "repo": "mill-ionaire",
+      "sha": "fa4cb1d22ed0ef05729d0ea372525023f2473056",
+      "message": "Menu trimmed to volume, how to play and start over; inventory buttons live with the bins; confirmations; stop single floor mills",
+      "heckle": "You gutted the machine menu down to three buttons and a volume slider, and the commit message is longer than most people's resignation letters. In mill-ionaire-v2.html the reset sheet title is now a full sentence screaming are you sure you want to throw the whole damn business in the scrap heap, which is a modal dialog written like a campaign ad. The empty-bins sheet repeats the same drama. The test loop in mill-ionaire-v2-test.js still lists howBtn and resetBtn then clicks the last button in each sheet blindly, so it passes whether or not your confirmation does anything useful. Bundling a menu rewrite, new confirmations, and a floor mill stop feature into one commit is how you lose a weekend to a bisect.\n\nFix it: Shorten the h3 text in the resetSheet and emptySheet blocks of mill-ionaire-v2.html. Make the menu test assert the confirm buttons actually wipe or keep state. Split this into three commits next time."
+    },
+    {
+      "date": "2026-10-22T04:56:51Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "64bb150d2af79e2824b34aca02b14ffd705bb0e8",
+      "message": "agent-orange 2026-10-22T020443 (#27)",
+      "heckle": "Pull request number 27 and it adds one line of minified JSON in contrib/agent-orange/2026-10-22T020443.json. A whole pull request, a whole merge, a whole commit, for what amounts to a sticky note. This is a government agency holding a ribbon cutting for a single pothole. The merge went through the web interface so the history now credits you for work a bot did, which makes the log useless for finding out who broke what. Twenty seven of these and nobody has asked whether a turn file per pull request is a sane process, because the answer is no.\n\nFix it: Batch agent turns into one pull request instead of one per turn. Auto merge only when the file actually changes something in contrib/agent-orange. Tag the merge author as the bot so real history stays readable. Add a check that rejects empty or one-line no-op turn files."
+    },
+    {
+      "date": "2026-10-22T04:56:51Z",
+      "repo": "mill-ionaire",
+      "sha": "aeb86e1c59e18a0b7e578680c9e733f60f538b33",
+      "message": "Your mill and open bays on the floor, shop sound with hum, chatter and the odd squeal, bigger order board",
+      "heckle": "274 lines added and 83 deleted in a single html file, and the headline feature is a shop that squeals. Congratulations, you built a tycoon game with the ambiance of a dentist drill. mill-ionaire-v2.html is now a monolith where CSS, markup, game logic, and audio synthesis all live in one file, and every commit makes the diff harder to read than a congressional spending bill. The new soundBtn is a 32 pixel square next to the 32 pixel info button, two tiny targets jammed together on a phone header, which is exactly how people fat-finger the wrong one. The test click coordinates for the floor mill got nudged from 0.1 to 0.5 and 0.06, so your tests are tied to pixel positions and will break on the next layout tweak.\n\nFix it: Split mill-ionaire-v2.html into separate css, js and audio files. Give soundBtn and infoBtn at least 44 pixel hit areas and more gap. Click floor mills in the test by selector, not by fraction of the canvas."
+    },
+    {
+      "date": "2026-10-22T04:56:51Z",
+      "repo": "mill-ionaire",
+      "sha": "00b982f6d360a9f2a1beabce6def8ba333438da9",
+      "message": "Alphabet run and millwright buttons move onto the mill, room for the start marker",
+      "heckle": "You moved two buttons from the menu onto the mill screen and added a mystery PNG named mb.png at the repo root with no explanation. Is it a screenshot, an asset, or a leftover from whatever you were fumbling with at midnight? Binary junk in the root of a repo is how a tidy project turns into a garage sale. In mill-ionaire-v2.html the new .beacon-room rule uses margin-top with important, which is the CSS equivalent of shouting louder when nobody listens. And you whittled the test items list in mill-ionaire-v2-test.js by removing fixBtn from the menu loop, so the millwright is only covered by one click and no assertion about what it fixed.\n\nFix it: Delete mb.png from the root or move it into an assets folder and say what it is. Remove the important flag on .beacon-room in mill-ionaire-v2.html and fix the specificity properly. Assert in mill-ionaire-v2-test.js that the millwright button actually repairs the machine."
+    },
+    {
+      "date": "2026-10-22T04:56:51Z",
+      "repo": "mill-ionaire",
+      "sha": "6de5484832fc4af951129e395cdaa4e039dfaf04",
+      "message": "Smaller blue i button, i button and how to play share one sheet",
+      "heckle": "A whole commit to make a button smaller and merge two dialogs, which is the kind of change a competent person does in the same sitting as the last one instead of drip-feeding the repo like a stimulus package. In mill-ionaire-v2.html #infoBtn is set to 32 by 32 pixels, well under the 44 pixel minimum for a touch target, so thumbs on a phone will miss it and tap the burger instead. You deleted the infoSheet tests in mill-ionaire-v2-test.js and replaced them with checks that two strings appear in a sheet, which proves text exists and nothing about whether the sheet is usable. The rules text still says open the menu in some places and tap under the machine in others.\n\nFix it: Raise #infoBtn to a 44 pixel target in mill-ionaire-v2.html, even if the icon stays small. Fold this and the next button tweak into one commit. Reread every how to play paragraph so none still points at the old menu route."
+    },
+    {
+      "date": "2026-10-22T04:56:51Z",
+      "repo": "mill-ionaire",
+      "sha": "7ad04d9141389b84d8fa1ada7ae9b16a5bea8e84",
+      "message": "Flashing getting started marker, alphabet run replaces the demo wording",
+      "heckle": "You added a flashing beacon with a bobbing label, because a tycoon about metal letters clearly needed a casino sign. The CSS in mill-ionaire-v2.html does honor prefers-reduced-motion, fine, I will say it once and it hurts. But the beacon pulse swaps an outline between blue and amber at under a second a cycle, and the tip label uses white-space nowrap at 12 pixels, so on a narrow phone it will run off the screen edge like a politician from a town hall. The test in mill-ionaire-v2-test.js loops up to 40 times running ten seconds of fake clock waiting for an order to be ready, a loop that hides a slow order generator behind patience. And the test that asserts the word demo appears nowhere is a grep dressed up as a feature test.\n\nFix it: Clamp the beacon label width and allow wrapping in mill-ionaire-v2.html. Slow the pulse. Seed an order directly in the test instead of looping forty times."
+    },
+    {
+      "date": "2026-10-22T04:56:51Z",
+      "repo": "mill-ionaire",
+      "sha": "e333cedc4963f415ddcb03a5633d92776e1368a0",
+      "message": "Playtest suite: reach the part when cutting by hand, shorter soak",
+      "heckle": "The commit is named playtest suite but the substance is you editing numbers until the tests stop failing. In mill-ionaire-v2-test.js the Z slider loop went from 10 steps to 40 and the starting position changed from 8 to 20, so the test reaches the part by brute force and then the assertion was loosened from cutting to cutting or feeding. That is a test that accepts two outcomes because you could not tell which one the game gives. You also shortened the long shift soak from an hour to half an hour, which means the leak you built it to catch now has half the time to show up. A shorter soak that passes is not a fix, it is a budget cut with a press release.\n\nFix it: Decide what state the status line should show after the knee rises and assert exactly that in mill-ionaire-v2-test.js. Restore the full soak or split it into a nightly job. Explain the slider magic numbers 20 and 0.5 in a comment."
+    },
+    {
       "date": "2026-10-21T21:47:02Z",
       "repo": "itchy-troll",
       "sha": "e653c8923a4c5027b9a5c66f9ea8cafae6385bd8",
