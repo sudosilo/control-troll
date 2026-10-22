@@ -1,254 +1,283 @@
 {
  "jobs": [
   {
-   "repo": "stumbler",
+   "repo": "qsr-receipt-sim",
    "releases": [
     {
-     "tag": "v2026.10.05",
-     "target": "7a4ac7f99cb0a5f8099595391766ea347181ae67",
-     "name": "Vercel Stumbler 2026-10-05",
-     "body": "Hits are now grouped by name across platforms. A cross platform check tests a kept name on every other platform it is not yet kept on."
-    },
-    {
-     "tag": "v2026.09.02",
-     "target": "4da759eb609d4b7317c9c1cdab72fd70f51751a8",
-     "name": "Vercel Stumbler 2026-09-02",
-     "body": "Added a Netlify platform to the stumbler."
+     "tag": "v2026.10.08",
+     "target": "8f881c68deb305d4066b1365051c458e0fb923b2",
+     "name": "QSR Receipt Sim 2026-10-08",
+     "body": "First release. The receipt simulator lets you set the restaurant identity, header and footer messages, and paper size, with a live receipt preview."
     }
    ],
-   "description": "Random vercel.app name finder that opens names and keeps the live ones.",
-   "homepage": "https://stumbler.vercel.app",
+   "description": "Receipt designer for quick service restaurants with a live preview.",
+   "homepage": "https://qsr-receipt-sim.vercel.app",
+   "topics": [
+    "restaurant-tech",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "androids",
+   "releases": [
+    {
+     "tag": "v2026.10.08",
+     "target": "8f56e672c748e6fd286ed9fe4891798b972d63e8",
+     "name": "Androids Deploy Builder 2026-10-08",
+     "body": "First release. The builder writes ready to paste deploy command blocks for Vercel and Railway. A GitHub source option was added the same day."
+    }
+   ],
+   "description": "Builds the phone terminal command block that deploys a page to Vercel or Railway.",
+   "homepage": "https://androids.vercel.app",
    "topics": [
     "tool",
     "vercel",
-    "discovery"
+    "railway",
+    "deploy"
    ]
   },
   {
-   "repo": "carchive",
+   "repo": "cross-venue-equivalence-engine",
    "releases": [
     {
-     "tag": "v2026.10.06",
-     "target": "a44257a63668f21c319d4ee7215f776c0facefe6",
-     "name": "CARCHIVE 2026-10-06",
-     "body": "Added a deck builder and new cards. Version 7 of the game."
-    },
-    {
-     "tag": "v2026.10.06",
-     "target": "bf28b0c1315d198bb36200ba333769a5be05b1d8",
-     "name": "CARCHIVE 2026-10-06",
-     "body": "First release. Created the card duel game and improved it through versions 4 to 6 the same day. Version 6 added a landing page and a record of past duels."
+     "tag": "v2026.10.09",
+     "target": "c07e144566b502728dcf262d4ad2d25c1760fb9b",
+     "name": "QSR Equivalents Engine 2026-10-09",
+     "body": "Version 2 of the equivalents engine. Menu items now show equivalents built from any venue's ingredients or from the venue's own stock."
     }
    ],
-   "description": "Browser card duel game with a deck builder and duel records.",
-   "homepage": "https://carchive-nine.vercel.app",
+   "description": "Shows which menu items one restaurant could build from another restaurant's ingredients.",
+   "homepage": "https://equivalence-engine.vercel.app",
    "topics": [
-    "game",
-    "cards",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "topdown-pixeltown",
-   "releases": [
-    {
-     "tag": "v2026.10.05",
-     "target": "41f26343de05c0e7fdca4bfb5ee1d9da8de8b8b1",
-     "name": "Topdown Pixeltown 2026-10-05",
-     "body": "First release. Created the pixel town game page and packed the game code into one bundle."
-    }
-   ],
-   "description": "Top down pixel town game that renders to a canvas.",
-   "homepage": "https://topdown-pixeltown.vercel.app",
-   "topics": [
-    "game",
-    "pixel-art",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "topdown-pixeltowns",
-   "releases": [
-    {
-     "tag": "v2026.10.06",
-     "target": "a3165f83db1a938d7a6fa01d20aa1f1a64d2c2d9",
-     "name": "Topdown Pixeltowns 2026-10-06",
-     "body": "First release. Deployed the pixel town game as a single page."
-    }
-   ],
-   "description": "Top down pixel town game, the single file version of Topdown Pixeltown.",
-   "homepage": "",
-   "topics": [
-    "game",
-    "pixel-art",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "daily-outline",
-   "releases": [
-    {
-     "tag": "v2026.10.08",
-     "target": "38cd3ed06580a9fc8a9b4a81de03daa7bb1dfd46",
-     "name": "Daily Outline 2026-10-08",
-     "body": "Added a sign in wall and locked the calendar feed behind it."
-    },
-    {
-     "tag": "v2026.10.06",
-     "target": "39910a2589070c5e6ef9a24d64e9c73e68220faf",
-     "name": "Daily Outline 2026-10-06",
-     "body": "Added a calendar feed card, served by a Vercel function."
-    },
-    {
-     "tag": "v2026.06.01",
-     "target": "d27fc3bb5ee3a1cda0378651dc7100bb030059a9",
-     "name": "Daily Outline 2026-06-01",
-     "body": "First release. Created the daily outline tracker."
-    }
-   ],
-   "description": "Daily goal tracker with a calendar, exports, and email sign in sync.",
-   "homepage": "https://daily-outline.vercel.app",
-   "topics": [
+    "restaurant-tech",
     "tool",
-    "productivity",
+    "menu",
     "vercel"
    ]
   },
   {
-   "repo": "x",
+   "repo": "datacenter-osint",
    "releases": [
     {
-     "tag": "v2026.10.08",
-     "target": "36e82673d15320e99752aa308771a3a371733810",
-     "name": "Mary Jane-Man 2026-10-08",
-     "body": "First release. Redeployed version 5 of the game over a site that had been overwritten."
+     "tag": "v2026.10.09",
+     "target": "ffdb566de4018440d88d166c518221b1332b57f4",
+     "name": "Data Center OSINT 2026-10-09",
+     "body": "Version 4 opens on the whole country. Added power plants, heavy industry, cooling towers, drought, and a backend. The map now shows live satellite imagery with a last day loop, water vapor, infrared, and moving wind trails. An eastern satellite covers the country view, and the panel is shorter and closes when the map is dragged."
     }
    ],
-   "description": "Small arcade style browser game with a start screen and try again.",
-   "homepage": "",
+   "description": "Map of data centers, power plants, heavy industry, and drought with live satellite imagery.",
+   "homepage": "https://datacenter-osint.vercel.app",
+   "topics": [
+    "map",
+    "research",
+    "satellite",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "kat-chat",
+   "releases": [
+    {
+     "tag": "v2026.10.09",
+     "target": "5851d22166854ce48493c82987c012fbf7abc5e0",
+     "name": "Cat Command Chat 2026-10-09",
+     "body": "Added chess in the chat with shared live boards and watchers. Added a GIF and movie clip picker, long press menus for reactions and delete on every message, and Android notifications. Messages are padded to fixed sizes. Native Android and Windows apps are now built and released automatically. The About section covers every working feature."
+    },
+    {
+     "tag": "v2026.10.08",
+     "target": "618c609e90f4d9eb279a3d10f662c829bf17427f",
+     "name": "Cat Command Chat 2026-10-08",
+     "body": "Tapping photos now opens reactions, there is a view picture button, and reconnect notes are clearer."
+    },
+    {
+     "tag": "v2026.10.07",
+     "target": "305da3188aa88c4cdb2e600cdcaeca9a659004ec",
+     "name": "Cat Command Chat 2026-10-07",
+     "body": "First release. A chat app with links and file sharing, emoji reactions with ding and meow sounds, profiles with color and picture, replies, edits, mentions, search, voice notes, backgrounds, and owner tools with personal invites. Claude was added to the chat and can search the web. The app became installable and gained push notifications."
+    }
+   ],
+   "description": "Private group chat app with reactions, voice notes, chess, GIFs, and notifications.",
+   "homepage": "https://kat-chat-flame.vercel.app",
+   "topics": [
+    "chat",
+    "pwa",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "rogue-rail",
+   "releases": [
+    {
+     "tag": "v2026.10.09",
+     "target": "00be13cd9520a08e7ee70912b5487e3158c5d536",
+     "name": "Rogue Rail 2026-10-09",
+     "body": "First release. A rail shooter set to drum and bass with pause, mute, hull repair, music preload, a countdown, and a best score."
+    }
+   ],
+   "description": "Drum and bass corridor rail shooter with pause, repair, and best score.",
+   "homepage": "https://rogue-rail.vercel.app",
    "topics": [
     "game",
+    "music",
     "arcade",
     "vercel"
    ]
   },
   {
-   "repo": "nanoverse",
+   "repo": "kvs-roulette",
    "releases": [
     {
-     "tag": "v2026.10.08",
-     "target": "dd13ea96f5c2f989541db014663148852a1c9d35",
-     "name": "NANOVERSE 2026-10-08",
-     "body": "First release. Published version 18 as a single standalone page."
+     "tag": "v2026.10.10",
+     "target": "d3601387b0e8264b183cd71cf1aac3af49aa431f",
+     "name": "KVS Roulette 2026-10-10",
+     "body": "Version 2 plays full episodes and adds a random mode, seasons, and backup sources. Added a seek bar, start over, back and forward jumps, and fullscreen that keeps the controls."
     }
    ],
-   "description": "Cell simulation world that renders to a canvas with audio.",
-   "homepage": "https://nanoverse-psi.vercel.app",
+   "description": "Random episode and clip player with season and shuffle modes.",
+   "homepage": "https://kvs-sigma.vercel.app",
+   "topics": [
+    "video",
+    "player",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "checkin-kiosk",
+   "releases": [
+    {
+     "tag": "v2026.10.10",
+     "target": "580581fcbbf4090cf3e67c32af0d5118fa269c17",
+     "name": "Check-In Kiosk 2026-10-10",
+     "body": "Version 2 of the kiosk saves data to a Redis backend and adds a flow heat map. Added a guest log tab and a server PIN, and the PIN screen now shows the server's own error message."
+    }
+   ],
+   "description": "Guest check-in kiosk with walk-ins, reservations, and a staff area.",
+   "homepage": "https://checkin-kiosk-bice.vercel.app",
+   "topics": [
+    "restaurant-tech",
+    "kiosk",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "ordersim",
+   "releases": [
+    {
+     "tag": "v2026.10.10",
+     "target": "88df35f3fc7f5325a2e6a550553a7e164b0122c9",
+     "name": "ORDERSIM 2026-10-10",
+     "body": "First release. Version 2 has a light theme, callsigns, local best scores, and an online leaderboard."
+    }
+   ],
+   "description": "Restaurant kitchen rush game with a leaderboard.",
+   "homepage": "https://ordersim.vercel.app",
    "topics": [
     "game",
-    "simulation",
+    "restaurant-tech",
+    "simulator",
     "vercel"
    ]
   },
   {
-   "repo": "repofind",
+   "repo": "mind-globe",
    "releases": [
     {
-     "tag": "v2026.10.08",
-     "target": "bd681cfbe3e176c6a61098e1972d179e87976ac1",
-     "name": "Repo Find 2026-10-08",
-     "body": "Updated the comic skin."
-    }
-   ],
-   "description": "Search and watch tool for code repos, archives, and sites.",
-   "homepage": "https://repofind-delta.vercel.app",
-   "topics": [
-    "tool",
-    "search",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "rat",
-   "releases": [
-    {
-     "tag": "v2026.10.08",
-     "target": "39cf4e4db323feb95434918d0252e0564cf5f533",
-     "name": "Rogue Analog Transducer 2026-10-08",
-     "body": "Added phone mode and device detection. Tracks now come from a shared library, and a Haunt Me tile was added to the hub."
+     "tag": "v2026.10.10",
+     "target": "5dd9703f4e241f235af0a9b3ac248fddc09d0517",
+     "name": "Mind Globe 2026-10-10",
+     "body": "Mountains now rise from note length. Connections between notes show with airstrips and planes."
     },
     {
-     "tag": "v2026.04.17",
-     "target": "a48e6bb962068ff8448879e80e3776f1079f5c6b",
-     "name": "Rogue Analog Transducer 2026-04-17",
-     "body": "Added track 07, Haunt Me, with a cyber waifu visualizer."
+     "tag": "v2026.10.09",
+     "target": "482a5496146ce596f0b289b40d60b5ee87df7d81",
+     "name": "Mind Globe 2026-10-09",
+     "body": "The globe frontend was rebuilt."
     },
     {
-     "tag": "v2026.04.10",
-     "target": "5cf5bbec404f20a7e16cc73ae4f803f689c9a37b",
-     "name": "Rogue Analog Transducer 2026-04-10",
-     "body": "First release. Created RAT version 1."
+     "tag": "v2026.05.31",
+     "target": "cdda97b839e93b51beab31072d41e1221e5795ce",
+     "name": "Mind Globe 2026-05-31",
+     "body": "First release. The notes backend was created and set up to run on Railway."
     }
    ],
-   "description": "Music player with a track hub and a visualizer for each song.",
-   "homepage": "https://rat-site-gilt.vercel.app",
+   "description": "3D globe where your notes become land, with a backend that saves them.",
+   "homepage": "https://ming-globe.vercel.app",
    "topics": [
-    "music",
-    "visualizer",
+    "map",
+    "3d",
+    "notes",
+    "railway",
     "vercel"
    ]
   },
   {
-   "repo": "field-study",
+   "repo": "rie-api",
    "releases": [
     {
-     "tag": "v2026.10.08",
-     "target": "ea6e69dd2da9be88f8bb8f1d716122d560f26137",
-     "name": "Field Study 2026-10-08",
-     "body": "First release. Created Field Study with career and flashcard modes and a comic skin."
+     "tag": "v2026.10.10",
+     "target": "1cd4d1b421811ea6b1490be9b93ff79aea483da6",
+     "name": "RIE API 2026-10-10",
+     "body": "Version 2 moved to a Postgres database. The AI proxy and legends logging were removed. Sites keep untouched fields when renamed, and delete and bulk clear were added. A shared site profile can now be read and updated."
+    },
+    {
+     "tag": "v2026.04.19",
+     "target": "cab21614a98f1732505cc69a9c2a73c62692c767",
+     "name": "RIE API 2026-04-19",
+     "body": "Added an AI proxy and legends logging, and pinned the Node version."
+    },
+    {
+     "tag": "v2026.04.09",
+     "target": "9a94de0e1b6cecc1f85b7b1356b678811686863d",
+     "name": "RIE API 2026-04-09",
+     "body": "First release. The API stored site surveys and nodes."
     }
    ],
-   "description": "Study app with flashcards, quizzes, and drills in career and flashcard modes.",
-   "homepage": "https://field-study-pi.vercel.app",
+   "description": "Backend that stores restaurant site surveys and shared site profiles.",
+   "homepage": "",
    "topics": [
-    "tool",
-    "education",
-    "vercel"
+    "backend",
+    "api",
+    "railway"
    ]
   },
   {
-   "repo": "secureops",
+   "repo": "RTSS",
    "releases": [
     {
-     "tag": "v2026.10.08",
-     "target": "69249a7f50f3e124b8e90e85c96091a20744fc56",
-     "name": "SecureOps 2026-10-08",
-     "body": "First release. Published the first live version of SecureOps."
-    }
-   ],
-   "description": "Private operations app with a login, encrypted storage, and a locked down page.",
-   "homepage": "https://secureops-pi.vercel.app",
-   "topics": [
-    "tool",
-    "security",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "67-press-proccessor",
-   "releases": [
+     "tag": "v2026.10.10",
+     "target": "12f058ced22685a371e866ff8bdc03db38f8cc51",
+     "name": "RTSS 2026-10-10",
+     "body": "The live page now syncs to the cloud. Name, brand, address, city, state, internet provider, point of sale, and firewall link to the shared site profile."
+    },
     {
-     "tag": "v2026.10.08",
-     "target": "fd0791de051814b3f1483af3d43c9664990a2025",
-     "name": "67 Press Processor 2026-10-08",
-     "body": "First release. Created the box dieline and press roll tool."
+     "tag": "v2026.04.09",
+     "target": "788aea160268453ceaa115fc12f73c25ee637c25",
+     "name": "RTSS 2026-04-09",
+     "body": "Version 2 connects the survey to the RIE API."
+    },
+    {
+     "tag": "v2026.04.05",
+     "target": "ecf84bb7847b9aa0757e7becb89b19497477858e",
+     "name": "RTSS 2026-04-05",
+     "body": "The survey was deployed as a live page."
+    },
+    {
+     "tag": "v2026.04.02",
+     "target": "4f036cf12dc76e7ea238d83e40195482132ca2b3",
+     "name": "RTSS 2026-04-02",
+     "body": "First release. The first versions of the site survey form were added."
     }
    ],
-   "description": "Box dieline designer and press roll layout tool.",
-   "homepage": "https://67-press-proccessor.vercel.app",
+   "description": "Restaurant technology site survey form with cloud sync and CSV export.",
+   "homepage": "https://rtss-sigma.vercel.app",
    "topics": [
+    "restaurant-tech",
+    "survey",
     "tool",
-    "packaging",
     "vercel"
    ]
   }

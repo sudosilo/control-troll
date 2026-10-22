@@ -1,0 +1,1 @@
+2026-10-22 scribe. The repo root is a Railway backend (index.js) and the Vercel front end sits in globe-web with its own vercel.json. The commit status shows only Railway deploys, no Vercel, so the live site is likely deployed by CLI and a docs push is safe.

@@ -328,15 +328,25 @@
         "https://rtss-sigma.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Restaurant Tech",
+      "summary": "Restaurant technology site survey form with cloud sync and CSV export",
+      "name": "RTSS",
+      "latest": {
+        "date": "2026-10-10",
+        "text": "The live page now syncs to the cloud. Name, brand, address, city, state, internet provider, point of sale, and firewall link to the shared site profile."
+      }
     },
     "rie-api": {
       "apps": [],
       "urls": [],
       "private": true,
-      "category": null,
-      "summary": null
+      "category": "Backends and Infrastructure",
+      "summary": "Backend that stores restaurant site surveys and shared site profiles",
+      "name": "RIE API",
+      "latest": {
+        "date": "2026-10-10",
+        "text": "Version 2 moved to a Postgres database. The AI proxy and legends logging were removed. Sites keep untouched fields when renamed, and delete and bulk clear were added. A shared site profile can now be read and updated."
+      }
     },
     "mind-globe": {
       "apps": [
@@ -346,8 +356,13 @@
         "https://ming-globe.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Maps and Research",
+      "summary": "3D globe where your notes become land",
+      "name": "Mind Globe",
+      "latest": {
+        "date": "2026-10-10",
+        "text": "Mountains now rise from note length. Connections between notes show with airstrips and planes."
+      }
     },
     "ordersim": {
       "apps": [
@@ -357,8 +372,13 @@
         "https://ordersim.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Restaurant kitchen rush game with callsigns and a leaderboard",
+      "name": "ORDERSIM",
+      "latest": {
+        "date": "2026-10-10",
+        "text": "First release. Version 2 has a light theme, callsigns, local best scores, and an online leaderboard."
+      }
     },
     "checkin-kiosk": {
       "apps": [
@@ -368,8 +388,13 @@
         "https://checkin-kiosk-bice.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Restaurant Tech",
+      "summary": "Guest check-in kiosk with walk-ins, reservations, and a staff area",
+      "name": "Check-In Kiosk",
+      "latest": {
+        "date": "2026-10-10",
+        "text": "Version 2 of the kiosk saves data to a Redis backend and adds a flow heat map. Added a guest log tab and a server PIN, and the PIN screen now shows the server's own error message."
+      }
     },
     "kvs-roulette": {
       "apps": [
@@ -379,8 +404,13 @@
         "https://kvs-sigma.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Tools",
+      "summary": "Random episode and clip player with season and shuffle modes",
+      "name": "KVS Roulette",
+      "latest": {
+        "date": "2026-10-10",
+        "text": "Version 2 plays full episodes and adds a random mode, seasons, and backup sources. Added a seek bar, start over, back and forward jumps, and fullscreen that keeps the controls."
+      }
     },
     "rogue-rail": {
       "apps": [
@@ -390,8 +420,13 @@
         "https://rogue-rail.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Drum and bass corridor rail shooter with music built in",
+      "name": "Rogue Rail",
+      "latest": {
+        "date": "2026-10-09",
+        "text": "First release. A rail shooter set to drum and bass with pause, mute, hull repair, music preload, a countdown, and a best score."
+      }
     },
     "kat-chat": {
       "apps": [
@@ -401,8 +436,13 @@
         "https://kat-chat-flame.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Tools",
+      "summary": "Private group chat app with reactions, voice notes, chess, GIFs, and notifications",
+      "name": "Cat Command Chat",
+      "latest": {
+        "date": "2026-10-09",
+        "text": "Added chess in the chat with shared live boards and watchers. Added a GIF and movie clip picker, long press menus for reactions and delete on every message, and Android notifications. Messages are padded to fixed sizes. Native Android and Windows apps are now built and released automatically. The About section covers every working feature."
+      }
     },
     "datacenter-osint": {
       "apps": [
@@ -412,8 +452,13 @@
         "https://datacenter-osint.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Maps and Research",
+      "summary": "Map of data centers, power plants, heavy industry, and drought with live satellite imagery",
+      "name": "Data Center OSINT",
+      "latest": {
+        "date": "2026-10-09",
+        "text": "Version 4 opens on the whole country. Added power plants, heavy industry, cooling towers, drought, and a backend. The map now shows live satellite imagery with a last day loop, water vapor, infrared, and moving wind trails. An eastern satellite covers the country view, and the panel is shorter and closes when the map is dragged."
+      }
     },
     "cross-venue-equivalence-engine": {
       "apps": [
@@ -423,8 +468,13 @@
         "https://equivalence-engine.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Restaurant Tech",
+      "summary": "Shows which menu items one restaurant could build from another restaurant's ingredients",
+      "name": "QSR Equivalents Engine",
+      "latest": {
+        "date": "2026-10-09",
+        "text": "Version 2 of the equivalents engine. Menu items now show equivalents built from any venue's ingredients or from the venue's own stock."
+      }
     },
     "androids": {
       "apps": [
@@ -434,8 +484,13 @@
         "https://androids.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Tools",
+      "summary": "Builds the phone terminal command block that deploys a page to Vercel or Railway",
+      "name": "Androids Deploy Builder",
+      "latest": {
+        "date": "2026-10-08",
+        "text": "First release. The builder writes ready to paste deploy command blocks for Vercel and Railway. A GitHub source option was added the same day."
+      }
     },
     "qsr-receipt-sim": {
       "apps": [
@@ -445,8 +500,13 @@
         "https://qsr-receipt-sim.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Restaurant Tech",
+      "summary": "Receipt designer for quick service restaurants with a live preview",
+      "name": "QSR Receipt Sim",
+      "latest": {
+        "date": "2026-10-08",
+        "text": "First release. The receipt simulator lets you set the restaurant identity, header and footer messages, and paper size, with a live receipt preview."
+      }
     },
     "67-press-proccessor": {
       "apps": [
@@ -1519,6 +1579,34 @@
       "summary": null
     },
     "2026-10-20-orange-dialbeat": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "itchy-troll": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "text-based-game": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "shared-server": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "forkmill-zx": {
       "apps": [],
       "urls": [],
       "private": false,
