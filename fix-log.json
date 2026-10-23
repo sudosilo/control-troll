@@ -119,6 +119,22 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "The live URL and its saved snapshot both serve the Vercel Stumbler page, not a maze game, and no sudosilo repo matches, so the tests are correct against the spec and the developer must restore the game or say the app was replaced."
+    },
+    {
+      "date": "2026-10-23",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "repo not found",
+      "pullRequest": null,
+      "note": "Still no sudosilo repo matches snapshot-engine and scribe/repos.json has no entry, so the developer must say where the code lives."
+    },
+    {
+      "date": "2026-10-23",
+      "app": "tower-builder-five",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Repo sudosilo/tower-builder is unchanged since 2026-10-18 and holds only vercel.json, README and CHANGELOG, so the game exists only in the saved snapshot and the developer must redeploy it."
     }
   ]
 }
