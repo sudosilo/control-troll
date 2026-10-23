@@ -101,7 +101,26 @@
   "sudosilo/RTSS@v2026.10.10",
   "sudosilo/RTSS@v2026.04.09",
   "sudosilo/RTSS@v2026.04.05",
-  "sudosilo/RTSS@v2026.04.02"
+  "sudosilo/RTSS@v2026.04.02",
+  "sudosilo/ghost-kitchen-builder@v2026.10.10",
+  "sudosilo/ghost-kitchen-builder@v2026.04.09",
+  "sudosilo/ghost-kitchen-builder@v2026.04.06",
+  "sudosilo/restack@v2026.10.10",
+  "sudosilo/restack@v2026.04.09",
+  "sudosilo/tinewood-keys@v2026.10.11",
+  "sudosilo/ebutuoy-frontend@v2026.10.11",
+  "sudosilo/ebutuoy-backend@v2026.10.11",
+  "sudosilo/ebutuoy-backend@v2026.05.27",
+  "sudosilo/ebutuoy-backend@v2026.05.19",
+  "sudosilo/ebutuoy-backend@v2026.05.18",
+  "sudosilo/cockpit-racer@v2026.10.11",
+  "sudosilo/pixelmill@v2026.10.11",
+  "sudosilo/coffee-autosim@v2026.10.11",
+  "sudosilo/birdix@v2026.10.11",
+  "sudosilo/birdix@v2026.05.10",
+  "sudosilo/page-wide-pof@v2026.10.11",
+  "sudosilo/pixelcoop-farm@v2026.10.11",
+  "sudosilo/aliens-win@v2026.10.11"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -821,6 +840,125 @@
     "restaurant-tech",
     "survey",
     "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/ghost-kitchen-builder": {
+   "d": "Survey tool for designing and scoring a restaurant concept, with sample concepts and a summary export.",
+   "h": "https://ghost-kitchen-builder.vercel.app",
+   "t": [
+    "restaurant-tech",
+    "survey",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/restack": {
+   "d": "Technology stack explorer for restaurant sites that tracks what is known, partial, or missing.",
+   "h": "https://restack-wheat.vercel.app",
+   "t": [
+    "restaurant-tech",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/tinewood-keys": {
+   "d": "Browser electric piano with a light theme, octave shifts, sustain, and draggable knobs.",
+   "h": "https://tinewood-keys.vercel.app",
+   "t": [
+    "music",
+    "synth",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/ebutuoy-frontend": {
+   "d": "Discovery app that plays short samples of rarely seen videos from small channels.",
+   "h": "https://ebutuoy.vercel.app",
+   "t": [
+    "discovery",
+    "frontend",
+    "vercel",
+    "video"
+   ]
+  },
+  "sudosilo/ebutuoy-backend": {
+   "d": "Backend service for ebutuoy that finds little seen videos and remembers what was served.",
+   "h": "",
+   "t": [
+    "api",
+    "backend",
+    "railway",
+    "video"
+   ]
+  },
+  "sudosilo/cockpit-racer": {
+   "d": "Low poly 3D desert driving game from the cockpit, with traffic, deer, and a police cruiser.",
+   "h": "https://cockpit-racer.vercel.app",
+   "t": [
+    "3d",
+    "game",
+    "racing",
+    "vercel"
+   ]
+  },
+  "sudosilo/pixelmill": {
+   "d": "Toolpath simulator that cuts endless pixel programs like spiral, hatch, pocket, and cityscape.",
+   "h": "https://pixelmill.vercel.app",
+   "t": [
+    "simulator",
+    "tool",
+    "vercel",
+    "visualizer"
+   ]
+  },
+  "sudosilo/coffee-autosim": {
+   "d": "Live blueprint simulator of a coffee shop floor where baristas fill tickets on their own.",
+   "h": "https://coffee-autosim.vercel.app",
+   "t": [
+    "coffee",
+    "restaurant-tech",
+    "simulator",
+    "vercel"
+   ]
+  },
+  "sudosilo/birdix": {
+   "d": "Bird territory game with free paint, stained glass, and photo glass art modes.",
+   "h": "https://birdix.vercel.app",
+   "t": [
+    "art",
+    "canvas",
+    "game",
+    "vercel"
+   ]
+  },
+  "sudosilo/page-wide-pof": {
+   "d": "Origami fold pattern generator that makes printable designs with endless variation.",
+   "h": "",
+   "t": [
+    "origami",
+    "print",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/pixelcoop-farm": {
+   "d": "Pixel art chicken farm simulator with pipes, coops, and egg or meat farming.",
+   "h": "https://pixelcoop-farm.vercel.app",
+   "t": [
+    "game",
+    "pixel",
+    "simulator",
+    "vercel"
+   ]
+  },
+  "sudosilo/aliens-win": {
+   "d": "Arcade shooter where you fly a UFO and fire lasers through waves of targets.",
+   "h": "https://aliens-win.vercel.app",
+   "t": [
+    "arcade",
+    "game",
+    "shooter",
     "vercel"
    ]
   }
