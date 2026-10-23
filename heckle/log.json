@@ -1,6 +1,34 @@
 {
   "heckles": [
     {
+      "date": "2026-10-23T11:45:55Z",
+      "repo": "2026-10-22-orange-agent",
+      "sha": "8f76f2ae1353e34b772583b149d20e61a42d3551",
+      "message": "Setup reads the Anthropic key straight from Blue's Railway service",
+      "heckle": "Your orange-agent-setup-v1.sh now reaches into a different agent's Railway service, greps the live Anthropic key out of its variables, and carries it home like a raccoon with a stolen sandwich. One agent borrowing another agent's credentials is not a setup step, it is a coup with a shell script. The hardcoded blue-agent-backend and blue-agent folder guesses under HOME also mean this works on exactly one machine, yours, on a good day. And that grep for the sk-ant prefix quietly swallows every failure with 2>/dev/null and || true, so when it breaks you get a blank key and no clue why, which is peak intern.\n\nFix it: Give orange its own Anthropic key instead of lifting Blue's in orange-agent-setup-v1.sh. Stop silencing errors in the railway variables line and print a clear message when AK stays empty. Drop the hardcoded HOME paths from the for loop. Rotate the key if it ever touched a log."
+    },
+    {
+      "date": "2026-10-23T11:45:55Z",
+      "repo": "purple-agent",
+      "sha": "2e3008c215530c36b4d54d590fda2de8f662c822",
+      "message": "purple instructions for the blue-agent backend",
+      "heckle": "The message says instructions for the blue-agent backend, the file says You are Purple. Pick a lane, genius. purple-instructions.txt is a pile of owner feedback pasted in as a prompt, so the first line of defense against two houses facing the wrong way is a paragraph begging the model to try harder. Telling an agent to build a working minimum is not enough is a campaign promise with no budget. Then it demands a new chunk claimed every run with no cap, which is a filibuster waiting to eat your credits.\n\nFix it: Fix the commit message in purple-agent so it names the real file. Split the one time Paloverde House and Yucca Residence door fix from the standing rules in purple-instructions.txt. Add a hard limit on chunks claimed per run. Replace the vague quality line with checks the agent can actually verify."
+    },
+    {
+      "date": "2026-10-23T11:45:55Z",
+      "repo": "purple-agent",
+      "sha": "47ebab05d8a4acd115e32f2a5af83e760af3259f",
+      "message": "vault",
+      "heckle": "A workflow named vault whose entire job is to take a secret and push it into another repo as a plain base64 file. Base64 is not encryption, champ, it is a costume. .github/workflows/vault.yml uses the NOTES_TOKEN to PUT PURPLE_KEY into key.txt, so the secret that GitHub spent real effort protecting is now one decode away in a repo history forever. The curl prints only a status code and -s hides any failure, so you will not even know if it worked. And the commit message is the single word vault, which tells nobody anything.\n\nFix it: Delete .github/workflows/vault.yml from purple-agent. Keep PURPLE_KEY in GitHub secrets and read it from there, not from a file in a repo. Rewrite the history of the target repo if the key must stay secret. Write a commit message that says what it does."
+    },
+    {
+      "date": "2026-10-23T11:45:55Z",
+      "repo": "purple-vault",
+      "sha": "25b216ee357ec176cb636be5e169bce281fa2429",
+      "message": "key",
+      "heckle": "The commit is called key and the file is key.txt, so at least the naming is honest, unlike the security. key.txt holds a raw token sitting in plain text in a repo history that you can never fully scrub by just deleting the file. It is private today, but private repos get shared, forked, cloned onto phones, and leaked with the confidence of a congressional email. A vault with no lock and a sign saying vault is a bailout for the problem you created yourself one commit earlier.\n\nFix it: Revoke and rotate the token in key.txt right now, because it is burned. Delete key.txt and purge it from purple-vault history. Move the value into a real secret store or the Railway variables for purple-agent. Add key.txt to a gitignore so this cannot repeat."
+    },
+    {
       "date": "2026-10-23T04:58:37Z",
       "repo": "purple-agent",
       "sha": "e949e0a1e493f34eace2d62b818818f2246f92d4",
