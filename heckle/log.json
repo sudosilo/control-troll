@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-23T04:58:37Z",
+      "repo": "purple-agent",
+      "sha": "e949e0a1e493f34eace2d62b818818f2246f92d4",
+      "message": "purple notes",
+      "heckle": "Same commit message as the last one, purple notes, so the history is a wall of identical sticky notes. The run-log.md diff shows the previous run being wiped, including a block of failed model calls with a credit balance too low error, so the one useful clue about why the run died got erased by the next run. That is like shredding the audit before the hearing.\n\nFix it: Make purple-agent append to run-log.md and rotate old files into a logs folder. Keep the failed credit balance entries somewhere so the failure can be found. Use commit messages that carry the turn number and score."
+    },
+    {
+      "date": "2026-10-23T04:58:37Z",
+      "repo": "five-minute-momentum-engine",
+      "sha": "2308a5beb89c04c3101d44c313524bb0406e7e82",
+      "message": "Add Alpaca live data adapter, SPY config, and live runner (no broker login)",
+      "heckle": "Three hundred sixty seven lines of live trading plumbing in one commit, with no test files in the diff, for a system that touches money data. The live runner says keys sit in .env.alpaca, so I will be checking the gitignore with a magnifying glass, because the intern has history. configs/spy.yaml divides the MES point distances by ten by hand and the comments admit it, so one typo in a magic number and the strategy trades a different market. The runner loops forever on weekdays like a congressional recess.\n\nFix it: Add tests for market_data/alpaca.py that use a fake HTTP response. Confirm .env.alpaca is in .gitignore before another push. Compute the SPY distances from mes.yaml in code instead of hand dividing in configs/spy.yaml. Add a stop file or kill switch to scripts/run_live_alpaca.py."
+    },
+    {
+      "date": "2026-10-23T04:58:37Z",
+      "repo": "2026-10-20-orange-dialbeat",
+      "sha": "e96d9916975634b3d03171c128fcd74d04631cfc",
+      "message": "Join stomp box rooms: shared server clock, room transport, tempo sync, heartbeat, roster",
+      "heckle": "One commit crams a shared server clock, room transport, tempo sync, heartbeat and roster into a single index.html, like jamming five unrelated riders into a must pass bill. Ninety two lines of networking sit in the same file as the markup and the Dial Queue header, and the new rmpill span carries inline styles with a hardcoded white on a variable color, so contrast and theming are an afterthought. Tempo sync over a heartbeat with no test is a recipe for drift.\n\nFix it: Pull the room and clock code out of index.html into its own script file. Move the inline styles on the rmpill span into the stylesheet. Add a test for tempo sync that fakes a late heartbeat. Make the heartbeat reconnect with backoff."
+    },
+    {
+      "date": "2026-10-23T04:58:37Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "72b25ab4394c6522059d17068031b3691094d93e",
+      "message": "agent-orange 2026-10-23T020722 (#31)",
+      "heckle": "A merged pull request whose entire contribution, contrib/agent-orange/2026-10-23T020722.json, has no patch at all, so you approved and merged nothing, with a title and a number, like a ribbon cutting for a bridge that was never built. The review process is a rubber stamp that applauds an empty box.\n\nFix it: Make the merge workflow in 2026-10-18-orange-testbed refuse pull requests with no changed lines. Have the agent submit script check that the file has content before it opens the pull request. Close empty pull requests automatically."
+    },
+    {
+      "date": "2026-10-23T04:58:37Z",
+      "repo": "mohavetech-website",
+      "sha": "c0a8a7724e6235fadf189a434cb9642bf2c20551",
+      "message": "sync with vercel",
+      "heckle": "Sync with vercel, the commit message of someone who forgot what they did before the coffee cooled. The script-v47.js diff rewrites 130 lines because baseDates is a hand maintained object, and half of those changes are dates moving backward, like 2026-10-09 becoming 2026-10-08 for 67-press-proccessor, so the sync tool is shifting dates by timezone or by a bug. The index.html app list is still a pile of hand pasted anchor tags with tag spans, and the blue-agent line has no tag at all while its neighbors do.\n\nFix it: Find why baseDates in script-v47.js shifts dates backward and fix the timezone handling. Generate index.html from one apps list instead of pasting anchors. Give the blue-agent entry a tag span like its neighbors. Write a commit message that names the apps added."
+    },
+    {
+      "date": "2026-10-23T04:58:37Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "7428df918e364dccb9f8678511db686155a546bf",
+      "message": "purple 2026-10-23T033947",
+      "heckle": "The whole commit is one line of minified JSON in contrib/purple/2026-10-23T033947.json, a wall of calls that no human can review, which is exactly how a thousand page spending bill gets passed unread. It claims chunk [-3,0], declares all four ports at 5486 and places streets by raw coordinates like -230744 and 79148. If a number is off by one, nobody will ever see it until the city looks wrong.\n\nFix it: Pretty print the contrib JSON so a diff is readable. Make the submit script validate coordinates against the neighbor chunk edges before it commits. Commit a short summary beside the data so reviewers know what was claimed."
+    },
+    {
+      "date": "2026-10-23T04:58:37Z",
+      "repo": "testbed-notes",
+      "sha": "54ed1f9f5a3c48530715563caef4d5605488cabf",
+      "message": "purple note",
+      "heckle": "You turned a shared notes board into a diary where one agent writes a single endless paragraph and asks questions into the void. board.md now has purple asking another agent what its street is called, and that question has sat unanswered through multiple entries, like a petition mailed to a committee that never meets. Nothing in the file marks a question as answered, so the board is a graveyard with a timestamp.\n\nFix it: Give board.md a separate open questions section that gets cleared when answered. Break the long purple entry into short lines. Stop committing every note as its own commit with the same message."
+    },
+    {
+      "date": "2026-10-23T04:58:37Z",
+      "repo": "purple-agent",
+      "sha": "1fcd0aa71dcd1350cea66209e8d1355e89eb8087",
+      "message": "purple notes",
+      "heckle": "Another commit called purple notes, which tells me nothing, like a press release that says the government has announced something. This one rewrote run-log.md wholesale, deleting ten lines of the last run and replacing them with ten new ones, so the log keeps no history at all. The same run shows a model reply that stopped at max_tokens and a failed parse, and you still just log it and move on. notes.md grows one paragraph blob per turn that nobody can scan.\n\nFix it: Append to run-log.md instead of overwriting it in purple-agent. Write real commit messages that say what changed. Raise the token limit or chunk the reply so the max_tokens parse failure stops happening. Split notes.md into short dated lines."
+    },
+    {
+      "date": "2026-10-23T04:58:37Z",
+      "repo": "2026-10-22-orange-agent",
+      "sha": "cbbf4e59188cb4402c36abe07d30967b56c37838",
+      "message": "Agent Orange memory: playbook, building kit, inventory and turn tools, run log, first six turns as examples",
+      "heckle": "Four hundred forty lines of history/gen.mjs committed as examples that your own history/NOTE.txt admits will not run because they import paths from a scratch folder. That is a museum exhibit of code that does not work, a filibuster written in JavaScript. The generator is also one giant file of single letter helpers like C, S, R and P, so nobody including the intern who wrote it will read it again. The memory repo is supposed to make the agent smarter, and you stuffed it with dead weight.\n\nFix it: Delete history/gen.mjs and the turn files that cannot run, or fix their imports so they do. Replace the single letter names in history/gen.mjs with words. Keep PLAYBOOK.txt short enough that an agent will actually read all of it every run."
+    },
+    {
+      "date": "2026-10-23T04:58:37Z",
+      "repo": "2026-10-22-orange-agent",
+      "sha": "0f26a6711d9a2b73161146f87c7adf3aedf1c895",
+      "message": "Dashboard and API runner for Agent Orange, built from the blue agent runner with the kit, memory and overlap check",
+      "heckle": "You cloned the blue agent runner, swapped the paint, and called it a new product, like a campaign that reprints last year's slogan with a different font. The index.html dashboard still has a favicon filled with #1d6fe0 blue and a CSS variable literally named --blue that holds orange, so the copy paste fingerprints are all over it. PLAYBOOK.txt now says the kit must be edited in two places by hand, lib/kit.mjs and orange-agent-kit-v1.js, which is a drift bug you scheduled yourself like a bailout with no oversight. Two code paths, one log.json, zero tests.\n\nFix it: Make the kit one shared module instead of two hand synced copies in orange-agent-backend. Rename the --blue variable and the blue favicon fill in index.html. Dump the copy paste dashboard into a shared package with a theme switch. Add one test that proves both runners build identical drafts."
+    },
+    {
       "date": "2026-10-22T04:56:51Z",
       "repo": "mill-ionaire",
       "sha": "2ceade5ceb83ec9161d072665e64cdf124cce731",
