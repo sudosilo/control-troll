@@ -1,283 +1,271 @@
 {
  "jobs": [
   {
-   "repo": "qsr-receipt-sim",
-   "releases": [
-    {
-     "tag": "v2026.10.08",
-     "target": "8f881c68deb305d4066b1365051c458e0fb923b2",
-     "name": "QSR Receipt Sim 2026-10-08",
-     "body": "First release. The receipt simulator lets you set the restaurant identity, header and footer messages, and paper size, with a live receipt preview."
-    }
-   ],
-   "description": "Receipt designer for quick service restaurants with a live preview.",
-   "homepage": "https://qsr-receipt-sim.vercel.app",
-   "topics": [
-    "restaurant-tech",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "androids",
-   "releases": [
-    {
-     "tag": "v2026.10.08",
-     "target": "8f56e672c748e6fd286ed9fe4891798b972d63e8",
-     "name": "Androids Deploy Builder 2026-10-08",
-     "body": "First release. The builder writes ready to paste deploy command blocks for Vercel and Railway. A GitHub source option was added the same day."
-    }
-   ],
-   "description": "Builds the phone terminal command block that deploys a page to Vercel or Railway.",
-   "homepage": "https://androids.vercel.app",
-   "topics": [
-    "tool",
-    "vercel",
-    "railway",
-    "deploy"
-   ]
-  },
-  {
-   "repo": "cross-venue-equivalence-engine",
-   "releases": [
-    {
-     "tag": "v2026.10.09",
-     "target": "c07e144566b502728dcf262d4ad2d25c1760fb9b",
-     "name": "QSR Equivalents Engine 2026-10-09",
-     "body": "Version 2 of the equivalents engine. Menu items now show equivalents built from any venue's ingredients or from the venue's own stock."
-    }
-   ],
-   "description": "Shows which menu items one restaurant could build from another restaurant's ingredients.",
-   "homepage": "https://equivalence-engine.vercel.app",
-   "topics": [
-    "restaurant-tech",
-    "tool",
-    "menu",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "datacenter-osint",
-   "releases": [
-    {
-     "tag": "v2026.10.09",
-     "target": "ffdb566de4018440d88d166c518221b1332b57f4",
-     "name": "Data Center OSINT 2026-10-09",
-     "body": "Version 4 opens on the whole country. Added power plants, heavy industry, cooling towers, drought, and a backend. The map now shows live satellite imagery with a last day loop, water vapor, infrared, and moving wind trails. An eastern satellite covers the country view, and the panel is shorter and closes when the map is dragged."
-    }
-   ],
-   "description": "Map of data centers, power plants, heavy industry, and drought with live satellite imagery.",
-   "homepage": "https://datacenter-osint.vercel.app",
-   "topics": [
-    "map",
-    "research",
-    "satellite",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "kat-chat",
-   "releases": [
-    {
-     "tag": "v2026.10.09",
-     "target": "5851d22166854ce48493c82987c012fbf7abc5e0",
-     "name": "Cat Command Chat 2026-10-09",
-     "body": "Added chess in the chat with shared live boards and watchers. Added a GIF and movie clip picker, long press menus for reactions and delete on every message, and Android notifications. Messages are padded to fixed sizes. Native Android and Windows apps are now built and released automatically. The About section covers every working feature."
-    },
-    {
-     "tag": "v2026.10.08",
-     "target": "618c609e90f4d9eb279a3d10f662c829bf17427f",
-     "name": "Cat Command Chat 2026-10-08",
-     "body": "Tapping photos now opens reactions, there is a view picture button, and reconnect notes are clearer."
-    },
-    {
-     "tag": "v2026.10.07",
-     "target": "305da3188aa88c4cdb2e600cdcaeca9a659004ec",
-     "name": "Cat Command Chat 2026-10-07",
-     "body": "First release. A chat app with links and file sharing, emoji reactions with ding and meow sounds, profiles with color and picture, replies, edits, mentions, search, voice notes, backgrounds, and owner tools with personal invites. Claude was added to the chat and can search the web. The app became installable and gained push notifications."
-    }
-   ],
-   "description": "Private group chat app with reactions, voice notes, chess, GIFs, and notifications.",
-   "homepage": "https://kat-chat-flame.vercel.app",
-   "topics": [
-    "chat",
-    "pwa",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "rogue-rail",
-   "releases": [
-    {
-     "tag": "v2026.10.09",
-     "target": "00be13cd9520a08e7ee70912b5487e3158c5d536",
-     "name": "Rogue Rail 2026-10-09",
-     "body": "First release. A rail shooter set to drum and bass with pause, mute, hull repair, music preload, a countdown, and a best score."
-    }
-   ],
-   "description": "Drum and bass corridor rail shooter with pause, repair, and best score.",
-   "homepage": "https://rogue-rail.vercel.app",
-   "topics": [
-    "game",
-    "music",
-    "arcade",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "kvs-roulette",
+   "repo": "ghost-kitchen-builder",
    "releases": [
     {
      "tag": "v2026.10.10",
-     "target": "d3601387b0e8264b183cd71cf1aac3af49aa431f",
-     "name": "KVS Roulette 2026-10-10",
-     "body": "Version 2 plays full episodes and adds a random mode, seasons, and backup sources. Added a seek bar, start over, back and forward jumps, and fullscreen that keeps the controls."
-    }
-   ],
-   "description": "Random episode and clip player with season and shuffle modes.",
-   "homepage": "https://kvs-sigma.vercel.app",
-   "topics": [
-    "video",
-    "player",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "checkin-kiosk",
-   "releases": [
-    {
-     "tag": "v2026.10.10",
-     "target": "580581fcbbf4090cf3e67c32af0d5118fa269c17",
-     "name": "Check-In Kiosk 2026-10-10",
-     "body": "Version 2 of the kiosk saves data to a Redis backend and adds a flow heat map. Added a guest log tab and a server PIN, and the PIN screen now shows the server's own error message."
-    }
-   ],
-   "description": "Guest check-in kiosk with walk-ins, reservations, and a staff area.",
-   "homepage": "https://checkin-kiosk-bice.vercel.app",
-   "topics": [
-    "restaurant-tech",
-    "kiosk",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "ordersim",
-   "releases": [
-    {
-     "tag": "v2026.10.10",
-     "target": "88df35f3fc7f5325a2e6a550553a7e164b0122c9",
-     "name": "ORDERSIM 2026-10-10",
-     "body": "First release. Version 2 has a light theme, callsigns, local best scores, and an online leaderboard."
-    }
-   ],
-   "description": "Restaurant kitchen rush game with a leaderboard.",
-   "homepage": "https://ordersim.vercel.app",
-   "topics": [
-    "game",
-    "restaurant-tech",
-    "simulator",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "mind-globe",
-   "releases": [
-    {
-     "tag": "v2026.10.10",
-     "target": "5dd9703f4e241f235af0a9b3ac248fddc09d0517",
-     "name": "Mind Globe 2026-10-10",
-     "body": "Mountains now rise from note length. Connections between notes show with airstrips and planes."
-    },
-    {
-     "tag": "v2026.10.09",
-     "target": "482a5496146ce596f0b289b40d60b5ee87df7d81",
-     "name": "Mind Globe 2026-10-09",
-     "body": "The globe frontend was rebuilt."
-    },
-    {
-     "tag": "v2026.05.31",
-     "target": "cdda97b839e93b51beab31072d41e1221e5795ce",
-     "name": "Mind Globe 2026-05-31",
-     "body": "First release. The notes backend was created and set up to run on Railway."
-    }
-   ],
-   "description": "3D globe where your notes become land, with a backend that saves them.",
-   "homepage": "https://ming-globe.vercel.app",
-   "topics": [
-    "map",
-    "3d",
-    "notes",
-    "railway",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "rie-api",
-   "releases": [
-    {
-     "tag": "v2026.10.10",
-     "target": "1cd4d1b421811ea6b1490be9b93ff79aea483da6",
-     "name": "RIE API 2026-10-10",
-     "body": "Version 2 moved to a Postgres database. The AI proxy and legends logging were removed. Sites keep untouched fields when renamed, and delete and bulk clear were added. A shared site profile can now be read and updated."
-    },
-    {
-     "tag": "v2026.04.19",
-     "target": "cab21614a98f1732505cc69a9c2a73c62692c767",
-     "name": "RIE API 2026-04-19",
-     "body": "Added an AI proxy and legends logging, and pinned the Node version."
+     "target": "b27e7a05742ad08873b1775a6e899a7d3364c76a",
+     "name": "Restaurant Design and Setup Survey 2026-10-10",
+     "body": "Replaced the broken cloud connection with a simpler built in sync. The concept name, website, phone, address, point of sale, and ordering fields now link to the shared site profile."
     },
     {
      "tag": "v2026.04.09",
-     "target": "9a94de0e1b6cecc1f85b7b1356b678811686863d",
-     "name": "RIE API 2026-04-09",
-     "body": "First release. The API stored site surveys and nodes."
+     "target": "f7f1f9ad84326b676ec1cfdbb8753c47f0bc6433",
+     "name": "Restaurant Design and Setup Survey 2026-04-09",
+     "body": "Connected the app to the shared restaurant data service. Added a new color palette."
+    },
+    {
+     "tag": "v2026.04.06",
+     "target": "bba9dc66c84f0ac82fa2bbc49163b92acbf9acf6",
+     "name": "Restaurant Design and Setup Survey 2026-04-06",
+     "body": "Created the app as version 1.0. It starts as a survey for designing a restaurant concept."
     }
    ],
-   "description": "Backend that stores restaurant site surveys and shared site profiles.",
+   "description": "Survey tool for designing and scoring a restaurant concept, with sample concepts and a summary export.",
+   "homepage": "https://ghost-kitchen-builder.vercel.app",
+   "topics": [
+    "restaurant-tech",
+    "tool",
+    "survey",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "restack",
+   "releases": [
+    {
+     "tag": "v2026.10.10",
+     "target": "fdbe892357c9e144e7835bbe1bb1f570668f2a45",
+     "name": "RESTACK 2026-10-10",
+     "body": "Fixed editing of custom items, import, and reset. Sites can now be renamed and deleted, and no default site is created automatically. Added a site profile window for the shared fields."
+    },
+    {
+     "tag": "v2026.04.09",
+     "target": "3d12a004e71db76d995fe56b87677aac49b35670",
+     "name": "RESTACK 2026-04-09",
+     "body": "Created the app and moved it to version 3, connected to the shared restaurant data service. Fixed the output folder so the site deploys correctly."
+    }
+   ],
+   "description": "Technology stack explorer for restaurant sites that tracks what is known, partial, or missing.",
+   "homepage": "https://restack-wheat.vercel.app",
+   "topics": [
+    "restaurant-tech",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "tinewood-keys",
+   "releases": [
+    {
+     "tag": "v2026.10.11",
+     "target": "fb0bff641fb781320eb4ba5588a04d6220ea2da1",
+     "name": "Tinewood Keys 2026-10-11",
+     "body": "Created the app. Version 1 is an electric piano with a light theme, octave buttons, sustain, and draggable knobs."
+    }
+   ],
+   "description": "Browser electric piano with a light theme, octave shifts, sustain, and draggable knobs.",
+   "homepage": "https://tinewood-keys.vercel.app",
+   "topics": [
+    "music",
+    "synth",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "ebutuoy-frontend",
+   "releases": [
+    {
+     "tag": "v2026.10.11",
+     "target": "c376261a159d824dbb687311b292dfeb57cbd4ba",
+     "name": "ebutuoy 2026-10-11",
+     "body": "Moved the app to GitHub after a bug hunt pass. Triggered a production build."
+    }
+   ],
+   "description": "Discovery app that plays short samples of rarely seen videos from small channels.",
+   "homepage": "https://ebutuoy.vercel.app",
+   "topics": [
+    "video",
+    "discovery",
+    "frontend",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "ebutuoy-backend",
+   "releases": [
+    {
+     "tag": "v2026.10.11",
+     "target": "2b03cfb21c29c5a8e2fdf9565cf367bb3eebfffd",
+     "name": "ebutuoy backend 2026-10-11",
+     "body": "Ran a bug hunt. Search now returns only videos that can play in the embed, and subscriber checks fail closed. Added paging and quota tracking. Data now lives on the volume when one exists, and the service exits cleanly and logs fatal errors."
+    },
+    {
+     "tag": "v2026.05.27",
+     "target": "b0439f438f14a625ecceb4ff9387da10ff2f0937",
+     "name": "ebutuoy backend 2026-05-27",
+     "body": "Added a clips table and clip endpoints."
+    },
+    {
+     "tag": "v2026.05.19",
+     "target": "a7d920344e52b04c553d909a1a73d0da804343bd",
+     "name": "ebutuoy backend 2026-05-19",
+     "body": "Added a tag system and a replay queue for videos that become eligible after a day. Added a language filter and a playlist endpoint."
+    },
+    {
+     "tag": "v2026.05.18",
+     "target": "b2813d36d767cdc3ae9f680c6be608eccb16f059",
+     "name": "ebutuoy backend 2026-05-18",
+     "body": "Created the backend with a seen videos record and a search that favors less popular videos. Added a roulette mode that picks places weighted by population."
+    }
+   ],
+   "description": "Backend service for ebutuoy that finds little seen videos and remembers what was served.",
    "homepage": "",
    "topics": [
     "backend",
+    "railway",
     "api",
-    "railway"
+    "video"
    ]
   },
   {
-   "repo": "RTSS",
+   "repo": "cockpit-racer",
    "releases": [
     {
-     "tag": "v2026.10.10",
-     "target": "12f058ced22685a371e866ff8bdc03db38f8cc51",
-     "name": "RTSS 2026-10-10",
-     "body": "The live page now syncs to the cloud. Name, brand, address, city, state, internet provider, point of sale, and firewall link to the shared site profile."
-    },
-    {
-     "tag": "v2026.04.09",
-     "target": "788aea160268453ceaa115fc12f73c25ee637c25",
-     "name": "RTSS 2026-04-09",
-     "body": "Version 2 connects the survey to the RIE API."
-    },
-    {
-     "tag": "v2026.04.05",
-     "target": "ecf84bb7847b9aa0757e7becb89b19497477858e",
-     "name": "RTSS 2026-04-05",
-     "body": "The survey was deployed as a live page."
-    },
-    {
-     "tag": "v2026.04.02",
-     "target": "4f036cf12dc76e7ea238d83e40195482132ca2b3",
-     "name": "RTSS 2026-04-02",
-     "body": "First release. The first versions of the site survey form were added."
+     "tag": "v2026.10.11",
+     "target": "22b3e82bafac917bba042e24e00b3083211cf4b3",
+     "name": "Cockpit Racer 2026-10-11",
+     "body": "Created the app as version 2. It is a low poly desert driving game with a wheel, gas, brake, traffic, and police."
     }
    ],
-   "description": "Restaurant technology site survey form with cloud sync and CSV export.",
-   "homepage": "https://rtss-sigma.vercel.app",
+   "description": "Low poly 3D desert driving game from the cockpit, with traffic, deer, and a police cruiser.",
+   "homepage": "https://cockpit-racer.vercel.app",
+   "topics": [
+    "game",
+    "racing",
+    "3d",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "pixelmill",
+   "releases": [
+    {
+     "tag": "v2026.10.11",
+     "target": "ba4dd7e000547c34e96d20d7c3aec6edfd92bbdb",
+     "name": "PIXELMILL 2026-10-11",
+     "body": "Created the app as version 1.0. It simulates a mill cutting pixel programs."
+    }
+   ],
+   "description": "Toolpath simulator that cuts endless pixel programs like spiral, hatch, pocket, and cityscape.",
+   "homepage": "https://pixelmill.vercel.app",
+   "topics": [
+    "simulator",
+    "visualizer",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "coffee-autosim",
+   "releases": [
+    {
+     "tag": "v2026.10.11",
+     "target": "d99e2d3150fec9abd933eb49363b1bf5e2f0a4fb",
+     "name": "Coffee Autosim 2026-10-11",
+     "body": "Created the app as version 3, a live blueprint sim of a coffee shop floor."
+    }
+   ],
+   "description": "Live blueprint simulator of a coffee shop floor where baristas fill tickets on their own.",
+   "homepage": "https://coffee-autosim.vercel.app",
    "topics": [
     "restaurant-tech",
-    "survey",
+    "simulator",
+    "coffee",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "birdix",
+   "releases": [
+    {
+     "tag": "v2026.10.11",
+     "target": "e322bea6e3f6a27b537824b471688158a0da2526",
+     "name": "BIRDIXEL 2026-10-11",
+     "body": "Added stained glass mode, automatic birds, and photo glass."
+    },
+    {
+     "tag": "v2026.05.10",
+     "target": "613af3d6c1f41e4de2790fffbdd9fb0452b6e3e6",
+     "name": "BIRDIXEL 2026-05-10",
+     "body": "Created the app."
+    }
+   ],
+   "description": "Bird territory game with free paint, stained glass, and photo glass art modes.",
+   "homepage": "https://birdix.vercel.app",
+   "topics": [
+    "game",
+    "art",
+    "canvas",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "page-wide-pof",
+   "releases": [
+    {
+     "tag": "v2026.10.11",
+     "target": "dfc8c3dbffa6934c1377fd23bd63210ec83844c3",
+     "name": "Fold pattern generator 2026-10-11",
+     "body": "Created the app as the Page Wide origami print app. It makes fold patterns on squares you can print."
+    }
+   ],
+   "description": "Origami fold pattern generator that makes printable designs with endless variation.",
+   "homepage": "",
+   "topics": [
     "tool",
+    "origami",
+    "print",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "pixelcoop-farm",
+   "releases": [
+    {
+     "tag": "v2026.10.11",
+     "target": "f933ebf3e7d76ce0c7b7848bacca31274cf891e0",
+     "name": "Chicken Farm 2026-10-11",
+     "body": "Created the app as version 3 of the chicken farm simulator."
+    }
+   ],
+   "description": "Pixel art chicken farm simulator with pipes, coops, and egg or meat farming.",
+   "homepage": "https://pixelcoop-farm.vercel.app",
+   "topics": [
+    "game",
+    "simulator",
+    "pixel",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "aliens-win",
+   "releases": [
+    {
+     "tag": "v2026.10.11",
+     "target": "57bdd94f4905575f3bfc1904b1a5e94af7251b82",
+     "name": "The Aliens Win 2026-10-11",
+     "body": "Created the app as the first version of the game. A second push triggered a production build."
+    }
+   ],
+   "description": "Arcade shooter where you fly a UFO and fire lasers through waves of targets.",
+   "homepage": "https://aliens-win.vercel.app",
+   "topics": [
+    "game",
+    "arcade",
+    "shooter",
     "vercel"
    ]
   }

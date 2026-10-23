@@ -182,8 +182,13 @@
         "https://aliens-win.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Arcade shooter where you fly a UFO against waves",
+      "name": "The Aliens Win",
+      "latest": {
+        "date": "2026-10-11",
+        "text": "Created the app as the first version of the game. A second push triggered a production build."
+      }
     },
     "pixelcoop-farm": {
       "apps": [
@@ -193,15 +198,25 @@
         "https://pixelcoop-farm.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Pixel art chicken farm builder and simulator",
+      "name": "Chicken Farm",
+      "latest": {
+        "date": "2026-10-11",
+        "text": "Created the app as version 3 of the chicken farm simulator."
+      }
     },
     "page-wide-pof": {
       "apps": [],
       "urls": [],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Tools",
+      "summary": "Origami fold pattern generator for printing",
+      "name": "Fold pattern generator",
+      "latest": {
+        "date": "2026-10-11",
+        "text": "Created the app as the Page Wide origami print app. It makes fold patterns on squares you can print."
+      }
     },
     "birdix": {
       "apps": [
@@ -211,8 +226,13 @@
         "https://birdix.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Bird territory game with free paint and stained glass modes",
+      "name": "BIRDIXEL",
+      "latest": {
+        "date": "2026-10-11",
+        "text": "Added stained glass mode, automatic birds, and photo glass."
+      }
     },
     "coffee-autosim": {
       "apps": [
@@ -222,8 +242,13 @@
         "https://coffee-autosim.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Restaurant Tech",
+      "summary": "Live blueprint simulator of a coffee shop floor with baristas",
+      "name": "Coffee Autosim",
+      "latest": {
+        "date": "2026-10-11",
+        "text": "Created the app as version 3, a live blueprint sim of a coffee shop floor."
+      }
     },
     "pixelmill": {
       "apps": [
@@ -233,8 +258,13 @@
         "https://pixelmill.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Music and Visualizers",
+      "summary": "Toolpath simulator that cuts endless pixel programs",
+      "name": "PIXELMILL",
+      "latest": {
+        "date": "2026-10-11",
+        "text": "Created the app as version 1.0. It simulates a mill cutting pixel programs."
+      }
     },
     "cockpit-racer": {
       "apps": [
@@ -244,15 +274,25 @@
         "https://cockpit-racer.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Games",
+      "summary": "Low poly 3D desert driving game from the cockpit",
+      "name": "Cockpit Racer",
+      "latest": {
+        "date": "2026-10-11",
+        "text": "Created the app as version 2. It is a low poly desert driving game with a wheel, gas, brake, traffic, and police."
+      }
     },
     "ebutuoy-backend": {
       "apps": [],
       "urls": [],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Backends and Infrastructure",
+      "summary": "Backend service for the ebutuoy video discovery app",
+      "name": "ebutuoy backend",
+      "latest": {
+        "date": "2026-10-11",
+        "text": "Ran a bug hunt. Search now returns only videos that can play in the embed, and subscriber checks fail closed. Added paging and quota tracking. Data now lives on the volume when one exists, and the service exits cleanly and logs fatal errors."
+      }
     },
     "ebutuoy-frontend": {
       "apps": [
@@ -262,8 +302,13 @@
         "https://ebutuoy.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Maps and Research",
+      "summary": "Discovery app that plays short samples of rarely seen videos",
+      "name": "ebutuoy",
+      "latest": {
+        "date": "2026-10-11",
+        "text": "Moved the app to GitHub after a bug hunt pass. Triggered a production build."
+      }
     },
     "mill-ionaire": {
       "apps": [
@@ -284,8 +329,13 @@
         "https://tinewood-keys.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Music and Visualizers",
+      "summary": "Browser electric piano with sustain, octaves, and knobs",
+      "name": "Tinewood Keys",
+      "latest": {
+        "date": "2026-10-11",
+        "text": "Created the app. Version 1 is an electric piano with a light theme, octave buttons, sustain, and draggable knobs."
+      }
     },
     "free-as-in-links": {
       "apps": [
@@ -306,8 +356,13 @@
         "https://restack-wheat.vercel.app"
       ],
       "private": true,
-      "category": null,
-      "summary": null
+      "category": "Restaurant Tech",
+      "summary": "Technology stack explorer for restaurant sites with coverage tracking",
+      "name": "RESTACK",
+      "latest": {
+        "date": "2026-10-10",
+        "text": "Fixed editing of custom items, import, and reset. Sites can now be renamed and deleted, and no default site is created automatically. Added a site profile window for the shared fields."
+      }
     },
     "ghost-kitchen-builder": {
       "apps": [
@@ -317,8 +372,13 @@
         "https://ghost-kitchen-builder.vercel.app"
       ],
       "private": false,
-      "category": null,
-      "summary": null
+      "category": "Restaurant Tech",
+      "summary": "Survey tool for designing and scoring a restaurant concept",
+      "name": "Restaurant Design and Setup Survey",
+      "latest": {
+        "date": "2026-10-10",
+        "text": "Replaced the broken cloud connection with a simpler built in sync. The concept name, website, phone, address, point of sale, and ordering fields now link to the shared site profile."
+      }
     },
     "RTSS": {
       "apps": [
@@ -1607,6 +1667,48 @@
       "summary": null
     },
     "forkmill-zx": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "2026-10-22-orange-agent": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "purple-agent": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "purple-vault": {
+      "apps": [],
+      "urls": [],
+      "private": true,
+      "category": null,
+      "summary": null
+    },
+    "testbed-notes": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "blue-agent": {
+      "apps": [],
+      "urls": [],
+      "private": false,
+      "category": null,
+      "summary": null
+    },
+    "blue-agent-sandbox": {
       "apps": [],
       "urls": [],
       "private": false,
