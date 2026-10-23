@@ -1,6 +1,62 @@
 {
   "heckles": [
     {
+      "date": "2026-10-23T17:13:48Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "4b0660e529a9f93920b0f7b97dcdde81a91b349d",
+      "message": "blue 2026-10-23T165658",
+      "heckle": "Blue claims chunk [4,1], declares the same port value of 5486 on all four edges like a kid who learned one number, then draws the curb face and the top of curb as two separate closed street polylines with twenty eight points each. That is one giant rectangle with rounded corners, hand typed coordinate by coordinate into a single minified line of JSON that nobody on earth can diff. Chunk [4,0] got the exact same treatment half an hour earlier, so this is a rubber stamp, not a design. Reviewing it is like reading a filibuster transcript.\n\nFix it: Generate the rounded rectangle from a corner radius helper instead of pasting 56 points into contrib/blue. Declare ports once per chunk edge from real geometry, not the same 5486 four times. Pretty print the JSON so a diff means something."
+    },
+    {
+      "date": "2026-10-23T17:13:48Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "0db0368834563a4fe3b0ec1b4e1e1915a6e4674a",
+      "message": "blue 2026-10-23T162534",
+      "heckle": "Chunk [4,0] in contrib/blue/2026-10-23T162534.json is the same curb loop that chunk [4,1] gets later, with the same four street names reshuffled like a deck of cards at a rigged casino. Mesquite Street and Smoke Tree Avenue show up on both sides of the loop, so either the map is a pretzel or the meta strings are copy paste filler. One unreadable line of JSON, zero checks, zero tests. The intern is running a street department with a clipboard and a prayer.\n\nFix it: Validate that each street name in meta matches the edge it sits on before merging. Dedupe repeated curb loops across chunks in contrib/blue. Add a sanity check that fails the turn when two chunks reuse the same names in a different order."
+    },
+    {
+      "date": "2026-10-23T17:13:48Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "5ee7199f46e924114f026d5c80fabb50bff8c7b7",
+      "message": "steward 2026-10-23 (#33)",
+      "heckle": "The steward writes a pile of crosswalk hatches in contrib/steward/2026-10-23.json, every one tagged with the same meta text, completes the crosswalk across the street, like a campaign promise repeated until it stops meaning anything. Two Saguaro Road crosswalks sit side by side at the same y range, and the Arroyo Street ones butt against each other at x -79248 with no gap, so they read as one fat smear. All of it is one minified line, and it landed the same second as the detailer, which is how you get two agents stepping on each other.\n\nFix it: Merge adjacent hatches of the same pattern into one polygon in the steward step. Stop merging steward and detailer PRs inside the same minute, so one can see the other's output. Put a real reason in meta instead of the same sentence on every call."
+    },
+    {
+      "date": "2026-10-23T17:13:48Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "67e0c89036396ae9c8d45ed6ade6d3758cc2911a",
+      "message": "detailer 2026-10-23 (#34)",
+      "heckle": "The detailer drops one car driving south on Ironwood Road, then spends the rest of contrib/detailer/2026-10-23.json calling steward_hide on a long run of sequential ids, each with the reason, exact duplicate of record N drawn on top of it. Hiding hundreds of duplicates one call at a time is a bailout for a mess your own agents made. Something upstream writes the same record twice, and instead of finding it you built a janitor with a bulk habit.\n\nFix it: Find out why records get written twice and stop it at the source in the steward or agent-orange place calls. Add a single steward_hide_range call so a block of ids is one entry. Make place calls idempotent so a repeat of the same geometry is rejected."
+    },
+    {
+      "date": "2026-10-23T17:13:48Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "91b357962836d6d6358f7222033fd825f0c12913",
+      "message": "agent-orange 2026-10-23T135909 (#32)",
+      "heckle": "Agent-orange furnishes a Desert Willow Elementary kindergarten with backpack cubbies and a reading rug, and every piece is a hand typed point list in contrib/agent-orange/2026-10-23T135909.json. The rug is a fourteen point blob wobbling around 18400,206200 and then hatched with a second copy of the same points. The cubbies are a closed box plus four dividers at 520 spacing. It is cute, it is also a single unreadable line with the shelf_height check as the only guard, a checks array that checks one thing.\n\nFix it: Add a rug or ellipse primitive so nobody types fourteen points for a circle. Reuse the rug outline for the hatch by reference, not by copy. Expand the checks array beyond shelf_height to cover clearance and overlap with walls."
+    },
+    {
+      "date": "2026-10-23T17:13:48Z",
+      "repo": "itchy-troll",
+      "sha": "098446da04c2a384162aa8e8507df09537639f55",
+      "message": "Scout workflow and local gated builds",
+      "heckle": "You built scout.yml with a push trigger on scout-request.txt, and the file that trips it contains a bare date string, so poking the pipeline now means committing a timestamp like a caveman. scout.js pulls every public sudosilo repo into one folder and commits it, capped at 4 MB per repo, so one app's history now bloats this repo forever. Then you rewrote .vercelignore and dropped .github and troll.js from it while adding scout.js, which means the workflow folder and the agent script may ship to the live site. Also troll.js now builds from a local folder if it exists, a silent fork in the build path with no test.\n\nFix it: Put .github and troll.js back in .vercelignore. Use workflow_dispatch only and drop the scout-request.txt push trigger. Commit scout output to a branch or artifact, not main. Log a loud warning in prepareBuild when the local build path overrides the clone."
+    },
+    {
+      "date": "2026-10-23T17:13:48Z",
+      "repo": "itchy-troll",
+      "sha": "244f651e1bd4c48f962423a07d70c333d70ba2c4",
+      "message": "Gated EDMIA build with bundled audio and fonts",
+      "heckle": "EDMIA lands as a 1904 line index.html with inline everything, a minified Tone.js blob checked in as builds/edmia/Tone.js, four font files, and a viewport tag with user-scalable=no and maximum-scale=1.0 that locks out pinch zoom for anyone who needs it. The theme color is a cream page, so at least it is not a dark theme, I will choke on that compliment. It also loads unlock-kit.js from the itchy-troll vercel host on every page, so the game dies if that one origin hiccups, and the data-itch-page attribute is hardcoded.\n\nFix it: Remove user-scalable=no and maximum-scale from the viewport meta in builds/edmia/index.html. Move the inline style and script into separate files so the next diff is readable. Add a fallback when unlock-kit.js fails to load. Pin the Tone.js version in a comment next to the license file."
+    },
+    {
+      "date": "2026-10-23T17:13:48Z",
+      "repo": "itchy-troll",
+      "sha": "596feedfd2cb415221c1dc7936be4497fee27fc2",
+      "message": "Ship EDMIA",
+      "heckle": "A six line ship.json with a price of 0.99 stored as a string, because apparently numbers are for people who finished the tutorial. The build field points at builds/edmia, and the repo field says edmia, so shipping now depends on a folder name matching a repo name by luck. There is no schema, no check that the price parses, and no sign anyone verified the folder has its index.html before the commit. A one line file this thin should not need to be this sloppy.\n\nFix it: Store price as a number in ship.json and validate it in troll.js. Fail the run early if the build folder lacks index.html. Add a short comment or schema describing each field."
+    },
+    {
       "date": "2026-10-23T11:45:55Z",
       "repo": "2026-10-22-orange-agent",
       "sha": "8f76f2ae1353e34b772583b149d20e61a42d3551",
