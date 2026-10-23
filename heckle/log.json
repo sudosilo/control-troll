@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-23T21:28:22Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "682434a5b31d6e123a14a0d2655c4061a0ba4019",
+      "message": "Live smash: donor search by song, artist or BPM, suggestions topped up from a BPM search",
+      "heckle": "Donor search arrives as a new api/song-search.js that builds a Deezer query with bpm_min and bpm_max operators, which the Deezer search API does not document, so your BPM search is a prayer typed into a box. The catch swallows every failure into an empty results array, and the suggestion top up in index.html wraps its fetch in an empty catch, so when it breaks the screen just sits there like a filibuster with no bill attached. Also bpm: null on every result means the list you built to match tempo has no tempo in it. A hidden liveBpmNow input stores state in the DOM like it is 2009.\n\nFix it: Verify the bpm_min syntax against a real Deezer response in api/song-search.js or drop the feature. Log the error in the empty catch in index.html instead of eating it. Fill in a real bpm on each result or stop calling it a BPM search. Keep the live BPM in a variable, not a hidden input."
+    },
+    {
+      "date": "2026-10-23T21:28:22Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "50f48288360022f0a0956cffc18034f1cb7cd0e3",
+      "message": "Typed and logged drop points with auto drop, start over, original speed switch, voice follows its real playback speed",
+      "heckle": "One commit, 152 lines added to a single index.html, and the message lists five features like a campaign platform nobody can fund: typed drop points, auto drop, start over, speed switch, voice speed following. Each one adds more global flags to a file that is already a swamp of state variables and try blocks with empty catches. The new stretchOn checkbox and dropIn field are stuffed into the same cramped toggleRow strips on a phone screen, so the controls are going to be a thumb fight. Bundling this much into one commit means when it breaks, you cannot revert one piece.\n\nFix it: Split index.html into separate script files before it collapses. Commit one feature at a time. Check the dropIn row at phone width because it has an input, a label, and buttons in one line. Replace the empty catch blocks with real logging."
+    },
+    {
+      "date": "2026-10-23T21:28:22Z",
+      "repo": "blue-agent",
+      "sha": "d01bf646835136636a68456b4f5c43c695a6c43e",
+      "message": "Log newest runs and errors at startup",
+      "heckle": "Congratulations, you made the start script run a debugging dump before the server, joined with a semicolon so a crash in show-runs.mjs does not matter and a hung Redis connect holds the whole boot hostage. The connect has no timeout, so if Redis is slow the server never comes up, a bailout with strings attached. It also prints up to 600 characters of raw events and 300 of run summaries into Railway logs, and nobody has checked whether those contain anything private. This is a throwaway debug script wired into production start like a permanent fixture.\n\nFix it: Add a connect timeout in show-runs.mjs so it cannot block boot. Run it as a separate command, not inside the start script in package.json. Strip or redact event text before logging it. Delete the whole thing once the bug is found."
+    },
+    {
+      "date": "2026-10-23T21:28:22Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "f8c6c0c2bbe4018f9f5781f359327cb0633df80e",
+      "message": "Pre-buffer the acapella for 5 seconds before the drop, no stacked seeks while buffering",
+      "heckle": "Pre buffering the acapella works by muting the YouTube player, playing it for a hard coded five seconds, then pausing and seeking again, which is a hack stacked on a hack. Five seconds is a magic number with no reason behind it, so a slow connection still stutters and a fast one wastes five seconds of audible dead time. The new acaWarming, acaGraceUntil, instGraceUntil, and warmToken globals join a pile of other loose flags in index.html, and instGraceUntil is declared but nothing in this diff reads it. Another half finished guard in a file with no tests.\n\nFix it: Remove instGraceUntil from the warm up block in index.html if nothing uses it. Wait for the player state change event instead of a fixed five second timeout in warmAca. Put the buffering flags in one state object. Add a test for the seek logic."
+    },
+    {
+      "date": "2026-10-23T21:28:22Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "186336c029eb006512187c24bae9dcaca06fc9a6",
+      "message": "Stop the beat and voice at their ends instead of seeking back to the start",
+      "heckle": "Your fix for seeking back to the start is a pile of duration checks with magic offsets, 0.3 here and 0.5 there, picked by vibes, not by anything measured. The same end of track guard is pasted into syncAca and the live sync block, so two copies will drift apart the first time someone fixes just one. getDuration returns zero before a stream loads, and your if acaDur guards quietly skip the whole check in that case, so the bug can return on the first play. Ugly, duplicated, and called a fix.\n\nFix it: Pull the end of track check into one helper in index.html and call it from both syncAca and the live loop. Use one tolerance constant instead of 0.3 and 0.5. Handle the zero duration case on purpose. Test with a short clip."
+    },
+    {
+      "date": "2026-10-23T21:28:22Z",
+      "repo": "song-offset-listener",
+      "sha": "1c384bab8ad429c371df61b87b659d61b81ccd15",
+      "message": "BPM lookup: report Deezer errors",
+      "heckle": "This commit adds a deezerSeen module level variable to api/bpm-lookup.js that is shared across every request on a warm edge instance, next to lastReason, which is also module level. Two simultaneous lookups will overwrite each other, so one user gets an error message about someone else's song. It is the same mistake as a state wide policy written from one person's anecdote. The reason strings are pasted into the response, so Deezer error JSON goes straight to the browser, and deezerSeen is only ever used to build one string.\n\nFix it: Make lastReason and deezerSeen local to each lookup call in api/bpm-lookup.js and return them with the result. Do not send raw upstream error JSON to the client. Delete deezerSeen and put the row count in the message directly."
+    },
+    {
+      "date": "2026-10-23T21:28:22Z",
+      "repo": "song-offset-listener",
+      "sha": "1ee8f7046fae5e7c584b95cc00dec1aded1b7bc0",
+      "message": "BPM lookup: Deezer first (free, no key), GetSongBPM as backup when a key exists",
+      "heckle": "A fresh Deezer lookup lands in api/bpm-lookup.js that fires up to three extra track fetches in a row, one after another, for every miss, inside an edge function with no timeout, so a slow upstream turns one BPM request into a very long wait. The artist match uses includes both ways, so a short artist name matches anything, and the sort only checks startsWith. The description says GetSongBPM is a backup, yet the file still has the old lib import removed in the previous commit, so the repo has two lookup paths and a dead helper somewhere. The kind of sprawl a shutdown deal would be proud of.\n\nFix it: Run the track fetches in parallel with a timeout in the deezer function of api/bpm-lookup.js. Tighten the artist matching so short names do not match everything. Delete lib/getsongbpm.js if nothing else imports it."
+    },
+    {
+      "date": "2026-10-23T21:28:22Z",
+      "repo": "song-offset-listener",
+      "sha": "ed7e738b2688ad5f8823ac6aa2e00d0e8d9223d3",
+      "message": "BPM lookup: report why a lookup missed",
+      "heckle": "Third commit in a row on the same lookup file, and this one adds a v: 2 field to the response so you can tell if the deploy took, which is what a person does when they do not trust their own pipeline. The lastReason variable is module level, shared between requests, and set in four places, and the error text slices raw JSON from a third party straight into your API response. Debug scaffolding is landing in production API code one commit at a time, a bailout in installments. Nobody reading the client can tell what v means.\n\nFix it: Move lastReason into a local object in api/bpm-lookup.js. Remove the v: 2 marker once the deploy is confirmed. Squash these debugging commits instead of pushing every guess to production."
+    },
+    {
+      "date": "2026-10-23T21:28:22Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "0a62dbc68ccb57b6041b3bae783f655c6cd8f4f4",
+      "message": "Stop caching missed BPM lookups so they retry",
+      "heckle": "Small fix, small credit: you stopped caching failed BPM lookups so they retry. But now every failed lookup retries on every list render forever, and the bpmJobs queue in index.html has no backoff, so a song Deezer does not know gets hammered on each reload. The new forEach that deletes falsy cache entries runs on every page load to clean up a mess you made yourself. Hardly a migration plan, just a broom.\n\nFix it: Add a short expiry or a retry limit for missed lookups in the bpm job loop in index.html. Store a miss marker with a timestamp instead of deleting it. Remove the cleanup forEach after one release."
+    },
+    {
+      "date": "2026-10-23T21:28:22Z",
+      "repo": "song-offset-listener",
+      "sha": "4b29d61234bfb759d8067ebf040a90c8f008af2b",
+      "message": "BPM lookup: use type=both for song plus artist, fall back to title search",
+      "heckle": "The lookup now builds a GetSongBPM URL with the API key in the query string, as the service demands, but the first line of api/bpm-lookup.js is now a blank line where the import used to be, and the new get helper returns an empty array on every failure so the caller cannot tell a dead key from a missing song. You just inlined a whole helper from lib/getsongbpm.js into the route and left the original file around, so there are two copies of the same lookup logic waiting to disagree. Copy paste engineering with a pulse.\n\nFix it: Delete lib/getsongbpm.js or import it again in api/bpm-lookup.js, but keep only one copy. Return a reason from get so errors are visible. Remove the leading blank line. Add a test with a fake response for pick."
+    },
+    {
       "date": "2026-10-23T17:13:48Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "4b0660e529a9f93920b0f7b97dcdde81a91b349d",
