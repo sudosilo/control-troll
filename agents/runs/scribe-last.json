@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 111405,
+ "duration_api_ms": 83284,
  "stop_reason": "end_turn",
- "session_id": "6da9720e-1faf-48be-8ab6-41aae40f7ef5",
- "total_cost_usd": 0.33846809999999994,
+ "session_id": "9d36b49b-8a36-492c-ab44-67ada08805b8",
+ "total_cost_usd": 0.271427,
  "usage": {
-  "input_tokens": 30,
-  "cache_creation_input_tokens": 40628,
-  "cache_read_input_tokens": 532769,
-  "output_tokens": 12249,
+  "input_tokens": 24,
+  "cache_creation_input_tokens": 34077,
+  "cache_read_input_tokens": 401018,
+  "output_tokens": 9484,
   "output_tokens_details": {
-   "thinking_tokens": 1956
+   "thinking_tokens": 1163
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 40628,
+   "ephemeral_1h_input_tokens": 34077,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 413,
-    "cache_read_input_tokens": 52833,
-    "cache_creation_input_tokens": 586,
+    "output_tokens": 345,
+    "cache_read_input_tokens": 48457,
+    "cache_creation_input_tokens": 226,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 586
+     "ephemeral_1h_input_tokens": 226
     },
     "type": "message"
    }
@@ -53,15 +53,15 @@
    "costBasis": "list"
   },
   "claude-sonnet-5-5": {
-   "inputTokens": 30,
-   "outputTokens": 12249,
-   "cacheReadInputTokens": 532769,
-   "cacheCreationInputTokens": 40628,
+   "inputTokens": 24,
+   "outputTokens": 9484,
+   "cacheReadInputTokens": 401018,
+   "cacheCreationInputTokens": 34077,
    "webSearchRequests": 0,
-   "costUSD": 0.33833889999999994,
+   "costUSD": 0.2712978,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 1956,
+   "thinkingTokens": 1163,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
@@ -97,17 +97,47 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 15,
+ "num_turns": 12,
  "subtype": "success",
  "api_error_status": null,
- "result": "I documented 12 repos this run: qsr-receipt-sim, androids, cross-venue-equivalence-engine, datacenter-osint, kat-chat, rogue-rail, kvs-roulette, checkin-kiosk, ordersim, mind-globe, rie-api, and RTSS. Each got a README, a CHANGELOG, and one \"docs: scribe update\" commit. RTSS already had a short README, so I kept it and added the scribe sections below it.\n\nMind-globe has a Railway backend at the root and its web app in a subfolder. Its commit statuses show only Railway deploys and no Vercel, so I judged a docs push safe and did not add a root vercel.json. I could not confirm that against Vercel, but the live site was still up before the push and I did not recheck it afterward. Checkin-kiosk already has a root vercel.json.\n\nThe publish jobs, state, and repo map are saved in control-troll. I also pushed the refreshed profile page to sudosilo/sudosilo, and committed the notes and state to control-troll main. I added itchy-troll, text-based-game, shared-server, and forkmill-zx to the repo map with no apps. About 61 backfills remain, so roughly five more runs. I reached every repo I tried.",
- "ttft_ms": 4459,
+ "result": "I documented 12 repos this run: ghost-kitchen-builder, restack, tinewood-keys, ebutuoy-frontend, ebutuoy-backend, cockpit-racer, pixelmill, coffee-autosim, birdix, page-wide-pof, pixelcoop-farm and aliens-win.\n\nEach got a README, a CHANGELOG and a publish job, and I pushed them to the default branch. 53 backfills remain. The next ones are synth, ether-wand, pajamastan-invoices and torque-converter.\n\nRestack keeps its app in a public folder with no root vercel.json, so I checked the live site after the push. It still returns 200. The profile README in sudosilo/sudosilo is rebuilt and pushed. The scribe state and the agent notes are committed to control-troll main.\n\nThe only repo with no Control Troll app was page-wide-pof. I amended its commit to drop the \"checked every morning\" line, since it isn't monitored. I also added six agent repos to repos.json with empty apps. I could reach every repo.",
+ "ttft_ms": 2077,
  "type": "result",
- "duration_ms": 164345,
- "uuid": "ade30365-6250-4ef4-8f8a-2b4613abb9cd",
- "ttft_stream_ms": 4221,
- "time_to_request_ms": 203,
- "first_content_frame_ms": 4222,
+ "duration_ms": 112249,
+ "uuid": "0622453c-f2ce-47c9-934c-aafdc9c85749",
+ "ttft_stream_ms": 1815,
+ "time_to_request_ms": 136,
+ "first_content_frame_ms": 1815,
  "queued_turn_count": 0,
- "result_index": 0
+ "result_index": 0,
+ "model_usage_since_last_result": {
+  "claude-haiku-5-5": {
+   "inputTokens": 1207,
+   "outputTokens": 17,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "webSearchRequests": 0,
+   "costUSD": 0.0001292,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 24,
+   "outputTokens": 9484,
+   "cacheReadInputTokens": 401018,
+   "cacheCreationInputTokens": 34077,
+   "webSearchRequests": 0,
+   "costUSD": 0.2712978,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 1163,
+   "canonicalModel": "claude-sonnet-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ }
 }
