@@ -96,6 +96,7 @@ main{padding:20px 16px;max-width:900px;margin:0 auto}
 <label>Preset <select id="pre"></select></label>
 <label>Launch <select id="qn"><option value="0">Now</option><option value="0.25">Beat</option><option value="1">Bar</option><option value="2">2 bars</option><option value="4">4 bars</option></select></label>
 <span id="qst" style="font-size:13px;font-weight:600;color:var(--accd)"></span>
+<span id="rmpill" style="display:none;font-size:12px;font-weight:600;color:#fff;background:var(--acc);border-radius:10px;padding:2px 8px"></span>
 <button class="info" data-topic="top">i</button>
 <button id="burger" aria-label="Menu">&#9776;</button>
 </header>
@@ -109,6 +110,9 @@ main{padding:20px 16px;max-width:900px;margin:0 auto}
 <div id="menu" class="sheet" hidden><div class="ibody"><span class="ttl">Menu</span>
 <div class="row"><input id="svname" placeholder="Preset name" style="flex:1;min-width:0"><button id="svbtn" class="go">Save</button></div>
 <div id="svlist"></div>
+<span class="ttl" style="margin-top:14px">Room</span>
+<div class="row"><input id="rmcode" placeholder="Room code" autocomplete="off" autocapitalize="off" spellcheck="false" style="flex:1;min-width:0"><button id="rmjoin" class="go">Join</button><button id="rmleave">Leave</button></div>
+<div id="rminfo" style="font-size:13px;color:var(--mute);margin-bottom:6px"></div><div id="rmlist"></div>
 <div class="row"><button id="rst">Reset wheels</button><button id="clr">Clear</button><button id="mclose">Close</button></div></div></div>
 <div id="rowpick" class="sheet" hidden><div class="ibody"><span class="ttl" id="rpt"></span><div id="rpfam" class="row"></div><div id="rplist"></div><div class="row"><button id="rpempty">Empty row</button><button id="rpclose" class="go">Close</button></div></div></div>
 <div id="infobox" hidden><div class="ibody"><div id="itxt"></div><button id="iclose" class="go">Close</button></div></div>
@@ -531,7 +535,7 @@ function trigger(seg,t,P,r){if(seg.sound==='none')return;if(Math.random()*100>=P
   voice(seg.sound,t+offs[k],Object.assign({},P,{pitch:P.pitch+P.rpitch*k}),hg)}}
 
 var playing=false;let nextT=0,G=0,timer=null,hits=[];
-function stepDur(){return 60/LIVE.bpm/LIVE.div}
+function stepDur(){return 60/(ROOM.mode&&ROOM.T?roomTempo():LIVE.bpm)/LIVE.div}
 function stepAt(t,g){const ty=LIVE.toys;if(ty)TOYS.forEach(x=>{const ev=ty[x.id]|0;if(ev>0&&g%(LIVE.div*4*ev)===0)toyFire(x.id,t)});
 const sp=LIVE.spin;if(sp&&sp.on){const per=LIVE.div*4*Math.max(1,sp.every|0);if(g%per===0)spinFire(t)}
 LIVE.rows.forEach((rw,r)=>{const seg=rw.segs[g%rw.len],P=params(seg);if(!rw.mute)trigger(seg,t,P,r);seg.pos=((seg.pos+Math.round(P.advance))%seg.notches+seg.notches)%seg.notches})}
@@ -570,9 +574,15 @@ function spinFire(t){const sp=LIVE.spin;let i;if(sp.mode==='same')i=+sp.animal||
  if(narr)setTimeout(()=>{try{const u=new SpeechSynthesisUtterance('The '+nm+' says');u.rate=1.3;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}},Math.max(0,(t-ac.currentTime)*1000));
  const reps=Math.max(1,Math.min(8,sp.reps|0)),P=params(sg(snd));P.volume=+sp.vol;P.room=20;P.ratchet=reps;P.span=reps*4;P.chance=100;
  trigger({sound:snd},t+delay,P,-1);if(!OFF)spinQ.push({t,i})}
-function tick(){while(nextT<ac.currentTime+.2){if(dirty&&(G-G0)%qsteps()===0)commit();stepAt(nextT,G-G0);hits.push({g:G-G0,t:nextT});G++;nextT+=stepDur()}}
-function start(){initAudio();ac.resume();LIVE=clone(S);dirty=false;rebase=false;G0=0;nextT=ac.currentTime+.06;G=0;hits=[];lastGroup.length=0;timer=setInterval(tick,40);playing=true;playB.textContent='Stop'}
-function stop(){clearInterval(timer);playing=false;playB.textContent='Play';if(!rebase)S.rows.forEach((rw,r)=>rw.segs.forEach((g,i)=>{const o=LIVE.rows[r]&&LIVE.rows[r].segs[i];if(o&&!g._pt)g.pos=o.pos%g.notches;delete g._pt}));save();renderQueue()}
+function tickRoom(){const T=ROOM.T;if(!T||!T.playing)return;const n=snow(),horizon=n+200;let cursor=Math.max(ROOM.sched||0,n);
+ for(let b=Math.max(barAt(T,cursor),T.barOffset);barTime(T,b)<horizon;b++){const t0=barTime(T,b),spb=LIVE.div*4,st=barMs(partOf(T,b).tempo)/spb;
+  for(let k=0;k<spb;k++){const t=t0+k*st;if(t<cursor||t>=horizon)continue;G=b*spb+k;if(dirty&&(G-G0)%qsteps()===0)commit();const at=toAudio(t);if(at<ac.currentTime-.005)continue;stepAt(at,G-G0);hits.push({g:G-G0,t:at})}}
+ ROOM.sched=horizon}
+function tick(){if(ROOM.mode){tickRoom();return}while(nextT<ac.currentTime+.2){if(dirty&&(G-G0)%qsteps()===0)commit();stepAt(nextT,G-G0);hits.push({g:G-G0,t:nextT});G++;nextT+=stepDur()}}
+function start(){if(roomLive()){roomPlayToggle();return}startLocal(false)}
+function startLocal(room){if(playing)return;initAudio();ac.resume();ROOM.mode=!!room;ROOM.sched=0;LIVE=clone(S);dirty=false;rebase=false;G0=0;nextT=ac.currentTime+.06;G=0;hits=[];lastGroup.length=0;timer=setInterval(tick,40);playing=true;playB.textContent='Stop'}
+function stop(){if(ROOM.mode&&roomLive()){roomPlayToggle();return}stopLocal()}
+function stopLocal(){ROOM.mode=false;clearInterval(timer);playing=false;playB.textContent='Play';if(!rebase)S.rows.forEach((rw,r)=>rw.segs.forEach((g,i)=>{const o=LIVE.rows[r]&&LIVE.rows[r].segs[i];if(o&&!g._pt)g.pos=o.pos%g.notches;delete g._pt}));save();renderQueue()}
 function saveWav(){wavOut(recL,recR,ac.sampleRate);recL=[];recR=[]}
 function wavOut(recL,recR,sr){const n=recL.reduce((a,b)=>a+b.length,0);if(!n)return;const buf=new ArrayBuffer(44+n*4),v=new DataView(buf);let p=0;
  const ws=s=>{for(let i=0;i<s.length;i++)v.setUint8(p++,s.charCodeAt(i))},u32=x=>{v.setUint32(p,x,true);p+=4},u16=x=>{v.setUint16(p,x,true);p+=2};
@@ -648,7 +658,82 @@ SPN.addEventListener('change',e=>{const t=e.target,sp=S.spin;
 SPN.addEventListener('input',e=>{const t=e.target,sp=S.spin,v=parseInt(t.value);if(isNaN(v))return;
  if(t.id==='spev'&&v>=1&&v<=100)sp.every=v;else if(t.id==='sprep'&&v>=1&&v<=8)sp.reps=v;else if(t.id==='spvol'&&v>=0&&v<=150)sp.vol=v;save()});
 document.getElementById('addrow').onclick=()=>{if(S.rows.length<MAXROWS){rebase=true;S.rows.push(row({}));sel={r:S.rows.length-1,i:0};refreshAll()}};
+/* ---------- room sync on the stomp box server ---------- */
+const APP='dialbeat',SCHEMA=1;
+let SYNC_URL='wss://stompbox-lab-api-production.up.railway.app';try{const o=localStorage.getItem('dialqueueSync');if(o)SYNC_URL=o}catch(e){}
+function lclock(){return performance.timeOrigin?performance.timeOrigin+performance.now():Date.now()}
+const CLK={offset:0,best:Infinity,left:0,timer:null,rep:null};
+function snow(){return lclock()+CLK.offset}
+const barMs=t=>240000/t;
+function pendingAt(s){return s.epoch+(s.pending.atBar-s.barOffset)*barMs(s.tempo)}
+function barTime(s,b){if(s.pending&&b>=s.pending.atBar)return pendingAt(s)+(b-s.pending.atBar)*barMs(s.pending.tempo);return s.epoch+(b-s.barOffset)*barMs(s.tempo)}
+function barAt(s,t){if(s.pending){const at=pendingAt(s);if(t>=at)return s.pending.atBar+Math.floor((t-at)/barMs(s.pending.tempo))}return s.barOffset+Math.floor((t-s.epoch)/barMs(s.tempo))}
+const partOf=(s,b)=>s.pending&&b>=s.pending.atBar?s.pending:s;
+const toAudio=t=>ac.currentTime+(t-snow())/1000;
+const cleanRoom=r=>String(r||'').trim().toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,24);
+const ROOM={ws:null,status:'off',retry:0,timer:null,seq:0,phones:0,players:0,reason:'',roster:[],code:'',T:null,want:false};
+try{ROOM.code=cleanRoom(localStorage.getItem('dialqueueRoom')||'')}catch(e){}
+ROOM.device=(()=>{let d=null;try{d=localStorage.getItem('dialqueueDevice')}catch(e){}if(!d){d=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2)+String(Date.now())).replace(/[^a-z0-9-]/gi,'').toLowerCase();try{localStorage.setItem('dialqueueDevice',d)}catch(e){}}return d})();
+ROOM.short=ROOM.device.slice(0,8);
+const roomLive=()=>ROOM.status==='live';
+const inRoom=()=>roomLive()&&ROOM.T&&ROOM.T.playing;
+function roomTempo(){const T=ROOM.T;return partOf(T,barAt(T,snow())).tempo}
+function env(type,extra){return Object.assign({type,app:APP,schema:SCHEMA,room:ROOM.code,device:ROOM.device,seq:++ROOM.seq,ts:Date.now()},extra)}
+function sendMsg(type,extra){const ws=ROOM.ws;if(ws&&ws.readyState===1){ws.send(JSON.stringify(env(type,extra)));return true}return false}
+function setRoomStatus(s){ROOM.status=s;renderRoom()}
+function clockBurst(n){clearTimeout(CLK.timer);CLK.left=n;CLK.best=Infinity;const step=()=>{if(CLK.left<=0)return;CLK.left--;sendMsg('ping',{t0:lclock()});CLK.timer=setTimeout(step,150)};step()}
+function clockPong(m){const t3=lclock(),trip=t3-m.t0;if(!(trip>=0)||typeof m.t1!=='number')return;if(trip<CLK.best){CLK.best=trip;CLK.offset=m.t1+trip/2-t3}}
+function roomConnect(){
+ clearTimeout(ROOM.timer);if(ROOM.ws){const o=ROOM.ws;ROOM.ws=null;o.close()}
+ if(!ROOM.code){setRoomStatus('off');return}
+ setRoomStatus('connecting');
+ let ws;try{ws=new WebSocket(SYNC_URL+'?app='+APP+'&room='+encodeURIComponent(ROOM.code)+'&device='+encodeURIComponent(ROOM.device))}catch(e){setRoomStatus('reconnecting');return}
+ ROOM.ws=ws;
+ ws.onopen=()=>{if(ROOM.ws!==ws)return;ROOM.retry=0;ROOM.reason='';setRoomStatus('live');sendMsg('hello',{});clockBurst(8);clearInterval(CLK.rep);CLK.rep=setInterval(()=>clockBurst(4),30000)};
+ ws.onmessage=e=>{if(ROOM.ws===ws)roomReceive(e.data)};
+ ws.onerror=()=>ws.close();
+ ws.onclose=ev=>{if(ROOM.ws!==ws)return;ROOM.ws=null;clearInterval(CLK.rep);if(ev&&ev.reason)ROOM.reason=ev.reason;if(playing&&ROOM.mode)stopLocal();setRoomStatus('reconnecting');ROOM.timer=setTimeout(roomConnect,Math.min(15000,500*Math.pow(2,ROOM.retry++)))};
+}
+function roomLeave(){const wasRoom=playing&&ROOM.mode;ROOM.code='';try{localStorage.setItem('dialqueueRoom','')}catch(e){}clearTimeout(ROOM.timer);clearInterval(CLK.rep);if(ROOM.ws){const o=ROOM.ws;ROOM.ws=null;o.close()}ROOM.roster=[];ROOM.T=null;CLK.offset=0;ROOM.want=false;if(wasRoom)stopLocal();setRoomStatus('off')}
+function roomReceive(text){
+ let m;try{m=JSON.parse(text)}catch(e){return}if(!m)return;
+ if(m.type==='roster'){ROOM.roster=m.phones||[];ROOM.phones=ROOM.roster.length;renderRoom();return}
+ if(m.app!==APP)return;
+ if(m.type==='pong'){clockPong(m);return}
+ if(m.type==='loop'&&m.state){
+  ROOM.T=Object.assign({},m.state);ROOM.players=m.players|0;ROOM.sched=0;
+  const t=ROOM.T.pending?ROOM.T.pending.tempo:ROOM.T.tempo;if(t){S.bpm=t;if(LIVE!==S)LIVE.bpm=t;bpmI.value=t}
+  if(!ROOM.T.playing&&!ROOM.T.idle)ROOM.want=false;
+  if(ROOM.T.playing&&!playing&&ac)startLocal(true);
+  else if(!ROOM.T.playing&&playing&&ROOM.mode)stopLocal();
+  renderRoom();return}
+ if(m.type==='auth'){if(!m.ok){ROOM.reason=m.reason||'sign in';renderRoom()}return}
+}
+setInterval(()=>{if(roomLive()&&ROOM.want)sendMsg('beat',{})},10000);
+function roomPlayToggle(){
+ initAudio();ac.resume();
+ if(playing){ROOM.want=false;sendMsg('transport',{action:'stop'});return}
+ ROOM.want=true;sendMsg('transport',{action:'start'});sendMsg('beat',{});
+ if(ROOM.T&&ROOM.T.playing)startLocal(true);
+}
+function sendTempo(v){if(roomLive())sendMsg('transport',{action:'tempo',tempo:Math.max(50,Math.min(200,Math.round(v)))})}
+function renderRoom(){
+ const p=document.getElementById('rmpill');if(p){p.textContent=ROOM.status==='off'?'':ROOM.status==='live'?'room '+ROOM.code:ROOM.status;p.style.display=ROOM.status==='off'?'none':''}
+ const i=document.getElementById('rminfo');if(!i)return;
+ let info;
+ if(ROOM.status==='off')info='Playing solo on this phone\'s own clock.';
+ else if(ROOM.status==='live'){const T=ROOM.T;info=(ROOM.phones||1)+' in the room, '+ROOM.players+' playing. Loop '+(T&&T.playing?'running at '+Math.round(roomTempo())+' BPM':'stopped')+'.'}
+ else info=ROOM.reason?'Server said: '+ROOM.reason:'Trying to reach the room server.';
+ i.textContent=info;
+ const l=document.getElementById('rmlist');if(l)l.innerHTML=roomLive()?ROOM.roster.map(ph=>`<div class="saved"><span>${String(ph.app).replace(/</g,'')} ${ph.seat+1}${ph.id===ROOM.short?' (this phone)':''}</span><span style="flex:none;color:${ph.playing?'var(--accd)':'var(--mute)'}">${ph.playing?'playing':'idle'}</span></div>`).join(''):'';
+ const c=document.getElementById('rmcode');if(c&&document.activeElement!==c)c.value=ROOM.code;
+}
+
 playB.onclick=()=>playing?stop():start();
+document.getElementById('rmjoin').onclick=()=>{initAudio();ac.resume();const r=cleanRoom(document.getElementById('rmcode').value);if(!r){document.getElementById('rminfo').textContent='Type a room code first.';return}ROOM.code=r;try{localStorage.setItem('dialqueueRoom',r)}catch(e){}if(playing)stopLocal();ROOM.T=null;roomConnect()};
+document.getElementById('rmleave').onclick=roomLeave;
+setInterval(renderRoom,2000);
+if(ROOM.code)roomConnect();
 recB.onclick=()=>{initAudio();ac.resume();if(!recording){recL=[];recR=[];recSrc.connect(recNode);recNode.connect(recZ);recording=true;recStart=Date.now();recB.classList.add('rec');if(!playing)start()}else{recording=false;try{recSrc.disconnect(recNode);recNode.disconnect()}catch(e){}recB.classList.remove('rec');recB.textContent='Rec';saveWav()}};
 const bnB=document.getElementById('bounce');
 bnB.onclick=async()=>{if(bnB.disabled)return;initAudio();if(playing)stop();const secs=+document.getElementById('blen').value,keep=JSON.stringify(S),live={ac,master,conv};bnB.disabled=true;bnB.textContent='Rendering...';
@@ -663,9 +748,10 @@ const PGROUP={'Peak kitchen':['Fridge light','Peak kitchen simmer','Peak kitchen
 Object.keys(PRESETS).forEach(k=>{if(!Object.values(PGROUP).some(a=>a.includes(k)))PGROUP.Textures.push(k)});
 preI.innerHTML='<option value="">Custom</option>'+Object.entries(PGROUP).map(([g,a])=>`<optgroup label="${g}">${a.map(k=>`<option value="${k}">${k}</option>`).join('')}</optgroup>`).join('');
 preI.value=S.preset||'';
-preI.onchange=()=>{if(!preI.value){preI.value=S.preset||'';return}S=PRESETS[preI.value]();bpmI.value=S.bpm;divI.value=S.div;sel={r:0,i:0};rebase=true;refreshAll()};
+preI.onchange=()=>{if(!preI.value){preI.value=S.preset||'';return}S=PRESETS[preI.value]();bpmI.value=S.bpm;divI.value=S.div;sel={r:0,i:0};rebase=true;refreshAll();sendTempo(S.bpm)};
 bpmI.value=S.bpm;divI.value=S.div;
 bpmI.oninput=()=>{const v=parseInt(bpmI.value);if(v>=40&&v<=300){S.bpm=v;save()}};
+bpmI.onchange=()=>{if(roomLive())sendTempo(+bpmI.value)};
 divI.onchange=()=>{S.div=+divI.value;rebase=true;save()};
 document.getElementById('rst').onclick=()=>{S.rows.forEach(rw=>rw.segs.forEach(s=>{s.pos=0;s._pt=1}));save()};
 document.getElementById('clr').onclick=()=>{rebase=true;S.rows=[row({})];S.preset='';preI.value='';sel={r:0,i:0};refreshAll()};
@@ -684,7 +770,7 @@ function frame(){let h=null,fr=0,now=0;
  if(recording)recB.textContent=`Stop rec ${Math.floor((Date.now()-recStart)/1000)}s`;
  requestAnimationFrame(frame)}
 const INFO={
-top:['Top controls',['Play starts and stops the pattern.','Rec records everything you hear. Tap it again to stop, and it saves a WAV file to your phone. It starts playback if nothing is playing.','Bounce builds the pattern offline, faster than it plays, and saves a WAV file of the length you pick. It never stutters, even on the heaviest patterns. The wheels go back to where they were afterward.','Launch sets when changes drop in while playing. Every change you make, from a new preset to one notch or one effect value, waits in a queue and lands together on the next step, beat, bar, 2 bars or 4 bars, so the groove never breaks. The orange note next to it shows when something is waiting. When stopped, changes apply right away.','BPM sets the tempo, from 40 to 300.','Step sets how long each block lasts: a quarter, eighth or sixteenth note.','Preset loads a ready-made pattern. The menu shows which one is loaded. Custom means you started from Clear.','The menu button holds Save, your saved presets, Reset wheels and Clear. Save keeps the whole beat on this phone under the name you type. Load drops it in on the next launch point. Reset wheels turns every wheel back to notch 1. Clear empties everything down to one blank row.']],
+top:['Top controls',['Play starts and stops the pattern.','Rec records everything you hear. Tap it again to stop, and it saves a WAV file to your phone. It starts playback if nothing is playing.','Bounce builds the pattern offline, faster than it plays, and saves a WAV file of the length you pick. It never stutters, even on the heaviest patterns. The wheels go back to where they were afterward.','Launch sets when changes drop in while playing. Every change you make, from a new preset to one notch or one effect value, waits in a queue and lands together on the next step, beat, bar, 2 bars or 4 bars, so the groove never breaks. The orange note next to it shows when something is waiting. When stopped, changes apply right away.','BPM sets the tempo, from 40 to 300.','Step sets how long each block lasts: a quarter, eighth or sixteenth note.','Preset loads a ready-made pattern. The menu shows which one is loaded. Custom means you started from Clear.','Room joins the stomp box room server shared by your other pedals. Type the same room code on every phone and tap Join. Everyone in the room plays on one shared clock: Play or Stop on any phone starts or stops the whole room on the next bar, and a BPM change from any phone lands on the next bar line everywhere. The room keeps playing while at least one phone is playing. Leave goes back to playing solo.','The menu button holds Save, your saved presets, Reset wheels and Clear. Save keeps the whole beat on this phone under the name you type. Load drops it in on the next launch point. Reset wheels turns every wheel back to notch 1. Clear empties everything down to one blank row.']],
 toys:['Toy box',['Tap the toy box to open it, then tap a toy to take it out. Only one toy is out at a time, and Put back returns it. A toy marked auto keeps firing on its schedule even while it sits in the box. Tap the box again to close it.','Each toy brings back the sound of a real kind of toy from its era. Tap the toy or Fire to set it off.','The rubber chicken squeezes air through the reed in its rubber body: a nasal scream that jumps up and sags back down.','Bike spokes is a playing card clipped to the fork. The wheel spins up and slows down, so the flaps speed up and then ease off.','The spark gun is the early 80s kind, where pulling the trigger spun a flint wheel against a ratchet inside a tin body, so you hear rapid clicks, crackling sparks and the tin ringing.','The groan tube is the sealed plastic tube with a reed and a sliding weight inside. Each time it fires, it tips 90 degrees, the weight slides down and pushes air past the reed, and the tube moans. Every other tip flips it back the other way, so the moan rises instead of falls.','The toy xylophone has painted metal bars, slightly out of tune like the real thing. Tap any bar to play it, or Fire for a quick run up the bars.','The toy piano has little hammers striking metal rods, so it rings like a bell with a wooden thump from the keys. Tap any key, black ones too, or Fire for a little arpeggio.','The megaphone is the late 90s toy cop kind, pushed through a tiny crunchy horn speaker. Tap Wail, Yelp, Horn or Hi lo to sound it and pick it, and Fire or Every plays the one you picked.','The laser gun is the mid 90s kind, with a chip and a tiny speaker playing a stored pew: a square wave diving in pitch with a fast warble, crunched down like a cheap speaker.','Every fires the toy on its own every so many bars while the beat plays. 0 turns that off.','Both sounds also live in the Toys family, so any block can use them with all the wheel assignments.']],
 spinner:['Spinner',['Pull the lever or tap Pull, and the arrow spins and lands on an animal. The narrator names it, then the animal answers.','While the pattern plays, the spinner fires on its own every so many bars. Set Every from 1 to 100.','Random picks any animal. In order goes around the wheel. Same animal always lands on the one you choose.','Repeats plays the answer 1 to 8 times in a row. Volume runs 0 to 150.','The animal sounds land in Rec and Bounce. The narrator voice comes from your phone and plays live only.']],
 rows:['Rows',['Each row is a line of blocks with its own red line. All rows play at the same time.','A row can be 1 to 16 blocks long. Rows of different lengths drift apart and line up again later, which keeps the pattern changing.','The wheel in each block shows its current notch out of its total. The color shows which sound is in the block.','Tap any block to edit it below. Add row adds up to 6 rows.','The colored bar on the left of each row shows its instrument family. Tap it to load a row preset: pick a family across the top, then a pattern. Only that row changes.']],

@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-22T18:02:08.673Z",
+  "builtAt": "2026-10-23T17:55:55.439Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -77,20 +77,6 @@
       ],
       "knownProblem": null,
       "snapshot": "snapshots/pajamastan-warrants.html"
-    },
-    {
-      "app": "field-twin-teal-gold",
-      "url": "https://field-twin-teal-gold.vercel.app",
-      "kind": "down",
-      "since": "2026-10-21",
-      "status": 404,
-      "failing": [],
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 ()"
-      ],
-      "features": [],
-      "knownProblem": null,
-      "snapshot": "snapshots/field-twin-teal-gold.html"
     },
     {
       "app": "termbeat",
