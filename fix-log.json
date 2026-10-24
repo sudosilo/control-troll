@@ -135,6 +135,30 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "Repo sudosilo/tower-builder is unchanged since 2026-10-18 and holds only vercel.json, README and CHANGELOG, so the game exists only in the saved snapshot and the developer must redeploy it."
+    },
+    {
+      "date": "2026-10-24",
+      "app": "topo-wars-server",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": "https://github.com/sudosilo/topo-wars-server/pull/1",
+      "note": "Pull request 1 adding /api/health is still open and unmerged, so the root still returns 404 until the developer merges it."
+    },
+    {
+      "date": "2026-10-24",
+      "app": "pajamastan-warrants",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Still 404 and the repo code already serves / and /status, so the developer must redeploy the Docker backend or repoint the vercel.app name."
+    },
+    {
+      "date": "2026-10-24",
+      "app": "frontend-sudosilo2-1771s-projects",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "This is a protected Vercel team URL that shows a login page and no repo is named for it, so the developer should link the public production URL (possibly ebutuoy.vercel.app from ebutuoy-frontend) in the index and apps.json instead."
     }
   ]
 }
