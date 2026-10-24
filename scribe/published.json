@@ -120,7 +120,25 @@
   "sudosilo/birdix@v2026.05.10",
   "sudosilo/page-wide-pof@v2026.10.11",
   "sudosilo/pixelcoop-farm@v2026.10.11",
-  "sudosilo/aliens-win@v2026.10.11"
+  "sudosilo/aliens-win@v2026.10.11",
+  "sudosilo/synth@v2026.10.11",
+  "sudosilo/ether-wand@v2026.10.11",
+  "sudosilo/ether-wand@v2026.10.10",
+  "sudosilo/pajamastan-invoices@v2026.10.12",
+  "sudosilo/torque-converter@v2026.10.12",
+  "sudosilo/irrigation-demo@v2026.10.12",
+  "sudosilo/parkingten@v2026.10.12",
+  "sudosilo/parkingten@v2026.09.05",
+  "sudosilo/parkingten@v2026.04.20",
+  "sudosilo/pajamastan@v2026.10.12",
+  "sudosilo/pajamastan@v2026.10.08",
+  "sudosilo/tractor-tool@v2026.10.12",
+  "sudosilo/anthropic-percentage-pop-up-game@v2026.10.13",
+  "sudosilo/parcelsun-kq@v2026.10.13",
+  "sudosilo/gladhand-dockyard@v2026.10.13",
+  "sudosilo/gladhand-dockyard@v2026.10.12",
+  "sudosilo/scope-listener@v2026.10.14",
+  "sudosilo/scope-listener@v2026.09.22"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -959,6 +977,128 @@
     "arcade",
     "game",
     "shooter",
+    "vercel"
+   ]
+  },
+  "sudosilo/synth": {
+   "d": "A browser synthesizer with several color themes for playing sounds.",
+   "h": "",
+   "t": [
+    "music",
+    "synthesizer",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/ether-wand": {
+   "d": "A phone instrument where tilting and shaking the phone plays a tone.",
+   "h": "https://ether-wand.vercel.app",
+   "t": [
+    "instrument",
+    "music",
+    "phone",
+    "vercel"
+   ]
+  },
+  "sudosilo/pajamastan-invoices": {
+   "d": "Seller and buyer invoices with a Pajamastan letterhead tab.",
+   "h": "",
+   "t": [
+    "invoices",
+    "pajamastan",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/torque-converter": {
+   "d": "Converts torque between newton meters, foot pounds, and inch pounds.",
+   "h": "https://torque-converter.vercel.app",
+   "t": [
+    "converter",
+    "mechanics",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/irrigation-demo": {
+   "d": "A demo of a tank, pump, and drip irrigation cycle.",
+   "h": "",
+   "t": [
+    "demo",
+    "education",
+    "irrigation",
+    "simulator"
+   ]
+  },
+  "sudosilo/parkingten": {
+   "d": "A parking management app with spot, check in, and operator pages.",
+   "h": "https://parkingten.vercel.app",
+   "t": [
+    "api",
+    "backend",
+    "parking",
+    "redis",
+    "vercel"
+   ]
+  },
+  "sudosilo/pajamastan": {
+   "d": "The official site of the micronation of Pajamastan.",
+   "h": "https://pajamastan.vercel.app",
+   "t": [
+    "atlas",
+    "micronation",
+    "pajamastan",
+    "vercel"
+   ]
+  },
+  "sudosilo/tractor-tool": {
+   "d": "A toolkit for tractor work with a blueprint, hourly rate, quote, and game.",
+   "h": "https://tractor-tool.vercel.app",
+   "t": [
+    "game",
+    "quotes",
+    "tool",
+    "tractor",
+    "vercel"
+   ]
+  },
+  "sudosilo/anthropic-percentage-pop-up-game": {
+   "d": "A typing game where pop-ups keep covering the screen.",
+   "h": "",
+   "t": [
+    "game",
+    "typing",
+    "vercel"
+   ]
+  },
+  "sudosilo/parcelsun-kq": {
+   "d": "A solar heat model for a parcel locker with a four module default.",
+   "h": "",
+   "t": [
+    "heat",
+    "simulator",
+    "solar",
+    "threejs"
+   ]
+  },
+  "sudosilo/gladhand-dockyard": {
+   "d": "A truck and trailer backing sim set in a busy dock yard and city.",
+   "h": "",
+   "t": [
+    "game",
+    "physics",
+    "simulator",
+    "trucks"
+   ]
+  },
+  "sudosilo/scope-listener": {
+   "d": "An oscilloscope that compares a song to the phone mic and shows the offset.",
+   "h": "https://scope-listener.vercel.app",
+   "t": [
+    "audio",
+    "music",
+    "oscilloscope",
+    "tool",
     "vercel"
    ]
   }
