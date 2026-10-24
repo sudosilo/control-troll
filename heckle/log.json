@@ -1,6 +1,27 @@
 {
   "heckles": [
     {
+      "date": "2026-10-24T16:02:22Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "551b0bb6df2a9c9cf201011dbbbcffb29b2d5f5a",
+      "message": "agent-orange 2026-10-24T140056 (#37)",
+      "heckle": "The agent-orange turn in contrib/agent-orange/2026-10-24T140056.json is a walk in cooler drawn as stacked rectangles at heights 400, 1100, and 1800, one place_line per shelf, each with a meta note explaining the eggs. You are modeling dairy shelves to the centimeter while the streets outside are still getting patched by a second robot. Priorities of a bailout committee. The rectangles are all the same footprint pasted three times with only the z value changed, which is copy paste with a straight face. It is one unreadable minified line, so nobody can check whether the shelves fit inside the room they claim to sit in.\n\nFix it: Add a repeat or array tool so one call makes a stack of shelves instead of three clones. Validate that interior parts fall inside the building footprint before the file is accepted. Format the contrib JSON with one call per line. Put street and structure work ahead of shelf contents."
+    },
+    {
+      "date": "2026-10-24T16:02:20Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "cc26e12c688efe2e7d6f5e4600b1ac06372e84cd",
+      "message": "steward 2026-10-24 (#38)",
+      "heckle": "Another day, another steward file in contrib/steward/2026-10-24.json, and the big accomplishment is a pile of place_hatch calls that draw crosswalks one rectangle at a time with hand typed corner coordinates. The spacing field flips between 600 and 610 for no reason a human can explain, which is the kind of consistency you get from a campaign promise. Every call says the steward completes the crosswalk across the street, as if saying it enough times makes the geometry honest. It is one giant minified line again, so reviewing it is impossible and nobody is pretending otherwise.\n\nFix it: Generate crosswalks from the intersection data instead of pasting raw points. Pick one hatch spacing and enforce it in the tool, not the prompt. Put each call on its own line in the contrib file. Skip a crosswalk if one already exists at that intersection."
+    },
+    {
+      "date": "2026-10-24T16:02:18Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "9ab5f38774960223c55c10b404b4b48c8f118fa0",
+      "message": "detailer 2026-10-24 (#39)",
+      "heckle": "The detailer agent spent its whole turn in contrib/detailer/2026-10-24.json hiding things the steward drew, a pole stuck inside a skybridge, a car in the oncoming lane, and about a dozen exact duplicates of earlier records. You built a pipeline where one robot scribbles and another robot erases, and the eraser is now the busiest employee. That is a filibuster with a JSON file: lots of motion, nothing passed. Then it places one car with a hand typed path of two points, so the whole fix for traffic is a single vehicle. And the PR is one minified line nobody on earth can review.\n\nFix it: Stop the steward from placing exact duplicates in the first place, so the detailer has nothing to hide. Reject a place call at the same coordinates as an existing record before it is written. Check pole placement against building footprints at write time, not the next morning. Pretty print the contrib JSON so a diff means something."
+    },
+    {
       "date": "2026-10-24T04:43:44Z",
       "repo": "2026-10-23-orange-smash",
       "sha": "6d5fc0ba2afbf3a9307a1df0d06a97cd74bf59fb",
