@@ -1,271 +1,268 @@
 {
  "jobs": [
   {
-   "repo": "ghost-kitchen-builder",
-   "releases": [
-    {
-     "tag": "v2026.10.10",
-     "target": "b27e7a05742ad08873b1775a6e899a7d3364c76a",
-     "name": "Restaurant Design and Setup Survey 2026-10-10",
-     "body": "Replaced the broken cloud connection with a simpler built in sync. The concept name, website, phone, address, point of sale, and ordering fields now link to the shared site profile."
-    },
-    {
-     "tag": "v2026.04.09",
-     "target": "f7f1f9ad84326b676ec1cfdbb8753c47f0bc6433",
-     "name": "Restaurant Design and Setup Survey 2026-04-09",
-     "body": "Connected the app to the shared restaurant data service. Added a new color palette."
-    },
-    {
-     "tag": "v2026.04.06",
-     "target": "bba9dc66c84f0ac82fa2bbc49163b92acbf9acf6",
-     "name": "Restaurant Design and Setup Survey 2026-04-06",
-     "body": "Created the app as version 1.0. It starts as a survey for designing a restaurant concept."
-    }
-   ],
-   "description": "Survey tool for designing and scoring a restaurant concept, with sample concepts and a summary export.",
-   "homepage": "https://ghost-kitchen-builder.vercel.app",
-   "topics": [
-    "restaurant-tech",
-    "tool",
-    "survey",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "restack",
-   "releases": [
-    {
-     "tag": "v2026.10.10",
-     "target": "fdbe892357c9e144e7835bbe1bb1f570668f2a45",
-     "name": "RESTACK 2026-10-10",
-     "body": "Fixed editing of custom items, import, and reset. Sites can now be renamed and deleted, and no default site is created automatically. Added a site profile window for the shared fields."
-    },
-    {
-     "tag": "v2026.04.09",
-     "target": "3d12a004e71db76d995fe56b87677aac49b35670",
-     "name": "RESTACK 2026-04-09",
-     "body": "Created the app and moved it to version 3, connected to the shared restaurant data service. Fixed the output folder so the site deploys correctly."
-    }
-   ],
-   "description": "Technology stack explorer for restaurant sites that tracks what is known, partial, or missing.",
-   "homepage": "https://restack-wheat.vercel.app",
-   "topics": [
-    "restaurant-tech",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "tinewood-keys",
+   "repo": "synth",
    "releases": [
     {
      "tag": "v2026.10.11",
-     "target": "fb0bff641fb781320eb4ba5588a04d6220ea2da1",
-     "name": "Tinewood Keys 2026-10-11",
-     "body": "Created the app. Version 1 is an electric piano with a light theme, octave buttons, sustain, and draggable knobs."
+     "target": "56a56f03b94789cad1c7a7d7434a155bd1cb7a4e",
+     "name": "Axiom Synth 2026-10-11",
+     "body": "Released version two of the synth with new themes and a pass of bug fixes."
     }
    ],
-   "description": "Browser electric piano with a light theme, octave shifts, sustain, and draggable knobs.",
-   "homepage": "https://tinewood-keys.vercel.app",
+   "description": "A browser synthesizer with several color themes for playing sounds.",
+   "homepage": "",
    "topics": [
     "music",
-    "synth",
+    "synthesizer",
     "tool",
     "vercel"
    ]
   },
   {
-   "repo": "ebutuoy-frontend",
+   "repo": "ether-wand",
    "releases": [
     {
      "tag": "v2026.10.11",
-     "target": "c376261a159d824dbb687311b292dfeb57cbd4ba",
-     "name": "ebutuoy 2026-10-11",
-     "body": "Moved the app to GitHub after a bug hunt pass. Triggered a production build."
+     "target": "d546fab627d2346a0ad4a9b0ee1439cfc8e9f434",
+     "name": "Ether Wand 2026-10-11",
+     "body": "Added room codes so players can join a shared room. Added a choice of sound voices."
+    },
+    {
+     "tag": "v2026.10.10",
+     "target": "270e98683f77f44bc0d9b3dfb03ef7a75ad8024c",
+     "name": "Ether Wand 2026-10-10",
+     "body": "Added a light theme and triggered a fresh deploy."
     }
    ],
-   "description": "Discovery app that plays short samples of rarely seen videos from small channels.",
-   "homepage": "https://ebutuoy.vercel.app",
+   "description": "A phone instrument where tilting and shaking the phone plays a tone.",
+   "homepage": "https://ether-wand.vercel.app",
    "topics": [
-    "video",
-    "discovery",
-    "frontend",
+    "music",
+    "instrument",
+    "phone",
     "vercel"
    ]
   },
   {
-   "repo": "ebutuoy-backend",
+   "repo": "pajamastan-invoices",
    "releases": [
     {
-     "tag": "v2026.10.11",
-     "target": "2b03cfb21c29c5a8e2fdf9565cf367bb3eebfffd",
-     "name": "ebutuoy backend 2026-10-11",
-     "body": "Ran a bug hunt. Search now returns only videos that can play in the embed, and subscriber checks fail closed. Added paging and quota tracking. Data now lives on the volume when one exists, and the service exits cleanly and logs fatal errors."
-    },
-    {
-     "tag": "v2026.05.27",
-     "target": "b0439f438f14a625ecceb4ff9387da10ff2f0937",
-     "name": "ebutuoy backend 2026-05-27",
-     "body": "Added a clips table and clip endpoints."
-    },
-    {
-     "tag": "v2026.05.19",
-     "target": "a7d920344e52b04c553d909a1a73d0da804343bd",
-     "name": "ebutuoy backend 2026-05-19",
-     "body": "Added a tag system and a replay queue for videos that become eligible after a day. Added a language filter and a playlist endpoint."
-    },
-    {
-     "tag": "v2026.05.18",
-     "target": "b2813d36d767cdc3ae9f680c6be608eccb16f059",
-     "name": "ebutuoy backend 2026-05-18",
-     "body": "Created the backend with a seen videos record and a search that favors less popular videos. Added a roulette mode that picks places weighted by population."
+     "tag": "v2026.10.12",
+     "target": "9f906302ea292c8b2a8ecfada3cb3ba5c9ddadfe",
+     "name": "Pajamastan Invoices 2026-10-12",
+     "body": "First release. Seller and buyer invoices with a Pajamastan letterhead tab."
     }
    ],
-   "description": "Backend service for ebutuoy that finds little seen videos and remembers what was served.",
+   "description": "Seller and buyer invoices with a Pajamastan letterhead tab.",
    "homepage": "",
    "topics": [
+    "pajamastan",
+    "invoices",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "torque-converter",
+   "releases": [
+    {
+     "tag": "v2026.10.12",
+     "target": "d7fa7ce16842939e419562ceb405a3e23c9a50cb",
+     "name": "Torque Converter 2026-10-12",
+     "body": "First release. A torque converter with a bolt spec lookup. Added a creator seal and triggered a production build."
+    }
+   ],
+   "description": "Converts torque between newton meters, foot pounds, and inch pounds.",
+   "homepage": "https://torque-converter.vercel.app",
+   "topics": [
+    "tool",
+    "mechanics",
+    "converter",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "irrigation-demo",
+   "releases": [
+    {
+     "tag": "v2026.10.12",
+     "target": "05749ee9c4c41885f0fff0b3d0cbd48577983b61",
+     "name": "Tank Pump Drip Demo 2026-10-12",
+     "body": "First release. Archived the irrigation demo page that shows the tank, pump, and drip cycle."
+    }
+   ],
+   "description": "A demo of a tank, pump, and drip irrigation cycle.",
+   "homepage": "",
+   "topics": [
+    "irrigation",
+    "demo",
+    "simulator",
+    "education"
+   ]
+  },
+  {
+   "repo": "parkingten",
+   "releases": [
+    {
+     "tag": "v2026.10.12",
+     "target": "649ab01d288ac0e041bee61d28877656aa7141b0",
+     "name": "Parkingten 2026-10-12",
+     "body": "Fixed the sessions API, added an operator key, switched to a light theme, and resized plate photos before upload. Cleaned up pasted settings and removed a temporary trace."
+    },
+    {
+     "tag": "v2026.09.05",
+     "target": "c2225a2401fff92c965d9d1717e729ee8f91d5f2",
+     "name": "Parkingten 2026-09-05",
+     "body": "Added parking spot contract files and switched the API to a simpler network module."
+    },
+    {
+     "tag": "v2026.04.20",
+     "target": "b11cd8975f8e94bf2e6587900169b4b5700762d6",
+     "name": "Parkingten 2026-04-20",
+     "body": "First release. Set up the parking API and the check in and operator pages, and spent the day fixing routes and data store connection problems."
+    }
+   ],
+   "description": "A parking management app with spot, check in, and operator pages.",
+   "homepage": "https://parkingten.vercel.app",
+   "topics": [
+    "parking",
     "backend",
-    "railway",
     "api",
-    "video"
+    "vercel",
+    "redis"
    ]
   },
   {
-   "repo": "cockpit-racer",
+   "repo": "pajamastan",
    "releases": [
     {
-     "tag": "v2026.10.11",
-     "target": "22b3e82bafac917bba042e24e00b3083211cf4b3",
-     "name": "Cockpit Racer 2026-10-11",
-     "body": "Created the app as version 2. It is a low poly desert driving game with a wheel, gas, brake, traffic, and police."
-    }
-   ],
-   "description": "Low poly 3D desert driving game from the cockpit, with traffic, deer, and a police cruiser.",
-   "homepage": "https://cockpit-racer.vercel.app",
-   "topics": [
-    "game",
-    "racing",
-    "3d",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "pixelmill",
-   "releases": [
-    {
-     "tag": "v2026.10.11",
-     "target": "ba4dd7e000547c34e96d20d7c3aec6edfd92bbdb",
-     "name": "PIXELMILL 2026-10-11",
-     "body": "Created the app as version 1.0. It simulates a mill cutting pixel programs."
-    }
-   ],
-   "description": "Toolpath simulator that cuts endless pixel programs like spiral, hatch, pocket, and cityscape.",
-   "homepage": "https://pixelmill.vercel.app",
-   "topics": [
-    "simulator",
-    "visualizer",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "coffee-autosim",
-   "releases": [
-    {
-     "tag": "v2026.10.11",
-     "target": "d99e2d3150fec9abd933eb49363b1bf5e2f0a4fb",
-     "name": "Coffee Autosim 2026-10-11",
-     "body": "Created the app as version 3, a live blueprint sim of a coffee shop floor."
-    }
-   ],
-   "description": "Live blueprint simulator of a coffee shop floor where baristas fill tickets on their own.",
-   "homepage": "https://coffee-autosim.vercel.app",
-   "topics": [
-    "restaurant-tech",
-    "simulator",
-    "coffee",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "birdix",
-   "releases": [
-    {
-     "tag": "v2026.10.11",
-     "target": "e322bea6e3f6a27b537824b471688158a0da2526",
-     "name": "BIRDIXEL 2026-10-11",
-     "body": "Added stained glass mode, automatic birds, and photo glass."
+     "tag": "v2026.10.12",
+     "target": "d3dafc5137504d612ac807c79cbc83efbeb3c361",
+     "name": "Pajamastan 2026-10-12",
+     "body": "Released version three. Added an atlas, inventory tabs, a grouped hamburger menu, and a creator seal."
     },
     {
-     "tag": "v2026.05.10",
-     "target": "613af3d6c1f41e4de2790fffbdd9fb0452b6e3e6",
-     "name": "BIRDIXEL 2026-05-10",
-     "body": "Created the app."
+     "tag": "v2026.10.08",
+     "target": "c469819f68cd1ccf3c342af10c4c475268825e96",
+     "name": "Pajamastan 2026-10-08",
+     "body": "Released version two of the Pajamastan site."
     }
    ],
-   "description": "Bird territory game with free paint, stained glass, and photo glass art modes.",
-   "homepage": "https://birdix.vercel.app",
+   "description": "The official site of the micronation of Pajamastan.",
+   "homepage": "https://pajamastan.vercel.app",
    "topics": [
-    "game",
-    "art",
-    "canvas",
+    "pajamastan",
+    "atlas",
+    "micronation",
     "vercel"
    ]
   },
   {
-   "repo": "page-wide-pof",
+   "repo": "tractor-tool",
    "releases": [
     {
-     "tag": "v2026.10.11",
-     "target": "dfc8c3dbffa6934c1377fd23bd63210ec83844c3",
-     "name": "Fold pattern generator 2026-10-11",
-     "body": "Created the app as the Page Wide origami print app. It makes fold patterns on squares you can print."
+     "tag": "v2026.10.12",
+     "target": "6651f54d74eec692e2ef0e401c2f11f3ead90456",
+     "name": "Tractor Toolkit 2026-10-12",
+     "body": "First release. Tractor toolkit revision B with a footer, a creator seal, and generic app content. Triggered a production build."
     }
    ],
-   "description": "Origami fold pattern generator that makes printable designs with endless variation.",
-   "homepage": "",
+   "description": "A toolkit for tractor work with a blueprint, hourly rate, quote, and game.",
+   "homepage": "https://tractor-tool.vercel.app",
    "topics": [
     "tool",
-    "origami",
-    "print",
+    "tractor",
+    "quotes",
+    "game",
     "vercel"
    ]
   },
   {
-   "repo": "pixelcoop-farm",
+   "repo": "anthropic-percentage-pop-up-game",
    "releases": [
     {
-     "tag": "v2026.10.11",
-     "target": "f933ebf3e7d76ce0c7b7848bacca31274cf891e0",
-     "name": "Chicken Farm 2026-10-11",
-     "body": "Created the app as version 3 of the chicken farm simulator."
+     "tag": "v2026.10.13",
+     "target": "c8121df8c5fb6478ee213766131dc6d7387147df",
+     "name": "Percentage Pop-up Typing Game 2026-10-13",
+     "body": "First release. A pop-up typing game with a dark theme and a live usage meter. Pop-ups start on page open and keep coming over the results screen. Added 222 percentage facts, live weather, and moon phase pop-ups."
     }
    ],
-   "description": "Pixel art chicken farm simulator with pipes, coops, and egg or meat farming.",
-   "homepage": "https://pixelcoop-farm.vercel.app",
+   "description": "A typing game where pop-ups keep covering the screen.",
+   "homepage": "",
+   "topics": [
+    "game",
+    "typing",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "parcelsun-kq",
+   "releases": [
+    {
+     "tag": "v2026.10.13",
+     "target": "95796d6c71cbbb415966928201c21cdd607875c0",
+     "name": "Parcelsun 2026-10-13",
+     "body": "First release, built over four versions in one day. A parcel locker solar heat model, then a board strip, hat shadow, console gear heat, and back view. Then a field style locker look with a four module default, and finally even service seams, cabinet louvers, and console panel detail."
+    }
+   ],
+   "description": "A solar heat model for a parcel locker with a four module default.",
+   "homepage": "",
+   "topics": [
+    "simulator",
+    "solar",
+    "heat",
+    "threejs"
+   ]
+  },
+  {
+   "repo": "gladhand-dockyard",
+   "releases": [
+    {
+     "tag": "v2026.10.13",
+     "target": "5ca1fac64cb5b7f45b5b1f84730d05d60f1818ac",
+     "name": "Gladhand Dockyard 2026-10-13",
+     "body": "Added an open city map with signals, telephone poles with wires that come down, outages, and traffic. Added breachable buildings, big structures, berm dents, and a breakable block wall ring."
+    },
+    {
+     "tag": "v2026.10.12",
+     "target": "ecefd9bd5f59b1b595541d7ac2dd1326da12d8da",
+     "name": "Gladhand Dockyard 2026-10-12",
+     "body": "First release as a trailer backing sim. Added speed scaled crash damage, totaled cabs, breakable structures, and saved yard damage. Added yard and road traffic, forklifts, a yard truck, pedestrians, camera modes with pan and pinch zoom, a first person driver view with mirrors, a doubled yard, a container terminal, and rail."
+    }
+   ],
+   "description": "A truck and trailer backing sim set in a busy dock yard and city.",
+   "homepage": "",
    "topics": [
     "game",
     "simulator",
-    "pixel",
-    "vercel"
+    "trucks",
+    "physics"
    ]
   },
   {
-   "repo": "aliens-win",
+   "repo": "scope-listener",
    "releases": [
     {
-     "tag": "v2026.10.11",
-     "target": "57bdd94f4905575f3bfc1904b1a5e94af7251b82",
-     "name": "The Aliens Win 2026-10-11",
-     "body": "Created the app as the first version of the game. A second push triggered a production build."
+     "tag": "v2026.10.14",
+     "target": "ff52bbcda6cb9b4679cbbf3d8adcbe2b145b0e03",
+     "name": "Scope Listener 2026-10-14",
+     "body": "Added autopilot, which identifies the song, loads the reference, locates the spot, and tracks and logs the sample level hands free."
+    },
+    {
+     "tag": "v2026.09.22",
+     "target": "6035995fd5e3d4b1c7375e62262f35fdc0e39a83",
+     "name": "Scope Listener 2026-09-22",
+     "body": "First release. Combined an oscilloscope with a live offset listener that syncs automatically. Moved the auto sync button to the top of the page. Fixed the about panel taking the first tap on every button."
     }
    ],
-   "description": "Arcade shooter where you fly a UFO and fire lasers through waves of targets.",
-   "homepage": "https://aliens-win.vercel.app",
+   "description": "An oscilloscope that compares a song to the phone mic and shows the offset.",
+   "homepage": "https://scope-listener.vercel.app",
    "topics": [
-    "game",
-    "arcade",
-    "shooter",
+    "music",
+    "oscilloscope",
+    "audio",
+    "tool",
     "vercel"
    ]
   }

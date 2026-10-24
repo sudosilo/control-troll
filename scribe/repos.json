@@ -1,1719 +1,1786 @@
 {
-  "note": "Repo map for the scribe. apps are Control Troll app names, which are Vercel subdomains. category and summary are filled in by the scribe the first time it documents a repo. Repos with no apps are backends, archives, or tools with no live page.",
-  "repos": {
-    "control-troll": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "gladhand-dockyard": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "parcelsun-kq": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "chassisquiver": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "anthropic-percentage-pop-up-game": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "tractor-tool": {
-      "apps": [
-        "tractor-tool"
-      ],
-      "urls": [
-        "https://tractor-tool.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "pajamastan": {
-      "apps": [
-        "pajamastan"
-      ],
-      "urls": [
-        "https://pajamastan.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "parkingten": {
-      "apps": [
-        "parkingten"
-      ],
-      "urls": [
-        "https://parkingten.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "irrigation-demo": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "torque-converter": {
-      "apps": [
-        "torque-converter"
-      ],
-      "urls": [
-        "https://torque-converter.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "pajamastan-invoices": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "field-twin": {
-      "apps": [
-        "field-twin-teal"
-      ],
-      "urls": [
-        "https://field-twin-teal.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "mohavetech-website": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "ether-wand": {
-      "apps": [
-        "ether-wand"
-      ],
-      "urls": [
-        "https://ether-wand.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "stompbox-lab": {
-      "apps": [
-        "stompbox-lab"
-      ],
-      "urls": [
-        "https://stompbox-lab.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "spectral-engine": {
-      "apps": [
-        "spectral-engine"
-      ],
-      "urls": [
-        "https://spectral-engine.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "looper": {
-      "apps": [
-        "looper-sooty"
-      ],
-      "urls": [
-        "https://looper-sooty.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "axiom": {
-      "apps": [
-        "axiom-eight-xi"
-      ],
-      "urls": [
-        "https://axiom-eight-xi.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "synth": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "aliens-win": {
-      "apps": [
-        "aliens-win"
-      ],
-      "urls": [
-        "https://aliens-win.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Arcade shooter where you fly a UFO against waves",
-      "name": "The Aliens Win",
-      "latest": {
-        "date": "2026-10-11",
-        "text": "Created the app as the first version of the game. A second push triggered a production build."
-      }
-    },
-    "pixelcoop-farm": {
-      "apps": [
-        "pixelcoop-farm"
-      ],
-      "urls": [
-        "https://pixelcoop-farm.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Pixel art chicken farm builder and simulator",
-      "name": "Chicken Farm",
-      "latest": {
-        "date": "2026-10-11",
-        "text": "Created the app as version 3 of the chicken farm simulator."
-      }
-    },
-    "page-wide-pof": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Tools",
-      "summary": "Origami fold pattern generator for printing",
-      "name": "Fold pattern generator",
-      "latest": {
-        "date": "2026-10-11",
-        "text": "Created the app as the Page Wide origami print app. It makes fold patterns on squares you can print."
-      }
-    },
-    "birdix": {
-      "apps": [
-        "birdix"
-      ],
-      "urls": [
-        "https://birdix.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Bird territory game with free paint and stained glass modes",
-      "name": "BIRDIXEL",
-      "latest": {
-        "date": "2026-10-11",
-        "text": "Added stained glass mode, automatic birds, and photo glass."
-      }
-    },
-    "coffee-autosim": {
-      "apps": [
-        "coffee-autosim"
-      ],
-      "urls": [
-        "https://coffee-autosim.vercel.app"
-      ],
-      "private": false,
-      "category": "Restaurant Tech",
-      "summary": "Live blueprint simulator of a coffee shop floor with baristas",
-      "name": "Coffee Autosim",
-      "latest": {
-        "date": "2026-10-11",
-        "text": "Created the app as version 3, a live blueprint sim of a coffee shop floor."
-      }
-    },
-    "pixelmill": {
-      "apps": [
-        "pixelmill"
-      ],
-      "urls": [
-        "https://pixelmill.vercel.app"
-      ],
-      "private": false,
-      "category": "Music and Visualizers",
-      "summary": "Toolpath simulator that cuts endless pixel programs",
-      "name": "PIXELMILL",
-      "latest": {
-        "date": "2026-10-11",
-        "text": "Created the app as version 1.0. It simulates a mill cutting pixel programs."
-      }
-    },
-    "cockpit-racer": {
-      "apps": [
-        "cockpit-racer"
-      ],
-      "urls": [
-        "https://cockpit-racer.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Low poly 3D desert driving game from the cockpit",
-      "name": "Cockpit Racer",
-      "latest": {
-        "date": "2026-10-11",
-        "text": "Created the app as version 2. It is a low poly desert driving game with a wheel, gas, brake, traffic, and police."
-      }
-    },
-    "ebutuoy-backend": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Backends and Infrastructure",
-      "summary": "Backend service for the ebutuoy video discovery app",
-      "name": "ebutuoy backend",
-      "latest": {
-        "date": "2026-10-11",
-        "text": "Ran a bug hunt. Search now returns only videos that can play in the embed, and subscriber checks fail closed. Added paging and quota tracking. Data now lives on the volume when one exists, and the service exits cleanly and logs fatal errors."
-      }
-    },
-    "ebutuoy-frontend": {
-      "apps": [
-        "ebutuoy"
-      ],
-      "urls": [
-        "https://ebutuoy.vercel.app"
-      ],
-      "private": false,
-      "category": "Maps and Research",
-      "summary": "Discovery app that plays short samples of rarely seen videos",
-      "name": "ebutuoy",
-      "latest": {
-        "date": "2026-10-11",
-        "text": "Moved the app to GitHub after a bug hunt pass. Triggered a production build."
-      }
-    },
-    "mill-ionaire": {
-      "apps": [
-        "mill-ionaire"
-      ],
-      "urls": [
-        "https://mill-ionaire.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "tinewood-keys": {
-      "apps": [
-        "tinewood-keys"
-      ],
-      "urls": [
-        "https://tinewood-keys.vercel.app"
-      ],
-      "private": false,
-      "category": "Music and Visualizers",
-      "summary": "Browser electric piano with sustain, octaves, and knobs",
-      "name": "Tinewood Keys",
-      "latest": {
-        "date": "2026-10-11",
-        "text": "Created the app. Version 1 is an electric piano with a light theme, octave buttons, sustain, and draggable knobs."
-      }
-    },
-    "free-as-in-links": {
-      "apps": [
-        "free-as-in-links"
-      ],
-      "urls": [
-        "https://free-as-in-links.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "restack": {
-      "apps": [
-        "restack-wheat"
-      ],
-      "urls": [
-        "https://restack-wheat.vercel.app"
-      ],
-      "private": true,
-      "category": "Restaurant Tech",
-      "summary": "Technology stack explorer for restaurant sites with coverage tracking",
-      "name": "RESTACK",
-      "latest": {
-        "date": "2026-10-10",
-        "text": "Fixed editing of custom items, import, and reset. Sites can now be renamed and deleted, and no default site is created automatically. Added a site profile window for the shared fields."
-      }
-    },
-    "ghost-kitchen-builder": {
-      "apps": [
-        "ghost-kitchen-builder"
-      ],
-      "urls": [
-        "https://ghost-kitchen-builder.vercel.app"
-      ],
-      "private": false,
-      "category": "Restaurant Tech",
-      "summary": "Survey tool for designing and scoring a restaurant concept",
-      "name": "Restaurant Design and Setup Survey",
-      "latest": {
-        "date": "2026-10-10",
-        "text": "Replaced the broken cloud connection with a simpler built in sync. The concept name, website, phone, address, point of sale, and ordering fields now link to the shared site profile."
-      }
-    },
-    "RTSS": {
-      "apps": [
-        "rtss-sigma"
-      ],
-      "urls": [
-        "https://rtss-sigma.vercel.app"
-      ],
-      "private": false,
-      "category": "Restaurant Tech",
-      "summary": "Restaurant technology site survey form with cloud sync and CSV export",
-      "name": "RTSS",
-      "latest": {
-        "date": "2026-10-10",
-        "text": "The live page now syncs to the cloud. Name, brand, address, city, state, internet provider, point of sale, and firewall link to the shared site profile."
-      }
-    },
-    "rie-api": {
-      "apps": [],
-      "urls": [],
-      "private": true,
-      "category": "Backends and Infrastructure",
-      "summary": "Backend that stores restaurant site surveys and shared site profiles",
-      "name": "RIE API",
-      "latest": {
-        "date": "2026-10-10",
-        "text": "Version 2 moved to a Postgres database. The AI proxy and legends logging were removed. Sites keep untouched fields when renamed, and delete and bulk clear were added. A shared site profile can now be read and updated."
-      }
-    },
-    "mind-globe": {
-      "apps": [
-        "ming-globe"
-      ],
-      "urls": [
-        "https://ming-globe.vercel.app"
-      ],
-      "private": false,
-      "category": "Maps and Research",
-      "summary": "3D globe where your notes become land",
-      "name": "Mind Globe",
-      "latest": {
-        "date": "2026-10-10",
-        "text": "Mountains now rise from note length. Connections between notes show with airstrips and planes."
-      }
-    },
-    "ordersim": {
-      "apps": [
-        "ordersim"
-      ],
-      "urls": [
-        "https://ordersim.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Restaurant kitchen rush game with callsigns and a leaderboard",
-      "name": "ORDERSIM",
-      "latest": {
-        "date": "2026-10-10",
-        "text": "First release. Version 2 has a light theme, callsigns, local best scores, and an online leaderboard."
-      }
-    },
-    "checkin-kiosk": {
-      "apps": [
-        "checkin-kiosk-bice"
-      ],
-      "urls": [
-        "https://checkin-kiosk-bice.vercel.app"
-      ],
-      "private": false,
-      "category": "Restaurant Tech",
-      "summary": "Guest check-in kiosk with walk-ins, reservations, and a staff area",
-      "name": "Check-In Kiosk",
-      "latest": {
-        "date": "2026-10-10",
-        "text": "Version 2 of the kiosk saves data to a Redis backend and adds a flow heat map. Added a guest log tab and a server PIN, and the PIN screen now shows the server's own error message."
-      }
-    },
-    "kvs-roulette": {
-      "apps": [
-        "kvs-sigma"
-      ],
-      "urls": [
-        "https://kvs-sigma.vercel.app"
-      ],
-      "private": false,
-      "category": "Tools",
-      "summary": "Random episode and clip player with season and shuffle modes",
-      "name": "KVS Roulette",
-      "latest": {
-        "date": "2026-10-10",
-        "text": "Version 2 plays full episodes and adds a random mode, seasons, and backup sources. Added a seek bar, start over, back and forward jumps, and fullscreen that keeps the controls."
-      }
-    },
-    "rogue-rail": {
-      "apps": [
-        "rogue-rail"
-      ],
-      "urls": [
-        "https://rogue-rail.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Drum and bass corridor rail shooter with music built in",
-      "name": "Rogue Rail",
-      "latest": {
-        "date": "2026-10-09",
-        "text": "First release. A rail shooter set to drum and bass with pause, mute, hull repair, music preload, a countdown, and a best score."
-      }
-    },
-    "kat-chat": {
-      "apps": [
-        "kat-chat-flame"
-      ],
-      "urls": [
-        "https://kat-chat-flame.vercel.app"
-      ],
-      "private": false,
-      "category": "Tools",
-      "summary": "Private group chat app with reactions, voice notes, chess, GIFs, and notifications",
-      "name": "Cat Command Chat",
-      "latest": {
-        "date": "2026-10-09",
-        "text": "Added chess in the chat with shared live boards and watchers. Added a GIF and movie clip picker, long press menus for reactions and delete on every message, and Android notifications. Messages are padded to fixed sizes. Native Android and Windows apps are now built and released automatically. The About section covers every working feature."
-      }
-    },
-    "datacenter-osint": {
-      "apps": [
-        "datacenter-osint"
-      ],
-      "urls": [
-        "https://datacenter-osint.vercel.app"
-      ],
-      "private": false,
-      "category": "Maps and Research",
-      "summary": "Map of data centers, power plants, heavy industry, and drought with live satellite imagery",
-      "name": "Data Center OSINT",
-      "latest": {
-        "date": "2026-10-09",
-        "text": "Version 4 opens on the whole country. Added power plants, heavy industry, cooling towers, drought, and a backend. The map now shows live satellite imagery with a last day loop, water vapor, infrared, and moving wind trails. An eastern satellite covers the country view, and the panel is shorter and closes when the map is dragged."
-      }
-    },
-    "cross-venue-equivalence-engine": {
-      "apps": [
-        "equivalence-engine"
-      ],
-      "urls": [
-        "https://equivalence-engine.vercel.app"
-      ],
-      "private": false,
-      "category": "Restaurant Tech",
-      "summary": "Shows which menu items one restaurant could build from another restaurant's ingredients",
-      "name": "QSR Equivalents Engine",
-      "latest": {
-        "date": "2026-10-09",
-        "text": "Version 2 of the equivalents engine. Menu items now show equivalents built from any venue's ingredients or from the venue's own stock."
-      }
-    },
-    "androids": {
-      "apps": [
-        "androids"
-      ],
-      "urls": [
-        "https://androids.vercel.app"
-      ],
-      "private": false,
-      "category": "Tools",
-      "summary": "Builds the phone terminal command block that deploys a page to Vercel or Railway",
-      "name": "Androids Deploy Builder",
-      "latest": {
-        "date": "2026-10-08",
-        "text": "First release. The builder writes ready to paste deploy command blocks for Vercel and Railway. A GitHub source option was added the same day."
-      }
-    },
-    "qsr-receipt-sim": {
-      "apps": [
-        "qsr-receipt-sim"
-      ],
-      "urls": [
-        "https://qsr-receipt-sim.vercel.app"
-      ],
-      "private": false,
-      "category": "Restaurant Tech",
-      "summary": "Receipt designer for quick service restaurants with a live preview",
-      "name": "QSR Receipt Sim",
-      "latest": {
-        "date": "2026-10-08",
-        "text": "First release. The receipt simulator lets you set the restaurant identity, header and footer messages, and paper size, with a live receipt preview."
-      }
-    },
-    "67-press-proccessor": {
-      "apps": [
-        "67-press-proccessor"
-      ],
-      "urls": [
-        "https://67-press-proccessor.vercel.app"
-      ],
-      "private": false,
-      "category": "Field and Equipment",
-      "summary": "Box dieline designer and press roll layout tool",
-      "name": "67 Press Processor",
-      "latest": {
-        "date": "2026-10-08",
-        "text": "First release. Created the box dieline and press roll tool."
-      }
-    },
-    "secureops": {
-      "apps": [
-        "secureops-pi"
-      ],
-      "urls": [
-        "https://secureops-pi.vercel.app"
-      ],
-      "private": false,
-      "category": "Tools",
-      "summary": "Private operations app with a login, encrypted storage, and a locked down page",
-      "name": "SecureOps",
-      "latest": {
-        "date": "2026-10-08",
-        "text": "First release. Published the first live version of SecureOps."
-      }
-    },
-    "field-study": {
-      "apps": [
-        "field-study-pi"
-      ],
-      "urls": [
-        "https://field-study-pi.vercel.app"
-      ],
-      "private": false,
-      "category": "Field and Equipment",
-      "summary": "Study app with flashcards, quizzes, and drills in career and flashcard modes",
-      "name": "Field Study",
-      "latest": {
-        "date": "2026-10-08",
-        "text": "First release. Created Field Study with career and flashcard modes and a comic skin."
-      }
-    },
-    "rat": {
-      "apps": [
-        "rat-site-gilt"
-      ],
-      "urls": [
-        "https://rat-site-gilt.vercel.app"
-      ],
-      "private": false,
-      "category": "Music and Visualizers",
-      "summary": "Music player with a track hub and a visualizer for each song",
-      "name": "Rogue Analog Transducer",
-      "latest": {
-        "date": "2026-10-08",
-        "text": "Added phone mode and device detection. Tracks now come from a shared library, and a Haunt Me tile was added to the hub."
-      }
-    },
-    "repofind": {
-      "apps": [
-        "repofind-delta"
-      ],
-      "urls": [
-        "https://repofind-delta.vercel.app"
-      ],
-      "private": false,
-      "category": "Tools",
-      "summary": "Search and watch tool for code repos, archives, and sites",
-      "name": "Repo Find",
-      "latest": {
-        "date": "2026-10-08",
-        "text": "Updated the comic skin."
-      }
-    },
-    "nanoverse": {
-      "apps": [
-        "nanoverse-psi"
-      ],
-      "urls": [
-        "https://nanoverse-psi.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Cell simulation world that renders to a canvas with audio",
-      "name": "NANOVERSE",
-      "latest": {
-        "date": "2026-10-08",
-        "text": "First release. Published version 18 as a single standalone page."
-      }
-    },
-    "x": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Games",
-      "summary": "Small arcade style browser game with a start screen and try again",
-      "name": "Mary Jane-Man",
-      "latest": {
-        "date": "2026-10-08",
-        "text": "First release. Redeployed version 5 of the game over a site that had been overwritten."
-      }
-    },
-    "daily-outline": {
-      "apps": [
-        "daily-outline"
-      ],
-      "urls": [
-        "https://daily-outline.vercel.app"
-      ],
-      "private": false,
-      "category": "Tools",
-      "summary": "Daily goal tracker with a calendar, exports, and email sign in sync",
-      "name": "Daily Outline",
-      "latest": {
-        "date": "2026-10-08",
-        "text": "Added a sign in wall and locked the calendar feed behind it."
-      }
-    },
-    "topdown-pixeltowns": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Games",
-      "summary": "Top down pixel town game, the single file version of Topdown Pixeltown",
-      "name": "Topdown Pixeltowns",
-      "latest": {
-        "date": "2026-10-06",
-        "text": "First release. Deployed the pixel town game as a single page."
-      }
-    },
-    "topdown-pixeltown": {
-      "apps": [
-        "topdown-pixeltown"
-      ],
-      "urls": [
-        "https://topdown-pixeltown.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Top down pixel town game that renders to a canvas",
-      "name": "Topdown Pixeltown",
-      "latest": {
-        "date": "2026-10-05",
-        "text": "First release. Created the pixel town game page and packed the game code into one bundle."
-      }
-    },
-    "carchive": {
-      "apps": [
-        "carchive-nine"
-      ],
-      "urls": [
-        "https://carchive-nine.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Browser card duel game with a deck builder and duel records",
-      "name": "CARCHIVE",
-      "latest": {
-        "date": "2026-10-06",
-        "text": "Added a deck builder and new cards. Version 7 of the game."
-      }
-    },
-    "final-vector": {
-      "apps": [
-        "final-vector-six"
-      ],
-      "urls": [
-        "https://final-vector-six.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "stumbler": {
-      "apps": [
-        "stumbler"
-      ],
-      "urls": [
-        "https://stumbler.vercel.app"
-      ],
-      "private": false,
-      "category": "Tools",
-      "summary": "Random vercel.app name finder that opens names and keeps the live ones",
-      "name": "Vercel Stumbler",
-      "latest": {
-        "date": "2026-10-05",
-        "text": "Hits are now grouped by name across platforms. A cross platform check tests a kept name on every other platform it is not yet kept on."
-      }
-    },
-    "hackercons-roulette-api": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Backends and Infrastructure",
-      "summary": "Catalog service that serves random playable conference clips to the player.",
-      "name": "Hackercons Roulette API",
-      "latest": {
-        "date": "2026-10-04",
-        "text": "Created the clip catalog backend. A fix the same day made the random pick truly random."
-      }
-    },
-    "hackercons-roulette": {
-      "apps": [
-        "hackercons-roulette"
-      ],
-      "urls": [
-        "https://hackercons-roulette.vercel.app"
-      ],
-      "private": false,
-      "category": "Music and Visualizers",
-      "summary": "Player that serves random short clips from hacker conference talks.",
-      "name": "Hackercons Roulette",
-      "latest": {
-        "date": "2026-10-04",
-        "text": "Created the clip player, version two, with stumble and guess modes."
-      }
-    },
-    "pancake-orange": {
-      "apps": [
-        "pancake-orange"
-      ],
-      "urls": [
-        "https://pancake-orange.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Tap pancakes before they burn in a growing grill game.",
-      "name": "Pancake Orange",
-      "latest": {
-        "date": "2026-10-04",
-        "text": "Created the pancake game."
-      }
-    },
-    "topo-wars": {
-      "apps": [
-        "topo-wars"
-      ],
-      "urls": [
-        "https://topo-wars.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Turn based war game played on real map terrain with computer, friend, and zombie modes.",
-      "name": "Topo Wars",
-      "latest": {
-        "date": "2026-10-03",
-        "text": "Added a commander aura and a howitzer fortress. Computer opponents now scout and grab land, and up to four can play at once. Added tanks, mine drones, a chinook, and two kill grenades. The enemy commander now hides with no last seen marker."
-      }
-    },
-    "topo-wars-server": {
-      "apps": [
-        "topo-wars-server"
-      ],
-      "urls": [
-        "https://topo-wars-server.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "paycheck-hub": {
-      "apps": [
-        "shitty-ass-finance"
-      ],
-      "urls": [
-        "https://shitty-ass-finance.vercel.app"
-      ],
-      "private": false,
-      "category": "Tools",
-      "summary": "Splits a paycheck into bills and spending buckets with fixed rules.",
-      "name": "Paycheck Hub",
-      "latest": {
-        "date": "2026-10-02",
-        "text": "First deploy of the paycheck hub."
-      }
-    },
-    "pajamastan-warrants": {
-      "apps": [
-        "pajamastan-warrants"
-      ],
-      "urls": [
-        "https://pajamastan-warrants.vercel.app"
-      ],
-      "private": false,
-      "category": "Pajamastan",
-      "summary": "Public record page that lists the active warrants docket and checks for new ones.",
-      "name": "Pajamastan Warrants",
-      "latest": {
-        "date": "2026-10-02",
-        "text": "First deploy of the warrants page and the backend that keeps its docket current."
-      }
-    },
-    "note-note-note": {
-      "apps": [
-        "note-note-note"
-      ],
-      "urls": [
-        "https://note-note-note.vercel.app"
-      ],
-      "private": false,
-      "category": "Tools",
-      "summary": "Turns a picture into colored squares you group into notes and connect with lines.",
-      "name": "Note Note Note",
-      "latest": {
-        "date": "2026-09-29",
-        "text": "Added lines, a mind map, undo for deleted notes, and storage protection. Line colors now show in the top bar while connecting."
-      }
-    },
-    "topo-war": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Games",
-      "summary": "Early first version of a map based territory war game.",
-      "name": "Territory Control",
-      "latest": {
-        "date": "2026-09-29",
-        "text": "Created the first version of the territory control war game."
-      }
-    },
-    "signal-snapshot-backend": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Backends and Infrastructure",
-      "summary": "Backend that checks price bars for patterns and grades the signals it logs.",
-      "name": "Signal Snapshot Backend",
-      "latest": {
-        "date": "2026-09-28",
-        "text": "Created the signal snapshot backend. It takes in price bars, detects patterns, logs snapshots, grades them, and serves a report. A small deploy fix followed the same day."
-      }
-    },
-    "signal-snapshot": {
-      "apps": [
-        "virality-snapshot"
-      ],
-      "urls": [
-        "https://virality-snapshot.vercel.app"
-      ],
-      "private": false,
-      "category": "Tools",
-      "summary": "Panel that shows trading signals checked by the signal snapshot backend.",
-      "name": "Signal Snapshot",
-      "latest": {
-        "date": "2026-09-28",
-        "text": "Created the signal snapshot panel with live, graded, and report views."
-      }
-    },
-    "diamond-driller": {
-      "apps": [
-        "diamond-driller"
-      ],
-      "urls": [
-        "https://diamond-driller.vercel.app"
-      ],
-      "private": false,
-      "category": "Tools",
-      "summary": "Turns a picture into a numbered color-by-number drill pattern with printable pages.",
-      "name": "Diamond Driller",
-      "latest": {
-        "date": "2026-09-25",
-        "text": "Created the spot pattern maker. Added the 447 color standard and smaller patterns and pages. Sheets now fill exactly with a centered crop and a true size PDF. Millimeter rulers now run along the top and left edges."
-      }
-    },
-    "web-press-simulator": {
-      "apps": [],
-      "urls": [],
-      "private": true,
-      "category": "Field and Equipment",
-      "summary": "Training simulator for a web printing press with settings, dryers, alarms, and maintenance screens.",
-      "name": "Web Press Simulator",
-      "latest": {
-        "date": "2026-09-25",
-        "text": "Created the web press simulator. It showed press settings, dryers, alarms, and preventive maintenance, in English and French."
-      }
-    },
-    "scope-listener": {
-      "apps": [
-        "scope-listener"
-      ],
-      "urls": [
-        "https://scope-listener.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "song-offset-listener": {
-      "apps": [
-        "offset-listener"
-      ],
-      "urls": [
-        "https://offset-listener.vercel.app"
-      ],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "phasewell-scope": {
-      "apps": [
-        "phasewell-scope"
-      ],
-      "urls": [
-        "https://phasewell-scope.vercel.app"
-      ],
-      "private": false,
-      "category": "Music and Visualizers",
-      "summary": "Dual channel browser scope that compares a song file with the microphone.",
-      "name": "Phasewell Scope",
-      "latest": {
-        "date": "2026-09-22",
-        "text": "First release. The scope compares a song file with the microphone in several views. Seven updates the same day refined the controls."
-      }
-    },
-    "engine-companion": {
-      "apps": [
-        "engine-companion"
-      ],
-      "urls": [
-        "https://engine-companion.vercel.app"
-      ],
-      "private": false,
-      "category": "Tools",
-      "summary": "Phone friendly status and command page for a trading engine.",
-      "name": "Engine Companion",
-      "latest": {
-        "date": "2026-09-17",
-        "text": "First release. The companion shows engine status and lets the owner pause, resume, or flatten from one page."
-      }
-    },
-    "qsr-tracker-backend": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Backends and Infrastructure",
-      "summary": "Data relay for the restaurant industry tracker: filings, news, quotes, futures, and engine routes.",
-      "name": "QSR Tracker Backend",
-      "latest": {
-        "date": "2026-09-16",
-        "text": "Added engine routes for a snapshot, a ledger, a heartbeat, and a two way command queue."
-      }
-    },
-    "mohave-browser": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Tools",
-      "summary": "Small Android web browser built on the Gecko engine.",
-      "name": "Mohave Browser",
-      "latest": {
-        "date": "2026-09-16",
-        "text": "First build of the browser. The build setup was trimmed and updated for the newest Gecko engine."
-      }
-    },
-    "arcade-backend": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Backends and Infrastructure",
-      "summary": "Score server for the arcade games, with locks, cooldowns, and on chain writes.",
-      "name": "Arcade Backend",
-      "latest": {
-        "date": "2026-09-14",
-        "text": "Version 2 now locks every on chain write so two scores can never reuse the same number. Each game and each player has a lock, and players wait through a cooldown between submissions. Every submission is logged with its outcome for audit."
-      }
-    },
-    "tilespinneratlas": {
-      "apps": [
-        "tile-spinner"
-      ],
-      "urls": [
-        "https://tile-spinner.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Tile rotating puzzle where closed loops score, with regional tile styles.",
-      "name": "Atlas of Tiles",
-      "latest": {
-        "date": "2026-09-11",
-        "text": "First release. Atlas of Tiles lets players rotate tiles to close loops, with several regional tile styles."
-      }
-    },
-    "threat-atlas-v3": {
-      "apps": [
-        "threat-atlas-two"
-      ],
-      "urls": [
-        "https://threat-atlas-two.vercel.app"
-      ],
-      "private": false,
-      "category": "Maps and Research",
-      "summary": "Interactive globe of security threats with layers, filters, and country intel.",
-      "name": "Threat Atlas",
-      "latest": {
-        "date": "2026-09-11",
-        "text": "First release. Threat Atlas shows a rotating globe with layered threat data and country intel."
-      }
-    },
-    "dronesim": {
-      "apps": [
-        "dronesim-blue"
-      ],
-      "urls": [
-        "https://dronesim-blue.vercel.app"
-      ],
-      "private": false,
-      "category": "Music and Visualizers",
-      "summary": "Pixel art drone show simulator with a timeline editor and image based formations.",
-      "name": "Dronesim",
-      "latest": {
-        "date": "2026-09-11",
-        "text": "First release. Dronesim is an operator console for drone shows with a timeline, formations, and optional audio."
-      }
-    },
-    "boba-breakeven-x8k4": {
-      "apps": [
-        "boba-breakeven-x8k4"
-      ],
-      "urls": [
-        "https://boba-breakeven-x8k4.vercel.app"
-      ],
-      "private": false,
-      "category": "Restaurant Tech",
-      "summary": "Break-even calculator and seven day shop game for a bubble tea shop.",
-      "name": "Boba Break-Even",
-      "latest": {
-        "date": "2026-09-11",
-        "text": "First release. Boba Break-Even calculates cups needed to cover costs. A second update on the same day polished the page."
-      }
-    },
-    "beesim-green": {
-      "apps": [
-        "beesim-green"
-      ],
-      "urls": [
-        "https://beesim-green.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Browser bee strategy game with generated terrain, zones, and a mosaic mode.",
-      "name": "Bee Sim",
-      "latest": {
-        "date": "2026-09-10",
-        "text": "First release. Bee Sim shipped as a single static page. The deploy setup was reworked several times until the page loaded from the root of the site."
-      }
-    },
-    "mohavetech-contracts-api": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Backends and Infrastructure",
-      "summary": "Backend for the contract app: drafts, PIN unlock, e-signatures, and Polygon notarization.",
-      "name": "Contracts API",
-      "latest": {
-        "date": "2026-09-10",
-        "text": "Created the contracts backend in six stages. It started with health and draft routes, then added a public record, PIN unlock, and a Redis lockout after bad guesses. Assistant routes, real Polygon notarization, and in-house e-signatures followed. The assistant now gives clear errors, times out, and limits each visitor. Signing no longer mints automatically, and minting is its own step."
-      }
-    },
-    "ascend": {
-      "apps": [
-        "ascend-pearl-ten"
-      ],
-      "urls": [
-        "https://ascend-pearl-ten.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Endless vertical platformer with moving platforms, powerups, and touch controls for phones.",
-      "name": "Ascend",
-      "latest": {
-        "date": "2026-09-10",
-        "text": "First release. Ascend is a vertical climbing game with generated platforms, coins, gems, and powerups. It works with touch controls on a phone."
-      }
-    },
-    "mohavetech-contracts": {
-      "apps": [
-        "mohavetech-contracts"
-      ],
-      "urls": [
-        "https://mohavetech-contracts.vercel.app"
-      ],
-      "private": false,
-      "category": "Tools",
-      "summary": "Draft a contract, sign it with a finger or mouse, and record its fingerprint on Polygon.",
-      "name": "Contracts",
-      "latest": {
-        "date": "2026-09-10",
-        "text": "First draft of the contract app. A missing page file was restored so the app loads."
-      }
-    },
-    "bitfield-synth": {
-      "apps": [
-        "bitfield-synth"
-      ],
-      "urls": [
-        "https://bitfield-synth.vercel.app"
-      ],
-      "private": false,
-      "category": "Music and Visualizers",
-      "summary": "Pixel field visualizer driven by math expressions, audio, and images.",
-      "name": "Bitfield Synth",
-      "latest": {
-        "date": "2026-09-08",
-        "text": "Version 8 adds a hamburger drawer and a full bleed canvas. Version 9 follows with further refinements."
-      }
-    },
-    "shitty-ass-trading-app": {
-      "apps": [
-        "shitty-ass-trading"
-      ],
-      "urls": [
-        "https://shitty-ass-trading.vercel.app"
-      ],
-      "private": false,
-      "category": "Restaurant Tech",
-      "summary": "Stock tracker for restaurant and food industry tickers with news, recalls, filings, and sentiment.",
-      "name": "Shitty Ass Trading App",
-      "latest": {
-        "date": "2026-09-05",
-        "text": "Updated the app icon and header mark. Merged the magazine tabs into one, loaded leadership info on start, and added a way to dismiss wrong entries."
-      }
-    },
-    "tower2": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Games",
-      "summary": "Second version of the tower builder game, with an info button explaining the rules.",
-      "name": "Tower Builder 2",
-      "latest": {
-        "date": "2026-09-02",
-        "text": "First version of the second tower builder. It adds an info button that explains the rules."
-      }
-    },
-    "tower-builder": {
-      "apps": [
-        "tower-builder-five",
-        "tower-builder-one"
-      ],
-      "urls": [
-        "https://tower-builder-five.vercel.app",
-        "https://tower-builder-one.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Beam building tower game that tests your design against wind and earthquakes.",
-      "name": "Tower Builder",
-      "latest": {
-        "date": "2026-09-02",
-        "text": "First version of the tower builder game. This repo holds only the Vercel settings for now."
-      }
-    },
-    "skwiggle-v105": {
-      "apps": [
-        "skwiggle"
-      ],
-      "urls": [
-        "https://skwiggle.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Never ending line drawing game with mint support, later replaced by a Vercel host stumbler.",
-      "name": "Skwiggle",
-      "latest": {
-        "date": "2026-09-02",
-        "text": "Version 107 rebuilds the wallet connection on the right network after a switch and shows the real reason when a mint fails. Version 3.9 replaced the page with the Vercel Stumbler and added Netlify as a platform."
-      }
-    },
-    "skwiggle-mint-pin": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Backends and Infrastructure",
-      "summary": "Proxy service that pins Skwiggle art to IPFS so it can be minted.",
-      "name": "Skwiggle Mint Pin",
-      "latest": {
-        "date": "2026-09-01",
-        "text": "Created the pin proxy for minting. It now accepts two kinds of credentials, adds a health check that tests the credential, and logs the real cause when pinning fails. Triggered a redeploy on Railway."
-      }
-    },
-    "skwiggle-backend": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Backends and Infrastructure",
-      "summary": "Small Express backend for the Skwiggle drawing game, set up to run on Railway.",
-      "name": "Skwiggle Backend",
-      "latest": {
-        "date": "2026-08-31",
-        "text": "Created the backend with a basic running check. Added a Railway config so it can deploy and restart on failure."
-      }
-    },
-    "aerophin-twin": {
-      "apps": [
-        "aerophin-twin"
-      ],
-      "urls": [
-        "https://aerophin-twin.vercel.app"
-      ],
-      "private": false,
-      "category": "Field and Equipment",
-      "summary": "Drawing set and interactive 3D part models for two coffee machine designs.",
-      "name": "Aerophin Twin",
-      "latest": {
-        "date": "2026-08-29",
-        "text": "Created the drawing set for two coffee machines and added parts lists for each part. Added a part drawings page with interactive 3D models."
-      }
-    },
-    "threat-dash": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Tools",
-      "summary": "Dashboard page for the threat poller, with a watchlist you can add to and remove from.",
-      "name": "Threat Dash",
-      "latest": {
-        "date": "2026-08-06",
-        "text": "First version of the threat dashboard. It shows poller results and lets you add and remove repos on the watchlist."
-      }
-    },
-    "threat-poller": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Backends and Infrastructure",
-      "summary": "Background poller that watches GitHub repos by category, saves alerts to Postgres, and serves them over a read API.",
-      "name": "Threat Poller",
-      "latest": {
-        "date": "2026-08-01",
-        "text": "Created the threat intel poller with three category rules for watched repos. Alerts now save to Postgres so they persist between runs. Added a read API that returns the latest alerts for the dashboard."
-      }
-    },
-    "termbeat": {
-      "apps": [
-        "termbeat"
-      ],
-      "urls": [
-        "https://termbeat.vercel.app"
-      ],
-      "private": false,
-      "category": "Music and Visualizers",
-      "summary": "Audio reactive terminal that reacts to music or the microphone, with themes and small games.",
-      "name": "Termbeat",
-      "latest": {
-        "date": "2026-07-19",
-        "text": "First version. Termbeat is a terminal that reacts to audio from a file or the microphone. It shipped with several terminal themes and modes for a visualizer, bars, and a few small games."
-      }
-    },
-    "tanks-and-zombies": {
-      "apps": [
-        "tanksandzombies"
-      ],
-      "urls": [
-        "https://tanksandzombies.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Tank versus zombie horde wave shooter with unlockable skins.",
-      "name": "Tanks and Zombies",
-      "latest": {
-        "date": "2026-07-03",
-        "text": "First release. A tank versus zombie horde wave shooter with cannon, sea ram, and rocket weapons, a charged shot, and skins that unlock by score. Added a weapon bar and a high score table."
-      }
-    },
-    "dronecamp": {
-      "apps": [
-        "dronecamp"
-      ],
-      "urls": [
-        "https://dronecamp.vercel.app"
-      ],
-      "private": false,
-      "category": "Field and Equipment",
-      "summary": "Landing page for a Part 107 drone pilot training program in northern Arizona.",
-      "name": "Drone Training Page",
-      "latest": {
-        "date": "2026-07-03",
-        "text": "First release. A landing page for a Part 107 drone pilot training program. Replaced a wrong page that went up first."
-      }
-    },
-    "coffeekit": {
-      "apps": [
-        "screensaver-musicfx"
-      ],
-      "urls": [
-        "https://screensaver-musicfx.vercel.app"
-      ],
-      "private": false,
-      "category": "Music and Visualizers",
-      "summary": "Audio reactive screensaver with seven visual modes.",
-      "name": "Screensaver",
-      "latest": {
-        "date": "2026-06-21",
-        "text": "First release. An audio reactive screensaver with seven modes: plasma, lines, stars, pipes, matrix, blob, and DVD. It reacts to the microphone or an uploaded song."
-      }
-    },
-    "matops-backend": {
-      "apps": [],
-      "urls": [],
-      "private": true,
-      "category": "Backends and Infrastructure",
-      "summary": "Lead capture backend that stores form submissions and sends email alerts.",
-      "name": "Lead Capture Backend",
-      "latest": {
-        "date": "2026-06-04",
-        "text": "First release. A lead capture endpoint that stores each submission and sends an email alert."
-      }
-    },
-    "edmia": {
-      "apps": [
-        "edmia"
-      ],
-      "urls": [
-        "https://edmia.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Falling block color match game where every move adds to the music.",
-      "name": "EDMIA",
-      "latest": {
-        "date": "2026-05-21",
-        "text": "First release. A falling block color match game where clearing squares drives the soundtrack. Includes slide, rotate, drop, and boost controls, song sections that change with level, and a high score table with initials."
-      }
-    },
-    "spaceout": {
-      "apps": [
-        "spaceout-mu"
-      ],
-      "urls": [
-        "https://spaceout-mu.vercel.app"
-      ],
-      "private": false,
-      "category": "Games",
-      "summary": "Paddle and ball brick breaker with waves and touch controls.",
-      "name": "SpaceOut",
-      "latest": {
-        "date": "2026-05-09",
-        "text": "First release. A brick breaker game with waves, lives, and a saved high score. Swipe, drag, or the on screen buttons move the paddle."
-      }
-    },
-    "graceland-diagram": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Field and Equipment",
-      "summary": "3D exploded view of a 14 by 20 kitchen shed build.",
-      "name": "Kitchen Shed Diagram",
-      "latest": {
-        "date": "2026-05-08",
-        "text": "First release. A 3D exploded view of a 14 by 20 kitchen shed with toggles for shell, loft, water, electrical, kitchen, and restroom layers."
-      }
-    },
-    "nota-city": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Games",
-      "summary": "Shared city builder on a 32 by 32 grid with a backend tick engine.",
-      "name": "Nota City",
-      "latest": {
-        "date": "2026-04-20",
-        "text": "First release. A shared city builder with a 32 by 32 grid, zone, road, power, and water layers, and a backend tick engine that grows population and funds. Added placement rules, a bulldozer, and drag to paint. Roads now show under every layer. Fixed road placement on empty tiles and page loading on refresh."
-      }
-    },
-    "gridmark": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": "Maps and Research",
-      "summary": "GPS location marker and heatmap that sorts places into work and personal.",
-      "name": "Gridmark",
-      "latest": {
-        "date": "2026-04-14",
-        "text": "First release. A map tool that saves work and personal locations with notes, draws a heatmap, and records a GPS track every 10 seconds. All data stays on the device."
-      }
-    },
-    "suno-forge": {
-      "apps": [
-        "suno-forge-kappa"
-      ],
-      "urls": [
-        "https://suno-forge-kappa.vercel.app"
-      ],
-      "private": false,
-      "category": "Music and Visualizers",
-      "summary": "Song builder that drafts lyrics and style tags for AI music generators.",
-      "name": "Suno Forge",
-      "latest": {
-        "date": "2026-04-05",
-        "text": "First release. A song builder that drafts lyrics and a style string from a genre, mood, and structure, with EDM drop and pump options and copy buttons for each part. Fixed the left panel sitting under other content."
-      }
-    },
-    "drivethru-sim": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "mission-operator": {
-      "apps": [
-        "mission-operator"
-      ],
-      "urls": [
-        "https://mission-operator.vercel.app"
-      ],
-      "private": false,
-      "category": "Maps and Research",
-      "summary": "Location aware scanner console for nearby aircraft, radios, mesh nodes, and towers.",
-      "name": "Mission Operator",
-      "latest": {
-        "date": "2026-03-26",
-        "text": "First release. A scanner console that uses the device location to list nearby aircraft from live flight data, along with cell towers, Wi-Fi, Bluetooth, ham repeaters, and mesh nodes. Includes a logbook and settings."
-      }
-    },
-    "groundcore": {
-      "apps": [
-        "groundcore-nine"
-      ],
-      "urls": [
-        "https://groundcore-nine.vercel.app"
-      ],
-      "private": false,
-      "category": "Field and Equipment",
-      "summary": "Desert planting planner with row spacing, plant lookup, and a map sandbox for laying out rows.",
-      "name": "GroundCore",
-      "latest": {
-        "date": "2026-04-05",
-        "text": "First release. A planting planner for the Mohave Valley desert region with a row spacing calculator, a plant lookup that fills in recommended spacing, a plant browser with category filters, and a map sandbox for laying out rows, structures, and drives."
-      }
-    },
-    "fogwarren-vx": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "rosetta-pone": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "tickle-boxie": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "chromahum-zq": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "mohave-wtf": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "tapperator": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "inkrunner": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "field-twin-violet-api": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "five-minute-momentum-engine": {
-      "apps": [],
-      "urls": [],
-      "private": true,
-      "category": null,
-      "summary": null
-    },
-    "hoofer-sync": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "field-twin-viridian": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "heckle-troll": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "sudosilo": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "2026-10-18-orange-testbed": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "steward-repo": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "doctrine-duel-qx": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "doctrine-duel-qx-sandbox": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "stackloom-meta": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "fatty-fart-pedal": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "2026-10-20-orange-dialbeat": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "itchy-troll": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "text-based-game": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "shared-server": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "forkmill-zx": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "2026-10-22-orange-agent": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "purple-agent": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "purple-vault": {
-      "apps": [],
-      "urls": [],
-      "private": true,
-      "category": null,
-      "summary": null
-    },
-    "testbed-notes": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "blue-agent": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    },
-    "blue-agent-sandbox": {
-      "apps": [],
-      "urls": [],
-      "private": false,
-      "category": null,
-      "summary": null
-    }
+ "note": "Repo map for the scribe. apps are Control Troll app names, which are Vercel subdomains. category and summary are filled in by the scribe the first time it documents a repo. Repos with no apps are backends, archives, or tools with no live page.",
+ "repos": {
+  "control-troll": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "gladhand-dockyard": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Games",
+   "summary": "A truck and trailer backing sim set in a busy dock yard and city",
+   "name": "Gladhand Dockyard",
+   "latest": {
+    "date": "2026-10-13",
+    "text": "Added an open city map with signals, telephone poles with wires that come down, outages, and traffic. Added breachable buildings, big structures, berm dents, and a breakable block wall ring."
+   }
+  },
+  "parcelsun-kq": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Maps and Research",
+   "summary": "A solar heat model for a parcel locker with a four module default",
+   "name": "Parcelsun",
+   "latest": {
+    "date": "2026-10-13",
+    "text": "First release, built over four versions in one day. A parcel locker solar heat model, then a board strip, hat shadow, console gear heat, and back view. Then a field style locker look with a four module default, and finally even service seams, cabinet louvers, and console panel detail."
+   }
+  },
+  "chassisquiver": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "anthropic-percentage-pop-up-game": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Games",
+   "summary": "A typing game where pop-ups keep covering the screen",
+   "name": "Percentage Pop-up Typing Game",
+   "latest": {
+    "date": "2026-10-13",
+    "text": "First release. A pop-up typing game with a dark theme and a live usage meter. Pop-ups start on page open and keep coming over the results screen. Added 222 percentage facts, live weather, and moon phase pop-ups."
+   }
+  },
+  "tractor-tool": {
+   "apps": [
+    "tractor-tool"
+   ],
+   "urls": [
+    "https://tractor-tool.vercel.app"
+   ],
+   "private": false,
+   "category": "Field and Equipment",
+   "summary": "A toolkit for tractor work with a blueprint, hourly rate, quote, and game",
+   "name": "Tractor Toolkit",
+   "latest": {
+    "date": "2026-10-12",
+    "text": "First release. Tractor toolkit revision B with a footer, a creator seal, and generic app content. Triggered a production build."
+   }
+  },
+  "pajamastan": {
+   "apps": [
+    "pajamastan"
+   ],
+   "urls": [
+    "https://pajamastan.vercel.app"
+   ],
+   "private": false,
+   "category": "Pajamastan",
+   "summary": "The official site of the micronation of Pajamastan",
+   "name": "Pajamastan",
+   "latest": {
+    "date": "2026-10-12",
+    "text": "Released version three. Added an atlas, inventory tabs, a grouped hamburger menu, and a creator seal."
+   }
+  },
+  "parkingten": {
+   "apps": [
+    "parkingten"
+   ],
+   "urls": [
+    "https://parkingten.vercel.app"
+   ],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "A parking management app with spot, check in, and operator pages",
+   "name": "Parkingten",
+   "latest": {
+    "date": "2026-10-12",
+    "text": "Fixed the sessions API, added an operator key, switched to a light theme, and resized plate photos before upload. Cleaned up pasted settings and removed a temporary trace."
+   }
+  },
+  "irrigation-demo": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Field and Equipment",
+   "summary": "A demo of a tank, pump, and drip irrigation cycle",
+   "name": "Tank Pump Drip Demo",
+   "latest": {
+    "date": "2026-10-12",
+    "text": "First release. Archived the irrigation demo page that shows the tank, pump, and drip cycle."
+   }
+  },
+  "torque-converter": {
+   "apps": [
+    "torque-converter"
+   ],
+   "urls": [
+    "https://torque-converter.vercel.app"
+   ],
+   "private": false,
+   "category": "Field and Equipment",
+   "summary": "Converts torque between newton meters, foot pounds, and inch pounds",
+   "name": "Torque Converter",
+   "latest": {
+    "date": "2026-10-12",
+    "text": "First release. A torque converter with a bolt spec lookup. Added a creator seal and triggered a production build."
+   }
+  },
+  "pajamastan-invoices": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Pajamastan",
+   "summary": "Seller and buyer invoices with a Pajamastan letterhead tab",
+   "name": "Pajamastan Invoices",
+   "latest": {
+    "date": "2026-10-12",
+    "text": "First release. Seller and buyer invoices with a Pajamastan letterhead tab."
+   }
+  },
+  "field-twin": {
+   "apps": [
+    "field-twin-teal"
+   ],
+   "urls": [
+    "https://field-twin-teal.vercel.app"
+   ],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "mohavetech-website": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "ether-wand": {
+   "apps": [
+    "ether-wand"
+   ],
+   "urls": [
+    "https://ether-wand.vercel.app"
+   ],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "A phone instrument where tilting and shaking the phone plays a tone",
+   "name": "Ether Wand",
+   "latest": {
+    "date": "2026-10-11",
+    "text": "Added room codes so players can join a shared room. Added a choice of sound voices."
+   }
+  },
+  "stompbox-lab": {
+   "apps": [
+    "stompbox-lab"
+   ],
+   "urls": [
+    "https://stompbox-lab.vercel.app"
+   ],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "spectral-engine": {
+   "apps": [
+    "spectral-engine"
+   ],
+   "urls": [
+    "https://spectral-engine.vercel.app"
+   ],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "looper": {
+   "apps": [
+    "looper-sooty"
+   ],
+   "urls": [
+    "https://looper-sooty.vercel.app"
+   ],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "axiom": {
+   "apps": [
+    "axiom-eight-xi"
+   ],
+   "urls": [
+    "https://axiom-eight-xi.vercel.app"
+   ],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "synth": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "A browser synthesizer with several color themes for playing sounds",
+   "name": "Axiom Synth",
+   "latest": {
+    "date": "2026-10-11",
+    "text": "Released version two of the synth with new themes and a pass of bug fixes."
+   }
+  },
+  "aliens-win": {
+   "apps": [
+    "aliens-win"
+   ],
+   "urls": [
+    "https://aliens-win.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Arcade shooter where you fly a UFO against waves",
+   "name": "The Aliens Win",
+   "latest": {
+    "date": "2026-10-11",
+    "text": "Created the app as the first version of the game. A second push triggered a production build."
+   }
+  },
+  "pixelcoop-farm": {
+   "apps": [
+    "pixelcoop-farm"
+   ],
+   "urls": [
+    "https://pixelcoop-farm.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Pixel art chicken farm builder and simulator",
+   "name": "Chicken Farm",
+   "latest": {
+    "date": "2026-10-11",
+    "text": "Created the app as version 3 of the chicken farm simulator."
+   }
+  },
+  "page-wide-pof": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Tools",
+   "summary": "Origami fold pattern generator for printing",
+   "name": "Fold pattern generator",
+   "latest": {
+    "date": "2026-10-11",
+    "text": "Created the app as the Page Wide origami print app. It makes fold patterns on squares you can print."
+   }
+  },
+  "birdix": {
+   "apps": [
+    "birdix"
+   ],
+   "urls": [
+    "https://birdix.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Bird territory game with free paint and stained glass modes",
+   "name": "BIRDIXEL",
+   "latest": {
+    "date": "2026-10-11",
+    "text": "Added stained glass mode, automatic birds, and photo glass."
+   }
+  },
+  "coffee-autosim": {
+   "apps": [
+    "coffee-autosim"
+   ],
+   "urls": [
+    "https://coffee-autosim.vercel.app"
+   ],
+   "private": false,
+   "category": "Restaurant Tech",
+   "summary": "Live blueprint simulator of a coffee shop floor with baristas",
+   "name": "Coffee Autosim",
+   "latest": {
+    "date": "2026-10-11",
+    "text": "Created the app as version 3, a live blueprint sim of a coffee shop floor."
+   }
+  },
+  "pixelmill": {
+   "apps": [
+    "pixelmill"
+   ],
+   "urls": [
+    "https://pixelmill.vercel.app"
+   ],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "Toolpath simulator that cuts endless pixel programs",
+   "name": "PIXELMILL",
+   "latest": {
+    "date": "2026-10-11",
+    "text": "Created the app as version 1.0. It simulates a mill cutting pixel programs."
+   }
+  },
+  "cockpit-racer": {
+   "apps": [
+    "cockpit-racer"
+   ],
+   "urls": [
+    "https://cockpit-racer.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Low poly 3D desert driving game from the cockpit",
+   "name": "Cockpit Racer",
+   "latest": {
+    "date": "2026-10-11",
+    "text": "Created the app as version 2. It is a low poly desert driving game with a wheel, gas, brake, traffic, and police."
+   }
+  },
+  "ebutuoy-backend": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "Backend service for the ebutuoy video discovery app",
+   "name": "ebutuoy backend",
+   "latest": {
+    "date": "2026-10-11",
+    "text": "Ran a bug hunt. Search now returns only videos that can play in the embed, and subscriber checks fail closed. Added paging and quota tracking. Data now lives on the volume when one exists, and the service exits cleanly and logs fatal errors."
+   }
+  },
+  "ebutuoy-frontend": {
+   "apps": [
+    "ebutuoy"
+   ],
+   "urls": [
+    "https://ebutuoy.vercel.app"
+   ],
+   "private": false,
+   "category": "Maps and Research",
+   "summary": "Discovery app that plays short samples of rarely seen videos",
+   "name": "ebutuoy",
+   "latest": {
+    "date": "2026-10-11",
+    "text": "Moved the app to GitHub after a bug hunt pass. Triggered a production build."
+   }
+  },
+  "mill-ionaire": {
+   "apps": [
+    "mill-ionaire"
+   ],
+   "urls": [
+    "https://mill-ionaire.vercel.app"
+   ],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "tinewood-keys": {
+   "apps": [
+    "tinewood-keys"
+   ],
+   "urls": [
+    "https://tinewood-keys.vercel.app"
+   ],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "Browser electric piano with sustain, octaves, and knobs",
+   "name": "Tinewood Keys",
+   "latest": {
+    "date": "2026-10-11",
+    "text": "Created the app. Version 1 is an electric piano with a light theme, octave buttons, sustain, and draggable knobs."
+   }
+  },
+  "free-as-in-links": {
+   "apps": [
+    "free-as-in-links"
+   ],
+   "urls": [
+    "https://free-as-in-links.vercel.app"
+   ],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "restack": {
+   "apps": [
+    "restack-wheat"
+   ],
+   "urls": [
+    "https://restack-wheat.vercel.app"
+   ],
+   "private": true,
+   "category": "Restaurant Tech",
+   "summary": "Technology stack explorer for restaurant sites with coverage tracking",
+   "name": "RESTACK",
+   "latest": {
+    "date": "2026-10-10",
+    "text": "Fixed editing of custom items, import, and reset. Sites can now be renamed and deleted, and no default site is created automatically. Added a site profile window for the shared fields."
+   }
+  },
+  "ghost-kitchen-builder": {
+   "apps": [
+    "ghost-kitchen-builder"
+   ],
+   "urls": [
+    "https://ghost-kitchen-builder.vercel.app"
+   ],
+   "private": false,
+   "category": "Restaurant Tech",
+   "summary": "Survey tool for designing and scoring a restaurant concept",
+   "name": "Restaurant Design and Setup Survey",
+   "latest": {
+    "date": "2026-10-10",
+    "text": "Replaced the broken cloud connection with a simpler built in sync. The concept name, website, phone, address, point of sale, and ordering fields now link to the shared site profile."
+   }
+  },
+  "RTSS": {
+   "apps": [
+    "rtss-sigma"
+   ],
+   "urls": [
+    "https://rtss-sigma.vercel.app"
+   ],
+   "private": false,
+   "category": "Restaurant Tech",
+   "summary": "Restaurant technology site survey form with cloud sync and CSV export",
+   "name": "RTSS",
+   "latest": {
+    "date": "2026-10-10",
+    "text": "The live page now syncs to the cloud. Name, brand, address, city, state, internet provider, point of sale, and firewall link to the shared site profile."
+   }
+  },
+  "rie-api": {
+   "apps": [],
+   "urls": [],
+   "private": true,
+   "category": "Backends and Infrastructure",
+   "summary": "Backend that stores restaurant site surveys and shared site profiles",
+   "name": "RIE API",
+   "latest": {
+    "date": "2026-10-10",
+    "text": "Version 2 moved to a Postgres database. The AI proxy and legends logging were removed. Sites keep untouched fields when renamed, and delete and bulk clear were added. A shared site profile can now be read and updated."
+   }
+  },
+  "mind-globe": {
+   "apps": [
+    "ming-globe"
+   ],
+   "urls": [
+    "https://ming-globe.vercel.app"
+   ],
+   "private": false,
+   "category": "Maps and Research",
+   "summary": "3D globe where your notes become land",
+   "name": "Mind Globe",
+   "latest": {
+    "date": "2026-10-10",
+    "text": "Mountains now rise from note length. Connections between notes show with airstrips and planes."
+   }
+  },
+  "ordersim": {
+   "apps": [
+    "ordersim"
+   ],
+   "urls": [
+    "https://ordersim.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Restaurant kitchen rush game with callsigns and a leaderboard",
+   "name": "ORDERSIM",
+   "latest": {
+    "date": "2026-10-10",
+    "text": "First release. Version 2 has a light theme, callsigns, local best scores, and an online leaderboard."
+   }
+  },
+  "checkin-kiosk": {
+   "apps": [
+    "checkin-kiosk-bice"
+   ],
+   "urls": [
+    "https://checkin-kiosk-bice.vercel.app"
+   ],
+   "private": false,
+   "category": "Restaurant Tech",
+   "summary": "Guest check-in kiosk with walk-ins, reservations, and a staff area",
+   "name": "Check-In Kiosk",
+   "latest": {
+    "date": "2026-10-10",
+    "text": "Version 2 of the kiosk saves data to a Redis backend and adds a flow heat map. Added a guest log tab and a server PIN, and the PIN screen now shows the server's own error message."
+   }
+  },
+  "kvs-roulette": {
+   "apps": [
+    "kvs-sigma"
+   ],
+   "urls": [
+    "https://kvs-sigma.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Random episode and clip player with season and shuffle modes",
+   "name": "KVS Roulette",
+   "latest": {
+    "date": "2026-10-10",
+    "text": "Version 2 plays full episodes and adds a random mode, seasons, and backup sources. Added a seek bar, start over, back and forward jumps, and fullscreen that keeps the controls."
+   }
+  },
+  "rogue-rail": {
+   "apps": [
+    "rogue-rail"
+   ],
+   "urls": [
+    "https://rogue-rail.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Drum and bass corridor rail shooter with music built in",
+   "name": "Rogue Rail",
+   "latest": {
+    "date": "2026-10-09",
+    "text": "First release. A rail shooter set to drum and bass with pause, mute, hull repair, music preload, a countdown, and a best score."
+   }
+  },
+  "kat-chat": {
+   "apps": [
+    "kat-chat-flame"
+   ],
+   "urls": [
+    "https://kat-chat-flame.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Private group chat app with reactions, voice notes, chess, GIFs, and notifications",
+   "name": "Cat Command Chat",
+   "latest": {
+    "date": "2026-10-09",
+    "text": "Added chess in the chat with shared live boards and watchers. Added a GIF and movie clip picker, long press menus for reactions and delete on every message, and Android notifications. Messages are padded to fixed sizes. Native Android and Windows apps are now built and released automatically. The About section covers every working feature."
+   }
+  },
+  "datacenter-osint": {
+   "apps": [
+    "datacenter-osint"
+   ],
+   "urls": [
+    "https://datacenter-osint.vercel.app"
+   ],
+   "private": false,
+   "category": "Maps and Research",
+   "summary": "Map of data centers, power plants, heavy industry, and drought with live satellite imagery",
+   "name": "Data Center OSINT",
+   "latest": {
+    "date": "2026-10-09",
+    "text": "Version 4 opens on the whole country. Added power plants, heavy industry, cooling towers, drought, and a backend. The map now shows live satellite imagery with a last day loop, water vapor, infrared, and moving wind trails. An eastern satellite covers the country view, and the panel is shorter and closes when the map is dragged."
+   }
+  },
+  "cross-venue-equivalence-engine": {
+   "apps": [
+    "equivalence-engine"
+   ],
+   "urls": [
+    "https://equivalence-engine.vercel.app"
+   ],
+   "private": false,
+   "category": "Restaurant Tech",
+   "summary": "Shows which menu items one restaurant could build from another restaurant's ingredients",
+   "name": "QSR Equivalents Engine",
+   "latest": {
+    "date": "2026-10-09",
+    "text": "Version 2 of the equivalents engine. Menu items now show equivalents built from any venue's ingredients or from the venue's own stock."
+   }
+  },
+  "androids": {
+   "apps": [
+    "androids"
+   ],
+   "urls": [
+    "https://androids.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Builds the phone terminal command block that deploys a page to Vercel or Railway",
+   "name": "Androids Deploy Builder",
+   "latest": {
+    "date": "2026-10-08",
+    "text": "First release. The builder writes ready to paste deploy command blocks for Vercel and Railway. A GitHub source option was added the same day."
+   }
+  },
+  "qsr-receipt-sim": {
+   "apps": [
+    "qsr-receipt-sim"
+   ],
+   "urls": [
+    "https://qsr-receipt-sim.vercel.app"
+   ],
+   "private": false,
+   "category": "Restaurant Tech",
+   "summary": "Receipt designer for quick service restaurants with a live preview",
+   "name": "QSR Receipt Sim",
+   "latest": {
+    "date": "2026-10-08",
+    "text": "First release. The receipt simulator lets you set the restaurant identity, header and footer messages, and paper size, with a live receipt preview."
+   }
+  },
+  "67-press-proccessor": {
+   "apps": [
+    "67-press-proccessor"
+   ],
+   "urls": [
+    "https://67-press-proccessor.vercel.app"
+   ],
+   "private": false,
+   "category": "Field and Equipment",
+   "summary": "Box dieline designer and press roll layout tool",
+   "name": "67 Press Processor",
+   "latest": {
+    "date": "2026-10-08",
+    "text": "First release. Created the box dieline and press roll tool."
+   }
+  },
+  "secureops": {
+   "apps": [
+    "secureops-pi"
+   ],
+   "urls": [
+    "https://secureops-pi.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Private operations app with a login, encrypted storage, and a locked down page",
+   "name": "SecureOps",
+   "latest": {
+    "date": "2026-10-08",
+    "text": "First release. Published the first live version of SecureOps."
+   }
+  },
+  "field-study": {
+   "apps": [
+    "field-study-pi"
+   ],
+   "urls": [
+    "https://field-study-pi.vercel.app"
+   ],
+   "private": false,
+   "category": "Field and Equipment",
+   "summary": "Study app with flashcards, quizzes, and drills in career and flashcard modes",
+   "name": "Field Study",
+   "latest": {
+    "date": "2026-10-08",
+    "text": "First release. Created Field Study with career and flashcard modes and a comic skin."
+   }
+  },
+  "rat": {
+   "apps": [
+    "rat-site-gilt"
+   ],
+   "urls": [
+    "https://rat-site-gilt.vercel.app"
+   ],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "Music player with a track hub and a visualizer for each song",
+   "name": "Rogue Analog Transducer",
+   "latest": {
+    "date": "2026-10-08",
+    "text": "Added phone mode and device detection. Tracks now come from a shared library, and a Haunt Me tile was added to the hub."
+   }
+  },
+  "repofind": {
+   "apps": [
+    "repofind-delta"
+   ],
+   "urls": [
+    "https://repofind-delta.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Search and watch tool for code repos, archives, and sites",
+   "name": "Repo Find",
+   "latest": {
+    "date": "2026-10-08",
+    "text": "Updated the comic skin."
+   }
+  },
+  "nanoverse": {
+   "apps": [
+    "nanoverse-psi"
+   ],
+   "urls": [
+    "https://nanoverse-psi.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Cell simulation world that renders to a canvas with audio",
+   "name": "NANOVERSE",
+   "latest": {
+    "date": "2026-10-08",
+    "text": "First release. Published version 18 as a single standalone page."
+   }
+  },
+  "x": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Games",
+   "summary": "Small arcade style browser game with a start screen and try again",
+   "name": "Mary Jane-Man",
+   "latest": {
+    "date": "2026-10-08",
+    "text": "First release. Redeployed version 5 of the game over a site that had been overwritten."
+   }
+  },
+  "daily-outline": {
+   "apps": [
+    "daily-outline"
+   ],
+   "urls": [
+    "https://daily-outline.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Daily goal tracker with a calendar, exports, and email sign in sync",
+   "name": "Daily Outline",
+   "latest": {
+    "date": "2026-10-08",
+    "text": "Added a sign in wall and locked the calendar feed behind it."
+   }
+  },
+  "topdown-pixeltowns": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Games",
+   "summary": "Top down pixel town game, the single file version of Topdown Pixeltown",
+   "name": "Topdown Pixeltowns",
+   "latest": {
+    "date": "2026-10-06",
+    "text": "First release. Deployed the pixel town game as a single page."
+   }
+  },
+  "topdown-pixeltown": {
+   "apps": [
+    "topdown-pixeltown"
+   ],
+   "urls": [
+    "https://topdown-pixeltown.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Top down pixel town game that renders to a canvas",
+   "name": "Topdown Pixeltown",
+   "latest": {
+    "date": "2026-10-05",
+    "text": "First release. Created the pixel town game page and packed the game code into one bundle."
+   }
+  },
+  "carchive": {
+   "apps": [
+    "carchive-nine"
+   ],
+   "urls": [
+    "https://carchive-nine.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Browser card duel game with a deck builder and duel records",
+   "name": "CARCHIVE",
+   "latest": {
+    "date": "2026-10-06",
+    "text": "Added a deck builder and new cards. Version 7 of the game."
+   }
+  },
+  "final-vector": {
+   "apps": [
+    "final-vector-six"
+   ],
+   "urls": [
+    "https://final-vector-six.vercel.app"
+   ],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "stumbler": {
+   "apps": [
+    "stumbler"
+   ],
+   "urls": [
+    "https://stumbler.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Random vercel.app name finder that opens names and keeps the live ones",
+   "name": "Vercel Stumbler",
+   "latest": {
+    "date": "2026-10-05",
+    "text": "Hits are now grouped by name across platforms. A cross platform check tests a kept name on every other platform it is not yet kept on."
+   }
+  },
+  "hackercons-roulette-api": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "Catalog service that serves random playable conference clips to the player.",
+   "name": "Hackercons Roulette API",
+   "latest": {
+    "date": "2026-10-04",
+    "text": "Created the clip catalog backend. A fix the same day made the random pick truly random."
+   }
+  },
+  "hackercons-roulette": {
+   "apps": [
+    "hackercons-roulette"
+   ],
+   "urls": [
+    "https://hackercons-roulette.vercel.app"
+   ],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "Player that serves random short clips from hacker conference talks.",
+   "name": "Hackercons Roulette",
+   "latest": {
+    "date": "2026-10-04",
+    "text": "Created the clip player, version two, with stumble and guess modes."
+   }
+  },
+  "pancake-orange": {
+   "apps": [
+    "pancake-orange"
+   ],
+   "urls": [
+    "https://pancake-orange.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Tap pancakes before they burn in a growing grill game.",
+   "name": "Pancake Orange",
+   "latest": {
+    "date": "2026-10-04",
+    "text": "Created the pancake game."
+   }
+  },
+  "topo-wars": {
+   "apps": [
+    "topo-wars"
+   ],
+   "urls": [
+    "https://topo-wars.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Turn based war game played on real map terrain with computer, friend, and zombie modes.",
+   "name": "Topo Wars",
+   "latest": {
+    "date": "2026-10-03",
+    "text": "Added a commander aura and a howitzer fortress. Computer opponents now scout and grab land, and up to four can play at once. Added tanks, mine drones, a chinook, and two kill grenades. The enemy commander now hides with no last seen marker."
+   }
+  },
+  "topo-wars-server": {
+   "apps": [
+    "topo-wars-server"
+   ],
+   "urls": [
+    "https://topo-wars-server.vercel.app"
+   ],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "paycheck-hub": {
+   "apps": [
+    "shitty-ass-finance"
+   ],
+   "urls": [
+    "https://shitty-ass-finance.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Splits a paycheck into bills and spending buckets with fixed rules.",
+   "name": "Paycheck Hub",
+   "latest": {
+    "date": "2026-10-02",
+    "text": "First deploy of the paycheck hub."
+   }
+  },
+  "pajamastan-warrants": {
+   "apps": [
+    "pajamastan-warrants"
+   ],
+   "urls": [
+    "https://pajamastan-warrants.vercel.app"
+   ],
+   "private": false,
+   "category": "Pajamastan",
+   "summary": "Public record page that lists the active warrants docket and checks for new ones.",
+   "name": "Pajamastan Warrants",
+   "latest": {
+    "date": "2026-10-02",
+    "text": "First deploy of the warrants page and the backend that keeps its docket current."
+   }
+  },
+  "note-note-note": {
+   "apps": [
+    "note-note-note"
+   ],
+   "urls": [
+    "https://note-note-note.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Turns a picture into colored squares you group into notes and connect with lines.",
+   "name": "Note Note Note",
+   "latest": {
+    "date": "2026-09-29",
+    "text": "Added lines, a mind map, undo for deleted notes, and storage protection. Line colors now show in the top bar while connecting."
+   }
+  },
+  "topo-war": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Games",
+   "summary": "Early first version of a map based territory war game.",
+   "name": "Territory Control",
+   "latest": {
+    "date": "2026-09-29",
+    "text": "Created the first version of the territory control war game."
+   }
+  },
+  "signal-snapshot-backend": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "Backend that checks price bars for patterns and grades the signals it logs.",
+   "name": "Signal Snapshot Backend",
+   "latest": {
+    "date": "2026-09-28",
+    "text": "Created the signal snapshot backend. It takes in price bars, detects patterns, logs snapshots, grades them, and serves a report. A small deploy fix followed the same day."
+   }
+  },
+  "signal-snapshot": {
+   "apps": [
+    "virality-snapshot"
+   ],
+   "urls": [
+    "https://virality-snapshot.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Panel that shows trading signals checked by the signal snapshot backend.",
+   "name": "Signal Snapshot",
+   "latest": {
+    "date": "2026-09-28",
+    "text": "Created the signal snapshot panel with live, graded, and report views."
+   }
+  },
+  "diamond-driller": {
+   "apps": [
+    "diamond-driller"
+   ],
+   "urls": [
+    "https://diamond-driller.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Turns a picture into a numbered color-by-number drill pattern with printable pages.",
+   "name": "Diamond Driller",
+   "latest": {
+    "date": "2026-09-25",
+    "text": "Created the spot pattern maker. Added the 447 color standard and smaller patterns and pages. Sheets now fill exactly with a centered crop and a true size PDF. Millimeter rulers now run along the top and left edges."
+   }
+  },
+  "web-press-simulator": {
+   "apps": [],
+   "urls": [],
+   "private": true,
+   "category": "Field and Equipment",
+   "summary": "Training simulator for a web printing press with settings, dryers, alarms, and maintenance screens.",
+   "name": "Web Press Simulator",
+   "latest": {
+    "date": "2026-09-25",
+    "text": "Created the web press simulator. It showed press settings, dryers, alarms, and preventive maintenance, in English and French."
+   }
+  },
+  "scope-listener": {
+   "apps": [
+    "scope-listener"
+   ],
+   "urls": [
+    "https://scope-listener.vercel.app"
+   ],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "An oscilloscope that compares a song to the phone mic and shows the offset",
+   "name": "Scope Listener",
+   "latest": {
+    "date": "2026-10-14",
+    "text": "Added autopilot, which identifies the song, loads the reference, locates the spot, and tracks and logs the sample level hands free."
+   }
+  },
+  "song-offset-listener": {
+   "apps": [
+    "offset-listener"
+   ],
+   "urls": [
+    "https://offset-listener.vercel.app"
+   ],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "phasewell-scope": {
+   "apps": [
+    "phasewell-scope"
+   ],
+   "urls": [
+    "https://phasewell-scope.vercel.app"
+   ],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "Dual channel browser scope that compares a song file with the microphone.",
+   "name": "Phasewell Scope",
+   "latest": {
+    "date": "2026-09-22",
+    "text": "First release. The scope compares a song file with the microphone in several views. Seven updates the same day refined the controls."
+   }
+  },
+  "engine-companion": {
+   "apps": [
+    "engine-companion"
+   ],
+   "urls": [
+    "https://engine-companion.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Phone friendly status and command page for a trading engine.",
+   "name": "Engine Companion",
+   "latest": {
+    "date": "2026-09-17",
+    "text": "First release. The companion shows engine status and lets the owner pause, resume, or flatten from one page."
+   }
+  },
+  "qsr-tracker-backend": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "Data relay for the restaurant industry tracker: filings, news, quotes, futures, and engine routes.",
+   "name": "QSR Tracker Backend",
+   "latest": {
+    "date": "2026-09-16",
+    "text": "Added engine routes for a snapshot, a ledger, a heartbeat, and a two way command queue."
+   }
+  },
+  "mohave-browser": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Tools",
+   "summary": "Small Android web browser built on the Gecko engine.",
+   "name": "Mohave Browser",
+   "latest": {
+    "date": "2026-09-16",
+    "text": "First build of the browser. The build setup was trimmed and updated for the newest Gecko engine."
+   }
+  },
+  "arcade-backend": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "Score server for the arcade games, with locks, cooldowns, and on chain writes.",
+   "name": "Arcade Backend",
+   "latest": {
+    "date": "2026-09-14",
+    "text": "Version 2 now locks every on chain write so two scores can never reuse the same number. Each game and each player has a lock, and players wait through a cooldown between submissions. Every submission is logged with its outcome for audit."
+   }
+  },
+  "tilespinneratlas": {
+   "apps": [
+    "tile-spinner"
+   ],
+   "urls": [
+    "https://tile-spinner.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Tile rotating puzzle where closed loops score, with regional tile styles.",
+   "name": "Atlas of Tiles",
+   "latest": {
+    "date": "2026-09-11",
+    "text": "First release. Atlas of Tiles lets players rotate tiles to close loops, with several regional tile styles."
+   }
+  },
+  "threat-atlas-v3": {
+   "apps": [
+    "threat-atlas-two"
+   ],
+   "urls": [
+    "https://threat-atlas-two.vercel.app"
+   ],
+   "private": false,
+   "category": "Maps and Research",
+   "summary": "Interactive globe of security threats with layers, filters, and country intel.",
+   "name": "Threat Atlas",
+   "latest": {
+    "date": "2026-09-11",
+    "text": "First release. Threat Atlas shows a rotating globe with layered threat data and country intel."
+   }
+  },
+  "dronesim": {
+   "apps": [
+    "dronesim-blue"
+   ],
+   "urls": [
+    "https://dronesim-blue.vercel.app"
+   ],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "Pixel art drone show simulator with a timeline editor and image based formations.",
+   "name": "Dronesim",
+   "latest": {
+    "date": "2026-09-11",
+    "text": "First release. Dronesim is an operator console for drone shows with a timeline, formations, and optional audio."
+   }
+  },
+  "boba-breakeven-x8k4": {
+   "apps": [
+    "boba-breakeven-x8k4"
+   ],
+   "urls": [
+    "https://boba-breakeven-x8k4.vercel.app"
+   ],
+   "private": false,
+   "category": "Restaurant Tech",
+   "summary": "Break-even calculator and seven day shop game for a bubble tea shop.",
+   "name": "Boba Break-Even",
+   "latest": {
+    "date": "2026-09-11",
+    "text": "First release. Boba Break-Even calculates cups needed to cover costs. A second update on the same day polished the page."
+   }
+  },
+  "beesim-green": {
+   "apps": [
+    "beesim-green"
+   ],
+   "urls": [
+    "https://beesim-green.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Browser bee strategy game with generated terrain, zones, and a mosaic mode.",
+   "name": "Bee Sim",
+   "latest": {
+    "date": "2026-09-10",
+    "text": "First release. Bee Sim shipped as a single static page. The deploy setup was reworked several times until the page loaded from the root of the site."
+   }
+  },
+  "mohavetech-contracts-api": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "Backend for the contract app: drafts, PIN unlock, e-signatures, and Polygon notarization.",
+   "name": "Contracts API",
+   "latest": {
+    "date": "2026-09-10",
+    "text": "Created the contracts backend in six stages. It started with health and draft routes, then added a public record, PIN unlock, and a Redis lockout after bad guesses. Assistant routes, real Polygon notarization, and in-house e-signatures followed. The assistant now gives clear errors, times out, and limits each visitor. Signing no longer mints automatically, and minting is its own step."
+   }
+  },
+  "ascend": {
+   "apps": [
+    "ascend-pearl-ten"
+   ],
+   "urls": [
+    "https://ascend-pearl-ten.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Endless vertical platformer with moving platforms, powerups, and touch controls for phones.",
+   "name": "Ascend",
+   "latest": {
+    "date": "2026-09-10",
+    "text": "First release. Ascend is a vertical climbing game with generated platforms, coins, gems, and powerups. It works with touch controls on a phone."
+   }
+  },
+  "mohavetech-contracts": {
+   "apps": [
+    "mohavetech-contracts"
+   ],
+   "urls": [
+    "https://mohavetech-contracts.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Draft a contract, sign it with a finger or mouse, and record its fingerprint on Polygon.",
+   "name": "Contracts",
+   "latest": {
+    "date": "2026-09-10",
+    "text": "First draft of the contract app. A missing page file was restored so the app loads."
+   }
+  },
+  "bitfield-synth": {
+   "apps": [
+    "bitfield-synth"
+   ],
+   "urls": [
+    "https://bitfield-synth.vercel.app"
+   ],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "Pixel field visualizer driven by math expressions, audio, and images.",
+   "name": "Bitfield Synth",
+   "latest": {
+    "date": "2026-09-08",
+    "text": "Version 8 adds a hamburger drawer and a full bleed canvas. Version 9 follows with further refinements."
+   }
+  },
+  "shitty-ass-trading-app": {
+   "apps": [
+    "shitty-ass-trading"
+   ],
+   "urls": [
+    "https://shitty-ass-trading.vercel.app"
+   ],
+   "private": false,
+   "category": "Restaurant Tech",
+   "summary": "Stock tracker for restaurant and food industry tickers with news, recalls, filings, and sentiment.",
+   "name": "Shitty Ass Trading App",
+   "latest": {
+    "date": "2026-09-05",
+    "text": "Updated the app icon and header mark. Merged the magazine tabs into one, loaded leadership info on start, and added a way to dismiss wrong entries."
+   }
+  },
+  "tower2": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Games",
+   "summary": "Second version of the tower builder game, with an info button explaining the rules.",
+   "name": "Tower Builder 2",
+   "latest": {
+    "date": "2026-09-02",
+    "text": "First version of the second tower builder. It adds an info button that explains the rules."
+   }
+  },
+  "tower-builder": {
+   "apps": [
+    "tower-builder-five",
+    "tower-builder-one"
+   ],
+   "urls": [
+    "https://tower-builder-five.vercel.app",
+    "https://tower-builder-one.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Beam building tower game that tests your design against wind and earthquakes.",
+   "name": "Tower Builder",
+   "latest": {
+    "date": "2026-09-02",
+    "text": "First version of the tower builder game. This repo holds only the Vercel settings for now."
+   }
+  },
+  "skwiggle-v105": {
+   "apps": [
+    "skwiggle"
+   ],
+   "urls": [
+    "https://skwiggle.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Never ending line drawing game with mint support, later replaced by a Vercel host stumbler.",
+   "name": "Skwiggle",
+   "latest": {
+    "date": "2026-09-02",
+    "text": "Version 107 rebuilds the wallet connection on the right network after a switch and shows the real reason when a mint fails. Version 3.9 replaced the page with the Vercel Stumbler and added Netlify as a platform."
+   }
+  },
+  "skwiggle-mint-pin": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "Proxy service that pins Skwiggle art to IPFS so it can be minted.",
+   "name": "Skwiggle Mint Pin",
+   "latest": {
+    "date": "2026-09-01",
+    "text": "Created the pin proxy for minting. It now accepts two kinds of credentials, adds a health check that tests the credential, and logs the real cause when pinning fails. Triggered a redeploy on Railway."
+   }
+  },
+  "skwiggle-backend": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "Small Express backend for the Skwiggle drawing game, set up to run on Railway.",
+   "name": "Skwiggle Backend",
+   "latest": {
+    "date": "2026-08-31",
+    "text": "Created the backend with a basic running check. Added a Railway config so it can deploy and restart on failure."
+   }
+  },
+  "aerophin-twin": {
+   "apps": [
+    "aerophin-twin"
+   ],
+   "urls": [
+    "https://aerophin-twin.vercel.app"
+   ],
+   "private": false,
+   "category": "Field and Equipment",
+   "summary": "Drawing set and interactive 3D part models for two coffee machine designs.",
+   "name": "Aerophin Twin",
+   "latest": {
+    "date": "2026-08-29",
+    "text": "Created the drawing set for two coffee machines and added parts lists for each part. Added a part drawings page with interactive 3D models."
+   }
+  },
+  "threat-dash": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Tools",
+   "summary": "Dashboard page for the threat poller, with a watchlist you can add to and remove from.",
+   "name": "Threat Dash",
+   "latest": {
+    "date": "2026-08-06",
+    "text": "First version of the threat dashboard. It shows poller results and lets you add and remove repos on the watchlist."
+   }
+  },
+  "threat-poller": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "Background poller that watches GitHub repos by category, saves alerts to Postgres, and serves them over a read API.",
+   "name": "Threat Poller",
+   "latest": {
+    "date": "2026-08-01",
+    "text": "Created the threat intel poller with three category rules for watched repos. Alerts now save to Postgres so they persist between runs. Added a read API that returns the latest alerts for the dashboard."
+   }
+  },
+  "termbeat": {
+   "apps": [
+    "termbeat"
+   ],
+   "urls": [
+    "https://termbeat.vercel.app"
+   ],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "Audio reactive terminal that reacts to music or the microphone, with themes and small games.",
+   "name": "Termbeat",
+   "latest": {
+    "date": "2026-07-19",
+    "text": "First version. Termbeat is a terminal that reacts to audio from a file or the microphone. It shipped with several terminal themes and modes for a visualizer, bars, and a few small games."
+   }
+  },
+  "tanks-and-zombies": {
+   "apps": [
+    "tanksandzombies"
+   ],
+   "urls": [
+    "https://tanksandzombies.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Tank versus zombie horde wave shooter with unlockable skins.",
+   "name": "Tanks and Zombies",
+   "latest": {
+    "date": "2026-07-03",
+    "text": "First release. A tank versus zombie horde wave shooter with cannon, sea ram, and rocket weapons, a charged shot, and skins that unlock by score. Added a weapon bar and a high score table."
+   }
+  },
+  "dronecamp": {
+   "apps": [
+    "dronecamp"
+   ],
+   "urls": [
+    "https://dronecamp.vercel.app"
+   ],
+   "private": false,
+   "category": "Field and Equipment",
+   "summary": "Landing page for a Part 107 drone pilot training program in northern Arizona.",
+   "name": "Drone Training Page",
+   "latest": {
+    "date": "2026-07-03",
+    "text": "First release. A landing page for a Part 107 drone pilot training program. Replaced a wrong page that went up first."
+   }
+  },
+  "coffeekit": {
+   "apps": [
+    "screensaver-musicfx"
+   ],
+   "urls": [
+    "https://screensaver-musicfx.vercel.app"
+   ],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "Audio reactive screensaver with seven visual modes.",
+   "name": "Screensaver",
+   "latest": {
+    "date": "2026-06-21",
+    "text": "First release. An audio reactive screensaver with seven modes: plasma, lines, stars, pipes, matrix, blob, and DVD. It reacts to the microphone or an uploaded song."
+   }
+  },
+  "matops-backend": {
+   "apps": [],
+   "urls": [],
+   "private": true,
+   "category": "Backends and Infrastructure",
+   "summary": "Lead capture backend that stores form submissions and sends email alerts.",
+   "name": "Lead Capture Backend",
+   "latest": {
+    "date": "2026-06-04",
+    "text": "First release. A lead capture endpoint that stores each submission and sends an email alert."
+   }
+  },
+  "edmia": {
+   "apps": [
+    "edmia"
+   ],
+   "urls": [
+    "https://edmia.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Falling block color match game where every move adds to the music.",
+   "name": "EDMIA",
+   "latest": {
+    "date": "2026-05-21",
+    "text": "First release. A falling block color match game where clearing squares drives the soundtrack. Includes slide, rotate, drop, and boost controls, song sections that change with level, and a high score table with initials."
+   }
+  },
+  "spaceout": {
+   "apps": [
+    "spaceout-mu"
+   ],
+   "urls": [
+    "https://spaceout-mu.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "Paddle and ball brick breaker with waves and touch controls.",
+   "name": "SpaceOut",
+   "latest": {
+    "date": "2026-05-09",
+    "text": "First release. A brick breaker game with waves, lives, and a saved high score. Swipe, drag, or the on screen buttons move the paddle."
+   }
+  },
+  "graceland-diagram": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Field and Equipment",
+   "summary": "3D exploded view of a 14 by 20 kitchen shed build.",
+   "name": "Kitchen Shed Diagram",
+   "latest": {
+    "date": "2026-05-08",
+    "text": "First release. A 3D exploded view of a 14 by 20 kitchen shed with toggles for shell, loft, water, electrical, kitchen, and restroom layers."
+   }
+  },
+  "nota-city": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Games",
+   "summary": "Shared city builder on a 32 by 32 grid with a backend tick engine.",
+   "name": "Nota City",
+   "latest": {
+    "date": "2026-04-20",
+    "text": "First release. A shared city builder with a 32 by 32 grid, zone, road, power, and water layers, and a backend tick engine that grows population and funds. Added placement rules, a bulldozer, and drag to paint. Roads now show under every layer. Fixed road placement on empty tiles and page loading on refresh."
+   }
+  },
+  "gridmark": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Maps and Research",
+   "summary": "GPS location marker and heatmap that sorts places into work and personal.",
+   "name": "Gridmark",
+   "latest": {
+    "date": "2026-04-14",
+    "text": "First release. A map tool that saves work and personal locations with notes, draws a heatmap, and records a GPS track every 10 seconds. All data stays on the device."
+   }
+  },
+  "suno-forge": {
+   "apps": [
+    "suno-forge-kappa"
+   ],
+   "urls": [
+    "https://suno-forge-kappa.vercel.app"
+   ],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "Song builder that drafts lyrics and style tags for AI music generators.",
+   "name": "Suno Forge",
+   "latest": {
+    "date": "2026-04-05",
+    "text": "First release. A song builder that drafts lyrics and a style string from a genre, mood, and structure, with EDM drop and pump options and copy buttons for each part. Fixed the left panel sitting under other content."
+   }
+  },
+  "drivethru-sim": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "mission-operator": {
+   "apps": [
+    "mission-operator"
+   ],
+   "urls": [
+    "https://mission-operator.vercel.app"
+   ],
+   "private": false,
+   "category": "Maps and Research",
+   "summary": "Location aware scanner console for nearby aircraft, radios, mesh nodes, and towers.",
+   "name": "Mission Operator",
+   "latest": {
+    "date": "2026-03-26",
+    "text": "First release. A scanner console that uses the device location to list nearby aircraft from live flight data, along with cell towers, Wi-Fi, Bluetooth, ham repeaters, and mesh nodes. Includes a logbook and settings."
+   }
+  },
+  "groundcore": {
+   "apps": [
+    "groundcore-nine"
+   ],
+   "urls": [
+    "https://groundcore-nine.vercel.app"
+   ],
+   "private": false,
+   "category": "Field and Equipment",
+   "summary": "Desert planting planner with row spacing, plant lookup, and a map sandbox for laying out rows.",
+   "name": "GroundCore",
+   "latest": {
+    "date": "2026-04-05",
+    "text": "First release. A planting planner for the Mohave Valley desert region with a row spacing calculator, a plant lookup that fills in recommended spacing, a plant browser with category filters, and a map sandbox for laying out rows, structures, and drives."
+   }
+  },
+  "fogwarren-vx": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "rosetta-pone": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "tickle-boxie": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "chromahum-zq": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "mohave-wtf": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "tapperator": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "inkrunner": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "field-twin-violet-api": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "five-minute-momentum-engine": {
+   "apps": [],
+   "urls": [],
+   "private": true,
+   "category": null,
+   "summary": null
+  },
+  "hoofer-sync": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "field-twin-viridian": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "heckle-troll": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "sudosilo": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "2026-10-18-orange-testbed": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "steward-repo": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "doctrine-duel-qx": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "doctrine-duel-qx-sandbox": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "stackloom-meta": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "fatty-fart-pedal": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "2026-10-20-orange-dialbeat": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "itchy-troll": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "text-based-game": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "shared-server": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "forkmill-zx": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "2026-10-22-orange-agent": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "purple-agent": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "purple-vault": {
+   "apps": [],
+   "urls": [],
+   "private": true,
+   "category": null,
+   "summary": null
+  },
+  "testbed-notes": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "blue-agent": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "blue-agent-sandbox": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "2026-10-23-orange-smash": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
   }
+ }
 }
