@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-23T17:55:55.439Z",
+  "builtAt": "2026-10-24T16:39:14.296Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -77,6 +77,22 @@
       ],
       "knownProblem": null,
       "snapshot": "snapshots/pajamastan-warrants.html"
+    },
+    {
+      "app": "frontend-sudosilo2-1771s-projects",
+      "url": "https://frontend-sudosilo2-1771s-projects.vercel.app",
+      "kind": "down",
+      "since": "2026-10-24",
+      "status": 404,
+      "failing": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "features": [
+        "URL should show the app frontend."
+      ],
+      "knownProblem": "This URL serves a Vercel login page instead of the app. It is a protected team URL. The project index should link the public production URL instead.",
+      "snapshot": "snapshots/frontend-sudosilo2-1771s-projects.html"
     },
     {
       "app": "termbeat",
