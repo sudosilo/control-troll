@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-24T04:43:44Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "6d5fc0ba2afbf3a9307a1df0d06a97cd74bf59fb",
+      "message": "Seed: instore list, any file in tools/lists runs by name",
+      "heckle": "You committed 84 lines of a coffee chain's playlist into tools/lists/instore.txt like a stalker with a notepad, and the last line is cut off mid entry, so some poor phone will search for a song called half a title. The new check in tools/seed-cache.sh runs any file named by whatever argument you type, so a typo like bottom or middle or heard colliding with a filename now silently picks a list instead of a mode. That is a filibuster of an argument parser: lots of talking, nothing decided. Also the lists are hand pasted data living beside code, which is how a cereal box recipe gets filed.\n\nFix it: Check for the mode words before the list lookup in tools/seed-cache.sh. Make the lookup refuse names that match a mode. Finish the truncated last line of tools/lists/instore.txt. Print an error when the name matches no file instead of falling through to the default list."
+    },
+    {
+      "date": "2026-10-24T04:43:44Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "a665c08617e94d3c3f6bf3ee4ba903b567aa1fb2",
+      "message": "Seed: holiday in-store list (coffee chain holiday playlists plus 2025 retail)",
+      "heckle": "A 121 line holiday song dump in tools/lists/holiday.txt, with the same carol by six different crooners because apparently one cache entry per song was too efficient for you. You then hardcoded a special case for holiday in tools/seed-cache.sh, which the very next commit had to rip out and generalize, so you built the thing twice in one hour like a bailout that needed a second bailout. The final line of the list is chopped mid word too, which tells me nobody even looked at the file before pushing it.\n\nFix it: Delete the one off holiday branch from tools/seed-cache.sh since the generic list lookup covers it. Dedupe repeated titles in tools/lists/holiday.txt or accept that you pay for each artist version on purpose. Repair the cut off final line. Read your own file before you commit it."
+    },
+    {
+      "date": "2026-10-24T04:43:44Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "8f43a25d74f5ba30f5d6be8af1c6683de36fe353",
+      "message": "Seed: heard mode pulls every song Offset Listener has recognized",
+      "heckle": "In tools/seed-cache.sh the heard mode runs curl -s against a public endpoint and writes the response straight to a file in the home folder with no status check. If that endpoint returns an error page, congratulations, your seed script now searches for songs titled with HTML. The silent flag guarantees you will never know why. It also reuses the same file name every run, so a failed download quietly feeds last time's stale list back in, which is exactly how a government keeps running on a continuing resolution.\n\nFix it: Use curl -sf in tools/seed-cache.sh so a failed download stops the script. Download to a temp file and move it only on success. Print how many lines you got before you start searching."
+    },
+    {
+      "date": "2026-10-24T04:43:44Z",
+      "repo": "song-offset-listener",
+      "sha": "5c837c57ab2bb442e60e03a37030cf713c3b5215",
+      "message": "Heard list: every recognized song as Title|Artist lines for the cache seed",
+      "heckle": "The new api/heard-list.js is an unauthenticated public edge route that dumps every song your listener ever recognized, which is basically a surveillance log of what strangers played in stores, handed to anyone who can type a URL. Every fetch is wrapped in an empty catch, so when Redis hiccups it returns a cheerful 200 with half a list and nobody learns anything. The scan loop caps at 200 rounds and just stops, no warning. Your error handling is a campaign promise: sounds great, delivers nothing.\n\nFix it: Require a shared secret header on api/heard-list.js before it answers. Log or return an error when the hash read or scan fails instead of swallowing it. Report when the 200 round cap truncates the list. Add a cache header so a crawler cannot hammer your Redis bill."
+    },
+    {
+      "date": "2026-10-24T04:43:44Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "ffe83edd781e1da5efe2a36ff2082bcb15548168",
+      "message": "Seed: middle mode for a third phone",
+      "heckle": "A third phone. You own three phones whose whole job is to ask a video site for song lists, and you are splitting the work with a mode literally called middle. In tools/seed-cache.sh the middle branch halves the file with head and tac and tail, so phone three and phone two now overlap on the same songs anyway since bottom just reverses the whole list. You built three workers that collide in the center like a coalition government. The setup file s also still pulls the mode through main with a default of bottom, so a typo quietly runs bottom.\n\nFix it: Split the list into real slices in tools/seed-cache.sh so phones never overlap, for example by line number modulo. Reject unknown modes in the s script instead of defaulting to bottom. Skip songs another phone already cached, which your own check route can do."
+    },
+    {
+      "date": "2026-10-24T04:43:44Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "93197f060e484420daff2b618a3b1e18a3932b40",
+      "message": "Setup: install from the main package server, repair interrupted installs",
+      "heckle": "The s script now overwrites the phone's apt sources.list with a hardcoded mirror, deletes the chosen mirror folders, and runs dpkg configure with all errors thrown in the trash. All of that sits inside a script you tell people to pipe straight from the internet into bash. That is a rubber stamp on your own supply chain. Redirecting stderr to /dev/null on dpkg means when it breaks you get a shrug and an infinite retry loop. You treated a package manager like a junk drawer.\n\nFix it: Stop overwriting sources.list in the s script unless the mirror is actually failing. Show dpkg errors instead of sending them to /dev/null. Cap the retry loop in s so it stops after a few tries. Pin the script to a commit hash so the pipe to bash is not a moving target."
+    },
+    {
+      "date": "2026-10-24T04:43:44Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "0d30e0a356e5ff69ced8da2ab29dd48e544bbf69",
+      "message": "Second phone setup waits for internet and resumes the seed instead of quitting",
+      "heckle": "The s script now loops forever in three places: waiting for the internet, retrying the install, and restarting the seed every 10 minutes until a stopped file disappears. There is no max, no log, and no way out except killing the terminal, so a bad network turns your second phone into a space heater with a wake lock on. A filibuster with a battery. Also tools/seed-cache.sh deletes the stopped marker at the top on every run, so the until loop in s can read a fresh blocked flag only if the script exits zero exactly right.\n\nFix it: Add a retry limit or a backoff ceiling to every until loop in the s script. Write a log line with a timestamp each time it restarts. Exit non zero from tools/seed-cache.sh when blocked instead of exit 0, so the caller does not guess from a marker file."
+    },
+    {
+      "date": "2026-10-24T04:43:44Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "532e4b801be5e2954b0f2176c7cd2b889331d793",
+      "message": "Setup script: safe to pipe into bash",
+      "heckle": "Thirty seconds after creating s, you wrapped the whole thing in a main function because it turns out piping a script into bash eats stdin and the first version would have broken. That is the commit message admitting the previous commit was broken, and you pushed both anyway. It still runs pkg update and installs the gh tool nobody uses, and still has no error checks between steps, so one failed clone and it happily keeps going into a missing folder.\n\nFix it: Add set -e or check each step in s so a failed clone stops the script. Drop gh from the install line since nothing calls it. Test a pipe to bash once on a real device before pushing."
+    },
+    {
+      "date": "2026-10-24T04:43:44Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "3bc79afc61d7a9c097c7af2f67a930961103ba31",
+      "message": "One line setup script for an extra seeding phone",
+      "heckle": "You added a shell script named s. One letter. In the repo root. Served from your public site and meant to be piped to bash, which is a great name for a thing that executes remote code on a phone. It has no error handling at all, so a failed pkg install walks right into a git clone and then a seed run on nothing. In vercel.json you reformatted five unrelated rewrite entries into a wall of multi line braces just to add a header block, burying the real change in noise like a rider on a spending bill.\n\nFix it: Rename s to something that says what it does, and keep the rewrite entries in vercel.json as they were. Add error checks to s after each step. Do not mix a reformat with a feature in the same commit."
+    },
+    {
+      "date": "2026-10-24T04:43:44Z",
+      "repo": "mill-ionaire",
+      "sha": "5113dd03865fd9140836bb49ffd223b137bdb423",
+      "message": "Numbers and emoji dies, matching sets, spelling bee, longer words, finishing line",
+      "heckle": "One commit. Numbers, emoji, matching sets, spelling bee, longer words, and a whole finishing line, 169 added lines in mill-ionaire-v2.html in a single push. That is an omnibus bill with a thousand riders and zero committee review. The new test block in mill-ionaire-v2-test.js plays 60 loops and then asserts procs.size is at least 2, a bar so low a toddler would clear it, and it depends on random orders showing up at all. The README paragraph and the how to play dialog now say the same thing twice in different words. Copy paste again, champ.\n\nFix it: Split this into one commit per feature so a bug can be traced. Make the order generator in mill-ionaire-v2.html seedable and assert exact kinds in mill-ionaire-v2-test.js instead of hoping random picks hit. Keep the how to play text in one place and load it into both spots."
+    },
+    {
       "date": "2026-10-23T21:28:22Z",
       "repo": "2026-10-23-orange-smash",
       "sha": "682434a5b31d6e123a14a0d2655c4061a0ba4019",
