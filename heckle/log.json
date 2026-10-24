@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-24T20:54:46Z",
+      "repo": "song-offset-listener",
+      "sha": "ba8238d4c50fa87d0434f6afa45312dfcd3d088f",
+      "message": "Auto pick: remember obscure tracks to skip",
+      "heckle": "One added line in api/auto-pick.js checkTempo and it duplicates the rank check the very next line already does. The previous commit was five minutes old and you already needed a sequel to fix it. This is a bailout for a bailout, and the cache logic now reads like a filibuster transcript with two branches saying the same thing.\n\nFix it: Merge the two rank checks in checkTempo into one condition so the cached path has a single exit. Stop pushing a fix every thirty seconds and test the function once before you commit."
+    },
+    {
+      "date": "2026-10-24T20:54:46Z",
+      "repo": "song-offset-listener",
+      "sha": "dc661741b1ae849cc8b4fb8b79075c05d873587d",
+      "message": "Auto pick: favor songs people know, clean titles",
+      "heckle": "Congratulations, MIN_RANK = 120000 is a magic number dropped in the middle of api/auto-pick.js like a campaign promise with no budget behind it. You also changed what the cache stores, so every old entry has no rank and slips past the filter, and obscure songs get cached with bpm null for thirty days. Did you learn caching from a cereal box?\n\nFix it: Move MIN_RANK to the top of api/auto-pick.js with a comment saying what it means. Version the cache key in checkTempo so old entries without a rank stop leaking through. Cut the thirty day lifetime on the negative cache entry, because one bad lookup should not blacklist a song for a month."
+    },
+    {
+      "date": "2026-10-24T20:54:46Z",
+      "repo": "song-offset-listener",
+      "sha": "29188b5f6f592acaa943f6213561fde3a84825ce",
+      "message": "Auto pick: answer within about 9 seconds",
+      "heckle": "You chopped the time budgets in api/auto-pick.js from eighteen seconds to nine and the wait between batches from 700 to 300 milliseconds, against an API you already know rate limits you. That is not tuning, that is a government shutdown deadline with hope as the strategy. The 6000 to 3000 cutoff for the second page quietly means most requests never get the random page at all.\n\nFix it: Pull the timing numbers in the handler into named constants so the next change is not a guessing game. Respect the one request per second limit on the mb helper instead of hammering it at 300 milliseconds. Log how often the second page is skipped before you decide the budget is right."
+    },
+    {
+      "date": "2026-10-24T20:54:46Z",
+      "repo": "song-offset-listener",
+      "sha": "9255baf98fe8ef4be0051bf6f8164fb10822892d",
+      "message": "Auto pick: time limits so slow lookups return what they have",
+      "heckle": "Magic numbers 6000, 12000, and 18000 are scattered through the handler in api/auto-pick.js, and the ternary inside the for loop condition is unreadable enough to qualify as a hostile act. You also rewrote the retry logic in mb in the same commit, because why would one change per commit ever occur to the intern. Half of these numbers get replaced in the next commit anyway.\n\nFix it: Hoist the deadline checks in the handler loop into a small helper called timeLeft. Keep the retry change in mb in its own commit. Name the constants once so you stop rewriting them."
+    },
+    {
+      "date": "2026-10-24T20:54:46Z",
+      "repo": "song-offset-listener",
+      "sha": "2cd2db2bcc3822755d4af6a89cdaf017fd2c428d",
+      "message": "Auto pick: reset trace each request",
+      "heckle": "The trace array in api/auto-pick.js is a module level variable, so it leaks between requests on a warm edge instance, and your fix is to clear it with trace.length = 0 at the top of the handler. Two concurrent requests will still stomp each other's debug output. It is a shared mutable global in a request handler, which is how you get a bill nobody voted for.\n\nFix it: Make trace a local array inside the handler and pass it into checkTempo. Delete the module level trace entirely once that is done."
+    },
+    {
+      "date": "2026-10-24T20:54:46Z",
+      "repo": "song-offset-listener",
+      "sha": "e32c5ac73df8f40b3a94d4c56485b3c12b3fb3e1",
+      "message": "Auto pick: debug trace",
+      "heckle": "You shipped debug plumbing straight into production in api/auto-pick.js: a ?debug parameter that hands anyone on the internet your candidate pool and the raw error text from the upstream API. A commit titled debug trace is the code equivalent of leaving the scaffolding up and charging rent. Also the trace holds a module level array again, because lessons do not stick.\n\nFix it: Gate the debug output in the handler behind an env flag or strip it before shipping. Stop echoing upstream error JSON back to callers in checkTempo. Keep the trace local to the request."
+    },
+    {
+      "date": "2026-10-24T20:54:46Z",
+      "repo": "song-offset-listener",
+      "sha": "88e2a171cc22684ea6fa6fd317db2657f49ea4eb",
+      "message": "Auto pick: exact tempo per candidate, half and double time count",
+      "heckle": "A thirty line rewrite of checkTempo in api/auto-pick.js that throws away the tempo filtered search you wrote earlier today and replaces it with fetch the track and compute it yourself. You went from batches of six to four, from 48 candidates to 28, and from 400 to 700 milliseconds, all inside one afternoon, like a budget that gets revised every hour. The folds of 1, 2, and 0.5 are fine, but nobody can tell if this version works because the commit stack is a flip flop festival.\n\nFix it: Pick one candidate strategy and write down why in a comment above checkTempo. Add a small test for the half and double time fold math. Stop revisiting batch sizes without numbers from real requests."
+    },
+    {
+      "date": "2026-10-24T20:54:46Z",
+      "repo": "song-offset-listener",
+      "sha": "33ac978fc53cc9250f0acfb66b18468d3ee377b5",
+      "message": "Auto pick: check more candidates per request",
+      "heckle": "Candidates jumped from 16 to 48 and the default spread from 4 to 6 in api/auto-pick.js, so the endpoint now makes up to 48 upstream lookups per request on an edge function. Three commits later you cut it back to 28. This is the fiscal policy of someone who spends first and reads the invoice after.\n\nFix it: Put a hard cap on upstream calls per request in the handler. Make spread a documented default constant. Stop shipping experiments straight to main."
+    },
+    {
+      "date": "2026-10-24T20:54:46Z",
+      "repo": "song-offset-listener",
+      "sha": "6d1f57f82d27542c401bd9f179d7d836cf16c0eb",
+      "message": "Auto pick: songs by genre tag, decade and BPM for Autosmash",
+      "heckle": "A brand new 92 line edge route, api/auto-pick.js, with no tests, a User-Agent string that literally says no-contact-configured to a public API that asks for a real contact, and a pool cache key built from a raw query string. The skip list is a comma separated query parameter, so enough skipped songs will blow the URL length. Ninety two lines landed in one commit and then fourteen minutes of repairs followed, which tells me exactly how much you ran it first.\n\nFix it: Set a real contact in the UA constant at the top of api/auto-pick.js. Move the skip list to a POST body or cap its length in the handler. Add a basic test for the handler's input validation. Run the thing once before you push it."
+    },
+    {
+      "date": "2026-10-24T20:54:46Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "aafdb40e54b6271c025f54341c9e7166ee07b3eb",
+      "message": "Autosmash tab: BPM plus a genre and decade for each side, chains beats",
+      "heckle": "A 187 line addition crammed into one index.html, which is now a single file holding styles, markup, help text, and a whole new tab, like a bill with forty riders nobody read. The modeRow got flex-wrap bolted on so the new tab can spill onto a second row on a phone, which is the cramped mobile layout equivalent of a clown car. The vercel.json rewrite sends /api/auto-pick to a different deployment, so this app now depends on another project's uptime and nobody wrote that down.\n\nFix it: Split the Autosmash script and styles out of index.html into their own files. Check .modeRow in the CSS on a narrow phone, because wrapping tabs on a second row looks broken. Note the cross project rewrite for /api/auto-pick in vercel.json in the README, or move the route into this repo."
+    },
+    {
       "date": "2026-10-24T16:02:22Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "551b0bb6df2a9c9cf201011dbbbcffb29b2d5f5a",
