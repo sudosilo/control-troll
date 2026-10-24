@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-24T23:19:33Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "274c6db67be78c1126ca6d430c2691bbbda10b3b",
+      "message": "Skip Vercel deploys for app-build-only changes",
+      "heckle": "One line in vercel.json and you still managed to build a trap. The ignoreCommand diffs HEAD^ against HEAD, so it only judges the last commit of a push. Push three commits where the first touches index.html and the last touches src-tauri, and Vercel skips the deploy and your page fix vanishes like a campaign promise after the election. Did you test this or just vibe it into existence?\n\nFix it: Compare against VERCEL_GIT_PREVIOUS_SHA instead of HEAD^ in the ignoreCommand in vercel.json. Add api and the root html files to the check explicitly so new folders do not silently count as skippable."
+    },
+    {
+      "date": "2026-10-24T23:19:33Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "0b39fe824348815519325952c382de130c30f013",
+      "message": "Profile: add your own YouTube key, with show button and saved song note",
+      "heckle": "You built a form that asks strangers to paste a Google API key into a page and then ship it to your server in a request header. Brilliant. The paragraph of explainer text in index.html hardcodes 1,400 songs and about 100 searches a day, numbers that will be wrong by Tuesday. The inline styles on that new card are thrown together like a rushed omnibus bill, and the eye button is a raw SVG path pasted in the middle of the markup.\n\nFix it: Drop the hardcoded song count and quota numbers from the profile card in index.html. Move the inline styles into the stylesheet. Say plainly on the card where the key is stored and that it travels to your server. Add an aria label that flips between show and hide on the ytEye button."
+    },
+    {
+      "date": "2026-10-24T23:19:33Z",
+      "repo": "song-offset-listener",
+      "sha": "aea444d81f009f1f0bdc9f946071b09cfbdfaadf",
+      "message": "YouTube search takes a visitor's own key, falls back to the shared one",
+      "heckle": "api/youtube-search.js now lets any anonymous visitor burn through your handler with whatever string matches a regex. A bad personal key means you quietly retry on the shared key anyway, so anyone can force two upstream calls per request and drain the shared quota faster than a government shutdown drains patience. Worse, results cached under the shared key are keyed the same as personal ones, so keyUsed lies on every cache hit. The regex is a length check wearing a trench coat.\n\nFix it: Rate limit the personal key path in api/youtube-search.js. Skip the shared fallback when the personal key fails for quota reasons. Strip keyUsed from the cached object before cacheSet. Never log the x-yt-key header."
+    },
+    {
+      "date": "2026-10-24T23:19:33Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "18a639b77eaade50c9b3dde49e4bfe9bc66326ae",
+      "message": "Android app keeps the page below the status bar and camera",
+      "heckle": "You are writing Kotlin as an array of JavaScript strings inside patch-android.cjs, and that is the most intern thing I have seen all week. The status bar color is hardcoded to a beige hex, and the light status bar flag is forced on regardless of theme, so the day you add a dark mode the icons vanish. Worse, the whole patch hides behind an includes check for mediaPlaybackRequiresUserGesture, so any build that already got the old patch skips the new inset code completely.\n\nFix it: Key the idempotence check in src-tauri/scripts/patch-android.cjs on the inset listener, not the autoplay line. Move the Kotlin into a real template file. Read the background color from one shared constant instead of a hex literal."
+    },
+    {
+      "date": "2026-10-24T23:19:33Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "6c5be28b04553723ce0a45489823e148cdd9bc17",
+      "message": "Android build signs even without secrets and logs which step failed",
+      "heckle": "Missing signing secrets used to stop the build. Now build-apps.yml shrugs, signs with a throwaway build key, and publishes anyway. Congratulations, you invented an update that will not install over the last one, which is the exact problem your own signing script exists to prevent. The failure step also dumps toJSON(steps) into a text file and uploads it to a public release, so your CI internals are now a download link.\n\nFix it: Fail the Check signing key step in .github/workflows/build-apps.yml again when secrets are missing. If you must keep the fallback, never attach it to a release. Upload the build log as a private workflow artifact instead of a release asset, and trim the steps dump to step names and outcomes."
+    },
+    {
+      "date": "2026-10-24T23:19:33Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "63a007f4f54ccb3efb65e24a5f1ff3f07a9cc129",
+      "message": "Start an app build with the signing key in place",
+      "heckle": "The message promises a build with the signing key in place. The diff is one comment in src-tauri/scripts/set-version.cjs getting three extra words. That is not a fix, that is a nudge dressed as work, a ceremonial ribbon cutting for a bridge that does not exist. You edited a comment to trip a path filter on a workflow, and then lied about it in the commit title like a politician explaining a rebate.\n\nFix it: Use the workflow_dispatch trigger already in .github/workflows/build-apps.yml instead of editing comments. Write commit messages that describe what changed. If you need a rebuild, tag it as an empty commit and say so."
+    },
+    {
+      "date": "2026-10-24T23:19:33Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "a24b494a67ef13906bb6b84da333005c0d454a63",
+      "message": "Signing script installs openssl if missing",
+      "heckle": "tools/android-signing.sh now calls pkg install, which only exists on one phone terminal. Run it anywhere else and set -e kills the script with a confusing error, all to fix a missing package on your own device. Meanwhile the script writes the keystore password to password.txt in plain text and then echoes it to the screen. Bold plan for a signing key, very open-government of you.\n\nFix it: Check for pkg, apt-get, or brew before installing in tools/android-signing.sh and print a clear message otherwise. Lock password.txt to mode 600 and stop echoing the password. Tell the user to store it in a password manager, then delete the file after the secret upload."
+    },
+    {
+      "date": "2026-10-24T23:19:33Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "f93533d4879529ec542a64de4a1123cfb87caf49",
+      "message": "Android and Windows app: Tauri wrapper around the live site, built and released",
+      "heckle": "A whole native app that is a browser pointed at your website, 158 lines of workflow, and a tauri.conf.json with csp set to null. You turned off the content security policy on a shell that loads a remote site with microphone permission. The version is 1.0 plus the run number, so every push of a typo fix is a public release. And why does the Windows build ship a downloadBootstrapper install? Hope your users like bailouts.\n\nFix it: Set a real csp in src-tauri/tauri.conf.json that allows only your own origin and the APIs you call. Gate the release job in .github/workflows/build-apps.yml behind workflow_dispatch or a tag so typo fixes do not publish. Pin the actions to commit hashes."
+    },
+    {
+      "date": "2026-10-24T23:19:33Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "19e9bd3702ae810c7bf7869621cc8a2dacebb2b7",
+      "message": "Show page errors on screen",
+      "heckle": "You pasted a debug console into production. Every visitor now gets an orange error box over the bottom of the page, and the build meta tag is hardcoded to 3ff68a8-plus, a version string that is wrong the moment you make another commit. That is not versioning, that is a sticky note. The error handler also appends forever with no cap, so one looping failure fills the screen like an unread terms of service.\n\nFix it: Show the errBar in index.html only when the url has a debug flag. Replace the hardcoded build meta with a value stamped at deploy time or delete it. Cap the bar to the last five messages and add a close button."
+    },
+    {
+      "date": "2026-10-24T23:19:33Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "3ff68a8bb4dd80d0276129a971a26e47a3e43d34",
+      "message": "Never cache the page, so phones always get the newest version",
+      "heckle": "Two header rules in vercel.json for the slash route and index.html, copy pasted with one word changed, which is the full extent of your engineering here. Never cache the page means every phone reloads the whole page every visit, on mobile data, forever, because you could not be bothered to version your files. Your build is a blunt instrument swung like a filibuster, delaying everything to avoid one stale load.\n\nFix it: Merge the two header blocks in vercel.json into one source pattern. Switch to max-age=0 with must-revalidate so conditional requests still return a cheap 304. Use hashed or versioned names for scripts so the cache actually works."
+    },
+    {
       "date": "2026-10-24T20:54:46Z",
       "repo": "song-offset-listener",
       "sha": "ba8238d4c50fa87d0434f6afa45312dfcd3d088f",
