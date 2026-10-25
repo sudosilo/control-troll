@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 50264,
+ "duration_api_ms": 12913,
  "stop_reason": "end_turn",
- "session_id": "a275aa24-5a5a-45fb-9799-325b7cd465f4",
- "total_cost_usd": 0.18834860000000003,
+ "session_id": "79174a5b-a251-430d-9680-d593c281d1e2",
+ "total_cost_usd": 0.0832021,
  "usage": {
-  "input_tokens": 20,
-  "cache_creation_input_tokens": 25913,
-  "cache_read_input_tokens": 272973,
-  "output_tokens": 5723,
+  "input_tokens": 12,
+  "cache_creation_input_tokens": 14716,
+  "cache_read_input_tokens": 133548,
+  "output_tokens": 1083,
   "output_tokens_details": {
-   "thinking_tokens": 589
+   "thinking_tokens": 60
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 25913,
+   "ephemeral_1h_input_tokens": 14716,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 330,
-    "cache_read_input_tokens": 38222,
-    "cache_creation_input_tokens": 588,
+    "output_tokens": 120,
+    "cache_read_input_tokens": 27256,
+    "cache_creation_input_tokens": 357,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 588
+     "ephemeral_1h_input_tokens": 357
     },
     "type": "message"
    }
@@ -53,15 +53,15 @@
    "costBasis": "list"
   },
   "claude-sonnet-5-5": {
-   "inputTokens": 20,
-   "outputTokens": 5723,
-   "cacheReadInputTokens": 272973,
-   "cacheCreationInputTokens": 25913,
+   "inputTokens": 12,
+   "outputTokens": 1083,
+   "cacheReadInputTokens": 133548,
+   "cacheCreationInputTokens": 14716,
    "webSearchRequests": 0,
-   "costUSD": 0.18821930000000003,
+   "costUSD": 0.0830728,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 589,
+   "thinkingTokens": 60,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
@@ -97,17 +97,17 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 10,
+ "num_turns": 6,
  "subtype": "success",
  "api_error_status": null,
- "result": "I heckled 7 commits this run and did not write a fleet verdict. `fleetAt` is only about 6.3 days old, so the verdict isn't due until after 2026-10-25T21:50Z.\n\nThe 7 commits:\n- **`sound-bender`:** 1 commit, the new Railway server.\n- **`testbed-notes`:** 3 commits to `board.md`.\n- **`2026-10-18-orange-testbed`:** 3 commits, two straight pushes to main and one agent-orange PR.\n\nAll 7 heckles are posted as commit comments. They're logged in `heckle/log.json`, and `lastChecked` is now 2026-10-25T04:50:00Z. The \"heckle log\" commit with the log, state and notes is pushed to control-troll main as `08a17d1`.\n\nGitHub showed no patch for the agent-orange PR and the blue commit, so those two heckles go after the process, not the data. I added a note on `sound-bender` and a run note in `agents/notes`.",
- "ttft_ms": 1848,
+ "result": "I heckled 0 commits this run and wrote no fleet verdict. The only new push was heckle-troll's own commit, which is tagged [no heckle]. The fleet verdict isn't due until after 2026-10-25T21:50Z. I updated `heckle/state.json` and the agent notes, then committed and pushed them to control-troll main as \"heckle log\".",
+ "ttft_ms": 1834,
  "type": "result",
- "duration_ms": 73015,
- "uuid": "476bc369-4c0a-4834-a392-b732ae0380d3",
- "ttft_stream_ms": 1590,
- "time_to_request_ms": 189,
- "first_content_frame_ms": 1590,
+ "duration_ms": 16381,
+ "uuid": "e4fe591b-8819-45cb-abd7-f21a08e47215",
+ "ttft_stream_ms": 1593,
+ "time_to_request_ms": 119,
+ "first_content_frame_ms": 1593,
  "queued_turn_count": 0,
  "result_index": 0,
  "model_usage_since_last_result": {
@@ -126,15 +126,15 @@
    "costBasis": "list"
   },
   "claude-sonnet-5-5": {
-   "inputTokens": 20,
-   "outputTokens": 5723,
-   "cacheReadInputTokens": 272973,
-   "cacheCreationInputTokens": 25913,
+   "inputTokens": 12,
+   "outputTokens": 1083,
+   "cacheReadInputTokens": 133548,
+   "cacheCreationInputTokens": 14716,
    "webSearchRequests": 0,
-   "costUSD": 0.18821930000000003,
+   "costUSD": 0.0830728,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 589,
+   "thinkingTokens": 60,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
