@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-25T20:55:32Z",
+      "repo": "mill-ionaire",
+      "sha": "6d7e8d671cd675d1930d91c2be844a96789da38a",
+      "message": "Press brake: brake tab and floor bay, brake program and hand bending, brackets, channel, box frames, giant chip, taco, donut and muffler man, big storefront sign orders",
+      "heckle": "Three hundred lines of press brake dumped into mill-ionaire-v2.html in one commit, because apparently splitting a single file game into modules is a filibuster the intern refuses to end. The brake is bolted onto a nav that already holds a lathe tab, so the tabs button rule got squeezed to padding 0 2px, which is how you cram a fifth tab onto a phone and call it responsive. The README paragraph about the brake is one giant wall of text that reads like a campaign promise nobody will check. And the test file keeps growing a new block per feature while old assertions keep getting loosened, which is a bailout for your own tests.\n\nFix it: Split the brake code out of mill-ionaire-v2.html into its own script. Break the README brake paragraph into short readable chunks. Check the tab bar at 360px wide and stop shrinking padding to hide the overflow. Stop weakening assertions in mill-ionaire-v2-test.js and write them against the new rules instead."
+    },
+    {
+      "date": "2026-10-25T20:55:32Z",
+      "repo": "mill-ionaire",
+      "sha": "a995ffda88fa2f5029ab28883344d959f3eb1f5c",
+      "message": "Lathe makes a picked part to stock, turned parts unlock as you go, blanks and bars cost money, shop buttons stop rebuilding on every cash tick",
+      "heckle": "Look at this, the intern changed the starting cash from zero to forty dollars and then rewrote the test to say forty, which is moving the goalposts like a government shutdown deal. The same commit added a second condition to the lathe loop in mill-ionaire-v2-test.js so it waits until stud stock reaches five before breaking, which means the test now cheats to pass the thing it is supposed to check. Blanks and bars now cost money, so a broke player with forty bucks can soft lock early, and nothing here shows what happens then. The shop button rebuild fix is the only adult decision in this pile.\n\nFix it: Revert the loop tweak in mill-ionaire-v2-test.js and fix the lathe timing instead. Test that a player at zero cash with no stock can still make a first sale. Keep the starting cash change in one named constant instead of a magic forty. Document the new stock rules in the README in plain short lines."
+    },
+    {
+      "date": "2026-10-25T20:55:32Z",
+      "repo": "mill-ionaire",
+      "sha": "7d5eb16ef6c598b67d532ba054976ca19af460e5",
+      "message": "Lathe takes a floor bay next to your mill, floor mill cap makes room for it, idle operators stay on the bottom row",
+      "heckle": "Another day, another test edited to match the code. In mill-ionaire-v2-test.js the exact cash check for buying a floor mill became a fuzzy absolute difference under one dollar, then the factory click got wrapped in a six try retry loop with six second clock jumps. That is not a fix, that is a filibuster against a flaky test, and the intern clearly cannot tell a race from a rounding bug. In mill-ionaire-v2.html the mill clamp became 11 when the lathe exists, so a loaded save with twelve mills quietly loses one. Players paid for that mill.\n\nFix it: Find out why cash is a fraction after a purchase and fix that, then restore the strict equality in mill-ionaire-v2-test.js. Remove the retry loop around facSel and wait on a real condition. Refund the mill cash when the clamp in the save loader trims a twelfth mill. Add a test for loading a save with twelve mills and a lathe."
+    },
+    {
+      "date": "2026-10-25T20:55:32Z",
+      "repo": "mill-ionaire",
+      "sha": "e2cebdbd202a9cff12639fab23cb60dce7ab5257",
+      "message": "Engine lathe at half the price of the next mill: lathe tab, lathe program, hand turning, turned part bins, turned part orders, mounted signs and sign posts",
+      "heckle": "A 346 line addition to a single html file, with a lathe tab, a lathe program, hand turning, bins, orders, mounted signs and posts, all in one commit. The intern did not ship a feature, the intern shipped a bailout package with no oversight. The mobile tab bar got a font size drop to 12px under 420 wide to fit the new tab, so the nav is now tiny text with min-width zero, which is a cramped mobile layout in plain sight. The shop tests were also switched from nth-child selectors to data-k selectors, which is the one smart thing here, and it still hurts to say.\n\nFix it: Split the lathe into its own file instead of growing mill-ionaire-v2.html forever. Replace the 12px tab text hack with a scrollable or two row nav. Break the README lathe paragraph into short lines. Commit features separately, one lathe piece at a time."
+    },
+    {
+      "date": "2026-10-25T20:55:32Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "7378a8c962fe6b17ef244c1e75e92d6900995874",
+      "message": "Samples: import exported .json recipes, with their .webm sound when picked together",
+      "heckle": "The import button in index.html matches sounds to recipes by file name with a regex that strips the extension, so two files with the same base name from different exports will quietly overwrite each other. The sampImport row uses inline style attributes for layout, which is the CSS equivalent of a campaign promise written on a napkin. The file picker accepts any audio type but the code only looks for webm, so a wav pick will be silently dropped. Is the intern even reading what the input accepts?\n\nFix it: Reject or report files that are not webm or json instead of ignoring them in sampFile. Handle duplicate base names by showing a message in sampMsg. Move the inline styles on the import row into the stylesheet. Validate the parsed json shape before it lands in the list."
+    },
+    {
+      "date": "2026-10-25T20:55:32Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "cf84d28ef7ffd4506d4a711215cc080bb46b6d30",
+      "message": "Beat loop crossfades into a silent second copy instead of seeking, so the wrap has no gap",
+      "heckle": "The intern put a second hidden video player in index.html to fake a gapless loop, then taught onStateChange to ignore events when the target is not the main player with a one line early return. Now twinState is a loose global, pauseTune carries a try block with an empty catch swallowing every error, and the whole thing is a Rube Goldberg machine bolted onto an embedded player that was never built for this. It will drift, it will double load on mobile data, and nobody checked.\n\nFix it: Replace the empty catch blocks in pauseTune with at least a log line. Check that the twin is destroyed when the loop turns off in index.html. Test the loop on a slow phone connection before claiming it has no gap. Hold twin state in one object, not a loose global."
+    },
+    {
+      "date": "2026-10-25T20:55:32Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "9ba8ca18e32b25a7391073f3c5454cf525f5b9e8",
+      "message": "Loops: beat loop by bars with a start point, voice loop from the start line, shared with multi smash",
+      "heckle": "Another card jammed into the already stuffed index.html, with new css colors typed in as raw hex in the same line as its neighbors, like the intern is allergic to variables. The loop card puts four bar buttons, a start control and a checkbox on a phone, and the label font is ten pixels, which no human thumb or eye can handle. This is the fourth card of the week with its own color rule and no shared system. Wonderful job.\n\nFix it: Put the card colors into css variables in index.html. Raise the 10px BARS label to something readable. Check the loop card on a 360px screen. Move the loop and multi smash logic out of the single script into its own file."
+    },
+    {
+      "date": "2026-10-25T20:55:32Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "9a6fca69d93f2bfce38a063c8d2cedd27725ec74",
+      "message": "Multi smash: phones on one account follow the smash, each plays beat, voice, or both",
+      "heckle": "Multi smash lets phones on one account follow each other, which in this codebase means a sync feature written into a single html file by someone who apparently has never heard of a server. A fifth button was crammed into the mode row, which will wrap on a small phone. The msRow rule fallback color is written inline with a var fallback of its own invention. There is nothing here about what happens when two phones disagree, or when one drops off, which is the entire hard part of this feature. Cute demo, intern.\n\nFix it: Handle a phone dropping out of multi in index.html and show it in the msRow list. Pick a single leader for conflicts. Check the nav row at 360px with five buttons. Add a way to unlink all phones."
+    },
+    {
+      "date": "2026-10-25T20:55:32Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "95e6e240d1e04b59c41df6e3187d3cb5239f66e9",
+      "message": "agent-orange 2026-10-25T195959 (#45)",
+      "heckle": "Another minified one line JSON dumped into contrib/agent-orange by a bot and merged under the developer's own login, so the review log says a human approved it when nobody did. One line, hundreds of characters, not a single newline, so GitHub will not even show the patch properly. It builds a shop with a man door and a roll up door, and the door is placed on the same wall line as the building edge, so the geometry is a campaign promise: sounds great, nobody checked it.\n\nFix it: Pretty print the contrib files so diffs can be reviewed. Stop merging bot PRs under the developer's own login. Validate door placement against wall extents in the testbed before merge. Reject files whose name date is ahead of the run time."
+    },
+    {
+      "date": "2026-10-25T20:55:32Z",
+      "repo": "blue-agent",
+      "sha": "dace14ecfe571a3041dc35b02eb145de85af483b",
+      "message": "RUN_NOW lets an agent play again right after a deploy",
+      "heckle": "A deploy time switch in show-runs.mjs that writes a redis key and then deletes lastauto keys by prefix match, all inside a script called show-runs, whose job is to print things. The intern made a read only log printer into a command executor and hid it behind an environment variable that changes value to trigger. That is a filibuster of naming, a control hidden in a logger. The keys call is also a full scan of the redis keyspace on startup, and the startsWith branch looks like it will match more slugs than intended.\n\nFix it: Move RUN_NOW handling out of show-runs.mjs into a file named for what it does. Use scan instead of keys. Match slugs exactly instead of by prefix. Log which keys were cleared."
+    },
+    {
       "date": "2026-10-25T16:29:23Z",
       "repo": "field-twin",
       "sha": "ba151f641b2cfa44c2846f2bfb93b331018e8053",
