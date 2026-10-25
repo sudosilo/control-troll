@@ -138,7 +138,30 @@
   "sudosilo/gladhand-dockyard@v2026.10.13",
   "sudosilo/gladhand-dockyard@v2026.10.12",
   "sudosilo/scope-listener@v2026.10.14",
-  "sudosilo/scope-listener@v2026.09.22"
+  "sudosilo/scope-listener@v2026.09.22",
+  "sudosilo/free-as-in-links@v2026.10.14",
+  "sudosilo/free-as-in-links@v2026.10.11",
+  "sudosilo/axiom@v2026.10.14",
+  "sudosilo/axiom@v2026.10.11",
+  "sudosilo/looper@v2026.10.14",
+  "sudosilo/looper@v2026.10.11",
+  "sudosilo/looper@v2026.04.20",
+  "sudosilo/spectral-engine@v2026.10.14",
+  "sudosilo/spectral-engine@v2026.10.11",
+  "sudosilo/spectral-engine@v2026.09.02",
+  "sudosilo/final-vector@v2026.10.14",
+  "sudosilo/final-vector@v2026.10.06",
+  "sudosilo/final-vector@v2026.09.10",
+  "sudosilo/field-twin-viridian@v2026.10.15",
+  "sudosilo/stompbox-lab@v2026.10.15",
+  "sudosilo/stompbox-lab@v2026.10.14",
+  "sudosilo/stompbox-lab@v2026.10.11",
+  "sudosilo/hoofer-sync@v2026.10.15",
+  "sudosilo/hoofer-sync@v2026.10.14",
+  "sudosilo/inkrunner@v2026.10.17",
+  "sudosilo/tapperator@v2026.10.17",
+  "sudosilo/mohave-wtf@v2026.10.17",
+  "sudosilo/tickle-boxie@v2026.10.17"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -1098,6 +1121,124 @@
     "audio",
     "music",
     "oscilloscope",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/free-as-in-links": {
+   "d": "A plain index of free, useful links that hosts nothing itself.",
+   "h": "https://free-as-in-links.vercel.app",
+   "t": [
+    "links",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/axiom": {
+   "d": "A browser synthesizer that can sync with a band of phones.",
+   "h": "https://axiom-eight-xi.vercel.app",
+   "t": [
+    "band-sync",
+    "music",
+    "synthesizer",
+    "vercel"
+   ]
+  },
+  "sudosilo/looper": {
+   "d": "A pad based loop recorder with band sync and ready made grooves.",
+   "h": "https://looper-sooty.vercel.app",
+   "t": [
+    "band-sync",
+    "looper",
+    "music",
+    "vercel"
+   ]
+  },
+  "sudosilo/spectral-engine": {
+   "d": "Twelve music visualizers that can follow a shared band.",
+   "h": "https://spectral-engine.vercel.app",
+   "t": [
+    "band-sync",
+    "music",
+    "vercel",
+    "visualizer"
+   ]
+  },
+  "sudosilo/final-vector": {
+   "d": "A browser game called Who Is The Final Victor.",
+   "h": "https://final-vector-six.vercel.app",
+   "t": [
+    "canvas",
+    "game",
+    "vercel"
+   ]
+  },
+  "sudosilo/field-twin-viridian": {
+   "d": "A field twin app that reads plates and keeps a list of sightings.",
+   "h": "",
+   "t": [
+    "field",
+    "plate-reader",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/stompbox-lab": {
+   "d": "A pedal board and synth with grooves that play across many phones.",
+   "h": "https://stompbox-lab.vercel.app",
+   "t": [
+    "band-sync",
+    "music",
+    "pedals",
+    "vercel"
+   ]
+  },
+  "sudosilo/hoofer-sync": {
+   "d": "A dance floor with a dancer for each phone in the band room.",
+   "h": "",
+   "t": [
+    "band-sync",
+    "dance",
+    "music",
+    "vercel"
+   ]
+  },
+  "sudosilo/inkrunner": {
+   "d": "A comic ink cold gas driving sim with tricks and lap ghosts.",
+   "h": "",
+   "t": [
+    "driving",
+    "game",
+    "simulator",
+    "vercel"
+   ]
+  },
+  "sudosilo/tapperator": {
+   "d": "A steering wheel drum kit with calibration, a looper, and room sync.",
+   "h": "",
+   "t": [
+    "drums",
+    "looper",
+    "music",
+    "vercel"
+   ]
+  },
+  "sudosilo/mohave-wtf": {
+   "d": "A retro styled software catalog that lists the developer's apps.",
+   "h": "",
+   "t": [
+    "catalog",
+    "retro",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/tickle-boxie": {
+   "d": "A talk box studio with separate mic and speaker choice.",
+   "h": "",
+   "t": [
+    "audio",
+    "music",
     "tool",
     "vercel"
    ]
