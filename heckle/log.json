@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-25T21:47:04Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "f49c44f8c76e99990c22102039fb22fd15d9a9b3",
+      "message": "All-voice songs count as their own acapella; 100 song a cappella seed list; Autosmash accepts both kinds",
+      "heckle": "You committed a 100 line a cappella list to tools/lists/acappella.txt that is mostly one group over and over, so the seed list is a fan page, not a data set. Then ALL_VOICE_ARTISTS in index.html hardcodes a list of group names into a regex, so every new singing group needs a code push, the exact opposite of data driven. The NO_VOCALS regex next to it already looks like a cat walked on a keyboard, and now there is a second one. Seed-cache.sh gets a special case for acappella that copies the classical case line for line. Copy paste is your whole architecture.\n\nFix it: Move the artist names out of the ALL_VOICE_ARTISTS regex into a list file. Add variety to tools/lists/acappella.txt so one group does not own the seed. Fold the acappella and classical cases in seed-cache.sh into one setting."
+    },
+    {
+      "date": "2026-10-25T21:50:58Z",
+      "repo": "mill-ionaire",
+      "sha": "7709947f1c5d9619d819fcb982b7ec5f509ac6db",
+      "message": "Inventory: tap any bin to see every finish in it with counts and what open orders want, part bins show pictures, labeled sections",
+      "heckle": "The bin detail view lands as 70 lines of HTML and CSS in mill-ionaire-v2.html, a single file that now holds the whole game, all styles, and every rule like a bloated omnibus bill nobody read. The drow grid uses fixed pixel columns of 48px, 40px and 28 percent, which will get squeezed on a narrow phone and wrap the counts into the labels. The test checks text with regexes like open orders want [2-9], which would pass if the number was wrong anywhere in that range. Tests that pass on almost right are how this repo ended up loosening the asserts every other commit.\n\nFix it: Make the drow grid in mill-ionaire-v2.html responsive so counts stay readable at phone width. Tighten the open orders regex in mill-ionaire-v2-test.js to the exact expected number. Split the CSS into its own file before the next feature."
+    },
+    {
+      "date": "2026-10-25T22:00:43Z",
+      "repo": "song-offset-listener",
+      "sha": "23bca0f6e4a53977aeae81976eceab0da2a3499f",
+      "message": "Loudness maps for instrumentals, made on the phones; saved-song picks accept any genre and a count",
+      "heckle": "api/energy.js takes a POST that stores a loudness map for any video id and sends Access-Control-Allow-Origin star on everything. From what the diff shows there is no key, no token and no check on who is posting, so any stranger on the internet can write junk maps into your Redis, the same way a campaign donor writes a bill. The handler also wraps the whole thing in a catch that returns status 200 with the error text, so every failure looks like a success to monitoring. The queue GET refills itself from saved searches inside a request, which will be slow on an edge function.\n\nFix it: Require a shared secret header on the POST in api/energy.js and reject the rest. Return a real error status from the catch in handler. Clamp the length of the total and voice arrays before storing them."
+    },
+    {
+      "date": "2026-10-25T22:00:45Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "ed2ad60218aa6f80b134d98149916fd3d89ffbcf",
+      "message": "Suggest: scores start lines and drop bars from lyrics, BPM and the beat's loudness map; phones make the maps",
+      "heckle": "Suggest ships in one commit with 150 lines in index.html, a new bash script, tools/energy-map.sh, and a vercel.json rewrite, which is a whole feature stuffed into one lunch bag. The script downloads audio with yt-dlp onto a phone, loops forever with a sleep of 30 minutes, and posts numbers to a hardcoded deploy URL. The setup script s now upgrades every package on the phone when in energy mode, a full apt-get upgrade on a loop that tries again until it works. That is not a setup script, that is a hostage situation. Also the ffmpeg astats pipeline is one unreadable string of filters, and a failure just gets cut to 100 characters.\n\nFix it: Pull the hardcoded API URL in tools/energy-map.sh into one variable at the top of s. Drop the full apt-get upgrade from s. Split the Suggest card from the loudness map code into separate commits next time."
+    },
+    {
+      "date": "2026-10-25T22:34:53Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "7fe91f49e66b0cf0a5cdfc93d242fed46b8be5cd",
+      "message": "Live smash: NEXT clears the locked song, beat and donor, goes quiet and listens again",
+      "heckle": "A NEXT button in index.html whose label says NEXT on the key and CLEAR in the keyLabels row under it, so the same control has two names on one screen. Pick one. The handler clears the locked song, beat and donor, goes quiet and listens again, all buried in the 2400 range of a file that already reads like a ransom note of added features. The live bar is now five keys wide on a phone, and I see no layout change to stop them cramming together. Those keys were already tight, and now the intern added another and hoped for the best.\n\nFix it: Use the same word for the button and its label. Check the liveNextBtn row at phone width and let it wrap or shrink. Move the NEXT handler into its own named function instead of piling it into the acapella state block."
+    },
+    {
+      "date": "2026-10-25T22:40:45Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "6015ee5ac5e4076f7501857e75ac5dddf45e8165",
+      "message": "Phone setup always takes the newest scripts, even if the phone's copy was changed",
+      "heckle": "One line changed in the file named s, and the best part is the file is named s. A single letter, in a repo with README grade names everywhere else, as if saving a keystroke on the phone was worth making every future reader guess. The change swaps git pull for fetch plus reset --hard origin/main, which means any local edit on the phone gets erased with no warning. That is fine until the day the phone has a note or a config you wanted. It also hardcodes main, and the older repos mostly use master, so copy this pattern and it breaks.\n\nFix it: Rename s to something like phone-setup.sh and update every place that curls it. Print a warning before the reset --hard wipes local changes. Read the default branch name instead of hardcoding origin/main."
+    },
+    {
+      "date": "2026-10-25T23:01:08Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "4fdcbbc04a9833b95fad4977bc24b0db5666c738",
+      "message": "Profile: separate Create account form with name and password check, plus New account when signed in",
+      "heckle": "Another 33 lines shoved into renderProfile() in index.html, which now builds a sign in tab, a create account tab, and a pile of string concatenated HTML inputs in one function like a clown car with a keyboard. The profMode global decides what shows, and the markup is glued together with plus signs, so one stray quote and the profile panel dies. A password check living in the same function that paints the form means you test it by tapping buttons on your phone. Nobody told the intern that forms exist as a concept.\n\nFix it: Split renderProfile() into a sign in view and a create account view. Move the name and password check into a small function you can test on its own. Use a template or DOM calls instead of string plus string for the profIn inputs."
+    },
+    {
+      "date": "2026-10-25T23:03:31Z",
+      "repo": "testbed-notes",
+      "sha": "e36a5cae2ee7abcb024590bb413464d0b1cbfd5d",
+      "message": "dq-violet-opus note",
+      "heckle": "A nine line status memo appended to board.md, which makes it the fifth memo in a file that is basically a campaign promise list nobody delivers on. It says none of the morning commissions are done and all stay open, then reissues the same P1 through P4 list with two coordinates changed. That is not a note, that is a government shutdown extension. The board has no done markers, no dates on the old commissions, and no way to tell which asks are stale, so the file only grows. The intern is also committing as a different name than the login, which makes the history a puzzle nobody asked for.\n\nFix it: Move finished and stale commissions out of board.md into an archive section. Mark each open commission with the date it was issued. Replace the repeat list with a one line diff when nothing changed."
+    },
+    {
+      "date": "2026-10-25T23:10:10Z",
+      "repo": "mill-ionaire",
+      "sha": "72a75f839c8ab20a81710dde963db7e5314ee6be",
+      "message": "Broke shops keep their own mill running on scrap rack stock and free power",
+      "heckle": "You changed what a broke shop can do, and instead of fixing the test you deleted the half of it that failed. In mill-ionaire-v2-test.js the assertion that a broke shop cannot drop a brass blank it cannot pay for is gone, and in its place is one saying it can, which is a bailout dressed up as a bug fix. Last time it was loosened the other direction, so this test now follows your game balance around like a lost puppy. The README line got hacked off mid sentence too, so the docs now stop talking right when they get interesting, like a budget negotiation.\n\nFix it: Decide the broke shop rule once and write it down in the README with a finished sentence. Keep the aluminum offcut assertion in mill-ionaire-v2-test.js so the floor stays tested. Stop retuning numbers and rewriting the test in the same commit."
+    },
+    {
+      "date": "2026-10-25T23:12:04Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "00e27b95fe431b9d332923ad99a0e6743eb465f1",
+      "message": "Acapella: follow the real speed when an upload refuses to change speed, and stop seek loops on slow streams",
+      "heckle": "You bolted acaRateLocked onto appliedRate() in index.html like a guy taping a second steering wheel to a car that already drifts. The same file now has a pile of module level globals, acaSeeks, acaRateSet, acaRateLocked, and you reset all three by hand in two separate places, findAcapella and pickAca. Miss one in a future edit and the app plays at a ghost speed. A single file with 2900 lines and no tests is a filibuster written in HTML. The slow stream seek loop fix is a guess wearing a timeout, and I see no proof it works anywhere but your phone.\n\nFix it: Put the acapella state in one object with a reset function so findAcapella and pickAca call the same thing. Split the acapella player code out of index.html into its own script. Add a test for the rounded speed path, since a bug here is silent."
+    },
+    {
       "date": "2026-10-25T20:55:32Z",
       "repo": "mill-ionaire",
       "sha": "6d7e8d671cd675d1930d91c2be844a96789da38a",
