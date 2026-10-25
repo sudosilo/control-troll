@@ -1,6 +1,34 @@
 {
   "heckles": [
     {
+      "date": "2026-10-25T16:29:23Z",
+      "repo": "field-twin",
+      "sha": "ba151f641b2cfa44c2846f2bfb93b331018e8053",
+      "message": "End of day debriefs: Claude writes a prose debrief from the day log, replies saved with the day and fed into later debriefs",
+      "heckle": "Congratulations, the intern built a diary that phones home to a paid model, then hardcoded a street address, a workplace and a commute story into DEBRIEF_PROMPT in fieldtwin-api/server.js, so a personal life now lives in source like a campaign promise nobody audited. The /debrief route falls back to VISION_MODEL on any 4xx, so a bad request just burns money twice. In index.html the new debrief category has to be filtered out by hand in ICON_CHOICES, computeTrophies and the stats chrono list, three copies of one idea, which means you will forget the fourth. Did a cereal box teach you that?\n\nFix it: Move the address and commute details out of DEBRIEF_PROMPT in server.js into an env var or per user setting. Add a rate limit and spend cap to the /debrief route. Retry on the fallback model only for model errors, not every 4xx. Replace the three hidden category filters in index.html with one helper."
+    },
+    {
+      "date": "2026-10-25T16:29:23Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "f21397fd6e2f8137c21b685c472c4dcf175cb3d6",
+      "message": "detailer 2026-10-25 (#44)",
+      "heckle": "Another day, another detailer file, and the intern merged a pull request containing one line of minified JSON like it was a filibuster ending in a voice vote. In contrib/detailer/2026-10-25.json the first call hides a person because it slid along a path while sitting, and the next places a new person with a hand typed loop path and a speed of 9000 on a night bus. So the agent deletes its own mess and redraws the same mess, which is the government shutdown of scene editing. Nobody can review a patch that is one endless line, and you clearly did not try.\n\nFix it: Write contrib/detailer files with one call per line so the diff is readable. Stop the detailer from hiding and re placing the same person in one turn. Generate looping bus paths from a few waypoints instead of pasting every arc point. Have the merge job reject PRs where the steward already drew the object that day."
+    },
+    {
+      "date": "2026-10-25T16:29:23Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "40f2110fe3749166996c41d31a1667555bd2e0aa",
+      "message": "steward 2026-10-25 (#43)",
+      "heckle": "The steward filed a pull request that is a single minified line in contrib/steward/2026-10-25.json, which is how you hide a bailout inside an omnibus bill. It is a pile of place_hatch crosswalk calls, each with the same hand typed spacing of 610 and the same meta excuse that the steward completes the crosswalk across the street. The rectangles for Saguaro Road and Mesquite Street are copied number for number with only offsets changed, so this is copy paste with a coordinate hangover. You merged it without a glance.\n\nFix it: Pretty print the contrib/steward JSON so reviewers can read it. Generate crosswalk hatches from the intersection list instead of pasting rectangles. Check for an existing crosswalk before placing a new one. Reject merges whose patch cannot be read in the diff view."
+    },
+    {
+      "date": "2026-10-25T16:29:23Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "30bc506c10fec521b49facb43a932c0d964c8196",
+      "message": "agent-orange 2026-10-25T135940 (#42)",
+      "heckle": "Agent orange pushed one more minified line of place_hatch calls in contrib/agent-orange/2026-10-25T135940.json, and the intern waved it through like a rubber stamp senator. Every classroom at the elementary school gets its own identical square of cross hatch, same spacing of 305, same color pair, with only the x offsets nudged by hand. That is a floor plan made by someone who discovered copy and paste and never looked back. It is one unreadable line, so no human can check whether rooms overlap or hall gaps line up.\n\nFix it: Emit one hatch per line in contrib/agent-orange so diffs show something. Build room floors from a list of room names and widths in one helper. Add an overlap check before merge for hatches in the same building. Stop merging agent PRs without opening at least one."
+    },
+    {
       "date": "2026-10-25T04:50:00Z",
       "repo": "testbed-notes",
       "sha": "cd4a159dcd6787446d8d4ced37be26853b48c0aa",
