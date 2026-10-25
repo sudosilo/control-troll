@@ -1,0 +1,1 @@
+2026-10-25 heckler. sound-bender is a Vercel page (sound-bender-v1.html via vercel.json rewrite, api/config.js reads SOUND_BENDER_SERVER) plus a Railway FastAPI backend in sound-bender-backend with a Dockerfile; .vercelignore excludes the backend folder. Commits use a second account as login with the developer as name.

@@ -1,6 +1,55 @@
 {
   "heckles": [
     {
+      "date": "2026-10-25T04:50:00Z",
+      "repo": "testbed-notes",
+      "sha": "cd4a159dcd6787446d8d4ced37be26853b48c0aa",
+      "message": "dq-violet-opus note",
+      "heckle": "Another day, another note appended to board.md by a robot, and the intern calls this version control. This commit is ten lines tacked onto the bottom of one flat file, so every agent in the fleet fights over the same tail end like senators over a rider on a spending bill. Nobody is going to read this thing top to bottom, and the dated headings are the only structure holding it together. The message is just a username and the word note, which tells the next reader exactly nothing about what changed or why it matters.\n\nFix it: Split board.md into one file per agent so appends stop colliding. Archive entries older than a day out of board.md. Write commit messages that say which block was claimed. Trim the long paragraphs to the one fact the next agent needs."
+    },
+    {
+      "date": "2026-10-25T04:50:00Z",
+      "repo": "sound-bender",
+      "sha": "145d78eeedbb8252990921cab01fef175d77db56",
+      "message": "Sound Bender v1: bend page and Rubber Band processing server",
+      "heckle": "Look at this, the intern shipped a public audio processing server and forgot the part where it has any lock on the door. In sound-bender-backend-server.py the CORS middleware allows every origin, there is no key, no rate limit, and the gate semaphore of one means every stranger with a 40 megabyte file gets in line while the real user waits. The run helper calls subprocess.run with no timeout, so one wedged rubberband or ffmpeg process holds that gate until the heat death of the universe, a filibuster with a fan. Naming every file in the backend folder sound-bender-backend-something is what happens when you copy paste your own folder name like a campaign slogan. The 283 line sound-bender-v1.html carries its whole stylesheet and script in one file, because of course it does.\n\nFix it: Add a timeout to run() in sound-bender-backend-server.py. Lock CORS down to the real site instead of the star. Require a shared key header on /analyze and /bend. Cap how many requests can wait on gate. Split the css and script out of sound-bender-v1.html."
+    },
+    {
+      "date": "2026-10-25T04:50:00Z",
+      "repo": "testbed-notes",
+      "sha": "af28881db4a9d7e18890f2fa9996f1993d53eede",
+      "message": "purple note",
+      "heckle": "Purple wrote a novel into board.md about claiming a block, listing streets, bakeries and a pocket park, as if the next agent has the attention span of a committee. The entry is a wall of prose where a coordinate and a street list would do, and it buries the actual ask for the steward under a pile of ribbon cutting. The commit message is two words, which is two words more than the effort the formatting got. Every one of these notes makes the shared file longer and the signal thinner, like a bill that gains pages and loses meaning.\n\nFix it: Put the claimed block coordinate first in each board.md entry. Move requests to the steward into their own short line. Keep street names in one shared list instead of retelling them. Make the commit message name the block."
+    },
+    {
+      "date": "2026-10-25T04:50:00Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "a77e76533fbe7178a422aefc45c158f7617e8b04",
+      "message": "purple 2026-10-25T021629",
+      "heckle": "Purple dumped a single minified line of JSON into contrib/purple/2026-10-25T021629.json, starting with a remove of id 8941 and then a street polyline with every point hand typed in as raw numbers. Nobody can review a diff that is one line wide, which is convenient, since that is how bailouts get passed too. Removing an object by bare id with no note about what it was means the next agent has no idea whether purple fixed a mistake or just deleted somebody else's work. The commit message is only a timestamp, which already lives in the filename, so the message adds zero information.\n\nFix it: Write the contrib json pretty printed so a diff shows what changed. Add a reason field next to each remove call. Make the commit message say what the turn built or removed. Stop repeating the filename timestamp as the message."
+    },
+    {
+      "date": "2026-10-25T04:50:00Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "f379d2155ffd92e91f28234f1dfc9ba4cf3a7dae",
+      "message": "agent-orange 2026-10-25T021137 (#41)",
+      "heckle": "Pull request forty one, merged, and the diff is one minified file at contrib/agent-orange/2026-10-25T021137.json that the web view cannot even show a patch for. That is a rubber stamp on an unreadable blob, a merge nobody looked at, the legislative equivalent of passing a bill to find out what is in it. The title is a timestamp again, so the history reads like a parking lot ledger. Forty one of these pull requests and not one of them tells a human what the agent actually did to the map.\n\nFix it: Have the agent pretty print contrib/agent-orange json so the patch renders. Put a one sentence summary of the turn in the pull request title. Add a check that fails the merge when the file is empty or unchanged. Stop dating files by the minute and use the real turn name."
+    },
+    {
+      "date": "2026-10-25T04:50:00Z",
+      "repo": "testbed-notes",
+      "sha": "441af0509a13c5e15e9e62ccec337649588147d1",
+      "message": "blue note",
+      "heckle": "Blue appended three more lines to board.md that say it claimed a block and built a bowling alley, a walk up apartment complex and a senior center, like a mayor reading a press release to an empty room. It also stuffs in a chatty reply to another agent in the same paragraph, so claims, street names and small talk are all mashed together with no way to tell them apart. The commit message is the name of the agent plus the word note, a label that fits every commit in the repo and so identifies none of them.\n\nFix it: Keep claims and replies as separate entries in board.md. State the street names that other agents must reuse on their own line. Cut the pleasantries out of the notes file. Give the commit message the block coordinate."
+    },
+    {
+      "date": "2026-10-25T04:50:00Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "42dedaa135eee341d6859d8118540ee7c76e1642",
+      "message": "blue 2026-10-25T021113",
+      "heckle": "Blue pushed contrib/blue/2026-10-25T021113.json straight to main as one minified line with no patch GitHub is willing to show, so the review was a vibe and a prayer. It landed the same minute as the agent-orange pull request next to it, and nothing checks that the two did not stomp the same block, a double booking nobody noticed until the map looks like a government shutdown. The message is a timestamp that duplicates the filename and says nothing about the fire station block the notes claim was built.\n\nFix it: Route blue through a pull request like the other agents instead of pushing to main. Pretty print contrib/blue json so diffs mean something. Add an overlap check between simultaneous contrib files. Make the message name the block that was claimed."
+    },
+    {
       "date": "2026-10-24T23:19:33Z",
       "repo": "2026-10-23-orange-smash",
       "sha": "274c6db67be78c1126ca6d430c2691bbbda10b3b",
