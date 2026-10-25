@@ -1,266 +1,292 @@
 {
  "jobs": [
   {
-   "repo": "synth",
-   "releases": [
-    {
-     "tag": "v2026.10.11",
-     "target": "56a56f03b94789cad1c7a7d7434a155bd1cb7a4e",
-     "name": "Axiom Synth 2026-10-11",
-     "body": "Released version two of the synth with new themes and a pass of bug fixes."
-    }
-   ],
-   "description": "A browser synthesizer with several color themes for playing sounds.",
-   "homepage": "",
-   "topics": [
-    "music",
-    "synthesizer",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "ether-wand",
-   "releases": [
-    {
-     "tag": "v2026.10.11",
-     "target": "d546fab627d2346a0ad4a9b0ee1439cfc8e9f434",
-     "name": "Ether Wand 2026-10-11",
-     "body": "Added room codes so players can join a shared room. Added a choice of sound voices."
-    },
-    {
-     "tag": "v2026.10.10",
-     "target": "270e98683f77f44bc0d9b3dfb03ef7a75ad8024c",
-     "name": "Ether Wand 2026-10-10",
-     "body": "Added a light theme and triggered a fresh deploy."
-    }
-   ],
-   "description": "A phone instrument where tilting and shaking the phone plays a tone.",
-   "homepage": "https://ether-wand.vercel.app",
-   "topics": [
-    "music",
-    "instrument",
-    "phone",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "pajamastan-invoices",
-   "releases": [
-    {
-     "tag": "v2026.10.12",
-     "target": "9f906302ea292c8b2a8ecfada3cb3ba5c9ddadfe",
-     "name": "Pajamastan Invoices 2026-10-12",
-     "body": "First release. Seller and buyer invoices with a Pajamastan letterhead tab."
-    }
-   ],
-   "description": "Seller and buyer invoices with a Pajamastan letterhead tab.",
-   "homepage": "",
-   "topics": [
-    "pajamastan",
-    "invoices",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "torque-converter",
-   "releases": [
-    {
-     "tag": "v2026.10.12",
-     "target": "d7fa7ce16842939e419562ceb405a3e23c9a50cb",
-     "name": "Torque Converter 2026-10-12",
-     "body": "First release. A torque converter with a bolt spec lookup. Added a creator seal and triggered a production build."
-    }
-   ],
-   "description": "Converts torque between newton meters, foot pounds, and inch pounds.",
-   "homepage": "https://torque-converter.vercel.app",
-   "topics": [
-    "tool",
-    "mechanics",
-    "converter",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "irrigation-demo",
-   "releases": [
-    {
-     "tag": "v2026.10.12",
-     "target": "05749ee9c4c41885f0fff0b3d0cbd48577983b61",
-     "name": "Tank Pump Drip Demo 2026-10-12",
-     "body": "First release. Archived the irrigation demo page that shows the tank, pump, and drip cycle."
-    }
-   ],
-   "description": "A demo of a tank, pump, and drip irrigation cycle.",
-   "homepage": "",
-   "topics": [
-    "irrigation",
-    "demo",
-    "simulator",
-    "education"
-   ]
-  },
-  {
-   "repo": "parkingten",
-   "releases": [
-    {
-     "tag": "v2026.10.12",
-     "target": "649ab01d288ac0e041bee61d28877656aa7141b0",
-     "name": "Parkingten 2026-10-12",
-     "body": "Fixed the sessions API, added an operator key, switched to a light theme, and resized plate photos before upload. Cleaned up pasted settings and removed a temporary trace."
-    },
-    {
-     "tag": "v2026.09.05",
-     "target": "c2225a2401fff92c965d9d1717e729ee8f91d5f2",
-     "name": "Parkingten 2026-09-05",
-     "body": "Added parking spot contract files and switched the API to a simpler network module."
-    },
-    {
-     "tag": "v2026.04.20",
-     "target": "b11cd8975f8e94bf2e6587900169b4b5700762d6",
-     "name": "Parkingten 2026-04-20",
-     "body": "First release. Set up the parking API and the check in and operator pages, and spent the day fixing routes and data store connection problems."
-    }
-   ],
-   "description": "A parking management app with spot, check in, and operator pages.",
-   "homepage": "https://parkingten.vercel.app",
-   "topics": [
-    "parking",
-    "backend",
-    "api",
-    "vercel",
-    "redis"
-   ]
-  },
-  {
-   "repo": "pajamastan",
-   "releases": [
-    {
-     "tag": "v2026.10.12",
-     "target": "d3dafc5137504d612ac807c79cbc83efbeb3c361",
-     "name": "Pajamastan 2026-10-12",
-     "body": "Released version three. Added an atlas, inventory tabs, a grouped hamburger menu, and a creator seal."
-    },
-    {
-     "tag": "v2026.10.08",
-     "target": "c469819f68cd1ccf3c342af10c4c475268825e96",
-     "name": "Pajamastan 2026-10-08",
-     "body": "Released version two of the Pajamastan site."
-    }
-   ],
-   "description": "The official site of the micronation of Pajamastan.",
-   "homepage": "https://pajamastan.vercel.app",
-   "topics": [
-    "pajamastan",
-    "atlas",
-    "micronation",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "tractor-tool",
-   "releases": [
-    {
-     "tag": "v2026.10.12",
-     "target": "6651f54d74eec692e2ef0e401c2f11f3ead90456",
-     "name": "Tractor Toolkit 2026-10-12",
-     "body": "First release. Tractor toolkit revision B with a footer, a creator seal, and generic app content. Triggered a production build."
-    }
-   ],
-   "description": "A toolkit for tractor work with a blueprint, hourly rate, quote, and game.",
-   "homepage": "https://tractor-tool.vercel.app",
-   "topics": [
-    "tool",
-    "tractor",
-    "quotes",
-    "game",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "anthropic-percentage-pop-up-game",
-   "releases": [
-    {
-     "tag": "v2026.10.13",
-     "target": "c8121df8c5fb6478ee213766131dc6d7387147df",
-     "name": "Percentage Pop-up Typing Game 2026-10-13",
-     "body": "First release. A pop-up typing game with a dark theme and a live usage meter. Pop-ups start on page open and keep coming over the results screen. Added 222 percentage facts, live weather, and moon phase pop-ups."
-    }
-   ],
-   "description": "A typing game where pop-ups keep covering the screen.",
-   "homepage": "",
-   "topics": [
-    "game",
-    "typing",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "parcelsun-kq",
-   "releases": [
-    {
-     "tag": "v2026.10.13",
-     "target": "95796d6c71cbbb415966928201c21cdd607875c0",
-     "name": "Parcelsun 2026-10-13",
-     "body": "First release, built over four versions in one day. A parcel locker solar heat model, then a board strip, hat shadow, console gear heat, and back view. Then a field style locker look with a four module default, and finally even service seams, cabinet louvers, and console panel detail."
-    }
-   ],
-   "description": "A solar heat model for a parcel locker with a four module default.",
-   "homepage": "",
-   "topics": [
-    "simulator",
-    "solar",
-    "heat",
-    "threejs"
-   ]
-  },
-  {
-   "repo": "gladhand-dockyard",
-   "releases": [
-    {
-     "tag": "v2026.10.13",
-     "target": "5ca1fac64cb5b7f45b5b1f84730d05d60f1818ac",
-     "name": "Gladhand Dockyard 2026-10-13",
-     "body": "Added an open city map with signals, telephone poles with wires that come down, outages, and traffic. Added breachable buildings, big structures, berm dents, and a breakable block wall ring."
-    },
-    {
-     "tag": "v2026.10.12",
-     "target": "ecefd9bd5f59b1b595541d7ac2dd1326da12d8da",
-     "name": "Gladhand Dockyard 2026-10-12",
-     "body": "First release as a trailer backing sim. Added speed scaled crash damage, totaled cabs, breakable structures, and saved yard damage. Added yard and road traffic, forklifts, a yard truck, pedestrians, camera modes with pan and pinch zoom, a first person driver view with mirrors, a doubled yard, a container terminal, and rail."
-    }
-   ],
-   "description": "A truck and trailer backing sim set in a busy dock yard and city.",
-   "homepage": "",
-   "topics": [
-    "game",
-    "simulator",
-    "trucks",
-    "physics"
-   ]
-  },
-  {
-   "repo": "scope-listener",
+   "repo": "free-as-in-links",
    "releases": [
     {
      "tag": "v2026.10.14",
-     "target": "ff52bbcda6cb9b4679cbbf3d8adcbe2b145b0e03",
-     "name": "Scope Listener 2026-10-14",
-     "body": "Added autopilot, which identifies the song, loads the reference, locates the spot, and tracks and logs the sample level hands free."
+     "target": "a731f192aefde7661f3b36790072fb86a8f14d81",
+     "name": "Free Links 2026-10-14",
+     "body": "Cleaned invisible characters out of the names of the suggested links."
     },
     {
-     "tag": "v2026.09.22",
-     "target": "6035995fd5e3d4b1c7375e62262f35fdc0e39a83",
-     "name": "Scope Listener 2026-09-22",
-     "body": "First release. Combined an oscilloscope with a live offset listener that syncs automatically. Moved the auto sync button to the top of the page. Fixed the about panel taking the first tap on every button."
+     "tag": "v2026.10.11",
+     "target": "c2445dfd0c33dba2a8f620409a12c3464e90533f",
+     "name": "Free Links 2026-10-11",
+     "body": "Created the app as a plain index of free, useful links. Added a daily job that collects new link suggestions."
     }
    ],
-   "description": "An oscilloscope that compares a song to the phone mic and shows the offset.",
-   "homepage": "https://scope-listener.vercel.app",
+   "description": "A plain index of free, useful links that hosts nothing itself.",
+   "homepage": "https://free-as-in-links.vercel.app",
+   "topics": [
+    "tool",
+    "links",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "axiom",
+   "releases": [
+    {
+     "tag": "v2026.10.14",
+     "target": "32c4f305dc6858be4a5fa1e6d516634fa79e08ac",
+     "name": "Axiom 2026-10-14",
+     "body": "Corrected the phone markers."
+    },
+    {
+     "tag": "v2026.10.11",
+     "target": "c33950c56fa40cde4446b35c98fa90b61dfdf69b",
+     "name": "Axiom 2026-10-11",
+     "body": "Added themes and a pass of bug fixes. Then added band sync so the synth can play with other phones. Put a play button inside the Band panel."
+    }
+   ],
+   "description": "A browser synthesizer that can sync with a band of phones.",
+   "homepage": "https://axiom-eight-xi.vercel.app",
    "topics": [
     "music",
-    "oscilloscope",
+    "synthesizer",
+    "band-sync",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "looper",
+   "releases": [
+    {
+     "tag": "v2026.10.14",
+     "target": "6349e56618bd179d5981f6db480e14e7b3bc33fc",
+     "name": "Looper 2026-10-14",
+     "body": "Corrected the phone markers."
+    },
+    {
+     "tag": "v2026.10.11",
+     "target": "81cdc56276032416867891eae10091b9fe194e21",
+     "name": "Looper 2026-10-11",
+     "body": "Added band sync and a play button inside the Band panel. Added ready made band grooves."
+    },
+    {
+     "tag": "v2026.04.20",
+     "target": "511c8ffc24128fa4157361f41144dd041f7326ae",
+     "name": "Looper 2026-04-20",
+     "body": "First version of the looper."
+    }
+   ],
+   "description": "A pad based loop recorder with band sync and ready made grooves.",
+   "homepage": "https://looper-sooty.vercel.app",
+   "topics": [
+    "music",
+    "looper",
+    "band-sync",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "spectral-engine",
+   "releases": [
+    {
+     "tag": "v2026.10.14",
+     "target": "a089100fc93b56a6a843316a6f918671b6b8cf07",
+     "name": "Spectral Engine 2026-10-14",
+     "body": "Corrected the phone markers."
+    },
+    {
+     "tag": "v2026.10.11",
+     "target": "ed46bc44bb58401ddf14ffa28da3a3af994494df",
+     "name": "Spectral Engine 2026-10-11",
+     "body": "Added band sync so the visualizers can follow the sound of a shared band."
+    },
+    {
+     "tag": "v2026.09.02",
+     "target": "0796a3ddc0b4ec028f6baf4ea57047ce65bfa843",
+     "name": "Spectral Engine 2026-09-02",
+     "body": "Created the app with twelve visualizers."
+    }
+   ],
+   "description": "Twelve music visualizers that can follow a shared band.",
+   "homepage": "https://spectral-engine.vercel.app",
+   "topics": [
+    "music",
+    "visualizer",
+    "band-sync",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "final-vector",
+   "releases": [
+    {
+     "tag": "v2026.10.14",
+     "target": "6fa570af474e3569f668104860a5871bd9864f65",
+     "name": "Who Is The Final Victor 2026-10-14",
+     "body": "Changed the accent color from light blue to hot pink."
+    },
+    {
+     "tag": "v2026.10.06",
+     "target": "4c00309340a7a94a69efa5a3bc9cbb8409cae75c",
+     "name": "Who Is The Final Victor 2026-10-06",
+     "body": "Made the game a standalone build."
+    },
+    {
+     "tag": "v2026.09.10",
+     "target": "a86ff4b8b3f9627f290d14e84cfa1be976544672",
+     "name": "Who Is The Final Victor 2026-09-10",
+     "body": "First version of the game."
+    }
+   ],
+   "description": "A browser game called Who Is The Final Victor.",
+   "homepage": "https://final-vector-six.vercel.app",
+   "topics": [
+    "game",
+    "canvas",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "field-twin-viridian",
+   "releases": [
+    {
+     "tag": "v2026.10.15",
+     "target": "388d4b3839bf7230c3a595965b165a4754a3be4f",
+     "name": "Field Twin Viridian 2026-10-15",
+     "body": "First version. Added a plate reader status and reading while parked, with an upload status. Then added plate sightings, a best photo, a pass on state and color, and a page for each plate."
+    }
+   ],
+   "description": "A field twin app that reads plates and keeps a list of sightings.",
+   "homepage": "",
+   "topics": [
+    "tool",
+    "field",
+    "plate-reader",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "stompbox-lab",
+   "releases": [
+    {
+     "tag": "v2026.10.15",
+     "target": "0afa3f165e9c5c1248faf0fd80b5f36c27d576cb",
+     "name": "Stompbox Lab 2026-10-15",
+     "body": "Every phone in a room now gets the list of every other phone. Fixed seating so each phone gets the right message. Added more grooves: House, Jungle, Disco, Funk, Boom Bap, Trap, Reggaeton, and Rock, each with its own tempo."
+    },
+    {
+     "tag": "v2026.10.14",
+     "target": "05617a50d77c7f7a2164ce1f681638aeae1772ea",
+     "name": "Stompbox Lab 2026-10-14",
+     "body": "Corrected the phone markers."
+    },
+    {
+     "tag": "v2026.10.11",
+     "target": "83b533cdf31b905ddeb9c2abec2acca9f6cce5c6",
+     "name": "Stompbox Lab 2026-10-11",
+     "body": "Created the app with a light theme and a board snapshot. Added a light and dark switch. Added a server clock and looped grooves on every phone, then sign in. A single room now holds every app, and knobs stay on each phone with its own voice."
+    }
+   ],
+   "description": "A pedal board and synth with grooves that play across many phones.",
+   "homepage": "https://stompbox-lab.vercel.app",
+   "topics": [
+    "music",
+    "pedals",
+    "band-sync",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "hoofer-sync",
+   "releases": [
+    {
+     "tag": "v2026.10.15",
+     "target": "c4c4e1ebf62dd553a6639ac626cf8583a816d9ee",
+     "name": "Hoofer Sync 2026-10-15",
+     "body": "Added a dance floor with a dancer for every phone in the room. A phone now dances as soon as it joins. Loop parts only go to phones that are playing. Added tabs for Floor, Moves, Wardrobe, and Studio, a move maker, outfits, famous routines, and up to fifteen dancers."
+    },
+    {
+     "tag": "v2026.10.14",
+     "target": "e238ee4381b166ed85af9d073a0e2bd51619f98f",
+     "name": "Hoofer Sync 2026-10-14",
+     "body": "Created the app as a choreography sequencer dancer that joins the Stompbox Lab band room."
+    }
+   ],
+   "description": "A dance floor with a dancer for each phone in the band room.",
+   "homepage": "",
+   "topics": [
+    "music",
+    "dance",
+    "band-sync",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "inkrunner",
+   "releases": [
+    {
+     "tag": "v2026.10.17",
+     "target": "6f990c1487a72f9f01b754e8653e7425bf85c63e",
+     "name": "Inkrunner 2026-10-17",
+     "body": "Created the game as a comic ink driving sim. Added air tricks, a track loop with barricades, a crash reset, and a lap ghost. Added outer walls, a wider road, zoom out, and a brace button. Fixed a crash at the wall band and opened free driving outside the walls."
+    }
+   ],
+   "description": "A comic ink cold gas driving sim with tricks and lap ghosts.",
+   "homepage": "",
+   "topics": [
+    "game",
+    "driving",
+    "simulator",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "tapperator",
+   "releases": [
+    {
+     "tag": "v2026.10.17",
+     "target": "1b4d81669f9aa87600a8ae118812f348b45ca6ac",
+     "name": "Tapperator 2026-10-17",
+     "body": "Created the app as a steering wheel drum kit with a five round calibration, a four tab looper, and room sync. Added sampling for each instrument with five sets per pad. Players now start with two pads and add more later, with striker tips and mix-up warnings."
+    }
+   ],
+   "description": "A steering wheel drum kit with calibration, a looper, and room sync.",
+   "homepage": "",
+   "topics": [
+    "music",
+    "drums",
+    "looper",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "mohave-wtf",
+   "releases": [
+    {
+     "tag": "v2026.10.17",
+     "target": "562dd764cae6627b39882803d92c36e57970999e",
+     "name": "Retro Software Catalog 2026-10-17",
+     "body": "Created the retro software catalog. Added retro social link buttons in the footer. Added Field Twin Glaucous, Inkrunner, Tapperator, and the catalog itself, and fixed the Control Troll address."
+    }
+   ],
+   "description": "A retro styled software catalog that lists the developer's apps.",
+   "homepage": "",
+   "topics": [
+    "tool",
+    "catalog",
+    "retro",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "tickle-boxie",
+   "releases": [
+    {
+     "tag": "v2026.10.17",
+     "target": "79d2bcddfdcaf9af75c800e2282a511e0d36ada1",
+     "name": "Talk Box Studio 2026-10-17",
+     "body": "Created the talk box app. Added separate mic and speaker choice and a feedback guard."
+    }
+   ],
+   "description": "A talk box studio with separate mic and speaker choice.",
+   "homepage": "",
+   "topics": [
+    "music",
     "audio",
     "tool",
     "vercel"
