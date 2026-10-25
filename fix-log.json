@@ -159,6 +159,22 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "This is a protected Vercel team URL that shows a login page and no repo is named for it, so the developer should link the public production URL (possibly ebutuoy.vercel.app from ebutuoy-frontend) in the index and apps.json instead."
+    },
+    {
+      "date": "2026-10-25",
+      "app": "termbeat",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Live page still has only load audio, mic and play with no menu or themes and the repo has not been pushed since 2026-10-18, so the test is right and the developer must restore the fuller build."
+    },
+    {
+      "date": "2026-10-25",
+      "app": "mary-jane-man",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Live URL still serves the Vercel Stumbler page and no sudosilo repo matches mary, maze or jane, so the developer must restore the game or say the app was replaced."
     }
   ]
 }
