@@ -169,6 +169,46 @@
   }
   .pad button.pressed { background: var(--pressed); }
   .pad svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+
+  /* Doku engine screen */
+  .doku { position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; background: var(--page); user-select: none; -webkit-user-select: none; }
+  .doku[hidden] { display: none; }
+  .doku-status { min-height: 22px; padding: 6px 14px 0; font-size: 13px; color: var(--muted); text-align: center; }
+  .doku-status.warn { color: var(--warn); font-weight: 600; }
+  .doku-status.good { color: var(--accent); font-weight: 600; }
+  .doku-stage { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 8px 12px; }
+  .doku-wrap { position: relative; --side: min(calc(100vw - 24px), calc(100dvh - 330px), 560px); width: var(--side); height: var(--side); }
+  .doku-grid {
+    width: 100%; height: 100%; display: grid; grid-template-columns: repeat(9, 1fr); grid-template-rows: repeat(9, 1fr);
+    border: 2px solid var(--ink); border-radius: 6px; overflow: hidden; background: var(--surface);
+  }
+  .dcell {
+    border: none; border-right: 1px solid var(--edge); border-bottom: 1px solid var(--edge); padding: 0;
+    display: flex; align-items: center; justify-content: center; background: transparent;
+    font-size: calc(var(--side) / 9 * 0.56); font-weight: 700; line-height: 1; touch-action: manipulation;
+  }
+  .dcell.br { border-right: 2px solid var(--ink); }
+  .dcell.bb { border-bottom: 2px solid var(--ink); }
+  .dcell.lastc { border-right: none; }
+  .dcell.lastr { border-bottom: none; }
+  .dcell.given { background: rgba(28, 40, 51, 0.05); }
+  .dcell.peer { background: #eef4fb; }
+  .dcell.given.peer { background: #e3ebf4; }
+  .dcell.same { background: #d6e6f8; }
+  .dcell.mine { text-shadow: 0 0 6px rgba(36, 99, 176, 0.45); }
+  .dcell.bad { background: #fbe1dc; }
+  .dcell.sel { box-shadow: inset 0 0 0 3px var(--accent); }
+  .dpal { display: grid; grid-template-columns: repeat(9, 1fr); gap: 5px; padding: 4px 12px 0; }
+  .dpal button {
+    height: 52px; border-radius: 12px; background: var(--surface); border: 1px solid var(--edge);
+    font-size: 24px; font-weight: 700; padding: 0; display: flex; align-items: center; justify-content: center;
+  }
+  .dpal button.used { opacity: 0.3; }
+  .dtools { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px 12px calc(env(safe-area-inset-bottom) + 14px); }
+  .hack-card { border: 2px solid var(--accent); }
+  .hack-strip { height: 10px; background: linear-gradient(90deg, #2463b0, #2fb4e6, #2463b0); }
+  .hack-facts { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .hack-facts b { color: var(--accent); }
 </style>
 </head>
 <body>
@@ -239,14 +279,42 @@
   </footer>
 </div>
 
+
+<div id="doku" class="doku" hidden>
+  <header class="play-top">
+    <div class="play-title">
+      <div id="dokuName" class="row-name"></div>
+      <div id="dokuFor" class="quiet"></div>
+    </div>
+    <div class="stat"><span id="dokuStatLabelA" class="label">Mistakes</span><span id="dokuStatA" class="value">0</span></div>
+    <div class="stat" id="dokuStatBoxB"><span class="label">Nodes</span><span id="dokuStatB" class="value">0</span></div>
+    <button id="dokuClose" class="btn">Done</button>
+  </header>
+  <div id="dokuStatus" class="doku-status"></div>
+  <main class="doku-stage">
+    <div id="dokuWrap" class="doku-wrap">
+      <div id="dokuGrid" class="doku-grid"></div>
+      <div id="dokuOverlay" class="overlay">
+        <h1 id="dokuOverlayTitle"></h1>
+        <p id="dokuOverlayText"></p>
+        <button id="dokuOverlayButton" class="btn primary">Start</button>
+      </div>
+    </div>
+  </main>
+  <div id="dokuPal" class="dpal"></div>
+  <div class="dtools">
+    <button id="dokuErase" class="btn">Erase</button>
+    <button id="dokuHint" class="btn primary">Hint</button>
+  </div>
+</div>
 <script>
 // ------------------------------------------------------------------
-// STACKLOOM v1
+// STACKLOOM v2
 // A game about running a studio that manufactures falling block games.
 // Every game the studio sells is the same engine plus a different theme
 // file. The data blocks at the top are the whole catalog of parts.
 // ------------------------------------------------------------------
-const VERSION = "stackloom-meta v1";
+const VERSION = "stackloom-meta v2";
 
 // Rules shared by every game the studio makes. This is the engine.
 const ENGINE = {
@@ -332,6 +400,85 @@ const CUSTOMERS = [
 ];
 
 // ------------------------------------------------------------------
+// SECOND PRODUCT LINE: DOKU
+// Symbol sudoku games. Same idea as the block line: one doku engine,
+// and every product is just a skin file with nine symbols on it.
+// ------------------------------------------------------------------
+const DOKU_THEMES = {
+  hacker: { label: "Hackerdoku", work: 26, board: "#f4f9ff", grid: "#cfe0f5", glow: true,
+    glyphs: ["🐛", "🐴", "⌨️", "🕳️", "🎣", "💣", "🕷️", "👁️", "🔒"],
+    names: ["worm", "trojan", "keylogger", "rootkit", "phishing hook", "zero day", "crawler", "spyware", "ransomware"],
+    colors: ["#2463b0", "#3a8fb7", "#4fa36c", "#5d6b78", "#2fb4e6", "#d0584f", "#8a5cb8", "#3f5fbf", "#e0a33a"] },
+  meow: { label: "Meowdoku", work: 22, board: "#fffaf4", grid: "#f0e1cf", glow: false,
+    glyphs: ["😺", "😸", "😹", "😻", "😼", "😽", "🙀", "😿", "🐈"],
+    names: ["grin cat", "happy cat", "laughing cat", "heart eyes cat", "smirk cat", "kiss cat", "shocked cat", "sad cat", "walking cat"],
+    colors: ["#e2a93b", "#d49a5e", "#c68a52", "#e8657a", "#9a6843", "#ff7eb6", "#8a5cb8", "#3a8fb7", "#7a5548"] },
+  classic: { label: "Numberdoku", work: 14, board: "#fbfdfc", grid: "#e1eae6", glow: false,
+    glyphs: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    names: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"],
+    colors: ["#2463b0", "#2463b0", "#2463b0", "#2463b0", "#2463b0", "#2463b0", "#2463b0", "#2463b0", "#2463b0"] },
+  fruit: { label: "Fruitdoku", work: 20, board: "#fffdf4", grid: "#efe8cf", glow: false,
+    glyphs: ["🍎", "🍌", "🍇", "🍓", "🍑", "🍍", "🥝", "🍒", "🍋"],
+    names: ["apple", "banana", "grapes", "strawberry", "peach", "pineapple", "kiwi", "cherry", "lemon"],
+    colors: ["#d0584f", "#f2c230", "#8a5cb8", "#e8657a", "#f39c4a", "#e0a33a", "#6bb34a", "#c0392b", "#f5d06f"] },
+  space: { label: "Spacedoku", work: 24, board: "#f6f6ff", grid: "#e4e4f7", glow: true,
+    glyphs: ["🚀", "🪐", "⭐", "🌙", "☄️", "🛸", "👽", "🌍", "🛰️"],
+    names: ["rocket", "planet", "star", "moon", "comet", "saucer", "alien", "earth", "satellite"],
+    colors: ["#5b4bdb", "#8f6ee8", "#f0a830", "#4a6fe3", "#e85fb3", "#2fb4e6", "#4fa36c", "#2a7fbf", "#7f8c9a"] },
+  candy: { label: "Candydoku", work: 20, board: "#fff7fb", grid: "#f6e1ec", glow: false,
+    glyphs: ["🍬", "🍭", "🧁", "🍩", "🍪", "🍫", "🍰", "🍦", "🎂"],
+    names: ["candy", "lollipop", "cupcake", "donut", "cookie", "chocolate", "cake slice", "ice cream", "birthday cake"],
+    colors: ["#ff7eb6", "#ffb86b", "#8be0c9", "#b49cff", "#c68a52", "#7a5548", "#ff6b81", "#7cc6ff", "#ffd45e"] },
+  dino: { label: "Dinodoku", work: 22, board: "#f8fbf1", grid: "#e3ecd3", glow: false,
+    glyphs: ["🦖", "🦕", "🥚", "🌋", "🦴", "🌿", "🪨", "🐊", "🦎"],
+    names: ["rex", "longneck", "egg", "volcano", "bone", "fern", "rock", "croc", "lizard"],
+    colors: ["#6a9f3a", "#a3c45a", "#c2b25a", "#d98c3a", "#8b6b3d", "#4f7d4a", "#7f8c9a", "#5fae8a", "#6bb34a"] },
+  ocean: { label: "Oceandoku", work: 20, board: "#f3fbfd", grid: "#d9eef3", glow: false,
+    glyphs: ["🐟", "🐚", "🐙", "🦀", "🐬", "🐳", "🦈", "🐠", "🪸"],
+    names: ["fish", "shell", "octopus", "crab", "dolphin", "whale", "shark", "tropical fish", "coral"],
+    colors: ["#2a7fbf", "#f2a65a", "#e76f6f", "#d0584f", "#39b3c6", "#3d5a99", "#5a6b7d", "#f5d06f", "#ff7eb6"] },
+  robot: { label: "Robodoku", work: 22, board: "#f6f8fa", grid: "#e1e6eb", glow: false,
+    glyphs: ["🤖", "⚙️", "🔋", "🔧", "🔩", "💡", "📡", "🛠️", "🧲"],
+    names: ["robot", "gear", "battery", "wrench", "bolt", "bulb", "dish", "toolkit", "magnet"],
+    colors: ["#7f8c9a", "#5a6b7d", "#4fa36c", "#3a8fb7", "#9aa9b8", "#e0a33a", "#2463b0", "#d0584f", "#c0392b"] }
+};
+
+const DOKU_LEVELS = {
+  easy: { label: "easy puzzles", clues: 40, work: 0 },
+  medium: { label: "medium puzzles", clues: 32, work: 6 },
+  hard: { label: "hard puzzles", clues: 26, work: 12 }
+};
+
+// The Hackerdoku campaign. Every solved board is a machine that joins
+// your botnet. Nodes are spent on tools and scans.
+const HACK_KEY = "stackloom-hackerdoku-1";
+const HACK_TARGETS = [
+  { name: "Smart fridge", level: "easy", nodes: 3 },
+  { name: "Neighbor's router", level: "easy", nodes: 5 },
+  { name: "Coffee shop Wi-Fi", level: "easy", nodes: 8 },
+  { name: "Arcade high score server", level: "medium", nodes: 12 },
+  { name: "Print shop network", level: "medium", nodes: 18 },
+  { name: "Campus network", level: "medium", nodes: 25 },
+  { name: "Cloud data center", level: "hard", nodes: 40 },
+  { name: "Weather satellite", level: "hard", nodes: 60 }
+];
+const HACK_ENDLESS = { name: "Random server farm", level: "hard", nodes: 30 };
+const HACK_RANKS = [
+  { at: 0, name: "Script kiddie" },
+  { at: 10, name: "Packet goblin" },
+  { at: 40, name: "Grey hat" },
+  { at: 100, name: "Botnet herder" },
+  { at: 200, name: "Zero day broker" },
+  { at: 350, name: "Satellite whisperer" }
+];
+const HACK_TOOLS = [
+  { key: "scanner", name: "Port scanner", cost: 15, text: "Scans cost 2 nodes instead of 5." },
+  { key: "rootkit", name: "Rootkit", cost: 30, text: "Absorbs your first wrong move on every board, so it never counts as a strike." },
+  { key: "keylogger", name: "Keylogger", cost: 50, text: "Every board starts with three extra cells already cracked." }
+];
+const HACK_STRIKES = 3;
+
+// ------------------------------------------------------------------
 // Company rules
 // ------------------------------------------------------------------
 const DAY_SECONDS = 45;
@@ -349,6 +496,8 @@ const OFFICES = [
 const UPGRADES = [
   { key: "schema", name: "Theme schema", cost: 800,
     text: "A written rule for what a valid theme file must contain. Terminals write fewer bugs." },
+  { key: "doku", name: "Doku line", cost: 1200,
+    text: "Opens a second product line. Customers start ordering symbol sudoku games in skins like Hackerdoku and Meowdoku, built on a second engine." },
   { key: "tests", name: "Test suite", cost: 1600,
     text: "Automatic checks run the moment a build finishes and catch most bugs before anyone plays the game." },
   { key: "engine", name: "Shared engine", cost: 3000,
@@ -431,16 +580,37 @@ function terminalPrice() { return 350 + 150 * (company.terminals.length - 1); }
 // ------------------------------------------------------------------
 // Manufacturing: an order becomes a theme file
 // ------------------------------------------------------------------
+function isDoku(order) { return order.line === "doku"; }
+function lookFor(order) { return isDoku(order) ? DOKU_THEMES[order.theme] : THEMES[order.theme]; }
+function bugSlots(order) { return isDoku(order) ? 9 : PIECE_SETS[order.pieceSet].shapes.length; }
+
 function orderSpec(order) {
-  const parts = [THEMES[order.theme].label + " theme"];
+  if (isDoku(order)) return lookFor(order).label + ", " + DOKU_LEVELS[order.level].label;
+  const parts = [lookFor(order).label + " theme"];
   if (order.pieceSet !== "standard") parts.push(PIECE_SETS[order.pieceSet].label);
   if (order.board !== "standard") parts.push(BOARDS[order.board].label);
   if (order.speed !== "normal") parts.push(SPEEDS[order.speed].label);
   return parts.join(", ");
 }
 
+function buildDokuFile(customer, themeKey, levelKey) {
+  const look = DOKU_THEMES[themeKey];
+  return {
+    product: "doku",
+    themeName: look.label,
+    customer: customer,
+    size: 9,
+    clues: DOKU_LEVELS[levelKey].clues,
+    board: look.board,
+    grid: look.grid,
+    glow: look.glow,
+    symbols: look.glyphs.map((glyph, i) => ({ name: look.names[i], glyph: glyph, color: look.colors[i] }))
+  };
+}
+
 function buildThemeFile(order) {
-  const look = THEMES[order.theme];
+  if (isDoku(order)) return buildDokuFile(order.customer, order.theme, order.level);
+  const look = lookFor(order);
   return {
     themeName: look.label,
     customer: order.customer,
@@ -463,6 +633,11 @@ function buildThemeFile(order) {
 function withBug(file, bug) {
   if (!bug) return file;
   const copy = JSON.parse(JSON.stringify(file));
+  if (copy.product === "doku") {
+    copy.symbols[bug.pieceIndex].glyph = "?";
+    copy.symbols[bug.pieceIndex].color = "#c3c8ca";
+    return copy;
+  }
   copy.pieces[bug.pieceIndex].color = "#c3c8ca";
   copy.pieces[bug.pieceIndex].motif = "";
   return copy;
@@ -474,6 +649,15 @@ function formatFile(file) {
   text = text.replace(/\[\s+((?:\[[\d,]+\],?\s*)+)\]/g, (match, inner) => "[" + inner.replace(/\s+/g, "") + "]");
   return text;
 }
+
+const HOUSE_DOKU = {
+  id: "housedoku",
+  customer: "the studio",
+  spec: "Hackerdoku, the sample doku every studio keeps on hand",
+  day: 0,
+  bug: false,
+  file: buildDokuFile("The studio", "hacker", "medium")
+};
 
 const HOUSE_GAME = {
   id: "house",
@@ -489,6 +673,7 @@ const HOUSE_GAME = {
 // offer, then queued, then building, then ready, then shipped
 // ------------------------------------------------------------------
 function makeOffer() {
+  if (company.upgrades.doku && Math.random() < 0.45) return makeDokuOffer();
   const order = {
     id: company.nextId++,
     customer: pick(CUSTOMERS),
@@ -499,8 +684,26 @@ function makeOffer() {
     status: "offer", progress: 0, terminal: -1, builtBy: -1, bug: null, tested: false,
     expiresAt: company.time + 40, deadline: 0, readyAt: 0
   };
-  order.work = THEMES[order.theme].work + PIECE_SETS[order.pieceSet].work + BOARDS[order.board].work + SPEEDS[order.speed].work;
+  order.work = lookFor(order).work + PIECE_SETS[order.pieceSet].work + BOARDS[order.board].work + SPEEDS[order.speed].work;
   let pay = order.work * 10 + Math.floor(Math.random() * 13) * 5;
+  pay *= 1 + company.reputation / 200;
+  if (company.upgrades.generator) pay *= 1.25;
+  order.pay = Math.round(pay / 5) * 5;
+  return order;
+}
+
+function makeDokuOffer() {
+  const order = {
+    id: company.nextId++,
+    line: "doku",
+    customer: pick(CUSTOMERS),
+    theme: pick(Object.keys(DOKU_THEMES)),
+    level: pick(["easy", "medium", "medium", "hard"]),
+    status: "offer", progress: 0, terminal: -1, builtBy: -1, bug: null, tested: false,
+    expiresAt: company.time + 40, deadline: 0, readyAt: 0
+  };
+  order.work = DOKU_THEMES[order.theme].work + DOKU_LEVELS[order.level].work;
+  let pay = order.work * 11 + Math.floor(Math.random() * 13) * 5;
   pay *= 1 + company.reputation / 200;
   if (company.upgrades.generator) pay *= 1.25;
   order.pay = Math.round(pay / 5) * 5;
@@ -538,10 +741,10 @@ function finishBuild(order, i) {
   order.readyAt = company.time;
 
   if (Math.random() < bugChance(i)) {
-    order.bug = { pieceIndex: Math.floor(Math.random() * PIECE_SETS[order.pieceSet].shapes.length) };
+    order.bug = { pieceIndex: Math.floor(Math.random() * bugSlots(order)) };
     if (company.upgrades.tests && Math.random() < 0.7) {
       order.bug = null;
-      notify("The test suite caught a bug in the " + THEMES[order.theme].label + " game for " + order.customer + " and it was fixed.");
+      notify("The test suite caught a bug in the " + lookFor(order).label + " game for " + order.customer + " and it was fixed.");
     }
   }
   dirty = true;
@@ -549,7 +752,7 @@ function finishBuild(order, i) {
 
 function shipOrder(order) {
   const c = company;
-  const label = THEMES[order.theme].label;
+  const label = lookFor(order).label;
   let pay = order.pay;
   let repChange = 3;
   let message = "Shipped the " + label + " game to " + order.customer + " for " + cash(order.pay) + ".";
@@ -607,7 +810,7 @@ function runAgents() {
     if (order.status !== "ready" || !isManaged(order.builtBy) || c.time - order.readyAt < 8) return;
     if (order.bug && isBoosted(order.builtBy) && Math.random() < 0.5) {
       order.bug = null;
-      notify("Dev " + devFor(order.builtBy) + " reviewed the " + THEMES[order.theme].label + " game and fixed a bug before it shipped.");
+      notify("Dev " + devFor(order.builtBy) + " reviewed the " + lookFor(order).label + " game and fixed a bug before it shipped.");
     }
     shipOrder(order);
   });
@@ -653,7 +856,7 @@ function simulate(dt) {
       if (order.status === "building") c.terminals[order.terminal].job = null;
       order.status = "gone";
       c.reputation = clamp(c.reputation - 5, 0, 100);
-      notify(order.customer + " canceled their " + THEMES[order.theme].label + " order after waiting too long.", true);
+      notify(order.customer + " canceled their " + lookFor(order).label + " order after waiting too long.", true);
     }
   });
 
@@ -707,8 +910,8 @@ function strip(colors) {
   return `<div class="strip">${colors.map(color => `<i style="background:${color}"></i>`).join("")}</div>`;
 }
 
-function motifLine(themeKey) {
-  const motifs = THEMES[themeKey].motifs;
+function motifLine(order) {
+  const motifs = isDoku(order) ? DOKU_THEMES[order.theme].glyphs : THEMES[order.theme].motifs;
   return motifs.length ? `<div class="motifs">${motifs.join(" ")}</div>` : "";
 }
 
@@ -724,7 +927,7 @@ function renderOrders() {
   offers.forEach(order => {
     html += `
       <article class="order">
-        ${strip(THEMES[order.theme].colors)}
+        ${strip(lookFor(order).colors)}
         <div class="order-body">
           <div class="order-top">
             <div>
@@ -733,7 +936,7 @@ function renderOrders() {
             </div>
             <div class="pay">${cash(order.pay)}</div>
           </div>
-          ${motifLine(order.theme)}
+          ${motifLine(order)}
           <div class="meta"><span>${order.work} work</span><span data-count="${order.id}" data-kind="offer"></span></div>
           <div class="actions">
             <button class="btn primary" data-do="accept" data-id="${order.id}">Accept</button>
@@ -771,7 +974,7 @@ function renderOrders() {
 
     html += `
       <article class="order">
-        ${strip(THEMES[order.theme].colors)}
+        ${strip(lookFor(order).colors)}
         <div class="order-body">
           <div class="order-top">
             <div>
@@ -806,7 +1009,7 @@ function renderTerminals() {
           <div class="row-name">Terminal ${i + 1}</div>
           <div class="row-state ${order ? "busy" : ""}">${order ? "Building" : "Idle"}</div>
         </div>
-        <div class="row-sub">${order ? THEMES[order.theme].label + " game for " + order.customer : "Nothing to build"}</div>
+        <div class="row-sub">${order ? lookFor(order).label + " game for " + order.customer : "Nothing to build"}</div>
         ${order ? `<div class="bar"><i data-progress="${order.id}"></i></div>` : ""}
         <div class="row-sub">${runner}</div>
       </div>`;
@@ -921,11 +1124,12 @@ function renderOffice() {
 }
 
 function renderGames() {
-  let html = `<p class="note">Every game here runs on the same engine. The only difference between them is the theme file. Tap View file to see one.</p>`;
-  [HOUSE_GAME, ...company.catalog].forEach(game => {
+  let html = `<p class="note">Every block game here runs on the block engine and every doku runs on the doku engine. The only difference between products on the same engine is the theme file. Tap View file to see one.</p>`;
+  html += renderHackCard();
+  [HOUSE_GAME, HOUSE_DOKU, ...company.catalog].forEach(game => {
     html += `
       <article class="order">
-        ${strip(game.file.pieces.slice(0, 7).map(piece => piece.color))}
+        ${strip(fileColors(game.file))}
         <div class="order-body">
           <div class="customer">${game.file.themeName} for ${game.customer}</div>
           <div class="spec">${game.spec}${game.day ? ". Shipped on day " + game.day : ""}</div>
@@ -994,7 +1198,13 @@ function refreshLive() {
 // Taps on the management screens
 // ------------------------------------------------------------------
 function gameById(id) {
-  return id === "house" ? HOUSE_GAME : company.catalog.find(game => game.id === id);
+  if (id === "house") return HOUSE_GAME;
+  if (id === "housedoku") return HOUSE_DOKU;
+  return company.catalog.find(game => game.id === id);
+}
+
+function fileColors(file) {
+  return file.product === "doku" ? file.symbols.map(symbol => symbol.color) : file.pieces.slice(0, 7).map(piece => piece.color);
 }
 
 function doAction(action, id) {
@@ -1019,7 +1229,7 @@ function doAction(action, id) {
       if (order && order.status === "ready") openPlay(withBug(buildThemeFile(order), order.bug), { orderId: order.id });
       break;
     case "file":
-      if (order) openSheet(THEMES[order.theme].label + " theme file", withBug(buildThemeFile(order), order.bug));
+      if (order) openSheet(lookFor(order).label + " theme file", withBug(buildThemeFile(order), order.bug));
       break;
     case "ship":
       if (order && order.status === "ready") { shipOrder(order); cleanup(); }
@@ -1064,6 +1274,17 @@ function doAction(action, id) {
       if (upgrade && !c.upgrades[upgrade.key] && spend(upgrade.cost)) {
         c.upgrades[upgrade.key] = true;
         notify("Installed the " + upgrade.name.toLowerCase() + ".", true);
+      }
+      break;
+    }
+    case "hackPlay":
+      openHackTarget();
+      break;
+    case "hackTool": {
+      const tool = HACK_TOOLS.find(t => t.key === id);
+      if (tool && !hack.tools[tool.key]) {
+        if (hack.nodes < tool.cost) showToast("Your botnet needs " + tool.cost + " nodes for the " + tool.name.toLowerCase() + ".");
+        else { hack.nodes -= tool.cost; hack.tools[tool.key] = true; saveHack(); showToast("Installed the " + tool.name.toLowerCase() + "."); }
       }
       break;
     }
@@ -1460,6 +1681,11 @@ function resizeBoard() {
 }
 
 function openPlay(file, context) {
+  if (file.product === "doku") openDoku(file, context);
+  else openBlocks(file, context);
+}
+
+function openBlocks(file, context) {
   theme = file;
   playContext = context || {};
   playOpen = true;
@@ -1492,21 +1718,28 @@ function closePlay() {
   gameState = "ready";
   softDropping = false;
 
-  if (playContext.orderId != null) {
-    const order = findOrder(playContext.orderId);
-    if (order) {
-      order.tested = true;
-      if (order.bug) {
-        const pieceName = PIECE_SETS[order.pieceSet].shapes[order.bug.pieceIndex];
-        order.bug = null;
-        notify("Play test found a bug. The " + pieceName + " piece had lost its color and picture. Fixed before shipping.", true);
-      } else {
-        notify("Play test passed on the " + THEMES[order.theme].label + " game for " + order.customer + ".", true);
-      }
-    }
-  }
+  finishPlayTest(playContext.orderId);
   lastTick = performance.now();
   render();
+}
+
+function finishPlayTest(orderId) {
+  if (orderId == null) return;
+  const order = findOrder(orderId);
+  if (!order) return;
+  order.tested = true;
+  if (order.bug) {
+    if (isDoku(order)) {
+      const symbolName = DOKU_THEMES[order.theme].names[order.bug.pieceIndex];
+      notify("Play test found a bug. The " + symbolName + " symbol had lost its picture and turned into a question mark. Fixed before shipping.", true);
+    } else {
+      const pieceName = PIECE_SETS[order.pieceSet].shapes[order.bug.pieceIndex];
+      notify("Play test found a bug. The " + pieceName + " piece had lost its color and picture. Fixed before shipping.", true);
+    }
+    order.bug = null;
+  } else {
+    notify("Play test passed on the " + lookFor(order).label + " game for " + order.customer + ".", true);
+  }
 }
 
 document.getElementById("playClose").addEventListener("click", closePlay);
@@ -1574,6 +1807,420 @@ document.addEventListener("keyup", event => {
 window.addEventListener("resize", resizeBoard);
 
 // ------------------------------------------------------------------
+// THE DOKU ENGINE
+// Reads a doku skin file and becomes that game. Every puzzle is made
+// fresh and always has exactly one solution.
+// ------------------------------------------------------------------
+function dokuShuffle(list) {
+  for (let i = list.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [list[i], list[j]] = [list[j], list[i]];
+  }
+  return list;
+}
+
+// Bit mask of the values still allowed at cell i. Values run one to nine.
+function dokuAllowed(g, i) {
+  const r = Math.floor(i / 9), c = i % 9;
+  const br = r - r % 3, bc = c - c % 3;
+  let used = 0;
+  for (let k = 0; k < 9; k++) {
+    used |= 1 << g[r * 9 + k];
+    used |= 1 << g[k * 9 + c];
+    used |= 1 << g[(br + Math.floor(k / 3)) * 9 + bc + k % 3];
+  }
+  return ~used & 0x3fe;
+}
+
+function dokuBits(mask) { let n = 0; while (mask) { mask &= mask - 1; n++; } return n; }
+
+function dokuFill(g) {
+  const i = g.indexOf(0);
+  if (i === -1) return true;
+  const mask = dokuAllowed(g, i);
+  const values = dokuShuffle([1, 2, 3, 4, 5, 6, 7, 8, 9].filter(v => mask & (1 << v)));
+  for (const v of values) {
+    g[i] = v;
+    if (dokuFill(g)) return true;
+  }
+  g[i] = 0;
+  return false;
+}
+
+// Counts solutions, stopping once it reaches the limit.
+function dokuCount(g, limit) {
+  let best = -1, bestMask = 0, bestBits = 10;
+  for (let i = 0; i < 81; i++) {
+    if (g[i]) continue;
+    const mask = dokuAllowed(g, i);
+    const bits = dokuBits(mask);
+    if (bits === 0) return 0;
+    if (bits < bestBits) { best = i; bestMask = mask; bestBits = bits; if (bits === 1) break; }
+  }
+  if (best === -1) return 1;
+  let total = 0;
+  for (let v = 1; v <= 9 && total < limit; v++) {
+    if (!(bestMask & (1 << v))) continue;
+    g[best] = v;
+    total += dokuCount(g, limit - total);
+  }
+  g[best] = 0;
+  return total;
+}
+
+function makeDokuPuzzle(clues) {
+  const solution = Array(81).fill(0);
+  dokuFill(solution);
+  const puzzle = solution.slice();
+  let filled = 81;
+  for (const i of dokuShuffle(Array.from({ length: 81 }, (unused, n) => n))) {
+    if (filled <= clues) break;
+    const keep = puzzle[i];
+    puzzle[i] = 0;
+    if (dokuCount(puzzle, 2) !== 1) puzzle[i] = keep;
+    else filled--;
+  }
+  return { solution, puzzle };
+}
+
+const dokuRoot = document.getElementById("doku");
+const dokuGridEl = document.getElementById("dokuGrid");
+const dokuPalEl = document.getElementById("dokuPal");
+const dokuStatusEl = document.getElementById("dokuStatus");
+const dokuOverlay = document.getElementById("dokuOverlay");
+const dokuOverlayTitle = document.getElementById("dokuOverlayTitle");
+const dokuOverlayText = document.getElementById("dokuOverlayText");
+const dokuOverlayButton = document.getElementById("dokuOverlayButton");
+const dokuHintButton = document.getElementById("dokuHint");
+
+let dokuOpen = false;
+let dk = null;
+
+function dokuCellButtons() {
+  let html = "";
+  for (let i = 0; i < 81; i++) {
+    const r = Math.floor(i / 9), c = i % 9;
+    const classes = ["dcell"];
+    if (c === 2 || c === 5) classes.push("br");
+    if (r === 2 || r === 5) classes.push("bb");
+    if (c === 8) classes.push("lastc");
+    if (r === 8) classes.push("lastr");
+    html += `<button class="${classes.join(" ")}" data-cell="${i}"></button>`;
+  }
+  dokuGridEl.innerHTML = html;
+}
+
+function dokuPalette() {
+  dokuPalEl.innerHTML = dk.file.symbols.map((symbol, n) =>
+    `<button data-sym="${n + 1}" aria-label="${symbol.name}" style="color:${symbol.color}">${symbol.glyph}</button>`).join("");
+}
+
+function dokuStatus(text, kind) {
+  dokuStatusEl.textContent = text || "";
+  dokuStatusEl.className = "doku-status" + (kind ? " " + kind : "");
+}
+
+function dokuScanCost() { return hack.tools.scanner ? 2 : 5; }
+
+function dokuStats() {
+  const campaign = !!dk.ctx.campaign;
+  document.getElementById("dokuStatLabelA").textContent = campaign ? "Strikes" : "Mistakes";
+  document.getElementById("dokuStatA").textContent = campaign ? dk.strikes + " of " + HACK_STRIKES : dk.mistakes;
+  document.getElementById("dokuStatBoxB").hidden = !campaign;
+  document.getElementById("dokuStatB").textContent = hack.nodes;
+  dokuHintButton.textContent = campaign ? "Scan for " + dokuScanCost() + " nodes" : "Hint";
+}
+
+function dokuDraw() {
+  if (!dk) return;
+  const sel = dk.selected;
+  const selValue = sel >= 0 ? dk.board[sel] : 0;
+  const sr = Math.floor(sel / 9), sc = sel % 9;
+  const counts = Array(10).fill(0);
+  for (let i = 0; i < 81; i++) if (dk.board[i] && !dk.bad.has(i)) counts[dk.board[i]]++;
+
+  dokuGridEl.querySelectorAll(".dcell").forEach(el => {
+    const i = Number(el.dataset.cell);
+    const v = dk.board[i];
+    const r = Math.floor(i / 9), c = i % 9;
+    const peer = sel >= 0 && (r === sr || c === sc || (Math.floor(r / 3) === Math.floor(sr / 3) && Math.floor(c / 3) === Math.floor(sc / 3)));
+    el.classList.toggle("given", dk.given[i]);
+    el.classList.toggle("mine", !!v && !dk.given[i]);
+    el.classList.toggle("peer", peer && i !== sel);
+    el.classList.toggle("same", !!selValue && v === selValue && i !== sel);
+    el.classList.toggle("bad", dk.bad.has(i));
+    el.classList.toggle("sel", i === sel);
+    if (v) {
+      const symbol = dk.file.symbols[v - 1];
+      el.textContent = symbol.glyph;
+      el.style.color = symbol.color;
+    } else {
+      el.textContent = "";
+    }
+  });
+
+  dokuPalEl.querySelectorAll("button").forEach(el => {
+    el.classList.toggle("used", counts[Number(el.dataset.sym)] >= 9);
+  });
+  dokuStats();
+}
+
+function dokuShowOverlay(title, text, label) {
+  dokuOverlayTitle.textContent = title;
+  dokuOverlayText.textContent = text;
+  dokuOverlayButton.textContent = label;
+  dokuOverlay.hidden = false;
+}
+
+function openDoku(file, context) {
+  dk = { file: file, ctx: context || {}, state: "ready", board: Array(81).fill(0), given: Array(81).fill(false),
+    solution: [], bad: new Set(), selected: -1, mistakes: 0, strikes: 0, shield: 0 };
+  dokuOpen = true;
+  document.getElementById("dokuName").textContent = dk.ctx.campaign ? dk.ctx.target.name : file.themeName;
+  document.getElementById("dokuFor").textContent = dk.ctx.campaign ? hackRank().name + ", " + file.themeName : "For " + file.customer;
+  dokuCellButtons();
+  dokuPalette();
+  dokuStatus("");
+  if (dk.ctx.campaign) {
+    dokuShowOverlay(dk.ctx.target.name,
+      "Every row, column, and box needs each tool once. Three wrong moves and you get traced. Crack it and it joins your botnet for " + dk.ctx.target.nodes + " nodes.",
+      "Start the hack");
+  } else if (dk.ctx.orderId != null) {
+    dokuShowOverlay(file.themeName, "Play this build the way the customer will. If a symbol looks wrong, that is a bug.", "Start");
+  } else {
+    dokuShowOverlay(file.themeName, "Every row, column, and box holds each symbol once. Tap a cell, then tap a symbol.", "Start");
+  }
+  dokuRoot.hidden = false;
+  dokuDraw();
+}
+
+function dokuStart() {
+  const made = makeDokuPuzzle(dk.file.clues);
+  dk.solution = made.solution;
+  dk.board = made.puzzle.slice();
+  dk.given = made.puzzle.map(v => v !== 0);
+  dk.bad = new Set();
+  dk.selected = -1;
+  dk.mistakes = 0;
+  dk.strikes = 0;
+  dk.shield = dk.ctx.campaign && hack.tools.rootkit ? 1 : 0;
+  if (dk.ctx.campaign && hack.tools.keylogger) {
+    const empty = dokuShuffle(dk.board.map((v, i) => v ? -1 : i).filter(i => i >= 0)).slice(0, 3);
+    empty.forEach(i => { dk.board[i] = dk.solution[i]; dk.given[i] = true; });
+    dokuStatus("The keylogger cracked three cells before you started.", "good");
+  } else {
+    dokuStatus(dk.ctx.campaign && dk.shield ? "Rootkit armed for this board." : "");
+  }
+  dk.state = "playing";
+  dokuOverlay.hidden = true;
+  dokuDraw();
+}
+
+function dokuCheckWin() {
+  for (let i = 0; i < 81; i++) if (dk.board[i] !== dk.solution[i]) return;
+  dk.state = "won";
+  dk.selected = -1;
+  if (dk.ctx.campaign) {
+    const target = dk.ctx.target;
+    hack.nodes += target.nodes;
+    hack.total += target.nodes;
+    if (dk.ctx.advance) hack.next++;
+    hack.owned++;
+    saveHack();
+    dokuShowOverlay("Owned", target.name + " joined your botnet for " + target.nodes + " nodes. Rank: " + hackRank().name + ".", "Hack the next target");
+  } else {
+    dokuShowOverlay("Solved", dk.mistakes ? "Solved with " + dk.mistakes + " wrong " + plural(dk.mistakes, "move") + "." : "Clean solve with no wrong moves.", "New puzzle");
+  }
+  dokuDraw();
+}
+
+function dokuPlace(v) {
+  const i = dk.selected;
+  if (dk.state !== "playing" || i < 0 || dk.given[i]) return;
+  if (dk.board[i] === v && !dk.bad.has(i)) return;
+  dk.board[i] = v;
+  if (v !== dk.solution[i]) {
+    dk.bad.add(i);
+    dk.mistakes++;
+    if (dk.ctx.campaign) {
+      if (dk.shield > 0) {
+        dk.shield--;
+        dokuStatus("Wrong tool there. The rootkit hid it, so no strike.", "warn");
+      } else {
+        dk.strikes++;
+        if (dk.strikes >= HACK_STRIKES) {
+          dk.state = "over";
+          dokuDraw();
+          dokuShowOverlay("Traced", "The admins traced you. " + dk.ctx.target.name + " is still out there.", "Try again");
+          return;
+        }
+        dokuStatus("Wrong tool there. Strike " + dk.strikes + " of " + HACK_STRIKES + ".", "warn");
+      }
+    } else {
+      dokuStatus("That symbol breaks a row, column, or box.", "warn");
+    }
+  } else {
+    dk.bad.delete(i);
+    dokuStatus("");
+  }
+  dokuDraw();
+  dokuCheckWin();
+}
+
+function dokuErase() {
+  const i = dk.selected;
+  if (dk.state !== "playing" || i < 0 || dk.given[i]) return;
+  dk.board[i] = 0;
+  dk.bad.delete(i);
+  dokuDraw();
+}
+
+function dokuHint() {
+  if (dk.state !== "playing") return;
+  let i = dk.selected;
+  if (i < 0 || dk.given[i] || (dk.board[i] === dk.solution[i])) {
+    const open = dk.board.map((v, n) => (v !== dk.solution[n] ? n : -1)).filter(n => n >= 0);
+    if (!open.length) return;
+    i = pick(open);
+  }
+  if (dk.ctx.campaign) {
+    const cost = dokuScanCost();
+    if (hack.nodes < cost) { dokuStatus("Your botnet needs " + cost + " nodes to run a scan.", "warn"); return; }
+    hack.nodes -= cost;
+    saveHack();
+    dokuStatus("Scan cracked a cell for " + cost + " nodes.", "good");
+  } else {
+    dokuStatus("Hint filled a cell.", "good");
+  }
+  dk.board[i] = dk.solution[i];
+  dk.given[i] = true;
+  dk.bad.delete(i);
+  dk.selected = i;
+  dokuDraw();
+  dokuCheckWin();
+}
+
+function closeDoku() {
+  dokuOpen = false;
+  dokuRoot.hidden = true;
+  const orderId = dk ? dk.ctx.orderId : null;
+  dk = null;
+  finishPlayTest(orderId);
+  lastTick = performance.now();
+  render();
+}
+
+dokuGridEl.addEventListener("click", event => {
+  const cell = event.target.closest("[data-cell]");
+  if (!cell || !dk || dk.state !== "playing") return;
+  dk.selected = Number(cell.dataset.cell);
+  dokuDraw();
+});
+
+dokuPalEl.addEventListener("click", event => {
+  const button = event.target.closest("[data-sym]");
+  if (button && dk) dokuPlace(Number(button.dataset.sym));
+});
+
+document.getElementById("dokuErase").addEventListener("click", () => { if (dk) dokuErase(); });
+dokuHintButton.addEventListener("click", () => { if (dk) dokuHint(); });
+document.getElementById("dokuClose").addEventListener("click", closeDoku);
+
+dokuOverlayButton.addEventListener("click", () => {
+  if (!dk) return;
+  if (dk.ctx.campaign && dk.state === "won") {
+    openHackTarget();
+    return;
+  }
+  dokuStart();
+});
+
+document.addEventListener("keydown", event => {
+  if (!dokuOpen || !dk) return;
+  if (event.key === "Escape") { closeDoku(); return; }
+  if (dk.state !== "playing") return;
+  if (/^[1-9]$/.test(event.key)) dokuPlace(Number(event.key));
+  else if (event.key === "Backspace" || event.key === "Delete") dokuErase();
+  else if (dk.selected >= 0 && event.key.startsWith("Arrow")) {
+    const r = Math.floor(dk.selected / 9), c = dk.selected % 9;
+    const moves = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] };
+    const [dr, dc] = moves[event.key];
+    dk.selected = clamp(r + dr, 0, 8) * 9 + clamp(c + dc, 0, 8);
+    dokuDraw();
+  } else return;
+  event.preventDefault();
+});
+
+// ------------------------------------------------------------------
+// The Hackerdoku campaign
+// ------------------------------------------------------------------
+function newHack() { return { next: 0, nodes: 0, total: 0, owned: 0, tools: {} }; }
+
+function loadHack() {
+  try {
+    const saved = localStorage.getItem(HACK_KEY);
+    if (saved) return Object.assign(newHack(), JSON.parse(saved));
+  } catch (error) { /* broken or blocked save, start fresh */ }
+  return newHack();
+}
+
+function saveHack() {
+  try { localStorage.setItem(HACK_KEY, JSON.stringify(hack)); }
+  catch (error) { /* storage unavailable, skip */ }
+}
+
+let hack = loadHack();
+
+function hackRank() {
+  let rank = HACK_RANKS[0];
+  HACK_RANKS.forEach(r => { if (hack.total >= r.at) rank = r; });
+  return rank;
+}
+
+function hackTarget() {
+  return hack.next < HACK_TARGETS.length ? HACK_TARGETS[hack.next] : HACK_ENDLESS;
+}
+
+function openHackTarget() {
+  const target = hackTarget();
+  openDoku(buildDokuFile("your botnet", "hacker", target.level), { campaign: true, target: target, advance: hack.next < HACK_TARGETS.length });
+}
+
+function renderHackCard() {
+  const target = hackTarget();
+  const nextRank = HACK_RANKS.find(r => r.at > hack.total);
+  let html = `
+    <article class="order hack-card">
+      <div class="hack-strip"></div>
+      <div class="order-body">
+        <div class="order-top">
+          <div>
+            <div class="customer">Hackerdoku campaign</div>
+            <div class="spec">Crack machines, grow your botnet, spend nodes on tools.</div>
+          </div>
+        </div>
+        <div class="motifs">${DOKU_THEMES.hacker.glyphs.slice(0, 5).join(" ")}</div>
+        <div class="hack-facts">
+          <span>Rank <b>${hackRank().name}</b></span>
+          <span>Botnet <b>${hack.nodes} nodes</b></span>
+          <span>Machines owned <b>${hack.owned}</b></span>
+        </div>
+        <div class="status">Next target: ${target.name}, ${DOKU_LEVELS[target.level].label}, worth ${target.nodes} nodes${nextRank ? ". " + nextRank.name + " at " + nextRank.at + " total nodes" : ""}.</div>
+        <div class="actions"><button class="btn primary" data-do="hackPlay">Hack ${target.name}</button></div>`;
+  HACK_TOOLS.forEach(tool => {
+    const owned = hack.tools[tool.key];
+    html += `
+        <div class="row" style="margin-top:10px">
+          <div class="row-top"><div class="row-name">${tool.name}</div><div class="row-state ${owned ? "done" : ""}">${owned ? "Installed" : tool.cost + " nodes"}</div></div>
+          <div class="row-sub">${tool.text}</div>
+          ${owned ? "" : `<div class="actions"><button class="btn" data-do="hackTool" data-id="${tool.key}">Install for ${tool.cost} nodes</button></div>`}
+        </div>`;
+  });
+  html += `</div></article>`;
+  return html;
+}
+
+// ------------------------------------------------------------------
 // The studio clock. Company time stops while you play test.
 // ------------------------------------------------------------------
 let lastTick = performance.now();
@@ -1584,13 +2231,13 @@ setInterval(() => {
   const dt = Math.min(1, (now - lastTick) / 1000);
   lastTick = now;
 
-  if (!playOpen && !document.hidden) {
+  if (!playOpen && !dokuOpen && !document.hidden) {
     simulate(dt);
     saveClock += dt;
   }
   if (saveClock >= 5) { saveClock = 0; saveCompany(); }
 
-  if (!playOpen) {
+  if (!playOpen && !dokuOpen) {
     if (dirty && !pointerIsDown && now - lastPointerUp > 350) render();
     else refreshLive();
   }

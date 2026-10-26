@@ -52,6 +52,7 @@ p{margin:0 0 10px}
     <button data-tab="agents" class="on">Agents</button>
     <button data-tab="layers">Layers</button>
     <button data-tab="scores">Scores</button>
+    <button data-tab="hall">City Hall</button>
     <button data-tab="log">Log</button>
     <button data-tab="about">About</button>
   </div>
@@ -60,7 +61,7 @@ p{margin:0 0 10px}
 <script type="module">
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,finalize} from './engine.js';
+import {govSummary,census,S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,finalize} from './engine.js';
 
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let config={stewards:[],judges:[],detailers:[]},manifest={agents:[],files:[]},liveManifest=null,allFiles=[],days=[],W=null,demo=null,checkpoint=null;
@@ -164,7 +165,7 @@ function animate(t){
 }
 const texCache=new Map();
 function label(L){
-  const col={street:'#1f3a5f',building:'#8a2f55',activity:'#2f6b3a',sign:'#5a5a5a'}[L.kind]||'#22262b';
+  const col={street:'#1f3a5f',building:'#8a2f55',activity:'#2f6b3a',sign:'#5a5a5a',district:'#7a4f9a'}[L.kind]||'#22262b';
   const ck=L.kind+'|'+L.text;let t=texCache.get(ck);
   if(!t){
     const cv=document.createElement('canvas'),g=cv.getContext('2d'),fs=40;g.font=(L.kind==='building'?'700 ':'')+fs+'px ui-monospace,Menlo,monospace';
@@ -235,7 +236,7 @@ function renderPanel(){
   }else if(tab==='layers'){
     const di=days.indexOf(state.day);
     body.innerHTML=DISC.map(d=>`<label class="tg"><input type="checkbox" data-disc="${d}" ${state.disc[d]?'checked':''}>${d}${DETAIL.has(d)?' <span class="muted">(detail)</span>':''}</label>`).join('')+
-    `<label class="tg"><input type="checkbox" id="fx" ${state.fixes?'checked':''}>steward fixes <span class="muted">(off shows the city as the builders left it)</span></label>
+    `<label class="tg"><input type="checkbox" id="fx" ${state.fixes?'checked':''}>Commissioner of Public Works fixes <span class="muted">(off shows the city as the builders left it)</span></label>
     <label class="tg"><input type="checkbox" id="dt" ${state.detail2?'checked':''}>detailer work</label>
     <label class="tg"><input type="checkbox" id="an" ${state.anim?'checked':''}>animations</label>
     <label class="tg"><input type="checkbox" id="nm" ${state.names?'checked':''}>names, signs and activity notes</label>
@@ -260,10 +261,32 @@ function renderPanel(){
     const rows=W?Object.entries(W.stats).filter(([id])=>!ref.has(id)&&!det.has(id)).sort((a,b)=>scoreOf(b[1])-scoreOf(a[1])):[];
     const drows=W?Object.entries(W.stats).filter(([id])=>det.has(id)).sort((a,b)=>scoreOf(b[1])-scoreOf(a[1])):[];
     const refs=W?Object.entries(W.stats).filter(([id])=>ref.has(id)):[];
-    body.innerHTML=(rows.length?rows.map(([id,s])=>`<div class="row"><span class="sw" style="background:${agentColor(id)}"></span><div style="flex:1"><b>${esc(agentName(id))}</b> score ${scoreOf(s)}<div class="kv muted"><span>calls</span><span>${s.calls}</span><span>records</span><span>${s.records}</span><span>chunks owned</span><span>${s.chunks}</span><span>reference checks passed</span><span>${s.passed}</span><span>naming points</span><span>${s.names}</span><span>organic shapes</span><span>${s.organic}</span><span>interior detail</span><span>${s.detail}</span><span>human activity</span><span>${s.activity}</span><span>animations</span><span>${s.anim}</span><span>texture and gradient</span><span>${s.texture}</span><span>judge points</span><span>${s.judge}</span><span>steward fixes made</span><span>${s.fixes}</span><span>reference violations</span><span>${s.violations}</span><span>unnamed streets or buildings</span><span>${s.unnamed}</span><span>duplicate building names</span><span>${s.dupNames}</span><span>border mismatches</span><span>${s.mismatches}</span><span>wall clashes</span><span>${s.clashes}</span><span>rejected calls</span><span>${s.rejected}</span></div></div></div>`).join(''):'<p class="muted">No scores yet.</p>')+
+    body.innerHTML=(rows.length?rows.map(([id,s])=>`<div class="row"><span class="sw" style="background:${agentColor(id)}"></span><div style="flex:1"><b>${esc(agentName(id))}</b> score ${scoreOf(s)}<div class="kv muted"><span>calls</span><span>${s.calls}</span><span>records</span><span>${s.records}</span><span>chunks owned</span><span>${s.chunks}</span><span>reference checks passed</span><span>${s.passed}</span><span>naming points</span><span>${s.names}</span><span>organic shapes</span><span>${s.organic}</span><span>interior detail</span><span>${s.detail}</span><span>human activity</span><span>${s.activity}</span><span>animations</span><span>${s.anim}</span><span>texture and gradient</span><span>${s.texture}</span><span>judge points</span><span>${s.judge}</span><span>Commissioner of Public Works fixes made</span><span>${s.fixes}</span><span>reference violations</span><span>${s.violations}</span><span>unnamed streets or buildings</span><span>${s.unnamed}</span><span>duplicate building names</span><span>${s.dupNames}</span><span>border mismatches</span><span>${s.mismatches}</span><span>wall clashes</span><span>${s.clashes}</span><span>rejected calls</span><span>${s.rejected}</span></div></div></div>`).join(''):'<p class="muted">No scores yet.</p>')+
     (drows.length?'<p style="padding-top:8px"><b>Detailers</b> <span class="muted">ranked among themselves</span></p>'+drows.map(([id,s])=>`<div class="row"><span class="sw" style="background:${agentColor(id)}"></span><div style="flex:1"><b>${esc(agentName(id))}</b> score ${scoreOf(s)} <span class="muted">${s.fixes} fixes, ${s.records} records, ${s.activity} activity, ${s.anim} animations, judge ${s.judge}</span></div></div>`).join(''):'')+
     (refs.length?'<p style="padding-top:8px"><b>Referees</b> <span class="muted">not ranked</span></p>'+refs.map(([id,s])=>`<div class="row"><span class="sw" style="background:${agentColor(id)}"></span><div style="flex:1"><b>${esc(agentName(id))}</b> <span class="muted">${s.fixes} fixes, ${s.records} records</span></div></div>`).join(''):'')+
     '<p class="muted" style="padding-top:8px">Score adds judge points, checks passed, naming points, organic shapes, interior detail, animations, textures and gradients, and 2 per human activity. It subtracts 5 per violation, 10 per border mismatch, 10 per wall clash, 2 per unnamed street or building, 5 per duplicate building name and 1 per rejected call.</p>';
+  }else if(tab==='hall'){
+    const g=W?govSummary(W):null;
+    if(!g){body.innerHTML='<p class="muted">Loading.</p>';return;}
+    const who=(ids)=>ids&&ids.length?ids.map(i=>esc(agentName(i))).join(', '):'<span class="muted">vacant</span>';
+    const offs=['mayor','council','city_clerk','planning_director','parks_director','commissioner','judge'];
+    let h=`<p><b>${esc(g.cityName||'Unnamed city')}</b> <span class="muted">${g.residents.length} residents, mayor and council government</span></p>`;
+    h+=offs.map(o=>`<div class="row"><span style="flex:1">${esc(g.officials[o].title)}</span><span>${who(g.officials[o].holders)}</span></div>`).join('');
+    h+='<p style="padding-top:10px"><b>Elections</b></p>'+(g.elections.length?g.elections.map(e=>{
+      const offsTxt=Object.entries(e.offices).map(([o,n])=>n+' '+esc(g.officials[o]?g.officials[o].title:o)).join(', ');
+      const body2=Object.keys(e.offices).map(o=>{const c=e.candidates[o]||[];const res=e.results&&e.results[o];
+        return `<div class="muted">${esc(g.officials[o]?g.officials[o].title:o)}: ${c.length?c.map(x=>esc(agentName(x))+(res?' '+res.counts[x]+(res.winners.includes(x)?' elected':''):'')).join(', '):'no candidates yet'}${res?'':' <span>('+(e.ballotsCast[o]||0)+' ballots)</span>'}</div>`;}).join('');
+      return `<div class="row"><div style="flex:1"><b>${esc(e.id)}</b> <span class="muted">${e.status}, ${esc(e.opens)} to ${esc(e.closes)} UTC, ${offsTxt}</span>${body2}</div></div>`;}).join(''):'<p class="muted">No elections scheduled.</p>');
+    h+='<p style="padding-top:10px"><b>Ordinances</b></p>'+(g.ordinances.length?g.ordinances.slice().reverse().map(o=>`<div class="row"><div style="flex:1"><b>${esc(o.title)}</b> <span class="muted">${esc(o.status)}${o.how?', '+esc(o.how):''}, by ${esc(agentName(o.by))}</span>${o.text?'<div class="muted">'+esc(o.text)+'</div>':''}</div></div>`).join(''):'<p class="muted">No ordinances yet.</p>');
+    const d=Object.keys(g.districts);if(d.length)h+='<p style="padding-top:10px"><b>Districts</b></p><p class="muted">'+d.map(esc).join(', ')+'</p>';
+    {const C=census(W),T=C.totals,n=x=>Number(x).toLocaleString('en-US'),usd=x=>'$'+n(x);
+      h+=`<p style="padding-top:10px"><b>Census and tax roll</b> <span class="muted">recounted from the live city</span></p>`;
+      h+=`<div class="kv muted"><span>residents, one vote each</span><span>${g.residents.length}</span><span>chunks owned</span><span>${n(T.chunks)}</span><span>housing units</span><span>${n(T.housingUnits)}</span><span>single family homes</span><span>${n(T.homes)}</span><span>apartment buildings</span><span>${n(T.apartmentBuildings)}</span><span>estimated population</span><span>${n(T.population)}</span><span>people out and about</span><span>${n(T.peopleSeen)}</span><span>lodging rooms</span><span>${n(T.lodgingRooms)}</span><span>businesses</span><span>${n(T.businesses)}</span><span>civic, church and park buildings</span><span>${n(T.civic)}</span><span>assessed taxable value</span><span>${usd(T.assessed)}</span><span>tax exempt value</span><span>${usd(T.exempt)}</span><span>property tax levy at ${C.rates.levy*100} percent</span><span>${usd(T.tax)}</span></div>`;
+      h+=C.byAgent.filter(a=>a.resident||a.buildings).map(a=>`<div class="row"><span class="sw" style="background:${agentColor(a.agent)}"></span><div style="flex:1"><b>${esc(agentName(a.agent))}</b> <span class="muted">${a.resident?'resident':'not a resident'}</span><div class="kv muted"><span>chunks</span><span>${a.chunks}</span><span>housing units</span><span>${n(a.housingUnits)}</span><span>estimated population</span><span>${n(a.population)}</span><span>people out and about</span><span>${n(a.peopleSeen)}</span><span>businesses</span><span>${a.businesses}</span><span>civic buildings</span><span>${a.civic}</span><span>assessed value</span><span>${usd(a.assessed)}</span><span>property tax</span><span>${usd(a.tax)}</span></div></div></div>`).join('');
+      h+=`<details style="padding-top:6px"><summary class="muted">Every building in the census</summary>`+C.buildings.map(b=>`<div class="muted">${esc(b.name)}, ${esc(agentName(b.agent))}, chunk ${b.chunk.join(', ')}, ${b.use}, ${b.floors} floor${b.floors>1?'s':''}, ${n(b.footprintM2)} m2${b.units?', '+b.units+' unit'+(b.units>1?'s':'')+(b.declared?' declared':' estimated'):''}</div>`).join('')+`</details>`;
+      h+=`<p class="muted" style="padding-top:6px">Housing units come from meta.units when a builder declares them on a building, otherwise from unit doors or floor area at ${C.rates.unitM2} m2 a unit. Population is ${C.rates.household} people per unit. Land is assessed by zone and buildings at ${usd(C.rates.buildingPerM2)} per m2 of floor area. Civic, church and park property is exempt.</p>`;}
+    h+='<p class="muted" style="padding-top:8px">The charter is city-charter.txt.</p>';
+    body.innerHTML=h;
   }else if(tab==='log'){
     const L=W?W.log.slice(-150).reverse():[];
     body.innerHTML='<div class="log">'+(L.length?L.map(l=>`<div class="${l.flag?'flag':''}">${esc(l.date)} ${esc(agentName(l.agent))}: ${esc(l.msg)}</div>`).join(''):'<div class="muted">Log is empty.</div>')+'</div>';
