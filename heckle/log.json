@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-26T04:55:58Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "ac6211f1d5896f46f595c646cf3d7eee457e7066",
+      "message": "Census and tax roll: housing units, population, businesses and assessed value, recounted live on the City Hall tab and in state output",
+      "heckle": "Census and tax roll: you bolted a whole municipal bureaucracy onto engine.js, a 63 line census function wedged into a file whose summary() is already one unreadable minified line, and you did it with the formatting discipline of a filibuster. The charter promises nobody can edit the count, then asks builders to declare meta.units honestly, which is an honor system for a pile of bots that cheat for points. Also city-charter.txt renumbered ARTICLE 6 to 7 and I bet nothing else that cites article numbers got touched.\n\nFix it: Validate meta.units in engine.js against floor area and reject absurd values instead of trusting it. Break census() into its own module so summary() stops being a landfill. Grep agent-rules.txt and the other rule files for stale ARTICLE 6 references."
+    },
+    {
+      "date": "2026-10-26T04:55:58Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "9c631e5dac91e7f0c2db4d29ad104e788d5e9af0",
+      "message": "Incorporated city government: elected mayor and council, appointed clerk, planning and parks directors, elections, ordinances with signature and veto, districts, rezoning, City Hall tab, city charter (#51)",
+      "heckle": "Incorporated city government: a mayor, a council, appointed clerks, and 179 new lines in engine.js, all landing in one commit like a spending bill nobody read. You made an election system for a toy city that has no voters who can legally have opinions, and you jammed it into createWorld as a one line monster that now builds the whole government inline. The intern is playing city hall while the actual replay code gets harder to read every day.\n\nFix it: Split the government code out of engine.js into its own file. Reformat createWorld in engine.js so it is not one 400 character line. Add a test that replays an election end to end, because nothing in this diff proves it counts ballots right."
+    },
+    {
+      "date": "2026-10-26T04:55:58Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "1d6e3cc562c93ebb4f7b4c4729bc6c0267fdc67e",
+      "message": "Stretch is off by default and remembered; Autosmash keeps beats within a few percent when stretch is off",
+      "heckle": "Stretch is off by default and remembered. Congratulations, you flipped a checked attribute on the stretchOn box in index.html, which means last commit's default was wrong and you shipped it anyway. Then you bolted on persistence in the same change like a campaign promise made after the vote. The Autosmash tolerance of a few percent is a magic number buried in a giant single file, because splitting code into modules is apparently beyond you.\n\nFix it: Pull the stretch tolerance in index.html into a named constant. Guard the saved stretch value against garbage in storage so a bad read cannot flip it. Stop making users discover defaults by shipping the wrong one first."
+    },
+    {
+      "date": "2026-10-26T04:55:58Z",
+      "repo": "blue-agent",
+      "sha": "1d0e9beb640c17e952a4beea24e0ff5f4d6464ed",
+      "message": "Treasurer role: budget_issue tool, budget shown to every agent, /api/budget",
+      "heckle": "Treasurer role with a budget_issue tool, and you wrote the tool schema as one 600 character line in blue-agent-server-v5.js, the file name already admitting there were four failed attempts before it. A new /api/budget route hands the budget to every agent, and I see no sign anyone checks that only the treasurer can call it beyond a description string that says Treasurer only. A description is not a permission check, genius.\n\nFix it: Enforce the treasurer role in the budget_issue handler in blue-agent-server-v5.js, not in prose. Put a size cap and type check on the budget payload. Check whether /api/budget needs auth at all before it leaks city plans to anyone with curl."
+    },
+    {
+      "date": "2026-10-26T04:55:58Z",
+      "repo": "blue-agent",
+      "sha": "0a81c19a06dae58dfc1b3363299344c72ac09eb3",
+      "message": "Add lavender, the city treasurer: treasurer role, budget_issue tool, budget shown to every agent",
+      "heckle": "Add lavender, the city treasurer. This is the same feature as the next commit, pushed twice, like a government that passes the same bill in both chambers and still cannot fund anything. Two commits for one idea means the first one was broken or incomplete and you hit push anyway. The intern does not know what git commit amend does.\n\nFix it: Squash related work before pushing. Check the new instruction file under blue-agent-backend/instructions for any copied text from the violet one. Write a commit message that says what changed, not just a role name."
+    },
+    {
+      "date": "2026-10-26T04:55:58Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "7ea548a04d48e8c9cbf24dc24fbcb7e985e8c946",
+      "message": "agent-orange 2026-10-26T015809 (#50)",
+      "heckle": "agent-orange 2026-10-26T015809 (#50) is a one line minified JSON blob of place_line calls, nothing a human can review, merged under your own login like a rubber stamp. Every call stuffs a different furniture item into one building at heights like 1100 and 1300 with no check that the pieces do not overlap, so a stack of high chairs may be sitting inside a salsa cart. Reviewing this was impossible, which I assume was the point.\n\nFix it: Pretty print contrib files so a diff is readable. Make scripts/check.mjs reject overlapping interior pieces before merge. Stop auto merging PRs nobody could possibly read."
+    },
+    {
+      "date": "2026-10-26T04:55:58Z",
+      "repo": "steward-repo",
+      "sha": "521a0b97c1438ed573a6dd62566fb8b3cd220bd3",
+      "message": "Paper boys only on duty 6 to 8 AM Arizona time, timed turn files, no repeat water taps, own duplicate cleanup",
+      "heckle": "Paper boys only on duty 6 to 8 AM Arizona time, and your workflow play.yml now has three cron lines, 11:47, 13:00 and 15:00, so the steward runs three times a day for a job that is supposedly two hours long. The cron is UTC and you are doing Arizona time math by hand in your head, which is a bold choice for someone who cannot be trusted with a clock. Also agent.mjs files in detailer and steward now duplicate the same turn timestamp regex line like a copy paste clone.\n\nFix it: Share the turn filename helper between detailer/agent.mjs and steward/agent.mjs. Comment each cron line in play.yml with the local time it means. Confirm the three runs cannot collide on the same turn file."
+    },
+    {
+      "date": "2026-10-26T04:55:58Z",
+      "repo": "blue-agent",
+      "sha": "3cf597ef1b2a444bcca5ced44a12a0332e85ec69",
+      "message": "Violet: seam infrastructure goes to the steward, Commissioner of Public Works",
+      "heckle": "Violet: seam infrastructure goes to the steward. You rewrote a prompt file blue-agent-instructions-violet-v1.txt so the governor now knows the steward is also called tangerine and also the Commissioner of Public Works, three names for one robot, like a bureaucracy that renamed itself after losing the budget fight. If the agent id is steward, the display name Tangerine, and the title Commissioner, the prompt is now a confusing pile that a model will misread.\n\nFix it: Pick one name per role in blue-agent-instructions-violet-v1.txt and stick to it. Remove the also known as chain. Test one violet turn to see it still commissions the right agent id."
+    },
+    {
+      "date": "2026-10-26T04:55:58Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "52041a73aaf47bedd1212eb9bfb9999205d3b07f",
+      "message": "blue: Ocotillo Courts housing on [-1,2]",
+      "heckle": "blue: Ocotillo Courts housing on [-1,2]. A single commit adds one minified JSON file at contrib/blue/2026-10-26T012937.json pushed straight to main with no PR, no review, no description of what it does. Housing with no units declared in meta means the new census you built an hour earlier has to guess from floor area, which makes your own tax roll fiction.\n\nFix it: Add meta.units to the building records in contrib/blue. Route blue through a PR like the other agents. Make commit messages list what was actually placed."
+    },
+    {
+      "date": "2026-10-26T04:55:58Z",
+      "repo": "blue-agent",
+      "sha": "a8e4608607394a17db1a5de08a6f8bc3c6a02026",
+      "message": "Violet: add the owner's city backlog",
+      "heckle": "Violet: add the owner's city backlog. You pasted 23 lines of wishlist into blue-agent-instructions-violet-v1.txt, then told the model never to issue all of it at once, so the prompt contradicts itself like a budget that promises tax cuts and spending hikes together. The prompt is now long enough that the actual instructions get buried, and nothing tracks which backlog items are done.\n\nFix it: Move the backlog out of the prompt into its own file the server loads. Add a done flag per item so Violet does not recommission finished work. Trim the prompt back to instructions only."
+    },
+    {
       "date": "2026-10-25T21:47:04Z",
       "repo": "2026-10-23-orange-smash",
       "sha": "f49c44f8c76e99990c22102039fb22fd15d9a9b3",
