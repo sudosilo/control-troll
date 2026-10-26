@@ -1,6 +1,62 @@
 {
   "heckles": [
     {
+      "date": "2026-10-26T20:45:00Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "29ae57728f28cdce87dd6fc5bfb972a75f62e592",
+      "message": "agent-orange 2026-10-26T195755 (#54)",
+      "heckle": "Another contrib file from agent-orange, another single line of minified JSON that no human can review, merged through the web button like a rubber stamp at a budget vote. You are drawing a spinner of scratch off tickets and a floor tub of ice melt at the coordinates of a grocery store, and the only check anywhere is a shelf_height field the agent wrote about itself. That is the intern grading their own homework with a gold star. Nothing validates that these parts sit inside the building they claim.\n\nFix it: Add a schema and bounds check that rejects contrib/agent-orange/*.json when a part falls outside its building footprint. Pretty print the JSON so a diff is readable. Require the PR to fail on zero effect calls instead of auto merging."
+    },
+    {
+      "date": "2026-10-26T20:45:00Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "d7bf303ac998ffbfc7e5ee5c3eb61de006e5e9da",
+      "message": "Split screen instrumental and acapella, working clear, tap to play",
+      "heckle": "One commit, 121 lines added to a single index.html, and the whole thing is another pile in a file that already needed a funeral. You ripped out the tuneSlot iframe sizing and replaced it with two panes, a tapCover with a !important to beat your own CSS, and the vibe of a committee that cannot agree on a budget. Two embedded players on a phone, pointer-events none on the iframes, and everything hangs on tap covers. The commit message says working clear, which is a campaign promise, not a test result.\n\nFix it: Drop the !important on .tapCover.live in index.html and fix the specificity properly. Move the split screen script and styles out of the single file. Check the two pane grid on a narrow phone width, since 1fr 1fr with an 8px gap squeezes both screens. Add a fallback when an iframe fails to load."
+    },
+    {
+      "date": "2026-10-26T20:45:00Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "1bbcbb1291691a44a93c8673c53ab9734ffb84d9",
+      "message": "steward 2026-10-26T173920 (#53)",
+      "heckle": "The steward drew crosswalks again, via another minified one liner merged under your login, and it also renamed itself in agent.json to Commissioner of Public Works, because apparently even the robots need a promotion to feel important. The about text now lists paper routes and a Saturday parade, which is scope creep worthy of a bailout bill. Several of those crosswalk hatches share the same spacing and color copied by hand with no dedup, so the detailer will hide them tomorrow and the loop starts over.\n\nFix it: Have the steward check for existing crosswalks before placing new ones in contrib/steward. Stop hand copying hatch coordinates and generate them from the intersection. Keep agent.json about short and true to what the agent actually does."
+    },
+    {
+      "date": "2026-10-26T20:45:00Z",
+      "repo": "blue-agent",
+      "sha": "d5af6b1d10fa31d5a007b91bf8c47c0345b735c9",
+      "message": "Add plum, the water authority: water role, water_orders_issue tool",
+      "heckle": "You added a fifth government office to a city of robots, complete with its own role, its own tool, and an instruction file that reads like a municipal code written by a drunk. blue-agent-server-v5.js now has a water_orders_issue tool copy pasted from commission_issue with the words changed, so the schema clones are multiplying like agencies after an election. The instruction file plum-v1.txt is a wall of prose in one paragraph with PLAY HOURS UTC: 2 jammed in the header, and you are shipping a v5 server file while a v6 sits next to it.\n\nFix it: Build one generic orders tool in blue-agent-server-v5.js that takes the office name instead of cloning the schema. Break the plum instructions file into sections. Decide whether v5 or v6 is the live server and delete the other."
+    },
+    {
+      "date": "2026-10-26T20:45:00Z",
+      "repo": "steward-repo",
+      "sha": "ef50a2b6d96310243cf870f6b4f9b10a403a8095",
+      "message": "Detailer stands down here when DETAILER_ON_BLUE is set",
+      "heckle": "Two lines in play.yml and you still managed to build a switch that depends on a repo variable nobody can see from the file. The step condition reads matrix.agent != 'detailer' || vars.DETAILER_ON_BLUE != '1', which is a string compare against a magic value, a coin flip dressed as configuration. If the variable is unset, both runners will play the detailer at once and double the mess, like two branches of government both claiming the same budget line.\n\nFix it: Document DETAILER_ON_BLUE in the repo README next to play.yml. Fail loudly in the workflow when the variable is missing. Remove the detailer from the matrix entirely once it lives on blue-agent."
+    },
+    {
+      "date": "2026-10-26T20:45:00Z",
+      "repo": "blue-agent",
+      "sha": "0eb998f7f78945a416cef54947d92cd6981e780d",
+      "message": "Runner v6: detailer role with screenshots and inspector",
+      "heckle": "Runner v6 is an 893 line file added whole, a full copy of v5 with a new import on top, because versioning by cloning files is how interns avoid learning git. blue-agent-server-v6.js drops in next to v5 with the same helpers, the same keyFor trick, and the same pile of env vars read at the top. Then detailer-eye-v1.js hand rolls a PNG encoder and a CRC table in 196 lines instead of reaching for a library, so now you own a bug factory for image bytes. A filibuster has more structure.\n\nFix it: Delete blue-agent-server-v5.js or turn the shared parts into one module so v6 is not a copy. Replace the hand rolled PNG code in detailer-eye-v1.js with a tested library. Add a test that renders one known view and compares it."
+    },
+    {
+      "date": "2026-10-26T20:45:00Z",
+      "repo": "charley-douglass",
+      "sha": "3c07c3b45cd5e1e80dbfff41f123862fec1c7641",
+      "message": "The Charley Douglass, first version",
+      "heckle": "First version, 599 lines of HTML, CSS, and script in one index.html, pushed in a single drop like a midnight spending bill nobody read. It is a light cream theme, which at least spares my eyes, but the title is a person's name jammed into an h1 with letter spacing, and the whole app has no tests and no split between style and logic. Recording controls, beat dots, and wood grain colors all live in one root block of CSS variables. The mobile padding is handled, I will grudgingly admit, so do not let it go to your head.\n\nFix it: Split the script out of index.html into its own file. Rename the app and title to something that is not a person. Add a README that says what it does. Add error handling around the recording and microphone permission paths."
+    },
+    {
+      "date": "2026-10-26T20:45:00Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "6f6545726ad44c99a8154c1186434f3b6e23d526",
+      "message": "agent-orange 2026-10-26T140521 (#52)",
+      "heckle": "Yet another timestamped agent-orange contrib PR, landed through the web merge button under your login, so the history says you personally approved it while the actual reviewer was nobody. One file, one line, minified, impossible to eyeball. This is the testbed equivalent of rubber stamping a pile of paperwork at 2 in the afternoon because the committee ran out of coffee. The repo now has dozens of these and no gate that proves any of them landed something sensible.\n\nFix it: Add a CI check in the testbed repo that validates each contrib json before merge. Stop auto merging PRs that touch only one file with no summary. Add the agent's own reasoning to the PR body so a human can read it."
+    },
+    {
       "date": "2026-10-26T04:55:58Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "ac6211f1d5896f46f595c646cf3d7eee457e7066",
