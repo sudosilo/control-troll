@@ -161,7 +161,33 @@
   "sudosilo/inkrunner@v2026.10.17",
   "sudosilo/tapperator@v2026.10.17",
   "sudosilo/mohave-wtf@v2026.10.17",
-  "sudosilo/tickle-boxie@v2026.10.17"
+  "sudosilo/tickle-boxie@v2026.10.17",
+  "sudosilo/rosetta-pone@v2026.10.18",
+  "sudosilo/rosetta-pone@v2026.10.17",
+  "sudosilo/fogwarren-vx@v2026.10.18",
+  "sudosilo/topo-wars-server@v2026.10.03",
+  "sudosilo/topo-wars-server@v2026.10.01",
+  "sudosilo/topo-wars-server@v2026.09.30",
+  "sudosilo/topo-wars-server@v2026.09.29",
+  "sudosilo/blue-agent-sandbox@v2026.10.18",
+  "sudosilo/fatty-fart-pedal@v2026.10.19",
+  "sudosilo/chromahum-zq@v2026.10.20",
+  "sudosilo/chromahum-zq@v2026.10.17",
+  "sudosilo/chassisquiver@v2026.10.20",
+  "sudosilo/chassisquiver@v2026.10.17",
+  "sudosilo/chassisquiver@v2026.10.13",
+  "sudosilo/chassisquiver@v2026.10.12",
+  "sudosilo/field-twin-violet-api@v2026.10.21",
+  "sudosilo/field-twin-violet-api@v2026.10.20",
+  "sudosilo/field-twin-violet-api@v2026.10.17",
+  "sudosilo/field-twin-violet-api@v2026.10.15",
+  "sudosilo/field-twin-violet-api@v2026.10.14",
+  "sudosilo/forkmill-zx@v2026.10.21",
+  "sudosilo/text-based-game@v2026.10.21",
+  "sudosilo/five-minute-momentum-engine@v2026.10.22",
+  "sudosilo/five-minute-momentum-engine@v2026.10.15",
+  "sudosilo/shared-server@v2026.10.22",
+  "sudosilo/shared-server@v2026.10.21"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -1240,6 +1266,127 @@
     "audio",
     "music",
     "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/rosetta-pone": {
+   "d": "A cuneiform to English translator that reads signs or transliteration sign by sign.",
+   "h": "https://rosetta-pone.vercel.app",
+   "t": [
+    "language",
+    "tool",
+    "translator",
+    "vercel"
+   ]
+  },
+  "sudosilo/fogwarren-vx": {
+   "d": "A retro desktop style fog of war maze game with mines, pitfalls, and a hidden picture.",
+   "h": "https://fogwarren-vx.vercel.app",
+   "t": [
+    "game",
+    "maze",
+    "puzzle",
+    "retro",
+    "vercel"
+   ]
+  },
+  "sudosilo/topo-wars-server": {
+   "d": "The backend that keeps Topo Wars two player battles in sync and sends turn notifications.",
+   "h": "https://topo-wars-server.vercel.app",
+   "t": [
+    "backend",
+    "game",
+    "multiplayer",
+    "vercel"
+   ]
+  },
+  "sudosilo/blue-agent-sandbox": {
+   "d": "A sandbox copy of the agent test bed where several AI agents build one shared city.",
+   "h": "",
+   "t": [
+    "agents",
+    "backend",
+    "simulation",
+    "vercel"
+   ]
+  },
+  "sudosilo/fatty-fart-pedal": {
+   "d": "A stomp pedal instrument that plays fart sounds, solo or together in a shared room.",
+   "h": "https://fatty-fart-pedal.vercel.app",
+   "t": [
+    "instrument",
+    "multiplayer",
+    "music",
+    "vercel"
+   ]
+  },
+  "sudosilo/chromahum-zq": {
+   "d": "An instrument that turns camera colors into sound, with tiles, patterns, and an infinite canvas.",
+   "h": "https://chromahum-zq.vercel.app",
+   "t": [
+    "camera",
+    "music",
+    "vercel",
+    "visualizer"
+   ]
+  },
+  "sudosilo/chassisquiver": {
+   "d": "A phone app that logs road quality from vibration and shows it on a map with a vehicle garage.",
+   "h": "https://field-twin-glaucous.vercel.app",
+   "t": [
+    "field",
+    "maps",
+    "roads",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/field-twin-violet-api": {
+   "d": "A phone inventory app for parts, vendors, reorder levels, orders, and storage locations.",
+   "h": "https://field-twin-violet.vercel.app",
+   "t": [
+    "field",
+    "inventory",
+    "supabase",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/forkmill-zx": {
+   "d": "A voice and text adventure about a mill, driven by an AI engine you can plug in.",
+   "h": "",
+   "t": [
+    "ai",
+    "game",
+    "text-adventure",
+    "voice"
+   ]
+  },
+  "sudosilo/text-based-game": {
+   "d": "A text game on a tabletop board with miniatures, where an AI crew follows your orders.",
+   "h": "",
+   "t": [
+    "ai",
+    "game",
+    "text-adventure",
+    "vercel"
+   ]
+  },
+  "sudosilo/five-minute-momentum-engine": {
+   "d": "A Python engine that runs a fixed five minute momentum strategy on historical data.",
+   "h": "",
+   "t": [
+    "python",
+    "simulation",
+    "tool"
+   ]
+  },
+  "sudosilo/shared-server": {
+   "d": "A small server that holds one Claude key so every other app can call it.",
+   "h": "",
+   "t": [
+    "ai",
+    "backend",
     "vercel"
    ]
   }
