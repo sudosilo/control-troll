@@ -34,10 +34,17 @@
   },
   "chassisquiver": {
    "apps": [],
-   "urls": [],
+   "urls": [
+    "https://field-twin-glaucous.vercel.app"
+   ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Field and Equipment",
+   "summary": "A phone app that scores road quality from steering wheel vibration",
+   "name": "Field Twin Glaucous",
+   "latest": {
+    "date": "2026-10-20",
+    "text": "Added one sign in across the Field Twin apps."
+   }
   },
   "anthropic-percentage-pop-up-game": {
    "apps": [],
@@ -916,8 +923,13 @@
     "https://topo-wars-server.vercel.app"
    ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Backends and Infrastructure",
+   "summary": "The battle server that keeps Topo Wars friend games in sync",
+   "name": "Topo Wars Server",
+   "latest": {
+    "date": "2026-10-03",
+    "text": "Added tanks, mines, a chinook, and grenade splash damage. Added a commander aura. The battle rules were synced with the game several times."
+   }
   },
   "paycheck-hub": {
    "apps": [
@@ -1597,17 +1609,31 @@
   },
   "fogwarren-vx": {
    "apps": [],
-   "urls": [],
+   "urls": [
+    "https://fogwarren-vx.vercel.app"
+   ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Games",
+   "summary": "A retro desktop fog of war maze game with mines and a hidden picture",
+   "name": "FogWarren",
+   "latest": {
+    "date": "2026-10-18",
+    "text": "Created the game. It is a retro desktop style fog of war maze with mines, pitfalls, flares, and color warps. It has a compass and a hidden picture that is revealed as you explore."
+   }
   },
   "rosetta-pone": {
    "apps": [],
-   "urls": [],
+   "urls": [
+    "https://rosetta-pone.vercel.app"
+   ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Tools",
+   "summary": "A cuneiform to English translator with a sign keyboard",
+   "name": "Rosetta Pone",
+   "latest": {
+    "date": "2026-10-18",
+    "text": "Every key on the sign keyboard now shows its English meaning."
+   }
   },
   "tickle-boxie": {
    "apps": [],
@@ -1623,10 +1649,17 @@
   },
   "chromahum-zq": {
    "apps": [],
-   "urls": [],
+   "urls": [
+    "https://chromahum-zq.vercel.app"
+   ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Music and Visualizers",
+   "summary": "A camera color to sound instrument with tiles, patterns, and an infinite canvas",
+   "name": "ChromaHum Tiles",
+   "latest": {
+    "date": "2026-10-20",
+    "text": "Added patterns and tiles as sources, plus a My Tile editor. Added zoom, pan, and colors, and removed the chime. Added a movement engine and an infinite canvas. Added voice draw, a cleaner audio chain that avoids pops, and pattern backdrops."
+   }
   },
   "mohave-wtf": {
    "apps": [],
@@ -1666,17 +1699,29 @@
   },
   "field-twin-violet-api": {
    "apps": [],
-   "urls": [],
+   "urls": [
+    "https://field-twin-violet.vercel.app"
+   ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Field and Equipment",
+   "summary": "A phone inventory app for parts, vendors, orders, and locations",
+   "name": "Field Twin Violet",
+   "latest": {
+    "date": "2026-10-21",
+    "text": "Sign in now also works when handed over from one more Field Twin app. Removed an address from the app."
+   }
   },
   "five-minute-momentum-engine": {
    "apps": [],
    "urls": [],
    "private": true,
-   "category": null,
-   "summary": null
+   "category": "Tools",
+   "summary": "A Python engine that runs a fixed five minute momentum strategy in simulation",
+   "name": "Five Minute Momentum Engine",
+   "latest": {
+    "date": "2026-10-22",
+    "text": "Added a live data adapter, a configuration for a stock index fund, and a live runner. The live runner does not log in to a broker."
+   }
   },
   "hoofer-sync": {
    "apps": [],
@@ -1753,10 +1798,17 @@
   },
   "fatty-fart-pedal": {
    "apps": [],
-   "urls": [],
+   "urls": [
+    "https://fatty-fart-pedal.vercel.app"
+   ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Music and Visualizers",
+   "summary": "A silly stomp pedal instrument that plays fart sounds, alone or in a room",
+   "name": "Fatty Fart Pedal",
+   "latest": {
+    "date": "2026-10-19",
+    "text": "Created the pedal as a room instrument. Stomp to play a sound, build a one bar pattern, and join a room by code. Removed two ding recordings so only the fart sounds remain."
+   }
   },
   "2026-10-20-orange-dialbeat": {
    "apps": [],
@@ -1776,22 +1828,37 @@
    "apps": [],
    "urls": [],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Games",
+   "summary": "A tabletop text game with miniatures where an AI crew takes your orders",
+   "name": "Text Based Game",
+   "latest": {
+    "date": "2026-10-21",
+    "text": "Created the game with a page and an AI turn function. AI turns now go through the shared server and the AI status messages are gone. Added a tabletop board with miniatures and guide suggestions, and removed the mic."
+   }
   },
   "shared-server": {
    "apps": [],
    "urls": [],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Backends and Infrastructure",
+   "summary": "One server that holds a single Claude key for every app",
+   "name": "Shared Server",
+   "latest": {
+    "date": "2026-10-22",
+    "text": "Added the roast, push, and fleet apps for HeckleTroll."
+   }
   },
   "forkmill-zx": {
    "apps": [],
    "urls": [],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Games",
+   "summary": "A voice text adventure mill that uses an AI engine",
+   "name": "Forkmill",
+   "latest": {
+    "date": "2026-10-21",
+    "text": "Created the game. It is a voice text adventure mill with an AI engine."
+   }
   },
   "2026-10-22-orange-agent": {
    "apps": [],
@@ -1832,8 +1899,13 @@
    "apps": [],
    "urls": [],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Backends and Infrastructure",
+   "summary": "A sandbox copy of the agent test bed where AI agents build a shared city",
+   "name": "Agent Test Bed Sandbox",
+   "latest": {
+    "date": "2026-10-18",
+    "text": "Created the sandbox as a copy of the agent test bed. Synced it with the secured version of the test bed."
+   }
   },
   "2026-10-23-orange-smash": {
    "apps": [],
@@ -1843,6 +1915,13 @@
    "summary": null
   },
   "sound-bender": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": null,
+   "summary": null
+  },
+  "welcome-to-the-madness": {
    "apps": [],
    "urls": [],
    "private": false,

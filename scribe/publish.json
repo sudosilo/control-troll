@@ -1,294 +1,315 @@
 {
  "jobs": [
   {
-   "repo": "free-as-in-links",
+   "repo": "rosetta-pone",
    "releases": [
     {
-     "tag": "v2026.10.14",
-     "target": "a731f192aefde7661f3b36790072fb86a8f14d81",
-     "name": "Free Links 2026-10-14",
-     "body": "Cleaned invisible characters out of the names of the suggested links."
+     "tag": "v2026.10.18",
+     "target": "24e7c7ffa3075d28ecf74921a42a8ff03271fbe7",
+     "name": "Rosetta Pone 2026-10-18",
+     "body": "Every key on the sign keyboard now shows its English meaning."
     },
     {
-     "tag": "v2026.10.11",
-     "target": "c2445dfd0c33dba2a8f620409a12c3464e90533f",
-     "name": "Free Links 2026-10-11",
-     "body": "Created the app as a plain index of free, useful links. Added a daily job that collects new link suggestions."
+     "tag": "v2026.10.17",
+     "target": "64539e91eedd9d4f8609835acd21da4260dc5fde",
+     "name": "Rosetta Pone 2026-10-17",
+     "body": "Created the app as a cuneiform to English translator. Pasted signs or a typed transliteration give readings and an English gloss."
     }
    ],
-   "description": "A plain index of free, useful links that hosts nothing itself.",
-   "homepage": "https://free-as-in-links.vercel.app",
+   "description": "A cuneiform to English translator that reads signs or transliteration sign by sign.",
+   "homepage": "https://rosetta-pone.vercel.app",
    "topics": [
     "tool",
-    "links",
+    "language",
+    "translator",
     "vercel"
    ]
   },
   {
-   "repo": "axiom",
+   "repo": "fogwarren-vx",
    "releases": [
     {
-     "tag": "v2026.10.14",
-     "target": "32c4f305dc6858be4a5fa1e6d516634fa79e08ac",
-     "name": "Axiom 2026-10-14",
-     "body": "Corrected the phone markers."
-    },
-    {
-     "tag": "v2026.10.11",
-     "target": "c33950c56fa40cde4446b35c98fa90b61dfdf69b",
-     "name": "Axiom 2026-10-11",
-     "body": "Added themes and a pass of bug fixes. Then added band sync so the synth can play with other phones. Put a play button inside the Band panel."
+     "tag": "v2026.10.18",
+     "target": "f76482cd3f035e6f3279bf2ca2aa8d21cf7c1844",
+     "name": "FogWarren 2026-10-18",
+     "body": "Created the game. It is a retro desktop style fog of war maze with mines, pitfalls, flares, and color warps. It has a compass and a hidden picture that is revealed as you explore."
     }
    ],
-   "description": "A browser synthesizer that can sync with a band of phones.",
-   "homepage": "https://axiom-eight-xi.vercel.app",
-   "topics": [
-    "music",
-    "synthesizer",
-    "band-sync",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "looper",
-   "releases": [
-    {
-     "tag": "v2026.10.14",
-     "target": "6349e56618bd179d5981f6db480e14e7b3bc33fc",
-     "name": "Looper 2026-10-14",
-     "body": "Corrected the phone markers."
-    },
-    {
-     "tag": "v2026.10.11",
-     "target": "81cdc56276032416867891eae10091b9fe194e21",
-     "name": "Looper 2026-10-11",
-     "body": "Added band sync and a play button inside the Band panel. Added ready made band grooves."
-    },
-    {
-     "tag": "v2026.04.20",
-     "target": "511c8ffc24128fa4157361f41144dd041f7326ae",
-     "name": "Looper 2026-04-20",
-     "body": "First version of the looper."
-    }
-   ],
-   "description": "A pad based loop recorder with band sync and ready made grooves.",
-   "homepage": "https://looper-sooty.vercel.app",
-   "topics": [
-    "music",
-    "looper",
-    "band-sync",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "spectral-engine",
-   "releases": [
-    {
-     "tag": "v2026.10.14",
-     "target": "a089100fc93b56a6a843316a6f918671b6b8cf07",
-     "name": "Spectral Engine 2026-10-14",
-     "body": "Corrected the phone markers."
-    },
-    {
-     "tag": "v2026.10.11",
-     "target": "ed46bc44bb58401ddf14ffa28da3a3af994494df",
-     "name": "Spectral Engine 2026-10-11",
-     "body": "Added band sync so the visualizers can follow the sound of a shared band."
-    },
-    {
-     "tag": "v2026.09.02",
-     "target": "0796a3ddc0b4ec028f6baf4ea57047ce65bfa843",
-     "name": "Spectral Engine 2026-09-02",
-     "body": "Created the app with twelve visualizers."
-    }
-   ],
-   "description": "Twelve music visualizers that can follow a shared band.",
-   "homepage": "https://spectral-engine.vercel.app",
-   "topics": [
-    "music",
-    "visualizer",
-    "band-sync",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "final-vector",
-   "releases": [
-    {
-     "tag": "v2026.10.14",
-     "target": "6fa570af474e3569f668104860a5871bd9864f65",
-     "name": "Who Is The Final Victor 2026-10-14",
-     "body": "Changed the accent color from light blue to hot pink."
-    },
-    {
-     "tag": "v2026.10.06",
-     "target": "4c00309340a7a94a69efa5a3bc9cbb8409cae75c",
-     "name": "Who Is The Final Victor 2026-10-06",
-     "body": "Made the game a standalone build."
-    },
-    {
-     "tag": "v2026.09.10",
-     "target": "a86ff4b8b3f9627f290d14e84cfa1be976544672",
-     "name": "Who Is The Final Victor 2026-09-10",
-     "body": "First version of the game."
-    }
-   ],
-   "description": "A browser game called Who Is The Final Victor.",
-   "homepage": "https://final-vector-six.vercel.app",
+   "description": "A retro desktop style fog of war maze game with mines, pitfalls, and a hidden picture.",
+   "homepage": "https://fogwarren-vx.vercel.app",
    "topics": [
     "game",
-    "canvas",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "field-twin-viridian",
-   "releases": [
-    {
-     "tag": "v2026.10.15",
-     "target": "388d4b3839bf7230c3a595965b165a4754a3be4f",
-     "name": "Field Twin Viridian 2026-10-15",
-     "body": "First version. Added a plate reader status and reading while parked, with an upload status. Then added plate sightings, a best photo, a pass on state and color, and a page for each plate."
-    }
-   ],
-   "description": "A field twin app that reads plates and keeps a list of sightings.",
-   "homepage": "",
-   "topics": [
-    "tool",
-    "field",
-    "plate-reader",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "stompbox-lab",
-   "releases": [
-    {
-     "tag": "v2026.10.15",
-     "target": "0afa3f165e9c5c1248faf0fd80b5f36c27d576cb",
-     "name": "Stompbox Lab 2026-10-15",
-     "body": "Every phone in a room now gets the list of every other phone. Fixed seating so each phone gets the right message. Added more grooves: House, Jungle, Disco, Funk, Boom Bap, Trap, Reggaeton, and Rock, each with its own tempo."
-    },
-    {
-     "tag": "v2026.10.14",
-     "target": "05617a50d77c7f7a2164ce1f681638aeae1772ea",
-     "name": "Stompbox Lab 2026-10-14",
-     "body": "Corrected the phone markers."
-    },
-    {
-     "tag": "v2026.10.11",
-     "target": "83b533cdf31b905ddeb9c2abec2acca9f6cce5c6",
-     "name": "Stompbox Lab 2026-10-11",
-     "body": "Created the app with a light theme and a board snapshot. Added a light and dark switch. Added a server clock and looped grooves on every phone, then sign in. A single room now holds every app, and knobs stay on each phone with its own voice."
-    }
-   ],
-   "description": "A pedal board and synth with grooves that play across many phones.",
-   "homepage": "https://stompbox-lab.vercel.app",
-   "topics": [
-    "music",
-    "pedals",
-    "band-sync",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "hoofer-sync",
-   "releases": [
-    {
-     "tag": "v2026.10.15",
-     "target": "c4c4e1ebf62dd553a6639ac626cf8583a816d9ee",
-     "name": "Hoofer Sync 2026-10-15",
-     "body": "Added a dance floor with a dancer for every phone in the room. A phone now dances as soon as it joins. Loop parts only go to phones that are playing. Added tabs for Floor, Moves, Wardrobe, and Studio, a move maker, outfits, famous routines, and up to fifteen dancers."
-    },
-    {
-     "tag": "v2026.10.14",
-     "target": "e238ee4381b166ed85af9d073a0e2bd51619f98f",
-     "name": "Hoofer Sync 2026-10-14",
-     "body": "Created the app as a choreography sequencer dancer that joins the Stompbox Lab band room."
-    }
-   ],
-   "description": "A dance floor with a dancer for each phone in the band room.",
-   "homepage": "",
-   "topics": [
-    "music",
-    "dance",
-    "band-sync",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "inkrunner",
-   "releases": [
-    {
-     "tag": "v2026.10.17",
-     "target": "6f990c1487a72f9f01b754e8653e7425bf85c63e",
-     "name": "Inkrunner 2026-10-17",
-     "body": "Created the game as a comic ink driving sim. Added air tricks, a track loop with barricades, a crash reset, and a lap ghost. Added outer walls, a wider road, zoom out, and a brace button. Fixed a crash at the wall band and opened free driving outside the walls."
-    }
-   ],
-   "description": "A comic ink cold gas driving sim with tricks and lap ghosts.",
-   "homepage": "",
-   "topics": [
-    "game",
-    "driving",
-    "simulator",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "tapperator",
-   "releases": [
-    {
-     "tag": "v2026.10.17",
-     "target": "1b4d81669f9aa87600a8ae118812f348b45ca6ac",
-     "name": "Tapperator 2026-10-17",
-     "body": "Created the app as a steering wheel drum kit with a five round calibration, a four tab looper, and room sync. Added sampling for each instrument with five sets per pad. Players now start with two pads and add more later, with striker tips and mix-up warnings."
-    }
-   ],
-   "description": "A steering wheel drum kit with calibration, a looper, and room sync.",
-   "homepage": "",
-   "topics": [
-    "music",
-    "drums",
-    "looper",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "mohave-wtf",
-   "releases": [
-    {
-     "tag": "v2026.10.17",
-     "target": "562dd764cae6627b39882803d92c36e57970999e",
-     "name": "Retro Software Catalog 2026-10-17",
-     "body": "Created the retro software catalog. Added retro social link buttons in the footer. Added Field Twin Glaucous, Inkrunner, Tapperator, and the catalog itself, and fixed the Control Troll address."
-    }
-   ],
-   "description": "A retro styled software catalog that lists the developer's apps.",
-   "homepage": "",
-   "topics": [
-    "tool",
-    "catalog",
+    "puzzle",
+    "maze",
     "retro",
     "vercel"
    ]
   },
   {
-   "repo": "tickle-boxie",
+   "repo": "topo-wars-server",
    "releases": [
     {
-     "tag": "v2026.10.17",
-     "target": "79d2bcddfdcaf9af75c800e2282a511e0d36ada1",
-     "name": "Talk Box Studio 2026-10-17",
-     "body": "Created the talk box app. Added separate mic and speaker choice and a feedback guard."
+     "tag": "v2026.10.03",
+     "target": "52ed31130fa4ec59a34e6af10f2525f6a9723698",
+     "name": "Topo Wars Server 2026-10-03",
+     "body": "Added tanks, mines, a chinook, and grenade splash damage. Added a commander aura. The battle rules were synced with the game several times."
+    },
+    {
+     "tag": "v2026.10.01",
+     "target": "9bde9a39839f3534f970da27baa2443ac2b2db2a",
+     "name": "Topo Wars Server 2026-10-01",
+     "body": "Added bomber runs and snipers. Grenades can now be thrown after walking."
+    },
+    {
+     "tag": "v2026.09.30",
+     "target": "fc089d4ac1bd86125436644ff3fb970ff91c20e2",
+     "name": "Topo Wars Server 2026-09-30",
+     "body": "Added a drone hangar, a gun foundry, and roomier production. Added buildings and a howitzer with a height rule and a dead zone. Added zombies, a machine gun nest, and supply crates."
+    },
+    {
+     "tag": "v2026.09.29",
+     "target": "07c7bd23da43040f66a106714656b168b1d9ff21",
+     "name": "Topo Wars Server 2026-09-29",
+     "body": "Created the battle server for friend games. Added join by code, surrender, structures that cost supply, paved roads, and turn notification keys. Jeeps now remember which way they face, and structures can be turned."
     }
    ],
-   "description": "A talk box studio with separate mic and speaker choice.",
+   "description": "The backend that keeps Topo Wars two player battles in sync and sends turn notifications.",
+   "homepage": "https://topo-wars-server.vercel.app",
+   "topics": [
+    "backend",
+    "game",
+    "multiplayer",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "blue-agent-sandbox",
+   "releases": [
+    {
+     "tag": "v2026.10.18",
+     "target": "ec6691f2216d06ff6cfca75d6943e0e7b77c3b61",
+     "name": "Agent Test Bed Sandbox 2026-10-18",
+     "body": "Created the sandbox as a copy of the agent test bed. Synced it with the secured version of the test bed."
+    }
+   ],
+   "description": "A sandbox copy of the agent test bed where several AI agents build one shared city.",
    "homepage": "",
    "topics": [
+    "backend",
+    "agents",
+    "simulation",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "fatty-fart-pedal",
+   "releases": [
+    {
+     "tag": "v2026.10.19",
+     "target": "19d3f0f5dc4bc8942dc0415cc3fbd47f6b98c33f",
+     "name": "Fatty Fart Pedal 2026-10-19",
+     "body": "Created the pedal as a room instrument. Stomp to play a sound, build a one bar pattern, and join a room by code. Removed two ding recordings so only the fart sounds remain."
+    }
+   ],
+   "description": "A stomp pedal instrument that plays fart sounds, solo or together in a shared room.",
+   "homepage": "https://fatty-fart-pedal.vercel.app",
+   "topics": [
     "music",
-    "audio",
+    "instrument",
+    "multiplayer",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "chromahum-zq",
+   "releases": [
+    {
+     "tag": "v2026.10.20",
+     "target": "618fd2ab6ba68798c3fbb66962f9c59a06950fbb",
+     "name": "ChromaHum Tiles 2026-10-20",
+     "body": "Added patterns and tiles as sources, plus a My Tile editor. Added zoom, pan, and colors, and removed the chime. Added a movement engine and an infinite canvas. Added voice draw, a cleaner audio chain that avoids pops, and pattern backdrops."
+    },
+    {
+     "tag": "v2026.10.17",
+     "target": "d3ae69c6b5204245029de5d36c5542cbe77f111c",
+     "name": "ChromaHum Tiles 2026-10-17",
+     "body": "Created the app. It turns camera color into sound."
+    }
+   ],
+   "description": "An instrument that turns camera colors into sound, with tiles, patterns, and an infinite canvas.",
+   "homepage": "https://chromahum-zq.vercel.app",
+   "topics": [
+    "music",
+    "visualizer",
+    "camera",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "chassisquiver",
+   "releases": [
+    {
+     "tag": "v2026.10.20",
+     "target": "39e58b65012d5c6d147c28afe55ebe53009da5d2",
+     "name": "Field Twin Glaucous 2026-10-20",
+     "body": "Added one sign in across the Field Twin apps."
+    },
+    {
+     "tag": "v2026.10.17",
+     "target": "dd086031c43967ff664ea25b44db7ac4edf60d31",
+     "name": "Field Twin Glaucous 2026-10-17",
+     "body": "The app is now shown as Field Twin Glaucous. It shares the Field map, Inventory, and Roads tabs with the other Field Twin apps."
+    },
+    {
+     "tag": "v2026.10.13",
+     "target": "c7512cf1616892d84ced9f6a5afa7c4ed213b386",
+     "name": "Field Twin Glaucous 2026-10-13",
+     "body": "The map now colors each road by the best pass across overlapping runs and directions. Each pass has its own toggle."
+    },
+    {
+     "tag": "v2026.10.12",
+     "target": "11c0c25f199f035a48361cb9b04815d202532c85",
+     "name": "Field Twin Glaucous 2026-10-12",
+     "body": "Created the app. It logs roads by GPS, scores road quality from vibration, and shows runs on a map with share links. Added accounts, a vehicle garage for up to 20 vehicles, and gyro steering with bump filtering."
+    }
+   ],
+   "description": "A phone app that logs road quality from vibration and shows it on a map with a vehicle garage.",
+   "homepage": "https://field-twin-glaucous.vercel.app",
+   "topics": [
     "tool",
+    "field",
+    "roads",
+    "maps",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "field-twin-violet-api",
+   "releases": [
+    {
+     "tag": "v2026.10.21",
+     "target": "c66b7a5dbd763fd1e9a730a7a422ee280d5d4974",
+     "name": "Field Twin Violet 2026-10-21",
+     "body": "Sign in now also works when handed over from one more Field Twin app. Removed an address from the app."
+    },
+    {
+     "tag": "v2026.10.20",
+     "target": "9d1fdd57ec500fc66fa244ce3bcba83467d64c42",
+     "name": "Field Twin Violet 2026-10-20",
+     "body": "Added one sign in across the Field Twin apps."
+    },
+    {
+     "tag": "v2026.10.17",
+     "target": "a9f761eba1b4d13501681643c1a5b724b7781805",
+     "name": "Field Twin Violet 2026-10-17",
+     "body": "Linked the Roads tab to Field Twin Glaucous. All three Field Twin apps now share the Field map, Inventory, and Roads tabs."
+    },
+    {
+     "tag": "v2026.10.15",
+     "target": "699db6b4046c7539a3caa7272f4d333fbdc9b643",
+     "name": "Field Twin Violet 2026-10-15",
+     "body": "Added a blue theme and moved the tab bar to the top. Added a parts first flow with Items pages, vendors, reorder levels, and an order list. Added a Move button for locations and storage units. Added customers on items and logs, orders read from a photo, and arrivals that check off open orders. Uploads no longer stall on a missing field or a stuck photo."
+    },
+    {
+     "tag": "v2026.10.14",
+     "target": "46f141e307ab9fb307c00574fcf6aad71b68d2f3",
+     "name": "Field Twin Violet 2026-10-14",
+     "body": "Added the phone app with accounts, a sign in screen that shows progress and plain errors, and a database setup for the photo store."
+    }
+   ],
+   "description": "A phone inventory app for parts, vendors, reorder levels, orders, and storage locations.",
+   "homepage": "https://field-twin-violet.vercel.app",
+   "topics": [
+    "tool",
+    "field",
+    "inventory",
+    "supabase",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "forkmill-zx",
+   "releases": [
+    {
+     "tag": "v2026.10.21",
+     "target": "3e7b39ba7402726b867e61e289dff853bbf20f71",
+     "name": "Forkmill 2026-10-21",
+     "body": "Created the game. It is a voice text adventure mill with an AI engine."
+    }
+   ],
+   "description": "A voice and text adventure about a mill, driven by an AI engine you can plug in.",
+   "homepage": "",
+   "topics": [
+    "game",
+    "voice",
+    "text-adventure",
+    "ai"
+   ]
+  },
+  {
+   "repo": "text-based-game",
+   "releases": [
+    {
+     "tag": "v2026.10.21",
+     "target": "8fc52b33d765f27d4f76e41155be014dcecaad08",
+     "name": "Text Based Game 2026-10-21",
+     "body": "Created the game with a page and an AI turn function. AI turns now go through the shared server and the AI status messages are gone. Added a tabletop board with miniatures and guide suggestions, and removed the mic."
+    }
+   ],
+   "description": "A text game on a tabletop board with miniatures, where an AI crew follows your orders.",
+   "homepage": "",
+   "topics": [
+    "game",
+    "text-adventure",
+    "ai",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "five-minute-momentum-engine",
+   "releases": [
+    {
+     "tag": "v2026.10.22",
+     "target": "2308a5beb89c04c3101d44c313524bb0406e7e82",
+     "name": "Five Minute Momentum Engine 2026-10-22",
+     "body": "Added a live data adapter, a configuration for a stock index fund, and a live runner. The live runner does not log in to a broker."
+    },
+    {
+     "tag": "v2026.10.15",
+     "target": "ad8af2399a0f96875ed4af64aced3bb53cb96828",
+     "name": "Five Minute Momentum Engine 2026-10-15",
+     "body": "Imported the engine from a shared drive copy."
+    }
+   ],
+   "description": "A Python engine that runs a fixed five minute momentum strategy on historical data.",
+   "homepage": "",
+   "topics": [
+    "tool",
+    "python",
+    "simulation"
+   ]
+  },
+  {
+   "repo": "shared-server",
+   "releases": [
+    {
+     "tag": "v2026.10.22",
+     "target": "449268520199db94c4db0a8e39b570cd5df0f98c",
+     "name": "Shared Server 2026-10-22",
+     "body": "Added the roast, push, and fleet apps for HeckleTroll."
+    },
+    {
+     "tag": "v2026.10.21",
+     "target": "60d50e603c71ac7a5ce8d6fcae86fc46ac86e3d5",
+     "name": "Shared Server 2026-10-21",
+     "body": "Created the server with one Claude key for every app."
+    }
+   ],
+   "description": "A small server that holds one Claude key so every other app can call it.",
+   "homepage": "",
+   "topics": [
+    "backend",
+    "ai",
     "vercel"
    ]
   }
