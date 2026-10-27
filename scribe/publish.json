@@ -1,315 +1,370 @@
 {
  "jobs": [
   {
-   "repo": "rosetta-pone",
+   "repo": "2026-10-20-orange-dialbeat",
    "releases": [
     {
-     "tag": "v2026.10.18",
-     "target": "24e7c7ffa3075d28ecf74921a42a8ff03271fbe7",
-     "name": "Rosetta Pone 2026-10-18",
-     "body": "Every key on the sign keyboard now shows its English meaning."
+     "tag": "v2026.10.22",
+     "target": "e96d9916975634b3d03171c128fcd74d04631cfc",
+     "name": "Dial Queue 2026-10-22",
+     "body": "Added stomp box rooms. Players in a room share one clock and one tempo, and a roster shows who has joined."
     },
     {
-     "tag": "v2026.10.17",
-     "target": "64539e91eedd9d4f8609835acd21da4260dc5fde",
-     "name": "Rosetta Pone 2026-10-17",
-     "body": "Created the app as a cuneiform to English translator. Pasted signs or a typed transliteration give readings and an English gloss."
+     "tag": "v2026.10.21",
+     "target": "9caeeb9ec07047c021fe6561630b3985420cb3ee",
+     "name": "Dial Queue 2026-10-21",
+     "body": "Added a preset menu with saved presets, ten EDM presets, and Euro, house, and kitchen mixes. Added a toy box with toy instruments, an 80s spark gun, a 90s laser gun, and a chest that holds every toy. Changes made while playing now wait and start on the next step, beat, bar, two bars, or four bars."
+    },
+    {
+     "tag": "v2026.10.20",
+     "target": "3157a6014830f633e8c8db7b26a29a3778863b6c",
+     "name": "Dial Queue 2026-10-20",
+     "body": "Created the app as a drum machine called Dial Queue. Added more rows, an orange theme, ratchet effects, new sounds, and fast presets. Added struck materials, gate, choke, chance, and follow wheels. Added sound colors, info buttons, instrument families, six drum and bass presets, and a Bounce button that saves a loop as an audio file."
     }
    ],
-   "description": "A cuneiform to English translator that reads signs or transliteration sign by sign.",
-   "homepage": "https://rosetta-pone.vercel.app",
+   "description": "A drum machine with dial rows, instrument families, presets, and toy sounds.",
+   "homepage": "https://2026-10-20-orange-dialbeat.vercel.app",
    "topics": [
+    "music",
+    "drum-machine",
     "tool",
-    "language",
-    "translator",
     "vercel"
    ]
   },
   {
-   "repo": "fogwarren-vx",
+   "repo": "mohavetech-website",
    "releases": [
     {
-     "tag": "v2026.10.18",
-     "target": "f76482cd3f035e6f3279bf2ca2aa8d21cf7c1844",
-     "name": "FogWarren 2026-10-18",
-     "body": "Created the game. It is a retro desktop style fog of war maze with mines, pitfalls, flares, and color warps. It has a compass and a hidden picture that is revealed as you explore."
-    }
-   ],
-   "description": "A retro desktop style fog of war maze game with mines, pitfalls, and a hidden picture.",
-   "homepage": "https://fogwarren-vx.vercel.app",
-   "topics": [
-    "game",
-    "puzzle",
-    "maze",
-    "retro",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "topo-wars-server",
-   "releases": [
-    {
-     "tag": "v2026.10.03",
-     "target": "52ed31130fa4ec59a34e6af10f2525f6a9723698",
-     "name": "Topo Wars Server 2026-10-03",
-     "body": "Added tanks, mines, a chinook, and grenade splash damage. Added a commander aura. The battle rules were synced with the game several times."
+     "tag": "v2026.10.22",
+     "target": "c0a8a7724e6235fadf189a434cb9642bf2c20551",
+     "name": "App Index 2026-10-22",
+     "body": "Synced with the live project list."
     },
     {
-     "tag": "v2026.10.01",
-     "target": "9bde9a39839f3534f970da27baa2443ac2b2db2a",
-     "name": "Topo Wars Server 2026-10-01",
-     "body": "Added bomber runs and snipers. Grenades can now be thrown after walking."
+     "tag": "v2026.10.21",
+     "target": "939c9bf0c711ccaefba0fed5544f4d9a4d96a5b2",
+     "name": "App Index 2026-10-21",
+     "body": "Added new categories."
     },
     {
-     "tag": "v2026.09.30",
-     "target": "fc089d4ac1bd86125436644ff3fb970ff91c20e2",
-     "name": "Topo Wars Server 2026-09-30",
-     "body": "Added a drone hangar, a gun foundry, and roomier production. Added buildings and a howitzer with a height rule and a dead zone. Added zombies, a machine gun nest, and supply crates."
+     "tag": "v2026.10.20",
+     "target": "7801fbfdd869bb51842a3da0fa878e34b8d1ebd9",
+     "name": "App Index 2026-10-20",
+     "body": "Synced with the live project list and sorted the new apps."
     },
-    {
-     "tag": "v2026.09.29",
-     "target": "07c7bd23da43040f66a106714656b168b1d9ff21",
-     "name": "Topo Wars Server 2026-09-29",
-     "body": "Created the battle server for friend games. Added join by code, surrender, structures that cost supply, paved roads, and turn notification keys. Jeeps now remember which way they face, and structures can be turned."
-    }
-   ],
-   "description": "The backend that keeps Topo Wars two player battles in sync and sends turn notifications.",
-   "homepage": "https://topo-wars-server.vercel.app",
-   "topics": [
-    "backend",
-    "game",
-    "multiplayer",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "blue-agent-sandbox",
-   "releases": [
-    {
-     "tag": "v2026.10.18",
-     "target": "ec6691f2216d06ff6cfca75d6943e0e7b77c3b61",
-     "name": "Agent Test Bed Sandbox 2026-10-18",
-     "body": "Created the sandbox as a copy of the agent test bed. Synced it with the secured version of the test bed."
-    }
-   ],
-   "description": "A sandbox copy of the agent test bed where several AI agents build one shared city.",
-   "homepage": "",
-   "topics": [
-    "backend",
-    "agents",
-    "simulation",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "fatty-fart-pedal",
-   "releases": [
     {
      "tag": "v2026.10.19",
-     "target": "19d3f0f5dc4bc8942dc0415cc3fbd47f6b98c33f",
-     "name": "Fatty Fart Pedal 2026-10-19",
-     "body": "Created the pedal as a room instrument. Stomp to play a sound, build a one bar pattern, and join a room by code. Removed two ding recordings so only the fart sounds remain."
-    }
-   ],
-   "description": "A stomp pedal instrument that plays fart sounds, solo or together in a shared room.",
-   "homepage": "https://fatty-fart-pedal.vercel.app",
-   "topics": [
-    "music",
-    "instrument",
-    "multiplayer",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "chromahum-zq",
-   "releases": [
-    {
-     "tag": "v2026.10.20",
-     "target": "618fd2ab6ba68798c3fbb66962f9c59a06950fbb",
-     "name": "ChromaHum Tiles 2026-10-20",
-     "body": "Added patterns and tiles as sources, plus a My Tile editor. Added zoom, pan, and colors, and removed the chime. Added a movement engine and an infinite canvas. Added voice draw, a cleaner audio chain that avoids pops, and pattern backdrops."
+     "target": "b80425ff93b0a70abe38c7f6f04ef91d605b2b4d",
+     "name": "App Index 2026-10-19",
+     "body": "Synced with the live project list and added new apps."
     },
     {
      "tag": "v2026.10.17",
-     "target": "d3ae69c6b5204245029de5d36c5542cbe77f111c",
-     "name": "ChromaHum Tiles 2026-10-17",
-     "body": "Created the app. It turns camera color into sound."
+     "target": "19897707ce2cdd6d6868c68cd83d2588c42f7c9f",
+     "name": "App Index 2026-10-17",
+     "body": "Synced with the live project list and added new apps."
     }
    ],
-   "description": "An instrument that turns camera colors into sound, with tiles, patterns, and an infinite canvas.",
-   "homepage": "https://chromahum-zq.vercel.app",
-   "topics": [
-    "music",
-    "visualizer",
-    "camera",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "chassisquiver",
-   "releases": [
-    {
-     "tag": "v2026.10.20",
-     "target": "39e58b65012d5c6d147c28afe55ebe53009da5d2",
-     "name": "Field Twin Glaucous 2026-10-20",
-     "body": "Added one sign in across the Field Twin apps."
-    },
-    {
-     "tag": "v2026.10.17",
-     "target": "dd086031c43967ff664ea25b44db7ac4edf60d31",
-     "name": "Field Twin Glaucous 2026-10-17",
-     "body": "The app is now shown as Field Twin Glaucous. It shares the Field map, Inventory, and Roads tabs with the other Field Twin apps."
-    },
-    {
-     "tag": "v2026.10.13",
-     "target": "c7512cf1616892d84ced9f6a5afa7c4ed213b386",
-     "name": "Field Twin Glaucous 2026-10-13",
-     "body": "The map now colors each road by the best pass across overlapping runs and directions. Each pass has its own toggle."
-    },
-    {
-     "tag": "v2026.10.12",
-     "target": "11c0c25f199f035a48361cb9b04815d202532c85",
-     "name": "Field Twin Glaucous 2026-10-12",
-     "body": "Created the app. It logs roads by GPS, scores road quality from vibration, and shows runs on a map with share links. Added accounts, a vehicle garage for up to 20 vehicles, and gyro steering with bump filtering."
-    }
-   ],
-   "description": "A phone app that logs road quality from vibration and shows it on a map with a vehicle garage.",
-   "homepage": "https://field-twin-glaucous.vercel.app",
+   "description": "An index page that lists every app with its age, phone tags, and notes.",
+   "homepage": "https://mohavetech-website.vercel.app",
    "topics": [
     "tool",
-    "field",
-    "roads",
-    "maps",
+    "index",
+    "dashboard",
     "vercel"
    ]
   },
   {
-   "repo": "field-twin-violet-api",
+   "repo": "purple-vault",
    "releases": [
     {
-     "tag": "v2026.10.21",
-     "target": "c66b7a5dbd763fd1e9a730a7a422ee280d5d4974",
-     "name": "Field Twin Violet 2026-10-21",
-     "body": "Sign in now also works when handed over from one more Field Twin app. Removed an address from the app."
-    },
-    {
-     "tag": "v2026.10.20",
-     "target": "9d1fdd57ec500fc66fa244ce3bcba83467d64c42",
-     "name": "Field Twin Violet 2026-10-20",
-     "body": "Added one sign in across the Field Twin apps."
-    },
-    {
-     "tag": "v2026.10.17",
-     "target": "a9f761eba1b4d13501681643c1a5b724b7781805",
-     "name": "Field Twin Violet 2026-10-17",
-     "body": "Linked the Roads tab to Field Twin Glaucous. All three Field Twin apps now share the Field map, Inventory, and Roads tabs."
-    },
-    {
-     "tag": "v2026.10.15",
-     "target": "699db6b4046c7539a3caa7272f4d333fbdc9b643",
-     "name": "Field Twin Violet 2026-10-15",
-     "body": "Added a blue theme and moved the tab bar to the top. Added a parts first flow with Items pages, vendors, reorder levels, and an order list. Added a Move button for locations and storage units. Added customers on items and logs, orders read from a photo, and arrivals that check off open orders. Uploads no longer stall on a missing field or a stuck photo."
-    },
-    {
-     "tag": "v2026.10.14",
-     "target": "46f141e307ab9fb307c00574fcf6aad71b68d2f3",
-     "name": "Field Twin Violet 2026-10-14",
-     "body": "Added the phone app with accounts, a sign in screen that shows progress and plain errors, and a database setup for the photo store."
+     "tag": "v2026.10.22",
+     "target": "25b216ee357ec176cb636be5e169bce281fa2429",
+     "name": "Purple Vault 2026-10-22",
+     "body": "Created the private store with the first saved value for the Purple agent."
     }
    ],
-   "description": "A phone inventory app for parts, vendors, reorder levels, orders, and storage locations.",
-   "homepage": "https://field-twin-violet.vercel.app",
-   "topics": [
-    "tool",
-    "field",
-    "inventory",
-    "supabase",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "forkmill-zx",
-   "releases": [
-    {
-     "tag": "v2026.10.21",
-     "target": "3e7b39ba7402726b867e61e289dff853bbf20f71",
-     "name": "Forkmill 2026-10-21",
-     "body": "Created the game. It is a voice text adventure mill with an AI engine."
-    }
-   ],
-   "description": "A voice and text adventure about a mill, driven by an AI engine you can plug in.",
+   "description": "A private store that holds one saved setting for the Purple agent.",
    "homepage": "",
    "topics": [
-    "game",
-    "voice",
-    "text-adventure",
+    "agent",
+    "storage",
+    "infrastructure"
+   ]
+  },
+  {
+   "repo": "purple-agent",
+   "releases": [
+    {
+     "tag": "v2026.10.22",
+     "target": "2e3008c215530c36b4d54d590fda2de8f662c822",
+     "name": "Purple Agent 2026-10-22",
+     "body": "Created the runner for the Purple agent with a daily schedule. Added streaming model calls, retries, and a public run log. Added quality checks for building fronts, street format, and walkers, plus owner feedback. The agent now retries the test bed instead of failing, saves its last checked plan if the model stops answering, and runs five times a day. Added local dry runs and a shared notes board."
+    }
+   ],
+   "description": "An AI agent that builds one block of a shared city in the Agent Test Bed.",
+   "homepage": "",
+   "topics": [
+    "agent",
+    "automation",
+    "backend",
     "ai"
    ]
   },
   {
-   "repo": "text-based-game",
+   "repo": "sound-bender",
    "releases": [
     {
-     "tag": "v2026.10.21",
-     "target": "8fc52b33d765f27d4f76e41155be014dcecaad08",
-     "name": "Text Based Game 2026-10-21",
-     "body": "Created the game with a page and an AI turn function. AI turns now go through the shared server and the AI status messages are gone. Added a tabletop board with miniatures and guide suggestions, and removed the mic."
+     "tag": "v2026.10.24",
+     "target": "145d78eeedbb8252990921cab01fef175d77db56",
+     "name": "Sound Bender 2026-10-24",
+     "body": "First release. Added Sound Bender version 1, a bend page and a Rubber Band processing server."
     }
    ],
-   "description": "A text game on a tabletop board with miniatures, where an AI crew follows your orders.",
+   "description": "A page that bends the pitch and tempo of a sound through a processing server.",
    "homepage": "",
    "topics": [
-    "game",
-    "text-adventure",
-    "ai",
+    "music",
+    "audio",
+    "tool",
+    "vercel",
+    "railway"
+   ]
+  },
+  {
+   "repo": "field-twin",
+   "releases": [
+    {
+     "tag": "v2026.10.25",
+     "target": "ba151f641b2cfa44c2846f2bfb93b331018e8053",
+     "name": "Field Twin 2026-10-25",
+     "body": "Added end of day debriefs. A prose debrief is written from the day log, and replies are saved with the log."
+    },
+    {
+     "tag": "v2026.10.23",
+     "target": "12e59353a57742594058299f7ce0e9154ec1030a",
+     "name": "Field Twin 2026-10-23",
+     "body": "Added an X on the odometer lock that puts the reading off for half an hour and pauses nags until then."
+    },
+    {
+     "tag": "v2026.10.21",
+     "target": "b52061d1fb905347459a324a22eb56e998fe7b52",
+     "name": "Field Twin 2026-10-21",
+     "body": "Phones now show on the map in their own colors, with a shared home for stops and odometer prompts. The timeline uses half hour blocks, and a stop seen by several phones is kept once. Battery use dropped because GPS turns off while parked. The receipt reader retries through network hiccups."
+    },
+    {
+     "tag": "v2026.10.20",
+     "target": "352e1df94845c27cf3b22c972faa98352209f7f7",
+     "name": "Field Twin 2026-10-20",
+     "body": "Added an Android app with auto tracking, automatic stops, GPS miles, and odometer prompts that lock the app. Added a live GPS dot and GPS calibration from odometer readings. One sign in now works across Field Twin Teal, Violet, and Glaucous. The receipt reader finds the account login after the camera."
+    },
+    {
+     "tag": "v2026.10.18",
+     "target": "a28b8e2767b2c96b79332231c2935092c9253182",
+     "name": "Field Twin 2026-10-18",
+     "body": "Saving a receipt now checks for duplicates, and likely duplicates are listed on the Spend page."
+    }
+   ],
+   "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
+   "homepage": "https://field-twin-teal.vercel.app",
+   "topics": [
+    "tool",
+    "field",
+    "map",
+    "mileage",
     "vercel"
    ]
   },
   {
-   "repo": "five-minute-momentum-engine",
+   "repo": "stackloom-meta",
    "releases": [
     {
-     "tag": "v2026.10.22",
-     "target": "2308a5beb89c04c3101d44c313524bb0406e7e82",
-     "name": "Five Minute Momentum Engine 2026-10-22",
-     "body": "Added a live data adapter, a configuration for a stock index fund, and a live runner. The live runner does not log in to a broker."
+     "tag": "v2026.10.25",
+     "target": "5320b5267bfb8cb3af68552d0ecf41aaf70f2d2a",
+     "name": "Stackloom 2026-10-25",
+     "body": "Added version 2. It brings a Doku product line and a Hackerdoku campaign with a botnet, tools, and ranks."
     },
     {
-     "tag": "v2026.10.15",
-     "target": "ad8af2399a0f96875ed4af64aced3bb53cb96828",
-     "name": "Five Minute Momentum Engine 2026-10-15",
-     "body": "Imported the engine from a shared drive copy."
+     "tag": "v2026.10.18",
+     "target": "50718282e5ff885865d06018d13ac06b3288ef89",
+     "name": "Stackloom 2026-10-18",
+     "body": "First release. Added a studio game with orders, terminals, agents, developers, offices, and a theme."
     }
    ],
-   "description": "A Python engine that runs a fixed five minute momentum strategy on historical data.",
-   "homepage": "",
+   "description": "A studio game with orders, terminals, agents, developers, and offices.",
+   "homepage": "https://stackloom-meta.vercel.app",
    "topics": [
-    "tool",
-    "python",
-    "simulation"
+    "game",
+    "management",
+    "simulator",
+    "vercel"
    ]
   },
   {
-   "repo": "shared-server",
+   "repo": "song-offset-listener",
    "releases": [
     {
-     "tag": "v2026.10.22",
-     "target": "449268520199db94c4db0a8e39b570cd5df0f98c",
-     "name": "Shared Server 2026-10-22",
-     "body": "Added the roast, push, and fleet apps for HeckleTroll."
+     "tag": "v2026.10.25",
+     "target": "23bca0f6e4a53977aeae81976eceab0da2a3499f",
+     "name": "Offset Listener 2026-10-25",
+     "body": "Added loudness maps for instrumentals, made on the phones. Saved song picks now accept any genre."
     },
     {
-     "tag": "v2026.10.21",
-     "target": "60d50e603c71ac7a5ce8d6fcae86fc46ac86e3d5",
-     "name": "Shared Server 2026-10-21",
-     "body": "Created the server with one Claude key for every app."
+     "tag": "v2026.10.24",
+     "target": "aea444d81f009f1f0bdc9f946071b09cfbdfaadf",
+     "name": "Offset Listener 2026-10-24",
+     "body": "Added artist and album info routes with permanent caching. Added auto pick, which chooses songs by genre, decade, and tempo for Autosmash. Added a saved song index, so picks need no video search. A visitor can use their own search key."
+    },
+    {
+     "tag": "v2026.10.23",
+     "target": "5c837c57ab2bb442e60e03a37030cf713c3b5215",
+     "name": "Offset Listener 2026-10-23",
+     "body": "Added a standalone tempo lookup route for the lyric smash app, with fallbacks and caching. Added a heard list of every recognized song."
+    },
+    {
+     "tag": "v2026.10.14",
+     "target": "7473857c8c315b57617d7d2b24e05a4cbe60fb18",
+     "name": "Offset Listener 2026-10-14",
+     "body": "Zone Director now plays synced handset playback with play, pause, output delay, and location tags. It gained a Sites sheet with save, address lookup, and site detail. Moved autopilot over to Scope Listener."
+    },
+    {
+     "tag": "v2026.10.13",
+     "target": "6d76d6455b230aac6f31724c546561d59f03d867",
+     "name": "Offset Listener 2026-10-13",
+     "body": "Added a Zone Director page and a mode menu on the listener. Fixed seed anchors that were missing a location."
     }
    ],
-   "description": "A small server that holds one Claude key so every other app can call it.",
+   "description": "A phone app that identifies a song and syncs playback across phones.",
+   "homepage": "https://offset-listener.vercel.app",
+   "topics": [
+    "music",
+    "sync",
+    "backend",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "2026-10-22-orange-agent",
+   "releases": [
+    {
+     "tag": "v2026.10.25",
+     "target": "6502b3d2bb9c2d2b1b16bc69c934e33f5dca6a74",
+     "name": "Agent Orange 2026-10-25",
+     "body": "Added a chapel and worker housing turn. The playbook now covers reading the board. Fixed a street edge in both kits."
+    },
+    {
+     "tag": "v2026.10.22",
+     "target": "8f76f2ae1353e34b772583b149d20e61a42d3551",
+     "name": "Agent Orange 2026-10-22",
+     "body": "Created the agent with a playbook, a building kit, inventory and turn tools, and a run log with its first six turns. Added a dashboard and runner built from the blue agent runner. Setup now reads the model key from the Blue service."
+    }
+   ],
+   "description": "An AI agent that builds the north and east side of a shared line drawn city.",
+   "homepage": "https://2026-10-22-orange-agent.vercel.app",
+   "topics": [
+    "agent",
+    "automation",
+    "ai",
+    "city",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "welcome-to-the-madness",
+   "releases": [
+    {
+     "tag": "v2026.10.25",
+     "target": "8860fabc13046c59f50b1c23aa63dfdb4422de63",
+     "name": "Welcome to the Madness 2026-10-25",
+     "body": "First release. Added the kitchen rush game, then leveled it up with canvas graphics, a doneness ring, perfect pulls, combos, rush levels, sound, and a pause button."
+    }
+   ],
+   "description": "A kitchen rush game where you pull orders before they burn.",
+   "homepage": "https://welcome-to-the-madness.vercel.app",
+   "topics": [
+    "game",
+    "arcade",
+    "cooking",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "steward-repo",
+   "releases": [
+    {
+     "tag": "v2026.10.26",
+     "target": "ef50a2b6d96310243cf870f6b4f9b10a403a8095",
+     "name": "Steward Repo 2026-10-26",
+     "body": "The detailer now stands down here when it runs on the Blue service instead."
+    },
+    {
+     "tag": "v2026.10.25",
+     "target": "1d3dcd6940bc9a23ca7f84667cea85766eb97951",
+     "name": "Steward Repo 2026-10-25",
+     "body": "The steward now plays under the display name Agent Tangerine and holds the title Commissioner of Public Works. Added paper boys on every block sidewalk, a Saturday parade, and duty hours from 6 to 8 AM Arizona time."
+    },
+    {
+     "tag": "v2026.10.20",
+     "target": "22065bd16eddfaa616b4549fdd19848b00b0e7ea",
+     "name": "Steward Repo 2026-10-20",
+     "body": "The steward now stitches water and sewer mains and buries fuel tanks at fuel stations."
+    },
+    {
+     "tag": "v2026.10.18",
+     "target": "63b3c36c2dc6ee38dca33de0f9cfe17ba18df324",
+     "name": "Steward Repo 2026-10-18",
+     "body": "Created the steward and detailer agents with a daily schedule."
+    }
+   ],
+   "description": "Two AI agents that keep the shared city's water, sewer, and street life running.",
    "homepage": "",
    "topics": [
-    "backend",
+    "agent",
+    "automation",
     "ai",
+    "city"
+   ]
+  },
+  {
+   "repo": "itchy-troll",
+   "releases": [
+    {
+     "tag": "v2026.10.26",
+     "target": "38d06dd1d24b99a807baa0c8fc12d35a66fb1020",
+     "name": "Itchy Troll 2026-10-26",
+     "body": "Shipped Atlas of Tiles again. Skipped the browser install on the command line only path."
+    },
+    {
+     "tag": "v2026.10.25",
+     "target": "883ddf035c187a67c75013eaf209569a517bf81c",
+     "name": "Itchy Troll 2026-10-25",
+     "body": "Added a gated Atlas of Tiles build with bundled fonts and phone fixes, and shipped it."
+    },
+    {
+     "tag": "v2026.10.24",
+     "target": "329f9fd3a7de1b604c57f16b15992d8d854061ca",
+     "name": "Itchy Troll 2026-10-24",
+     "body": "Shipped EDMIA to a new page. Added a login relay and a screenshot hand so the agent can see its pages. Kept the account name out of logs and the ledger."
+    },
+    {
+     "tag": "v2026.10.23",
+     "target": "2b41ffd2ede479e196e9019dc4dc33a3e41e4c2c",
+     "name": "Itchy Troll 2026-10-23",
+     "body": "Added a scout workflow and local gated builds. Shipped EDMIA with bundled audio and fonts. Publishing now uses a command line tool only, since the site login has a human check. Failure screenshots are kept."
+    },
+    {
+     "tag": "v2026.10.22",
+     "target": "63cddae330c303ec00ed50110a210ce4ee39e353",
+     "name": "Itchy Troll 2026-10-22",
+     "body": "Updated the ship log."
+    }
+   ],
+   "description": "An agent that ships one app a day to a game publishing site and keeps a ledger.",
+   "homepage": "https://itchy-troll.vercel.app",
+   "topics": [
+    "tool",
+    "automation",
+    "agent",
     "vercel"
    ]
   }

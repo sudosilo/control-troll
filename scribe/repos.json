@@ -154,15 +154,27 @@
     "https://field-twin-teal.vercel.app"
    ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Field and Equipment",
+   "summary": "A field log with a map, receipts, mileage, and an Android app that tracks stops",
+   "name": "Field Twin",
+   "latest": {
+    "date": "2026-10-25",
+    "text": "Added end of day debriefs. A prose debrief is written from the day log, and replies are saved with the log."
+   }
   },
   "mohavetech-website": {
    "apps": [],
-   "urls": [],
+   "urls": [
+    "https://mohavetech-website.vercel.app"
+   ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Tools",
+   "summary": "An index page that lists every app with its age, phone tags, and notes",
+   "name": "App Index",
+   "latest": {
+    "date": "2026-10-22",
+    "text": "Synced with the live project list."
+   }
   },
   "ether-wand": {
    "apps": [
@@ -1071,8 +1083,13 @@
     "https://offset-listener.vercel.app"
    ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Music and Visualizers",
+   "summary": "A phone app that identifies a song and syncs playback across phones",
+   "name": "Offset Listener",
+   "latest": {
+    "date": "2026-10-25",
+    "text": "Added loudness maps for instrumentals, made on the phones. Saved song picks now accept any genre."
+   }
   },
   "phasewell-scope": {
    "apps": [
@@ -1772,8 +1789,13 @@
    "apps": [],
    "urls": [],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Backends and Infrastructure",
+   "summary": "Two AI agents that keep the shared city's water, sewer, and street life running",
+   "name": "Steward Repo",
+   "latest": {
+    "date": "2026-10-26",
+    "text": "The detailer now stands down here when it runs on the Blue service instead."
+   }
   },
   "doctrine-duel-qx": {
    "apps": [],
@@ -1791,10 +1813,17 @@
   },
   "stackloom-meta": {
    "apps": [],
-   "urls": [],
+   "urls": [
+    "https://stackloom-meta.vercel.app"
+   ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Games",
+   "summary": "A studio game with orders, terminals, agents, developers, and offices",
+   "name": "Stackloom",
+   "latest": {
+    "date": "2026-10-25",
+    "text": "Added version 2. It brings a Doku product line and a Hackerdoku campaign with a botnet, tools, and ranks."
+   }
   },
   "fatty-fart-pedal": {
    "apps": [],
@@ -1812,17 +1841,31 @@
   },
   "2026-10-20-orange-dialbeat": {
    "apps": [],
-   "urls": [],
+   "urls": [
+    "https://2026-10-20-orange-dialbeat.vercel.app"
+   ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Music and Visualizers",
+   "summary": "A drum machine with dial rows, instrument families, presets, and toy sounds",
+   "name": "Dial Queue",
+   "latest": {
+    "date": "2026-10-22",
+    "text": "Added stomp box rooms. Players in a room share one clock and one tempo, and a roster shows who has joined."
+   }
   },
   "itchy-troll": {
    "apps": [],
-   "urls": [],
+   "urls": [
+    "https://itchy-troll.vercel.app"
+   ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Tools",
+   "summary": "An agent that ships one app a day to a game publishing site and keeps a ledger",
+   "name": "Itchy Troll",
+   "latest": {
+    "date": "2026-10-26",
+    "text": "Shipped Atlas of Tiles again. Skipped the browser install on the command line only path."
+   }
   },
   "text-based-game": {
    "apps": [],
@@ -1862,24 +1905,41 @@
   },
   "2026-10-22-orange-agent": {
    "apps": [],
-   "urls": [],
+   "urls": [
+    "https://2026-10-22-orange-agent.vercel.app"
+   ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Backends and Infrastructure",
+   "summary": "An AI agent that builds the north and east side of a shared line drawn city",
+   "name": "Agent Orange",
+   "latest": {
+    "date": "2026-10-25",
+    "text": "Added a chapel and worker housing turn. The playbook now covers reading the board. Fixed a street edge in both kits."
+   }
   },
   "purple-agent": {
    "apps": [],
    "urls": [],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Backends and Infrastructure",
+   "summary": "An AI agent that builds one block of a shared city in the Agent Test Bed",
+   "name": "Purple Agent",
+   "latest": {
+    "date": "2026-10-22",
+    "text": "Created the runner for the Purple agent with a daily schedule. Added streaming model calls, retries, and a public run log. Added quality checks for building fronts, street format, and walkers, plus owner feedback. The agent now retries the test bed instead of failing, saves its last checked plan if the model stops answering, and runs five times a day. Added local dry runs and a shared notes board."
+   }
   },
   "purple-vault": {
    "apps": [],
    "urls": [],
    "private": true,
-   "category": null,
-   "summary": null
+   "category": "Backends and Infrastructure",
+   "summary": "A private store that holds one saved setting for the Purple agent",
+   "name": "Purple Vault",
+   "latest": {
+    "date": "2026-10-22",
+    "text": "Created the private store with the first saved value for the Purple agent."
+   }
   },
   "testbed-notes": {
    "apps": [],
@@ -1918,10 +1978,29 @@
    "apps": [],
    "urls": [],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Music and Visualizers",
+   "summary": "A page that bends the pitch and tempo of a sound through a processing server",
+   "name": "Sound Bender",
+   "latest": {
+    "date": "2026-10-24",
+    "text": "First release. Added Sound Bender version 1, a bend page and a Rubber Band processing server."
+   }
   },
   "welcome-to-the-madness": {
+   "apps": [],
+   "urls": [
+    "https://welcome-to-the-madness.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A kitchen rush game where you pull orders before they burn",
+   "name": "Welcome to the Madness",
+   "latest": {
+    "date": "2026-10-25",
+    "text": "First release. Added the kitchen rush game, then leveled it up with canvas graphics, a doneness ring, perfect pulls, combos, rush levels, sound, and a pause button."
+   }
+  },
+  "charley-douglass": {
    "apps": [],
    "urls": [],
    "private": false,
