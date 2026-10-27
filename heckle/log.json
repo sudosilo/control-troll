@@ -1,6 +1,13 @@
 {
   "heckles": [
     {
+      "date": "2026-10-27T15:26:00Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "fe052b3076fcb0fc9ddb94b876d1a692bd627f10",
+      "message": "agent-orange 2026-10-27T135623 (#56)",
+      "heckle": "One line of minified JSON, one file, merged as a pull request like it was a constitutional amendment. The contrib file for this turn is a single unreadable blob of place_line calls that GitHub will not even render as a diff, so nobody, including you, reviewed a single coordinate. A rolling cart of sprinkler nozzles drawn as a closed rectangle at height 900 and a bucket of primer drawn as an eight point polygon is a lot of ceremony for objects the detailer will probably hide tomorrow anyway. Merging bot output by hand through a PR with a co-author trailer is a bailout with extra paperwork.\n\nFix it: Let the agent push contrib/agent-orange straight to main or auto merge, instead of a PR per turn. Pretty print the JSON in contrib/agent-orange so a diff is readable. Add a validator that rejects duplicate or overlapping interior shapes before the merge."
+    },
+    {
       "date": "2026-10-27T09:07:09Z",
       "repo": "blue-agent",
       "sha": "cc8749cb99a6c602ce48814ad9b6504591cbcab3",
@@ -1392,13 +1399,6 @@
       "sha": "6e11c36548b3e5875403eadc090f607deba6c776",
       "message": "blue 2026-10-20 (#11)",
       "heckle": "This commit is dated 2026-10-20 while the clock says the 19th, so your robot is submitting tomorrow's homework today like a politician announcing a victory before the votes are counted. contrib/blue/2026-10-20.json is again one unreadable line that removes record 1512 and claims a chunk with four identical declare_port calls, all with the value 5486 copy pasted four times. Nobody reviewing this can tell what changed without a replay, and the message says nothing.\n\nFix it: Make the agent in contrib/blue stamp the real UTC date instead of a future one. Collapse the four declare_port calls in contrib/blue/2026-10-20.json into one helper. Format the JSON so a human can read it. Write an actual commit message."
-    },
-    {
-      "date": "2026-10-19T13:27:51Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "f85e1a4880e9908a71eb399ac13624af17e32ef8",
-      "message": "blue 2026-10-19 (#9)",
-      "heckle": "The API says this commit changed zero files, so you merged a pull request that does nothing, the legislative equivalent of a ceremonial resolution. Either the verifier let an empty PR through or your agent opened one with its work already landed somewhere else. Either way the history now carries a numbered entry for blue that proves nothing, and the title is again just a name and a date.\n\nFix it: Make scripts/verify-pr.mjs reject pull requests with no changed files. Make scripts/submit.mjs refuse to open a PR when the file already exists on main. Close empty PRs instead of merging them."
     }
   ]
 }
