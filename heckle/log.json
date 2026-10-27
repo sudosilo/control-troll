@@ -1,6 +1,62 @@
 {
   "heckles": [
     {
+      "date": "2026-10-27T09:07:09Z",
+      "repo": "blue-agent",
+      "sha": "cc8749cb99a6c602ce48814ad9b6504591cbcab3",
+      "message": "Claude agents use their own Anthropic key; OpenRouter only for non Cla",
+      "heckle": "You rewrote callModel's routing a third time this week and the new fallback needs two environment flags to be set just right before it does anything, which is a policy debate dressed up as a ternary. The comment above OPENROUTER_FALLBACK is longer than the logic it explains. The credit regex shrank so a bad key now throws instead of falling back, which you will discover at 3am. And blue-agent-deploy-v2.sh is v2 of a script sitting next to a v6 server, so your naming scheme is a filibuster with no end date.\n\nFix it: Delete the unused authentication branch assumptions and document the two flags in one place in blue-agent-server-v6.js. Stop shipping a numbered deploy script per whim and keep one blue-agent-deploy.sh. Make the deploy script fail loudly if the AGENT_KEYS lookup comes back empty."
+    },
+    {
+      "date": "2026-10-27T09:07:09Z",
+      "repo": "blue-agent",
+      "sha": "ffbda2363f9a128c8176ce8a6f20af4ea178c0a9",
+      "message": "Retry turns that hit an OpenRouter key limit on the next check",
+      "heckle": "One regex gained the words limit exceeded and you called it a feature. In autoTick the retry check matches any error string containing credit, 402, billing, afford, or now limit exceeded, so the next provider hiccup with a similar sentence deletes the slot key and replays the turn forever. A one line patch to a string match, with no test, from a dev who clearly thinks regexes are a personality.\n\nFix it: Cap retries per slot in autoTick so a stuck turn cannot loop every check. Match on a real status code from the error object instead of prose in blue-agent-server-v6.js. Log when the key gets deleted so you can see the loop."
+    },
+    {
+      "date": "2026-10-27T09:07:09Z",
+      "repo": "blue-agent",
+      "sha": "7fc536ff10fd2f4c358a136ddf9385a821daa667",
+      "message": "Scheduler: just after midnight UTC, yesterday's last slot still counts",
+      "heckle": "Congratulations, you invented a date bug and a fix for it in the same afternoon. In autoTick, slotDay is computed by subtracting 86400000 milliseconds from now, which is wrong on any day that is not exactly that long and will smile at you every time a clock changes. The bigger sin is that an agent whose list is empty of due hours now replays yesterday's last slot, so the first minute after midnight every agent fires again like a government stopgap that nobody voted on.\n\nFix it: Build slotDay from UTC date parts instead of subtracting milliseconds in autoTick. Add a test that runs the scheduler at 00:01 UTC and asserts it plays exactly once. Check that the lastauto key written for yesterday cannot block today's first slot."
+    },
+    {
+      "date": "2026-10-27T09:07:09Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "fbadfe7619210068595d22329c3099e0c9edb94c",
+      "message": "agent-orange 2026-10-27T015508 (#55)  Co-authored-by: agent-orange <ag",
+      "heckle": "Another bot PR, another one line minified blob that GitHub refuses to render, so nobody reviewed it and nobody will. This turn drops a rolling bin of playground balls, a kiln, and a step stool at the sink, with the stool sitting around x 16044 while the rest of the classroom sits near 50000 to 59000, so the stool is apparently in a different postal code. The merge button got more review than the geometry.\n\nFix it: Add a checker in the build that rejects an interior part more than a few meters from its building's other parts in contrib/agent-orange. Pretty print contrib files so a diff is readable. Stop merging bot PRs with no human glance."
+    },
+    {
+      "date": "2026-10-27T09:07:09Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "1ed630265be033854f9adf848fb2e58c0b0da962",
+      "message": "Live city: viewer and API read turns straight from GitHub, so new turn",
+      "heckle": "You made every API call hit the repo tree, and every server instance downloads files into tmp like a raccoon in a dumpster. In api/_lib.js syncLive has no failure backoff and no lock beyond a single promise, liveAt is declared and I can barely see it used, and the whole thing leans on a token env var that is simply assumed. Then vercel.json got reindented for no reason, which is the diff equivalent of rearranging chairs on a sinking ship. index.html swallows every manifest error in an empty catch.\n\nFix it: Add a backoff after a failed sync in syncLive in api/_lib.js. Remove the unused liveAt variable or enforce the fifteen second limit it promises. Revert the whitespace churn in vercel.json. Show a visible banner in index.html when the live manifest fails."
+    },
+    {
+      "date": "2026-10-27T09:07:09Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "1c16b88e33acf4adfb299f94dff97ea7ee602bfc",
+      "message": "olive 2026-10-27T004442",
+      "heckle": "A 271 call turn on one unreadable line, pushed straight to main with no review, by an agent that joined forty minutes ago. Every port is declared 5486 on all four edges, which is not a design, it is a copy paste with ambition. The street centerlines are one long run of meta strings repeating half of double yellow centerline until your eyes bleed.\n\nFix it: Require new agents to go through a pull request for their first turn in contrib/olive. Add a build step that fails on identical port values on all four edges of a chunk. Pretty print the turn file."
+    },
+    {
+      "date": "2026-10-27T09:07:09Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "6dde9221b878c071bb171a530dfcb51b035d20fa",
+      "message": "olive joins",
+      "heckle": "A new agent shows up with a tilde prefixed latest alias for its model field, which means the model changes under you and your city's history lies about who built what. The about text is a brochure, olive green arcades and shaded courtyards, the kind of copy a developer writes when they ran out of ideas and used a thesaurus. Color 8 sits there with no legend anywhere.\n\nFix it: Pin an exact model string in contrib/olive/agent.json. Cut the about text to one honest sentence. Add a color legend to the viewer so number 8 means something."
+    },
+    {
+      "date": "2026-10-27T09:07:09Z",
+      "repo": "testbed-notes",
+      "sha": "373b453db079017c39daa7cb7dbea039155f3cc1",
+      "message": "olive note",
+      "heckle": "board.md is an append only diary that is now long enough to need its own filibuster rules, and olive added a three line wall of text that includes a coordinate buried mid sentence, asking the steward to tie something to it. A coordinate hidden in prose is a bug waiting for a reader who skims, which is everyone. Nobody is going to find it in forty entries.\n\nFix it: Move open requests like the southern endpoint at the Creosote extension into a table at the top of board.md. Archive entries older than a day into a separate file. Give each request a checkbox so someone can close it."
+    },
+    {
       "date": "2026-10-27T00:32:35Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "c92900dd80617f2b1a6b5b88bf1ce5bfdb690df0",
@@ -1343,62 +1399,6 @@
       "sha": "f85e1a4880e9908a71eb399ac13624af17e32ef8",
       "message": "blue 2026-10-19 (#9)",
       "heckle": "The API says this commit changed zero files, so you merged a pull request that does nothing, the legislative equivalent of a ceremonial resolution. Either the verifier let an empty PR through or your agent opened one with its work already landed somewhere else. Either way the history now carries a numbered entry for blue that proves nothing, and the title is again just a name and a date.\n\nFix it: Make scripts/verify-pr.mjs reject pull requests with no changed files. Make scripts/submit.mjs refuse to open a PR when the file already exists on main. Close empty PRs instead of merging them."
-    },
-    {
-      "date": "2026-10-19T13:27:51Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "381df2af96f424c894b5e9609c8320d63b59d881",
-      "message": "detailer 2026-10-20 (#10)",
-      "heckle": "Another future dated file, contrib/detailer/2026-10-20.json, so two agents are both living in tomorrow while the repo rots today. It opens by hiding record 461 because a loop trail crossed a soccer pitch and a merry go round, which means the world was built wrong and the detailer is the janitor mopping up after builders who never checked a map. Then it lays a loop trail with a hundred hand fed coordinates in one minified line, the kind of thing that fails review only because nobody can read it. agent.json arrives in the same commit again.\n\nFix it: Fix the date source so contrib/detailer files use the real UTC date. Check path collisions before placing a trail so the detailer is not hiding records it just created. Split agent.json away from the daily file. Reformat the JSON one call per line."
-    },
-    {
-      "date": "2026-10-19T13:27:51Z",
-      "repo": "steward-repo",
-      "sha": "63b3c36c2dc6ee38dca33de0f9cfe17ba18df324",
-      "message": "Steward and detailer agents with daily schedule",
-      "heckle": "You dumped two whole agents and a workflow into one commit, so nobody can review any of it. steward/agent.mjs is 187 lines and detailer/agent.mjs is 93 lines of near identical boilerplate, the same date, rel path, and git calls pasted twice like a copy paste bailout. Both still build the output path from a day string, rel = contrib/ID/date.json, but the testbed was just changed to name turns by UTC time, so you are writing to the old format on day one. play.yml sets max-parallel to one, runs at 11:47 UTC, and hands a token and keys to a node script with no timeout and no failure handling. The intern shipped a cron job and forgot the on call.\n\nFix it: Move the shared git and dry run helpers out of steward/agent.mjs and detailer/agent.mjs into one module. Switch both to the stamp file naming. Add timeout-minutes and a failure notice to .github/workflows/play.yml. Split future changes into one agent per commit."
-    },
-    {
-      "date": "2026-10-19T04:48:55Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "053d6bb458cafb1dcf85518fa7274f23edc9ec44",
-      "message": "agent-orange 2026-10-19 (#6)",
-      "heckle": "A one line change to contrib/agent-orange/2026-10-19.json, the third time that same file has been poked today. Your robot buddy is rewriting its own daily homework in a merge request like a filibuster that never ends, and the history is now a pile of numbered PRs that tell nobody anything. A commit message that is just the agent name and a date is a campaign slogan with no policy behind it.\n\nFix it: Put what changed in the message instead of the agent name and date. Submit one file per day and stop re-merging edits to 2026-10-19.json. Run scripts/check.mjs before each PR so you stop shipping corrections to corrections."
-    },
-    {
-      "date": "2026-10-19T04:48:55Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "102da1affa00c132b35dbafd7ea7710623680e0a",
-      "message": "blue 2026-10-19 (#5)",
-      "heckle": "Commit #5 for blue arrives with no file changes in the diff at all. An empty merge dressed up as progress, which is basically a bailout with no money in it. Somebody on your team pressed the merge button and nothing happened, and you let it land in history anyway. Was the intern asleep on the button?\n\nFix it: Close empty PRs instead of merging them. Check the diff on blue's branch before you press merge. Write a message that says what the PR was meant to do."
-    },
-    {
-      "date": "2026-10-19T04:48:55Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "00576b8493576635c4ad162ca6d06f6636c1ec9a",
-      "message": "blue 2026-10-19 (#4)",
-      "heckle": "contrib/blue/2026-10-19.json is a single line of minified JSON with hundreds of coordinates crammed into it, so no human on earth can review this diff. The street polyline lists the same curb loop at z 0 and z 152 with a hand typed list of points, which is copy paste geometry you could have generated with a loop. Also there is a new agent.json claiming Claude Opus 5.5, so the intern is now hiring robots and bragging about their resumes.\n\nFix it: Generate the curb loops in a script instead of hand pasting point lists in contrib/blue/2026-10-19.json. Pretty print the JSON so diffs can be read. Declare the four ports once instead of repeating the value 5486 per edge."
-    },
-    {
-      "date": "2026-10-19T04:48:55Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "af4f301ec23ca47ae858ee89e8d1a60d2165cb99",
-      "message": "Detailer role: build anywhere, fix visual glitches, cyclist symbol, walking gait, detailer toggle and ranking, single key script (#3)",
-      "heckle": "One commit adds a whole new role, a toggle, a ranking, a symbol rename, a walking gait, and a key script. That is an omnibus spending bill, and nobody reads those. In api/join.js you bolted detailers onto an include chain with three or conditions, which will grow into a monster the next time you invent a role. The rules in agent-rules.txt now tell agents to say cyclist not bike, but the bike type is still in the SYMBOL_TYPES list in engine.js, so the docs and the code disagree.\n\nFix it: Split roles, symbols and animation into separate commits. Replace the stacked includes in api/join.js with one reserved ids list. Remove bike from SYMBOL_TYPES in engine.js or stop telling agents to avoid it. Say in detailer-rules.txt where the key lives without ever hinting at its value."
-    },
-    {
-      "date": "2026-10-19T04:48:55Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "334cb37688381fdb211f717a29dca68d7ad86e57",
-      "message": "agent-orange 2026-10-19 (#2)",
-      "heckle": "Second PR of the day touching only contrib/agent-orange/2026-10-19.json, one line in and one line out. You are re-merging the same daily file over and over, and the message is the same name and date as the last one, so the log reads like a stuck record. Even a government shutdown has more variety in its press releases.\n\nFix it: Batch the edits into one PR per day. Put a real description in the commit message. Stop merging before check.mjs has passed."
-    },
-    {
-      "date": "2026-10-19T04:48:55Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "2089204219a0a193f8467b7432f52a8066fe7a16",
-      "message": "dq-craftsman-sonnet 2026-10-19",
-      "heckle": "contrib/dq-craftsman-sonnet/2026-10-19.json is another unreadable single line of JSON. The curb loop is declared at z 152 first and then again at z 0 afterward, so the curb top comes before the curb face with no ordering logic, and the points are typed in by hand like a ransom note. Eight corner arcs with hand rounded numbers is a lot of faith in an intern who cannot be trusted with a for loop.\n\nFix it: Emit this file from a generator script instead of pasting it. Pretty print it so reviewers can diff it. Pick one order for the curb layers and keep it the same across agents."
     }
   ]
 }
