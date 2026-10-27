@@ -187,7 +187,34 @@
   "sudosilo/five-minute-momentum-engine@v2026.10.22",
   "sudosilo/five-minute-momentum-engine@v2026.10.15",
   "sudosilo/shared-server@v2026.10.22",
-  "sudosilo/shared-server@v2026.10.21"
+  "sudosilo/shared-server@v2026.10.21",
+  "sudosilo/2026-10-20-orange-dialbeat@v2026.10.22",
+  "sudosilo/2026-10-20-orange-dialbeat@v2026.10.21",
+  "sudosilo/2026-10-20-orange-dialbeat@v2026.10.20",
+  "sudosilo/mohavetech-website@v2026.10.22",
+  "sudosilo/mohavetech-website@v2026.10.21",
+  "sudosilo/mohavetech-website@v2026.10.20",
+  "sudosilo/mohavetech-website@v2026.10.19",
+  "sudosilo/mohavetech-website@v2026.10.17",
+  "sudosilo/purple-vault@v2026.10.22",
+  "sudosilo/purple-agent@v2026.10.22",
+  "sudosilo/sound-bender@v2026.10.24",
+  "sudosilo/field-twin@v2026.10.25",
+  "sudosilo/field-twin@v2026.10.23",
+  "sudosilo/field-twin@v2026.10.21",
+  "sudosilo/field-twin@v2026.10.18",
+  "sudosilo/stackloom-meta@v2026.10.25",
+  "sudosilo/stackloom-meta@v2026.10.18",
+  "sudosilo/song-offset-listener@v2026.10.25",
+  "sudosilo/song-offset-listener@v2026.10.24",
+  "sudosilo/song-offset-listener@v2026.10.23",
+  "sudosilo/song-offset-listener@v2026.10.14",
+  "sudosilo/song-offset-listener@v2026.10.13",
+  "sudosilo/2026-10-22-orange-agent@v2026.10.25",
+  "sudosilo/2026-10-22-orange-agent@v2026.10.22",
+  "sudosilo/welcome-to-the-madness@v2026.10.25",
+  "sudosilo/steward-repo@v2026.10.26",
+  "sudosilo/itchy-troll@v2026.10.26"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -1387,6 +1414,128 @@
    "t": [
     "ai",
     "backend",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-10-20-orange-dialbeat": {
+   "d": "A drum machine with dial rows, instrument families, presets, and toy sounds.",
+   "h": "https://2026-10-20-orange-dialbeat.vercel.app",
+   "t": [
+    "drum-machine",
+    "music",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/mohavetech-website": {
+   "d": "An index page that lists every app with its age, phone tags, and notes.",
+   "h": "https://mohavetech-website.vercel.app",
+   "t": [
+    "dashboard",
+    "index",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/purple-vault": {
+   "d": "A private store that holds one saved setting for the Purple agent.",
+   "h": "",
+   "t": [
+    "agent",
+    "infrastructure",
+    "storage"
+   ]
+  },
+  "sudosilo/purple-agent": {
+   "d": "An AI agent that builds one block of a shared city in the Agent Test Bed.",
+   "h": "",
+   "t": [
+    "agent",
+    "ai",
+    "automation",
+    "backend"
+   ]
+  },
+  "sudosilo/sound-bender": {
+   "d": "A page that bends the pitch and tempo of a sound through a processing server.",
+   "h": "",
+   "t": [
+    "audio",
+    "music",
+    "railway",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/field-twin": {
+   "d": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
+   "h": "https://field-twin-teal.vercel.app",
+   "t": [
+    "field",
+    "map",
+    "mileage",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/stackloom-meta": {
+   "d": "A studio game with orders, terminals, agents, developers, and offices.",
+   "h": "https://stackloom-meta.vercel.app",
+   "t": [
+    "game",
+    "management",
+    "simulator",
+    "vercel"
+   ]
+  },
+  "sudosilo/song-offset-listener": {
+   "d": "A phone app that identifies a song and syncs playback across phones.",
+   "h": "https://offset-listener.vercel.app",
+   "t": [
+    "backend",
+    "music",
+    "sync",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-10-22-orange-agent": {
+   "d": "An AI agent that builds the north and east side of a shared line drawn city.",
+   "h": "https://2026-10-22-orange-agent.vercel.app",
+   "t": [
+    "agent",
+    "ai",
+    "automation",
+    "city",
+    "vercel"
+   ]
+  },
+  "sudosilo/welcome-to-the-madness": {
+   "d": "A kitchen rush game where you pull orders before they burn.",
+   "h": "https://welcome-to-the-madness.vercel.app",
+   "t": [
+    "arcade",
+    "cooking",
+    "game",
+    "vercel"
+   ]
+  },
+  "sudosilo/steward-repo": {
+   "d": "Two AI agents that keep the shared city's water, sewer, and street life running.",
+   "h": "",
+   "t": [
+    "agent",
+    "ai",
+    "automation",
+    "city"
+   ]
+  },
+  "sudosilo/itchy-troll": {
+   "d": "An agent that ships one app a day to a game publishing site and keeps a ledger.",
+   "h": "https://itchy-troll.vercel.app",
+   "t": [
+    "agent",
+    "automation",
+    "tool",
     "vercel"
    ]
   }
