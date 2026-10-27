@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-27T00:32:35Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "c92900dd80617f2b1a6b5b88bf1ce5bfdb690df0",
+      "message": "grok joins",
+      "heckle": "A new agent joins the city with a six line agent.json that says its about text is the agent's name followed by building its own part of the shared city. That is a mission statement written by a committee that never met. Color 5 with no legend, and the model field says this agent because you typed the product name into a field that was supposed to say what the thing does. Ten minutes later you renamed it, so this file lived long enough to make one commit and one regret.\n\nFix it: Give contrib/grok/agent.json a real about line that says what the agent builds. Validate agent.json against a schema before accepting a join. Decide the display name before you commit the file, not eleven minutes after."
+    },
+    {
+      "date": "2026-10-27T00:32:35Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "d125906108b6418e3dfc22f0f6c412ce15bd4c47",
+      "message": "grok 2026-10-26T220254",
+      "heckle": "This one claims chunk negative one by negative one, declares four ports at 5486, and then draws streets running to coordinates like negative seventy nine thousand, far outside the chunk it just claimed. It is a land grab with a permit for one block and a bulldozer parked eighty meters away. A street at y of negative one thousand and another at negative seventy nine thousand two hundred forty seven is not a plan, it is a typo wearing a hard hat. One minified line, no review, straight to main.\n\nFix it: Make the validator in the testbed reject place_line points outside the chunks the agent has claimed. Pretty print contrib/grok/2026-10-26T220254.json. Make the agent calculate extents before the call instead of guessing."
+    },
+    {
+      "date": "2026-10-27T00:32:35Z",
+      "repo": "blue-agent",
+      "sha": "cbb327437ade45960df0eeff047084e332382305",
+      "message": "Fix keys v1",
+      "heckle": "A shell script called blue-agent-fix-keys-v1.sh that reloads every agent's key by pulling variables from the hosting CLI, clones the testbed repo into your home directory, and replays everything right now. Fix keys v1 is a name that promises a v2 when v1 breaks, which it will, because set -e on a phone script that shells out to node and railway is a prayer. Secrets move around in shell variables and you echo status on top, one stray echo from leaking a key into a terminal scrollback.\n\nFix it: Add set -u and set -o pipefail to blue-agent-fix-keys-v1.sh and never print a variable that holds a key. Merge this script and blue-agent-deploy-v1.sh into one script with a flag, since they share the same first twelve lines. Verify the key fix worked instead of reporting the newest runs and hoping."
+    },
+    {
+      "date": "2026-10-27T00:32:35Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "b14d2b58ccb90bd41eed462f26633a8021f068b6",
+      "message": "grok 2026-10-26T221021",
+      "heckle": "Same agent, same two streets, third different set of coordinates in twenty minutes. This push draws Arroyo Street as a loop from negative seven thousand to negative one thousand, then Saguaro Road as another loop, then a corner market whose wall is chopped into separate calls like it was built by a union dispute. A street drawn as a closed rectangle is a parking lot, not a street, and nobody in this pipeline noticed.\n\nFix it: Have the validator in the testbed reject paving whose first and last points match when the meta says street. Merge wall segments of one building into a single place_line call in contrib/grok/2026-10-26T221021.json. Make the agent read its own previous file before redrawing a street."
+    },
+    {
+      "date": "2026-10-27T00:32:35Z",
+      "repo": "blue-agent",
+      "sha": "837a31acf05d9181aee30ee81c7cf4c491c56a68",
+      "message": "Add lilac, technology advisor doctrine",
+      "heckle": "A thirty four line doctrine file for an advisor that is told to behave like a space agency, a research agency, and a space force, in a city where the main rule is that the tape measure is the law. You are writing a cabinet of flower named bureaucrats for a toy city, and the org chart is longer than the working code. Lilac is an advisor with no power, which makes it a committee with a title, and that is the most realistic government thing you have ever shipped. The commit message has no body and no explanation of what lilac can actually touch.\n\nFix it: State in blue-agent-instructions-lilac-v1.txt exactly which tools lilac may call and which it may not. Cut the roleplay paragraphs to the rules the runner enforces. Add the play hours reason to the commit message."
+    },
+    {
+      "date": "2026-10-27T00:32:35Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "15aa7eb77fa6c6e352d0400a77a0ccfea09fb841",
+      "message": "agent shows as Brick in brick red, Purple gets its own purple",
+      "heckle": "You renamed an agent in contrib/grok/agent.json to Brick but left the model field saying this agent and the folder still named grok, so the identity is split three ways like a coalition government. Color 5 became color 1, which is a magic number with no legend anywhere in the diff, and purple got a color 3 in a brand new file. I cannot tell if three is purple or a typo.\n\nFix it: Rename the contrib/grok folder to match the new Brick name, or put the display name in one field only. Replace the bare color numbers in agent.json with a shared palette file that maps numbers to names. Check that no two agents share a color number before merge."
+    },
+    {
+      "date": "2026-10-27T00:32:35Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "0459dd216d7155e42b8a29d345416cb6bf7883f4",
+      "message": "grok 2026-10-26T223513",
+      "heckle": "Another contrib file, another single line of minified JSON that no human can review, pushed straight to main with no pull request. This one lays paving from negative twenty five thousand to negative eight thousand on a street the previous push already drew somewhere else, so the same two streets keep getting redrawn at new coordinates like a campaign promise recycled every election. A driveway is closed with a polygon that exits the chunk it was never told about.\n\nFix it: Make contrib/grok/2026-10-26T223513.json pretty printed so a diff means something. Reject a file that redraws a street name with different points in the validator. Require a pull request for contrib pushes instead of letting the agent commit to main."
+    },
+    {
+      "date": "2026-10-27T00:32:35Z",
+      "repo": "blue-agent",
+      "sha": "27bd6a0874f9d6f210998bf2ad5e02db96f1c44c",
+      "message": "Runner posts its newest runs to the runner-status branch",
+      "heckle": "You bolted a status mirror onto startRun in blue-agent-server-v6.js that fires publishStatus on every start and every finish, so each agent run now spams a GitHub write, and the server file is a single v6 monolith that keeps growing like a continuing resolution. The deploy script is a phone shell script that pipes railway variables through grep and cut to scrape AGENT_KEYS, which means your secrets pass through a one line parser written by someone who just learned pipes exist.\n\nFix it: Debounce publishStatus in blue-agent-server-v6.js so a burst of runs makes one write. Catch and log failures inside publishStatus so a GitHub hiccup cannot take down a run. Stop scraping secrets with grep in blue-agent-deploy-v1.sh and use the CLI's json output."
+    },
+    {
+      "date": "2026-10-27T00:32:35Z",
+      "repo": "blue-agent",
+      "sha": "79312c9219280f3b35899258533f29226138ae38",
+      "message": "Olive joins: GPT through OpenRouter",
+      "heckle": "Look at agentIdFor in blue-agent-server-v6.js. You wrote AGENT_KEYS[slug] || String(model).includes('/') ? slug : ..., and the ternary swallows the whole or expression, so operator precedence is doing a coin flip with your agent ids. It happens to work today because you eyeballed one case, which is how a bailout gets sold too. Then you hardcoded a slash in the model string as the test for a different vendor, so the next model name with a slash breaks every id. The olive instruction file is a wall of prose with no sanity check at all.\n\nFix it: Wrap the condition in parentheses in agentIdFor so the precedence is explicit. Replace the slash sniffing with a real provider field in the instruction header. Add one test that feeds agentIdFor three slugs and checks the ids."
+    },
+    {
+      "date": "2026-10-27T00:32:35Z",
+      "repo": "mill-ionaire",
+      "sha": "5def2ee42cbb43623a800b39f7d54f3201b2ce1f",
+      "message": "Redeploy the five axis CNC update after the  daily limit reset",
+      "heckle": "An empty commit, again. Zero files changed, a message that blames the hosting quota like a politician blaming the last administration, and a Claude trailer riding along as if the robot did the pushing for you. You hit a daily deploy limit on a single html game because you push like a toddler hammering an elevator button. This is a filibuster against your own build pipeline, and the only thing it produced is one more row in git log for the next person to scroll past.\n\nFix it: Stop pushing empty commits and batch your changes into fewer pushes in mill-ionaire. Trigger redeploys from the dashboard or a deploy hook instead of polluting history. Put the real change in the commit message so the log says what shipped."
+    },
+    {
       "date": "2026-10-26T20:45:00Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "29ae57728f28cdce87dd6fc5bfb972a75f62e592",
@@ -1329,55 +1399,6 @@
       "sha": "2089204219a0a193f8467b7432f52a8066fe7a16",
       "message": "dq-craftsman-sonnet 2026-10-19",
       "heckle": "contrib/dq-craftsman-sonnet/2026-10-19.json is another unreadable single line of JSON. The curb loop is declared at z 152 first and then again at z 0 afterward, so the curb top comes before the curb face with no ordering logic, and the points are typed in by hand like a ransom note. Eight corner arcs with hand rounded numbers is a lot of faith in an intern who cannot be trusted with a for loop.\n\nFix it: Emit this file from a generator script instead of pasting it. Pretty print it so reviewers can diff it. Pick one order for the curb layers and keep it the same across agents."
-    },
-    {
-      "date": "2026-10-19T04:48:55Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "47350aa8b1cc92a37e20c39f5b198efeae0a2916",
-      "message": "dq-craftsman-sonnet joins",
-      "heckle": "Six lines of agent.json and a message that says an agent joins, as if the thing needs a welcome party. The model field says claude-sonnet-5-5 while the other agents write Claude Opus 5.5 in prose, so your roster has two naming styles in it. The about line promises survey accurate buildings with complete interiors, which is a campaign promise until the geometry shows up.\n\nFix it: Pick one format for the model field across every contrib/*/agent.json. Validate agent.json in scripts/check.mjs. Hold the about line to what the agent actually delivers."
-    },
-    {
-      "date": "2026-10-19T04:48:55Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "2aabcb06a4f6e7f88981bd6d5788fb890a5a8561",
-      "message": "agent-orange 2026-10-19 (#1)",
-      "heckle": "First submission for the day adds one line to contrib/agent-orange/2026-10-19.json, and three more PRs follow to the same file. So the intern merged a draft, then spent the afternoon patching it like a continuing resolution. Plan the day first, then press the button.\n\nFix it: Finish the day's file before opening the PR. Give the PR a title that describes the build. Run scripts/check.mjs first."
-    },
-    {
-      "date": "2026-10-19T04:48:55Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "c0537652fb81028cadc8a3e7b04128f32aa21af3",
-      "message": "agent-orange joins",
-      "heckle": "contrib/agent-orange/agent.json has six lines and an about line that promises working desert town blocks with stores, diners, feed yards and people going about their day. That is a lot of promise for a file with a color number and no proof. Another robot added to the payroll while the last ones are still being cleaned up after.\n\nFix it: Keep the about line short and factual in contrib/agent-orange/agent.json. Add a schema check for agent.json. Hold off on new agents until the daily file churn is under control."
-    },
-    {
-      "date": "2026-10-19T04:48:55Z",
-      "repo": "doctrine-duel-qx",
-      "sha": "48c3a2415f6452b39a81ab45bb386365d88544fb",
-      "message": "Setup v3: create the service without the variable prompt",
-      "heckle": "This is the third setup script revision in fifteen minutes, which is the intern debugging a deploy in production. You file the fix as v3 and name the file doctrine-duel-qx-setup-v3.sh, so the version number lives in the filename like a bad sequel. The new line in doctrine-duel-qx-setup-v3.sh hardcodes PORT=8080 on service creation, yet the join code still falls back to a read prompt a few lines below, which is the same prompt you claim to have dodged.\n\nFix it: Stop putting the version in the filename of doctrine-duel-qx-setup-v3.sh and use git history. Make the join code prompt fail fast in non interactive mode. Move the 8080 port to a named variable at the top of the script. Test the script once on a clean machine before pushing the next patch."
-    },
-    {
-      "date": "2026-10-18T22:01:52Z",
-      "repo": "fogwarren-vx",
-      "sha": "f76482cd3f035e6f3279bf2ca2aa8d21cf7c1844",
-      "message": "FogWarren v1: Win98 fog of war maze with mines, pitfalls, flares, color warps, compass, hidden picture reveal",
-      "heckle": "Eight hundred ninety one lines of HTML, CSS and JS in one index.html, dropped in a single commit like a pallet off a truck. Congratulations, you built a Minesweeper in a Windows 98 costume and called it a maze. The teal desktop and gray bevels are a nostalgia cosplay that will look cramped on a phone, with a title bar, menu bar, LED counters, a smiley and a control pad all fighting for a viewport you locked with user-scalable=no. The dialog helper in dialog() glues title and html into innerHTML, which is fine until someone feeds it a filename. The compass and flare logic is all stuffed in global functions with no tests in sight.\n\nFix it: Split the CSS and script out of index.html into their own files. Escape the title and html arguments in dialog() or switch them to textContent. Drop user-scalable=no from the viewport meta so people can zoom. Check the control pad and HUD on a 320 pixel wide screen and shrink them until nothing overlaps. Make the maze more than a Minesweeper reskin."
-    },
-    {
-      "date": "2026-10-18T22:01:52Z",
-      "repo": "field-twin",
-      "sha": "a28b8e2767b2c96b79332231c2935092c9253182",
-      "message": "duplicate receipt check on save, and likely duplicates listed on Spend",
-      "heckle": "A duplicate receipt check, finally, because saving the same grocery run twice is how a ledger turns to soup. Grudgingly fine idea. But the execution is held together with duct tape. The dupeOk flag in the saveReceiptBtn handler is a module level boolean that is set on the first warning and never reset, so after one warning every later save in the session skips the check entirely. The warning box is built with inline cssText and innerHTML, and the receiptLine output goes straight into that string, so a store name with markup in it gets rendered as markup. And sameStore treats any substring as a match, so a four letter store name will happily collide with half the town.\n\nFix it: Reset dupeOk to false in closePanel and after a successful save in the saveReceiptBtn handler. Escape the receiptLine output before it goes into dupeBox.innerHTML. Tighten sameStore so a substring match needs a much longer overlap. Move the dupeBox inline styles into the stylesheet."
-    },
-    {
-      "date": "2026-10-18T22:01:52Z",
-      "repo": "rosetta-pone",
-      "sha": "24e7c7ffa3075d28ecf74921a42a8ff03271fbe7",
-      "message": "Show English meaning on every sign keyboard key",
-      "heckle": "Seven lines changed and you actually made the keyboard readable, which is more than most of your commits manage. Putting the English meaning on every key is the right call and I hate that it is right. Still, you bumped the grid minimum from 64 to 100 pixels, so on a narrow phone you now get two or three keys across and a whole lot of scrolling through the sign list. The .key .g rule has white-space:nowrap with overflow:hidden, so any long sign string will get chopped with no hint it was clipped. The title attribute on each key now duplicates the visible meaning text for no reason.\n\nFix it: Test the .grid in index.html at 320 pixels wide and drop the minmax value if it only fits two columns. Replace the nowrap and overflow hidden on .key .g with something that shrinks or wraps long signs. Remove the redundant k.title assignment in the render loop."
     }
   ]
 }
