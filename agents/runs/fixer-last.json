@@ -1,78 +1,33 @@
 {
- "duration_api_ms": 15009,
- "stop_reason": "end_turn",
- "session_id": "f9f06c5c-21a3-4dbf-a9f7-b1013706a076",
- "total_cost_usd": 0.10455450000000001,
+ "duration_api_ms": 0,
+ "stop_reason": "stop_sequence",
+ "session_id": "c7ed58e1-1c4d-4fd2-a619-04c3545678ee",
+ "total_cost_usd": 0,
  "usage": {
-  "input_tokens": 10,
-  "cache_creation_input_tokens": 20098,
-  "cache_read_input_tokens": 116658,
-  "output_tokens": 1225,
   "output_tokens_details": {
-   "thinking_tokens": 430
+   "thinking_tokens": 0
   },
+  "input_tokens": 0,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "output_tokens": 0,
   "server_tool_use": {
    "web_search_requests": 0,
    "web_fetch_requests": 0
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 20098,
+   "ephemeral_1h_input_tokens": 0,
    "ephemeral_5m_input_tokens": 0
   },
-  "inference_geo": "global",
-  "iterations": [
-   {
-    "input_tokens": 2,
-    "output_tokens": 259,
-    "cache_read_input_tokens": 32386,
-    "cache_creation_input_tokens": 658,
-    "cache_creation": {
-     "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 658
-    },
-    "type": "message"
-   }
-  ],
+  "inference_geo": "",
+  "iterations": [],
   "speed": "standard",
   "fallback_credit": null
  },
- "modelUsage": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1207,
-   "outputTokens": 212,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
-   "webSearchRequests": 0,
-   "costUSD": 0.0002267,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 193,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
-  "claude-sonnet-5-5": {
-   "inputTokens": 10,
-   "outputTokens": 1225,
-   "cacheReadInputTokens": 116658,
-   "cacheCreationInputTokens": 20098,
-   "webSearchRequests": 0,
-   "costUSD": 0.10432780000000001,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 430,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 20098,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  }
- },
+ "modelUsage": {},
  "permission_denials": [],
- "terminal_reason": "completed",
+ "terminal_reason": "api_error",
  "fast_mode_state": "off",
  "fast_mode_disabled_reason": "sdk_opt_in_required",
  "subagent_stats": {
@@ -100,52 +55,17 @@
   "by_type": {}
  },
  "safety_stops": 0,
- "is_error": false,
- "num_turns": 5,
+ "is_error": true,
+ "num_turns": 1,
  "subtype": "success",
- "api_error_status": null,
- "result": "No apps were worked this run, because all seven jobs in fixes.json fall inside the 3-day skip window. Each was last attempted between 2026-10-24 and 2026-10-26, and each still has the same error and a needs decision or repo not found outcome.\n\nThe seven jobs are snapshot-engine-pied, topo-wars-server, tower-builder-five, pajamastan-warrants, frontend-sudosilo2-1771s-projects, termbeat and mary-jane-man.\n\nI cloned no repos and opened no pull requests. fix-log.json got no new entries, since no job was touched. The topo-wars-server pull request 1 is still open and waiting on the developer to merge it.\n\nI added one line to agents/notes/general.md saying so, and pushed it to main as \"agent notes\".",
- "ttft_ms": 2530,
+ "api_error_status": 429,
+ "api_error_origin": "first_party",
+ "api_error": "usage_limit_reached",
+ "result": "You've hit your weekly limit \u00b7 resets Oct 30, 12am (UTC)",
  "type": "result",
- "duration_ms": 16489,
- "uuid": "5062e7e3-3a8d-40d1-925b-bf055ded414e",
- "ttft_stream_ms": 2292,
- "time_to_request_ms": 224,
- "first_content_frame_ms": 2292,
+ "duration_ms": 383,
+ "uuid": "31cf2476-5121-4c6c-a7c0-8a414cd67402",
  "queued_turn_count": 0,
  "result_index": 0,
- "model_usage_since_last_result": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1207,
-   "outputTokens": 212,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
-   "webSearchRequests": 0,
-   "costUSD": 0.0002267,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 193,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
-  "claude-sonnet-5-5": {
-   "inputTokens": 10,
-   "outputTokens": 1225,
-   "cacheReadInputTokens": 116658,
-   "cacheCreationInputTokens": 20098,
-   "webSearchRequests": 0,
-   "costUSD": 0.10432780000000001,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 430,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 20098,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  }
- }
+ "model_usage_since_last_result": {}
 }
