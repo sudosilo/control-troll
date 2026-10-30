@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-30T22:26:10Z",
+      "repo": "smash-bender",
+      "sha": "cf3320879278530a361d3138cc4d027371d313b8",
+      "message": "Import accepts music_start and voice_start",
+      "heckle": "In server/app.py the import endpoint takes two more form fields and runs float(music_start or 0) on them, so a letter in the field throws a 500 instead of a clean 422. You changed the positional argument list for runner.run_experiment by adding two floats to the end, with no keyword names, so any other caller breaks without a sound. This service still has no auth on the job endpoint and wildcard CORS, and you keep adding inputs to it like piling more luggage on a bus with no brakes.\n\nFix it: Declare music_start and voice_start as float form fields with bounds in server/app.py so bad input gets a 422. Pass them to runner.run_experiment by keyword. Lock down CORS to your own origins. Add a shared key check on the import and start routes."
+    },
+    {
+      "date": "2026-10-30T22:26:10Z",
+      "repo": "gladhand-dockyard",
+      "sha": "58362f81561ecda526f6da140d135f7ee34544ad",
+      "message": "v23: Drive section on the launch menu with every ride, full ride lineup at the city home lot",
+      "heckle": "A trailer backing trainer now has a Drive section for every ride, because apparently the dockyard needed a sports car, a helicopter, an ambulance, and a van to teach anyone to back up a trailer. The EGGS table in index.html is a pile of hand typed coordinates and paint hex codes, one line of city spawn data per vehicle, so moving the lot means editing numbers by feel. The launch menu gets another section stacked into one dispatch card, which on a small screen is a scroll through a junk drawer. Focus left the building around version fourteen.\n\nFix it: Move the EGGS vehicle data in index.html into a named config with one entry per row, not a wall of literals. Group the Drive section behind its own screen instead of stacking it in the dispatch card. Decide what this app is and cut the rides that are not trailers."
+    },
+    {
+      "date": "2026-10-30T22:26:10Z",
+      "repo": "song-offset-listener",
+      "sha": "4957411071510f7205751d5e441377768d37347f",
+      "message": "Smash Bender queue carries music_start and voice_start",
+      "heckle": "This is the same two field change as the one you just made in the other repo, pasted here by hand, so now two repos must agree on a job shape and neither one has a schema. In api/bender.js the job takes music_start and voice_start with a Math.max and a Math.round wrapped around Number(b.music_start), but no upper limit, so someone can queue a job starting nine million seconds into a song. Your seconds field has a clamp of 10 to 240 and these two got nothing. Inconsistent, like a tax code.\n\nFix it: Clamp music_start and voice_start to a sane maximum in api/bender.js, the same way seconds is clamped. Write the job shape down once and share it between the repos. Reject jobs that are missing the video ids with a useful message. Add a rate limit on the queue action."
+    },
+    {
+      "date": "2026-10-30T22:26:10Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "ea4f89c21c95e823015fb032174e5948716794d8",
+      "message": "Smash Bender sends music_start and voice_start so both clips start lined up at the drop or the sample",
+      "heckle": "You are POSTing music_start and voice_start from index.html to an unauthenticated /api/bender queue that any stranger on the internet can fill, and the whole timing math lives in a new benderStarts function that has no test and returns rounded floats from a pile of optional arguments. The shell relay reads the values with jq and a quiet default of 0, so a bad value silently becomes zero and you get clips that are misaligned with no error. That is a campaign promise with a footnote. Also the failure message just says could not queue it, which tells nobody anything.\n\nFix it: Test benderStarts in index.html with a drop before, at, and after the start. Validate music_start and voice_start in tools/bender-relay.sh and fail loudly on garbage. Show the real error from the queue call. Put a shared secret on the queue endpoint."
+    },
+    {
+      "date": "2026-10-30T22:26:10Z",
+      "repo": "gladhand-dockyard",
+      "sha": "317ee576e29375021e88dd9ae8cf6364ee8d1cd7",
+      "message": "v24: tank fire buttons get their own panel, truck only buttons hide while riding, side column scrolls",
+      "heckle": "You gave the tank its own fire panel pinned at bottom 200px, and made the side column scroll with the scrollbar hidden. So on a short phone in landscape, buttons slide off the bottom with no hint they exist. Hiding the scrollbar is hiding the evidence. The offsets are all magic numbers like 162px, 200px, and 262px stacked against each other, so one new button and the fire panel sits on top of the side column. Plan the layout like you plan a budget: badly and after the vote.\n\nFix it: Compute the side column height from the real layout in index.html instead of hard coded 162px, 200px, and 262px. Show a fade or arrow when #side can scroll. Use CSS variables for the shared offsets. Test it on a short landscape screen."
+    },
+    {
+      "date": "2026-10-30T22:26:10Z",
+      "repo": "gladhand-dockyard",
+      "sha": "201828e0d86c615934064550ccaa61a9e61218c6",
+      "message": "v25: driver view shows holes, craters, scorch, debris, marks, fire, smoke and flying chunks",
+      "heckle": "Driver view now draws holes, craters, scorch, debris, fire, smoke, and flying chunks, in one commit, in one file, with no profiling. The new line that builds colors for each object in the first person renderer is a nested ternary eleven deep, which is what a government shutdown looks like when written as code. Then you call fpHoleBoxes and fpDecals every frame, and for every wall with a breach you build fresh boxes, so a phone will turn into a hand warmer. Nobody asked whether the draw loop caches anything. Clearly not.\n\nFix it: Replace the object type color ternary in index.html with a lookup table. Cache the hole boxes per object until its damage changes. Cap the number of decals and debris pieces drawn per frame. Measure the frame time on an actual phone before adding more effects."
+    },
+    {
+      "date": "2026-10-30T22:26:10Z",
+      "repo": "gladhand-dockyard",
+      "sha": "1073403c931c9baafc5a66f28d20792ebf3999df",
+      "message": "v26: chimes off, continuous engine voices for semi, tank, helicopter, cars and bike, noise tire screech",
+      "heckle": "You turned the chimes off by making tone() return early when the type is triangle. That is not a feature, that is a hack with a comment saying BLUE PHONE on it. Every future triangle sound silently dies and you will blame the browser. Then you added fifty lines of continuous engine oscillators and a noise screech with no sign of a cap on voices, so a phone with a weak audio thread will crackle like a town hall mic. Also the sound toggle is read from localStorage in a bare try block that swallows everything.\n\nFix it: Replace the triangle check in tone() in index.html with an explicit mute list by sound name. Cap the number of live engine voices and stop them when the ride changes. Add a master gain so you can turn the whole mess down. Log the swallowed localStorage error instead of hiding it."
+    },
+    {
+      "date": "2026-10-30T22:26:10Z",
+      "repo": "gladhand-dockyard",
+      "sha": "a3f42ff2c3492cef49b4e00ad12b84b655be38bd",
+      "message": "v27: shells punch through light stuff and blast holes in walls, scorch and bullet pocks on walls, beeps removed",
+      "heckle": "Shells now punch through things and the damage state is stored in per area objects that pruneDmg filters on every call, with eleven chained filter clauses jammed on one line. That line is longer than a filibuster and twice as unreadable. You cut the gear shift beep and replaced it with a 70 hertz square thump, so the sound design is whatever you hummed this afternoon. You shipped a feature list longer than the test list, which is zero tests, because the game has none.\n\nFix it: Break the pruneDmg line in index.html into one statement per damage kind. Make the expiry times named constants instead of 1800 and 5400 sitting in the middle of a filter. Add a plain test that damage actually expires. Put the sound settings in one table instead of scattering tone calls."
+    },
+    {
+      "date": "2026-10-30T22:26:10Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "811acc514bad5e0d5a3d05400643919401f34344",
+      "message": "Samples list: song names on their own line, buttons wrap below",
+      "heckle": "Three lines changed and you still found a way to do it badly. You added flex-wrap to .sampRow and then bolted on two rules keyed off the #sampList id, so the specificity war in index.html now has an ID selector holding a rifle. The font size of 10px on .seg buttons is a tap target for an ant, on a phone, where this thing is supposed to live. You fixed a cramped row by making the buttons smaller and calling it layout. That is a bailout with a press conference.\n\nFix it: Raise the .seg font size in index.html to at least 12px and give it a real minimum height for thumbs. Drop the #sampList prefix and use a class instead. Delete the dead .sampRow .rt flex rule that the new one overrides."
+    },
+    {
+      "date": "2026-10-30T22:26:10Z",
+      "repo": "gladhand-dockyard",
+      "sha": "08446be816695a24700d51028e91b3a17c14c251",
+      "message": "v28: tank rounds take chunks out of walls, smooth engine sound without blips, tire screech sound off",
+      "heckle": "Version twenty eight of a single index.html, and the title tag is still being bumped by hand like a kid updating a scoreboard with a marker. You are now carving craters out of walls with a tank in a trailer backing sim, which is mission creep worse than a defense appropriations bill. The new ret variable in the wall damage block is declared, assigned, and tangled into one line of semicolon soup that nobody, including you, can review. The RED PHONE and BLUE PHONE comments pile up in the header like campaign yard signs after the election.\n\nFix it: Split the hole carving code in index.html into named functions with real line breaks. Stop hand editing the title and read the version from one constant. Move the RED PHONE and BLUE PHONE history out of the head comment into a changelog file. Break the single file into modules before it hits ten thousand lines."
+    },
+    {
       "date": "2026-10-30T18:03:06Z",
       "repo": "smash-bender",
       "sha": "c25c7a9f3abfe4cbd8f5d1aaa168592afe5a5966",
@@ -1329,76 +1399,6 @@
       "sha": "939c9bf0c711ccaefba0fed5544f4d9a4d96a5b2",
       "message": "new categories",
       "heckle": "Two commit messages worth of work hidden behind the words new categories. The intern hand edited about 120 lines of index.html to rename Music and Visualizers into Pedals and Instruments and shuffled links around, then renamed nothing in script-v46.js but still rewrote every single line of baseDates because every date moved by one day. That is a 127 line diff to say yesterday became today, which is the same energy as a filibuster reading a phone book. The troll.js cache buster is a timestamp pasted by hand again. This is a website maintained by copy and paste.\n\nFix it: Generate the category lists in index.html from data instead of hand editing links. Stop renaming the script-v46.js baseDates line by line and store a real date offset. Automate the troll.js version query string. Move baseDates out of a file that gets renamed every sync."
-    },
-    {
-      "date": "2026-10-21T17:17:38Z",
-      "repo": "doctrine-duel-qx",
-      "sha": "c384fcbe7443db2dfeec64a74b068c8fed9da199",
-      "message": "Runner v2: several scheduled play times a day, keyed agents play under their own id, blue doctrine",
-      "heckle": "The intern copied doctrine-duel-qx-server-v1.js into a file named v2.js and bumped package.json, so version control is now being used as a filing cabinet. The agentIdFor function returns the doctrine slug as the agent id whenever AGENT_KEYS has it, which means anyone naming a doctrine blue plays as blue, no questions asked. AGENT_KEYS is parsed from an env var with a catch that silently swallows bad JSON and carries on with nothing, so a typo means keys quietly vanish. A 118 line package-lock lands with it. The index.html play time input accepts any text.\n\nFix it: Rename back to one server file and let git hold the versions in doctrine-duel-qx-backend. Fail loudly when AGENT_KEYS in doctrine-duel-qx-server-v2.js is bad JSON. Check that a doctrine really owns the agent key before it plays under that id. Validate the play times input in index.html as hours from 0 to 23."
-    },
-    {
-      "date": "2026-10-21T17:17:38Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "7da785108c3b0306536b4df9a78f25e9ab8046e2",
-      "message": "steward 2026-10-21 (#25)",
-      "heckle": "Another pull request, another merge, another deploy, all to overwrite one line of minified JSON in contrib/steward/2026-10-21.json. This one is a utility pole line down Palo Verde Avenue with four conductor runs, each a seven point sag curve typed out as raw coordinates. Nobody can review a single line of minified JSON, so the pull request process here is a rubber stamp with a gavel. The steward is also placing wires with heights hardcoded to the millimeter, and last time the detailer hid a pole in a building, so I expect a repeat. This is a bailout for a process that already failed.\n\nFix it: Pretty print contrib/steward/2026-10-21.json so a diff can be read. Generate the sag curves from a function instead of seven typed points. Add a check that the pole at 85634,-131134 does not sit inside a building before merging. Stop opening a pull request for each file."
-    },
-    {
-      "date": "2026-10-21T17:17:38Z",
-      "repo": "field-twin",
-      "sha": "b52061d1fb905347459a324a22eb56e998fe7b52",
-      "message": "Phone app sends Field Twin service requests through the phone, past the service's website-only address rule",
-      "heckle": "The service says only the website may call it, and the intern's answer was to route around the rule through a native bridge. The commit message admits it: past the website-only address rule. That rule exists as a security control, and now FieldTwinBridge.httpSend in FieldTwinBridge.kt opens a plain HttpURLConnection to whatever url JavaScript hands it, with whatever headers and body. Any script that runs in that webview gets a free proxy with no origin check. The fetch wrapper in index.html only filters by a prefix match on getApiBase, but the bridge itself has no such filter. The 150 second timeout in nativeSend is also a hostage situation for the user.\n\nFix it: Check the url against the API base inside httpSend in FieldTwinBridge.kt, not only in index.html. Allow only https and reject everything else. Cap the body size. Fix the server rule properly by allowing the app's origin on the service instead of dodging it. Cut the 150 second timeout in nativeSend to something humane."
-    },
-    {
-      "date": "2026-10-21T04:56:39Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "3d074f266b53ee14d214e1f25b676f5bbd0b6860",
-      "message": "detailer 2026-10-21 (#24)",
-      "heckle": "A whole pull request, a merge, and a deploy trigger, all to hide one pole in contrib/detailer/2026-10-21.json. One line of minified JSON with a steward_hide call and a reason string that sounds like a hostage note about a pole standing inside a skybridge. This is a filibuster to move one object. The signed blob at the end proves the intern can run a signature scheme and still cannot batch a single fix.\n\nFix it: Stop opening a separate PR for every one-call file. Fold hides into the same turn that placed the pole in the first place. Make the steward check for overlap before placing, so the detailer is not cleaning up after a mess that was avoidable."
-    },
-    {
-      "date": "2026-10-21T04:56:39Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "8457dbd1ac0569bf73b3b694dd3c7b2f52d979fb",
-      "message": "steward 2026-10-21 (#23)",
-      "heckle": "Another day, another one-line minified JSON wall in contrib/steward/2026-10-21.json, and nobody could read it without a debugger and a stiff drink. Seven-point conductor lines are hand typed down Palo Verde Avenue like the intern was paid per digit. The next commit in the same repo hides a pole from this very file, so the steward placed a pole inside a building and shipped it anyway. That is a campaign promise with no oversight committee.\n\nFix it: Validate poles against building footprints before the steward emits place_symbol in the contrib file. Pretty print the JSON so a human can review a diff. Generate the repeated conductor points from one spacing function instead of pasting them."
-    },
-    {
-      "date": "2026-10-21T04:56:39Z",
-      "repo": "field-twin",
-      "sha": "352e1df94845c27cf3b22c972faa98352209f7f7",
-      "message": "Android app lets Inventory keep its login inside the tab; show Inventory sign in failures",
-      "heckle": "The intern discovered that Android blocks third party cookies inside a WebView and fixed it by turning every switch on at once in MainActivity.kt onWebViewCreate. setAcceptThirdPartyCookies(webView, true) for every page this app ever loads is a blank check signed at the border, and the surrounding try with an empty catch means if any of it throws you will never hear about it. The new fieldtwin-session-fail handler in index.html shows a status string cut to 80 chars, which is the reason an error message ends mid word on a phone.\n\nFix it: Log the exception in the empty catch in MainActivity.kt instead of swallowing it. Limit third party cookies to the Inventory and Roads origins. Show the failure in a dialog that can be read in full, not an 80 character status. Remove databaseEnabled, which is deprecated."
-    },
-    {
-      "date": "2026-10-21T04:56:39Z",
-      "repo": "2026-10-20-orange-dialbeat",
-      "sha": "3157a6014830f633e8c8db7b26a29a3778863b6c",
-      "message": "Six drum and bass presets, Animal family, animal spinner toy",
-      "heckle": "Six drum and bass presets and an animal spinner toy, in one commit, in one index.html that now has the CSS, the markup, and the script all fused together like a filibuster that refuses to end. The #spin block is a slot machine with a #lever bolted under the rows, wedged in above the editor on a phone where space is already tight. Nobody asked for a spinner in a drum machine, and the whole thing grew by 115 lines in a single file with no way to review it in pieces.\n\nFix it: Split the spinner toy out of index.html into its own file or module. Move it below the editor or behind a button so it does not crowd the mobile layout. Split the presets into a separate data file. Commit presets and the toy separately next time."
-    },
-    {
-      "date": "2026-10-21T04:56:39Z",
-      "repo": "field-twin",
-      "sha": "1720528eecaf2ed421042e806c79bcaab5824b88",
-      "message": "Receipt reader finds the account login after the camera, with refresh and one retry",
-      "heckle": "Receipt reader, behold: apiAuthHeaders got torn out and replaced by a pile of timeouts and fallbacks, with withTimeout returning null after 4 seconds and a refreshSession gamble after 8. That is a shutdown negotiation, not auth. storedAccessToken in index.html reaches into localStorage and guesses the key as sb- plus a project ref split off SUPABASE_URL, which breaks the minute the library renames its storage format. The one retry on failure is a prayer, not a plan, and the camera waking up with half a login is a symptom you papered over.\n\nFix it: Use the supabase onAuthStateChange event instead of racing timeouts in accountToken. Stop reading the library storage key by hand in storedAccessToken. Show the user a clear signed out state when the retry fails. Add a test for the refresh path."
-    },
-    {
-      "date": "2026-10-21T04:56:39Z",
-      "repo": "mohavetech-website",
-      "sha": "7801fbfdd869bb51842a3da0fa878e34b8d1ebd9",
-      "message": "sync with vercel, sort new apps",
-      "heckle": "Sync with vercel, the commit message says, as if the sync were an act of nature and not the intern hand pasting links into index.html again. Look at script-v45.js: baseDates gets rewritten wholesale, and half of the dates went backwards, like access-terminal-admin sliding from 2026-10-05 to 2026-10-04 and campus-ebutuoy sliding a day. That is a government shutdown of the data. And field-twin-teal gets a link to a field-twin-teal-gold domain while the field-twin entry stays on field-twin-teal, so now the same app wears two names.\n\nFix it: Generate the app list and baseDates from the Vercel project list instead of hand pasting. Stop renaming script-vNN.js every sync and use the query string in index.html. Fix the dates that went backwards in baseDates. Dedupe the field-twin-teal entry."
-    },
-    {
-      "date": "2026-10-21T04:56:39Z",
-      "repo": "steward-repo",
-      "sha": "22065bd16eddfaa616b4549fdd19848b00b0e7ea",
-      "message": "Steward stitches water and sewer mains and buries fuel tanks at fuel stations",
-      "heckle": "One hundred and six added lines wedged into steward/agent.mjs as a single anonymous block, like a bailout rider stapled to a spending bill. The kindOf regex is a swamp of fuel|gas|drip|irrigation|orchard|septic|well|drop pipe|vent, so one unlucky part name containing the word well gets silently dropped. The isMain test uses a second regex with tap|header|branch, and every line dumps nested ternaries into one-liners that cannot be stepped through.\n\nFix it: Move the water and sewer stitching out of the bare block in agent.mjs into a named function. Replace the part-name regexes with an explicit type field in meta. Split the long one-liner helpers like mainsOn and P across multiple lines. Add a test for a part name containing well."
     }
   ]
 }
