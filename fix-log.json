@@ -191,6 +191,30 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "Still 404 and sudosilo/tower-builder is unchanged since 2026-10-18 with only vercel.json, so the developer must redeploy the game from the saved snapshot or the tower2 source."
+    },
+    {
+      "date": "2026-10-30",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "repo not found",
+      "pullRequest": null,
+      "note": "Still 404 and no sudosilo repo matches snapshot-engine, so the developer must say where the code lives."
+    },
+    {
+      "date": "2026-10-30",
+      "app": "topo-wars-server",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": "https://github.com/sudosilo/topo-wars-server/pull/1",
+      "note": "Pull request 1 adding /api/health is still open and unmerged since 2026-10-18, so the root and /health still return 404 until the developer merges it."
+    },
+    {
+      "date": "2026-10-30",
+      "app": "tower-builder-five",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Still 404 and sudosilo/tower-builder is unchanged since 2026-10-18, so the developer must redeploy the game from the saved snapshot."
     }
   ]
 }
