@@ -214,15 +214,46 @@
   "sudosilo/2026-10-22-orange-agent@v2026.10.22",
   "sudosilo/welcome-to-the-madness@v2026.10.25",
   "sudosilo/steward-repo@v2026.10.26",
-  "sudosilo/itchy-troll@v2026.10.26"
+  "sudosilo/itchy-troll@v2026.10.26",
+  "sudosilo/charley-douglass@v2026.10.26",
+  "sudosilo/mill-ionaire@v2026.10.26",
+  "sudosilo/mill-ionaire@v2026.10.25",
+  "sudosilo/mill-ionaire@v2026.10.23",
+  "sudosilo/mill-ionaire@v2026.10.21",
+  "sudosilo/mill-ionaire@v2026.10.11",
+  "sudosilo/testbed-notes@v2026.10.26",
+  "sudosilo/testbed-notes@v2026.10.25",
+  "sudosilo/testbed-notes@v2026.10.24",
+  "sudosilo/testbed-notes@v2026.10.22",
+  "sudosilo/2026-10-18-orange-testbed@v2026.10.28",
+  "sudosilo/2026-10-18-orange-testbed@v2026.10.27",
+  "sudosilo/2026-10-18-orange-testbed@v2026.10.26",
+  "sudosilo/2026-10-18-orange-testbed@v2026.10.25",
+  "sudosilo/2026-10-18-orange-testbed@v2026.10.24",
+  "sudosilo/bpm-finder@v2026.10.28",
+  "sudosilo/qsr-timeline-Orange@v2026.10.28",
+  "sudosilo/conveyor-sim@v2026.10.28",
+  "sudosilo/2026-10-23-orange-smash@v2026.10.29",
+  "sudosilo/2026-10-23-orange-smash@v2026.10.26",
+  "sudosilo/2026-10-23-orange-smash@v2026.10.25",
+  "sudosilo/2026-10-23-orange-smash@v2026.10.24",
+  "sudosilo/2026-10-23-orange-smash@v2026.10.23",
+  "sudosilo/pdf-yourself@v2026.10.29",
+  "sudosilo/smash-bender@v2026.10.29",
+  "sudosilo/smash-bender@v2026.10.27",
+  "sudosilo/blue-agent@v2026.10.29",
+  "sudosilo/blue-agent@v2026.10.28",
+  "sudosilo/blue-agent@v2026.10.27",
+  "sudosilo/blue-agent@v2026.10.26",
+  "sudosilo/blue-agent@v2026.10.25",
+  "sudosilo/groundcore@v2026.10.18"
  ],
  "settings": {
   "sudosilo/groundcore": {
-   "d": "Desert planting planner with row spacing, plant lookup, and a map sandbox for laying out rows.",
+   "d": "Desert planting planner with row spacing, plant lookup, and a map sandbox for laying out rows",
    "h": "https://groundcore-nine.vercel.app",
    "t": [
-    "gardening",
-    "leaflet",
+    "garden",
     "map",
     "tool",
     "vercel"
@@ -1537,6 +1568,116 @@
     "automation",
     "tool",
     "vercel"
+   ]
+  },
+  "sudosilo/charley-douglass": {
+   "d": "A phone laugh track box with keys, a looping crowd pattern, and shared rooms",
+   "h": "",
+   "t": [
+    "instrument",
+    "music",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/mill-ionaire": {
+   "d": "A letter shop tycoon built around a simulated knee mill that grows into a factory floor",
+   "h": "https://mill-ionaire.vercel.app",
+   "t": [
+    "game",
+    "simulator",
+    "tycoon",
+    "vercel"
+   ]
+  },
+  "sudosilo/testbed-notes": {
+   "d": "A shared notes board where agents playing the test bed leave messages for each other",
+   "h": "",
+   "t": [
+    "agents",
+    "backend",
+    "notes"
+   ]
+  },
+  "sudosilo/2026-10-18-orange-testbed": {
+   "d": "A shared city where AI agents take turns building, with a viewer and a web API",
+   "h": "https://2026-10-18-orange-testbed.vercel.app",
+   "t": [
+    "agents",
+    "backend",
+    "map",
+    "simulator",
+    "vercel"
+   ]
+  },
+  "sudosilo/bpm-finder": {
+   "d": "Hold a phone near a speaker and read the tempo of the music in beats per minute",
+   "h": "https://bpm-finder.vercel.app",
+   "t": [
+    "music",
+    "tempo",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/qsr-timeline-Orange": {
+   "d": "A timeline of quick service restaurant menus through the decades, with early menus and photos",
+   "h": "",
+   "t": [
+    "history",
+    "restaurant-tech",
+    "timeline",
+    "vercel"
+   ]
+  },
+  "sudosilo/conveyor-sim": {
+   "d": "A conveyor simulation started from a copy of the agent test bed",
+   "h": "https://conveyor-sim.vercel.app",
+   "t": [
+    "agents",
+    "backend",
+    "simulator",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-10-23-orange-smash": {
+   "d": "A song mashup tool that matches vocals to beats by tempo and drops them on the bar",
+   "h": "https://2026-10-23-orange-smash.vercel.app",
+   "t": [
+    "mashup",
+    "music",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/pdf-yourself": {
+   "d": "Open a PDF, tap a line of text, and change what it says without leaving your device",
+   "h": "https://pdf-yourself.vercel.app",
+   "t": [
+    "editor",
+    "pdf",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/smash-bender": {
+   "d": "A server that sings one song's words on another song's timing and notes",
+   "h": "",
+   "t": [
+    "backend",
+    "mashup",
+    "music",
+    "python"
+   ]
+  },
+  "sudosilo/blue-agent": {
+   "d": "The runner and dashboard that schedule AI agents to play the test bed",
+   "h": "",
+   "t": [
+    "agents",
+    "backend",
+    "dashboard",
+    "railway"
    ]
   }
  }
