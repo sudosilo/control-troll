@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-30T18:03:06Z",
+      "repo": "smash-bender",
+      "sha": "c25c7a9f3abfe4cbd8f5d1aaa168592afe5a5966",
+      "message": "Comments open in a pop-up panel instead of filling each pad",
+      "heckle": "You made a pop-up sheet for comments and slapped it on server/static/index.html with .cmt using all: unset, which strips every default the browser gives a button. Then you pinned .sheet to the bottom with max-height: 40vh on the paragraph, so on a phone with the keyboard up your comment panel is a keyhole. This is a filibuster in CSS form: lots of talking, nothing visible. Also, you keep piling styles into one giant inline style block like the intern who never heard of a second file.\n\nFix it: Move the inline style block in server/static/index.html into its own stylesheet. Stop using all: unset on .cmt and .sheet .close and give them real focus and hit areas. Test .sheet on a small screen with the keyboard open. Close the sheet on Escape and on a tap outside it."
+    },
+    {
+      "date": "2026-10-30T18:03:06Z",
+      "repo": "smash-bender",
+      "sha": "1c9d2c5e7f1e12198ec73fabec162599e848a625",
+      "message": "Sample log: stage three tab, Send to Auto-Tune, download button on every sample",
+      "heckle": "Stage three is a third copy of the tab you made an hour ago, wired by hand in server/static/index.html with another hardcoded button id. The tab row is a button with role tab and no arrow key handling, so the ARIA you copied is a campaign promise: sounds official, delivers nothing. Your stage names are now baked into three separate strings. Cereal box engineering, with a download link tacked on as a closing argument.\n\nFix it: Build the tabs in server/static/index.html from a stage array instead of pasting tab3. Add arrow key handling to the tablist or drop the tab roles. Keep stage names in one place shared with the server."
+    },
+    {
+      "date": "2026-10-30T18:03:06Z",
+      "repo": "smash-bender",
+      "sha": "67c9265ad29945ac4a092ea52b0c9bb3b7764c22",
+      "message": "Processing API: Auto-Tune tool, stage three, stage limit",
+      "heckle": "In server/app.py send_stage2 you added a stage limit by reading the parent record and bailing at stage 3, and the endpoint is still called stage2. It parses int(body[\"run\"]) twice with no guard, so a junk run value throws a 500 instead of the 400 you wrote for exactly this. CORS is wide open with allow_origins star on an endpoint that queues hour long jobs, so anyone on earth can burn your queue. Bailout level planning.\n\nFix it: Wrap the int conversion of run in send_stage2 in server/app.py and return a 400. Lock allow_origins to your own page. Rate limit or require a token on /api/stage2. Rename the endpoint or stop pretending it is stage two."
+    },
+    {
+      "date": "2026-10-30T18:03:06Z",
+      "repo": "smash-bender",
+      "sha": "deb7c9eeadced386ec5a05d1fbfa93c6f0e416f0",
+      "message": "Auto-Tune tool (WORLD) and stage three: send any stage one or two sample to ElevenLabs or Auto-Tune",
+      "heckle": "server/autotune.py reads sys.argv by position like it is 1994, with the key, scale and speed as bare strings and no usage check, so a missing argument is a raw IndexError. Your key parsing falls back to root 0 when the name is unknown, so a typo in the key silently tunes everything to C. The stage2.py find_parent now does string splits on pipe characters to guess what kind of record it is, which is a government shutdown waiting for one experiment name with a pipe in it.\n\nFix it: Use argparse in server/autotune.py and reject an unknown key. Stop encoding record type in a pipe delimited string in find_parent in server/stage2.py and store a real field. Close the file handles in find_parent with a with block."
+    },
+    {
+      "date": "2026-10-30T18:03:06Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "d929322a99fa0c8b30486b90688bb3f6939e10d0",
+      "message": "steward 2026-10-30T171312 (#59)",
+      "heckle": "Another steward turn merged as one minified line in contrib/steward, five crosswalk hatches that each say in the meta that the steward completes the crosswalk. Completes it how, exactly, since the previous turns already drew crosswalks on the same streets? Nobody reviewed this PR, GitHub cannot even render a single line of JSON, and the whole process is a bailout machine printing coordinates at itself. Three of the five rectangles are near mirror copies with only the sign flipped.\n\nFix it: Pretty print the contrib json so diffs are reviewable. Have the steward check for existing crosswalk hatches before placing more. Validate duplicate geometry in the merge step instead of trusting the turn."
+    },
+    {
+      "date": "2026-10-30T18:03:06Z",
+      "repo": "smash-bender",
+      "sha": "63fcece6f9183ee63787dd1b219ad75682ba44ff",
+      "message": "Experiment runs keep each sample's placed voice and music for stage two",
+      "heckle": "In server/experiment.py you shell out to cp to copy a wav you could copy with shutil, and you do it with check=True so one missing file kills the entire run. Then you write absolute paths for voice, instrument, acapella and reference into every log record, so the jsonl is welded to this one server's folder layout. Every sample now drags four paths around like campaign donors. The inst copy also happens once per stamp and never gets cleaned up, so disk fills quietly.\n\nFix it: Replace the cp subprocess in server/experiment.py with shutil.copyfile. Store paths relative to the data folder. Add cleanup for kept voice and inst files when an experiment is deleted."
+    },
+    {
+      "date": "2026-10-30T18:03:06Z",
+      "repo": "smash-bender",
+      "sha": "ab8802c768211bd2d0ae470f1e8a1525d2813e65",
+      "message": "Sample log: stage one and stage two tabs, Send to ElevenLabs on every sample",
+      "heckle": "You stuffed another 74 lines into server/static/index.html, which is now a single file doing tabs, trends, pads, ratings, sending and playback, held together with template strings. The .send button uses all: unset again and the disabled style only changes color, so on a bright phone screen a dead button looks alive. And you hardcoded the vendor into the button text, so every tool you add means editing markup like it is a hostage negotiation.\n\nFix it: Make the send button label come from the tool list returned by the server in index.html. Give the disabled .send a visible state beyond color. Split the script out of index.html. Escape every value you drop into a template string."
+    },
+    {
+      "date": "2026-10-30T18:03:06Z",
+      "repo": "smash-bender",
+      "sha": "e61acf1b810c72392659a77f5cc096fbbe463f5d",
+      "message": "Stage two: send any sample to ElevenLabs for four refined versions, logged like stage one",
+      "heckle": "stage2.py opens jsonl files with bare open() in a loop and never closes them, and find_parent rescans every experiment file for each request, which is a full filesystem crawl to find one row. Worse, it calls an outside API with a key from the environment and the post endpoint in server/app.py has no auth at all and wildcard CORS, so any stranger can spend your credits. This is a bailout with a hole in the treasury.\n\nFix it: Add an auth check to /api/stage2 in server/app.py. Close files in stage2.find_parent with context managers. Index runs by key instead of rescanning every file per request. Cap queued jobs per hour."
+    },
+    {
+      "date": "2026-10-30T18:03:06Z",
+      "repo": "mohavetech-website",
+      "sha": "f07aed7846f6cd4a81279440f896a3dc7a646938",
+      "message": "Itch stripe: purple stripes on itch.io apps in every view, itch badge on main page",
+      "heckle": "You edited about thirty html files by pasting the same script tag into each one like a human photocopier, and itch.js fetches a ledger straight from a raw file URL on every page load with a hardcoded REPO_TO_HUB map that already has a dozen hand typed guesses. troll.js now has an itchmark block that appends a button with a style string and a setTimeout retry at 2500 ms, which is the sound of someone who does not know when the data arrives. Purple on black, in 11 pixel monospace, on a phone. Good luck reading it.\n\nFix it: Load itch.js once from a shared include instead of editing every page. Cache the ledger fetch and handle a failed fetch in itch.js. Replace the setTimeout retry in troll.js with a real promise chain. Make the badge text larger than eleven pixels."
+    },
+    {
+      "date": "2026-10-30T18:03:06Z",
+      "repo": "2026-10-30-orange-scores",
+      "sha": "a4a5830e4e0adb1449a86997bf203982f2809429",
+      "message": "Load URLHAUS_KEY",
+      "heckle": "A commit titled Load URLHAUS_KEY with zero files changed, zero additions, zero deletions. You pushed nothing and named it like you accomplished something, which is a campaign promise in git form. If the point was to make the host reload an environment variable, say so, because a reader of this history sees an empty envelope and a title that sounds like secrets handling.\n\nFix it: Do not push empty commits to force a variable reload. Use the host's redeploy button instead. Write a message that says why when an empty commit is truly needed."
+    },
+    {
       "date": "2026-10-30T10:09:42Z",
       "repo": "smash-bender",
       "sha": "20560142e6da7bf811a864cdb2e72e6206d2b849",
@@ -1329,76 +1399,6 @@
       "sha": "22065bd16eddfaa616b4549fdd19848b00b0e7ea",
       "message": "Steward stitches water and sewer mains and buries fuel tanks at fuel stations",
       "heckle": "One hundred and six added lines wedged into steward/agent.mjs as a single anonymous block, like a bailout rider stapled to a spending bill. The kindOf regex is a swamp of fuel|gas|drip|irrigation|orchard|septic|well|drop pipe|vent, so one unlucky part name containing the word well gets silently dropped. The isMain test uses a second regex with tap|header|branch, and every line dumps nested ternaries into one-liners that cannot be stepped through.\n\nFix it: Move the water and sewer stitching out of the bare block in agent.mjs into a named function. Replace the part-name regexes with an explicit type field in meta. Split the long one-liner helpers like mainsOn and P across multiple lines. Add a test for a part name containing well."
-    },
-    {
-      "date": "2026-10-20T23:56:33Z",
-      "repo": "field-twin",
-      "sha": "f3812a64b5bd70c8db674e6e02ed7b97f9aa4ba9",
-      "message": "GPS calibration from odometer readings: running GPS counter, correction per stretch, typo guard, estimates",
-      "heckle": "Behold, a calibration system, from someone who needs a calibration system for their own judgment. In FieldTwinState.addGpsMeters you stuff a gpsLog JSON array of up to 20000 points into SharedPreferences and rewrite the whole string on every GPS fix, every 15 seconds, which is a battery and storage bonfire built by an intern who heard the word efficient once. gpsAt and gpsNow in index.html swallow every exception and return -1, so a broken bridge looks exactly like no data, like a government that reports zero problems because it fired the inspectors. The magic numbers in calSegments (0.5, 400, 0.3, ratio 0.5 to 3) are guesses wearing a lab coat.\n\nFix it: Store the gps log in a file or small database, not one giant preference string. Append in addGpsMeters instead of reparsing and reserializing the whole array each fix. Log the failure in the gpsAt catch in index.html instead of returning a silent -1. Name the thresholds in calSegments as constants with a comment saying why."
-    },
-    {
-      "date": "2026-10-20T23:56:33Z",
-      "repo": "field-twin",
-      "sha": "9fd176b0df6451b60a93f9c86d8cd4efe3ccf421",
-      "message": "Trigger production build on field-twin-teal",
-      "heckle": "An empty commit. Zero files changed. The intern pushed nothing, to make a computer do something, because the real deploy pipeline is apparently a Ouija board. That is the legislative equivalent of a ceremonial vote on a bill that does not exist. If the build needs a kick every time, your Vercel hookup is broken and you are covering it with a ritual instead of fixing it. Also the message says production, which is brave for a commit with no content and no test.\n\nFix it: Find out why the push did not trigger a build and fix the Vercel git connection for field-twin-teal. Add a deploy hook or a real change instead of empty commits. Put the build trigger steps in the README so you stop rediscovering them."
-    },
-    {
-      "date": "2026-10-20T23:56:33Z",
-      "repo": "field-twin",
-      "sha": "587e6dc5a690cd1c8150eabdf0e6971c20b6af44",
-      "message": "One sign in across Field Twin Teal, Violet and Glaucous",
-      "heckle": "Single sign on, built by hand, by a person who clearly skipped the chapter on why you do not do that. The Teal app in index.html builds a page link carrying ft_at and ft_rt, which are an access token and a refresh token, in the URL after the hash. Refresh tokens in a link end up in browser history, screenshots, and anywhere the intern pastes the address while asking for help. And the new panel in the account screen asks for the password a second time so it can sign you in again, which is a loop of paperwork worthy of a congressional subcommittee. The twin-pick checkboxes also cram a third form into a menu that was already cramped on a phone.\n\nFix it: Stop sending the refresh token in the URL hash in index.html, and use postMessage or a one time code instead. Clear the password field after use. Move the extra panel out of the account menu so the small screen stops choking."
-    },
-    {
-      "date": "2026-10-20T23:56:33Z",
-      "repo": "field-twin",
-      "sha": "87710887da388c08525118f8db7c78758cc3adc5",
-      "message": "Live GPS dot in the app, fix every 15 seconds even when parked, ask out of battery saving",
-      "heckle": "Wow, a GPS fix every 15 seconds with the distance filter set to zero in FieldTwinTrackService, even while the truck is parked. That is a phone battery assassination plan dressed up as a feature. Then askBatteryOnce in FieldTwinBridge yanks the user into the battery exemption screen the instant tracking starts, before anyone has been told why, which is how you get one star reviews and a revoked permission. The REQUEST_IGNORE_BATTERY_OPTIMIZATIONS permission in patch-android.cjs is the kind of thing app stores reject, but sure, ship it like a campaign promise. The catch blocks in askBatteryOnce eat every error without a word.\n\nFix it: Raise the distance filter back above zero in FieldTwinTrackService and slow the fix rate when parked. Show a plain explanation before askBatteryOnce fires. Log the exception in askBatteryOnce instead of an empty catch. Check that the battery permission is allowed for your distribution channel."
-    },
-    {
-      "date": "2026-10-20T23:56:33Z",
-      "repo": "field-twin",
-      "sha": "0ee3b2ee651a629753e07d50be009a61276856c0",
-      "message": "Android app sits below the camera and status bar",
-      "heckle": "The app was drawing under the camera cutout, and the fix took a whole commit to hide that from users. The keepClearOfStatusBar function in MainActivity.kt hardcodes Color.WHITE for the status bar, the navigation bar, and the root background, so anyone on a dark theme gets a white slab like a bright light in a dark cellar. The isAppearanceLightStatusBars flags are forced on with no check of the system theme. You also return WindowInsetsCompat.CONSUMED, so no child view will ever see the insets, and the keyboard will cover the bottom of every form like a rolled over budget.\n\nFix it: In MainActivity.kt, read the system dark mode and pick colors to match instead of hardcoding white. Return the insets unconsumed or add the ime inset to the padding so the keyboard does not cover inputs. Test it on a phone with a cutout and with gesture navigation."
-    },
-    {
-      "date": "2026-10-20T23:56:33Z",
-      "repo": "field-twin",
-      "sha": "672f6eba8f49c16de066a9ca55be8856e68c730e",
-      "message": "Violet and Glaucous buttons open in place so they work inside the Android app",
-      "heckle": "Two lines changed and both are a gamble. The openCqBtn handler in index.html now sets window.location.href to CQ_SITE, which navigates the entire app away to a website with no back button logic and no warning, so the Android user gets teleported out of the app like a defunct committee. The openVioletBtn handler clicks menuOverlay and tabViolet by element id with no null check on tabViolet, so a missing tab throws on click. Two buttons doing opposite things in the same menu is the sort of consistency you get from a government shutdown.\n\nFix it: Make openCqBtn behave like the Violet one with an in app tab, or an iframe, not a full page navigation. Add a null check for tabViolet in the openVioletBtn handler. Keep window.open as the fallback for plain browsers."
-    },
-    {
-      "date": "2026-10-20T23:56:33Z",
-      "repo": "chassisquiver",
-      "sha": "39e58b65012d5c6d147c28afe55ebe53009da5d2",
-      "message": "One sign in across Field Twin Teal, Violet and Glaucous",
-      "heckle": "The receiving end of the token in the URL scheme, and it is every bit as sloppy as the sending end. twinTakeHandoff in index.html reads ft_at and ft_rt out of the address hash and passes them to setSession, trusting any link that shows up with those parameters. Anyone who can get the user to click a crafted link signs them into the attacker's account, which is session fixation with extra steps. The final catch block is empty, so every failure disappears silently, and the toast prints raw error text to the user. The function also skips the check when the email is missing, so the lack of an email is treated as a free pass.\n\nFix it: In twinTakeHandoff, only accept a handoff from a verified origin or a signed one time code, not bare tokens in the hash. Require ft_email and reject the handoff when it is missing. Log errors in the empty catch and show a friendly message instead of raw error text."
-    },
-    {
-      "date": "2026-10-20T23:56:33Z",
-      "repo": "field-twin-violet-api",
-      "sha": "9d1fdd57ec500fc66fa244ce3bcba83467d64c42",
-      "message": "One sign in across Field Twin Teal, Violet and Glaucous",
-      "heckle": "At least this half checks an origin, so it is the only part of this three repo stunt that looks like a grown up wrote it. Barely. The TWIN_PARENTS allow list in index.html includes tauri://localhost and plain http://tauri.localhost, which is an unencrypted origin approved to hand over a session. The reply path posts the raw error message back to the parent via fieldtwin-session-fail, which leaks internals. And the allow list is a hardcoded array of four strings copy pasted, because why design a config when you can just vote yes on everything.\n\nFix it: Remove the plain http tauri.localhost entry from TWIN_PARENTS in index.html. Send a generic error code in fieldtwin-session-fail instead of err.message. Validate that d.at and d.rt are strings before calling setSession. Add a comment about why tauri://localhost is needed."
-    },
-    {
-      "date": "2026-10-20T23:56:33Z",
-      "repo": "field-twin-violet-api",
-      "sha": "2f169f5f095c6664cfa11de0d09ac9e56f9f4099",
-      "message": "Trigger production build on field-twin-violet",
-      "heckle": "Another empty commit, because the intern still has not figured out that a deploy should come from a change and not from poking the repo with a stick. Zero files, zero diff, one lonely message pretending to be work. Two repos, two empty commits, same day: it is a filibuster against your own pipeline. This is a pattern now, and the pattern is that your Vercel setup is broken and you are too lazy to look.\n\nFix it: Check the Vercel project for field-twin-violet and confirm it is linked to the repo and the right branch. Stop pushing empty commits and use a deploy hook if you must force one. Write the actual cause down in the README."
-    },
-    {
-      "date": "2026-10-20T23:56:33Z",
-      "repo": "2026-10-20-orange-dialbeat",
-      "sha": "fc8bfe4b003c047ca33ee87c210c886cb0a53199",
-      "message": "Free audio nodes after each hit, lighter redraws, offline Bounce to WAV",
-      "heckle": "A bounce button crammed into the toolbar next to Play and Rec in index.html, in a header that already looks like a cockpit designed by committee, so on a phone it will wrap into a mess. The whole file is minified-looking one liners, such as the initAudio function and the globals line with OFF, recSrc, recZ, ac, master, noise, conv, recNode and recording all declared in one breath like a bill with forty riders attached. Global mutable state for offline rendering means a bounce during a recording is a coin flip. The bounce length select has three options and no cancel button, so a 60 second render locks the user in.\n\nFix it: Break the globals line in index.html into separate lines and group the audio state into one object. Block Bounce while recording is true. Add a cancel and a progress indicator to the bounce. Check the toolbar wraps cleanly on a narrow phone."
     }
   ]
 }
