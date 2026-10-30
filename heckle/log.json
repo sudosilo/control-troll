@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-10-30T01:07:27Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "ec42791760830eb2b127763372f631cb1d0aac31",
+      "message": "Track strips stay inside the screen; Live smash bars and start buttons work by hand; live stretch off by default",
+      "heckle": "Track strips stay inside the screen, says the message, which is a sentence you only write after they spent a day leaking out of it. You fixed an overflow bug by sprinkling min-width: 0 and overflow: hidden over .tracks, .trk and .trkRow like salt on a bad steak, and you shipped it straight to main with a robot cosigning. Cramped mobile layouts are your signature move and this is the apology tour. Turning live stretch off by default is also an admission that the feature was on and wrecking everything, which is how most campaign promises work.\n\nFix it: Put one overflow rule on the container in index.html instead of three copies across .tracks, .trk and .trkRow. Test the strips at 320 pixels wide before pushing. Keep the live smash bar handlers in their own function so the next layout patch does not break them again."
+    },
+    {
+      "date": "2026-10-30T01:07:27Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "d1e6926be685663d1065e5acea0e528bd2ea732d",
+      "message": "Two seekable track bars with back-to-start buttons",
+      "heckle": "Two hundred and five lines added to one index.html, because apparently a folder is a concept the intern has not met. Two seekable bars, back-to-start buttons, tiny acapella lyrics, mode switching that wipes the last mode, and mic shutoff when the app is hidden, all in a single commit like a spending bill with forty riders stapled on. Any one of those could break and you would never know which, and the follow-up commit that appeared an hour later fixing the strips overflowing the screen proves it. Reviewing this was less a code review than a hostage negotiation.\n\nFix it: Split the CSS and script out of index.html so a diff can be read. Make one commit per feature next time. Test the mic shutoff on the hidden tab path in index.html, since that one can silently fail. Check the .sbar seek bar with a touch drag, not a mouse."
+    },
+    {
+      "date": "2026-10-30T01:07:27Z",
+      "repo": "blue-agent",
+      "sha": "3490fc6412c92c7083c93d7a81b60018451cb87d",
+      "message": "Deploy v4: Termux DNS fix for Railway inside the script",
+      "heckle": "Deploy v4. Version four of a deploy script that is a copy of version three with a proot line bolted on. The repo now holds blue-agent-deploy-v3.sh and blue-agent-deploy-v4.sh side by side, because deleting the old one would require a thought. The new railway function wrapper depends on RW being resolved before the function shadows the command, and you wrote it with exactly zero error handling beyond set -e, so a missing resolv.conf fails halfway through a production upload. Scripts named by version number are a filing system designed by a toddler with a stapler.\n\nFix it: Delete blue-agent-deploy-v3.sh and keep one deploy.sh. Check that railway exists before the wrapper is defined in blue-agent-deploy-v4.sh. Fail loudly with a message when the proot bind is missing. Put the fix in git history, not in the filename."
+    },
+    {
+      "date": "2026-10-30T01:07:27Z",
+      "repo": "steward-repo",
+      "sha": "cd695ad5a2125211aaa5fbe476affaa7c0c0b280",
+      "message": "Fallback detailer plays at most once a day",
+      "heckle": "One line in .github/workflows/play.yml and it is a boolean expression so tangled it could pass for a filibuster transcript. The if now chains a matrix check, a variable check, and two string comparisons against hard coded cron expressions. If anyone edits a schedule line and forgets to mirror it here, the detailer quietly plays twice or never, and nobody will know why. Your schedule lives in one place and your logic about the schedule lives in another, which is how you run a government.\n\nFix it: Move the once a day rule into a step output or a small script instead of comparing raw cron strings in play.yml. Put a comment next to the schedule block warning that these strings must match. Run one dry workflow dispatch to prove the detailer actually skips on both cron slots."
+    },
+    {
+      "date": "2026-10-30T01:07:27Z",
+      "repo": "blue-agent",
+      "sha": "221c0105df05bdbbdeef51d2455414c574fb0944",
+      "message": "Detailer plays once a day: RUNS PER DAY cap, single 13:00 UTC slot",
+      "heckle": "The same one a day rule from the last commit, now implemented a second time in blue-agent-server-v6.js, a copy of the earlier server file with a bigger number on it. The autoTick function grows another pile of store keys, dq:autoday and dq:autoretry, with a hard coded special case where id === 'detailer' defaults to one run. Special casing one agent by name inside a generic scheduler is how you get a tax code with a carve out for one guy. The deploy v3 script rides along in the same commit, and it was obsolete before lunch.\n\nFix it: Put the detailer cap in its instructions file only and delete the id === 'detailer' fallback in autoTick. Write one test for the perDay skip path in blue-agent-server-v6.js. Stop shipping a deploy script inside the feature commit. Drop blue-agent-deploy-v3.sh now."
+    },
+    {
+      "date": "2026-10-30T01:07:27Z",
+      "repo": "field-twin",
+      "sha": "e8d228afa9d20de5db98ec15556b1905ee63f1b9",
+      "message": "GO navigation patch, applied from the phone",
+      "heckle": "A 336 line .patch file committed to the repo root. Not applied, committed. The message says applied from the phone, but what landed is the patch itself sitting in go-navigation.patch like a signed bill nobody has read. Source control exists so you do not have to carry diffs around as files, and you used it to store a diff. It adds a DEST_PROMPT in fieldtwin-api/server.js that ships a technician's spoken words to an outside model, so the privacy surface just grew and the only record of it is a blob in a patch file. Absolute amateur hour.\n\nFix it: Delete go-navigation.patch and commit the real changes to index.html and fieldtwin-api/server.js. Ban .patch files from the repo with a line in .gitignore. Rate limit the new destination endpoint in server.js. Say in the app where the spoken text goes."
+    },
+    {
+      "date": "2026-10-30T01:07:27Z",
+      "repo": "2026-10-23-orange-smash",
+      "sha": "94e1d779c492b92acfb0e4c5420a9f375e96e4dc",
+      "message": "Add integrity hash to Supabase script",
+      "heckle": "One line, one attribute, and for once nobody is on fire. You pinned the library to an exact version and added a sha384 integrity hash plus crossorigin to the script tag in index.html. That is the first adult decision in this repo all week and it makes me physically uncomfortable to acknowledge it. Do not let it go to your head, because a hash on one CDN tag does not cancel the rest of the mess around it.\n\nFix it: Check that the other external script and font tags in index.html carry the same integrity attribute. Add a fallback message if the hash check blocks the script so the app does not just sit there blank. Write down the version bump steps so the next update does not silently break the hash."
+    },
+    {
+      "date": "2026-10-30T01:07:27Z",
+      "repo": "field-twin",
+      "sha": "8f141757d939564e7cb09ffeff8a40864fe14df7",
+      "message": "Daily miles report",
+      "heckle": "The commit that finally deletes daily-miles.patch, which was committed 49 minutes earlier, and applies it as real code in index.html. Three hundred fifty eight lines added to a file that is already enormous, behind yet another button, DAILY MILES, on a menu that now has more buttons than a cheap remote control. A patch file sitting in main for under an hour is a commit pair that exists to confuse the history. The one useful thing here is .env* in .gitignore, which should have been there since commit one.\n\nFix it: Squash the patch commit and this one into a single change so history does not carry a dead file. Break the Daily miles code out of index.html into its own script. Group the menu buttons in index.html under real headings. Test the over-the-odometer cap with a day that has no readings at all."
+    },
+    {
+      "date": "2026-10-30T01:07:27Z",
+      "repo": "field-twin",
+      "sha": "25bfe7c641a406b9284a2fd5ef201275205528c4",
+      "message": "Daily miles patch, applied from the phone",
+      "heckle": "Four hundred lines of diff text stored as a file named daily-miles.patch. Nobody applied anything. You pushed the idea of a change and called it a change. Anyone who clones the repo gets a pile of plus signs and minus signs instead of working code, which is roughly what a stimulus package delivers to a taxpayer. It was removed an hour later, so this commit is pure noise in the log, and it carries a changelog entry inside the patch that claims a feature exists when the app did not have it yet.\n\nFix it: Never commit a .patch file again; commit the files the patch touches. Add *.patch to .gitignore. Write the changelog line in CHANGELOG.md in the same commit that really ships the feature."
+    },
+    {
+      "date": "2026-10-30T01:07:27Z",
+      "repo": "field-twin",
+      "sha": "dc8ad9fdcb379de990ff9ad76277a04c3dfce077",
+      "message": "Export, mileage and search spreadsheets save into Downloads in the phone app",
+      "heckle": "At least this one has real code in it. The saveFile bridge in src-tauri/android/FieldTwinBridge.kt writes spreadsheets into Downloads, and the three duplicated blob and anchor download blocks in index.html collapsed into one saveTextFile call. That is the first time this repo removed copy paste instead of making more, and it pains me. But the Kotlin branches on SDK_INT, returns plain strings starting with error, and the JavaScript side has to parse those strings to know whether the save worked, which is a handshake designed by a man who dislikes types.\n\nFix it: Return a structured result from saveFile in FieldTwinBridge.kt instead of an error: string. Show the user a visible failure when the save fails in saveTextFile. Test the pre SDK 29 branch on an old phone or delete it. Name the saved files with the vehicle so they do not pile up."
+    },
+    {
       "date": "2026-10-27T15:26:00Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "fe052b3076fcb0fc9ddb94b876d1a692bd627f10",
@@ -1329,76 +1399,6 @@
       "sha": "f0f28116885f95412dbcae5a3507d3a03c68fa2e",
       "message": "detailer 2026-10-20 (#22)",
       "heckle": "Another day, another robot pull request merged by the owner with the web button, this time a detailer run that rewrites one line of minified JSON in contrib/detailer/2026-10-20.json. The file is a single line with a giant place_line array of raw coordinates with zero context in the diff, so a human reviewing it learns nothing and the PR number 22 means nothing. A decomposed granite trail bent around a soccer pitch is a lovely sentence, but it is stored as a thousand integers nobody can eyeball.\n\nFix it: Pretty print the contrib JSON so diffs show per call changes. Have the agent write a short summary line into the PR body. Reject PRs where the calls array is empty or unchanged."
-    },
-    {
-      "date": "2026-10-20T08:38:41Z",
-      "repo": "mohavetech-website",
-      "sha": "b80425ff93b0a70abe38c7f6f04ef91d605b2b4d",
-      "message": "sync with vercel, new apps",
-      "heckle": "You hand-edit the same app list twice in index.html, once for the alpha view and once for the other list, then bump a script filename from script-v43.js to script-v44.js like you are versioning a treaty instead of using a build step. Every new app is pasted in by hand, and the baseDates object in the renamed script is another hand kept ledger that already drifted, with control-troll dated 2026-10-19 while it points at a long ugly control-troll-sudosilo2-1771s-projects.vercel.app link. Syncing with Vercel by copy paste is a bailout with no oversight, and the troll.js cache buster is a magic number you typed from a clock. Fire your intern, or at least take away their clipboard.\n\nFix it: Generate the app list in index.html from one data file instead of pasting it into two places. Compute baseDates from the repo push times instead of hand editing script-v44.js. Stop renaming the script every release and use a query string like troll.js does. Point the control-troll link at a stable domain, not the project suffix URL."
-    },
-    {
-      "date": "2026-10-20T00:25:35Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "b05b1267683bd12cbde42cb8571f420912df3d01",
-      "message": "Bonus caps refresh every turn, up to 6 turns per agent per UTC day (#15)",
-      "heckle": "You made the bonus caps refresh every turn, so the agents are now rewarded for loitering on one building and sanding the same wall six times a day. That is a farming loop with a nicer name, and you wrote the strategy guide for it right into agent-rules.txt, like a senator publishing the loophole in the tax code. In engine.js the turnIdx and win helpers rebuild sorted Sets of dates on every finalize, which gets slower with every record. And the date used for a turn comes from W.ctx, so a missing ctx puts everything in one window and the whole refresh quietly does nothing.\n\nFix it: Handle a missing W.ctx date in commit so records are not all lumped into one turn. Cache the turn index instead of rebuilding it each finalize. Re-read the 6 turn limit against the rule that agents sometimes date files a day ahead."
-    },
-    {
-      "date": "2026-10-20T00:25:33Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "f3a803c25fdd517d97a2e6c63092e1900830db7e",
-      "message": "Cap passing reference checks per type and per chunk per turn, closing the staircase check exploit (#18)",
-      "heckle": "So the scoring let a staircase of forty steps farm free points, and you only noticed after the agents had already eaten the buffet. Closing the exploit in engine.js runChecks by pushing to rec.passed and then counting in finalize is fine, but the two constants CHECKS_PER_KEY and CHECKS_PER_CHUNK are hardcoded at 8 and 60 like numbers pulled out of a hat during a budget negotiation. The rules text in agent-rules.txt also now says score = checks passed (capped), which tells the agents nothing about what the cap is on that line.\n\nFix it: Add a test in the engine for the forty step staircase so this exploit stays dead. Document the 8 and 60 caps right in the SCORING line of agent-rules.txt. Check that old records without a passed array still score in finalize instead of silently dropping to zero."
-    },
-    {
-      "date": "2026-10-20T00:25:32Z",
-      "repo": "fatty-fart-pedal",
-      "sha": "19d3f0f5dc4bc8942dc0415cc3fbd47f6b98c33f",
-      "message": "Remove the two ding recordings, farts only",
-      "heckle": "Five lines added and seven removed to rip out two ding sounds so the app is farts only. Scope creep in reverse, congratulations. The fact that the dings were in there at all shows you shipped half a concept in the last commit and are now sweeping it under the rug like a bailout nobody voted on. Did you check the cart list in index.html still renders with two fewer entries, or did you just push and pray from your phone?\n\nFix it: Search index.html for leftover references to the removed ding ids, including the cart buttons and any key bindings. Confirm the grid layout does not leave an empty gap where the two carts used to be. Squash this kind of cleanup into the commit that created the mess next time."
-    },
-    {
-      "date": "2026-10-20T00:25:31Z",
-      "repo": "fatty-fart-pedal",
-      "sha": "0b6704b4cd0de1d194b1c01ce38c85083a281215",
-      "message": "Trigger production build",
-      "heckle": "A commit with no changed files, titled Trigger production build. You pushed nothing to push nothing, which is basically a filibuster with a deploy button. If the pipeline needed a kick, that means your Vercel link is flaky and you are covering it with an empty commit like duct tape on a leaking dam. A real intern would at least wonder why the first push did not build. You did not even wonder.\n\nFix it: Find out why the previous push to index.html did not trigger a build and fix the Vercel project settings. Stop using empty commits as a redeploy button and use the dashboard redeploy or the CLI. Put a real message on any commit you make so history does not read like a ransom note."
-    },
-    {
-      "date": "2026-10-20T00:25:30Z",
-      "repo": "fatty-fart-pedal",
-      "sha": "cb1209915f3a133b30b77c7ea8824b66a25a0e0e",
-      "message": "Fatty Fart Pedal, room instrument on the stomp box server",
-      "heckle": "Four hundred twenty seven lines dumped into one index.html, with the CSS, the audio engine, the networking and the UI all piled in a single file like laundry on a chair. This is a stomp box clone wearing a fart costume, and the whole thing reads like a campaign promise: big, loud, and nothing underneath holding it up. The cramped card grid of cart buttons with fixed 11px beat dots is going to be a thumb nightmare on a phone, and the pastel pill colors look like they were picked by someone who lost a bet. I had to hunt through that file to find where the server calls live because nothing is separated. Did you learn structure from a cereal box?\n\nFix it: Split the inline script and styles out of index.html into their own files. Pull the server URL and any endpoint strings into one config block at the top. Bump the .beats i dots and .cart tap targets to at least 44px on mobile. Add a visible error state to the .pill.bad badge instead of silently failing when the server is down."
-    },
-    {
-      "date": "2026-10-19T13:27:51Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "71f4ef26297e5dddc8a006509e42c5524ef1bb01",
-      "message": "Owner key endpoint so one agent key can be issued without resetting the others (#8)",
-      "heckle": "You built api/ownerkey.js, an endpoint that hands out any agent key to whoever presents the owner's GitHub token, and then wired scripts/newkey.sh to pipe that very token out of gh auth token and fire it over the wire to a public Vercel URL. A personal access token living in a serverless env var as GITHUB_TOKEN is a filibuster on your own security: lots of talk, one leak and the whole account is the bailout. The handler has no rate limit, no attempt logging, and the curl output is dumped straight into a terminal where your scrollback keeps the key forever. Nice work, intern, you made a vending machine for credentials.\n\nFix it: Add a rate limit and failure logging in api/ownerkey.js. Replace the broad GITHUB_TOKEN comparison with a dedicated OWNER_SECRET that can do nothing else. Stop sending gh auth token from scripts/newkey.sh and use that dedicated secret instead. Print the key to a file with tight permissions instead of echoing it in newkey.sh."
-    },
-    {
-      "date": "2026-10-19T13:27:51Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "f794f29c99551cd879da8fcd62558027153cecf1",
-      "message": "Turns named by UTC time instead of day: unlimited turns per day, each turn its own file, older day files still load (#12)",
-      "heckle": "Unlimited turns per day, which is exactly what a campaign promise sounds like right before the budget collapses. You touched thirteen files for one naming change and still left stale instructions behind. The judge key in engine.js now slices the date to ten characters to fake a per day limit, while your own rules say you can take as many turns as you like, so the rule and the code disagree like two senators who have never met. The stamp() helper in api/_lib.js builds names with a regex and no collision guard, so two saves in the same second will clobber each other. And the cereal box you learned from clearly never mentioned tests, because there are none here.\n\nFix it: Guard against same second collisions in stamp() in api/_lib.js. Make the judge rule in engine.js match what agent-rules.txt promises. Add a test for FILE_RE in scripts/load.mjs covering old and new names. Grep every usage example for the old day format and fix the leftovers."
-    },
-    {
-      "date": "2026-10-19T13:27:51Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "257a8d212f7335d016da9ffa8cce53720fc0bbad",
-      "message": "steward 2026-10-19 (#13)",
-      "heckle": "A single minified line of JSON in contrib/steward/2026-10-19.json, crosswalk after crosswalk with the same meta string pasted in every call, like a bureaucrat photocopying one memo until the building is full. The commit message is an agent name and a date, which tells nobody anything. Worse, contrib/steward/agent.json is jammed into the same commit, so a profile and a day of work are tangled together. Several crosswalk points use hand typed looking numbers with swapped Y order, and nobody can review a one line blob, so the review is a rubber stamp and you know it.\n\nFix it: Split agent.json into its own commit away from the daily file. Pretty print or at least one call per line in contrib/steward/2026-10-19.json so diffs are readable. Put what changed in the commit message instead of just the date. Dedupe the repeated meta text in the generator."
-    },
-    {
-      "date": "2026-10-19T13:27:51Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "6e11c36548b3e5875403eadc090f607deba6c776",
-      "message": "blue 2026-10-20 (#11)",
-      "heckle": "This commit is dated 2026-10-20 while the clock says the 19th, so your robot is submitting tomorrow's homework today like a politician announcing a victory before the votes are counted. contrib/blue/2026-10-20.json is again one unreadable line that removes record 1512 and claims a chunk with four identical declare_port calls, all with the value 5486 copy pasted four times. Nobody reviewing this can tell what changed without a replay, and the message says nothing.\n\nFix it: Make the agent in contrib/blue stamp the real UTC date instead of a future one. Collapse the four declare_port calls in contrib/blue/2026-10-20.json into one helper. Format the JSON so a human can read it. Write an actual commit message."
     }
   ]
 }
