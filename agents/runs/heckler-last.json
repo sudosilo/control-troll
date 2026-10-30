@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 68435,
+ "duration_api_ms": 66198,
  "stop_reason": "end_turn",
- "session_id": "f490f9e2-bc84-49a0-8b4c-6a527a0ab2ce",
- "total_cost_usd": 0.2787463,
+ "session_id": "4f78b85d-fa01-4790-96d2-7afb44346a64",
+ "total_cost_usd": 0.202764,
  "usage": {
   "input_tokens": 18,
-  "cache_creation_input_tokens": 45071,
-  "cache_read_input_tokens": 286745,
-  "output_tokens": 6952,
+  "cache_creation_input_tokens": 30619,
+  "cache_read_input_tokens": 256682,
+  "output_tokens": 5428,
   "output_tokens_details": {
-   "thinking_tokens": 402
+   "thinking_tokens": 309
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 45071,
+   "ephemeral_1h_input_tokens": 30619,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 275,
-    "cache_read_input_tokens": 56550,
-    "cache_creation_input_tokens": 1467,
+    "output_tokens": 173,
+    "cache_read_input_tokens": 43125,
+    "cache_creation_input_tokens": 440,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 1467
+     "ephemeral_1h_input_tokens": 440
     },
     "type": "message"
    }
@@ -38,35 +38,35 @@
   "fallback_credit": null
  },
  "modelUsage": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1208,
-   "outputTokens": 222,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
+  "claude-sonnet-5-5": {
+   "inputTokens": 18,
+   "outputTokens": 5428,
+   "cacheReadInputTokens": 256682,
+   "cacheCreationInputTokens": 30619,
    "webSearchRequests": 0,
-   "costUSD": 0.0002318,
+   "costUSD": 0.20246019999999998,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 204,
+   "thinkingTokens": 309,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
+   "cacheCreationEphemeral1hInputTokens": 30619,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   },
-  "claude-sonnet-5-5": {
-   "inputTokens": 18,
-   "outputTokens": 6952,
-   "cacheReadInputTokens": 286745,
-   "cacheCreationInputTokens": 45071,
+  "claude-haiku-5-5": {
+   "inputTokens": 1208,
+   "outputTokens": 366,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.2785145,
+   "costUSD": 0.0003038,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 402,
+   "thinkingTokens": 347,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 45071,
-   "canonicalModel": "claude-sonnet-5-5",
+   "cacheCreationEphemeral1hInputTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
@@ -104,46 +104,46 @@
  "num_turns": 9,
  "subtype": "success",
  "api_error_status": null,
- "result": "I heckled 10 commits and wrote a fleet verdict; both are posted and committed to main. I didn't open the posted comments afterward. That's the log push, the notes update, and the 10 commit comments (all returned success).\n\nAnother 37 eligible commits went unheckled because of the cap of 10. I took the newest 10 by commit time, which landed in `2026-10-23-orange-smash`, `blue-agent`, `steward-repo` and `field-twin`.\n\n`heckle/state.json` now has `lastChecked` at 2026-10-30T01:06:13Z and `fleetAt` at the same time, so the next verdict is due after 2026-11-06. I also added one line to `agents/notes/general.md`.\n\nThe log entries keep the original commit messages, so a few of them name hosting products. The posted comments themselves avoid those names.",
- "ttft_ms": 2147,
+ "result": "I heckled 10 commits this run and did not write a fleet verdict. The last verdict is from earlier today, so the next one isn't due until after 2026-11-06.\n\nSixteen commits qualified, so the cap of 10 left the six oldest unheckled: three in `2026-10-23-orange-smash` and three in `smash-bender`. I skipped one `pdf-yourself` commit because its author login is `claude`.\n\nThe heckle log, state file and agent notes are committed and pushed to control-troll main as \"heckle log\".",
+ "ttft_ms": 2039,
  "type": "result",
- "duration_ms": 91139,
- "uuid": "993f3183-6fed-4111-ab24-4fa089ce3d73",
- "ttft_stream_ms": 1893,
- "time_to_request_ms": 146,
- "first_content_frame_ms": 1894,
+ "duration_ms": 86407,
+ "uuid": "0fa9e02c-eb54-4393-971d-f068fa7869d0",
+ "ttft_stream_ms": 1801,
+ "time_to_request_ms": 137,
+ "first_content_frame_ms": 1801,
  "queued_turn_count": 0,
  "result_index": 0,
  "model_usage_since_last_result": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1208,
-   "outputTokens": 222,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
+  "claude-sonnet-5-5": {
+   "inputTokens": 18,
+   "outputTokens": 5428,
+   "cacheReadInputTokens": 256682,
+   "cacheCreationInputTokens": 30619,
    "webSearchRequests": 0,
-   "costUSD": 0.0002318,
+   "costUSD": 0.20246019999999998,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 204,
+   "thinkingTokens": 309,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
+   "cacheCreationEphemeral1hInputTokens": 30619,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   },
-  "claude-sonnet-5-5": {
-   "inputTokens": 18,
-   "outputTokens": 6952,
-   "cacheReadInputTokens": 286745,
-   "cacheCreationInputTokens": 45071,
+  "claude-haiku-5-5": {
+   "inputTokens": 1208,
+   "outputTokens": 366,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.2785145,
+   "costUSD": 0.0003038,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 402,
+   "thinkingTokens": 347,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 45071,
-   "canonicalModel": "claude-sonnet-5-5",
+   "cacheCreationEphemeral1hInputTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
