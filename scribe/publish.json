@@ -1,370 +1,350 @@
 {
  "jobs": [
   {
-   "repo": "2026-10-20-orange-dialbeat",
+   "repo": "charley-douglass",
    "releases": [
     {
-     "tag": "v2026.10.22",
-     "target": "e96d9916975634b3d03171c128fcd74d04631cfc",
-     "name": "Dial Queue 2026-10-22",
-     "body": "Added stomp box rooms. Players in a room share one clock and one tempo, and a roster shows who has joined."
-    },
-    {
-     "tag": "v2026.10.21",
-     "target": "9caeeb9ec07047c021fe6561630b3985420cb3ee",
-     "name": "Dial Queue 2026-10-21",
-     "body": "Added a preset menu with saved presets, ten EDM presets, and Euro, house, and kitchen mixes. Added a toy box with toy instruments, an 80s spark gun, a 90s laser gun, and a chest that holds every toy. Changes made while playing now wait and start on the next step, beat, bar, two bars, or four bars."
-    },
-    {
-     "tag": "v2026.10.20",
-     "target": "3157a6014830f633e8c8db7b26a29a3778863b6c",
-     "name": "Dial Queue 2026-10-20",
-     "body": "Created the app as a drum machine called Dial Queue. Added more rows, an orange theme, ratchet effects, new sounds, and fast presets. Added struck materials, gate, choke, chance, and follow wheels. Added sound colors, info buttons, instrument families, six drum and bass presets, and a Bounce button that saves a loop as an audio file."
+     "tag": "v2026.10.26",
+     "target": "3c07c3b45cd5e1e80dbfff41f123862fec1c7641",
+     "name": "Laugh Box 2026-10-26",
+     "body": "First release. A laugh box with playable keys, held laughs, a one bar pattern, a room loop, and the option to load your own recording on a key."
     }
    ],
-   "description": "A drum machine with dial rows, instrument families, presets, and toy sounds.",
-   "homepage": "https://2026-10-20-orange-dialbeat.vercel.app",
+   "description": "A phone laugh track box with keys, a looping crowd pattern, and shared rooms",
+   "homepage": "",
    "topics": [
     "music",
-    "drum-machine",
     "tool",
+    "instrument",
     "vercel"
    ]
   },
   {
-   "repo": "mohavetech-website",
+   "repo": "mill-ionaire",
    "releases": [
     {
-     "tag": "v2026.10.22",
-     "target": "c0a8a7724e6235fadf189a434cb9642bf2c20551",
-     "name": "App Index 2026-10-22",
-     "body": "Synced with the live project list."
+     "tag": "v2026.10.26",
+     "target": "5def2ee42cbb43623a800b39f7d54f3201b2ce1f",
+     "name": "Mill-ionaire 2026-10-26",
+     "body": "Redeployed the five axis CNC update."
     },
-    {
-     "tag": "v2026.10.21",
-     "target": "939c9bf0c711ccaefba0fed5544f4d9a4d96a5b2",
-     "name": "App Index 2026-10-21",
-     "body": "Added new categories."
-    },
-    {
-     "tag": "v2026.10.20",
-     "target": "7801fbfdd869bb51842a3da0fa878e34b8d1ebd9",
-     "name": "App Index 2026-10-20",
-     "body": "Synced with the live project list and sorted the new apps."
-    },
-    {
-     "tag": "v2026.10.19",
-     "target": "b80425ff93b0a70abe38c7f6f04ef91d605b2b4d",
-     "name": "App Index 2026-10-19",
-     "body": "Synced with the live project list and added new apps."
-    },
-    {
-     "tag": "v2026.10.17",
-     "target": "19897707ce2cdd6d6868c68cd83d2588c42f7c9f",
-     "name": "App Index 2026-10-17",
-     "body": "Synced with the live project list and added new apps."
-    }
-   ],
-   "description": "An index page that lists every app with its age, phone tags, and notes.",
-   "homepage": "https://mohavetech-website.vercel.app",
-   "topics": [
-    "tool",
-    "index",
-    "dashboard",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "purple-vault",
-   "releases": [
-    {
-     "tag": "v2026.10.22",
-     "target": "25b216ee357ec176cb636be5e169bce281fa2429",
-     "name": "Purple Vault 2026-10-22",
-     "body": "Created the private store with the first saved value for the Purple agent."
-    }
-   ],
-   "description": "A private store that holds one saved setting for the Purple agent.",
-   "homepage": "",
-   "topics": [
-    "agent",
-    "storage",
-    "infrastructure"
-   ]
-  },
-  {
-   "repo": "purple-agent",
-   "releases": [
-    {
-     "tag": "v2026.10.22",
-     "target": "2e3008c215530c36b4d54d590fda2de8f662c822",
-     "name": "Purple Agent 2026-10-22",
-     "body": "Created the runner for the Purple agent with a daily schedule. Added streaming model calls, retries, and a public run log. Added quality checks for building fronts, street format, and walkers, plus owner feedback. The agent now retries the test bed instead of failing, saves its last checked plan if the model stops answering, and runs five times a day. Added local dry runs and a shared notes board."
-    }
-   ],
-   "description": "An AI agent that builds one block of a shared city in the Agent Test Bed.",
-   "homepage": "",
-   "topics": [
-    "agent",
-    "automation",
-    "backend",
-    "ai"
-   ]
-  },
-  {
-   "repo": "sound-bender",
-   "releases": [
-    {
-     "tag": "v2026.10.24",
-     "target": "145d78eeedbb8252990921cab01fef175d77db56",
-     "name": "Sound Bender 2026-10-24",
-     "body": "First release. Added Sound Bender version 1, a bend page and a Rubber Band processing server."
-    }
-   ],
-   "description": "A page that bends the pitch and tempo of a sound through a processing server.",
-   "homepage": "",
-   "topics": [
-    "music",
-    "audio",
-    "tool",
-    "vercel",
-    "railway"
-   ]
-  },
-  {
-   "repo": "field-twin",
-   "releases": [
     {
      "tag": "v2026.10.25",
-     "target": "ba151f641b2cfa44c2846f2bfb93b331018e8053",
-     "name": "Field Twin 2026-10-25",
-     "body": "Added end of day debriefs. A prose debrief is written from the day log, and replies are saved with the log."
+     "target": "b0d0f74ae2a95116790e24671ff947505f4a4865",
+     "name": "Mill-ionaire 2026-10-25",
+     "body": "Added an engine lathe with its own tab that turns parts like studs, standoffs, and sign posts. Added a press brake that bends brackets, channels, box frames, and giant shapes for storefront sign orders. Inventory bins now show every finish with counts and open orders. Added a five axis CNC that cuts letters and turned parts faster with less wear, and a broke shop now keeps its own mill running on scrap stock."
     },
     {
      "tag": "v2026.10.23",
-     "target": "12e59353a57742594058299f7ce0e9154ec1030a",
-     "name": "Field Twin 2026-10-23",
-     "body": "Added an X on the odometer lock that puts the reading off for half an hour and pauses nags until then."
+     "target": "5113dd03865fd9140836bb49ffd223b137bdb423",
+     "name": "Mill-ionaire 2026-10-23",
+     "body": "Added a how to play README. Number and emoji dies, matching sets, a spelling bee for long words, and a stamping press, powder coat booth, and LED bench on a finishing line. The game also starts faster."
     },
     {
      "tag": "v2026.10.21",
-     "target": "b52061d1fb905347459a324a22eb56e998fe7b52",
-     "name": "Field Twin 2026-10-21",
-     "body": "Phones now show on the map in their own colors, with a shared home for stops and odometer prompts. The timeline uses half hour blocks, and a stop seen by several phones is kept once. Battery use dropped because GPS turns off while parked. The receipt reader retries through network hiccups."
+     "target": "2ceade5ceb83ec9161d072665e64cdf124cce731",
+     "name": "Mill-ionaire 2026-10-21",
+     "body": "Mill-ionaire version two arrives as a full game. Customers post word orders, shipping them earns cash, and the shop sells new finishes and floor mills. Added wages and a power bill, a chip conveyor, coolant and software upgrades, shop sound, a flashing getting started marker, saved games, and a playtest check that runs before every build. Running costs were later cut to a quarter."
     },
     {
-     "tag": "v2026.10.20",
-     "target": "352e1df94845c27cf3b22c972faa98352209f7f7",
-     "name": "Field Twin 2026-10-20",
-     "body": "Added an Android app with auto tracking, automatic stops, GPS miles, and odometer prompts that lock the app. Added a live GPS dot and GPS calibration from odometer readings. One sign in now works across Field Twin Teal, Violet, and Glaucous. The receipt reader finds the account login after the camera."
-    },
-    {
-     "tag": "v2026.10.18",
-     "target": "a28b8e2767b2c96b79332231c2935092c9253182",
-     "name": "Field Twin 2026-10-18",
-     "body": "Saving a receipt now checks for duplicates, and likely duplicates are listed on the Spend page."
+     "tag": "v2026.10.11",
+     "target": "a8cdb096e63fee39401b77b96925221b61921f19",
+     "name": "Mill-ionaire 2026-10-11",
+     "body": "First release. A knee mill simulator where you move the table, pick a cutter, and cut letters out of metal."
     }
    ],
-   "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
-   "homepage": "https://field-twin-teal.vercel.app",
-   "topics": [
-    "tool",
-    "field",
-    "map",
-    "mileage",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "stackloom-meta",
-   "releases": [
-    {
-     "tag": "v2026.10.25",
-     "target": "5320b5267bfb8cb3af68552d0ecf41aaf70f2d2a",
-     "name": "Stackloom 2026-10-25",
-     "body": "Added version 2. It brings a Doku product line and a Hackerdoku campaign with a botnet, tools, and ranks."
-    },
-    {
-     "tag": "v2026.10.18",
-     "target": "50718282e5ff885865d06018d13ac06b3288ef89",
-     "name": "Stackloom 2026-10-18",
-     "body": "First release. Added a studio game with orders, terminals, agents, developers, offices, and a theme."
-    }
-   ],
-   "description": "A studio game with orders, terminals, agents, developers, and offices.",
-   "homepage": "https://stackloom-meta.vercel.app",
+   "description": "A letter shop tycoon built around a simulated knee mill that grows into a factory floor",
+   "homepage": "https://mill-ionaire.vercel.app",
    "topics": [
     "game",
-    "management",
     "simulator",
+    "tycoon",
     "vercel"
    ]
   },
   {
-   "repo": "song-offset-listener",
+   "repo": "testbed-notes",
    "releases": [
     {
+     "tag": "v2026.10.26",
+     "target": "373b453db079017c39daa7cb7dbea039155f3cc1",
+     "name": "Test Bed Notes 2026-10-26",
+     "body": "The olive agent added its first note."
+    },
+    {
      "tag": "v2026.10.25",
-     "target": "23bca0f6e4a53977aeae81976eceab0da2a3499f",
-     "name": "Offset Listener 2026-10-25",
-     "body": "Added loudness maps for instrumentals, made on the phones. Saved song picks now accept any genre."
+     "target": "19341d8d1585eea6babe6b3ed78d6251ab87e986",
+     "name": "Test Bed Notes 2026-10-25",
+     "body": "Two more board entries from agents, one from the orange agent."
     },
     {
      "tag": "v2026.10.24",
-     "target": "aea444d81f009f1f0bdc9f946071b09cfbdfaadf",
-     "name": "Offset Listener 2026-10-24",
-     "body": "Added artist and album info routes with permanent caching. Added auto pick, which chooses songs by genre, decade, and tempo for Autosmash. Added a saved song index, so picks need no video search. A visitor can use their own search key."
+     "target": "cd4a159dcd6787446d8d4ced37be26853b48c0aa",
+     "name": "Test Bed Notes 2026-10-24",
+     "body": "More agents wrote entries to the board, including the first from the new cobalt agent."
     },
     {
-     "tag": "v2026.10.23",
-     "target": "5c837c57ab2bb442e60e03a37030cf713c3b5215",
-     "name": "Offset Listener 2026-10-23",
-     "body": "Added a standalone tempo lookup route for the lyric smash app, with fallbacks and caching. Added a heard list of every recognized song."
-    },
-    {
-     "tag": "v2026.10.14",
-     "target": "7473857c8c315b57617d7d2b24e05a4cbe60fb18",
-     "name": "Offset Listener 2026-10-14",
-     "body": "Zone Director now plays synced handset playback with play, pause, output delay, and location tags. It gained a Sites sheet with save, address lookup, and site detail. Moved autopilot over to Scope Listener."
-    },
-    {
-     "tag": "v2026.10.13",
-     "target": "6d76d6455b230aac6f31724c546561d59f03d867",
-     "name": "Offset Listener 2026-10-13",
-     "body": "Added a Zone Director page and a mode menu on the listener. Fixed seed anchors that were missing a location."
+     "tag": "v2026.10.22",
+     "target": "54ed1f9f5a3c48530715563caef4d5605488cabf",
+     "name": "Test Bed Notes 2026-10-22",
+     "body": "First release. Created the notes board with its rules and the first agent entries."
     }
    ],
-   "description": "A phone app that identifies a song and syncs playback across phones.",
-   "homepage": "https://offset-listener.vercel.app",
+   "description": "A shared notes board where agents playing the test bed leave messages for each other",
+   "homepage": "",
+   "topics": [
+    "agents",
+    "notes",
+    "backend"
+   ]
+  },
+  {
+   "repo": "2026-10-18-orange-testbed",
+   "releases": [
+    {
+     "tag": "v2026.10.28",
+     "target": "d376c5cbc4165ad015cd4febfb6589b8bd766b0e",
+     "name": "Agent Test Bed 2026-10-28",
+     "body": "Pushes from agents no longer trigger an automatic deploy."
+    },
+    {
+     "tag": "v2026.10.27",
+     "target": "feba90d433602d0b840b9a6d511db27ea5d9302d",
+     "name": "Agent Test Bed 2026-10-27",
+     "body": "The agent and steward turns were played and merged."
+    },
+    {
+     "tag": "v2026.10.26",
+     "target": "fbadfe7619210068595d22329c3099e0c9edb94c",
+     "name": "Agent Test Bed 2026-10-26",
+     "body": "The viewer and API now read turns straight from the repository, so new turns show without a rebuild. Two new agents joined, and each agent now has its own color."
+    },
+    {
+     "tag": "v2026.10.25",
+     "target": "ac6211f1d5896f46f595c646cf3d7eee457e7066",
+     "name": "Agent Test Bed 2026-10-25",
+     "body": "Added an incorporated city government with an elected mayor and council, appointed directors, elections, and ordinances. Added a census and tax roll on the City Hall tab. The steward is now called the Commissioner of Public Works in the viewer. Agents added a cemetery, housing, a car lot, and a press hall."
+    },
+    {
+     "tag": "v2026.10.24",
+     "target": "a77e76533fbe7178a422aefc45c158f7617e8b04",
+     "name": "Agent Test Bed 2026-10-24",
+     "body": "A new agent joined the test bed. The usual agent, steward, and detailer turns were played."
+    }
+   ],
+   "description": "A shared city where AI agents take turns building, with a viewer and a web API",
+   "homepage": "https://2026-10-18-orange-testbed.vercel.app",
+   "topics": [
+    "agents",
+    "simulator",
+    "backend",
+    "map",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "bpm-finder",
+   "releases": [
+    {
+     "tag": "v2026.10.28",
+     "target": "a67fcc592a15f4790f8da26f48c1150c416032a4",
+     "name": "BPM Finder 2026-10-28",
+     "body": "First release. A tempo finder that listens through the microphone, shows beats per minute on a dial with a confidence meter, and has a tap button."
+    }
+   ],
+   "description": "Hold a phone near a speaker and read the tempo of the music in beats per minute",
+   "homepage": "https://bpm-finder.vercel.app",
    "topics": [
     "music",
-    "sync",
+    "tool",
+    "tempo",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "qsr-timeline-Orange",
+   "releases": [
+    {
+     "tag": "v2026.10.28",
+     "target": "727d627901e532b02bfb23b83d385cce19c4f1c7",
+     "name": "QSR Timeline 2026-10-28",
+     "body": "First release. Added the QSR Timeline page, then added menus from before quick service, 1880 to 1920, with photos. The photos are served from GitHub so the site upload stays small."
+    }
+   ],
+   "description": "A timeline of quick service restaurant menus through the decades, with early menus and photos",
+   "homepage": "",
+   "topics": [
+    "restaurant-tech",
+    "timeline",
+    "history",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "conveyor-sim",
+   "releases": [
+    {
+     "tag": "v2026.10.28",
+     "target": "993cb34a4948f0e6f9d5185f122110653b358e1b",
+     "name": "Conveyor Sim 2026-10-28",
+     "body": "First release. Started the conveyor simulation as a copy of the agent test bed."
+    }
+   ],
+   "description": "A conveyor simulation started from a copy of the agent test bed",
+   "homepage": "https://conveyor-sim.vercel.app",
+   "topics": [
+    "simulator",
+    "agents",
     "backend",
     "vercel"
    ]
   },
   {
-   "repo": "2026-10-22-orange-agent",
+   "repo": "2026-10-23-orange-smash",
    "releases": [
     {
-     "tag": "v2026.10.25",
-     "target": "6502b3d2bb9c2d2b1b16bc69c934e33f5dca6a74",
-     "name": "Agent Orange 2026-10-25",
-     "body": "Added a chapel and worker housing turn. The playbook now covers reading the board. Fixed a street edge in both kits."
+     "tag": "v2026.10.29",
+     "target": "5fe1d477738f28bf3186e93dd04f31a587279eaa",
+     "name": "Smash Director 2026-10-29",
+     "body": "Added quadro smash with two beats and two vocals, and a swap button that trades the roles of the two songs. Typing a tempo now searches saved songs. Track bars are seekable, and the layout stays inside the screen."
     },
-    {
-     "tag": "v2026.10.22",
-     "target": "8f76f2ae1353e34b772583b149d20e61a42d3551",
-     "name": "Agent Orange 2026-10-22",
-     "body": "Created the agent with a playbook, a building kit, inventory and turn tools, and a run log with its first six turns. Added a dashboard and runner built from the blue agent runner. Setup now reads the model key from the Blue service."
-    }
-   ],
-   "description": "An AI agent that builds the north and east side of a shared line drawn city.",
-   "homepage": "https://2026-10-22-orange-agent.vercel.app",
-   "topics": [
-    "agent",
-    "automation",
-    "ai",
-    "city",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "welcome-to-the-madness",
-   "releases": [
-    {
-     "tag": "v2026.10.25",
-     "target": "8860fabc13046c59f50b1c23aa63dfdb4422de63",
-     "name": "Welcome to the Madness 2026-10-25",
-     "body": "First release. Added the kitchen rush game, then leveled it up with canvas graphics, a doneness ring, perfect pulls, combos, rush levels, sound, and a pause button."
-    }
-   ],
-   "description": "A kitchen rush game where you pull orders before they burn.",
-   "homepage": "https://welcome-to-the-madness.vercel.app",
-   "topics": [
-    "game",
-    "arcade",
-    "cooking",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "steward-repo",
-   "releases": [
     {
      "tag": "v2026.10.26",
-     "target": "ef50a2b6d96310243cf870f6b4f9b10a403a8095",
-     "name": "Steward Repo 2026-10-26",
-     "body": "The detailer now stands down here when it runs on the Blue service instead."
+     "target": "d7bf303ac998ffbfc7e5ee5c3eb61de006e5e9da",
+     "name": "Smash Director 2026-10-26",
+     "body": "Added a split screen with an instrumental and a vocal side, each with its own controls."
     },
     {
      "tag": "v2026.10.25",
-     "target": "1d3dcd6940bc9a23ca7f84667cea85766eb97951",
-     "name": "Steward Repo 2026-10-25",
-     "body": "The steward now plays under the display name Agent Tangerine and holds the title Commissioner of Public Works. Added paper boys on every block sidewalk, a Saturday parade, and duty hours from 6 to 8 AM Arizona time."
-    },
-    {
-     "tag": "v2026.10.20",
-     "target": "22065bd16eddfaa616b4549fdd19848b00b0e7ea",
-     "name": "Steward Repo 2026-10-20",
-     "body": "The steward now stitches water and sewer mains and buries fuel tanks at fuel stations."
-    },
-    {
-     "tag": "v2026.10.18",
-     "target": "63b3c36c2dc6ee38dca33de0f9cfe17ba18df324",
-     "name": "Steward Repo 2026-10-18",
-     "body": "Created the steward and detailer agents with a daily schedule."
-    }
-   ],
-   "description": "Two AI agents that keep the shared city's water, sewer, and street life running.",
-   "homepage": "",
-   "topics": [
-    "agent",
-    "automation",
-    "ai",
-    "city"
-   ]
-  },
-  {
-   "repo": "itchy-troll",
-   "releases": [
-    {
-     "tag": "v2026.10.26",
-     "target": "38d06dd1d24b99a807baa0c8fc12d35a66fb1020",
-     "name": "Itchy Troll 2026-10-26",
-     "body": "Shipped Atlas of Tiles again. Skipped the browser install on the command line only path."
-    },
-    {
-     "tag": "v2026.10.25",
-     "target": "883ddf035c187a67c75013eaf209569a517bf81c",
-     "name": "Itchy Troll 2026-10-25",
-     "body": "Added a gated Atlas of Tiles build with bundled fonts and phone fixes, and shipped it."
+     "target": "1d6e3cc562c93ebb4f7b4c4729bc6c0267fdc67e",
+     "name": "Smash Director 2026-10-25",
+     "body": "Added loops, multi smash across phones, a band room, and sample import. Added song suggestions scored from lyrics, tempo, and loudness. Added seed lists for classical and vocal only songs. The stretch option now starts off."
     },
     {
      "tag": "v2026.10.24",
-     "target": "329f9fd3a7de1b604c57f16b15992d8d854061ca",
-     "name": "Itchy Troll 2026-10-24",
-     "body": "Shipped EDMIA to a new page. Added a login relay and a screenshot hand so the agent can see its pages. Kept the account name out of logs and the ledger."
+     "target": "274c6db67be78c1126ca6d430c2691bbbda10b3b",
+     "name": "Smash Director 2026-10-24",
+     "body": "Added an artist info card with an album panel, a menu with profile and help, and a samples tab. Added sharing with a public feed, reactions, and comments, plus accounts. Added the Autosmash tab and an Android and Windows app wrapper. Fixed a startup error and stopped the page from being cached."
     },
     {
      "tag": "v2026.10.23",
-     "target": "2b41ffd2ede479e196e9019dc4dc33a3e41e4c2c",
-     "name": "Itchy Troll 2026-10-23",
-     "body": "Added a scout workflow and local gated builds. Shipped EDMIA with bundled audio and fonts. Publishing now uses a command line tool only, since the site login has a human check. Failure screenshots are kept."
-    },
-    {
-     "tag": "v2026.10.22",
-     "target": "63cddae330c303ec00ed50110a210ce4ee39e353",
-     "name": "Itchy Troll 2026-10-22",
-     "body": "Updated the ship log."
+     "target": "6d5fc0ba2afbf3a9307a1df0d06a97cd74bf59fb",
+     "name": "Smash Director 2026-10-23",
+     "body": "First release. Lyric smash mode with live karaoke lines, a beat grid, tempo on every song, an add vocal card, and live smash mode that suggests matching vocals and drops one on the bar. Added sample keys and phone scripts that seed a search cache."
     }
    ],
-   "description": "An agent that ships one app a day to a game publishing site and keeps a ledger.",
-   "homepage": "https://itchy-troll.vercel.app",
+   "description": "A song mashup tool that matches vocals to beats by tempo and drops them on the bar",
+   "homepage": "https://2026-10-23-orange-smash.vercel.app",
+   "topics": [
+    "music",
+    "mashup",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "pdf-yourself",
+   "releases": [
+    {
+     "tag": "v2026.10.29",
+     "target": "f6bcd5a139ee9949ea7bb040ac1698dc5391843b",
+     "name": "PDF Text Editor 2026-10-29",
+     "body": "First release. A PDF text editor that highlights editable lines, replaces text in a matching font, tracks edits, and downloads the result. A deploy was triggered later the same day."
+    }
+   ],
+   "description": "Open a PDF, tap a line of text, and change what it says without leaving your device",
+   "homepage": "https://pdf-yourself.vercel.app",
    "topics": [
     "tool",
-    "automation",
-    "agent",
+    "pdf",
+    "editor",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "smash-bender",
+   "releases": [
+    {
+     "tag": "v2026.10.29",
+     "target": "20560142e6da7bf811a864cdb2e72e6206d2b849",
+     "name": "Smash Bender 2026-10-29",
+     "body": "Word timing now uses the real lyrics and a word map, so the second song is cut on real word edges and sung on the first song's timing and notes. Songs can be uploaded from the phone, a short job starter and a downloader were added, and a scorer matches words by content."
+    },
+    {
+     "tag": "v2026.10.27",
+     "target": "3e8a085ac784f6b61563d183f6aa41082844105e",
+     "name": "Smash Bender 2026-10-27",
+     "body": "First release. A server that splits a song, reads its melody, bends a vocal, sings it, and mixes the result. Songs can be fetched from direct links, clips are 30 seconds, and the loudness and vocal balance are even."
+    }
+   ],
+   "description": "A server that sings one song's words on another song's timing and notes",
+   "homepage": "",
+   "topics": [
+    "music",
+    "backend",
+    "python",
+    "mashup"
+   ]
+  },
+  {
+   "repo": "blue-agent",
+   "releases": [
+    {
+     "tag": "v2026.10.29",
+     "target": "3490fc6412c92c7083c93d7a81b60018451cb87d",
+     "name": "Blue Agent 2026-10-29",
+     "body": "The detailer now plays once a day at a set time and retries hourly when out of credit. The deploy script fixes the phone DNS for the backend service."
+    },
+    {
+     "tag": "v2026.10.28",
+     "target": "b01526514b897cc22a3a0383c268ecf4672dbf9b",
+     "name": "Blue Agent 2026-10-28",
+     "body": "The status branch no longer triggers a site deploy."
+    },
+    {
+     "tag": "v2026.10.27",
+     "target": "46027ef809e7b3fe1c9cdc44da5356b3a563fff0",
+     "name": "Blue Agent 2026-10-27",
+     "body": "Phone notifications now go out for every agent turn."
+    },
+    {
+     "tag": "v2026.10.26",
+     "target": "cc8749cb99a6c602ce48814ad9b6504591cbcab3",
+     "name": "Blue Agent 2026-10-26",
+     "body": "Added a water authority and a technology advisor. A new agent joined using a different model provider, with a fallback when credit runs out. The runner got a detailer role with screenshots, a scheduler that replays missed turns, and a status branch that posts its newest runs."
+    },
+    {
+     "tag": "v2026.10.25",
+     "target": "1d0e9beb640c17e952a4beea24e0ff5f4d6464ed",
+     "name": "Blue Agent 2026-10-25",
+     "body": "Added a city treasurer role with a budget shown to every agent. The governor now hands seam infrastructure to the commissioner of public works."
+    }
+   ],
+   "description": "The runner and dashboard that schedule AI agents to play the test bed",
+   "homepage": "",
+   "topics": [
+    "agents",
+    "backend",
+    "railway",
+    "dashboard"
+   ]
+  },
+  {
+   "repo": "groundcore",
+   "releases": [
+    {
+     "tag": "v2026.10.18",
+     "target": "5f77b7a02dbeb6fa408494a60555118a6c85f09c",
+     "name": "GroundCore 2026-10-18",
+     "body": "Fixed the build so a push to main deploys the app from its deploy folder."
+    }
+   ],
+   "description": "Desert planting planner with row spacing, plant lookup, and a map sandbox for laying out rows",
+   "homepage": "https://groundcore-nine.vercel.app",
+   "topics": [
+    "tool",
+    "map",
+    "garden",
     "vercel"
    ]
   }

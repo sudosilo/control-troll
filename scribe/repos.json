@@ -412,8 +412,13 @@
     "https://mill-ionaire.vercel.app"
    ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Games",
+   "summary": "A letter shop tycoon built around a simulated knee mill that grows into a factory floor.",
+   "name": "Mill-ionaire",
+   "latest": {
+    "date": "2026-10-26",
+    "text": "Redeployed the five axis CNC update."
+   }
   },
   "tinewood-keys": {
    "apps": [
@@ -1620,8 +1625,8 @@
    "summary": "Desert planting planner with row spacing, plant lookup, and a map sandbox for laying out rows.",
    "name": "GroundCore",
    "latest": {
-    "date": "2026-04-05",
-    "text": "First release. A planting planner for the Mohave Valley desert region with a row spacing calculator, a plant lookup that fills in recommended spacing, a plant browser with category filters, and a map sandbox for laying out rows, structures, and drives."
+    "date": "2026-10-18",
+    "text": "Fixed the build so a push to main deploys the app from its deploy folder."
    }
   },
   "fogwarren-vx": {
@@ -1780,10 +1785,17 @@
   },
   "2026-10-18-orange-testbed": {
    "apps": [],
-   "urls": [],
+   "urls": [
+    "https://2026-10-18-orange-testbed.vercel.app"
+   ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Backends and Infrastructure",
+   "summary": "A shared city where AI agents take turns building, with a viewer and a web API.",
+   "name": "Agent Test Bed",
+   "latest": {
+    "date": "2026-10-28",
+    "text": "Pushes from agents no longer trigger an automatic deploy."
+   }
   },
   "steward-repo": {
    "apps": [],
@@ -1945,15 +1957,25 @@
    "apps": [],
    "urls": [],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Backends and Infrastructure",
+   "summary": "A shared notes board where agents playing the test bed leave messages for each other.",
+   "name": "Test Bed Notes",
+   "latest": {
+    "date": "2026-10-26",
+    "text": "The olive agent added its first note."
+   }
   },
   "blue-agent": {
    "apps": [],
    "urls": [],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Backends and Infrastructure",
+   "summary": "The runner and dashboard that schedule AI agents to play the test bed.",
+   "name": "Blue Agent",
+   "latest": {
+    "date": "2026-10-29",
+    "text": "The detailer now plays once a day at a set time and retries hourly when out of credit. The deploy script fixes the phone DNS for the backend service."
+   }
   },
   "blue-agent-sandbox": {
    "apps": [],
@@ -1969,10 +1991,17 @@
   },
   "2026-10-23-orange-smash": {
    "apps": [],
-   "urls": [],
+   "urls": [
+    "https://2026-10-23-orange-smash.vercel.app"
+   ],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Music and Visualizers",
+   "summary": "A song mashup tool that matches vocals to beats by tempo and drops them on the bar.",
+   "name": "Smash Director",
+   "latest": {
+    "date": "2026-10-29",
+    "text": "Added quadro smash with two beats and two vocals, and a swap button that trades the roles of the two songs. Typing a tempo now searches saved songs. Track bars are seekable, and the layout stays inside the screen."
+   }
   },
   "sound-bender": {
    "apps": [],
@@ -2004,8 +2033,79 @@
    "apps": [],
    "urls": [],
    "private": false,
-   "category": null,
-   "summary": null
+   "category": "Music and Visualizers",
+   "summary": "A phone laugh track box with keys, a looping crowd pattern, and shared rooms.",
+   "name": "Laugh Box",
+   "latest": {
+    "date": "2026-10-26",
+    "text": "First release. A laugh box with playable keys, held laughs, a one bar pattern, a room loop, and the option to load your own recording on a key."
+   }
+  },
+  "bpm-finder": {
+   "apps": [],
+   "urls": [
+    "https://bpm-finder.vercel.app"
+   ],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "Hold a phone near a speaker and read the tempo of the music in beats per minute.",
+   "name": "BPM Finder",
+   "latest": {
+    "date": "2026-10-28",
+    "text": "First release. A tempo finder that listens through the microphone, shows beats per minute on a dial with a confidence meter, and has a tap button."
+   }
+  },
+  "qsr-timeline-Orange": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Restaurant Tech",
+   "summary": "A timeline of quick service restaurant menus through the decades, with early menus and photos.",
+   "name": "QSR Timeline",
+   "latest": {
+    "date": "2026-10-28",
+    "text": "First release. Added the QSR Timeline page, then added menus from before quick service, 1880 to 1920, with photos. The photos are served from GitHub so the site upload stays small."
+   }
+  },
+  "conveyor-sim": {
+   "apps": [],
+   "urls": [
+    "https://conveyor-sim.vercel.app"
+   ],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "A conveyor simulation started from a copy of the agent test bed.",
+   "name": "Conveyor Sim",
+   "latest": {
+    "date": "2026-10-28",
+    "text": "First release. Started the conveyor simulation as a copy of the agent test bed."
+   }
+  },
+  "pdf-yourself": {
+   "apps": [],
+   "urls": [
+    "https://pdf-yourself.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Open a PDF, tap a line of text, and change what it says without leaving your device.",
+   "name": "PDF Text Editor",
+   "latest": {
+    "date": "2026-10-29",
+    "text": "First release. A PDF text editor that highlights editable lines, replaces text in a matching font, tracks edits, and downloads the result. A deploy was triggered later the same day."
+   }
+  },
+  "smash-bender": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "A server that sings one song's words on another song's timing and notes.",
+   "name": "Smash Bender",
+   "latest": {
+    "date": "2026-10-29",
+    "text": "Word timing now uses the real lyrics and a word map, so the second song is cut on real word edges and sung on the first song's timing and notes. Songs can be uploaded from the phone, a short job starter and a downloader were added, and a scorer matches words by content."
+   }
   }
  }
 }
