@@ -1,33 +1,78 @@
 {
- "duration_api_ms": 0,
- "stop_reason": "stop_sequence",
- "session_id": "752d85c4-ae19-45b5-b4e1-3c9ff0850dd8",
- "total_cost_usd": 0,
+ "duration_api_ms": 33818,
+ "stop_reason": "end_turn",
+ "session_id": "07fe889d-c20c-48dd-9fea-c66941f12e7d",
+ "total_cost_usd": 0.1230028,
  "usage": {
+  "input_tokens": 14,
+  "cache_creation_input_tokens": 20791,
+  "cache_read_input_tokens": 175901,
+  "output_tokens": 2209,
   "output_tokens_details": {
-   "thinking_tokens": 0
+   "thinking_tokens": 184
   },
-  "input_tokens": 0,
-  "cache_creation_input_tokens": 0,
-  "cache_read_input_tokens": 0,
-  "output_tokens": 0,
   "server_tool_use": {
    "web_search_requests": 0,
    "web_fetch_requests": 0
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 20791,
    "ephemeral_5m_input_tokens": 0
   },
-  "inference_geo": "",
-  "iterations": [],
+  "inference_geo": "global",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 327,
+    "cache_read_input_tokens": 34649,
+    "cache_creation_input_tokens": 774,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 774
+    },
+    "type": "message"
+   }
+  ],
   "speed": "standard",
   "fallback_credit": null
  },
- "modelUsage": {},
+ "modelUsage": {
+  "claude-haiku-5-5": {
+   "inputTokens": 1207,
+   "outputTokens": 20,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "webSearchRequests": 0,
+   "costUSD": 0.0001307,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 0,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 14,
+   "outputTokens": 2209,
+   "cacheReadInputTokens": 175901,
+   "cacheCreationInputTokens": 20791,
+   "webSearchRequests": 0,
+   "costUSD": 0.12287210000000001,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 184,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 20791,
+   "canonicalModel": "claude-sonnet-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
  "permission_denials": [],
- "terminal_reason": "api_error",
+ "terminal_reason": "completed",
  "fast_mode_state": "off",
  "fast_mode_disabled_reason": "sdk_opt_in_required",
  "subagent_stats": {
@@ -55,17 +100,52 @@
   "by_type": {}
  },
  "safety_stops": 0,
- "is_error": true,
- "num_turns": 1,
+ "is_error": false,
+ "num_turns": 7,
  "subtype": "success",
- "api_error_status": 429,
- "api_error_origin": "first_party",
- "api_error": "usage_limit_reached",
- "result": "You've hit your weekly limit \u00b7 resets 12am (UTC)",
+ "api_error_status": null,
+ "result": "I worked three jobs, and none needed a code change. Each is still waiting on the developer.\n\nSnapshot-engine-pied still returns 404. No sudosilo repo matches it, so I logged it as repo not found.\n\nTopo-wars-server still returns 404 at its root and at /health. Its health route fix is pull request 1 at github.com/sudosilo/topo-wars-server/pull/1. It has been open since 2026-10-18 and is not merged. I did not open a new pull request, since that one already covers the fix.\n\nTower-builder-five still returns 404. The tower-builder repo has not changed since 2026-10-18. The developer needs to redeploy the game from the saved snapshot.\n\nI did not get to termbeat, pajamastan-warrants or mary-jane-man because of the three-job limit. Their last attempts were all four or more days ago, so they are due next run.\n\nI added three entries to fix-log.json and one line to agents/notes/general.md. Both are pushed to main as \"fix log\".",
+ "ttft_ms": 2492,
  "type": "result",
- "duration_ms": 523,
- "uuid": "e03bcc6d-a654-46b5-8e68-46aba5376b89",
+ "duration_ms": 39513,
+ "uuid": "f1a62d13-3273-487c-9ba0-02c73987e8c7",
+ "ttft_stream_ms": 2236,
+ "time_to_request_ms": 211,
+ "first_content_frame_ms": 2236,
  "queued_turn_count": 0,
  "result_index": 0,
- "model_usage_since_last_result": {}
+ "model_usage_since_last_result": {
+  "claude-haiku-5-5": {
+   "inputTokens": 1207,
+   "outputTokens": 20,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "webSearchRequests": 0,
+   "costUSD": 0.0001307,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 0,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 14,
+   "outputTokens": 2209,
+   "cacheReadInputTokens": 175901,
+   "cacheCreationInputTokens": 20791,
+   "webSearchRequests": 0,
+   "costUSD": 0.12287210000000001,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 184,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 20791,
+   "canonicalModel": "claude-sonnet-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ }
 }
