@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>gladhand dockyard v12</title>
+<title>gladhand dockyard v13</title>
 <!--
 RED PHONE: trailer backing sim v5
 RED PHONE: v4 written on the Red phone in chat with Claude Opus 5.5, Oct 11 2026 (single van, dock yard, inspection, air lines, magnetic coupling)
@@ -410,6 +410,12 @@ const TRACTORS={
     wt:23000,steerWt:12000,driveLim:34000,aMax:10,maxDelta:45,jk:85,style:'cabover',regen:true,paint:['#e8eaed','#8fb3cf']},
   heavy:{name:'Hybrid hauler',desc:'Tri-drive, huge torque, made for heavy haul. Turns like a building.',L:22,a:.5,bumper:28,tail:-8,cab:6,half:4.25,track:3.6,drives:[4.2,0,-4.2],
     wt:30000,steerWt:13000,driveLim:51000,aMax:9,maxDelta:36,jk:76,style:'heavy',hood:19,paint:['#3f7f4a','#62a06c']},
+  // BLUE PHONE: terminal tractor. one seat cab off to the left, tiny wheelbase, steers on a dime, governed at 25
+  yard:{name:'Yard truck',desc:'Terminal tractor. Steers on a dime, governed at 25. Lives in the yard.',L:9.5,a:.5,bumper:12.5,tail:-4.5,cab:3,half:4.1,track:3.4,drives:[0],
+    wt:17000,steerWt:9000,driveLim:34000,aMax:8,maxDelta:50,jk:88,style:'yard',vmax:36.7,paint:['#f2c230','#3d3a35']},
+  // BLUE PHONE: apocalypse truck. armor plate, a spiked ram on the nose, stacks out the top. hits harder and takes less
+  apoc:{name:'Apocalypse rig',desc:'Armor plate and a spiked ram. Smashes harder, shrugs off hits.',L:18,a:1,bumper:25,tail:-5,cab:6,half:4.4,track:3.6,drives:[2.1,-2.1],
+    wt:32000,steerWt:14000,driveLim:40000,aMax:9.5,maxDelta:36,jk:80,style:'apoc',hood:16,armor:.35,ram:2.2,paint:['#7a4a2e','#4e4a44']},
 };
 
 // =====================================================================
@@ -959,7 +965,9 @@ function cabColor(T,p1,p2){return(f,l,fe)=>{
     case 'conv':return f<T.cab+5.5?p2:p1;
     case 'sleeper':return f<T.cab+6.5?p2:p1;
     case 'cabover':if(f>fe-2.6&&f<fe-1.2&&a<T.half-.4)return PAL.glass;return(f<fe-3&&a<T.half-1)?p2:p1;
-    case 'heavy':return(f<T.cab+6||(f<fe-1&&a<1.2))?p2:p1;}
+    case 'heavy':return(f<T.cab+6||(f<fe-1&&a<1.2))?p2:p1;
+    case 'yard':return l<.4&&f<fe-1.5?(f>fe-3.4&&f<fe-2.2?PAL.glass:p1):p2;
+    case 'apoc':return f>fe-2.4?PAL.frame:(f<T.cab+6?p2:(Math.abs(l)<.5?PAL.stripe:p1));}
   return p1;};}
 function boxColor(u){const hw=u.w/2,rr=u.kp-u.len;return(f,l)=>(Math.abs(l)>hw-.5||f>u.kp-.5||f<rr+.5)?PAL.trlEdge:(f<rr+1.1?PAL.trlDoor:PAL.trl);}
 const OB_SOFT={block:1.2,berm:1,house:1,container:.6,railcar:.4,wall:1.6,rail:1.1,dock:.8,parked:1,shack:1.3,building:.6,tower:.25};
@@ -990,7 +998,7 @@ function crash(hit,mph,extra){
   if(mph<=.4)return false;
   if(mph<3){const ck='cr'+o.id;if(G.cool[ck]&&now()<G.cool[ck])return false;G.cool[ck]=now()+.8;}
   const geo=o.cx!=null?o:hit.ob,[cx,cy]=hit.cx!=null?[hit.cx,hit.cy]:closestOBB(geo,b.cx,b.cy);
-  const w=weights(),mf=Math.min(2.5,w.gvw/40000),E=hit.E!=null?hit.E:mph*mph/4*mf;
+  const w=weights(),mf=Math.min(2.5,w.gvw/40000),E=(hit.E!=null?hit.E:mph*mph/4*mf)*(!hit.isTrl&&TRK.ram?TRK.ram:1),arm=!hit.isTrl&&TRK.armor?TRK.armor/(TRK.ram||1):1;   // BLUE PHONE: the ram hits harder, the armor soaks it
   const prop=o.type!=='trailer'&&o.type!=='legs'&&o.type!=='vehicle',st=dstore(),T=tnow();let broke=false;
   if(prop&&o.hp<9999){const nd=obsDmg(o)+E,old=st.obs[o.id];st.obs[o.id]={d:Math.round(nd*10)/10,t:T};if(old&&old.fa!=null)st.obs[o.id].fa=old.fa;
     if(nd>=o.hp){broke=true;if(st.obs[o.id].fa==null){const vh=G.s.th+(G.s.v<0?Math.PI:0)+(Math.random()-.5)*.5;st.obs[o.id].fa=Math.round(normA(vh)*100)/100;}
@@ -1005,8 +1013,8 @@ function crash(hit,mph,extra){
     if(u.type==='van'||u.type==='pup'){const cr=G.crushU[ui]||(G.crushU[ui]=newCrush());
       applyCrush(cr,u.kp-u.len,u.kp,u.w/2,clamp(lf,u.kp-u.len,u.kp),clamp(ll,-u.w/2,u.w/2),dd,u.len*.3,u.w/2*.9);}
     else{const arr=G.udents[ui]||(G.udents[ui]=[]);addDent(arr,c.hx,c.hy,c.ph,cx,cy,E);}};
-  if(!hit.isTrl){G.cab=Math.max(0,G.cab-td);const T=TRK,c0=Math.cos(s.th),s0=Math.sin(s.th),dx0=cx-s.x,dy0=cy-s.y;
-    applyCrush(G.crushT,T.cab,T.bumper,T.half,clamp(dx0*c0+dy0*s0,T.cab,T.bumper),clamp(-dx0*s0+dy0*c0,-T.half,T.half),dV,(T.bumper-T.cab)*.6,T.half*.9);
+  if(!hit.isTrl){G.cab=Math.max(0,G.cab-td*arm);const T=TRK,c0=Math.cos(s.th),s0=Math.sin(s.th),dx0=cx-s.x,dy0=cy-s.y;
+    applyCrush(G.crushT,T.cab,T.bumper,T.half,clamp(dx0*c0+dy0*s0,T.cab,T.bumper),clamp(-dx0*s0+dy0*c0,-T.half,T.half),dV*arm,(T.bumper-T.cab)*.6,T.half*.9);
     let mxF=0;for(const i in G.crushT.F)mxF=Math.max(mxF,G.crushT.F[i]);G.crumple=Math.min(4.5,mxF);
     if(o.type==='trailer'&&hit.tu!=null){unitCrush(hit.tu,dV*.8);G.trl=Math.max(0,G.trl-td*.5);}}
   else{G.trl=Math.max(0,G.trl-td*.8);unitCrush(hit.ui,dV*.9);}
@@ -1209,7 +1217,7 @@ function npcHit(n,pb,nb){
   nImpulse(n,nx*j/mn,ny*j/mn);
   s.v-=(j/mp)*(nx*Math.cos(s.th)+ny*Math.sin(s.th));
   const cm=closing*MPH;if(cm<.5)return;
-  const Ep=cm*cm/4*(mn/(mn+mp))*2,En=cm*cm/4*(mp/(mn+mp))*2,[cx,cy]=closestOBB(nb,pb.cx,pb.cy);
+  const Ep=cm*cm/4*(mn/(mn+mp))*2,En=cm*cm/4*(mp/(mn+mp))*2*(pb.ui<0&&TRK.ram?TRK.ram:1),[cx,cy]=closestOBB(nb,pb.cx,pb.cy);
   crash({o:npcOb(n),isTrl:pb.ui>=0,ui:pb.ui,b:pb,E:Ep,cx,cy,blame},cm);   // BLUE PHONE: getting rear ended costs you far less than doing the rear ending
   npcDamage(n,cx,cy,En,nb);
 }
@@ -1827,8 +1835,8 @@ function fpBoxes(ctx,W,H,cam,boxes){
 }
 function fpScene(ctx,img,buf,W,H,cam,boxes){fpFloor(buf,W,H,cam);ctx.putImageData(img,0,0);fpHills(ctx,W,cam);fpBoxes(ctx,W,H,cam,boxes);}
 function render3D(){
-  fpResize();const s=G.s,T=TRK,ca=Math.cos(s.th),sa=Math.sin(s.th),W=FP.W,H=FP.H,co=T.style==='cabover';
-  const eyeF=co?T.bumper-3:T.cab+3.6,eyeL=-1.8,sh=G.shake>0?(Math.random()-.5)*.03:0;
+  fpResize();const s=G.s,T=TRK,ca=Math.cos(s.th),sa=Math.sin(s.th),W=FP.W,H=FP.H,co=T.style==='cabover'||T.style==='yard';
+  const eyeF=co?T.bumper-3:T.style==='yard'?T.cab+4.5:T.cab+3.6,eyeL=T.style==='yard'?-2.2:-1.8,sh=G.shake>0?(Math.random()-.5)*.03:0;
   const cam={x:s.x+ca*eyeF-sa*eyeL,y:s.y+sa*eyeF+ca*eyeL,z:(co?9.2:8.5)+(G.shake>0?(Math.random()-.5)*.3:0),yaw:s.th+(G.look||0)+sh,fov:78*DEG,hor:H*.4,maxD:900};
   const boxes=fpCollect(s.x,s.y,MAP.city?600:900);
   fpScene(fpL,FP.img,FP.buf,W,H,cam,boxes);
@@ -2240,7 +2248,7 @@ function update(dt){
     const traction=sD.mu*32.2*(w.drive/w.gvw);
     let want=G.throttle*aMax;
     if(!brk&&dir*s.v<2.2)want=Math.max(want,1.6);
-    if(dir*s.v>=(dir>0?(MAP.proc?102.7:(MAP.vmax||36.7)):5.9))want=0;
+    if(dir*s.v>=(dir>0?Math.min(TRK.vmax||1e9,MAP.proc?102.7:(MAP.vmax||36.7)):5.9))want=0;
     accel=dir*Math.min(want,traction);
   }
   let res=.35+sF.roll*.3+sD.roll*.5;
@@ -2446,6 +2454,12 @@ function drawTractorUpper(){
       part(s.x,s.y,a,B-2.6,B-1.2,-T.half+.4,T.half-.4,PAL.glass);break;
     case 'heavy':part(s.x,s.y,a,T.cab,B,-T.half,T.half,p1);part(s.x,s.y,a,T.cab,T.cab+6,-T.half,T.half,p2);
       part(s.x,s.y,a,T.cab+6,B-1,-1.2,1.2,p2);break;
+    case 'yard':part(s.x,s.y,a,T.cab,B,-T.half+.6,T.half,p2);part(s.x,s.y,a,T.cab,B-1.5,-T.half,.4,p1);part(s.x,s.y,a,B-3.4,B-2.2,-T.half+.4,0,PAL.glass);
+      part(s.x,s.y,a,T.cab+1,T.cab+3,-T.half+.6,-.4,PAL.glass);part(s.x,s.y,a,T.cab+4,T.cab+5,2.4,3.2,PAL.frame);part(s.x,s.y,a,T.cab+.5,T.cab+1.5,-.6,.6,PAL.stripe);break;
+    case 'apoc':part(s.x,s.y,a,T.cab,B,-T.half,T.half,p1);part(s.x,s.y,a,T.cab,T.cab+6,-T.half,T.half,p2);part(s.x,s.y,a,T.cab+6,B-2.4,-.5,.5,PAL.stripe);
+      for(let f=T.cab+1;f<B-3;f+=3)part(s.x,s.y,a,f,f+.4,-T.half,T.half,PAL.dent);
+      for(const sd of[-1,1]){part(s.x,s.y,a,T.cab+5.5,T.cab+6.5,sd*(T.half-1.2)-.5,sd*(T.half-1.2)+.5,PAL.frame);part(s.x,s.y,a,T.cab+1.5,T.cab+4,sd*(T.half-.3)-.3,sd*(T.half-.3)+.3,PAL.frame);}
+      part(s.x,s.y,a,B-2.4,B+.6,-T.half-.8,T.half+.8,PAL.frame);for(let l=-T.half-.4;l<=T.half+.4;l+=1.6)part(s.x,s.y,a,B+.6,B+1.8,l-.25,l+.25,PAL.rail);break;
   }
   part(s.x,s.y,a,B-.6,B+.2,-T.half-.1,T.half+.1,PAL.bumper);}
   // BLUE PHONE: dents and crushed panels where the cab took hits
@@ -2806,6 +2820,8 @@ function rigText(){
 // RED PHONE: dispatch screen
 // =====================================================================
 function swatch(kind,key){
+  if(kind==='tr'&&TRACTORS[key].style==='yard'){const t=TRACTORS[key];return '<svg class="sw" viewBox="0 0 30 56"><rect x="6" y="6" width="18" height="16" fill="'+t.paint[1]+'"/><rect x="6" y="4" width="10" height="16" fill="'+t.paint[0]+'"/><rect x="7" y="6" width="8" height="4" fill="#9fb8c8"/><rect x="11" y="24" width="8" height="14" fill="#6a655c"/><rect x="9" y="28" width="12" height="8" fill="#8f8a80"/><rect x="3" y="12" width="4" height="7" fill="#3d3a35"/><rect x="23" y="12" width="4" height="7" fill="#3d3a35"/><rect x="3" y="30" width="4" height="7" fill="#3d3a35"/><rect x="23" y="30" width="4" height="7" fill="#3d3a35"/></svg>';}
+  if(kind==='tr'&&TRACTORS[key].style==='apoc'){const t=TRACTORS[key];return '<svg class="sw" viewBox="0 0 30 56"><rect x="3" y="0" width="24" height="4" fill="#3d3a35"/><rect x="5" y="4" width="20" height="26" fill="'+t.paint[0]+'"/><rect x="5" y="20" width="20" height="10" fill="'+t.paint[1]+'"/><rect x="14" y="4" width="2" height="16" fill="#2a62b0"/><rect x="11" y="32" width="8" height="20" fill="#6a655c"/><rect x="3" y="40" width="4" height="7" fill="#3d3a35"/><rect x="23" y="40" width="4" height="7" fill="#3d3a35"/></svg>';}
   if(kind==='tr'){const t=TRACTORS[key];return '<svg class="sw" viewBox="0 0 30 56"><rect x="6" y="2" width="18" height="'+(t.style==='cabover'?20:t.style==='heavy'?30:24)+'" fill="'+t.paint[0]+'"/><rect x="6" y="2" width="18" height="6" fill="'+t.paint[1]+'"/><rect x="11" y="32" width="8" height="20" fill="#6a655c"/><rect x="3" y="40" width="4" height="7" fill="#3d3a35"/><rect x="23" y="40" width="4" height="7" fill="#3d3a35"/></svg>';}
   if(kind==='cfg'){const m={van:'<rect x="7" y="2" width="16" height="52" fill="#f1ede3" stroke="#8e8676"/>',doubles:'<rect x="7" y="2" width="16" height="24" fill="#f1ede3" stroke="#8e8676"/><rect x="7" y="30" width="16" height="24" fill="#f1ede3" stroke="#8e8676"/>',
     blade:'<path d="M12 2 L18 2 L20 14 L17 54 L15 54 Z" fill="#f6f7f5" stroke="#aeb3b6"/>',lowboy:'<rect x="5" y="2" width="20" height="52" fill="#8e8a80"/><rect x="6" y="14" width="18" height="22" fill="#e07a1f"/><rect x="13" y="2" width="4" height="14" fill="#e07a1f"/>'}[key];return '<svg class="sw" viewBox="0 0 30 56">'+m+'</svg>';}
