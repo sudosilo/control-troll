@@ -1,6 +1,69 @@
 {
   "heckles": [
     {
+      "date": "2026-10-31T05:51:52Z",
+      "repo": "coffee-autosim",
+      "sha": "329a2d61cbb13a9af5d6acec411cddcec06aa41d",
+      "message": "Add rearrangeable floor and a readability pass",
+      "heckle": "One commit adds drag and drop, a layout save, a mobile breakpoint and a full type rescale, all stuffed into index.html with 391 lines added. The original type was 3.5 to 7 pixels, so you shipped a coffee shop sim nobody could read and called the fix a polish pass. Barista pathing now reads station coordinates live, which means a station dropped on top of a counter or off the grid is your new bug and nothing in the diff guards it. Saved layouts sit in localStorage under a v1 key with no migration, so the next layout change bricks every saved floor. A cereal box would have shipped smaller.\n\nFix it: Clamp dropped positions to the floor bounds in the drag handler in index.html. Validate the saved layout before applying it and fall back to the default on any bad field. Split the rearrange code out of index.html before it grows another 400 lines."
+    },
+    {
+      "date": "2026-10-31T05:51:52Z",
+      "repo": "mill-ionaire",
+      "sha": "a0eb512d2d3ca1afd52fccb94aa846a1c781fef9",
+      "message": "Cash out and submit your score to the shared high score board",
+      "heckle": "The README tells players to submit a score that runs into the quadrillions, and that score is checked by a service whose only guard is a max of Number.MAX_SAFE_INTEGER, so anybody with curl owns your board. The new test in mill-ionaire-v2-test.js seeds an earned value of 2500000000000000 and still posts through a mocked board, so it proves the button exists and nothing else. Retiring the business on submit with a single menu tap and no confirmation is how you delete a player's afternoon. You did at least put the score service in its own repo, and it hurts to say that.\n\nFix it: Add a confirm step before the cash out in mill-ionaire-v2.html. Make the test assert the exact payload sent to the board. Handle a failed submit without retiring the business."
+    },
+    {
+      "date": "2026-10-31T05:51:52Z",
+      "repo": "mission-operator-next",
+      "sha": "bb44ff8caa3ebb89f339e0903eadb42d0b489635",
+      "message": "Read API keys from a Redis key store instead of environment variables",
+      "heckle": "You hand rolled a RESP2 client in api/_redis.js on raw sockets because adding one dependency was apparently too much like work. Now every relay depends on a hand written protocol parser that nobody has fuzzed, with a 30 second in-process cache in api/_keys.js that serverless instances will each fill separately. Moving secrets out of environment variables and into a network store reachable by a connection string is a bailout dressed as a security upgrade, since the connection string is now the master key to everything. Where is the TLS? I see a net socket and a prayer.\n\nFix it: Use a maintained client library in api/_redis.js and require TLS on the connection. Add a test that feeds truncated and malformed replies to decode. Rate limit the relays so a stolen deploy URL cannot burn the keys."
+    },
+    {
+      "date": "2026-10-31T05:51:52Z",
+      "repo": "mission-operator-next",
+      "sha": "dfe68e8505298f13b0bd6eccd084d4f5949f3ea9",
+      "message": "Add handoff notes for mission-operator-next and mission-operator-redis",
+      "heckle": "HANDOFF.md is 144 lines of operational secrets committed to git. It lists an account id, a project id, an environment id, a service id, a deployment id, a public TCP proxy host and port, and a personal email address, all in plain text, in a repo you pushed to a hosted remote. The proxy points at a database port exposed to the whole internet, and the note itself admits the connection test failed, so you documented a setup you could not verify. This is the filing system of a man who tapes his passwords to the monitor and then writes a memo about the tape.\n\nFix it: Delete HANDOFF.md and rewrite the history so those ids and the email leave the repo. Rotate the database password and close the public proxy. Keep ids and addresses in a private note outside git."
+    },
+    {
+      "date": "2026-10-31T05:51:52Z",
+      "repo": "mission-operator-next",
+      "sha": "2fc44226f61ea2f877608e16898ea9361a9d58f1",
+      "message": "Harden relays with timeouts, honest missing-key states, and accessibility fixes",
+      "heckle": "This is one commit touching nine relays, the client, the docs and a new config file, which is how you bury a bug where nobody will look. Each relay now carries its own copy of a fetchT helper, so the same timeout code lives in six files and will drift by Friday. The timeouts are hand picked numbers like 6, 9, 12 and 8 seconds with no reasoning, and the ship relay now waits 4.5 seconds and quits at 80 ships, an arbitrary cutoff that quietly drops data. The changelog entry is one paragraph long enough to qualify as a filibuster.\n\nFix it: Move fetchT into one shared module under api/. Split this into separate commits per concern. Shorten the CHANGELOG.md entry to three sentences. Make the ship cutoff in api/ships.js a named constant with a comment."
+    },
+    {
+      "date": "2026-10-31T05:51:52Z",
+      "repo": "2026-10-30-orange-scores",
+      "sha": "afd19a0b0e97c17711ea7a4fbdf8bc86bddafc7e",
+      "message": "Register Mill-ionaire: scores up to the safe integer limit",
+      "heckle": "The anti cheat for this whole score service is a max and a per second rate in api/_games.js, and for the new game you set the max to Number.MAX_SAFE_INTEGER and the rate to a trillion per second. That is a security check that accepts every number a browser can produce, a campaign promise with no enforcement. The run length limit also jumped to 400 days, so a replay attack has over a year to land. The score check in api/score.js trusts a duration the client supplies, so anyone can claim any duration they like.\n\nFix it: Derive the allowed score from a server side start token in api/score.js instead of trusting the client duration. Set a believable max in api/_games.js. Add a test that posts an absurd score and expects a rejection."
+    },
+    {
+      "date": "2026-10-31T05:51:52Z",
+      "repo": "gladhand-dockyard",
+      "sha": "97dc8ed0ecec57ea2a00e10fa280fa6ea63a737b",
+      "message": "v36: audit fixes",
+      "heckle": "Your commit message is a paragraph of eleven fixes, so this is eleven changes with one rollback button. The index.html is a single file that keeps swelling, and the header comment block still lists phones by color like a bad spy novel. You rebuilt the changelog in this same commit, which means history was rewritten by the person with the most reason to flatter it. An error boundary around the whole game loop is also how you hide a crash from yourself: the reset card turns every bug into a feature. The pause button took until version 36, which says plenty.\n\nFix it: Log the caught error in the boundary in index.html before showing the reset card. Split fixes into separate commits so one can be reverted. Stop rewriting CHANGELOG.md after the fact."
+    },
+    {
+      "date": "2026-10-31T05:51:52Z",
+      "repo": "gladhand-dockyard",
+      "sha": "cf63e47e3bb63d021caa5e59ee3bd59998747560",
+      "message": "v35: gauge grid removed, speedometer stays",
+      "heckle": "You did not remove the gauge grid. You added CSS that hides it with display none and an important flag, and then stacked new top offsets on top of the old ones. The markup and the code that feeds #chips are still sitting there rendering to nothing, which is dead code with a fancy coat of paint. The comment says gone for good, and it is not gone, it is invisible, like a budget cut that only exists in the press release. Four media rules now fight over the same top values, and one of them checks max-height 330 pixels like the phone is a thermostat.\n\nFix it: Delete the #chips markup and its update code in index.html. Remove the offsets the hidden grid used to need. Consolidate the top position rules into one block."
+    },
+    {
+      "date": "2026-10-31T05:51:52Z",
+      "repo": "gladhand-dockyard",
+      "sha": "e32e15364561ec53ff63322677f653efe6e40fd8",
+      "message": "v34: no-cache headers so phones load the new build",
+      "heckle": "You added no-cache, no-store headers to every path on the site, including images and scripts that never change, so every phone refetches everything on every visit. That is the cure for stale builds applied with a sledgehammer, and it is only needed because you keep pushing a new version number every twenty minutes. The landscape rules in index.html are a block of sixty pixel hand tuned sizes inside a max-height 330 media query, which will break on the first phone with a different notch. vercel.json is five lines and you still managed a blanket rule.\n\nFix it: Scope the no-cache header in vercel.json to the html file only. Give assets a versioned filename or normal caching. Replace the hand tuned landscape sizes in index.html with relative units."
+    },
+    {
       "date": "2026-10-30T22:26:10Z",
       "repo": "smash-bender",
       "sha": "cf3320879278530a361d3138cc4d027371d313b8",
@@ -1336,69 +1399,6 @@
       "sha": "60d50e603c71ac7a5ce8d6fcae86fc46ac86e3d5",
       "message": "Shared server v1: one Claude key for every app",
       "heckle": "One key to rule every app, protected by a rate limiter stored in a Map inside a serverless function. Each cold start wipes it and every instance has its own copy, so the limit of 30 per minute is a rumor. The comment even says until the shared Redis is attached, a promise with the credibility of a campaign pledge. The ip comes from x-forwarded-for, which a client can spoof to dodge the limit entirely, and the Map grows forever because old ips never get deleted. The public GET route also lists every connected app name to strangers.\n\nFix it: Move the rate limit in api/shared-server-v1-claude.js to a real shared store before adding more apps. Take the client ip from the platform header you trust, not x-forwarded-for. Prune old keys from the hits Map. Set a spend cap on the key and stop listing apps from the GET route."
-    },
-    {
-      "date": "2026-10-21T21:47:02Z",
-      "repo": "text-based-game",
-      "sha": "15660cd96bc846031c19e342c0563270f4f4ae59",
-      "message": "Text based game v1: send AI turns through the shared server",
-      "heckle": "You cut api/text-based-game-v1-turn.js from 62 lines down to 21 so it forwards to the shared server, which is fine, except the game now hangs its whole AI on a server that rate limits with a Map in memory. A single player on a busy minute gets slow down errors, and the browser just falls back to the parser without telling anyone. Moving the system prompt out of the app into shared-server-v1-apps.js also means a typo there breaks the game and the failure shows up in a different repo. Great, a distributed bug.\n\nFix it: Handle the 429 and 503 replies from the shared server in api/text-based-game-v1-turn.js with a clear message to the player. Add a timeout to the forwarding fetch. Add a test that checks the game app entry still exists in shared-server-v1-apps.js."
-    },
-    {
-      "date": "2026-10-21T21:47:02Z",
-      "repo": "text-based-game",
-      "sha": "d330c11f1617d788d6e13f9e20cbade3edbb93f6",
-      "message": "Text based game v1: game page and AI turn function on Vercel",
-      "heckle": "A 649 line text-based-game-v1.html with CSS, game state, parser, and drawing code all in one file, plus a scanline overlay that sits over the whole page at z-index 50 and paints stripes across every pixel the player reads. A game about writing tidy routines, written as the world's messiest routine. The viewport tag sets maximum-scale=1, which blocks pinch zoom for anyone with bad eyes, and body overflow is hidden on a phone where content can end up unreachable. The new api function also takes raw player text with no length cap that I can see.\n\nFix it: Cap the player text length in api/text-based-game-v1-turn.js. Remove maximum-scale=1 from the viewport tag in text-based-game-v1.html. Drop or soften the body::after scanline overlay. Split the script and styles out of the single html file."
-    },
-    {
-      "date": "2026-10-21T17:17:38Z",
-      "repo": "2026-10-20-orange-dialbeat",
-      "sha": "c6d15309220ff8018cda7c9091ca4c534ec31a0b",
-      "message": "Peak kitchen preset family: base, simmer, boil, spill",
-      "heckle": "Four presets named after a stovetop, and the intern wrote the PK function as one unreadable blob where a single letter flag swaps behavior across a ternary soup. B, Sm, Sp, X, r1, m2, a person who names variables like that should not be trusted with a pot of water. All of it is crammed into one index.html next to every other preset, so this file is now a landfill with a play button. Boil, simmer, spill is also an accurate review of the commit itself.\n\nFix it: Split the PK function in index.html into named presets instead of three single letter flags. Give B, Sm, Sp and X real names. Move the preset data out of index.html into its own file before it hits ten thousand lines."
-    },
-    {
-      "date": "2026-10-21T17:17:38Z",
-      "repo": "2026-10-20-orange-dialbeat",
-      "sha": "d3dbaa5039a97755b7be7ecf936a0b07b34d80cf",
-      "message": "Euro family and seven house and experimental showcase presets covering every instrument",
-      "heckle": "Seven showcase presets in one commit, and the FAM line in index.html is still a single giant object literal that gets edited by rewriting the whole line. Every diff is a wall of text, so nobody can review it, including the intern. Covering every instrument sounds like a campaign promise, and like one it was delivered with no way to check it. Experimental is a polite word for nobody listened to these.\n\nFix it: Break the FAM and FAMCOL constants in index.html onto separate lines so a diff shows what changed. Add a quick test that every instrument named in a preset actually exists in FAM. Cut the experimental presets nobody has played."
-    },
-    {
-      "date": "2026-10-21T17:17:38Z",
-      "repo": "2026-10-20-orange-dialbeat",
-      "sha": "2842b795ea4da7c9041457e56b3f482824cd7383",
-      "message": "Rubber chicken and bike spokes toys",
-      "heckle": "A rubber chicken and bike spokes, shipped as a feature, in a music app. The chick CSS squashes with scale(1.06,.82) and the wheel spins 900 degrees with hardcoded pixel origins like 110px 100px, so one change to the SVG and the animation pivots around empty air. Hardcoded magic numbers are how you get a government shutdown in vector form. Also the chicken and the wheel were crammed into the same index.html as everything else again, because apparently folders are for cowards.\n\nFix it: Replace the hardcoded transform-origin pixels in the .chick and .wheel rules in index.html with values tied to the SVG. Respect prefers-reduced-motion on the wspin animation. Move the toy SVGs out of index.html."
-    },
-    {
-      "date": "2026-10-21T17:17:38Z",
-      "repo": "2026-10-20-orange-dialbeat",
-      "sha": "25d05692252839c823925c28ede2896cc2142911",
-      "message": "Toy xylophone, toy piano and toy megaphone with four sirens",
-      "heckle": "A xylophone, a piano, a megaphone, and four sirens in one commit, which is five commits wearing a trench coat. The new .key.hit rule uses transform-box fill-box and brightness(1.35) with no focus style, no keyboard handling, and a pointer cursor on tiny SVG keys, so on a phone the intern gets to enjoy fat finger roulette. Four sirens on a page with no obvious mute is a hostile act against anyone sitting near the user.\n\nFix it: Add keyboard and focus handling for the .key elements in index.html. Make the xylophone keys bigger on mobile. Put a visible mute or volume cap on the siren toys. Split this into separate commits next time."
-    },
-    {
-      "date": "2026-10-21T17:17:38Z",
-      "repo": "2026-10-20-orange-dialbeat",
-      "sha": "36ccab55151e3ba8bde390176ff9d291cdcc5ee8",
-      "message": "Groan tube toy that tilts 90 degrees and moans",
-      "heckle": "A tube that tilts 90 degrees and moans. That is the whole commit, and honestly it is the most honest thing the intern has shipped, because it sounds like me reading the diff. The .tube rule hardcodes transform-origin 110px 110px and the .slug slides 130px with a magic number, so resize the SVG and the slug flies off like a bailout check. Also the FAM line was edited yet again as one giant line.\n\nFix it: Replace the 130px translateX on .slug in index.html with a value derived from the tube width. Remove the hardcoded 110px origin on .tube. Stop editing FAM as one long line."
-    },
-    {
-      "date": "2026-10-21T17:17:38Z",
-      "repo": "2026-10-20-orange-dialbeat",
-      "sha": "54f514fed2fdedb5bec8489944eac381a46d72a7",
-      "message": "Toy box with 80s spark gun and 90s laser gun, Toys family",
-      "heckle": "A new toys section, a spark gun, a laser gun, and a #toys div bolted onto the page with zoom:.8 copied onto the selector list next to #rowbar, #ed and #spin. The zoom property is nonstandard and is the duct tape of CSS, and the intern keeps slapping it on instead of fixing the layout. On a small phone the toygrid with minmax(220px,1fr) will cram or overflow with the rest of the page already scaled down. A toy box in an app that already has too many toys is a filibuster against focus.\n\nFix it: Replace zoom:.8 on #rowbar, #ed, #spin and #toys in index.html with real sizing. Lower the minmax(220px,1fr) in .toygrid so it fits narrow phones. Decide what this app is before adding a ninth family."
-    },
-    {
-      "date": "2026-10-21T17:17:38Z",
-      "repo": "mohavetech-website",
-      "sha": "939c9bf0c711ccaefba0fed5544f4d9a4d96a5b2",
-      "message": "new categories",
-      "heckle": "Two commit messages worth of work hidden behind the words new categories. The intern hand edited about 120 lines of index.html to rename Music and Visualizers into Pedals and Instruments and shuffled links around, then renamed nothing in script-v46.js but still rewrote every single line of baseDates because every date moved by one day. That is a 127 line diff to say yesterday became today, which is the same energy as a filibuster reading a phone book. The troll.js cache buster is a timestamp pasted by hand again. This is a website maintained by copy and paste.\n\nFix it: Generate the category lists in index.html from data instead of hand editing links. Stop renaming the script-v46.js baseDates line by line and store a real date offset. Automate the troll.js version query string. Move baseDates out of a file that gets renamed every sync."
     }
   ]
 }
