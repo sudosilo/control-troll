@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-30T18:41:05.220Z",
+  "builtAt": "2026-10-31T17:48:24.744Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -77,6 +77,42 @@
       ],
       "knownProblem": null,
       "snapshot": "snapshots/pajamastan-warrants.html"
+    },
+    {
+      "app": "androids",
+      "url": "https://androids.vercel.app",
+      "kind": "down",
+      "since": "2026-10-31",
+      "status": 404,
+      "failing": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "features": [
+        "Four deploy modes: Vercel new frontend, Vercel update, Railway new backend, Railway update.",
+        "Form takes project name, download filename, commit message and environment variables, and rejects a filename named index or not ending in .html.",
+        "Page writes the full Termux command block for the picked mode and Copy block copies it.",
+        "Mark as used saves project names so reused names get flagged, and Clear list wipes them.",
+        "Nothing runs on the page itself."
+      ],
+      "knownProblem": null,
+      "snapshot": "snapshots/androids.html"
+    },
+    {
+      "app": "mission-operator",
+      "url": "https://mission-operator.vercel.app",
+      "kind": "down",
+      "since": "2026-10-31",
+      "status": 503,
+      "failing": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "features": [
+        "Mission operator map app loads its script bundle and renders past the blank shell."
+      ],
+      "knownProblem": null,
+      "snapshot": "snapshots/mission-operator.html"
     },
     {
       "app": "termbeat",
