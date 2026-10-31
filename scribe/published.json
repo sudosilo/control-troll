@@ -246,7 +246,27 @@
   "sudosilo/blue-agent@v2026.10.27",
   "sudosilo/blue-agent@v2026.10.26",
   "sudosilo/blue-agent@v2026.10.25",
-  "sudosilo/groundcore@v2026.10.18"
+  "sudosilo/groundcore@v2026.10.18",
+  "sudosilo/mission-operator-next@v2026.10.30",
+  "sudosilo/mission-operator-next@v2026.10.15",
+  "sudosilo/mission-operator-next@v2026.03.26",
+  "sudosilo/2026-10-30-orange-scores@v2026.10.30",
+  "sudosilo/field-twin@v2026.10.29",
+  "sudosilo/steward-repo@v2026.10.29",
+  "sudosilo/2026-10-18-orange-testbed@v2026.10.30",
+  "sudosilo/edmia@v2026.10.30",
+  "sudosilo/itchy-troll@v2026.10.30",
+  "sudosilo/itchy-troll@v2026.10.29",
+  "sudosilo/itchy-troll@v2026.10.28",
+  "sudosilo/itchy-troll@v2026.10.27",
+  "sudosilo/mohavetech-website@v2026.10.30",
+  "sudosilo/mohavetech-website@v2026.10.29",
+  "sudosilo/mohavetech-website@v2026.10.28",
+  "sudosilo/smash-bender@v2026.10.30",
+  "sudosilo/song-offset-listener@v2026.10.30",
+  "sudosilo/song-offset-listener@v2026.10.28",
+  "sudosilo/2026-10-23-orange-smash@v2026.10.30",
+  "sudosilo/gladhand-dockyard@v2026.10.30"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -324,14 +344,13 @@
    ]
   },
   "sudosilo/edmia": {
-   "d": "Falling block color match game where every move adds to the music.",
+   "d": "A falling block puzzle game where the soundtrack is built from how you play",
    "h": "https://edmia.vercel.app",
    "t": [
     "game",
     "music",
     "puzzle",
-    "vercel",
-    "web-audio"
+    "vercel"
    ]
   },
   "sudosilo/matops-backend": {
@@ -1189,13 +1208,13 @@
    ]
   },
   "sudosilo/gladhand-dockyard": {
-   "d": "A truck and trailer backing sim set in a busy dock yard and city.",
+   "d": "A truck and trailer backing sim set in a busy dock yard and city",
    "h": "",
    "t": [
     "game",
-    "physics",
     "simulator",
-    "trucks"
+    "trucks",
+    "vercel"
    ]
   },
   "sudosilo/scope-listener": {
@@ -1459,7 +1478,7 @@
    ]
   },
   "sudosilo/mohavetech-website": {
-   "d": "An index page that lists every app with its age, phone tags, and notes.",
+   "d": "A single page index of the apps on this account, with many scene views",
    "h": "https://mohavetech-website.vercel.app",
    "t": [
     "dashboard",
@@ -1499,11 +1518,10 @@
    ]
   },
   "sudosilo/field-twin": {
-   "d": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
+   "d": "A phone friendly field log for stops, receipts, and miles",
    "h": "https://field-twin-teal.vercel.app",
    "t": [
-    "field",
-    "map",
+    "field-log",
     "mileage",
     "tool",
     "vercel"
@@ -1520,12 +1538,12 @@
    ]
   },
   "sudosilo/song-offset-listener": {
-   "d": "A phone app that identifies a song and syncs playback across phones.",
+   "d": "A phone app that lines up music across several phones",
    "h": "https://offset-listener.vercel.app",
    "t": [
-    "backend",
     "music",
-    "sync",
+    "phone",
+    "tool",
     "vercel"
    ]
   },
@@ -1551,21 +1569,21 @@
    ]
   },
   "sudosilo/steward-repo": {
-   "d": "Two AI agents that keep the shared city's water, sewer, and street life running.",
+   "d": "Steward and detailer agents that tend the shared Agent Test Bed city",
    "h": "",
    "t": [
     "agent",
-    "ai",
     "automation",
-    "city"
+    "github-actions",
+    "simulator"
    ]
   },
   "sudosilo/itchy-troll": {
-   "d": "An agent that ships one app a day to a game publishing site and keeps a ledger.",
+   "d": "An agent that publishes finished apps to a game publishing site",
    "h": "https://itchy-troll.vercel.app",
    "t": [
-    "agent",
     "automation",
+    "publishing",
     "tool",
     "vercel"
    ]
@@ -1600,12 +1618,11 @@
    ]
   },
   "sudosilo/2026-10-18-orange-testbed": {
-   "d": "A shared city where AI agents take turns building, with a viewer and a web API",
+   "d": "A shared city that AI agents build one turn at a time",
    "h": "https://2026-10-18-orange-testbed.vercel.app",
    "t": [
     "agents",
-    "backend",
-    "map",
+    "game",
     "simulator",
     "vercel"
    ]
@@ -1641,7 +1658,7 @@
    ]
   },
   "sudosilo/2026-10-23-orange-smash": {
-   "d": "A song mashup tool that matches vocals to beats by tempo and drops them on the bar",
+   "d": "A mashup tool that lines up the vocals of one song with the beat of another",
    "h": "https://2026-10-23-orange-smash.vercel.app",
    "t": [
     "mashup",
@@ -1661,11 +1678,11 @@
    ]
   },
   "sudosilo/smash-bender": {
-   "d": "A server that sings one song's words on another song's timing and notes",
+   "d": "A processing server for song mashups with phone scripts",
    "h": "",
    "t": [
+    "audio",
     "backend",
-    "mashup",
     "music",
     "python"
    ]
@@ -1678,6 +1695,26 @@
     "backend",
     "dashboard",
     "railway"
+   ]
+  },
+  "sudosilo/mission-operator-next": {
+   "d": "Mission Operator rebuilt: a field scanner with honest error states and working keys",
+   "h": "https://mission-operator-next.vercel.app",
+   "t": [
+    "map",
+    "scanner",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-10-30-orange-scores": {
+   "d": "A shared score service and hub page for the games",
+   "h": "https://2026-10-30-orange-scores.vercel.app",
+   "t": [
+    "backend",
+    "scores",
+    "tool",
+    "vercel"
    ]
   }
  }
