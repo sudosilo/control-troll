@@ -16,8 +16,8 @@
    "summary": "A truck and trailer backing sim set in a busy dock yard and city",
    "name": "Gladhand Dockyard",
    "latest": {
-    "date": "2026-10-13",
-    "text": "Added an open city map with signals, telephone poles with wires that come down, outages, and traffic. Added breachable buildings, big structures, berm dents, and a breakable block wall ring."
+    "date": "2026-10-30",
+    "text": "Added many rides to drive, including a yard truck, an apocalypse rig, a sports car, a helicopter, tow trucks, a flatbed, a dump truck with a pup, and a tank with a turret, cannon, and machine gun. Added driver views for every ride, ride horns, police lights, and ride to ride swaps. Added a spreading fire with fire trucks and a fire call job, a south side of the city with a cemetery, church, fire station, hospital, and radio station, and gas station explosions. Shells now blast holes in walls, damage is tracked for each vehicle, and a dispatch board shows jobs. Added a tutorial, ride unlocks by discovery, scoreboards, a menu that folds gauges away, a landscape layout, a pause button, and saves that warn when phone storage is full."
    }
   },
   "parcelsun-kq": {
@@ -158,8 +158,8 @@
    "summary": "A field log with a map, receipts, mileage, and an Android app that tracks stops",
    "name": "Field Twin",
    "latest": {
-    "date": "2026-10-25",
-    "text": "Added end of day debriefs. A prose debrief is written from the day log, and replies are saved with the log."
+    "date": "2026-10-29",
+    "text": "Export, mileage, and search spreadsheets now save into Downloads in the phone app. Added Daily miles, which shows start, end, and business miles for each workday from a start point shared by all phones. Stops can be marked as tickets, and confirmed days lock and save to a spreadsheet. Added a Daily miles report. Added GO, which gives turn by turn routes to a place you say or type, with logged places first."
    }
   },
   "mohavetech-website": {
@@ -172,8 +172,8 @@
    "summary": "An index page that lists every app with its age, phone tags, and notes",
    "name": "App Index",
    "latest": {
-    "date": "2026-10-22",
-    "text": "Synced with the live project list."
+    "date": "2026-10-30",
+    "text": "Added a Galleon view where every app is a cannon on one huge wooden warship. Added Rain, River, Downhill bikes, Cheese chase, and Tornado views. The Garden, Galleon, Rain, River, Downhill, Cheese chase, and Tornado views use a wireframe style. Apps on the game publishing site now get purple stripes in every view and a badge on the main page. The Garden view has filled flowers, sky, hills, and garden beds."
    }
   },
   "ether-wand": {
@@ -1092,8 +1092,8 @@
    "summary": "A phone app that identifies a song and syncs playback across phones",
    "name": "Offset Listener",
    "latest": {
-    "date": "2026-10-25",
-    "text": "Added loudness maps for instrumentals, made on the phones. Saved song picks now accept any genre."
+    "date": "2026-10-30",
+    "text": "Added a Smash Bender relay queue: the app queues a job, a phone takes it and reports back. The queue also carries where each clip starts in its song."
    }
   },
   "phasewell-scope": {
@@ -1518,8 +1518,8 @@
    "summary": "Falling block color match game where every move adds to the music.",
    "name": "EDMIA",
    "latest": {
-    "date": "2026-05-21",
-    "text": "First release. A falling block color match game where clearing squares drives the soundtrack. Includes slide, rotate, drop, and boost controls, song sections that change with level, and a high score table with initials."
+    "date": "2026-10-30",
+    "text": "Rebuilt the audio engine and gameplay. The fuzz is gone, and the game now has a ghost piece, a next piece preview, held movement, a fall speed tied to the beat, group clears, pause, and keyboard play. Scores now go to a shared world board, with an optional player link and a recent plays feed. A refused link no longer blocks a score. The layout now works in landscape with controls on the sides and a board ten columns wide."
    }
   },
   "spaceout": {
@@ -1793,8 +1793,8 @@
    "summary": "A shared city where AI agents take turns building, with a viewer and a web API.",
    "name": "Agent Test Bed",
    "latest": {
-    "date": "2026-10-28",
-    "text": "Pushes from agents no longer trigger an automatic deploy."
+    "date": "2026-10-30",
+    "text": "The agent and steward turns were played and merged."
    }
   },
   "steward-repo": {
@@ -1805,8 +1805,8 @@
    "summary": "Two AI agents that keep the shared city's water, sewer, and street life running",
    "name": "Steward Repo",
    "latest": {
-    "date": "2026-10-26",
-    "text": "The detailer now stands down here when it runs on the Blue service instead."
+    "date": "2026-10-29",
+    "text": "The Commissioner of Public Works now plays at most once a day. The fallback detailer also plays at most once a day. Paper boys now run only when switched on instead of by the clock."
    }
   },
   "doctrine-duel-qx": {
@@ -1875,8 +1875,8 @@
    "summary": "An agent that ships one app a day to a game publishing site and keeps a ledger",
    "name": "Itchy Troll",
    "latest": {
-    "date": "2026-10-26",
-    "text": "Shipped Atlas of Tiles again. Skipped the browser install on the command line only path."
+    "date": "2026-10-30",
+    "text": "Added a browser userscript that fills in a game's page on the publishing site from a saved page file, including description, tagline, genre, and tags. It picks the genre from the site's own dropdown, treats a genre that is already set as done, uploads cover and gameplay screenshots, and can create new pages. Added EDMIA cover and gameplay screenshots and queued Gladhand Dockyard next. Page text is now pasted by hand, so the page workflow was removed."
    }
   },
   "text-based-game": {
@@ -1999,8 +1999,8 @@
    "summary": "A song mashup tool that matches vocals to beats by tempo and drops them on the bar.",
    "name": "Smash Director",
    "latest": {
-    "date": "2026-10-29",
-    "text": "Added quadro smash with two beats and two vocals, and a swap button that trades the roles of the two songs. Typing a tempo now searches saved songs. Track bars are seekable, and the layout stays inside the screen."
+    "date": "2026-10-30",
+    "text": "Added Send to Smash Bender, which posts the instrumental and acapella to the processing server from Smash and from saved samples. Sends go through the phone relay, and songs are named by artist and song. Both clips now start lined up at the drop or the sample. The samples list shows song names on their own line with the buttons wrapped below."
    }
   },
   "sound-bender": {
@@ -2103,8 +2103,36 @@
    "summary": "A server that sings one song's words on another song's timing and notes.",
    "name": "Smash Bender",
    "latest": {
-    "date": "2026-10-29",
-    "text": "Word timing now uses the real lyrics and a word map, so the second song is cut on real word edges and sung on the first song's timing and notes. Songs can be uploaded from the phone, a short job starter and a downloader were added, and a scorer matches words by content."
+    "date": "2026-10-30",
+    "text": "Added a listening check for words understood and sounds-like, a key strength reading from singing loudness, and a lab toolbox installer. Added an overlay baseline that puts one song's voice on another's music untouched, and a melody reader that plays an acapella's tune on piano. Ready-made instrumental and acapella files now skip splitting. Experiments run in a capped loop that logs the idea, the change, and the measurements for each run, and a sample log page shows every run set with pads, scores, ratings, and a progress trend. Added stages two and three with Auto-Tune and a voice tool, an Instrument tool, projects with uploads, an import endpoint other apps can call, and clips that start partway into each song."
+   }
+  },
+  "mission-operator-next": {
+   "apps": [],
+   "urls": [
+    "https://mission-operator-next.vercel.app"
+   ],
+   "private": false,
+   "category": "Maps and Research",
+   "summary": "Field scanner console for nearby aircraft, radios, mesh nodes, and towers, rebuilt with honest error states.",
+   "name": "Mission Operator Next",
+   "latest": {
+    "date": "2026-10-30",
+    "text": "Every relay call now has a timeout, so a slow feed fails fast, and relays answer in one shape with a hint instead of a bare error. Feeds that need a server key say so plainly, and the app stops asking for a feed it knows it cannot get. API keys are now read from a key store instead of environment variables. Added labels for screen readers and handoff notes for the project."
+   }
+  },
+  "2026-10-30-orange-scores": {
+   "apps": [],
+   "urls": [
+    "https://2026-10-30-orange-scores.vercel.app"
+   ],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "Shared score board and live plays feed that the games send their scores to.",
+   "name": "Score Hub",
+   "latest": {
+    "date": "2026-10-30",
+    "text": "First release. A shared score service for the games, with a small script that games use to send scores and a hub page that lists top scores and live plays. It accepts the Redis variable names from the hosting marketplace. Mill-ionaire was registered, with scores up to the safe integer limit and runs that can last for days."
    }
   }
  }
