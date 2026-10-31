@@ -215,6 +215,30 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "Still 404 and sudosilo/tower-builder is unchanged since 2026-10-18, so the developer must redeploy the game from the saved snapshot."
+    },
+    {
+      "date": "2026-10-31",
+      "app": "pajamastan-warrants",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Still 404 NOT_FOUND and the repo has not been pushed since 2026-10-20, so the developer must redeploy the Docker backend or repoint the vercel.app name."
+    },
+    {
+      "date": "2026-10-31",
+      "app": "androids",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Vercel says DEPLOYMENT_NOT_FOUND and sudosilo/androids is archived since 2026-10-22, so the developer must redeploy it or retire the link and its Control Troll spec."
+    },
+    {
+      "date": "2026-10-31",
+      "app": "mission-operator",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Vercel says DEPLOYMENT_PAUSED and sudosilo/mission-operator is archived, with the app now live as mission-operator-next, so the developer should retire this link or point the spec at the new name."
     }
   ]
 }
