@@ -1,6 +1,62 @@
 {
   "heckles": [
     {
+      "date": "2026-10-31T19:20:50Z",
+      "repo": "mohavetech-website",
+      "sha": "a2a1a6e3e1f3182ef2b6d0948a0f90581dc8743f",
+      "message": "sync with vercel, drop retired apps",
+      "heckle": "You call it a sync, I call it hand pasting the same app list into index.html and fleet.html like a hostage note, and then renaming a script file just to dodge the cache. The troll.js version stamp changed again, so the cache buster is a manual ritual at this point. fleet.html swallowed 84 added and 80 removed lines for what is really a handful of repo names, which means a whole block got rewritten instead of patched. Dropping retired apps by deleting the lines means the next person has no idea why they vanished. This is a filibuster dressed up as a commit.\n\nFix it: Generate index.html and fleet.html from one list instead of pasting twice. Stop renaming script-vNN.js and use a query string stamp. Keep a retired list so deletions leave a trail."
+    },
+    {
+      "date": "2026-10-31T19:20:50Z",
+      "repo": "mind-globe",
+      "sha": "60d15ba4e6bd5a2cc116db4c14401110fb47f3be",
+      "message": "World presets: Earth continents and Checkerboard",
+      "heckle": "You stuffed a base64 land mask straight into globe-web/index.html, so the file now carries a wall of encoded gibberish that nobody can diff, review, or edit. The new #world-btn sits inside the pointer-events none HUD and only works because you patched it with pointer-events auto, which is the kind of duct tape that fails the first time someone restyles the HUD. The localStorage read is wrapped in an empty catch that swallows everything, and a button with no label in the markup stays blank until script runs. One tiny button and you still managed a mess, like a bailout bill with a rider attached.\n\nFix it: Move the Earth mask into its own data file and fetch it. Give the world button text in the markup. Log the localStorage failure instead of eating it. Make the HUD pass clicks through a wrapper, not a one off override."
+    },
+    {
+      "date": "2026-10-31T19:20:50Z",
+      "repo": "mohavetech-website",
+      "sha": "fdcf2ff53e283c2b52a7d041bacadcff1a123aee",
+      "message": "Host Free Links page on mohave.wtf",
+      "heckle": "You copied a whole 333 line page into freelinks.html, so the free links app now exists twice and the two will drift the first time you touch either one. Then you pointed the iframe in script-v49.js and troll.js at the copy, which kills the live link to the original repo and leaves a stale snapshot as the source of truth. linkrain.js was changed to fetch freelinks.html and parse a JSON literal out of the page by slicing from a string match on var DATA, which breaks if anyone adds a space. That is a campaign promise held together with indexOf. Also you edited a versioned script file in place, so the cache never learns about it.\n\nFix it: Pick one home for the links data and have both pages read a real JSON file. Delete the pasted copy or make the repo deploy the single source. Replace the indexOf parsing in linkrain.js with a plain data file. Bump the script name or stamp when script-v49.js changes."
+    },
+    {
+      "date": "2026-10-31T19:20:50Z",
+      "repo": "field-twin",
+      "sha": "263f49b997bde9ecd4470164bfa31e9234ea562c",
+      "message": "GO navigation",
+      "heckle": "The commit adds a /destination route in fieldtwin-api/server.js that feeds user text and up to 60 logged sites into a model call. The text is capped at 500 characters, fine, but the sites array is passed in with no shape check, so any client can stuff arbitrary strings into the prompt. The auth line lets a request through whenever API_TOKEN is empty, so an unset env var quietly turns the route into a public model proxy. And you committed go-navigation.patch, a 336 line patch file, then deleted it in the same commit, so the history now holds the whole diff twice. Pushing a patch file to apply it from a phone is not a workflow, it is a hostage situation.\n\nFix it: Fail closed in /destination when API_TOKEN is not set. Validate each entry in the sites array and cap string lengths. Stop committing .patch files and use a branch. Rate limit the route."
+    },
+    {
+      "date": "2026-10-31T19:20:50Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "8b16eff46553a9a46517572a9b4e5a8daa21447d",
+      "message": "steward 2026-10-31T161951 (#62)",
+      "heckle": "Another steward PR, another single line of minified JSON that no human can review. The parade is a police car, a banner, and drum line people all given path animations with the same coordinates copy pasted five times, so the diff is one giant line that GitHub refuses to render meaningfully. A parade loop at speed 1400 around a fixed rectangle means everything marches the same box, including the lead car and the banner, which will stack on top of each other. Merging this is a rubber stamp. Reviewing it is impossible by design, which is basically how a rushed spending bill gets through.\n\nFix it: Write contrib files as pretty printed JSON so a diff is readable. Offset parade paths per participant instead of reusing the same loop. Add a validator step that rejects overlapping placements before the merge."
+    },
+    {
+      "date": "2026-10-31T19:20:50Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "b26b7ec30d30b58c8580ba1fdd56391d5c561d21",
+      "message": "grok 2026-10-31T160255",
+      "heckle": "A grok contrib file pushed straight to main with no PR, no review, and a timestamp as the whole message. The content is one minified line that places a closed paving loop named as a street with a footprint of about four meters and another street of the same absurd size, so the city grows by tiny squares called streets. The market hatch is a 6000 unit box dropped near coordinates that other agents also write to, with nothing checking for collisions. A direct push to main by a bot is a shutdown averted by ignoring the rules.\n\nFix it: Make agent pushes go through a PR like the others. Reject lines shorter than a plausible street. Check new placements against existing ones before commit. Write the file with line breaks."
+    },
+    {
+      "date": "2026-10-31T19:20:50Z",
+      "repo": "mohavetech-website",
+      "sha": "9fe2aba8b011f1f58beb62251687edbabb36b1b4",
+      "message": "Link rain: every free link falls as a raindrop, colored by category",
+      "heckle": "You built linkrain.js by fetching the raw index.html of another repo from GitHub and slicing a JSON array out of it between var DATA and the next newline. Any reformat of that file breaks the page and the only error handling is a message that says links did not load, try again. The color table is hsl by index so categories shift color when someone inserts a new one. The title says light mode only with a color-scheme meta and a pale canvas, so nothing here respects a dark phone, and the stats text on a canvas is tiny on mobile. Raindrops falling forever on a canvas also never pause when the tab is hidden, which drains a phone battery for a toy.\n\nFix it: Read links from a real data file with a stable shape in linkrain.js. Wrap the JSON parse and report the actual error. Pause the animation loop on visibilitychange. Key colors on category name, not array position."
+    },
+    {
+      "date": "2026-10-31T19:20:50Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "0c4e51b529912f827ffa2a2bf2e6244df1140d7f",
+      "message": "agent-orange 2026-10-31T135541 (#61)",
+      "heckle": "Yet another minified single line PR from agent-orange, merged under the owner login with no human glance. The cafe is getting a chalkboard, a framed photo, a neon sign, and a wall phone, each as a separate place_line with a hand typed meta part string. The chalkboard hatch uses color 0 and color2 7 with pattern lines at spacing 200, so the surface is a stripe pattern you named a chalkboard and sits 40 units off the outline, which will z fight. The date in the file name and the PR number show these arrive faster than anyone reads them. Governing by autopilot, like a continuing resolution nobody read.\n\nFix it: Pretty print contrib files so the review means something. Offset surface layers by a real gap. Add a pass that flags overlapping parts in the same building before merge."
+    },
+    {
       "date": "2026-10-31T05:51:52Z",
       "repo": "coffee-autosim",
       "sha": "329a2d61cbb13a9af5d6acec411cddcec06aa41d",
@@ -1343,62 +1399,6 @@
       "sha": "e333cedc4963f415ddcb03a5633d92776e1368a0",
       "message": "Playtest suite: reach the part when cutting by hand, shorter soak",
       "heckle": "The commit is named playtest suite but the substance is you editing numbers until the tests stop failing. In mill-ionaire-v2-test.js the Z slider loop went from 10 steps to 40 and the starting position changed from 8 to 20, so the test reaches the part by brute force and then the assertion was loosened from cutting to cutting or feeding. That is a test that accepts two outcomes because you could not tell which one the game gives. You also shortened the long shift soak from an hour to half an hour, which means the leak you built it to catch now has half the time to show up. A shorter soak that passes is not a fix, it is a budget cut with a press release.\n\nFix it: Decide what state the status line should show after the knee rises and assert exactly that in mill-ionaire-v2-test.js. Restore the full soak or split it into a nightly job. Explain the slider magic numbers 20 and 0.5 in a comment."
-    },
-    {
-      "date": "2026-10-21T21:47:02Z",
-      "repo": "itchy-troll",
-      "sha": "e653c8923a4c5027b9a5c66f9ea8cafae6385bd8",
-      "message": "Publish when ship.json is pushed",
-      "heckle": "You taught a publisher to fire on a push to ship.json, then left the workflow_dispatch inputs in place too, so now two doors lead to the same room and neither one is locked. In troll.js the empty catch around the ship.json read swallows a broken file and quietly falls back to a 0.99 price, which is how you end up selling a game for the price of a gumball without noticing. The ship.json parse is also bare, so one stray comma becomes a silent default. Smooth work for someone whose last project plan was a shrug.\n\nFix it: Log a loud error in the empty catch in troll.js when ship.json exists but fails to parse. Drop the hidden 0.99 fallback for price and fail the run instead. Pick either the push trigger or the manual inputs in publish.yml, not both."
-    },
-    {
-      "date": "2026-10-21T21:47:02Z",
-      "repo": "itchy-troll",
-      "sha": "4453e34884a50d651d6d019cf9c7b89dc7d9adf6",
-      "message": "Single-game publisher with price, unlock API and kit, status page",
-      "heckle": "This commit rips out the daily scheduler, bolts on an unlock API, a kit, a status page, and a rewrite of troll.js in one lump, like a bill stuffed with riders nobody read. In api/unlock.js the email path unlocks a game for anyone who can type a buyer's address, so your paywall is a polite suggestion. The CORS header is a wide open star and the games list lives in a module cache that dies every cold start. The index.html status page fetches itch-ledger.json with no error state beyond an empty object, so a failed load looks like zero games shipped, which is honestly accurate.\n\nFix it: Require the download key in api/unlock.js and drop the email-only check. Restrict Access-Control-Allow-Origin to the domains that host your games. Split the troll.js rewrite and the unlock kit into separate commits next time. Show a real failure message in index.html when the ledger fetch fails."
-    },
-    {
-      "date": "2026-10-21T21:47:02Z",
-      "repo": "itchy-troll",
-      "sha": "3bdccaea234412760bf17884970d6ba461ef0ff6",
-      "message": "Agent picks games itself, keeps a ledger, runs daily",
-      "heckle": "A cron that lets a robot choose which of your repos go on sale to the public, with a hard-coded NEW_PER_RUN of 5. Bold. That is an unsupervised spending bill with your name on the storefront. The only guard is the SKIP_NAME regex in troll.js that dodges repos ending in api or server, which means a half-finished repo called anything else is cleared for launch. You also pass the repo token and a 60 minute timeout to a browser that logs in with a stored password. A hobbyist wrote this and a hostile intern would have asked for review first.\n\nFix it: Make troll.js publish only repos listed in an allowlist file, not a name regex. Cut NEW_PER_RUN in troll.js to 1 until the output is proven. Take the schedule block out of publish.yml until a human approves each game. Drop the unused GITHUB_TOKEN env from the publish step."
-    },
-    {
-      "date": "2026-10-21T21:47:02Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "e191c96380a8e55f92698a7cef5b9a7dd767da47",
-      "message": "agent-orange 2026-10-21T200522 (#26)",
-      "heckle": "Pull request number 26 and the whole payload is one line in contrib/agent-orange/2026-10-21T200522.json. A full review cycle, a merge, and a web-flow commit for a file a toddler could have emitted. This is government by committee: forty people in a room to rename a post office. Nobody can tell whether the agent added anything of value, because the diff is a single minified line that no human will ever read.\n\nFix it: Make the agent skip the PR when its contrib JSON is unchanged or empty. Pretty print the JSON in contrib/agent-orange so diffs show what changed. Batch several turns into one PR instead of one per timestamp."
-    },
-    {
-      "date": "2026-10-21T21:47:02Z",
-      "repo": "itchy-troll",
-      "sha": "c58ac7a6470c5f22f8877f3154b72b7755b0d9c9",
-      "message": "Itchy Troll agent: itch.io page setup and butler publish",
-      "heckle": "A Playwright script that logs into a website with a username and password and clicks through forms, glued to a workflow that downloads butler from a URL with curl and runs whatever comes back. troll.js is 207 lines of selector guessing, and the dumpFields helper exists because you do not know what the page looks like, which is a confession written as a function. The rsync step in publish.yml copies everything except a few folders, so a stray .env or notes file in a game repo goes straight to a public download page.\n\nFix it: Replace the rsync in publish.yml with an allowlist of files to upload. Pin the butler download to a version and verify it. Add a dry run input so the script can be tested without touching the live page. Remove dumpFields from troll.js once the selectors are known."
-    },
-    {
-      "date": "2026-10-21T21:47:02Z",
-      "repo": "text-based-game",
-      "sha": "8fc52b33d765f27d4f76e41155be014dcecaad08",
-      "message": "Text based game v1: tabletop board with miniatures, guide suggestions, mic removed",
-      "heckle": "One file, text-based-game-v1.html, took 169 added lines and 99 deleted in a single swing, and the commit message lists three unrelated features like a grocery receipt. You made the map a fixed 36vh box with a 190px minimum on a phone where the keyboard eats half the screen, so the log gets a postage stamp of space. The mic got removed, which is what happens when you build a feature, ship it, then discover you never tested it. Miniatures on a tabletop for a game about typing routines is a theme crisis.\n\nFix it: Test the map height in text-based-game-v1.html with the phone keyboard open and shrink the map when the input is focused. Split features into separate commits. Delete any leftover mic code and styles still in the file."
-    },
-    {
-      "date": "2026-10-21T21:47:02Z",
-      "repo": "text-based-game",
-      "sha": "351ee6025e5faf5d08492ef60b04a64771f1d7f6",
-      "message": "Text based game v1: remove AI status messages",
-      "heckle": "You deleted the engine did not answer message, so now when the AI call fails the player just gets silent fallback to the local parser with no explanation. That is a cover up, and I have seen shutdown negotiations with more transparency. The engineState div and its help paragraph went too, which means nobody can tell whether they are talking to a model or a regex. In the catch block of the turn call in text-based-game-v1.html, the failure now happens in silence, so you will never know your server is down either.\n\nFix it: Keep a quiet failure counter in the catch block in text-based-game-v1.html and show a small badge after repeated failures. Log fallbacks to the console so you can debug them. Hide status text only when the call succeeds."
-    },
-    {
-      "date": "2026-10-21T21:47:02Z",
-      "repo": "shared-server",
-      "sha": "60d50e603c71ac7a5ce8d6fcae86fc46ac86e3d5",
-      "message": "Shared server v1: one Claude key for every app",
-      "heckle": "One key to rule every app, protected by a rate limiter stored in a Map inside a serverless function. Each cold start wipes it and every instance has its own copy, so the limit of 30 per minute is a rumor. The comment even says until the shared Redis is attached, a promise with the credibility of a campaign pledge. The ip comes from x-forwarded-for, which a client can spoof to dodge the limit entirely, and the Map grows forever because old ips never get deleted. The public GET route also lists every connected app name to strangers.\n\nFix it: Move the rate limit in api/shared-server-v1-claude.js to a real shared store before adding more apps. Take the client ip from the platform header you trust, not x-forwarded-for. Prune old keys from the hits Map. Set a spend cap on the key and stop listing apps from the GET route."
     }
   ]
 }
