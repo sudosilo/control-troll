@@ -239,6 +239,30 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "Vercel says DEPLOYMENT_PAUSED and sudosilo/mission-operator is archived, with the app now live as mission-operator-next, so the developer should retire this link or point the spec at the new name."
+    },
+    {
+      "date": "2026-11-01",
+      "app": "irrigation-station",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "The irrigation-station name returns DEPLOYMENT_NOT_FOUND, but the same demo is live at irrigation-demo.vercel.app from sudosilo/irrigation-demo, so the developer should point the link and spec at that name or redeploy the old one."
+    },
+    {
+      "date": "2026-11-01",
+      "app": "open-pipeline",
+      "kind": "down",
+      "outcome": "repo not found",
+      "pullRequest": null,
+      "note": "Vercel says DEPLOYMENT_NOT_FOUND and no sudosilo repo matches; the snapshot notes say it was deployed from a phone folder by CLI as a Stumbler fork, so the developer must redeploy it or retire the link."
+    },
+    {
+      "date": "2026-11-01",
+      "app": "termbeat",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Live page still has no theme menu and the repo has not changed since 2026-10-18, so the test is right and the developer must restore the fuller build."
     }
   ]
 }
