@@ -22,6 +22,8 @@ h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
 .filters{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
 .filters button{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
 .filters button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.say{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;margin:0 6px 6px 0}
+.say.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .app{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:8px}
 .app.ok{border-left-color:var(--ok)}
 .app.bad{border-left-color:var(--bad)}
@@ -125,7 +127,7 @@ h1{font-size:22px;margin:0 0 4px;letter-spacing:.5px}
   <p>A second scheduled Claude task called Control Troll scribe runs at 11:40 every night. For every repo that changed that day, it writes a changelog entry, publishes a GitHub release, refreshes the README, and fills in the repo description, website link, and topic tags. It then rebuilds the profile page in the sudosilo repo, grouping every app by category with recent changes. Its rules are in scribe/rules.md. It works through older repos 12 a night until every repo has its history written.</p>
 
   <h3>HeckleTroll</h3>
-  <p>A third agent checks for new pushes every three hours. Each new commit gets a short roast posted as a comment on the commit, ending with a Fix it paragraph of concrete fixes. Once a week it writes a fleet verdict naming clones to merge, apps to finish or kill, and apps worth polishing. Both show in the HeckleTroll panel on this page. Put [no heckle] in a commit message to skip one. When nothing new was pushed, it stops before starting Claude, so it costs nothing.</p>
+  <p>A third agent checks for new pushes every three hours. Each new commit gets a short roast posted as a comment on the commit, ending with a Fix it paragraph of concrete fixes. Once a week it writes a fleet verdict naming clones to merge, apps to finish or kill, and apps worth polishing. Both show in the HeckleTroll panel on this page. Tap Read all aloud to hear every heckle in your phone's voice, or Play to hear one. Put [no heckle] in a commit message to skip one. When nothing new was pushed, it stops before starting Claude, so it costs nothing.</p>
 
   <h3>Shared notes</h3>
   <p>The three agents share one notebook in the agents/notes folder. Every run starts fresh, so the notebook is how they get smarter. Each agent reads the general notes when it starts and reads an app's own notes before touching that app. At the end of a run it writes down anything that would save the next agent time or stop a mistake, like how a repo deploys or which repo serves which app. Files stay short because the agents condense them when they grow past 40 lines.</p>
@@ -286,9 +288,39 @@ Promise.all([
   fetch(HECK+"fleet.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
 ]).then(function(v){
   var h=(v[0].heckles||[]).slice(0,10), f=v[1], out="";
-  if(f&&f.verdict) out+='<p><b>Fleet verdict, '+esc(f.date||"")+'</b></p>'+String(f.verdict).split(/\n\s*\n/).map(function(p){return '<p>'+esc(p)+'</p>';}).join("");
-  if(h.length) out+='<p><b>Latest commit heckles</b></p>'+h.map(function(x){return '<p><b>'+esc(x.repo)+'</b> '+esc(String(x.date||"").slice(0,10))+': '+esc(x.heckle)+'</p>';}).join("");
+  SAY=[];
+  if(h.length) h.forEach(function(x){SAY.push(x.repo.replace(/[-_]/g," ")+". "+x.heckle);});
+  if(f&&f.verdict) SAY.push("Fleet verdict. "+f.verdict);
+  if(SAY.length&&window.speechSynthesis) out+='<p><button class="say" id="sayAll">Read all aloud</button><button class="say" id="sayStop">Stop</button></p>';
+  if(h.length) out+='<p><b>Latest commit heckles</b></p>'+h.map(function(x,i){return '<p>'+(window.speechSynthesis?'<button class="say" data-say="'+i+'">Play</button>':'')+'<b>'+esc(x.repo)+'</b> '+esc(String(x.date||"").slice(0,10))+': '+esc(x.heckle)+'</p>';}).join("");
+  if(f&&f.verdict) out+='<p>'+(window.speechSynthesis?'<button class="say" data-say="'+(SAY.length-1)+'">Play</button>':'')+'<b>Fleet verdict, '+esc(f.date||"")+'</b></p>'+String(f.verdict).split(/\n\s*\n/).map(function(p){return '<p>'+esc(p)+'</p>';}).join("");
   if(out) document.getElementById("heckBody").innerHTML=out;
+});
+
+// Read heckles aloud with the phone's own voice. Long text is split into sentences
+// because some phone voices stop partway through a long chunk.
+var SAY=[], sayQueue=[], sayBtn=null;
+function sayMark(b){ if(sayBtn) sayBtn.classList.remove("on"); sayBtn=b; if(b) b.classList.add("on"); }
+function sayStop(){ sayQueue=[]; try{speechSynthesis.cancel();}catch(e){} sayMark(null); }
+function sayNext(){
+  if(!sayQueue.length){ sayMark(null); return; }
+  var u=new SpeechSynthesisUtterance(sayQueue.shift());
+  u.lang="en-US"; u.rate=1.05;
+  u.onend=sayNext; u.onerror=sayNext;
+  speechSynthesis.speak(u);
+}
+function sayText(list,btn){
+  sayStop(); sayMark(btn);
+  list.forEach(function(t){
+    String(t).replace(/\s+/g," ").split(/(?<=[.!?])\s+/).forEach(function(p){ if(p.trim()) sayQueue.push(p.trim()); });
+  });
+  sayNext();
+}
+document.addEventListener("click",function(e){
+  var b=e.target.closest("button"); if(!b||!window.speechSynthesis) return;
+  if(b.id==="sayAll") sayText(SAY,b);
+  else if(b.id==="sayStop") sayStop();
+  else if(b.hasAttribute("data-say")) sayText([SAY[+b.getAttribute("data-say")]],b);
 });
 fetch(HIST+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():{days:{}};}).then(function(j){hist=j||{days:{}};renderHist();render();}).catch(function(){renderHist();});
 fetch(SPECS+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():{};}).then(function(j){specs=j||{};render();}).catch(function(){});
