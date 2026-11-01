@@ -158,8 +158,8 @@
    "summary": "A field log with a map, receipts, mileage, and an Android app that tracks stops",
    "name": "Field Twin",
    "latest": {
-    "date": "2026-10-29",
-    "text": "Export, mileage, and search spreadsheets now save into Downloads in the phone app. Added Daily miles, which shows start, end, and business miles for each workday from a start point shared by all phones. Stops can be marked as tickets, and confirmed days lock and save to a spreadsheet. Added a Daily miles report. Added GO, which gives turn by turn routes to a place you say or type, with logged places first."
+    "date": "2026-10-31",
+    "text": "Added GO navigation. The route banner sits below the tabs with zoom buttons under it, and a Google Maps button hands the destination to Google Maps. The bottom panel now stays above the phone keyboard."
    }
   },
   "mohavetech-website": {
@@ -172,8 +172,8 @@
    "summary": "An index page that lists every app with its age, phone tags, and notes",
    "name": "App Index",
    "latest": {
-    "date": "2026-10-30",
-    "text": "Added a Galleon view where every app is a cannon on one huge wooden warship. Added Rain, River, Downhill bikes, Cheese chase, and Tornado views. The Garden, Galleon, Rain, River, Downhill, Cheese chase, and Tornado views use a wireframe style. Apps on the game publishing site now get purple stripes in every view and a badge on the main page. The Garden view has filled flowers, sky, hills, and garden beds."
+    "date": "2026-10-31",
+    "text": "Added link rain, where every free link falls as a raindrop colored by category. A Free Links page is now hosted on its own site. The index was synced with the live deployments and retired apps were dropped."
    }
   },
   "ether-wand": {
@@ -280,8 +280,8 @@
    "summary": "Arcade shooter where you fly a UFO against waves",
    "name": "The Aliens Win",
    "latest": {
-    "date": "2026-10-11",
-    "text": "Created the app as the first version of the game. A second push triggered a production build."
+    "date": "2026-10-31",
+    "text": "Added a handoff document for the project. The game itself did not change."
    }
   },
   "pixelcoop-farm": {
@@ -340,8 +340,8 @@
    "summary": "Live blueprint simulator of a coffee shop floor with baristas",
    "name": "Coffee Autosim",
    "latest": {
-    "date": "2026-10-11",
-    "text": "Created the app as version 3, a live blueprint sim of a coffee shop floor."
+    "date": "2026-10-30",
+    "text": "Added a rearrangeable floor. A new Rearrange button lets you drag stations, counters, and fixtures to wherever they flow best, and the layout is remembered when you reload. Baristas walk to the new positions. Text and contrast were made easier to read."
    }
   },
   "pixelmill": {
@@ -416,8 +416,8 @@
    "summary": "A letter shop tycoon built around a simulated knee mill that grows into a factory floor.",
    "name": "Mill-ionaire",
    "latest": {
-    "date": "2026-10-26",
-    "text": "Redeployed the five axis CNC update."
+    "date": "2026-10-30",
+    "text": "Added a cash out button that sends your score to the shared high score board. You can add an optional link beside your tag, and it shows under the tag on the board. High scores now have a place in the menu."
    }
   },
   "tinewood-keys": {
@@ -524,8 +524,8 @@
    "summary": "3D globe where your notes become land",
    "name": "Mind Globe",
    "latest": {
-    "date": "2026-10-10",
-    "text": "Mountains now rise from note length. Connections between notes show with airstrips and planes."
+    "date": "2026-10-31",
+    "text": "Added world presets, so you can start the globe from Earth continents or a checkerboard."
    }
   },
   "ordersim": {
@@ -604,8 +604,8 @@
    "summary": "Private group chat app with reactions, voice notes, chess, GIFs, and notifications",
    "name": "Cat Command Chat",
    "latest": {
-    "date": "2026-10-09",
-    "text": "Added chess in the chat with shared live boards and watchers. Added a GIF and movie clip picker, long press menus for reactions and delete on every message, and Android notifications. Messages are padded to fixed sizes. Native Android and Windows apps are now built and released automatically. The About section covers every working feature."
+    "date": "2026-10-31",
+    "text": "Added extra message sounds and look controls under About. Added a Tomatomo mode skin that gives the chat a pocket pet handheld look with pixel pets for every member."
    }
   },
   "datacenter-osint": {
@@ -1639,8 +1639,8 @@
    "summary": "A retro desktop fog of war maze game with mines and a hidden picture",
    "name": "FogWarren",
    "latest": {
-    "date": "2026-10-18",
-    "text": "Created the game. It is a retro desktop style fog of war maze with mines, pitfalls, flares, and color warps. It has a compass and a hidden picture that is revealed as you explore."
+    "date": "2026-10-31",
+    "text": "Version two sends your score, initials, and a site link to the shared score hub. Added a High Scores board."
    }
   },
   "rosetta-pone": {
@@ -2133,6 +2133,46 @@
    "latest": {
     "date": "2026-10-30",
     "text": "First release. A shared score service for the games, with a small script that games use to send scores and a hub page that lists top scores and live plays. It accepts the Redis variable names from the hosting marketplace. Mill-ionaire was registered, with scores up to the safe integer limit and runs that can last for days."
+   }
+  },
+  "a-canticle-for-pajamastan": {
+   "apps": [],
+   "urls": [
+    "https://a-canticle-for-pajamastan.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A top down action role playing game set in Pajamastan with a playable slice and a relay",
+   "name": "A Canticle for Pajamastan",
+   "latest": {
+    "date": "2026-10-31",
+    "text": "Created the game. It is a top down action role playing game set in Pajamastan, with spells, status effects, traps, a bestiary, gear, loot, a town, a character maker, a quest board, cutscenes, weather, a radar, and a playable slice. A relay screen lets players chat and connect to a shared relay. Early fights were eased, enemies stay inside their rooms, and labels on the town and switch yard were made larger."
+   }
+  },
+  "algorithm-albatross": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "Instrumental skeleton analysis and cover pair matching for songs",
+   "name": "Algorithm Albatross",
+   "latest": {
+    "date": "2026-10-31",
+    "text": "Created the app. It studies songs to find their instrumental skeletons, matches cover pairs, compares two songs bar by bar, and sweeps tempo to line them up. You can mark pairs as confirmed or rejected so the matching learns from you. It runs with a small server that comes with an install script."
+   }
+  },
+  "tomatomo": {
+   "apps": [],
+   "urls": [
+    "https://tomatomo.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A pocket pet handheld game you raise from an egg",
+   "name": "Tomatomo",
+   "latest": {
+    "date": "2026-10-31",
+    "text": "Created the app. It is a pocket pet handheld game where you hatch an egg, feed your pet, play with it, clean up after it, and put it to sleep. The pet grows and can evolve. You can rename it or start over with a new egg."
    }
   }
  }
