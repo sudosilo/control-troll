@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-01T19:44:13Z",
+      "repo": "field-twin",
+      "sha": "e073f368d2432782f3791bd6959a9138499218a0",
+      "message": "Route display: no box, sits above the bottom bar, three small symbol d",
+      "heckle": "You rewrote a comment so it no longer says the name of the maps app, but the function is still called openGoogleMaps and still builds a google URL, so the comment now lies about the code under it. That is a press release that contradicts the bill. In navBanner in index.html you also moved the marginTop reset above the early return, so it stomps a third party leaflet control every single call, even when no route exists. The banner itself is still one giant inline cssText string.\n\nFix it: Rename openGoogleMaps in index.html to match what the comment claims, or put the comment back. Stop touching the leaflet control from inside navBanner and use a css class instead. Move the banner cssText into the stylesheet."
+    },
+    {
+      "date": "2026-11-01T19:44:13Z",
+      "repo": "infinicanvan",
+      "sha": "0eb375a2f5331e2a07bcca1aa6bbb0b6116da4ba",
+      "message": "infinacanvan v5: tap to water, puddles, sky, bark trunk, grass, resource gauges",
+      "heckle": "A brand new repo and the first thing you ship is a single index.html with 2955 lines in it. One file. Markup, styles, game logic, all of it in one heap, like you emptied a junk drawer onto a card table and called it architecture. Nobody can review that, including you in a week. And the message says v5 while the repo has no v1 through v4 history, so your version numbers are decorative, like a campaign slogan.\n\nFix it: Split index.html into separate css and js files so a change to puddles does not mean scrolling past a sky. Delete the version number from the message or keep real history for it. Add a README so the repo says what the game is."
+    },
+    {
+      "date": "2026-11-01T19:44:13Z",
+      "repo": "infinicanvan",
+      "sha": "5e1302ada10f8aa318670ad8b99583ffaa0d5814",
+      "message": "trigger prod build",
+      "heckle": "An empty commit with a lowercase message, which is the intern way of saying the deploy did not work and he is poking it with a stick. Zero files, zero explanation, zero shame. Whatever is wrong with the build, you are not fixing it, you are just rattling the cage like a senator calling for another hearing.\n\nFix it: Find out why the push did not trigger the build on its own and fix the project link instead. Stop committing nothing to the main branch. Put a build note in the README if the trigger is flaky."
+    },
+    {
+      "date": "2026-11-01T19:44:13Z",
+      "repo": "infinicanvan",
+      "sha": "d784b680ee2d996a65d177864c417c8d20794a45",
+      "message": "infinacanvan v4: tap to water, puddles, sky, bark trunk, grass, resource gauges",
+      "heckle": "The entire contribution is a two line gitignore. Two lines. You wrote a v4 message on a commit that changes nothing but which junk to hide, which is the most padded filing since the last bailout. The only useful thing here is keeping env.local and the vercel folder out of git, and even that arrived after you had already been typing for who knows how long. Hope nothing got committed before this landed.\n\nFix it: Check the history for any env file that slipped in before this gitignore, and rotate anything you find. Write commit messages that describe the diff, not the product roadmap. Add node_modules and OS junk to .gitignore while you are in there."
+    },
+    {
+      "date": "2026-11-01T19:44:13Z",
+      "repo": "field-twin",
+      "sha": "8d5d6162f5a948f25a79cec001ac1b13353209cf",
+      "message": "Named lockers with locker pages, GO ranks places by arrivals, picks and logs, places table; floating window keeps the page running",
+      "heckle": "One commit, three unrelated jobs: lockers in index.html, picture in picture keep alive hacks in MainActivity.kt, and a new places table in the supabase sql file. That is not a commit, that is an omnibus bill with a rider on every page. In index.html the locker button logic got jammed into the entry panel string concatenation, a line so long it needs a filibuster to read. The onPause hack calls resume and resumeTimers on the webview on a delay, which is a prayer wrapped in a handler.\n\nFix it: Split this into one commit for lockers, one for the Android window behavior, and one for the sql. Break the panel actions line in index.html into a small function. Replace the 400 millisecond postDelayed in MainActivity.kt with a real lifecycle check. Confirm the sql file really is applied in production, since a file in the repo changes nothing."
+    },
+    {
+      "date": "2026-11-01T19:44:13Z",
+      "repo": "field-twin",
+      "sha": "c33b77aae912f82d73b1b79e6f71dda947506951",
+      "message": "Floating window sizes the map from the phone's own measurement and checks floating state every second; spoken directions removed",
+      "heckle": "You killed spoken directions by gutting navSay in index.html into an empty function. Not removed, not behind a setting, just a hollow stub with a comment, like a government agency that exists only on paper. Meanwhile the floating window fix needed new bridge methods, a padding rewrite in MainActivity.kt, and more important flags on the css, so the pip block is now a pile of patches on patches. Every commit this hour is a fix for the previous one.\n\nFix it: Make voice a setting in index.html instead of deleting the body of navSay. Remove the dead speech code paths or restore them behind the toggle. Collapse the stacked body.pip rules into one clean block. Test the floating window on a real device before pushing the next fix."
+    },
+    {
+      "date": "2026-11-01T19:44:13Z",
+      "repo": "field-twin",
+      "sha": "afbc306c35c4464f1a5f6cc211b462ae8e6faf79",
+      "message": "Floating map centers on me after the window finishes shrinking",
+      "heckle": "Look at ftPip in index.html. You schedule ftPipCenter on five timers at 60, 250, 600, 1200 and 2000 milliseconds because you do not know when the window finishes shrinking, so you fire five times and hope one lands. That is not engineering, that is a slot machine. And you wrapped closePanel in an empty try catch, so when it breaks it will break in silence, like a committee that never reports.\n\nFix it: Replace the five timers in window.ftPip with the resize event you already wired up. Drop the empty catch around closePanel and log the error. Make ftPipCenter skip work if the map size has not changed. Delete the old timer approach from the previous commit."
+    },
+    {
+      "date": "2026-11-01T19:44:13Z",
+      "repo": "field-twin",
+      "sha": "d45fd8bc57d3b5e3aaacaafd532a7117eac431b1",
+      "message": "Floating map window in the phone app: button under locate, and leaving the app during a route floats the map with only the next turn showing",
+      "heckle": "A picture in picture mode bolted on in one shot: a new leaflet control in index.html, new bridge methods in FieldTwinBridge.kt, lifecycle hooks in MainActivity.kt and a regex patcher in patch-android.cjs. The css hides everything with important on every line, seven of them, because you cannot trust your own specificity. The enterPip function also sets a result flag inside runOnUiThread and returns it right away, so it will return true before the work even ran. Congrats, you wrote a race condition for a window button.\n\nFix it: Make enterPip in FieldTwinBridge.kt wait for the ui thread result or return void. Cut the important flags in index.html by hiding one wrapper class instead of seven selectors. Move the stray comment about opening links back above openUrl, where it belongs. Add a check in patch-android.cjs that fails the build if the manifest edit did not apply."
+    },
+    {
+      "date": "2026-11-01T19:44:13Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "aff9c28afc85fc38e533758995d29bf625069db2",
+      "message": "steward 2026-11-01T171454 (#64)",
+      "heckle": "Another steward pull request, number 64, that adds one line of minified json and calls it a day of governance. The file contrib/steward/2026-11-01T171454.json is a single unreadable line of crosswalk hatches with the same steward note copy pasted on every call. Nobody can review a diff that is one 4000 character line, so the pull request process is a rubber stamp, like a budget vote nobody read. The merge went straight in.\n\nFix it: Pretty print the contrib json so a diff shows what changed. Dedupe the repeated steward meta text into one field. Add a check that rejects a contrib file placing a crosswalk on top of one that already exists. Stop merging these without a validation run."
+    },
+    {
+      "date": "2026-11-01T19:44:13Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "49f574116c7879f298ec190b5ca29e44d042daa6",
+      "message": "grok 2026-11-01T170306",
+      "heckle": "A grok contrib file pushed straight to main with no pull request, so the review step you built for the other agents does not apply to this one. The coordinates are negative, far from the city the steward is drawing in, so Grok Corner Market lands in some corner of the map nobody asked for. Also one line of minified json again, which is a diff for nobody. The lines for Brittlebush Street run at negative 79248 while the rest of the same file sits near zero, which looks like a typo you will find in production.\n\nFix it: Make agents open a pull request instead of pushing to main in contrib/grok. Validate that coordinates sit inside the city bounds before accepting the file. Reject the file when two street segments in one call are an order of magnitude apart. Format the json so a human can read the diff."
+    },
+    {
       "date": "2026-11-01T06:16:14Z",
       "repo": "field-twin",
       "sha": "4e307768ad6d99012cb8ff29618cd357e4957477",
@@ -1329,76 +1399,6 @@
       "sha": "098446da04c2a384162aa8e8507df09537639f55",
       "message": "Scout workflow and local gated builds",
       "heckle": "You built scout.yml with a push trigger on scout-request.txt, and the file that trips it contains a bare date string, so poking the pipeline now means committing a timestamp like a caveman. scout.js pulls every public sudosilo repo into one folder and commits it, capped at 4 MB per repo, so one app's history now bloats this repo forever. Then you rewrote .vercelignore and dropped .github and troll.js from it while adding scout.js, which means the workflow folder and the agent script may ship to the live site. Also troll.js now builds from a local folder if it exists, a silent fork in the build path with no test.\n\nFix it: Put .github and troll.js back in .vercelignore. Use workflow_dispatch only and drop the scout-request.txt push trigger. Commit scout output to a branch or artifact, not main. Log a loud warning in prepareBuild when the local build path overrides the clone."
-    },
-    {
-      "date": "2026-10-23T17:13:48Z",
-      "repo": "itchy-troll",
-      "sha": "244f651e1bd4c48f962423a07d70c333d70ba2c4",
-      "message": "Gated EDMIA build with bundled audio and fonts",
-      "heckle": "EDMIA lands as a 1904 line index.html with inline everything, a minified Tone.js blob checked in as builds/edmia/Tone.js, four font files, and a viewport tag with user-scalable=no and maximum-scale=1.0 that locks out pinch zoom for anyone who needs it. The theme color is a cream page, so at least it is not a dark theme, I will choke on that compliment. It also loads unlock-kit.js from the itchy-troll vercel host on every page, so the game dies if that one origin hiccups, and the data-itch-page attribute is hardcoded.\n\nFix it: Remove user-scalable=no and maximum-scale from the viewport meta in builds/edmia/index.html. Move the inline style and script into separate files so the next diff is readable. Add a fallback when unlock-kit.js fails to load. Pin the Tone.js version in a comment next to the license file."
-    },
-    {
-      "date": "2026-10-23T17:13:48Z",
-      "repo": "itchy-troll",
-      "sha": "596feedfd2cb415221c1dc7936be4497fee27fc2",
-      "message": "Ship EDMIA",
-      "heckle": "A six line ship.json with a price of 0.99 stored as a string, because apparently numbers are for people who finished the tutorial. The build field points at builds/edmia, and the repo field says edmia, so shipping now depends on a folder name matching a repo name by luck. There is no schema, no check that the price parses, and no sign anyone verified the folder has its index.html before the commit. A one line file this thin should not need to be this sloppy.\n\nFix it: Store price as a number in ship.json and validate it in troll.js. Fail the run early if the build folder lacks index.html. Add a short comment or schema describing each field."
-    },
-    {
-      "date": "2026-10-23T11:45:55Z",
-      "repo": "2026-10-22-orange-agent",
-      "sha": "8f76f2ae1353e34b772583b149d20e61a42d3551",
-      "message": "Setup reads the Anthropic key straight from Blue's Railway service",
-      "heckle": "Your orange-agent-setup-v1.sh now reaches into a different agent's Railway service, greps the live Anthropic key out of its variables, and carries it home like a raccoon with a stolen sandwich. One agent borrowing another agent's credentials is not a setup step, it is a coup with a shell script. The hardcoded blue-agent-backend and blue-agent folder guesses under HOME also mean this works on exactly one machine, yours, on a good day. And that grep for the sk-ant prefix quietly swallows every failure with 2>/dev/null and || true, so when it breaks you get a blank key and no clue why, which is peak intern.\n\nFix it: Give orange its own Anthropic key instead of lifting Blue's in orange-agent-setup-v1.sh. Stop silencing errors in the railway variables line and print a clear message when AK stays empty. Drop the hardcoded HOME paths from the for loop. Rotate the key if it ever touched a log."
-    },
-    {
-      "date": "2026-10-23T11:45:55Z",
-      "repo": "purple-agent",
-      "sha": "2e3008c215530c36b4d54d590fda2de8f662c822",
-      "message": "purple instructions for the blue-agent backend",
-      "heckle": "The message says instructions for the blue-agent backend, the file says You are Purple. Pick a lane, genius. purple-instructions.txt is a pile of owner feedback pasted in as a prompt, so the first line of defense against two houses facing the wrong way is a paragraph begging the model to try harder. Telling an agent to build a working minimum is not enough is a campaign promise with no budget. Then it demands a new chunk claimed every run with no cap, which is a filibuster waiting to eat your credits.\n\nFix it: Fix the commit message in purple-agent so it names the real file. Split the one time Paloverde House and Yucca Residence door fix from the standing rules in purple-instructions.txt. Add a hard limit on chunks claimed per run. Replace the vague quality line with checks the agent can actually verify."
-    },
-    {
-      "date": "2026-10-23T11:45:55Z",
-      "repo": "purple-agent",
-      "sha": "47ebab05d8a4acd115e32f2a5af83e760af3259f",
-      "message": "vault",
-      "heckle": "A workflow named vault whose entire job is to take a secret and push it into another repo as a plain base64 file. Base64 is not encryption, champ, it is a costume. .github/workflows/vault.yml uses the NOTES_TOKEN to PUT PURPLE_KEY into key.txt, so the secret that GitHub spent real effort protecting is now one decode away in a repo history forever. The curl prints only a status code and -s hides any failure, so you will not even know if it worked. And the commit message is the single word vault, which tells nobody anything.\n\nFix it: Delete .github/workflows/vault.yml from purple-agent. Keep PURPLE_KEY in GitHub secrets and read it from there, not from a file in a repo. Rewrite the history of the target repo if the key must stay secret. Write a commit message that says what it does."
-    },
-    {
-      "date": "2026-10-23T11:45:55Z",
-      "repo": "purple-vault",
-      "sha": "25b216ee357ec176cb636be5e169bce281fa2429",
-      "message": "key",
-      "heckle": "The commit is called key and the file is key.txt, so at least the naming is honest, unlike the security. key.txt holds a raw token sitting in plain text in a repo history that you can never fully scrub by just deleting the file. It is private today, but private repos get shared, forked, cloned onto phones, and leaked with the confidence of a congressional email. A vault with no lock and a sign saying vault is a bailout for the problem you created yourself one commit earlier.\n\nFix it: Revoke and rotate the token in key.txt right now, because it is burned. Delete key.txt and purge it from purple-vault history. Move the value into a real secret store or the Railway variables for purple-agent. Add key.txt to a gitignore so this cannot repeat."
-    },
-    {
-      "date": "2026-10-23T04:58:37Z",
-      "repo": "purple-agent",
-      "sha": "e949e0a1e493f34eace2d62b818818f2246f92d4",
-      "message": "purple notes",
-      "heckle": "Same commit message as the last one, purple notes, so the history is a wall of identical sticky notes. The run-log.md diff shows the previous run being wiped, including a block of failed model calls with a credit balance too low error, so the one useful clue about why the run died got erased by the next run. That is like shredding the audit before the hearing.\n\nFix it: Make purple-agent append to run-log.md and rotate old files into a logs folder. Keep the failed credit balance entries somewhere so the failure can be found. Use commit messages that carry the turn number and score."
-    },
-    {
-      "date": "2026-10-23T04:58:37Z",
-      "repo": "five-minute-momentum-engine",
-      "sha": "2308a5beb89c04c3101d44c313524bb0406e7e82",
-      "message": "Add Alpaca live data adapter, SPY config, and live runner (no broker login)",
-      "heckle": "Three hundred sixty seven lines of live trading plumbing in one commit, with no test files in the diff, for a system that touches money data. The live runner says keys sit in .env.alpaca, so I will be checking the gitignore with a magnifying glass, because the intern has history. configs/spy.yaml divides the MES point distances by ten by hand and the comments admit it, so one typo in a magic number and the strategy trades a different market. The runner loops forever on weekdays like a congressional recess.\n\nFix it: Add tests for market_data/alpaca.py that use a fake HTTP response. Confirm .env.alpaca is in .gitignore before another push. Compute the SPY distances from mes.yaml in code instead of hand dividing in configs/spy.yaml. Add a stop file or kill switch to scripts/run_live_alpaca.py."
-    },
-    {
-      "date": "2026-10-23T04:58:37Z",
-      "repo": "2026-10-20-orange-dialbeat",
-      "sha": "e96d9916975634b3d03171c128fcd74d04631cfc",
-      "message": "Join stomp box rooms: shared server clock, room transport, tempo sync, heartbeat, roster",
-      "heckle": "One commit crams a shared server clock, room transport, tempo sync, heartbeat and roster into a single index.html, like jamming five unrelated riders into a must pass bill. Ninety two lines of networking sit in the same file as the markup and the Dial Queue header, and the new rmpill span carries inline styles with a hardcoded white on a variable color, so contrast and theming are an afterthought. Tempo sync over a heartbeat with no test is a recipe for drift.\n\nFix it: Pull the room and clock code out of index.html into its own script file. Move the inline styles on the rmpill span into the stylesheet. Add a test for tempo sync that fakes a late heartbeat. Make the heartbeat reconnect with backoff."
-    },
-    {
-      "date": "2026-10-23T04:58:37Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "72b25ab4394c6522059d17068031b3691094d93e",
-      "message": "agent-orange 2026-10-23T020722 (#31)",
-      "heckle": "A merged pull request whose entire contribution, contrib/agent-orange/2026-10-23T020722.json, has no patch at all, so you approved and merged nothing, with a title and a number, like a ribbon cutting for a bridge that was never built. The review process is a rubber stamp that applauds an empty box.\n\nFix it: Make the merge workflow in 2026-10-18-orange-testbed refuse pull requests with no changed lines. Have the agent submit script check that the file has content before it opens the pull request. Close empty pull requests automatically."
     }
   ]
 }
