@@ -266,7 +266,18 @@
   "sudosilo/song-offset-listener@v2026.10.30",
   "sudosilo/song-offset-listener@v2026.10.28",
   "sudosilo/2026-10-23-orange-smash@v2026.10.30",
-  "sudosilo/gladhand-dockyard@v2026.10.30"
+  "sudosilo/gladhand-dockyard@v2026.10.30",
+  "sudosilo/a-canticle-for-pajamastan@v2026.10.31",
+  "sudosilo/algorithm-albatross@v2026.10.31",
+  "sudosilo/tomatomo@v2026.10.31",
+  "sudosilo/coffee-autosim@v2026.10.30",
+  "sudosilo/mill-ionaire@v2026.10.30",
+  "sudosilo/field-twin@v2026.10.31",
+  "sudosilo/mohavetech-website@v2026.10.31",
+  "sudosilo/mind-globe@v2026.10.31",
+  "sudosilo/fogwarren-vx@v2026.10.31",
+  "sudosilo/aliens-win@v2026.10.31",
+  "sudosilo/kat-chat@v2026.10.31"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -908,11 +919,10 @@
    ]
   },
   "sudosilo/kat-chat": {
-   "d": "Private group chat app with reactions, voice notes, chess, GIFs, and notifications.",
+   "d": "A private group chat app with reactions, voice notes, chess, GIFs, and notifications.",
    "h": "https://kat-chat-flame.vercel.app",
    "t": [
     "chat",
-    "pwa",
     "tool",
     "vercel"
    ]
@@ -958,14 +968,13 @@
    ]
   },
   "sudosilo/mind-globe": {
-   "d": "3D globe where your notes become land, with a backend that saves them.",
+   "d": "A 3D globe where your notes become land.",
    "h": "https://ming-globe.vercel.app",
    "t": [
-    "3d",
     "map",
-    "notes",
     "railway",
-    "vercel"
+    "threejs",
+    "tool"
    ]
   },
   "sudosilo/rie-api": {
@@ -1057,10 +1066,9 @@
    ]
   },
   "sudosilo/coffee-autosim": {
-   "d": "Live blueprint simulator of a coffee shop floor where baristas fill tickets on their own.",
+   "d": "A live blueprint simulator of a coffee shop floor with baristas.",
    "h": "https://coffee-autosim.vercel.app",
    "t": [
-    "coffee",
     "restaurant-tech",
     "simulator",
     "vercel"
@@ -1097,10 +1105,9 @@
    ]
   },
   "sudosilo/aliens-win": {
-   "d": "Arcade shooter where you fly a UFO and fire lasers through waves of targets.",
+   "d": "An arcade shooter where you fly a UFO against waves.",
    "h": "https://aliens-win.vercel.app",
    "t": [
-    "arcade",
     "game",
     "shooter",
     "vercel"
@@ -1357,13 +1364,11 @@
    ]
   },
   "sudosilo/fogwarren-vx": {
-   "d": "A retro desktop style fog of war maze game with mines, pitfalls, and a hidden picture.",
+   "d": "A retro desktop fog of war maze game with mines and a hidden picture.",
    "h": "https://fogwarren-vx.vercel.app",
    "t": [
     "game",
     "maze",
-    "puzzle",
-    "retro",
     "vercel"
    ]
   },
@@ -1478,10 +1483,9 @@
    ]
   },
   "sudosilo/mohavetech-website": {
-   "d": "A single page index of the apps on this account, with many scene views",
+   "d": "An index page that lists every app with its age, phone tags, and notes.",
    "h": "https://mohavetech-website.vercel.app",
    "t": [
-    "dashboard",
     "index",
     "tool",
     "vercel"
@@ -1518,11 +1522,11 @@
    ]
   },
   "sudosilo/field-twin": {
-   "d": "A phone friendly field log for stops, receipts, and miles",
+   "d": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
    "h": "https://field-twin-teal.vercel.app",
    "t": [
-    "field-log",
-    "mileage",
+    "field-service",
+    "map",
     "tool",
     "vercel"
    ]
@@ -1599,7 +1603,7 @@
    ]
   },
   "sudosilo/mill-ionaire": {
-   "d": "A letter shop tycoon built around a simulated knee mill that grows into a factory floor",
+   "d": "A letter shop tycoon built around a simulated knee mill that grows into a factory.",
    "h": "https://mill-ionaire.vercel.app",
    "t": [
     "game",
@@ -1714,6 +1718,35 @@
     "backend",
     "scores",
     "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/a-canticle-for-pajamastan": {
+   "d": "A top down action role playing game set in Pajamastan with spells, quests, and a shared relay.",
+   "h": "https://a-canticle-for-pajamastan.vercel.app",
+   "t": [
+    "game",
+    "pajamastan",
+    "rpg",
+    "vercel"
+   ]
+  },
+  "sudosilo/algorithm-albatross": {
+   "d": "Finds instrumental skeletons and cover pairs in songs, with bar by bar comparison and a tempo sweep.",
+   "h": "",
+   "t": [
+    "analysis",
+    "audio",
+    "music",
+    "tool"
+   ]
+  },
+  "sudosilo/tomatomo": {
+   "d": "A pocket pet handheld game where you hatch, feed, and raise a pet.",
+   "h": "https://tomatomo.vercel.app",
+   "t": [
+    "game",
+    "pet",
     "vercel"
    ]
   }
