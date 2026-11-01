@@ -43,6 +43,7 @@ button { background: none; border: 0; cursor: pointer; }
 #stage canvas { display: block; width: 100%; height: 100%; }
 
 #hud { position: absolute; top: 10px; left: 12px; font-size: 10.5px; letter-spacing: .06em; color: var(--ink-2); line-height: 1.75; pointer-events: none; }
+#world-btn { pointer-events: auto; margin-top: 6px; border: 1.5px solid var(--accent); border-radius: 999px; background: var(--card); color: var(--accent); font-size: 11px; letter-spacing: .08em; padding: 6px 12px; min-height: 32px; }
 #sync { display: flex; align-items: center; gap: 6px; }
 #sync .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-3); }
 #sync.ok .dot { background: var(--ok); }
@@ -66,6 +67,12 @@ button { background: none; border: 0; cursor: pointer; }
 .btn.danger { border: 1.5px solid var(--bad); color: var(--bad); }
 .btn.danger.armed { background: var(--bad); color: var(--card); }
 .btn.slim { flex: none; }
+.row.tight .btn { padding: 0 8px; letter-spacing: .07em; }
+.s-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.chip { font-size: 11px; border: 1px solid var(--line); background: #fffdf8; border-radius: 999px; padding: 5px 10px; color: var(--ink-2); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chip b { color: var(--accent); font-weight: 700; margin-right: 4px; }
+#sheet.linking { border-color: var(--ok); }
+#sheet.linking .s-kicker { color: var(--ok); }
 
 .seg { display: flex; border: 1.5px solid var(--line); border-radius: 8px; overflow: hidden; margin-top: 10px; }
 .seg button { flex: 1; padding: 9px 4px; font-size: 11px; color: var(--ink-2); border-right: 1px solid var(--line); }
@@ -129,6 +136,7 @@ button { background: none; border: 0; cursor: pointer; }
   <div id="hud">
     <div id="sync"><span class="dot"></span><span id="sync-text">Loading</span></div>
     <div id="stats"></div>
+    <button id="world-btn"></button>
   </div>
   <div id="zoom">
     <button class="zbtn" id="zin" aria-label="Zoom in">+</button>
@@ -187,8 +195,15 @@ const SIZES = {
 // Elevation to color stops. Lone notes stay sandy, clusters climb to grass, forest, rock, snow.
 const TERRAIN = [
   [SEA, 0xeadaa8], [0.85, 0xdcc78e], [1.15, 0xa9c46e], [1.6, 0x77a24f],
-  [2.2, 0x557f3e], [2.9, 0x8c7c66], [3.6, 0xb4a896], [4.2, 0xf7f4ee],
+  [2.2, 0x557f3e], [2.9, 0x8c7c66], [3.7, 0xa89c88], [4.3, 0xd9d3c8], [4.7, 0xfbf9f4],
 ];
+// Longer notes carry more mass: wider land and a taller peak in the middle.
+function massOf(n) { return clamp((n.text || '').length / 240, 0, 2.6); }
+function noteRad(n) { return SIZES[n.size].rad * (1 + massOf(n) * 0.1); }
+function terrainWord(len) {
+  const e = 1 + clamp(len / 240, 0, 2.6) * 1.5;
+  return e < 1.2 ? 'sandy island' : e < 2.3 ? 'green hills' : e < 3.7 ? 'mountain' : 'snow peak';
+}
 const DEEP = new THREE.Color(0x4d82b2);
 const SHALLOW = new THREE.Color(0x9dcbe0);
 
@@ -270,9 +285,9 @@ let kernels = [];
 function buildKernels() {
   const out = [];
   for (const n of notes.values()) {
-    const rad = SIZES[n.size].rad;
+    const rad = noteRad(n);
     const v = toDir(n.lat, n.lon);
-    out.push({ pt: true, x: v.x, y: v.y, z: v.z, rad, cosMax: Math.cos(rad * 1.4), w: 1 });
+    out.push({ pt: true, x: v.x, y: v.y, z: v.z, rad, cosMax: Math.cos(rad * 1.4), w: 1, peak: massOf(n) * 1.5 });
     const p = n.parent && notes.get(n.parent);
     if (p) {
       const a = toDir(p.lat, p.lon), b = v;
@@ -280,23 +295,91 @@ function buildKernels() {
       if (nrm.length() < 1e-6) continue;
       nrm.normalize();
       const arc = angleBetween(a, b);
-      const rr = Math.min(rad, SIZES[p.size].rad) * 0.55;
+      const rr = Math.min(rad, noteRad(p)) * 0.55;
       const mid = a.clone().add(b).normalize();
       out.push({ pt: false, a, b, n: nrm, arc, mid, rad: rr, cosLim: Math.cos(arc / 2 + rr * 1.4), w: 0.7 });
     }
   }
   return out;
 }
+// ---------- world presets: the ground the notes are raised on ----------
+const WORLDS = { ocean: 'Open ocean', earth: 'Earth', checker: 'Checkerboard' };
+const WORLD_KEY = 'mindglobe.world';
+let world = 'ocean';
+try { const w = localStorage.getItem(WORLD_KEY); if (WORLDS[w]) world = w; } catch (e) {}
+// Earth land mask, 1 degree cells, rasterized from Natural Earth 1:50m land.
+const MASK_W = 360, MASK_H = 180;
+const EARTH = (() => {
+  const raw = atob('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAfwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/P8/AGD//z8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8//+F/////3/5AAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPAH8H/+//////8HAAAAAAAAADSAAQAAAB8AAAAAAAAAAAAAAAAAAAAAAAAAAPD//wf4//////8BAACAdT8AAAAAAAAAAP4AAAAAAAAAAAAAAAAAAAAAAAB4+Jzn//D//////38AAACAewMAAAAAAAAAAAAfAAAAAAAAAAAAAAAAAAAAAIA4BHAyO0D8/////38AAAAAPAoAAAAAAAAAAAA4AAAAAAAAAAAAAAAAAAAAAFhAmPPVH4D//////z8AAAAAAAAAAAAA4AEAAAD8HwAAAAAAAAAAAAAAAAAAAAD/Az/fDwAA/P////8BAAAAAAAAAADABwAAwP//PwAA4FsAAAAAAAAAAAAAAAQMAAQQAAAA8P////8BAAAAAAAAAABwAAAA+P//FwAAAAAAAAAAAAAAAAAAAP8BxvMxfwAA8P///3cAAAAAAAAAAAAcAIDh//9/3IcLAAcAAAAAAAAAAAAAgN9/xy+8xwEA4P///zcAAAAAAAAAAAAGAJ7i//////8fAD4AAAAA/P///////zgB8J0DAPT/XwAAAOL////////////x/5CBAAAAAADghgD4////AADwTwAAAADwH/D4//8AwP7/fxEAAAAAANgHAAAAgN9/////////////DwAAAAD+//+Bvob/H9SBof8AwP7//w8AAAAAoP8PAAAAD9///////////////48//D8AAAAAAAD08Dcy/AP+fwAAAP//////FwAA/PyFAAECAAAAAAAAAAAAAAAA4P8AAAAAAACAABAQeA7wPwAA+P//////DwAA4A4AADAAAAAAAAAAAAAAAAAAAH4PAAAAAAAAAABg/gPAPwAA/v//////AQBg4AAAAAwAAAAAAAAAAAAAAAAADg8AAAAAAAAAAACo/wPmfwDw/y/A////AByADwAAAAAAAAAAAAAAAAAAAAAAwAD4///////////Pw/gHAP4PAMA/AACA//F//v////////////////////8fAAP4///////////BAGAHAP4HAAADAACw//z///////////////////////9/AID//////////38AQ4AJAPwDAAAAAAD8P/7/////////////////////f/5fAMD//////////z8AwA8AAPgDAAAAAAD+H/z/////////////////////Mf8BAID/7/z//////x8AwD8AAMAAAAAAAAT+P7z+//////////////////9/wG8AAAD8AwD//////x8AwD8IAAAAAAAAAAC+P2D///////////////////91cAAAAACACwD4/////38AwP8eAAAAAAAAgAGcH/T//////////////////wEAOAAAAACADgDw/////38AgP8/AAAAAAAA4AMAX/T//////////////////wAAfgAAAAAwAABA//////8PgP8/AAAAAAAAgAFwHv7/////////////////PwAAfwAAAAAAAABA//////8/gP//AAAAAAAAgAPwAv7/////////////////DwAAPwAAAIAAAAAA/P//////8///AwAAAAAAcAcgcv//////////////////HwAAHwAAAAAAAACA/P//////4///DwAAAAAAPA7o/////////////////////wEADwAAAAAAAAAA8f//////4///DwAAAAAAPD/+/////////////////////wUAAwAAAAAAAAAA8P//////////FwAAAAAAAB///////////////////////wUAAwAAAAAAAAAAkP//////////CAAAAAAAgMD//////////////////////wwAAAAAAAAAAAAAYP////////8xLAAAAAAAAPT//////////////////////wwAAAAAAAAAAAAAAP///////38PfAAAAAAAgP///////////////////////wQAAAAAAAAAAAAAAP3///////8HUAAAAAAAAPz/////////////////////fwQAAAAAAAAAAAAAAP////////+XAAAAAAAAAPz////3/B/+////////////PwgAAAAAAAAAAAAAAP////////9/AAAAAAAAAPj//f9j/A/+////////////HwAAAAAAAAAAAAAAAP////////8MAAAAAAAAAPj/+P8B/Mf/////////////DwQAAAAAAAAAAAAAAP///////z8AAAAAAAAAcPzH4/8B8I//////////////Bx4AAAAAAAAAAAAAAP///////x8AAAAAAAAA+H+gw/8AwA/+//////////9/AAQAAAAAAAAAAAAAAP///////x8AAAAAAAAA+D8Ajv/w4B/8//////////8/AAAAAAAAAAAAAAAAAP///////wMAAAAAAAAA+B8wuA/+/z/+/////////98fAAMAAAAAAAAAAAAAAP///////wMAAAAAAAAA+E8wEIf//x/+/////////2cOAAMAAAAAAAAAAAAAAP7//////wEAAAAAgAAA+A8AEM7//x/8/////////wMOAAMAAAAAAAAAAAAAAPz//////wAAAAAAAAAA+AcABoT//x/8/////////zcYgAEAAAAAAAAAAAAAAPz//////wAAAAAAAAAAQOB/AAA2/////////////x8Y8AEAAAAAAAAAAAAAAPj//////wAAAAAAAAAAQPh/AAAA/////////////w8c/AAAAAAAAAAAAAAAAPj/////fwAAAAAAAAAA4P8/AAAA/////////////w+EGwAAAAAAAAAAAAAAAMD/////HwAAAAAAAAAA8P9/AACA/////////////x/EAwAAAAAAAAAAAAAAAID/////BwAAAAAAAAAA+P//BweA/////////////x+AAAAAAAAAAAAAAAAAAID9////BwAAAAAAAAAA/P//D3/A/////////////x9AAAAAAAAAAAAAAAAAAAD5////BwAAAAAAAAAA/P//f////////////////x8AAAAAAAAAAAAAAAAAAAD2/x8CBgAAAAAAAAAA/P/////v/4///////////z8AAAAAAAAAAAAAAAAAAAD0/wcABgAAAAAAAAAA/v///////4///////////z8AAAAAAAAAAAAAAAAAAADu/wcADgAAAAAAAACA//////8//x/+/////////x8AAAAAAAAAAAAAAAAAAACY/wcADAAAAAAAAADA//////8//z/g/////////w8AAAAAAAAAAAAAAAAAAACQ/wcACAAAAAAAAADg//////9//j+Av////////w8AAAAAAAAAAAAAAAAAAAAQ/wMAAAAAAAAAAADg//////9//n8YgP///////yMAAAAAAAAAAAAAAAAAAABA/gMAAAAAAAAAAADw////////+P9/AP///////xEAAAAAAAAAAAAAAAAAAAAA/AMAPQAAAAAAAADw////////+P//APz/////PxAAAAAAAAAAAAAAAAAAAAAA+AMIYAAAAAAAAAD4////////+f9/AOz/B///BAAAAAAAAAAAAAAAAAAAAAAA/AccgAEAAAAAAADw////////8f9/AOD/B/5/BAAAAAAAAAAAAAAAAQAAAAAA+A8eADgAAAAAAADw////////4f8/AOD/Afw/BgAAAAAAAAAAAAAAAAAAAAAA8J8OAPwAAAAAAADw////////4/8fAOD/APw/AgAAAAAAAAAAAAAAAAAAAAAAgP8PAAAAAAAAAADw////////x/8HAOB/APh/ADAAAAAAAAAAAAAAAAAAAAAAAP4PAAAAAAAAAADw////////h/8BAOA/AMz/ADAAAAAAAAAAAAAAAAAAAAAAAID/AAAAAAAAAAD4////////j/8AAMAPAMD/ARAAAAAAAAAAAAAAAAAAAAAAAAD/AQAAAAAAAAD4////////nx8AAMAPAMD/ATAAAAAAAAAAAAAAAAAAAAAAAAD4AAAAAAAAAAD4////////vwcAAIAPAMD+AdAAAAAAAAAAAAAAAAAAAAAAAADgAAAAAAAAAAD4////////fwACAIAPAID8AQABAAAAAAAAAAAAAAAAAAAAAADAAEgAAAAAAADg////////f0AAAAAPAID4AUADAAAAAAAAAAAAAAAAAAAAAADAAe8TAAAAAADg/////////34AAAAPAEBwAAgAAAAAAAAAAAAAAAAAAAAAAAAAE+9/AAAAAADA/////////38AAAAXAEAgAAQCAAAAAAAAAAAAAAAAAAAAAAAAz///AAAAAACA/////////z8AAAASAMAAAIADAAAAAAAAAAAAAAAAAAAAAAAAyP//AQAAAAAA/////////z8AAAAwAIAAAAAHAAAAAAAAAAAAAAAAAAAAAAAAgP//AwAAAAAA/n///////x8AAAAwAAADAAMDAAAAAAAAAAAAAAAAAAAAAAAAgP//fwAAAAAA/A/+/////x8AAAAAAAgHgAcAAAAAAAAAAAAAAAAAAAAAAAAAgP///wAAAAAAEADk/////w8AAAAAADAGwAcAAAAAAAAAAAAAAAAAAAAAAAAAgP///wEAAAAAAADA/////wcAAAAAAGAG4AEAAAAAAAAAAAAAAAAAAAAAAAAAwP///wEAAAAAAADA/////wMAAAAAAMAM+AMQAAAAAAAAAAAAAAAAAAAAAAAA4P///wMAAAAAAADA/////wAAAAAAAIAL/gMQAAAAAAAAAAAAAAAAAAAAAAAA8P///wEAAAAAAADg////fwAAAAAAAIAH/uMQAAAAAAAAAAAAAAAAAAAAAAAA8P///w8AAAAAAADg////PwAAAAAAAAAX/gNIAQAAAAAAAAAAAAAAAAAAAAAA+P//f3cAAAAAAADg////PwAAAAAAAAAO/DkIAwAAAAAAAAAAAAAAAAAAAAAA+P///3sAAAAAAADA////HwAAAAAAAAB+/DkA8AEAAAAAAAAAAAAAAAAAAAAA+P////8fAAAAAACA////DwAAAAAAAAA8gChE/g8AAAAAAAAAAAAAAAAAAAAA+P////8/AAAAAAAA////BwAAAAAAAAA4AAAA8B8AAAAAAAAAAAAAAAAAAAAA+P//////AQAAAAAA////BwAAAAAAAAAwAAgAxD8NAAAAAAAAAAAAAAAAAAAA8P//////AQAAAAAA////BwAAAAAAAADAAQAAhP+AAAAAAAAAAAAAAAAAAAAA8P//////AQAAAAAA/v//BwAAAAAAAACAHwCAwH8AAAAAAAAAAAAAAAAAAAAA4P//////AQAAAAAA/v//BwAAAAAAAAAAgN8EAMcAAAAAAAAAAAAAAAAAAAAAwP//////AAAAAAAA/v//DwAAAAAAAAAAAAgBAIAFAAAAAAAAAAAAAAAAAAAAwP//////AAAAAAAA/P//DwAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAgP////9/AAAAAAAA/P//DwAAAAAAAAAAAABAAQQgAAAAAAAAAAAAAAAAAAAAgP////8/AAAAAAAA/v//HyAAAAAAAAAAAACAHwQAAAAAgAAAAAAAAAAAAAAAAP////8fAAAAAAAA/v//HzAAAAAAAAAAAADADwwAAAAAAAAAAAAAAAAAAAAAAP////8fAAAAAAAA////HzAAAAAAAAAAAADMDxwAAAAAAAAAAAAAAAAAAAAAAP7///8fAAAAAAAA////HzwAAAAAAAAAAAD/Dx4AAAAAAAAAAAAAAAAAAAAAAPj///8fAAAAAAAA////Dz8AAAAAAAAAAID/vx4AAAiAAAAAQAAAAAAAAAAAAOD///8fAAAAAAAA////Ax8AAAAAAAAAAMD//z4AAAAAAAAAAAAAAAAAAAAAAMD///8PAAAAAAAA////AR8AAAAAAAAAAMD//z8AAAAAAAAAAAAAAAAAAAAAAMD///8PAAAAAAAA/v9/AB8AAAAAAAAAAOD///8AAAAAAAAAAAAAAAAAAAAAAMD///8PAAAAAAAA/v9/AB8gAAAAAAAAAPz///8BAAEAAAAAAAAAAAAAAAAAAMD///8HAAAAAAAA/P9/gA8AAAAAAAAAgP////8BAAIAAAAAAAAAAAAAAAAAAMD///8DAAAAAAAA/P//gA8AAAAAAAAAwP////8DAAAAAAAAAAAAAAAAAAAAAMD//38AAAAAAAAA/P9/AA8AAAAAAAAAwP////8HAAAAAAAAAAAAAAAAAAAAAOD//x8AAAAAAAAA+P9/AAcAAAAAAAAA4P////8PAAAAAAAAAAAAAAAAAAAAAOD//wcAAAAAAAAA+P8fAAIAAAAAAAAAwP////8fAAAAAAAAAAAAAAAAAAAAAOD//wcAAAAAAAAA+P8fAAAAAAAAAAAA4P////8fAAAAAAAAAAAAAAAAAAAAAOD//w8AAAAAAAAA+P8fAAAAAAAAAAAAwP////8/AAAAAAAAAAAAAAAAAAAAAOD//wcAAAAAAAAA8P8PAAAAAAAAAAAAgP////8/AAAAAAAAAAAAAAAAAAAAAOD//wMAAAAAAAAA4P8HAAAAAAAAAAAAgP////8fAAAAAAAAAAAAAAAAAAAAAPD//wMAAAAAAAAA4P8HAAAAAAAAAAAAgP////8fAAAAAAAAAAAAAAAAAAAAAPD//wAAAAAAAAAAwP8DAAAAAAAAAAAAAP////8fAAAAAAAAAAAAAAAAAAAAAOD//wAAAAAAAAAAwP8BAAAAAAAAAAAAAP8D/P8PAAAAAAAAAAAAAAAAAAAAAPD/fQAAAAAAAAAAwH8AAAAAAAAAAAAAAP8A2P8HAAAAAAAAAAAAAAAAAAAAAPD/OwAAAAAAAAAAgAAAAAAAAAAAAAAAAAcA6P8HAAAAAAAAAAAAAAAAAAAAAPj/BwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwP8DAAACAAAAAAAAAAAAAAAAAPj/BwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8DAAAEAAAAAAAAAAAAAAAAAPz/BwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8DAAAIAAAAAAAAAAAAAAAAAPz/AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgAAAA4AAAAAAAAAAAAAAAAAPg/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAAAPw/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAPwHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAAAAALAAAAAAAAAAAAAAAAAPgPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAAAIADAAAAAAAAAAAAAAAAAPgHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAMABAAAAAAAAAAAAAAAAAPgHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAAAAAP4BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHgAAAAAAAAAAAAAAAAAAP4BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAPwDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP0BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP4AAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHwAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANADAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAMAfAAAAAAB/eADGPwAAQAAAAAAAAAAAAAAAAAAAAIADAAAAAAAAAAAAAAAAAOT/AQCA/////////w8AAAAAAAAAAAAAAAAAAAAAAAAWAAAAAAAAAAAAAAAA4P///wP4//////////8HAAAAAAAAAAAAAAAAAAAAALgfAAAAAAAAAAAAAABg8P///wH/////////////DwAAAAAAAAAAAAAAAAAAAGA/AAAAAAAAAAA4fwL+/////+H/////////////XwAAAAAAAAAAAAAAAAAAAPg+AAAAAAAA9/f///////////j//////////////38AAAAAAAAAAAAAAA4AAHh+AAAAAAAA////////////f/7//////////////x8AAAAAAAAAIAAAAP9/WPp/AAAAAADw/////////////////////////////wcAAAAAAAAAEeA3AP////9/AAAAAAD8////////////////////////////fwEAAAAAAID///////////8PAAAAAID+////////////////////////////PwAAAAAAAP7//////////z8AAAAAgP//////////////////////////////fwAAAADAH////////////wMAAAAA/P///////////////////////////////xwAAAAA////////////fAABAPwA/////////////////////////////////wcAAAAe4P///////////zAAAPwBwP//////////////////////////////DwAA////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////');
+  let f = new Float32Array(MASK_W * MASK_H);
+  for (let i = 0; i < f.length; i++) f[i] = (raw.charCodeAt(i >> 3) >> (i & 7)) & 1;
+  for (let pass = 0; pass < 2; pass++) {
+    const g = new Float32Array(f.length);
+    for (let r = 0; r < MASK_H; r++) for (let c = 0; c < MASK_W; c++) {
+      let sum = 0, n = 0;
+      for (let dr = -1; dr <= 1; dr++) {
+        const rr = r + dr;
+        if (rr < 0 || rr >= MASK_H) continue;
+        for (let dc = -1; dc <= 1; dc++) { sum += f[rr * MASK_W + (c + dc + MASK_W) % MASK_W]; n++; }
+      }
+      g[r * MASK_W + c] = sum / n;
+    }
+    f = g;
+  }
+  return f;
+})();
+function earthAt(x, y, z) {
+  const lat = Math.asin(clamp(y, -1, 1)) / D2R, lon = Math.atan2(x, z) / D2R;
+  const fr = clamp(90 - lat - 0.5, 0, MASK_H - 1.001), fc = lon + 180 - 0.5;
+  const r0 = Math.floor(fr), c0 = Math.floor(fc), tr = fr - r0, tc = fc - c0;
+  const r1 = Math.min(r0 + 1, MASK_H - 1), ca = (c0 + MASK_W) % MASK_W, cb = (c0 + 1 + MASK_W) % MASK_W;
+  const top = EARTH[r0 * MASK_W + ca] * (1 - tc) + EARTH[r0 * MASK_W + cb] * tc;
+  const bot = EARTH[r1 * MASK_W + ca] * (1 - tc) + EARTH[r1 * MASK_W + cb] * tc;
+  return top * (1 - tr) + bot * tr;
+}
+// Checkerboard on a cube wrapped onto the sphere: squares stay square near the poles.
+const CHECK_N = 6;
+function checkerAt(x, y, z) {
+  const ax = Math.abs(x), ay = Math.abs(y), az = Math.abs(z);
+  let face, u, v;
+  if (ax >= ay && ax >= az) { face = x > 0 ? 0 : 1; u = z / ax; v = y / ax; }
+  else if (ay >= az) { face = y > 0 ? 2 : 3; u = x / ay; v = z / ay; }
+  else { face = z > 0 ? 4 : 5; u = x / az; v = y / az; }
+  const a = (Math.atan(u) * 4 / Math.PI + 1) / 2 * CHECK_N, b = (Math.atan(v) * 4 / Math.PI + 1) / 2 * CHECK_N;
+  const iu = Math.min(CHECK_N - 1, Math.floor(a)), iv = Math.min(CHECK_N - 1, Math.floor(b));
+  const edge = Math.min(a - iu, iu + 1 - a, b - iv, iv + 1 - b);
+  const land = (iu + iv + face) % 2 === 0;
+  const m = smooth01(edge / 0.07);
+  return land ? 0.1 + 1.2 * m : 0.1 - 0.1 * m;
+}
+function baseAt(x, y, z, nz) {
+  if (world === 'earth') { const m = earthAt(x, y, z); return Math.max(0, SEA + (m - 0.5) * 1.9 + nz * (0.12 + 0.3 * m)); }
+  if (world === 'checker') return checkerAt(x, y, z);
+  return 0;
+}
+function setWorld(w) {
+  world = w;
+  try { localStorage.setItem(WORLD_KEY, w); } catch (e) {}
+  rebuildTerrain();
+  renderSheet();
+  renderAtlas();
+}
+$('world-btn').addEventListener('click', () => {
+  const keys = Object.keys(WORLDS);
+  setWorld(keys[(keys.indexOf(world) + 1) % keys.length]);
+  toast('World: ' + WORLDS[world]);
+});
+
 const _p = new THREE.Vector3(), _c = new THREE.Vector3();
 function elevAt(x, y, z, nz) {
-  let e = 0;
+  let e = baseAt(x, y, z, nz);
   const warp = 1 + 0.35 * nz;
   for (const k of kernels) {
     if (k.pt) {
       const d = x * k.x + y * k.y + z * k.z;
       if (d < k.cosMax) continue;
       const t = Math.acos(d > 1 ? 1 : d) / (k.rad * warp);
-      if (t < 1) { const q = 1 - t * t; e += q * q * k.w; }
+      if (t < 1) { const q = 1 - t * t, q2 = q * q; e += q2 * k.w + k.peak * q2 * q2 * q2; }
     } else {
       if (x * k.mid.x + y * k.mid.y + z * k.mid.z < k.cosLim) continue;
       _p.set(x, y, z);
@@ -316,7 +399,7 @@ function elevAt(x, y, z, nz) {
   }
   return e;
 }
-function heightOf(e) { return e < SEA ? 0 : Math.min(e - SEA, 4.2) * 0.036; }
+function heightOf(e) { return e < SEA ? 0 : Math.min(e - SEA, 5) * 0.042; }
 const _col = new THREE.Color(), _c2 = new THREE.Color();
 function colorOf(e, nz) {
   if (e < SEA) {
@@ -419,16 +502,155 @@ function placePin() {
   dirty = true;
 }
 
+// ---------- connections: airstrips and planes ----------
+const air = new THREE.Group();
+globe.add(air);
+const STRIP_LEN = 0.13, STRIP_W = 0.03;
+const stripGeo = new THREE.BoxGeometry(STRIP_W, 0.006, STRIP_LEN);
+const stripeGeo = new THREE.BoxGeometry(0.004, 0.0075, STRIP_LEN * 0.78);
+const stripMat = new THREE.MeshPhongMaterial({ color: 0x4d4741, shininess: 4 });
+const stripeMat = new THREE.MeshBasicMaterial({ color: 0xf7f2e6 });
+const routeMat = new THREE.LineDashedMaterial({ color: 0x6b5c45, dashSize: 0.035, gapSize: 0.03, transparent: true, opacity: 0.5 });
+const planeParts = (() => {
+  const body = new THREE.MeshPhongMaterial({ color: 0xfffaf0, shininess: 40 });
+  const trim = new THREE.MeshPhongMaterial({ color: 0xb55a1c, shininess: 20 });
+  return [
+    [new THREE.BoxGeometry(0.014, 0.014, 0.075), body, 0, 0, 0],
+    [new THREE.BoxGeometry(0.085, 0.003, 0.02), trim, 0, 0, 0.006],
+    [new THREE.BoxGeometry(0.032, 0.003, 0.012), trim, 0, 0.002, -0.031],
+    [new THREE.BoxGeometry(0.003, 0.018, 0.014), body, 0, 0.01, -0.03],
+  ];
+})();
+function makePlane() {
+  const g = new THREE.Group();
+  for (const [geo, mat, x, y, z] of planeParts) { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); g.add(m); }
+  return g;
+}
+const _m4 = new THREE.Matrix4(), _bx = new THREE.Vector3(), _by = new THREE.Vector3(), _bz = new THREE.Vector3();
+function orient(obj, up, fwd) {
+  _by.copy(up).normalize();
+  _bz.copy(fwd).addScaledVector(_by, -_by.dot(fwd));
+  if (_bz.lengthSq() < 1e-12) return;
+  _bz.normalize();
+  _bx.crossVectors(_by, _bz);
+  obj.quaternion.setFromRotationMatrix(_m4.makeBasis(_bx, _by, _bz));
+}
+function tangentToward(a, b) {
+  const t = b.clone().addScaledVector(a, -a.dot(b));
+  if (t.lengthSq() < 1e-10) t.crossVectors(a, Math.abs(a.y) > 0.9 ? new THREE.Vector3(1, 0, 0) : UP);
+  return t.normalize();
+}
+function rotateToward(a, dir, ang) { return a.clone().multiplyScalar(Math.cos(ang)).addScaledVector(dir, Math.sin(ang)).normalize(); }
+function slerpDir(a, b, ang, t, out) {
+  if (ang < 1e-4) return out.copy(a).lerp(b, t).normalize();
+  const s = Math.sin(ang);
+  return out.copy(a).multiplyScalar(Math.sin((1 - t) * ang) / s).addScaledVector(b, Math.sin(t * ang) / s).normalize();
+}
+function smooth01(x) { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); }
+function linkedPairs() {
+  const out = new Map();
+  for (const n of notes.values()) for (const id of n.links) {
+    if (!notes.has(id) || id === n.id) continue;
+    const pair = n.id < id ? [n.id, id] : [id, n.id];
+    out.set(pair.join('|'), pair);
+  }
+  return [...out.values()];
+}
+// Airstrips are placed before the mesh is built so the ground under them can be graded flat.
+let strips = new Map();
+let flights = [];
+function planStrips() {
+  strips = new Map();
+  for (const n of notes.values()) {
+    const targets = n.links.filter(id => notes.has(id)).sort();
+    if (!targets.length) continue;
+    const a = toDir(n.lat, n.lon), tgt = notes.get(targets[0]), tv = toDir(tgt.lat, tgt.lon);
+    const f0 = tangentToward(a, tv);
+    let d = noteRad(n) * 0.5, c = rotateToward(a, f0, d);
+    for (let i = 0; i < 6 && elevAt(c.x, c.y, c.z, fbm(c.x, c.y, c.z)) < SEA + 0.25; i++) { d *= 0.72; c = rotateToward(a, f0, d); }
+    const e = elevAt(c.x, c.y, c.z, fbm(c.x, c.y, c.z));
+    strips.set(n.id, { c, f: tangentToward(c, tv), r: R + heightOf(Math.max(e, SEA + 0.05)) });
+  }
+}
+function gradeStrips(H) {
+  const inner = 0.042, outer = 0.07, cosOuter = Math.cos(outer);
+  for (const s of strips.values()) {
+    const h0 = s.r - R;
+    for (let u = 0; u < U; u++) {
+      if (E[u] < SEA) continue;
+      const d = UX[u] * s.c.x + UY[u] * s.c.y + UZ[u] * s.c.z;
+      if (d < cosOuter) continue;
+      const ang = Math.acos(d > 1 ? 1 : d);
+      const b = ang <= inner ? 1 : 1 - smooth01((ang - inner) / (outer - inner));
+      H[u] += (h0 - H[u]) * b;
+    }
+  }
+}
+function flightPoint(fl, t, out) {
+  slerpDir(fl.A.c, fl.B.c, fl.arc, t, out);
+  const lift = smooth01(t / 0.24) * smooth01((1 - t) / 0.24);
+  return out.multiplyScalar(fl.A.r + (fl.B.r - fl.A.r) * t + 0.012 + lift * fl.cruise);
+}
+function buildAir() {
+  for (const ch of [...air.children]) { air.remove(ch); if (ch.isLine) ch.geometry.dispose(); }
+  flights = [];
+  for (const s of strips.values()) {
+    const m = new THREE.Group();
+    m.add(new THREE.Mesh(stripGeo, stripMat), new THREE.Mesh(stripeGeo, stripeMat));
+    orient(m, s.c, s.f);
+    m.position.copy(s.c).multiplyScalar(s.r + 0.003);
+    air.add(m);
+  }
+  for (const [ia, ib] of linkedPairs()) {
+    const A = strips.get(ia), B = strips.get(ib);
+    if (!A || !B) continue;
+    const arc = angleBetween(A.c, B.c);
+    const fl = { A, B, arc, cruise: 0.08 + Math.min(0.34, arc * 0.4), dur: 3400 + arc * 5600, phase: hash3(ia.length * 31 + ib.charCodeAt(0), ib.length, ia.charCodeAt(0)) * 20000, plane: makePlane() };
+    const pts = [];
+    for (let i = 0; i <= 64; i++) pts.push(flightPoint(fl, i / 64, new THREE.Vector3()));
+    const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), routeMat);
+    line.computeLineDistances();
+    air.add(line, fl.plane);
+    flights.push(fl);
+  }
+}
+const _pa = new THREE.Vector3(), _pb = new THREE.Vector3(), _pc = new THREE.Vector3();
+function updatePlanes(now) {
+  const sc = 1.35 * clamp(camDist / fitDist, 0.5, 1);
+  const wait = 1300;
+  for (const fl of flights) {
+    const cyc = fl.dur * 2 + wait * 2;
+    let k = (now + fl.phase) % cyc, t, back = false;
+    if (k < wait) t = 0;
+    else if ((k -= wait) < fl.dur) t = k / fl.dur;
+    else if ((k -= fl.dur) < wait) t = 1;
+    else { t = 1 - (k - wait) / fl.dur; back = true; }
+    const te = 0.5 - 0.5 * Math.cos(Math.PI * t);
+    flightPoint(fl, te, _pa);
+    flightPoint(fl, Math.min(1, te + 0.01), _pb);
+    flightPoint(fl, Math.max(0, te - 0.01), _pc);
+    _pb.sub(_pc);
+    if (back) _pb.negate();
+    fl.plane.position.copy(_pa);
+    orient(fl.plane, _pa, _pb);
+    fl.plane.scale.setScalar(sc);
+  }
+}
+
+const H = new Float32Array(U);
 function rebuildTerrain() {
   kernels = buildKernels();
+  planStrips();
   let land = 0;
   for (let u = 0; u < U; u++) {
     const e = elevAt(UX[u], UY[u], UZ[u], NZ[u]);
     E[u] = e;
+    H[u] = heightOf(e);
     if (e >= SEA) land++;
   }
+  gradeStrips(H);
   for (let i = 0; i < VCOUNT; i++) {
-    const u = vmap[i], e = E[u], r = R + heightOf(e), o = i * 3;
+    const u = vmap[i], e = E[u], r = R + H[u], o = i * 3;
     posArr[o] = UX[u] * r; posArr[o + 1] = UY[u] * r; posArr[o + 2] = UZ[u] * r;
     const c = colorOf(e, NZ[u]);
     colArr[o] = c.r; colArr[o + 1] = c.g; colArr[o + 2] = c.b;
@@ -447,6 +669,7 @@ function rebuildTerrain() {
   }
   dotGeo.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
   dotGeo.computeBoundingSphere();
+  buildAir();
   placePin();
   renderHud();
   dirty = true;
@@ -535,8 +758,14 @@ function handleTap(cx, cy) {
   let best = null, bestScore = 0;
   for (const n of notes.values()) {
     const a = angleBetween(v, toDir(n.lat, n.lon));
-    const reach = SIZES[n.size].rad * 0.9;
+    const reach = noteRad(n) * 0.9;
     if (a < reach) { const s = 1 - a / reach; if (s > bestScore) { bestScore = s; best = n; } }
+  }
+  if (linking) {
+    if (!best) toast('Tap an island to connect it.');
+    else if (best.id === linking) toast('Pick a different island.');
+    else toggleLink(linking, best.id);
+    return;
   }
   if (best) select({ kind: 'note', id: best.id });
   else { const { lat, lon } = toLatLon(v); select({ kind: 'spot', lat, lon, size: defaultSize() }); }
@@ -552,8 +781,9 @@ function flyTo(lat, lon) {
 
 function frame(now) {
   requestAnimationFrame(frame);
-  if (document.hidden) return;
-  let moving = false;
+  if (document.hidden || $('page-globe').hidden) return;
+  let moving = flights.length > 0;
+  if (moving) updatePlanes(now);
   if (fly) {
     const t = clamp((now - fly.t0) / fly.dur, 0, 1);
     const s = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
@@ -589,9 +819,25 @@ function normalizeNote(n) {
     lon: ((Number(n.lon) + 540) % 360) - 180,
     size,
     parent: n.parent ? String(n.parent) : null,
+    links: parseLinks(n.links).filter(id => id !== String(n.id)),
     created: Number(n.created) || Date.now(),
     updated: Number(n.updated) || Date.now(),
   };
+}
+function parseLinks(v) {
+  if (typeof v === 'string') { try { v = JSON.parse(v); } catch (e) { v = []; } }
+  if (!Array.isArray(v)) return [];
+  return [...new Set(v.map(String))].slice(0, 60);
+}
+let linking = null;
+function toggleLink(a, b) {
+  const na = notes.get(a), nb = notes.get(b);
+  if (!na || !nb) return;
+  const on = na.links.includes(b);
+  upsertNote({ ...na, links: on ? na.links.filter(x => x !== b) : [...na.links, b] });
+  upsertNote({ ...nb, links: on ? nb.links.filter(x => x !== a) : [...nb.links, a] });
+  toast(on ? 'Flight removed' : 'Flight added');
+  commit([a, b]);
 }
 function regionsList() {
   const set = new Set();
@@ -617,10 +863,12 @@ function upsertNote(n) {
 function deleteNote(id) {
   if (!notes.has(id)) return;
   notes.delete(id);
-  const kids = childrenOf(id);
-  for (const k of kids) k.parent = null;
+  const changed = new Set();
+  for (const k of childrenOf(id)) { k.parent = null; changed.add(k.id); }
+  for (const n of notes.values()) if (n.links.includes(id)) { n.links = n.links.filter(x => x !== id); changed.add(n.id); }
   if (sel && sel.kind === 'note' && sel.id === id) sel = null;
-  commit(kids.map(k => k.id), [id]);
+  if (linking === id) linking = null;
+  commit([...changed], [id]);
 }
 
 // Find open water next to a parent for a new branch.
@@ -629,7 +877,7 @@ function branchSpot(parent, size) {
   const ref = Math.abs(p.y) > 0.95 ? new THREE.Vector3(1, 0, 0) : UP;
   const e1 = new THREE.Vector3().crossVectors(ref, p).normalize();
   const e2 = new THREE.Vector3().crossVectors(p, e1).normalize();
-  const dist = (SIZES[parent.size].rad + SIZES[size].rad) * 0.8;
+  const dist = (noteRad(parent) + SIZES[size].rad) * 0.8;
   let best = null, bestClear = -1;
   for (let i = 0; i < 12; i++) {
     const a = (i / 12) * Math.PI * 2 + 0.3;
@@ -656,9 +904,33 @@ function sizeSeg(current, onPick) {
   return h('div', { class: 'seg' }, [1, 2, 3].map(s =>
     h('button', { class: s === current ? 'on' : '', text: SIZES[s].name, onclick: () => onPick(s) })));
 }
+function linkChips(n) {
+  const ids = n.links.filter(id => notes.has(id));
+  if (!ids.length) return null;
+  return h('div', { class: 's-links' }, ids.map(id => {
+    const m = notes.get(id);
+    return h('button', { class: 'chip', onclick: () => select({ kind: 'note', id }, { fly: true }) },
+      h('b', { text: 'Flight' }), snippet(m.text, 26));
+  }));
+}
 function renderSheet() {
   const sheet = $('sheet');
   sheet.replaceChildren();
+  sheet.classList.toggle('linking', !!linking);
+  if (linking && !notes.get(linking)) linking = null;
+  if (linking) {
+    const src = notes.get(linking);
+    const count = src.links.filter(id => notes.has(id)).length;
+    sheet.append(...[
+      h('div', { class: 's-kicker', text: 'Connecting' }),
+      h('div', { class: 's-title', text: snippet(src.text, 40) }),
+      h('p', { class: 's-hint', style: 'margin-top:6px', text: 'Tap other islands to add a flight. Tap a connected island again to remove it.' }),
+      linkChips(src),
+      h('div', { class: 'row' },
+        h('button', { class: 'btn primary', text: `Done  (${count} flight${count === 1 ? '' : 's'})`, onclick: () => { linking = null; renderSheet(); } })),
+    ].filter(Boolean));
+    return;
+  }
   if (sel && sel.kind === 'note' && !notes.get(sel.id)) sel = null;
 
   if (!sel) {
@@ -693,16 +965,18 @@ function renderSheet() {
   sheet.append(...[
     h('div', { class: 's-kicker', text: SIZES[n.size].name }),
     h('div', { class: 's-title', text: n.region }),
-    h('div', { class: 's-meta', text: fmtCoord(n.lat, n.lon) + (kids.length ? `  ·  ${kids.length} branch${kids.length === 1 ? '' : 'es'}` : '') }),
+    h('div', { class: 's-meta', text: fmtCoord(n.lat, n.lon) + `  ·  ${terrainWord(n.text.length)}` + (kids.length ? `  ·  ${kids.length} branch${kids.length === 1 ? '' : 'es'}` : '') }),
     h('div', { class: 's-text', text: n.text }),
     parent ? h('button', { class: 's-link', text: 'Branch of: ' + snippet(parent.text), onclick: () => select({ kind: 'note', id: parent.id }, { fly: true }) }) : null,
-    h('div', { class: 'row' },
+    linkChips(n),
+    h('div', { class: 'row tight' },
       h('button', { class: 'btn primary', text: 'Edit', onclick: () => openEditor({ mode: 'edit', id: n.id, ...n }) }),
       h('button', { class: 'btn ghost', text: 'Branch', onclick: () => {
         const size = Math.max(1, n.size - 1);
         const spot = branchSpot(n, size);
         openEditor({ mode: 'branch', lat: spot.lat, lon: spot.lon, size, region: n.region, parent: n.id });
       } }),
+      h('button', { class: 'btn ghost', text: 'Connect', onclick: () => { linking = n.id; renderSheet(); toast('Tap another island'); } }),
       h('button', { class: 'btn danger slim', text: 'Delete', onclick: e => armDelete(e.currentTarget, () => deleteNote(n.id)) }),
     ),
   ].filter(Boolean));
@@ -728,7 +1002,7 @@ function renderEdSize() {
   $('ed-size').replaceChildren(...[1, 2, 3].map(s =>
     h('button', { class: s === edit.size ? 'on' : '', text: SIZES[s].name, onclick: () => { edit.size = s; renderEdSize(); } })));
 }
-function updateCount() { $('ed-count').textContent = `${$('ed-text').value.length} / 2000`; }
+function updateCount() { const n = $('ed-text').value.trim().length; $('ed-count').textContent = `${n} / 2000  ·  builds ${terrainWord(n)}`; }
 function closeEditor() { $('modal').hidden = true; edit = null; }
 $('ed-text').addEventListener('input', updateCount);
 $('ed-cancel').addEventListener('click', closeEditor);
@@ -738,7 +1012,7 @@ $('ed-save').addEventListener('click', () => {
   if (!text) { toast('Write something first.'); return; }
   const region = $('ed-region').value.trim() || 'Unsorted';
   lastRegion = region;
-  const base = edit.mode === 'edit' ? notes.get(edit.id) : { id: uid(), created: Date.now(), lat: edit.lat, lon: edit.lon, parent: edit.parent || null };
+  const base = edit.mode === 'edit' ? notes.get(edit.id) : { id: uid(), created: Date.now(), lat: edit.lat, lon: edit.lon, parent: edit.parent || null, links: [] };
   if (!base) { closeEditor(); return; }
   const saved = upsertNote({ ...base, text, region, size: edit.size });
   closeEditor();
@@ -748,7 +1022,7 @@ $('ed-save').addEventListener('click', () => {
 
 // ---------- example island ----------
 function plantExample() {
-  const big = upsertNote({ id: uid(), text: 'A big idea sits at the center. The more you write around it, the higher the land climbs.', region: 'Example', lat: 18, lon: -20, size: 3 });
+  const big = upsertNote({ id: uid(), text: 'A big idea sits at the center. The more you write, the higher the land climbs, so a long note like this one turns into a mountain while a one line thought stays a low sandy island. Branches grow out of it as ridges and peninsulas. Notes that sit close together pile their land on top of each other, climbing from sand into grass, then forest, then bare rock, and with enough words a peak goes white with snow. Connect two islands and each one gets a little airstrip, and a plane starts flying the route between them.', region: 'Example', lat: 18, lon: -20, size: 3 });
   const ids = [big.id];
   const branches = [
     ['First branch of the big idea. Branches lay a ridge back to their parent.', 2],
@@ -759,8 +1033,10 @@ function plantExample() {
     const spot = branchSpot(big, size);
     ids.push(upsertNote({ id: uid(), text, region: 'Example', lat: spot.lat, lon: spot.lon, size, parent: big.id }).id);
   }
-  ids.push(upsertNote({ id: uid(), text: 'A lone thought stays a small sandy island.', region: 'Example', lat: -6, lon: 25, size: 1 }).id);
-  ids.push(upsertNote({ id: uid(), text: 'Another stray thought out in open water.', region: 'Example', lat: 40, lon: 30, size: 1 }).id);
+  const lone = upsertNote({ id: uid(), text: 'A lone thought stays a small sandy island. This one is connected to the big idea, so a plane flies between them.', region: 'Example', lat: -6, lon: 25, size: 1, links: [big.id] });
+  const far = upsertNote({ id: uid(), text: 'Another thought out in open water, also on the flight network.', region: 'Example', lat: 40, lon: 30, size: 2, links: [big.id] });
+  upsertNote({ ...notes.get(big.id), links: [lone.id, far.id] });
+  ids.push(lone.id, far.id);
   sel = { kind: 'note', id: big.id };
   commit(ids);
   flyTo(big.lat, big.lon);
@@ -782,8 +1058,8 @@ function renderAtlas() {
   }
   const groups = new Map();
   for (const n of list) { if (!groups.has(n.region)) groups.set(n.region, []); groups.get(n.region).push(n); }
-  const weight = arr => arr.reduce((s, n) => s + SIZES[n.size].rad ** 2, 0);
-  const total = list.reduce((s, n) => s + SIZES[n.size].rad ** 2, 0) || 1;
+  const weight = arr => arr.reduce((s, n) => s + noteRad(n) ** 2, 0);
+  const total = weight(list) || 1;
   const regions = [...groups.entries()].sort((a, b) => weight(b[1]) - weight(a[1]));
   const allRegions = regionsList();
 
@@ -827,7 +1103,8 @@ function noteCard(n, depth, allRegions) {
     h('option', { value: '__new__', text: 'New region…' }));
   return h('div', { class: 'card' + (depth ? ' child' : ''), style: depth > 1 ? `padding-left:${14 + depth * 16}px` : null },
     h('div', { class: 'card-text', text: n.text }),
-    h('div', { class: 'card-meta', text: `${SIZES[n.size].name}  ·  ${fmtCoord(n.lat, n.lon)}` + (parent ? `  ·  branch of: ${snippet(parent.text, 30)}` : '') }),
+    h('div', { class: 'card-meta', text: `${SIZES[n.size].name}  ·  ${terrainWord(n.text.length)}  ·  ${fmtCoord(n.lat, n.lon)}` + (parent ? `  ·  branch of: ${snippet(parent.text, 30)}` : '') }),
+    n.links.some(id => notes.has(id)) ? h('div', { class: 'card-meta', text: 'Flights to: ' + n.links.filter(id => notes.has(id)).map(id => snippet(notes.get(id).text, 24)).join('  /  ') }) : null,
     h('div', { class: 'card-actions' },
       h('button', { class: 'btn ghost', text: 'Show', onclick: () => { showPage('globe'); select({ kind: 'note', id: n.id }, { fly: true }); } }),
       move,
@@ -852,6 +1129,7 @@ function showPage(name) {
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => showPage(t.dataset.page)));
 
 function renderHud() {
+  $('world-btn').textContent = 'World: ' + WORLDS[world];
   const n = notes.size, r = regionsList().length;
   $('stats').textContent = `${n} note${n === 1 ? '' : 's'}  ·  ${r} region${r === 1 ? '' : 's'}  ·  ${landPct.toFixed(1)}% land`;
 }
@@ -887,7 +1165,7 @@ async function req(path, opt = {}) {
   } finally { clearTimeout(timer); }
 }
 function toWire(n) {
-  return { id: n.id, cell_id: n.id, text: n.text, note: n.text, region: n.region, lat: n.lat, lon: n.lon, size: n.size, parent: n.parent, created_at: n.created, updated_at: n.updated };
+  return { id: n.id, cell_id: n.id, text: n.text, note: n.text, region: n.region, lat: n.lat, lon: n.lon, size: n.size, parent: n.parent, links: n.links, created_at: n.created, updated_at: n.updated };
 }
 async function pull() {
   setSync('busy', 'Loading');
@@ -917,6 +1195,7 @@ function mergeServer(rows) {
       region: r.region,
       size: r.size ?? old?.size,
       parent: r.parent !== undefined ? r.parent : old?.parent,
+      links: r.links !== undefined ? r.links : old?.links,
       created: r.created_at ?? old?.created,
       updated: r.updated_at ?? old?.updated,
     }));

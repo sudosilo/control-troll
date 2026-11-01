@@ -697,6 +697,12 @@
     font-size: 14px;
     border-radius: 8px;
   }
+  body.pip header, body.pip #twinTabs, body.pip #actionBar, body.pip #violetView, body.pip .leaflet-control-container, body.pip #panel, body.pip #menuOverlay, body.pip #sideMenu { display: none !important; }
+  body.pip #map { top: 0 !important; bottom: 0 !important; }
+  body.pip #navBanner { top: 4px !important; bottom: auto !important; left: 6px !important; right: 6px !important; }
+  body.pip #navBanner button { display: none !important; }
+  body.pip #navBanner div div:first-child { font-size: 13px !important; }
+  body.pip #navBanner div div + div { font-size: 10px !important; }
 </style>
 </head>
 <body>
@@ -825,7 +831,6 @@ const CATEGORIES = {
   fast_food:     { label: 'Fast food',      icon: '\u{1F354}',  color: '#d81b60' },
   amazon_locker: { label: 'Parcel locker',  icon: '\u{1F4E6}',  color: '#e07b00' },
   coffee_shop:   { label: 'Coffee shop',    icon: '\u{2615}',   color: '#795548' },
-  dispensary:    { label: 'Dispensary',     icon: '\u{1F33F}',  color: '#2e7d32' },
   pharmacy:      { label: 'Pharmacy',       icon: '\u{1F48A}',  color: '#00838f' },
   bank:          { label: 'Bank or ATM',    icon: '\u{1F3E7}',  color: '#455a64' },
   hotel:         { label: 'Hotel or motel', icon: '\u{1F6CF}',  color: '#5e35b1' },
@@ -841,6 +846,10 @@ const CATEGORIES = {
   airport:       { label: 'Airport',        icon: '\u{2708}',   color: '#0288d1' },
   govt_building: { label: 'Government',     icon: '\u{1F3DB}',  color: '#546e7a' },
   mall:          { label: 'Mall',           icon: '\u{1F6CD}',  color: '#ad1457' },
+  mailbox:       { label: 'Mailbox',        icon: '\u{1F4EB}',  color: '#1565c0' },
+  casino:        { label: 'Casino',         icon: '\u{1F3B0}',  color: '#b71c1c' },
+  parking:       { label: 'Parking structure', icon: '\u{1F17F}', color: '#1565c0' },
+  diner:         { label: 'Diner',          icon: '\u{1F373}',  color: '#ef6c00' },
   general:       { label: 'Other stop',     icon: '\u{1F4CD}',  color: '#1265c9' },
   odometer:      { label: 'Odometer reading', icon: '\u{1F6E3}', color: '#0b4ea2' },
   debrief:       { label: 'Day debrief',    icon: '\u{1F4DD}', color: '#1265c9' },
@@ -854,7 +863,7 @@ const SIGN_SHAPES = {
   govt_building: 'pentagon',
   airport: 'guide', airstrip: 'guide',
   memorial: 'yield',
-  grocery: 'circle', retail: 'circle', mall: 'circle', bank: 'circle', dispensary: 'circle',
+  grocery: 'circle', retail: 'circle', mall: 'circle', bank: 'circle', casino: 'circle', mailbox: 'square', parking: 'square', diner: 'octagon',
   general: 'shield', none: 'shield', receipt: 'tag', odometer: 'guide'
 };
 
@@ -882,7 +891,7 @@ function signHtml(key, iconChar, size) {
     '<span style="font-size:' + fs + 'px;transform:translateY(' + Math.round(shift * k) + 'px);">' + iconChar + '</span></div>';
 }
 
-const ICON_CHOICES = Object.keys(CATEGORIES).filter(k => k !== 'none' && k !== 'odometer' && k !== 'debrief');
+const ICON_CHOICES = Object.keys(CATEGORIES).filter(k => k !== 'none' && k !== 'odometer' && k !== 'debrief' && k !== 'receipt').sort((a, b) => CATEGORIES[a].label.localeCompare(CATEGORIES[b].label));
 const FALLBACK_ICON = CATEGORIES.general.icon;
 let selectedIcon = FALLBACK_ICON;
 const MIN_SAVE_INTERVAL_MS = 30000;
@@ -1907,7 +1916,10 @@ function detectCategory(geo) {
   if (has('parcel_locker') || name.includes('amazon hub') || name.includes('amazon locker')) return 'amazon_locker';
   if (has('fuel')) return 'gas_station';
   if (has('cafe') || has('coffee')) return 'coffee_shop';
-  if (has('cannabis') || name.includes('dispensary')) return 'dispensary';
+  if (has('post_box') || has('parcel_box') || name.includes('mailbox') || name.includes('mail box')) return 'mailbox';
+  if (has('casino') || has('gambling') || name.includes('casino')) return 'casino';
+  if ((has('parking') && (/multi|underground/.test(String(addr.parking || '')) || name.includes('garage') || name.includes('structure'))) || has('parking_garage')) return 'parking';
+  if (name.includes('diner') || /diner/.test(String(addr.cuisine || ''))) return 'diner';
   if (has('pharmacy') || has('chemist')) return 'pharmacy';
   if (has('bank') || has('atm')) return 'bank';
   if (has('car_wash')) return 'car_wash';
@@ -2096,20 +2108,6 @@ function categoryQuestions(category) {
       bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full']),
       bq('restroom', 'Restroom access', ['Customer only', 'Public', 'None']),
       sq('waitEstimate', 'Estimated wait right now', ['Under 2 min', '2-5 min', '5-10 min', 'Over 10 min'])
-    ],
-    dispensary: [
-      bq('idCheck', 'Is there an ID check point at the entrance', ['Yes', 'No']),
-      sq('posBrand', 'POS terminal brand in use', ['Dutchie', 'Flowhub', 'Treez', 'Other', 'Unknown']),
-      bq('security', 'Is a security guard present', ['Yes', 'No']),
-      sq('cameraCount', 'Visible camera count', ['0', '1-2', '3-5', '6 or more']),
-      bq('cashOnly', 'Payment methods accepted', ['Cash only', 'Cash and debit', 'Cards accepted']),
-      bq('atm', 'Is an ATM on site', ['Yes', 'No']),
-      bq('waitingRoom', 'Is there a separate waiting or check in room', ['Yes', 'No']),
-      bq('kiosk', 'Are self service ordering kiosks present', ['Yes', 'No']),
-      sq('staffCount', 'How many staff are visible', ['1-2', '3-4', '5-6', '7 or more']),
-      bq('deliveryPickup', 'Is there an online order pickup counter', ['Yes', 'No']),
-      bq('parking', 'Parking congestion right now', ['Empty', 'Moderate', 'Full']),
-      bq('signage', 'Is exterior signage clearly visible from the road', ['Yes', 'No'])
     ],
     pharmacy: [
       bq('standalone', 'Standalone pharmacy or inside a larger store', ['Standalone', 'Inside store']),
@@ -2451,6 +2449,22 @@ function initHere() {
     }
   });
   map.addControl(new Locate());
+  if (window.FieldTwinNative && typeof window.FieldTwinNative.enterPip === 'function') {
+    const Pip = L.Control.extend({
+      options: { position: 'topleft' },
+      onAdd: function () {
+        const bar = L.DomUtil.create('div', 'leaflet-bar');
+        const a = L.DomUtil.create('a', 'here-btn', bar);
+        a.href = '#';
+        a.title = 'Shrink the map to a floating window';
+        a.setAttribute('aria-label', 'Shrink the map to a floating window');
+        a.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#0b4ea2" stroke-width="2.4" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><rect x="11.5" y="11" width="8" height="6.5" rx="1" fill="#0b4ea2"/></svg>';
+        L.DomEvent.on(a, 'click', ev => { L.DomEvent.stop(ev); ftEnterPip(); });
+        return bar;
+      }
+    });
+    map.addControl(new Pip());
+  }
   document.getElementById('hereToggleBtn').addEventListener('click', () => {
     hereOn = !hereOn;
     try { localStorage.setItem('hereOn', hereOn ? '1' : '0'); } catch (e) {}
@@ -2538,11 +2552,12 @@ function showForm(entry) {
   let html = '<h2>' + label + '</h2>';
   html += '<div class="meta-line">' + entry.addressLabel + '</div>';
   html += '<div class="question">Stop type, changes the form below</div>';
+  html += '<input type="text" id="typeSearch" placeholder="Search types" autocomplete="off" style="margin-bottom:6px;">';
   html += '<div class="icon-picker" id="iconPicker">';
   ICON_CHOICES.forEach((key) => {
     const meta = CATEGORIES[key];
     const active = (entry.category || 'general') === key ? ' active' : '';
-    html += '<div class="icon-choice' + active + '" data-catkey="' + key + '">';
+    html += '<div class="icon-choice' + active + '" data-catkey="' + key + '" data-name="' + meta.label.toLowerCase() + '">';
     html += '<div style="font-size:20px;line-height:24px;">' + meta.icon + '</div>';
     html += '<div style="font-size:10px;line-height:13px;">' + meta.label + '</div>';
     html += '</div>';
@@ -2580,6 +2595,13 @@ function showForm(entry) {
   panel.scrollTop = 0;
   panel.classList.add('open');
 
+  const typeSearch = document.getElementById('typeSearch');
+  if (typeSearch) typeSearch.addEventListener('input', () => {
+    const q = typeSearch.value.trim().toLowerCase();
+    panel.querySelectorAll('#iconPicker .icon-choice').forEach(el => {
+      el.style.display = !q || el.getAttribute('data-name').indexOf(q) !== -1 || el.classList.contains('active') ? '' : 'none';
+    });
+  });
   let photoData = entry.photo || '';
   const photoInput = document.getElementById('photoInput');
   const photoPreview = document.getElementById('photoPreview');
@@ -4846,10 +4868,11 @@ function showEdit(entry, fromHistory) {
   const answers = (entry.answers || []).slice();
   while (answers.length < questions.length) answers.push('');
   const notesIdx = questions.indexOf('Notes');
-  const workIdx = isReceipt ? questions.indexOf('Work or personal') : -1;
+  const isOdo = entry.category === 'odometer';
+  const workIdx = (isReceipt || isOdo) ? questions.indexOf('Work or personal') : -1;
   const addrIdx = isReceipt ? questions.indexOf('Address on receipt') : -1;
   const originalAddr = addrIdx >= 0 ? (answers[addrIdx] || '') : '';
-  let isWork = entry.receipt ? Boolean(entry.receipt.work) : (workIdx >= 0 && answers[workIdx] === 'Work');
+  let isWork = entry.receipt ? Boolean(entry.receipt.work) : (workIdx >= 0 && answers[workIdx] !== 'Personal');
 
   let html = '<h2>EDIT</h2>';
   html += '<div class="question">Name shown in history</div>';
@@ -4859,7 +4882,7 @@ function showEdit(entry, fromHistory) {
     html += '<input type="datetime-local" id="edWhen" value="' + localStamp(new Date(entry.timestamp)) + '" style="width:100%;padding:8px;font-size:14px;margin-top:4px;border:1px solid var(--line);background:#f9fafb;color:var(--text);">';
     html += '<div class="question">Type</div>';
     html += '<select id="edCat">';
-    Object.keys(CATEGORIES).filter(k => k !== 'none' && k !== 'receipt' && k !== 'odometer' && k !== 'debrief').forEach(k => {
+    Object.keys(CATEGORIES).filter(k => k !== 'none' && k !== 'receipt' && k !== 'debrief').sort((a, b) => CATEGORIES[a].label.localeCompare(CATEGORIES[b].label)).forEach(k => {
       const sel = (entry.category || 'general') === k ? ' selected' : '';
       html += '<option value="' + k + '"' + sel + '>' + CATEGORIES[k].icon + ' ' + CATEGORIES[k].label + '</option>';
     });
@@ -6309,6 +6332,16 @@ function navWords(s) {
   return 'Turn ' + (mod || 'ahead') + road;
 }
 
+// Hands the destination to the phone maps app for turn by turn driving there.
+function openGoogleMaps(dest) {
+  const url = 'https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=' + encodeURIComponent(dest.lat + ',' + dest.lon);
+  if (window.FieldTwinNative && typeof window.FieldTwinNative.openUrl === 'function') {
+    try { window.FieldTwinNative.openUrl(url); return; } catch (e) {}
+  }
+  const w = window.open(url, '_blank', 'noopener');
+  if (!w) window.location.href = url;
+}
+
 async function navStart(dest) {
   closePanel();
   const me = mySpot();
@@ -6334,20 +6367,41 @@ async function navDraw(from) {
   const first = r.steps[1] || r.steps[0];
   navSay('Route ready, ' + Math.round(r.miles) + ' miles. ' + (first ? first.text : ''));
 }
+// Floating window (picture in picture) for the phone app: only the map and the next turn show while it floats.
+function ftEnterPip() {
+  try { if (window.FieldTwinNative && window.FieldTwinNative.enterPip()) return; } catch (e) {}
+  setStatus('floating window is not available on this phone');
+}
+function ftPipAuto() {
+  try { if (window.FieldTwinNative && typeof window.FieldTwinNative.setAutoPip === 'function') window.FieldTwinNative.setAutoPip(!!navState); } catch (e) {}
+}
+window.ftPip = function (on) {
+  document.body.classList.toggle('pip', !!on);
+  if (on) { closePanel && closePanel(); const s = mySpot(); if (navState) navState.follow = true; if (s) map.setView([s.lat, s.lon], Math.max(map.getZoom(), 16), { animate: false }); }
+  setTimeout(() => { try { map.invalidateSize(); } catch (e) {} navBanner(); }, 150);
+};
 function navBanner() {
   let b = document.getElementById('navBanner');
+  const ctl = document.querySelector('.leaflet-top.leaflet-left');
+  if (ctl) ctl.style.marginTop = '';
+  ftPipAuto();
   if (!navState) { if (b) b.remove(); return; }
   if (!b) {
     b = document.createElement('div');
     b.id = 'navBanner';
-    b.style.cssText = 'position:absolute;left:10px;right:10px;top:calc(env(safe-area-inset-top,0px) + 54px);z-index:960;background:#ffffff;color:#0a1b2e;border:3px solid #0a1b2e;box-shadow:4px 4px 0 #0a1b2e;padding:10px 12px;font-size:18px;font-weight:700;display:flex;gap:10px;align-items:center;justify-content:space-between;';
+    b.style.cssText = 'position:absolute;left:12px;right:12px;bottom:calc(var(--dock-h, 86px) + env(safe-area-inset-bottom, 0px) + 30px);z-index:1001;color:#0a1b2e;display:flex;gap:8px;align-items:center;pointer-events:none;';
     document.body.appendChild(b);
   }
   const r = navState.route, st = r && r.steps[navState.next];
   const me = mySpot();
   const dist = st && me ? navFeet(navMeters(me, st)) : '';
-  b.innerHTML = '<div style="flex:1;"><div>' + escapeHtml(st ? st.text : 'Getting a route') + '</div><div style="font-size:13px;font-weight:400;">' + (dist ? 'in ' + dist + ', ' : '') + (r ? Math.round(r.miles) + ' miles total' : '') + '</div></div>' +
-    '<button class="secondary" id="navCenter" style="padding:8px;font-size:11px;">CENTER</button><button class="secondary" id="navEndBtn" style="padding:8px;font-size:11px;">END</button>';
+  const halo = 'text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 6px #fff,0 0 6px #fff;';
+  const dot = 'pointer-events:auto;width:34px;height:34px;min-height:0;padding:0;border-radius:50%;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;border:2px solid #0a1b2e;box-shadow:none;text-transform:none;';
+  b.innerHTML = '<div style="flex:1;min-width:0;' + halo + '"><div style="font-size:16px;font-weight:800;">' + escapeHtml(st ? st.text : 'Getting a route') + '</div><div style="font-size:12px;font-weight:600;">' + (dist ? 'in ' + dist + ', ' : '') + (r ? Math.round(r.miles) + ' mi total' : '') + '</div></div>' +
+    '<button id="navGmaps" title="Maps" aria-label="Open in maps" style="' + dot + 'background:#0b4ea2;color:#fff;">\u{1F5FA}</button>' +
+    '<button id="navCenter" title="Center" aria-label="Center on me" style="' + dot + 'background:#fff;color:#0b4ea2;font-size:20px;">\u25CE</button>' +
+    '<button id="navEndBtn" title="End" aria-label="End route" style="' + dot + 'background:#fff;color:#0a1b2e;font-size:18px;font-weight:800;">\u2715</button>';
+  document.getElementById('navGmaps').addEventListener('click', () => { if (navState) openGoogleMaps(navState.dest); });
   document.getElementById('navEndBtn').addEventListener('click', () => navEnd('Route ended.'));
   document.getElementById('navCenter').addEventListener('click', () => { if (navState) { navState.follow = true; const s = mySpot(); if (s) map.panTo([s.lat, s.lon]); } });
 }
@@ -6397,6 +6451,27 @@ function navEnd(note) {
 }
 
 document.getElementById('goDockBtn').addEventListener('click', showGo);
+</script>
+<script>
+// Keeps the bottom panel above the on-screen keyboard: lifts it by however much of the screen the keyboard covers,
+// and scrolls the focused box into view inside the panel.
+(function () {
+  const vv = window.visualViewport;
+  const lift = () => {
+    const panel = document.getElementById('panel');
+    if (!panel) return;
+    const covered = vv ? Math.max(0, window.innerHeight - vv.height - vv.offsetTop) : 0;
+    panel.style.bottom = covered > 40 ? covered + 'px' : '';
+    panel.style.maxHeight = covered > 40 ? Math.max(160, vv.height - 20) + 'px' : '';
+  };
+  if (vv) { vv.addEventListener('resize', lift); vv.addEventListener('scroll', lift); }
+  document.addEventListener('focusin', ev => {
+    const el = ev.target;
+    if (!el || !el.closest || !el.closest('#panel') || !/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)) return;
+    setTimeout(() => { lift(); el.scrollIntoView({ block: 'center' }); }, 300);
+  });
+  document.addEventListener('focusout', () => setTimeout(lift, 300));
+})();
 </script>
 </body>
 </html>
