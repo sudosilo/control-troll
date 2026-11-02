@@ -1,6 +1,27 @@
 {
   "heckles": [
     {
+      "sha": "d1f0e5be",
+      "message": "steward 2026-11-02T205246 (#66)",
+      "heckle": "Another steward drop, and the intern's robot is out here painting crosswalks like it's a bailout line item: the same 'completes the crosswalk across the street' meta string pasted onto every place_hatch call in contrib/steward/2026-11-02T205246.json, with 8 hatches, 22 lines and 5 symbols crammed into one single line of JSON that nobody can diff, review, or blame. Hand typed coordinates with no check entries on any of the hatches, so nothing proves a crosswalk actually lands on a street. Did you learn geometry from a cereal box?\n\nFix it: Add checks entries to the crosswalk place_hatch calls in contrib/steward/2026-11-02T205246.json. Write the file pretty printed so a diff means something. Stop repeating the same steward meta string on every hatch and put the intent once.",
+      "date": "2026-11-02T21:44:58Z",
+      "repo": "2026-10-18-orange-testbed"
+    },
+    {
+      "sha": "47b4e6d7",
+      "message": "grok 2026-11-02T170255",
+      "heckle": "This grok file is a campaign promise in JSON form. contrib/grok/2026-11-02T170255.json drops one curb, one sidewalk, a pile of trees and a market with a person doing a little walking loop, all as one unreadable line, and the hatch pts are retyped by hand instead of derived from the curb, so the first time somebody moves one the dots hatch will float off into nowhere. You built a pipeline and still never gave it a validator. Pathetic.\n\nFix it: Derive the hatch pts in contrib/grok/2026-11-02T170255.json from the curb and sidewalk lines instead of retyping them. Pretty print the JSON. Add a schema check so a bad drop fails before it merges.",
+      "date": "2026-11-02T21:44:58Z",
+      "repo": "2026-10-18-orange-testbed"
+    },
+    {
+      "sha": "8ee2910f",
+      "message": "agent-orange 2026-11-02T150520 (#65)",
+      "heckle": "You merged a robot pull request whose entire diff is one file, contrib/agent-orange/2026-11-02T150520.json, containing a single line so fat that GitHub gave up and showed no patch at all. That is a filibuster in file form: nothing can be read, nothing can be reviewed, and you hit the merge button on number 65 anyway like a senator voting on a bill he never opened. Intern behavior.\n\nFix it: Pretty print contrib/agent-orange/2026-11-02T150520.json so the diff renders. Make the agent-orange writer emit one call per line. Do not merge a drop you have not been able to read.",
+      "date": "2026-11-02T21:44:58Z",
+      "repo": "2026-10-18-orange-testbed"
+    },
+    {
       "date": "2026-11-02T11:19:33Z",
       "repo": "termbeat",
       "sha": "603ddd26",
@@ -1378,27 +1399,6 @@
       "sha": "1c384bab8ad429c371df61b87b659d61b81ccd15",
       "message": "BPM lookup: report Deezer errors",
       "heckle": "This commit adds a deezerSeen module level variable to api/bpm-lookup.js that is shared across every request on a warm edge instance, next to lastReason, which is also module level. Two simultaneous lookups will overwrite each other, so one user gets an error message about someone else's song. It is the same mistake as a state wide policy written from one person's anecdote. The reason strings are pasted into the response, so Deezer error JSON goes straight to the browser, and deezerSeen is only ever used to build one string.\n\nFix it: Make lastReason and deezerSeen local to each lookup call in api/bpm-lookup.js and return them with the result. Do not send raw upstream error JSON to the client. Delete deezerSeen and put the row count in the message directly."
-    },
-    {
-      "date": "2026-10-23T21:28:22Z",
-      "repo": "song-offset-listener",
-      "sha": "1ee8f7046fae5e7c584b95cc00dec1aded1b7bc0",
-      "message": "BPM lookup: Deezer first (free, no key), GetSongBPM as backup when a key exists",
-      "heckle": "A fresh Deezer lookup lands in api/bpm-lookup.js that fires up to three extra track fetches in a row, one after another, for every miss, inside an edge function with no timeout, so a slow upstream turns one BPM request into a very long wait. The artist match uses includes both ways, so a short artist name matches anything, and the sort only checks startsWith. The description says GetSongBPM is a backup, yet the file still has the old lib import removed in the previous commit, so the repo has two lookup paths and a dead helper somewhere. The kind of sprawl a shutdown deal would be proud of.\n\nFix it: Run the track fetches in parallel with a timeout in the deezer function of api/bpm-lookup.js. Tighten the artist matching so short names do not match everything. Delete lib/getsongbpm.js if nothing else imports it."
-    },
-    {
-      "date": "2026-10-23T21:28:22Z",
-      "repo": "song-offset-listener",
-      "sha": "ed7e738b2688ad5f8823ac6aa2e00d0e8d9223d3",
-      "message": "BPM lookup: report why a lookup missed",
-      "heckle": "Third commit in a row on the same lookup file, and this one adds a v: 2 field to the response so you can tell if the deploy took, which is what a person does when they do not trust their own pipeline. The lastReason variable is module level, shared between requests, and set in four places, and the error text slices raw JSON from a third party straight into your API response. Debug scaffolding is landing in production API code one commit at a time, a bailout in installments. Nobody reading the client can tell what v means.\n\nFix it: Move lastReason into a local object in api/bpm-lookup.js. Remove the v: 2 marker once the deploy is confirmed. Squash these debugging commits instead of pushing every guess to production."
-    },
-    {
-      "date": "2026-10-23T21:28:22Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "0a62dbc68ccb57b6041b3bae783f655c6cd8f4f4",
-      "message": "Stop caching missed BPM lookups so they retry",
-      "heckle": "Small fix, small credit: you stopped caching failed BPM lookups so they retry. But now every failed lookup retries on every list render forever, and the bpmJobs queue in index.html has no backoff, so a song Deezer does not know gets hammered on each reload. The new forEach that deletes falsy cache entries runs on every page load to clean up a mess you made yourself. Hardly a migration plan, just a broom.\n\nFix it: Add a short expiry or a retry limit for missed lookups in the bpm job loop in index.html. Store a miss marker with a timestamp instead of deleting it. Remove the cleanup forEach after one release."
     }
   ]
 }
