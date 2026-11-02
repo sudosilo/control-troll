@@ -1,95 +1,171 @@
 {
  "jobs": [
   {
-   "repo": "a-canticle-for-pajamastan",
+   "repo": "j30p4rdy",
+   "releases": [
+    {
+     "tag": "v2026.11.01",
+     "target": "f819ab762f7efc40cc2f1859329a02538c391506",
+     "name": "J30P4RDY 2026-11-01",
+     "body": "First release. This is version 2 of a Jeopardy style lyrics quiz. Players race to buzz in, with rebounds, Double and Final rounds, shot clocks, and a bigger bank of clues."
+    }
+   ],
+   "description": "A Jeopardy style lyrics quiz where players race to buzz in on song clues.",
+   "homepage": "https://j30p4rdy.vercel.app",
+   "topics": [
+    "game",
+    "music",
+    "quiz",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "infinicanvan",
+   "releases": [
+    {
+     "tag": "v2026.11.01",
+     "target": "0eb375a2f5331e2a07bcca1aa6bbb0b6116da4ba",
+     "name": "Infinicanvan 2026-11-01",
+     "body": "First release. An infinite canvas that zooms without limit, with a pen, emoji stamps, paint mode, and cat tools. This version adds tap to water, puddles, a sky, a bark trunk, grass, and resource gauges for growing trees."
+    }
+   ],
+   "description": "An infinite zooming canvas with drawing tools and trees that grow with the weather.",
+   "homepage": "https://infinicanvan.vercel.app",
+   "topics": [
+    "game",
+    "canvas",
+    "toy",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "2026-11-01-orange-decimalday",
+   "releases": [
+    {
+     "tag": "v2026.11.01",
+     "target": "cc1bdb3af9cd4b7aa1fa8727c2875221f1740260",
+     "name": "Decimal Day Clock 2026-11-01",
+     "body": "First release. It shows the day on a decimal clock, with a count of days since 1970 and a normal clock with a time zone search. Days are grouped into weeks of 100 days, and each day cell shows its old calendar date. A notepad counts days up from 1970."
+    }
+   ],
+   "description": "A single page decimal day clock with a day count since 1970 and time zone search.",
+   "homepage": "https://2026-11-01-orange-decimalday.vercel.app",
+   "topics": [
+    "tool",
+    "clock",
+    "time",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "2026-10-18-orange-testbed",
    "releases": [
     {
      "tag": "v2026.10.31",
-     "target": "a92427a44008adabde737137abe25add6a61082e",
-     "name": "A Canticle for Pajamastan 2026-10-31",
-     "body": "Created the game. It is a top down action role playing game set in Pajamastan, with spells, status effects, traps, a bestiary, gear, loot, a town, a character maker, a quest board, cutscenes, weather, a radar, and a playable slice. A relay screen lets players chat and connect to a shared relay. Early fights were eased, enemies stay inside their rooms, and labels on the town and switch yard were made larger."
+     "target": "8b16eff46553a9a46517572a9b4e5a8daa21447d",
+     "name": "Agent Test Bed 2026-10-31",
+     "body": "The agent, steward, and grok turns for the day were played and merged into the city."
+    },
+    {
+     "tag": "v2026.11.01",
+     "target": "aff9c28afc85fc38e533758995d29bf625069db2",
+     "name": "Agent Test Bed 2026-11-01",
+     "body": "The agent, steward, and grok turns for the day were played and merged into the city."
+    },
+    {
+     "tag": "v2026.11.02",
+     "target": "8ee2910fdc63d8a5cbe3218a5de887a01e8bce96",
+     "name": "Agent Test Bed 2026-11-02",
+     "body": "The agent turn was played and merged into the city."
     }
    ],
-   "description": "A top down action role playing game set in Pajamastan with spells, quests, and a shared relay.",
-   "homepage": "https://a-canticle-for-pajamastan.vercel.app",
+   "description": "A shared city that AI agents build one turn at a time",
+   "homepage": "https://2026-10-18-orange-testbed.vercel.app",
+   "topics": [
+    "agents",
+    "game",
+    "simulator",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "nanoverse",
+   "releases": [
+    {
+     "tag": "v2026.11.01",
+     "target": "0667c5b800db65fd035aa14e67932bb6a6b2509a",
+     "name": "NANOVERSE 2026-11-01",
+     "body": "Published version 19 of the world. It adds water with boats, docks, and bridges, farmland that grows into neighborhoods, an airport, and more street life. Two fixes stopped the world from freezing on phones and from crashing mobile Firefox."
+    },
+    {
+     "tag": "v2026.11.02",
+     "target": "18e8e025e89d8956c810468545ffa3afdcff1461",
+     "name": "NANOVERSE 2026-11-02",
+     "body": "Added a train, a big ship, a stadium, and more bridges. The world now renders lighter. The drag and pinch hint text was removed."
+    }
+   ],
+   "description": "Cell simulation world that renders to a canvas with audio.",
+   "homepage": "https://nanoverse-psi.vercel.app",
    "topics": [
     "game",
-    "rpg",
-    "pajamastan",
+    "simulation",
     "vercel"
+   ]
+  },
+  {
+   "repo": "termbeat",
+   "releases": [
+    {
+     "tag": "v2026.11.01",
+     "target": "603ddd2682e73fca60c2ff32c997adb7f57c2bec",
+     "name": "Termbeat 2026-11-01",
+     "body": "Added Matrix, Snow, and Waterfall modes. Added MS-DOS and Mac skins with hidden era easter eggs that answer back. The microphone now releases when you stop it, the address bar stays clean, and your settings are saved."
+    }
+   ],
+   "description": "Audio reactive terminal that reacts to music or the microphone, with themes and small games.",
+   "homepage": "https://termbeat.vercel.app",
+   "topics": [
+    "music",
+    "terminal",
+    "vercel",
+    "visualizer",
+    "web-audio"
    ]
   },
   {
    "repo": "algorithm-albatross",
    "releases": [
     {
-     "tag": "v2026.10.31",
-     "target": "21704afcf614595a5e9aef9c0b181514179e9155",
-     "name": "Algorithm Albatross 2026-10-31",
-     "body": "Created the app. It studies songs to find their instrumental skeletons, matches cover pairs, compares two songs bar by bar, and sweeps tempo to line them up. You can mark pairs as confirmed or rejected so the matching learns from you. It runs with a small server that comes with an install script."
+     "tag": "v2026.11.01",
+     "target": "e9ef33c1a8a68657a01d313ecbe2f343afc7a69c",
+     "name": "Algorithm Albatross 2026-11-01",
+     "body": "Added a fetcher that pulls instrumental tracks from an open music archive and checks for duplicates before adding them."
     }
    ],
    "description": "Finds instrumental skeletons and cover pairs in songs, with bar by bar comparison and a tempo sweep.",
    "homepage": "",
    "topics": [
-    "music",
-    "tool",
+    "analysis",
     "audio",
-    "analysis"
+    "music",
+    "tool"
    ]
   },
   {
-   "repo": "tomatomo",
+   "repo": "mohavetech-website",
    "releases": [
     {
-     "tag": "v2026.10.31",
-     "target": "d5e47ddbe20bff51649c28c074c92495221026cb",
-     "name": "Tomatomo 2026-10-31",
-     "body": "Created the app. It is a pocket pet handheld game where you hatch an egg, feed your pet, play with it, clean up after it, and put it to sleep. The pet grows and can evolve. You can rename it or start over with a new egg."
+     "tag": "v2026.11.01",
+     "target": "afa13413a84a63b19b1200983e87d223d5a3780a",
+     "name": "App Index 2026-11-01",
+     "body": "The app index was synced with the live deployments."
     }
    ],
-   "description": "A pocket pet handheld game where you hatch, feed, and raise a pet.",
-   "homepage": "https://tomatomo.vercel.app",
+   "description": "An index page that lists every app with its age, phone tags, and notes.",
+   "homepage": "https://mohavetech-website.vercel.app",
    "topics": [
-    "game",
-    "pet",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "coffee-autosim",
-   "releases": [
-    {
-     "tag": "v2026.10.30",
-     "target": "329a2d61cbb13a9af5d6acec411cddcec06aa41d",
-     "name": "Coffee Autosim 2026-10-30",
-     "body": "Added a rearrangeable floor. A new Rearrange button lets you drag stations, counters, and fixtures to wherever they flow best, and the layout is remembered when you reload. Baristas walk to the new positions. Text and contrast were made easier to read."
-    }
-   ],
-   "description": "A live blueprint simulator of a coffee shop floor with baristas.",
-   "homepage": "https://coffee-autosim.vercel.app",
-   "topics": [
-    "simulator",
-    "restaurant-tech",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "mill-ionaire",
-   "releases": [
-    {
-     "tag": "v2026.10.30",
-     "target": "70b58ee0dcaf30a4e44031600bd4dfde86a2ccc2",
-     "name": "Mill-ionaire 2026-10-30",
-     "body": "Added a cash out button that sends your score to the shared high score board. You can add an optional link beside your tag, and it shows under the tag on the board. High scores now have a place in the menu."
-    }
-   ],
-   "description": "A letter shop tycoon built around a simulated knee mill that grows into a factory.",
-   "homepage": "https://mill-ionaire.vercel.app",
-   "topics": [
-    "game",
-    "tycoon",
-    "simulator",
+    "index",
+    "tool",
     "vercel"
    ]
   },
@@ -97,109 +173,37 @@
    "repo": "field-twin",
    "releases": [
     {
-     "tag": "v2026.10.31",
-     "target": "4e307768ad6d99012cb8ff29618cd357e4957477",
-     "name": "Field Twin 2026-10-31",
-     "body": "Added GO navigation. The route banner sits below the tabs with zoom buttons under it, and a Google Maps button hands the destination to Google Maps. The bottom panel now stays above the phone keyboard."
+     "tag": "v2026.11.01",
+     "target": "5a134c8a5a361e7730851185839a04b7e476da30",
+     "name": "Field Twin 2026-11-01",
+     "body": "Added a floating map window. When you leave the app during a route, the map floats with only the next turn showing. Lockers now have names and their own pages, and GO ranks places by arrivals, picks, and logs. Entries and lockers take any number of photos, and the phone app asks for camera permission before any photo button. The place list gained mailbox, casino, parking structure, and diner types."
     }
    ],
    "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
    "homepage": "https://field-twin-teal.vercel.app",
    "topics": [
-    "tool",
-    "map",
     "field-service",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "mohavetech-website",
-   "releases": [
-    {
-     "tag": "v2026.10.31",
-     "target": "a2a1a6e3e1f3182ef2b6d0948a0f90581dc8743f",
-     "name": "App Index 2026-10-31",
-     "body": "Added link rain, where every free link falls as a raindrop colored by category. A Free Links page is now hosted on its own site. The index was synced with the live deployments and retired apps were dropped."
-    }
-   ],
-   "description": "An index page that lists every app with its age, phone tags, and notes.",
-   "homepage": "https://mohavetech-website.vercel.app",
-   "topics": [
-    "tool",
-    "index",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "mind-globe",
-   "releases": [
-    {
-     "tag": "v2026.10.31",
-     "target": "60d15ba4e6bd5a2cc116db4c14401110fb47f3be",
-     "name": "Mind Globe 2026-10-31",
-     "body": "Added world presets, so you can start the globe from Earth continents or a checkerboard."
-    }
-   ],
-   "description": "A 3D globe where your notes become land.",
-   "homepage": "https://ming-globe.vercel.app",
-   "topics": [
     "map",
-    "threejs",
     "tool",
-    "railway"
-   ]
-  },
-  {
-   "repo": "fogwarren-vx",
-   "releases": [
-    {
-     "tag": "v2026.10.31",
-     "target": "2c4a9452875e29bfaff576f19667882580674e4b",
-     "name": "FogWarren 2026-10-31",
-     "body": "Version two sends your score, initials, and a site link to the shared score hub. Added a High Scores board."
-    }
-   ],
-   "description": "A retro desktop fog of war maze game with mines and a hidden picture.",
-   "homepage": "https://fogwarren-vx.vercel.app",
-   "topics": [
-    "game",
-    "maze",
     "vercel"
    ]
   },
   {
-   "repo": "aliens-win",
+   "repo": "2026-10-30-orange-scores",
    "releases": [
     {
      "tag": "v2026.10.31",
-     "target": "8b1b03c4b3c552a317acf4286e344613e0f904c6",
-     "name": "The Aliens Win 2026-10-31",
-     "body": "Added a handoff document for the project. The game itself did not change."
+     "target": "9a517097e4564c7ae4c5ff8c4f1c1a7b7d2d208e",
+     "name": "Score Hub 2026-10-31",
+     "body": "Registered FogWarren on the score hub so its scores show up there."
     }
    ],
-   "description": "An arcade shooter where you fly a UFO against waves.",
-   "homepage": "https://aliens-win.vercel.app",
+   "description": "A shared score service and hub page for the games",
+   "homepage": "https://2026-10-30-orange-scores.vercel.app",
    "topics": [
-    "game",
-    "shooter",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "kat-chat",
-   "releases": [
-    {
-     "tag": "v2026.10.31",
-     "target": "04130d0ce966326cee0657380781a787fe68a2ad",
-     "name": "Cat Command Chat 2026-10-31",
-     "body": "Added extra message sounds and look controls under About. Added a Tomatomo mode skin that gives the chat a pocket pet handheld look with pixel pets for every member."
-    }
-   ],
-   "description": "A private group chat app with reactions, voice notes, chess, GIFs, and notifications.",
-   "homepage": "https://kat-chat-flame.vercel.app",
-   "topics": [
+    "backend",
+    "scores",
     "tool",
-    "chat",
     "vercel"
    ]
   }
