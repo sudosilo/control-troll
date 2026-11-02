@@ -1,6 +1,20 @@
 {
   "heckles": [
     {
+      "date": "2026-11-02T11:19:33Z",
+      "repo": "termbeat",
+      "sha": "603ddd26",
+      "message": "Matrix, Snow, Waterfall modes; MS-DOS and Mac/Lisa skins; era easter eggs",
+      "heckle": "One commit, one index.html, 1943 lines added. Congratulations, you built a terminal toy and then kept stuffing it like a shutdown rider bill nobody read. Nine fake terminal skins, a pile of joke commands, a four project Build button, all crammed into a single file that is now a monolith nobody can diff. You swapped the font link for four separate CDN stylesheet tags, so the page now makes four extra blocking requests to look the same. The viz code assigns vizOutputEl.innerHTML in two places, and the whole thing ships with an easter egg essay baked into a paragraph tag like a campaign promise. Did you learn HTML from the back of a cereal box? A commit message that long should have been five commits.\n\nFix it: Split index.html into separate css and js files so the next change is reviewable. Collapse the four font links into one request or self host the fonts. Build the viz html with textContent or DOM nodes instead of vizOutputEl.innerHTML. Move the easter egg text out of the markup into data. Commit one feature at a time."
+    },
+    {
+      "date": "2026-11-02T11:19:33Z",
+      "repo": "algorithm-albatross",
+      "sha": "e9ef33c1",
+      "message": "Add instrumental fetcher with duplicate checking",
+      "heckle": "You wrote a 220 line downloader that pulls files from a public music site with a browser User-Agent and a faked Referer header, like a guy sneaking into a movie with a fake mustache. The fetch script algorithm_albatross_v1_fetch.py does not check the license on anything it grabs, it just grabs. The similarity function in that file loops 121 shifts over every fingerprint, and duplicate_of runs it against every row in the prints table for every download, so the library gets slower with each track, a bailout that never ends. Also the bare except in fp_of swallows a missing fpcalc and quietly returns an empty list, which then makes every file look unique. Did you even test this, or did you just vibe it?\n\nFix it: Make fp_of fail loudly when fpcalc is missing. Check the license field in take before keeping a file. Cache or index fingerprints in duplicate_of instead of scanning every row. Send an honest User-Agent in the UA dict. Pin requests in algorithm-albatross-v1-requirements.txt."
+    },
+    {
       "date": "2026-11-02T00:48:42Z",
       "repo": "j30p4rdy",
       "sha": "f819ab762f7efc40cc2f1859329a02538c391506",
@@ -1385,20 +1399,6 @@
       "sha": "0a62dbc68ccb57b6041b3bae783f655c6cd8f4f4",
       "message": "Stop caching missed BPM lookups so they retry",
       "heckle": "Small fix, small credit: you stopped caching failed BPM lookups so they retry. But now every failed lookup retries on every list render forever, and the bpmJobs queue in index.html has no backoff, so a song Deezer does not know gets hammered on each reload. The new forEach that deletes falsy cache entries runs on every page load to clean up a mess you made yourself. Hardly a migration plan, just a broom.\n\nFix it: Add a short expiry or a retry limit for missed lookups in the bpm job loop in index.html. Store a miss marker with a timestamp instead of deleting it. Remove the cleanup forEach after one release."
-    },
-    {
-      "date": "2026-10-23T21:28:22Z",
-      "repo": "song-offset-listener",
-      "sha": "4b29d61234bfb759d8067ebf040a90c8f008af2b",
-      "message": "BPM lookup: use type=both for song plus artist, fall back to title search",
-      "heckle": "The lookup now builds a GetSongBPM URL with the API key in the query string, as the service demands, but the first line of api/bpm-lookup.js is now a blank line where the import used to be, and the new get helper returns an empty array on every failure so the caller cannot tell a dead key from a missing song. You just inlined a whole helper from lib/getsongbpm.js into the route and left the original file around, so there are two copies of the same lookup logic waiting to disagree. Copy paste engineering with a pulse.\n\nFix it: Delete lib/getsongbpm.js or import it again in api/bpm-lookup.js, but keep only one copy. Return a reason from get so errors are visible. Remove the leading blank line. Add a test with a fake response for pick."
-    },
-    {
-      "date": "2026-10-23T17:13:48Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "4b0660e529a9f93920b0f7b97dcdde81a91b349d",
-      "message": "blue 2026-10-23T165658",
-      "heckle": "Blue claims chunk [4,1], declares the same port value of 5486 on all four edges like a kid who learned one number, then draws the curb face and the top of curb as two separate closed street polylines with twenty eight points each. That is one giant rectangle with rounded corners, hand typed coordinate by coordinate into a single minified line of JSON that nobody on earth can diff. Chunk [4,0] got the exact same treatment half an hour earlier, so this is a rubber stamp, not a design. Reviewing it is like reading a filibuster transcript.\n\nFix it: Generate the rounded rectangle from a corner radius helper instead of pasting 56 points into contrib/blue. Declare ports once per chunk edge from real geometry, not the same 5486 four times. Pretty print the JSON so a diff means something."
     }
   ]
 }
