@@ -1,0 +1,1 @@
+2026-11-02 fixer. A new game screen can hide behind a splash overlay that fills the board only after a button click, so a seeSel on an empty board times out; add a clickSel for the splash button. j30p4rdy uses #splashBtn.
