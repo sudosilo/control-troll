@@ -1,6 +1,41 @@
 {
   "heckles": [
     {
+      "date": "2026-11-02T00:48:42Z",
+      "repo": "j30p4rdy",
+      "sha": "f819ab762f7efc40cc2f1859329a02538c391506",
+      "message": "J30P4RDY v2: buzzer race, rebounds, Double and Final rounds, shot clocks, bigger clue bank",
+      "heckle": "Version two of a quiz game, and you dumped a 1312 line j30p4rdy-v2.html next to the original like a toddler who photocopies homework instead of editing it. The api/j30p4rdy-leaderboard-v2.js file has a v2 in its name too, because apparently git branches were too advanced for you. That POST endpoint takes any name and any score up to 200000 from anyone with no auth, so your leaderboard is a suggestion box run like a bailout with no oversight. Math.random in the member id and a bare catch that swallows bad JSON, truly a filibuster of error handling.\n\nFix it: Delete the v1 copy or the v2 suffix and stop forking your own files. Validate scores server side in api/j30p4rdy-leaderboard-v2.js, with a rate limit per caller. Log the JSON parse failure instead of eating it. Split the inline CSS and script out of j30p4rdy-v2.html so a human can read it."
+    },
+    {
+      "date": "2026-11-02T00:48:42Z",
+      "repo": "mohavetech-website",
+      "sha": "afa13413a84a63b19b1200983e87d223d5a3780a",
+      "message": "sync with vercel",
+      "heckle": "Another sync with vercel, the commit message equivalent of a shrug. You hand pasted app links into index.html and fleet.html and then renamed script-v51.js again, so the same list now lives in three places and rots in all of them. The baseDates block in script-v51.js churned fifteen lines because a date map is maintained by a man with a stopwatch and a dream. Cache busting through troll.js?v= with a pasted timestamp is a campaign promise: sounds official, fixes nothing.\n\nFix it: Generate index.html, fleet.html and baseDates from one json file with a script. Stop renaming script-v51.js and use a query string version. Write a real commit message that says which apps were added or dropped. Remove dead entries instead of editing them out by hand."
+    },
+    {
+      "date": "2026-11-02T00:48:42Z",
+      "repo": "field-twin",
+      "sha": "5a134c8a5a361e7730851185839a04b7e476da30",
+      "message": "Phone app asks for camera permission before any photo button, so photo taps never fail silently",
+      "heckle": "You bolted a click listener on the whole document in capture phase just to ask for camera permission, which is like fixing a leaky faucet by evicting the tenants. The ftCameraReady function has an empty catch that eats every failure, so when the bridge breaks the photo button dies silently, the exact bug this commit claims to fix. Then ftphPick and the global listener both run the same check, so a tap can prompt twice. The hidden file input also changed to a 1px fixed box in index.html, a hack on top of a hack.\n\nFix it: Pick one place for the permission check, either ftphPick or the global listener. Log the caught error in ftCameraReady. Check the permission result in FieldTwinBridge.kt and retry the photo automatically after the grant instead of making the user tap twice. Drop the 1px input hack once that works."
+    },
+    {
+      "date": "2026-11-02T00:48:42Z",
+      "repo": "field-twin",
+      "sha": "8a594ad86202bceff64b344f50ef3b8ef98bda7c",
+      "message": "Any number of photos per entry and per locker, uploaded straight to cloud storage and listed in field_twin_photos",
+      "heckle": "Any number of photos per entry, and you stuffed all of it into index.html, which is already a swamp of thousands of lines, because splitting a file is apparently a skill you skipped. Photos still ride along as base64 strings in entry.morePhotoData, so the local data balloons with every tap while the new field_twin_photos table sits there looking proud. The sql in supabase/field-twin-photos-v1.sql has a v1 in the filename, so I assume v2 will be another copy. The drawPreview grid has inline styles stacked like a government shutdown of CSS.\n\nFix it: Store only the uploaded path in entry data, never the base64, in index.html. Cap photo count and size so one bored thumb cannot fill storage. Move the photo code into its own file. Run the sql as a numbered migration, not a v1 file."
+    },
+    {
+      "date": "2026-11-02T00:48:42Z",
+      "repo": "field-twin",
+      "sha": "37dcc33a634c6cbbcdd114fef5378264fb151730",
+      "message": "Turn line goes back to full width after the floating window closes",
+      "heckle": "A one line fix for a width bug, and it still manages to be sloppy. You reached into the DOM for navBanner by id inside ftPipSize, a function whose job is sizing the map, so now it also owns the banner like a senator who sits on every committee. The cssText wipe on the map above it is the same blunt tool, erasing every inline style in one swing. No test, no check that the banner exists beyond a lazy if, in a file so long it needs its own zip code.\n\nFix it: Move the banner reset into the code that closes the floating window, not into ftPipSize in index.html. Use a css class toggle instead of wiping style.cssText on the map. Add one line in the commit body explaining what broke."
+    },
+    {
       "date": "2026-11-01T19:44:13Z",
       "repo": "field-twin",
       "sha": "e073f368d2432782f3791bd6959a9138499218a0",
@@ -1364,41 +1399,6 @@
       "sha": "4b0660e529a9f93920b0f7b97dcdde81a91b349d",
       "message": "blue 2026-10-23T165658",
       "heckle": "Blue claims chunk [4,1], declares the same port value of 5486 on all four edges like a kid who learned one number, then draws the curb face and the top of curb as two separate closed street polylines with twenty eight points each. That is one giant rectangle with rounded corners, hand typed coordinate by coordinate into a single minified line of JSON that nobody on earth can diff. Chunk [4,0] got the exact same treatment half an hour earlier, so this is a rubber stamp, not a design. Reviewing it is like reading a filibuster transcript.\n\nFix it: Generate the rounded rectangle from a corner radius helper instead of pasting 56 points into contrib/blue. Declare ports once per chunk edge from real geometry, not the same 5486 four times. Pretty print the JSON so a diff means something."
-    },
-    {
-      "date": "2026-10-23T17:13:48Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "0db0368834563a4fe3b0ec1b4e1e1915a6e4674a",
-      "message": "blue 2026-10-23T162534",
-      "heckle": "Chunk [4,0] in contrib/blue/2026-10-23T162534.json is the same curb loop that chunk [4,1] gets later, with the same four street names reshuffled like a deck of cards at a rigged casino. Mesquite Street and Smoke Tree Avenue show up on both sides of the loop, so either the map is a pretzel or the meta strings are copy paste filler. One unreadable line of JSON, zero checks, zero tests. The intern is running a street department with a clipboard and a prayer.\n\nFix it: Validate that each street name in meta matches the edge it sits on before merging. Dedupe repeated curb loops across chunks in contrib/blue. Add a sanity check that fails the turn when two chunks reuse the same names in a different order."
-    },
-    {
-      "date": "2026-10-23T17:13:48Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "5ee7199f46e924114f026d5c80fabb50bff8c7b7",
-      "message": "steward 2026-10-23 (#33)",
-      "heckle": "The steward writes a pile of crosswalk hatches in contrib/steward/2026-10-23.json, every one tagged with the same meta text, completes the crosswalk across the street, like a campaign promise repeated until it stops meaning anything. Two Saguaro Road crosswalks sit side by side at the same y range, and the Arroyo Street ones butt against each other at x -79248 with no gap, so they read as one fat smear. All of it is one minified line, and it landed the same second as the detailer, which is how you get two agents stepping on each other.\n\nFix it: Merge adjacent hatches of the same pattern into one polygon in the steward step. Stop merging steward and detailer PRs inside the same minute, so one can see the other's output. Put a real reason in meta instead of the same sentence on every call."
-    },
-    {
-      "date": "2026-10-23T17:13:48Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "67e0c89036396ae9c8d45ed6ade6d3758cc2911a",
-      "message": "detailer 2026-10-23 (#34)",
-      "heckle": "The detailer drops one car driving south on Ironwood Road, then spends the rest of contrib/detailer/2026-10-23.json calling steward_hide on a long run of sequential ids, each with the reason, exact duplicate of record N drawn on top of it. Hiding hundreds of duplicates one call at a time is a bailout for a mess your own agents made. Something upstream writes the same record twice, and instead of finding it you built a janitor with a bulk habit.\n\nFix it: Find out why records get written twice and stop it at the source in the steward or agent-orange place calls. Add a single steward_hide_range call so a block of ids is one entry. Make place calls idempotent so a repeat of the same geometry is rejected."
-    },
-    {
-      "date": "2026-10-23T17:13:48Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "91b357962836d6d6358f7222033fd825f0c12913",
-      "message": "agent-orange 2026-10-23T135909 (#32)",
-      "heckle": "Agent-orange furnishes a Desert Willow Elementary kindergarten with backpack cubbies and a reading rug, and every piece is a hand typed point list in contrib/agent-orange/2026-10-23T135909.json. The rug is a fourteen point blob wobbling around 18400,206200 and then hatched with a second copy of the same points. The cubbies are a closed box plus four dividers at 520 spacing. It is cute, it is also a single unreadable line with the shelf_height check as the only guard, a checks array that checks one thing.\n\nFix it: Add a rug or ellipse primitive so nobody types fourteen points for a circle. Reuse the rug outline for the hatch by reference, not by copy. Expand the checks array beyond shelf_height to cover clearance and overlap with walls."
-    },
-    {
-      "date": "2026-10-23T17:13:48Z",
-      "repo": "itchy-troll",
-      "sha": "098446da04c2a384162aa8e8507df09537639f55",
-      "message": "Scout workflow and local gated builds",
-      "heckle": "You built scout.yml with a push trigger on scout-request.txt, and the file that trips it contains a bare date string, so poking the pipeline now means committing a timestamp like a caveman. scout.js pulls every public sudosilo repo into one folder and commits it, capped at 4 MB per repo, so one app's history now bloats this repo forever. Then you rewrote .vercelignore and dropped .github and troll.js from it while adding scout.js, which means the workflow folder and the agent script may ship to the live site. Also troll.js now builds from a local folder if it exists, a silent fork in the build path with no test.\n\nFix it: Put .github and troll.js back in .vercelignore. Use workflow_dispatch only and drop the scout-request.txt push trigger. Commit scout output to a branch or artifact, not main. Log a loud warning in prepareBuild when the local build path overrides the clone."
     }
   ]
 }
