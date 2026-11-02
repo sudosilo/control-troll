@@ -93,7 +93,7 @@
     line-height: 1.5;
     color: #2f6b40;
     margin: 0;
-    min-height: 120px;
+    min-height: 140px;
     overflow: hidden;
   }
   .menuSection {
@@ -464,20 +464,21 @@ const allocateTrunkButton = document.getElementById('allocateTrunkButton');
 // event to keep track of.
 let currentMode = 'tree';
 
-// ORANGE NOTE: treeMarkers is still a placeholder, a stand in for whatever
-// clickable interaction points the real pest and inspection systems will
-// need later. Tapping the canvas in Tree Mode drops a point here, mainly
-// useful now as proof the touch pathway still works.
-let treeMarkers = [];
+// ORANGE NOTE: tapRipples is short lived tap feedback, a ring that grows
+// and fades where a finger lands in Tree Mode. It runs on real clock time
+// from performance.now, not animationSeconds, so a ripple lasts the same
+// half second at normal speed and at fast forward.
+let tapRipples = [];
+const TAP_RIPPLE_MS = 500;
 
-// ORANGE NOTE: this is the real thing from the handoff doc, simplified
-// where the open questions session simplified it. There is no water field
-// here at all, since water was decided unlimited for v1, so it always
-// scores a perfect 1 in growthFactor below rather than being tracked and
-// then hardcoded to full. There is no flowers key in massAllocation
-// either, since flowers were decided skipped entirely for v1. roots,
-// leaves, and trunk always sum to 1, adjustAllocation below is the only
-// thing that is allowed to change them and it enforces that by construction.
+// ORANGE NOTE: this is the PlantState from the handoff doc. Water is a
+// tracked resource now, filled by rain, by roots pulling soil moisture,
+// and by tapping puddles and rain clouds. hydrationAccum adds up how full
+// the water tank was over the whole cycle, so the water score at cycle
+// end reflects the average, not whatever the tank happened to read at
+// midnight. There is no flowers key in massAllocation, flowers were
+// skipped for v1. roots, leaves, and trunk always sum to 1, adjustAllocation
+// below is the only thing allowed to change them.
 let plant = {
   mass: 10,
   massAllocation: { roots: 0.34, leaves: 0.33, trunk: 0.33 },
@@ -485,9 +486,23 @@ let plant = {
   sunlightCapacity: 12,
   nutrients: 0,
   nutrientCapacity: 12,
+  water: 6,
+  waterCapacity: 12,
+  hydrationAccum: 0,
   cycleElapsedMs: 0,
   cycleCount: 0
 };
+
+// ORANGE NOTE: puddles are world space water pools that form on the ground
+// while it rains. Each one stores how much water it holds as a fraction of
+// the tank size at the time it formed, plus its own world size, so it
+// stays put and stays the same size as the camera moves. They shrink as
+// they evaporate after the rain stops, faster in daylight.
+let puddles = [];
+let puddleSpawnTimerMs = 0;
+const MAX_PUDDLES = 6;
+const PUDDLE_START_FRACTION = 0.35;
+const PUDDLE_SPAWN_EVERY_MS = 15000;
 
 // ORANGE NOTE: DAY_CYCLE_DURATION_MS is the doc's own 10 minute default.
 // That is a long time to sit and watch while testing this, so this is the
@@ -498,9 +513,27 @@ let plant = {
 const DAY_CYCLE_DURATION_MS = 600000;
 const BASE_GROWTH_PERCENT = 0.2;
 const CARRYOVER_DECAY = 0.3;
-const BASE_SUNLIGHT_RATE = 0.0002;
-const BASE_NUTRIENT_RATE = 0.00006;
+// ORANGE NOTE: sun and soil gain are tank fractions per cycle now, scaled
+// by each tank's own capacity, the same way water works. The old fixed
+// per millisecond rates did not grow with the tree while the tanks did,
+// so a big tree's sun and soil scores sank toward zero and the HUD bars
+// read empty. These numbers match the old fill rate at the starting mass.
+const SUN_FILL_PER_CYCLE = 7.6;
+const SOIL_FILL_PER_CYCLE = 2.35;
 const ALLOCATION_STEP = 0.05;
+
+// ORANGE NOTE: water balance per day cycle, written as tank fractions per
+// cycle and converted to per millisecond below. Drain is proportional to
+// how full the tank is and runs harder in daylight, so it settles instead
+// of slamming to zero. Root uptake is a steady trickle scaled by root
+// allocation, which with no rain settles the tank around a third full at
+// default allocation. Rain fills fast. A tapped puddle or cloud is a burst
+// on top that drains back down over a few minutes of simulated time.
+const WATER_DRAIN_PER_CYCLE = 3;
+const ROOT_UPTAKE_PER_CYCLE = 2.5;
+const RAIN_FILL_PER_CYCLE = 6;
+const PUDDLE_EVAP_PER_CYCLE = 4;
+const CLOUD_TAP_FRACTION = 0.06;
 
 // ORANGE NOTE: weather is independent of the day-night clock on purpose,
 // it can rain at night the same as it can rain at noon, real weather
@@ -542,10 +575,10 @@ const FALL_CHANCE = 0.5;
 
 // ORANGE NOTE: 45 seconds was originally picked as a reasonable first
 // guess with no real testing behind it, and it turned out far too short,
-// the canopy pattern never got to actually fill in and be seen before
+// the canopy pattern never got to fill in and be seen before
 // leaves started dropping out of it again. 400x longer, 18000 seconds,
 // which is 5 real hours at normal speed but only 5 real minutes at the
-// 60x fast forward speed this is actually meant to be watched at, since
+// 60x fast forward speed this is meant to be watched at, since
 // animationSeconds already scales with fast forward the same as
 // everything else tied to it.
 const BASE_LEAF_LIFESPAN_SECONDS = 45 * 400;
@@ -576,7 +609,7 @@ function randomLeafLifespan() {
 
 // ORANGE NOTE: branchCount used to only live inline inside drawPlant.
 // Pulled out here too so computeTargetLeafCount can build its number off
-// the same branch count drawPlant will actually draw, instead of guessing
+// the same branch count drawPlant will draw, instead of guessing
 // at it separately with a different formula.
 function computeBranchCount() {
   return Math.min(9, Math.round(1 + Math.sqrt(plant.mass / 5)));
@@ -708,7 +741,7 @@ function dayCycleProgress() {
 // the whole cycle is what puts the back half into negative territory, and
 // Math.max(0, ...) is what turns that negative half into a flat, genuine
 // zero instead of the light just dipping and coming back up. Using plain
-// PI instead of PI times 2 was an early mistake here, it never actually
+// PI instead of PI times 2 was an early mistake here, it never
 // reaches night at all, just a single instant of zero at each cycle
 // boundary before ramping straight back up.
 function daylightFactor() {
@@ -721,15 +754,18 @@ function updatePlantResources(deltaMs) {
   plant.sunlightCapacity = 12 + plant.mass * plant.massAllocation.leaves;
   plant.nutrientCapacity = 12 + plant.mass * plant.massAllocation.roots;
 
-  const sunlightGain = BASE_SUNLIGHT_RATE * plant.massAllocation.leaves * daylightFactor() * weatherSunlightMultiplier() * deltaMs;
+  const sunlightGain = plant.sunlightCapacity * SUN_FILL_PER_CYCLE * plant.massAllocation.leaves * daylightFactor() * weatherSunlightMultiplier() * deltaMs / DAY_CYCLE_DURATION_MS;
   plant.sunlight = Math.min(plant.sunlight + sunlightGain, plant.sunlightCapacity);
 
   // ORANGE NOTE: nutrients are not gated by daylightFactor at all, roots
   // pull from the soil the same at midnight as at noon, only leaves care
   // what time it is. Rain gives them a modest boost instead, ground
   // soaking up more than a dry spell would.
-  const nutrientGain = BASE_NUTRIENT_RATE * plant.massAllocation.roots * weatherNutrientMultiplier() * deltaMs;
+  const nutrientGain = plant.nutrientCapacity * SOIL_FILL_PER_CYCLE * plant.massAllocation.roots * weatherNutrientMultiplier() * deltaMs / DAY_CYCLE_DURATION_MS;
   plant.nutrients = Math.min(plant.nutrients + nutrientGain, plant.nutrientCapacity);
+
+  updateWater(deltaMs);
+  updatePuddles(deltaMs);
 
   // ORANGE NOTE: this is a while, not an if, and resolveDayCycleEnd
   // subtracts the duration rather than resetting to zero, specifically
@@ -744,21 +780,73 @@ function updatePlantResources(deltaMs) {
   }
 }
 
+function updateWater(deltaMs) {
+  plant.waterCapacity = 12 + plant.mass * (plant.massAllocation.roots + plant.massAllocation.trunk) * 0.5;
+  const cap = plant.waterCapacity;
+  const perMs = 1 / DAY_CYCLE_DURATION_MS;
+  // ORANGE NOTE: deltaMs can be large during jumpTime chunks or a throttled
+  // tab, so each term is clamped to keep the tank inside 0 and capacity
+  // rather than overshooting in one big step.
+  const drain = Math.min(plant.water, plant.water * WATER_DRAIN_PER_CYCLE * (0.5 + daylightFactor()) * perMs * deltaMs);
+  const uptake = cap * ROOT_UPTAKE_PER_CYCLE * plant.massAllocation.roots * perMs * deltaMs;
+  let rain = 0;
+  if (weather === 'rain') rain = cap * RAIN_FILL_PER_CYCLE * perMs * deltaMs;
+  else if (weather === 'fog') rain = cap * RAIN_FILL_PER_CYCLE * 0.08 * perMs * deltaMs;
+  plant.water = Math.max(0, Math.min(cap, plant.water - drain + uptake + rain));
+  plant.hydrationAccum += (plant.water / cap) * deltaMs;
+}
+
+function treeWorldSize() {
+  return SAPLING_BASE_SIZE * Math.sqrt(Math.min(plant.mass, MAX_MASS));
+}
+
+function spawnPuddle() {
+  const size = treeWorldSize();
+  let x = 0;
+  for (let tries = 0; tries < 8; tries++) {
+    x = (Math.random() - 0.5) * 2.4 * size;
+    if (Math.abs(x) < size * 0.25) continue;
+    if (puddles.every((p) => Math.abs(p.x - x) > p.radius + size * 0.2)) break;
+  }
+  puddles.push({
+    x,
+    fraction: PUDDLE_START_FRACTION,
+    radius: size * (0.14 + Math.random() * 0.1),
+    wobble: Math.random() * 10
+  });
+}
+
+function updatePuddles(deltaMs) {
+  if (weather === 'rain') {
+    puddleSpawnTimerMs += deltaMs;
+    while (puddleSpawnTimerMs >= PUDDLE_SPAWN_EVERY_MS) {
+      puddleSpawnTimerMs -= PUDDLE_SPAWN_EVERY_MS;
+      if (puddles.length < MAX_PUDDLES) spawnPuddle();
+    }
+    return;
+  }
+  puddleSpawnTimerMs = 0;
+  const evap = Math.min(1, PUDDLE_EVAP_PER_CYCLE * (0.3 + daylightFactor()) * deltaMs / DAY_CYCLE_DURATION_MS);
+  for (const p of puddles) p.fraction -= p.fraction * evap;
+  puddles = puddles.filter((p) => p.fraction > 0.02);
+}
+
 // ORANGE NOTE: MAX_MASS exists purely so canvas coordinates stay in a
 // range real devices can rasterize cleanly, not because growth is
-// supposed to feel realistic, proportional unrealistic scaling was the
+// supposed to look true to life, proportional exaggerated scaling was the
 // explicit point. 2,000,000 keeps s under roughly 110,000 screen pixels
 // even at MAX_SCALE, comfortably inside safe territory instead of the 150
-// to 250 million pixels the mass in the screenshots was actually
+// to 250 million pixels the mass in the screenshots was
 // producing.
 const MAX_MASS = 2000000;
 
 // ORANGE NOTE: this is presentAllocationChoice and resolveDayCycleEnd from
-// the doc, merged. The open questions session settled on an equal
-// weighted average for growthFactor and unlimited water, both of which
-// show up directly below, waterScore is just the literal number 1.
+// the doc, merged. growthFactor is an equal weighted average of the three
+// scores, as settled in the open questions session. waterScore is the
+// average fullness of the water tank across the whole cycle.
 function resolveDayCycleEnd() {
-  const waterScore = 1;
+  const waterScore = Math.min(1, plant.hydrationAccum / DAY_CYCLE_DURATION_MS);
+  plant.hydrationAccum = 0;
   const sunlightScore = plant.sunlight / plant.sunlightCapacity;
   const nutrientScore = plant.nutrients / plant.nutrientCapacity;
   const growthFactor = (waterScore + sunlightScore + nutrientScore) / 3;
@@ -809,11 +897,13 @@ function updateTreeModeStatusUI() {
   const trunk = Math.round(plant.massAllocation.trunk * 100);
   const sunlightPercent = Math.round((plant.sunlight / plant.sunlightCapacity) * 100);
   const nutrientPercent = Math.round((plant.nutrients / plant.nutrientCapacity) * 100);
+  const waterPercent = Math.round((plant.water / plant.waterCapacity) * 100);
   treeStatusText.textContent =
     'Mass ' + plant.mass.toFixed(1) + '. Day ' + dayNumber + ', ' + percentThroughDay + '% through. ' +
     'Weather: ' + weather + '. ' +
     'Roots ' + roots + '%, leaves ' + leaves + '%, trunk ' + trunk + '%. ' +
-    'Sunlight ' + sunlightPercent + '%, nutrients ' + nutrientPercent + '%.';
+    'Sunlight ' + sunlightPercent + '%, nutrients ' + nutrientPercent + '%, water ' + waterPercent + '%. ' +
+    'Tap puddles or rain clouds to water.';
 }
 
 allocateRootsButton.addEventListener('click', () => adjustAllocation('roots'));
@@ -841,7 +931,7 @@ const MIN_SCALE = 0.0005;
 const MAX_SCALE = 500000;
 
 // ORANGE NOTE: SAPLING_BASE_SIZE was picked as a round number, 40, with no
-// relation to the zoom range that actually exists, and that was the whole
+// relation to the zoom range that exists, and that was the whole
 // bug behind the tree looking too big to start. Screen size is world size
 // times scale, so a world size of 40 means even at MAX_SCALE a starting
 // mass 10 sapling renders at tens of millions of screen pixels, meaning
@@ -850,7 +940,7 @@ const MAX_SCALE = 500000;
 // height a normal sapling should read as, 250px, work out what world
 // size produces that at mass 10 and MAX_SCALE specifically, since
 // MAX_SCALE is the zoom level a seedling is meant to be viewed at, and
-// that is SAPLING_BASE_SIZE. This has to live after MAX_SCALE is actually
+// that is SAPLING_BASE_SIZE. This has to live after MAX_SCALE is
 // declared, not before it, referencing a const before its own declaration
 // line throws, it does not just read as undefined the way a plain
 // variable might.
@@ -953,10 +1043,10 @@ function drawRuler() {
 // ORANGE NOTE: the first version of this tracked fingers with a Map that we
 // added to on pointerdown and removed from on pointerup, keyed by
 // pointerId. On a real device that Map could drift out of sync with what
-// was actually touching the glass, since a missed or misdirected pointerup
+// was touching the glass, since a missed or misdirected pointerup
 // left a stale entry behind, and every count after that was off by one.
 // That is what a one finger draw needing two fingers, and zoom needing
-// three, actually was. Touch events do not have that problem. Every
+// three, was. Touch events do not have that problem. Every
 // touchstart, touchmove, and touchend event carries e.targetTouches, a
 // fresh snapshot of every finger currently down on this specific element,
 // built by the browser itself, so there is nothing here for our own code
@@ -1204,7 +1294,7 @@ function drawSkyWeather(widthCss, groundScreenY) {
 
 // ORANGE NOTE: this is the foreground weather, just rain, drawn last so it
 // falls in front of the plant and the ground the way rain you're standing
-// in actually looks. Each drop's x position and fall offset are both
+// in looks. Each drop's x position and fall offset are both
 // derived from its own index and animationSeconds rather than stored
 // anywhere, so there is no droplet array to maintain, they just always
 // land in the same deterministic places for a given moment in time.
@@ -1321,21 +1411,26 @@ function renderTreeContent() {
   const heightCss = canvas.height / dpr;
   const groundScreenY = worldToScreen(0, GROUND_WORLD_Y).y;
 
-  // ORANGE NOTE: the sky lerps between a night color and a day color off
-  // daylightFactor, which is the exact same 0 to 1 number driving sunlight
-  // acquisition, so the sky is always an honest picture of what the plant
-  // is actually getting right now, not a separate decoration. Night stays
-  // a muted blue rather than anything near black on purpose, this is
-  // in-scene lighting for the simulation, not the app switching to a dark
-  // interface, the toolbar and menu next to it stay exactly as light as
-  // they always have been.
-  const sky = lerpColor('#5b6f8c', '#dff1ff', daylightFactor());
-  ctx.fillStyle = sky;
+  // ORANGE NOTE: the sky is a vertical gradient now, darker overhead and
+  // lighter at the horizon, both ends driven by daylightFactor, the same
+  // number driving sunlight gain, so the sky is a true read of what the
+  // plant is getting. Night stays a muted blue on purpose, this is scene
+  // lighting, the toolbar and menu stay light.
+  const skyBottom = Math.max(0, Math.min(groundScreenY, heightCss));
+  const day = daylightFactor();
+  const skyGrad = ctx.createLinearGradient(0, 0, 0, Math.max(skyBottom, 1));
+  skyGrad.addColorStop(0, lerpColor('#46597a', '#9fcff0', day));
+  skyGrad.addColorStop(1, lerpColor('#6b7f9c', '#e8f5ff', day));
+  ctx.fillStyle = skyGrad;
   ctx.fillRect(0, 0, widthCss, Math.max(groundScreenY, 0));
 
+  drawSkyBodies(widthCss, skyBottom);
   drawSkyWeather(widthCss, groundScreenY);
 
-  ctx.fillStyle = '#8b6b47';
+  const groundGrad = ctx.createLinearGradient(0, groundScreenY, 0, Math.max(heightCss, groundScreenY + 1));
+  groundGrad.addColorStop(0, '#8b6b47');
+  groundGrad.addColorStop(1, '#6e5234');
+  ctx.fillStyle = groundGrad;
   ctx.fillRect(0, groundScreenY, widthCss, heightCss - groundScreenY);
   ctx.strokeStyle = '#5c4530';
   ctx.lineWidth = 2;
@@ -1345,18 +1440,226 @@ function renderTreeContent() {
   ctx.stroke();
 
   drawRocks(widthCss, groundScreenY);
+  drawPuddles();
+  drawGrass(widthCss, groundScreenY);
   drawFallenLeaves();
-
-  ctx.fillStyle = '#2f6b40';
-  for (const marker of treeMarkers) {
-    const p = worldToScreen(marker.x, marker.y);
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-    ctx.fill();
-  }
 
   drawPlant();
   drawRainForeground(widthCss, groundScreenY);
+  drawTapRipples();
+  drawResourceHud(widthCss);
+}
+
+// ORANGE NOTE: sun travels a low arc across the day half of the cycle,
+// moon across the night half, stars fade in as daylight drops. All of it
+// is backdrop in screen space, so it does not move when the camera pans.
+// Clouds from drawSkyWeather draw after this and cover it.
+function drawSkyBodies(widthCss, skyBottom) {
+  if (skyBottom < 20) return;
+  const p = dayCycleProgress();
+  const isDay = p < 0.5;
+  const t = isDay ? p / 0.5 : (p - 0.5) / 0.5;
+  const x = widthCss * (0.1 + 0.8 * t);
+  const y = skyBottom - Math.sin(Math.PI * t) * skyBottom * 0.75;
+  const clearSky = weather === 'clear' || weather === 'rainbow';
+
+  if (!isDay && clearSky) {
+    const starAlpha = 0.8;
+    for (let i = 0; i < 45; i++) {
+      const sx = pseudoRandom(i * 3.1 + 0.7) * widthCss;
+      const sy = pseudoRandom(i * 5.3 + 1.9) * skyBottom * 0.85;
+      const twinkle = 0.6 + 0.4 * Math.sin(animationSeconds * 2 + i);
+      ctx.fillStyle = 'rgba(255,255,240,' + (starAlpha * twinkle).toFixed(3) + ')';
+      ctx.fillRect(sx, sy, 1.6, 1.6);
+    }
+  }
+
+  if (isDay) {
+    const glow = ctx.createRadialGradient(x, y, 4, x, y, 60);
+    glow.addColorStop(0, 'rgba(255,230,140,0.55)');
+    glow.addColorStop(1, 'rgba(255,230,140,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(x, y, 60, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#ffd75e';
+    ctx.beginPath();
+    ctx.arc(x, y, 20, 0, Math.PI * 2);
+    ctx.fill();
+  } else {
+    ctx.fillStyle = '#f2f0e6';
+    ctx.beginPath();
+    ctx.arc(x, y, 16, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = lerpColor('#46597a', '#6b7f9c', y / Math.max(skyBottom, 1));
+    ctx.beginPath();
+    ctx.arc(x + 7, y - 4, 14, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+// ORANGE NOTE: grass uses the same slot trick as the rocks, positions come
+// from world slots so tufts move with the camera, but blade height is in
+// screen pixels so grass reads as grass at every zoom level.
+function drawGrass(widthCss, groundScreenY) {
+  const heightCss = canvas.height / (window.devicePixelRatio || 1);
+  if (groundScreenY < -20 || groundScreenY > heightCss + 20) return;
+  const spacingPx = 16;
+  const worldSpacing = spacingPx / camera.scale;
+  const leftWorldX = screenToWorld(0, 0).x;
+  const rightWorldX = screenToWorld(widthCss, 0).x;
+  const firstSlot = Math.floor(leftWorldX / worldSpacing) - 1;
+  const lastSlot = Math.ceil(rightWorldX / worldSpacing) + 1;
+  const sway = Math.sin(animationSeconds * 0.8) * 2;
+  const dry = Math.max(0, 0.3 - plant.water / plant.waterCapacity) / 0.3;
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 1.4;
+  for (let slot = firstSlot; slot <= lastSlot; slot++) {
+    const seed = slot * 37.3 + 5.1;
+    const baseX = worldToScreen(slot * worldSpacing + (pseudoRandom(seed) - 0.5) * worldSpacing, 0).x;
+    const blades = 2 + Math.floor(pseudoRandom(seed + 1) * 3);
+    ctx.strokeStyle = lerpColor(pseudoRandom(seed + 2) < 0.5 ? '#5f8f4e' : '#4f7f42', '#a59a5a', dry);
+    for (let b = 0; b < blades; b++) {
+      const h = 5 + pseudoRandom(seed + 3 + b) * 8;
+      const lean = (b - blades / 2) * 2.2 + sway;
+      ctx.beginPath();
+      ctx.moveTo(baseX + b * 1.5, groundScreenY + 1);
+      ctx.quadraticCurveTo(baseX + b * 1.5 + lean * 0.3, groundScreenY - h * 0.6, baseX + b * 1.5 + lean, groundScreenY - h);
+      ctx.stroke();
+    }
+  }
+}
+
+function puddleScreenShape(p) {
+  const size = Math.sqrt(p.fraction / PUDDLE_START_FRACTION);
+  const center = worldToScreen(p.x, 0);
+  const rx = p.radius * camera.scale * size;
+  return { x: center.x, y: center.y + Math.max(rx * 0.12, 1), rx, ry: Math.max(rx * 0.28, 1) };
+}
+
+function drawPuddles() {
+  for (const p of puddles) {
+    const shape = puddleScreenShape(p);
+    if (shape.rx < 0.5) continue;
+    ctx.save();
+    ctx.fillStyle = 'rgba(120,170,215,0.85)';
+    ctx.strokeStyle = 'rgba(70,110,150,0.9)';
+    ctx.lineWidth = Math.max(shape.rx * 0.03, 1);
+    ctx.beginPath();
+    ctx.ellipse(shape.x, shape.y, shape.rx, shape.ry, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(235,245,255,0.7)';
+    const shimmer = Math.sin(animationSeconds * 1.5 + p.wobble) * shape.rx * 0.15;
+    ctx.beginPath();
+    ctx.ellipse(shape.x - shape.rx * 0.3 + shimmer, shape.y - shape.ry * 0.25, shape.rx * 0.25, shape.ry * 0.25, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+function drawTapRipples() {
+  const now = performance.now();
+  tapRipples = tapRipples.filter((r) => now - r.time < TAP_RIPPLE_MS);
+  for (const r of tapRipples) {
+    const t = (now - r.time) / TAP_RIPPLE_MS;
+    ctx.save();
+    ctx.globalAlpha = 1 - t;
+    ctx.strokeStyle = r.hit ? '#3d8fd6' : '#ffffff';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(r.x, r.y, 8 + t * 34, 0, Math.PI * 2);
+    ctx.stroke();
+    if (r.hit) {
+      ctx.fillStyle = '#2f6fae';
+      ctx.font = 'bold 14px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      const labelW = canvas.width / (window.devicePixelRatio || 1);
+      ctx.fillText('+' + r.amount + '% water', Math.max(110, Math.min(labelW - 60, r.x)), r.y - 22 - t * 18);
+    }
+    ctx.restore();
+  }
+}
+
+// ORANGE NOTE: three small bars pinned to the top right of the canvas so
+// sun, water, and soil levels are visible without opening the menu. The
+// water bar turns orange below 20 percent as a warning that the plant is
+// drying out.
+function drawResourceHud(widthCss) {
+  const rows = [
+    { label: 'sun', value: plant.sunlight / plant.sunlightCapacity, color: '#e8b923' },
+    { label: 'water', value: plant.water / plant.waterCapacity, color: plant.water / plant.waterCapacity < 0.2 ? '#e07a2f' : '#3d8fd6' },
+    { label: 'soil', value: plant.nutrients / plant.nutrientCapacity, color: '#9a6b3f' }
+  ];
+  const w = 132;
+  const x = widthCss - w - 10;
+  const y = 10;
+  ctx.save();
+  ctx.fillStyle = 'rgba(255,255,255,0.82)';
+  ctx.strokeStyle = 'rgba(0,0,0,0.12)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  if (ctx.roundRect) ctx.roundRect(x, y, w, 62, 8);
+  else ctx.rect(x, y, w, 62);
+  ctx.fill();
+  ctx.stroke();
+  ctx.font = '11px system-ui, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  rows.forEach((row, i) => {
+    const ry = y + 14 + i * 17;
+    ctx.fillStyle = '#444444';
+    ctx.fillText(row.label, x + 8, ry);
+    ctx.fillStyle = '#e6e6e6';
+    ctx.fillRect(x + 46, ry - 4, 76, 8);
+    ctx.fillStyle = row.color;
+    ctx.fillRect(x + 46, ry - 4, 76 * Math.max(0, Math.min(1, row.value)), 8);
+  });
+  ctx.restore();
+}
+
+function lerpHex(hexA, hexB, t) {
+  const a = [parseInt(hexA.slice(1, 3), 16), parseInt(hexA.slice(3, 5), 16), parseInt(hexA.slice(5, 7), 16)];
+  const b = [parseInt(hexB.slice(1, 3), 16), parseInt(hexB.slice(3, 5), 16), parseInt(hexB.slice(5, 7), 16)];
+  return '#' + a.map((v, i) => Math.round(v + (b[i] - v) * t).toString(16).padStart(2, '0')).join('');
+}
+
+// ORANGE NOTE: a tap in Tree Mode checks puddles first, then rain clouds.
+// Puddle hit testing runs against the puddle's on screen ellipse with some
+// padding, so a fingertip does not need to land dead center. A puddle hit
+// pulls as much water as the tank has room for and shrinks the puddle by
+// that amount. A cloud tap only pays out while it is raining.
+function handleTreeTap(screenPos) {
+  const cap = plant.waterCapacity;
+  let gained = 0;
+  for (const p of puddles) {
+    const shape = puddleScreenShape(p);
+    const dx = (screenPos.x - shape.x) / (shape.rx + 18);
+    const dy = (screenPos.y - shape.y) / (shape.ry + 18);
+    if (dx * dx + dy * dy <= 1) {
+      const room = cap - plant.water;
+      const take = Math.min(p.fraction * cap, room);
+      plant.water += take;
+      p.fraction -= take / cap;
+      gained = take;
+      break;
+    }
+  }
+  puddles = puddles.filter((p) => p.fraction > 0.02);
+
+  if (gained === 0 && weather === 'rain') {
+    const widthCss = canvas.width / (window.devicePixelRatio || 1);
+    const cloudY = worldToScreen(0, GROUND_WORLD_Y).y * 0.18;
+    const hitCloud = [0.15, 0.4, 0.65, 0.85].some((frac) => Math.hypot(screenPos.x - widthCss * frac, screenPos.y - cloudY) < 75);
+    if (hitCloud) {
+      gained = Math.min(cap * CLOUD_TAP_FRACTION, cap - plant.water);
+      plant.water += gained;
+    }
+  }
+
+  tapRipples.push({ x: screenPos.x, y: screenPos.y, time: performance.now(), hit: gained > 0, amount: Math.round((gained / cap) * 100) });
+  updateTreeModeStatusUI();
+  render();
 }
 
 // ORANGE NOTE: this replaces the old fixed size placeholder sapling. Size
@@ -1381,7 +1684,7 @@ function renderTreeContent() {
 // far through the leaf list a given leaf is. That specific spiral is the
 // standard trick for scattering points evenly across a disk with no
 // visible gaps or clumps regardless of how many points there are, the
-// same pattern sunflower seed heads actually grow in. It is what lets the
+// same pattern sunflower seed heads grow in. It is what lets the
 // canopy go from a sparse scatter at low leaf counts to a properly full
 // round crown at high ones using the exact same formula the whole way.
 function drawPlant() {
@@ -1395,7 +1698,7 @@ function drawPlant() {
 
   // ORANGE NOTE: roots used to be three lines all reaching mostly straight
   // down with one level of whiskers, which reads like a tap root, not the
-  // fibrous, laterally spreading root system a lot of trees actually
+  // fibrous, laterally spreading root system a lot of trees
   // grow. Two of the three main roots now reach mostly sideways instead
   // of down, and drawRootBranch below is genuinely recursive, each
   // segment spawns its own smaller offshoots at a shallower angle spread,
@@ -1463,21 +1766,55 @@ function drawPlant() {
     return windValue * windAmplitude * heightFraction;
   }
 
-  ctx.strokeStyle = '#3f7a4f';
-  ctx.lineWidth = Math.max(s * 0.03, 1);
+  // ORANGE NOTE: barkT goes from 0 at the starting mass to 1 around mass
+  // 1000, a green stem turning into a brown barked trunk as the tree ages.
+  // The trunk is a filled tapered shape now, wide at the base and thin at
+  // the top, instead of one flat line, with bark lines showing once it has
+  // mostly turned brown.
+  const barkT = Math.max(0, Math.min(1, (Math.log10(plant.mass) - 1) / 2));
+  const barkColor = lerpHex('#3f7a4f', '#6b4f36', barkT);
+  const barkDark = lerpHex('#2f5f3c', '#4a3524', barkT);
+  const baseHalf = Math.max(s * 0.035, 1.5);
+  const topHalf = Math.max(s * 0.008, 0.6);
+  const topX = windX(-trunkHeight);
+  const midX = windX(-trunkHeight * 0.5);
+  ctx.fillStyle = barkColor;
   ctx.beginPath();
-  ctx.moveTo(0, 0);
-  ctx.lineTo(windX(-trunkHeight), -trunkHeight);
-  ctx.stroke();
+  ctx.moveTo(-baseHalf * 1.4, 0);
+  ctx.quadraticCurveTo(-baseHalf * 0.9, -trunkHeight * 0.08, -baseHalf, -trunkHeight * 0.15);
+  ctx.quadraticCurveTo(midX - (baseHalf + topHalf) * 0.5, -trunkHeight * 0.55, topX - topHalf, -trunkHeight);
+  ctx.lineTo(topX + topHalf, -trunkHeight);
+  ctx.quadraticCurveTo(midX + (baseHalf + topHalf) * 0.5, -trunkHeight * 0.55, baseHalf, -trunkHeight * 0.15);
+  ctx.quadraticCurveTo(baseHalf * 0.9, -trunkHeight * 0.08, baseHalf * 1.4, 0);
+  ctx.closePath();
+  ctx.fill();
+
+  if (barkT > 0.5 && baseHalf > 3) {
+    ctx.strokeStyle = barkDark;
+    ctx.lineWidth = Math.max(baseHalf * 0.12, 0.5);
+    ctx.globalAlpha = (barkT - 0.5) * 2 * 0.6;
+    for (let i = 0; i < 5; i++) {
+      const fx = (pseudoRandom(i * 4.7 + 2.3) - 0.5) * 1.2;
+      const y0 = -trunkHeight * (0.05 + pseudoRandom(i * 2.9 + 8.1) * 0.5);
+      const y1 = y0 - trunkHeight * (0.08 + pseudoRandom(i * 6.1 + 3.3) * 0.12);
+      const w0 = baseHalf + (topHalf - baseHalf) * (-y0 / trunkHeight);
+      const w1 = baseHalf + (topHalf - baseHalf) * (-y1 / trunkHeight);
+      ctx.beginPath();
+      ctx.moveTo(windX(y0) + fx * w0, y0);
+      ctx.lineTo(windX(y1) + fx * w1, y1);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
 
   // ORANGE NOTE: branchTips now carries a dirAngle for every entry, the
-  // direction that specific branch is actually growing in, trunk included.
+  // direction that specific branch is growing in, trunk included.
   // That is what the leaf loop below needs to make twigs point outward
   // along each branch's own direction instead of the mind map look, where
   // every leaf just found whatever branch tip happened to be geometrically
-  // closest regardless of which way that branch was actually pointing.
+  // closest regardless of which way that branch was pointing.
   const branchCount = computeBranchCount();
-  ctx.lineWidth = Math.max(s * 0.02, 0.8);
+  ctx.strokeStyle = barkColor;
   const trunkDirAngle = Math.atan2(-trunkHeight, windX(-trunkHeight));
   const branchTips = [{ x: windX(-trunkHeight), y: -trunkHeight, dirAngle: trunkDirAngle }];
   for (let i = 0; i < branchCount; i++) {
@@ -1489,22 +1826,34 @@ function drawPlant() {
     const branchLen = trunkHeight * (0.3 + spread * 0.25);
     const tipY = baseY - branchLen * 0.55;
     const tipX = baseX + side * branchLen * spread + (windX(tipY) - windX(baseY));
+    // lower branches are thicker than upper ones, and each one bows
+    // upward slightly through a curve control point instead of a ruler line
+    ctx.lineWidth = Math.max(s * (0.026 - heightFrac * 0.014), 0.8);
+    const ctrlX = baseX + (tipX - baseX) * 0.55;
+    const ctrlY = baseY + (tipY - baseY) * 0.2;
     ctx.beginPath();
     ctx.moveTo(baseX, baseY);
-    ctx.lineTo(tipX, tipY);
+    ctx.quadraticCurveTo(ctrlX, ctrlY, tipX, tipY);
     ctx.stroke();
-    branchTips.push({ x: tipX, y: tipY, dirAngle: Math.atan2(tipY - baseY, tipX - baseX) });
+    branchTips.push({ x: tipX, y: tipY, dirAngle: Math.atan2(tipY - ctrlY, tipX - ctrlX) });
   }
 
   // ORANGE NOTE: this went back to plain proportional sizing, s times
   // 0.06, no mass cap. Capping it was the right instinct when the ask was
   // realism, individual leaves shouldn't grow forever, but the call here
-  // was that unrealistic proportional scaling actually suits this game
+  // was that exaggerated proportional scaling suits this game
   // better than the capped version did, so this is a deliberate reversal,
   // not an oversight. Leaf count still climbs independently through
   // computeTargetLeafCount above, this only controls how big each one
   // reads at whatever the tree's current overall scale is.
   const leafRadius = s * 0.06;
+
+  // ORANGE NOTE: wilt goes from 0 to 1 as water drops below a quarter
+  // tank. Wilting leaves fade toward a dry olive color and sag downward,
+  // a visible cue to go tap a puddle.
+  const hydration = plant.water / plant.waterCapacity;
+  const wilt = Math.max(0, Math.min(1, (0.25 - hydration) / 0.25));
+  const twigColor = lerpHex('#3f7a4f', '#5a5a3a', barkT * 0.5);
 
   // ORANGE NOTE: this replaces both the golden angle spiral around one
   // shared canopy center and the nearest tip search. Each leaf is now
@@ -1514,7 +1863,7 @@ function drawPlant() {
   // for natural variety rather than every leaf pointing in an identical
   // exact line. That is what makes every twig point roughly away from the
   // trunk the way real growth does, instead of leaves scattering in a
-  // full circle independent of which way any branch was actually reaching.
+  // full circle independent of which way any branch was reaching.
   for (const leaf of leaves) {
     const branch = branchTips[leaf.slotIndex % branchTips.length];
     const jitter = (pseudoRandom(leaf.slotIndex * 3.7 + 1.1) - 0.5) * Math.PI * 0.9;
@@ -1522,9 +1871,9 @@ function drawPlant() {
     const radiusFrac = pseudoRandom(leaf.slotIndex * 7.31 + 2.17);
     const twigLen = trunkHeight * (0.12 + radiusFrac * 0.35);
     const lx = branch.x + Math.cos(leafAngle) * twigLen;
-    const ly = branch.y + Math.sin(leafAngle) * twigLen;
+    const ly = branch.y + Math.sin(leafAngle) * twigLen + twigLen * wilt * 0.35;
 
-    ctx.strokeStyle = '#3f7a4f';
+    ctx.strokeStyle = twigColor;
     ctx.lineWidth = Math.max(s * 0.006, 0.4);
     ctx.beginPath();
     ctx.moveTo(branch.x, branch.y);
@@ -1533,7 +1882,7 @@ function drawPlant() {
 
     const ageFraction = Math.min(1, (animationSeconds - leaf.birthTime) / leaf.lifespanSeconds);
     const baseColor = leaf.slotIndex % 2 === 0 ? '#5fa06e' : '#4f8f5f';
-    const leafColor = lerpColor(baseColor, '#d4b83f', ageFraction * 0.75);
+    const leafColor = lerpColor(lerpHex(baseColor, '#a3a060', wilt * 0.7), '#d4b83f', ageFraction * 0.75);
     const style = leaf.style || 'bud';
 
     if (style === 'needle') {
@@ -1553,7 +1902,7 @@ function drawPlant() {
     } else if (style === 'full') {
       // ORANGE NOTE: three overlapping circles instead of one, clustered
       // around the twig tip, for the fuller mass a mature tree's foliage
-      // actually has instead of one single leaf shape per twig.
+      // has instead of one single leaf shape per twig.
       ctx.fillStyle = leafColor;
       ctx.strokeStyle = '#2f6b40';
       ctx.lineWidth = Math.max(s * 0.008, 0.5);
@@ -1569,21 +1918,29 @@ function drawPlant() {
         ctx.stroke();
       }
     } else {
-      // bud, the original simple round leaf with a single vein, for a
-      // young sapling still putting out its first growth
+      // bud, a pointed leaf shape pointing along its twig, with a center
+      // vein, for a young sapling still putting out its first growth
+      const ca = Math.cos(leafAngle);
+      const sa = Math.sin(leafAngle);
+      const len = leafRadius * 1.3;
+      const wid = leafRadius * 0.75;
+      const baseLX = lx - ca * len;
+      const baseLY = ly - sa * len;
+      const tipLX = lx + ca * len;
+      const tipLY = ly + sa * len;
       ctx.fillStyle = leafColor;
       ctx.strokeStyle = '#2f6b40';
       ctx.lineWidth = Math.max(s * 0.008, 0.5);
       ctx.beginPath();
-      ctx.arc(lx, ly, leafRadius, 0, Math.PI * 2);
+      ctx.moveTo(baseLX, baseLY);
+      ctx.quadraticCurveTo(lx - sa * wid * 1.4, ly + ca * wid * 1.4, tipLX, tipLY);
+      ctx.quadraticCurveTo(lx + sa * wid * 1.4, ly - ca * wid * 1.4, baseLX, baseLY);
+      ctx.closePath();
       ctx.fill();
       ctx.stroke();
-
-      const dx = Math.cos(leafAngle) * leafRadius * 0.7;
-      const dy = Math.sin(leafAngle) * leafRadius * 0.7;
       ctx.beginPath();
-      ctx.moveTo(lx - dx, ly - dy);
-      ctx.lineTo(lx + dx, ly + dy);
+      ctx.moveTo(baseLX, baseLY);
+      ctx.lineTo(lx + ca * len * 0.7, ly + sa * len * 0.7);
       ctx.stroke();
     }
   }
@@ -1695,7 +2052,7 @@ function updateGesture(touches) {
 // ORANGE NOTE: these handlers read e.targetTouches, not e.touches, and
 // that distinction matters a lot here. e.touches is every finger touching
 // the whole page, no matter what element they landed on. e.targetTouches
-// is only the fingers that are actually down on this element. Holding a
+// is only the fingers that are down on this element. Holding a
 // toolbar zoom button with a thumb while touching the canvas with a
 // finger is two touches page wide but exactly one touch on the canvas.
 // Reading e.touches there made the canvas think a second finger had
@@ -1745,7 +2102,7 @@ canvas.addEventListener('touchmove', (e) => {
 // touching first, if that first touch immediately placed a stamp, every
 // pinch to zoom would leave an unwanted stamp behind before the second
 // finger ever landed. Arming instead of placing means a second finger
-// arriving can cancel it cleanly, and it only actually gets pushed into
+// arriving can cancel it cleanly, and it only gets pushed into
 // strokes on a genuine single finger release in paintTouchEnd.
 let stampArmed = false;
 let stampPos = null;
@@ -1764,7 +2121,7 @@ function paintTouchMove(e) {
   if (currentStroke) {
     extendStroke(getTouchPos(e.targetTouches[0]));
   } else if (stampArmed) {
-    // follow the finger so the stamp lands wherever you actually lift,
+    // follow the finger so the stamp lands wherever you lift,
     // letting you drag into position before releasing
     stampPos = getTouchPos(e.targetTouches[0]);
   }
@@ -1779,18 +2136,10 @@ function paintTouchEnd(committing) {
   stampPos = null;
 }
 
-// ORANGE NOTE: these three are the actual Tree Mode scaffold from the
-// handoff doc, the click handler this session was scoped to build. There
-// is no PlantState, no day cycle, no resources yet, that is future work.
-// A tap just drops a point into treeMarkers so the mode swap and the
-// shared camera can be proven working end to end before any of that
-// exists. Whoever builds the real interaction model can replace the body
-// of these three functions without touching anything else in the file.
+// ORANGE NOTE: a single finger tap in Tree Mode waters the plant through
+// handleTreeTap, puddles first, then rain clouds while it rains.
 function treeTouchStart(e) {
-  const pos = getTouchPos(e.targetTouches[0]);
-  const worldPos = screenToWorld(pos.x, pos.y);
-  treeMarkers.push(worldPos);
-  render();
+  handleTreeTap(getTouchPos(e.targetTouches[0]));
 }
 
 function treeTouchMove(e) {
@@ -1839,9 +2188,7 @@ canvas.addEventListener('mousedown', (e) => {
       placeStamp(getCanvasPos(e));
     }
   } else {
-    const worldPos = screenToWorld(getCanvasPos(e).x, getCanvasPos(e).y);
-    treeMarkers.push(worldPos);
-    render();
+    handleTreeTap(getCanvasPos(e));
   }
 });
 
@@ -2160,7 +2507,7 @@ menuButton.addEventListener('click', () => {
 
 // ORANGE NOTE: switching modes clears any half finished paint interaction,
 // an armed stamp, a stroke in progress, a pinch gesture, rather than
-// leaving it dangling. It does not touch camera, strokes, or treeMarkers,
+// leaving it dangling. It does not touch camera, strokes, or the plant,
 // so nothing already placed in either mode is lost by switching away from
 // it and back.
 //
@@ -2270,7 +2617,7 @@ fastForwardButton.addEventListener('click', () => {
 // whole jump, then that single snapshot gets multiplied across the
 // entire week as if daylight had been constant that whole time, and the
 // real per-cycle sunlight and nutrient gain never has a chance to refill
-// between the roughly 1008 day cycles a week actually contains, so
+// between the roughly 1008 day cycles a week contains, so
 // almost the entire jump's growth came from one lucky or unlucky instant
 // instead of a believable week. Processing it in DAY_CYCLE_DURATION_MS
 // divided by 20 chunks instead, about 30 simulated seconds each, gives
@@ -2439,7 +2786,7 @@ resizeCanvas();
 // clicked. Calling it once here, after resizeCanvas so canvas.width and
 // canvas.height are already real numbers and not whatever a bare canvas
 // element defaults to, makes the very first frame consistent with
-// whatever currentMode actually is instead of the UI still showing Paint
+// whatever currentMode is instead of the UI still showing Paint
 // Mode's menu while the variable already says tree.
 updateModeUI();
 </script>
