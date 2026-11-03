@@ -1,6 +1,27 @@
 {
   "heckles": [
     {
+      "date": "2026-11-03T17:07:23Z",
+      "repo": "algorithm-albatross",
+      "sha": "61c10208",
+      "message": "Add bass line layer: eighth note bass pitch per bar, compared with transposition and tempo regrid",
+      "heckle": "A bass line layer in algorithm_albatross_v1_analyze.py, and the intern bumped SKELETON_VERSION to 2 without a word about old cached skeletons. The new bass_steps function is nested inside analyze_file and rebuilds its overtone subtraction by hand with magic numbers 0.9, 0.8 and 0.7 that appear nowhere else. It also takes peaks[0], the lowest peak, so any rumble or noise bin under the real note wins. The compare file's _bass fallback silently scores missing bass as all rests, so a version 1 skeleton matched against a version 2 one gets bogus similarity. The bass threshold of 0.5 is copied from melody with no reason given. No tests came with any of it.\n\nFix it: Check SKELETON_VERSION in algorithm_albatross_v1_compare.py and rescan or skip old skeletons rather than faking rests in _bass. Move bass_steps to module level and name the overtone constants. Pick the strongest peak or require a minimum strength instead of peaks[0]. Add a test with a known bass riff and tune the 0.5 bass threshold from real data."
+    },
+    {
+      "date": "2026-11-03T17:07:23Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "d9ba1344",
+      "message": "agent-orange 2026-11-03T135545 (#67)",
+      "heckle": "Another agent-orange turn, merged as a pull request with the API showing no patch at all for contrib/agent-orange/2026-11-03T135545.json. A commit that shows nothing is the government shutdown of version control: everyone is paid, nothing moved. Either the file is empty, too big to display, or the turn landed with no review, and the intern cannot tell which. The merge went through web-flow, so the author filter cannot tell a human from the machine.\n\nFix it: Reject pull requests in the testbed that change zero lines or an empty contrib file. Add a size and JSON validity check before merge. Stop merging bot turns under the owner login so the log shows who really did the work."
+    },
+    {
+      "date": "2026-11-03T17:07:23Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "5f309796",
+      "message": "grok 2026-11-03T170302",
+      "heckle": "Another grok drop, and the intern's robot is out here laying curbs on four streets like a campaign promise with no budget line. contrib/grok/2026-11-03T170302.json is one minified line of JSON, so nobody on earth can review it, and the sig field means nothing if no one checks it. Every curb and sidewalk run is hand typed to the same -79248 extent, and the Grok Corner Market gets a knob at 900 and a door check, but the wall is a single two point line with a hatch box floating beside it. That is a market the way a filibuster is legislation.\n\nFix it: Pretty print the contrib files or validate them in CI so a human can read them. Verify the sig on merge instead of just carrying it around. Generate the street curbs from one street list instead of pasting eight near identical place_line calls. Close the market walls into a real box so the door check has something to check."
+    },
+    {
       "sha": "d1f0e5be",
       "message": "steward 2026-11-02T205246 (#66)",
       "heckle": "Another steward drop, and the intern's robot is out here painting crosswalks like it's a bailout line item: the same 'completes the crosswalk across the street' meta string pasted onto every place_hatch call in contrib/steward/2026-11-02T205246.json, with 8 hatches, 22 lines and 5 symbols crammed into one single line of JSON that nobody can diff, review, or blame. Hand typed coordinates with no check entries on any of the hatches, so nothing proves a crosswalk actually lands on a street. Did you learn geometry from a cereal box?\n\nFix it: Add checks entries to the crosswalk place_hatch calls in contrib/steward/2026-11-02T205246.json. Write the file pretty printed so a diff means something. Stop repeating the same steward meta string on every hatch and put the intent once.",
@@ -1378,27 +1399,6 @@
       "sha": "d01bf646835136636a68456b4f5c43c695a6c43e",
       "message": "Log newest runs and errors at startup",
       "heckle": "Congratulations, you made the start script run a debugging dump before the server, joined with a semicolon so a crash in show-runs.mjs does not matter and a hung Redis connect holds the whole boot hostage. The connect has no timeout, so if Redis is slow the server never comes up, a bailout with strings attached. It also prints up to 600 characters of raw events and 300 of run summaries into Railway logs, and nobody has checked whether those contain anything private. This is a throwaway debug script wired into production start like a permanent fixture.\n\nFix it: Add a connect timeout in show-runs.mjs so it cannot block boot. Run it as a separate command, not inside the start script in package.json. Strip or redact event text before logging it. Delete the whole thing once the bug is found."
-    },
-    {
-      "date": "2026-10-23T21:28:22Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "f8c6c0c2bbe4018f9f5781f359327cb0633df80e",
-      "message": "Pre-buffer the acapella for 5 seconds before the drop, no stacked seeks while buffering",
-      "heckle": "Pre buffering the acapella works by muting the YouTube player, playing it for a hard coded five seconds, then pausing and seeking again, which is a hack stacked on a hack. Five seconds is a magic number with no reason behind it, so a slow connection still stutters and a fast one wastes five seconds of audible dead time. The new acaWarming, acaGraceUntil, instGraceUntil, and warmToken globals join a pile of other loose flags in index.html, and instGraceUntil is declared but nothing in this diff reads it. Another half finished guard in a file with no tests.\n\nFix it: Remove instGraceUntil from the warm up block in index.html if nothing uses it. Wait for the player state change event instead of a fixed five second timeout in warmAca. Put the buffering flags in one state object. Add a test for the seek logic."
-    },
-    {
-      "date": "2026-10-23T21:28:22Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "186336c029eb006512187c24bae9dcaca06fc9a6",
-      "message": "Stop the beat and voice at their ends instead of seeking back to the start",
-      "heckle": "Your fix for seeking back to the start is a pile of duration checks with magic offsets, 0.3 here and 0.5 there, picked by vibes, not by anything measured. The same end of track guard is pasted into syncAca and the live sync block, so two copies will drift apart the first time someone fixes just one. getDuration returns zero before a stream loads, and your if acaDur guards quietly skip the whole check in that case, so the bug can return on the first play. Ugly, duplicated, and called a fix.\n\nFix it: Pull the end of track check into one helper in index.html and call it from both syncAca and the live loop. Use one tolerance constant instead of 0.3 and 0.5. Handle the zero duration case on purpose. Test with a short clip."
-    },
-    {
-      "date": "2026-10-23T21:28:22Z",
-      "repo": "song-offset-listener",
-      "sha": "1c384bab8ad429c371df61b87b659d61b81ccd15",
-      "message": "BPM lookup: report Deezer errors",
-      "heckle": "This commit adds a deezerSeen module level variable to api/bpm-lookup.js that is shared across every request on a warm edge instance, next to lastReason, which is also module level. Two simultaneous lookups will overwrite each other, so one user gets an error message about someone else's song. It is the same mistake as a state wide policy written from one person's anecdote. The reason strings are pasted into the response, so Deezer error JSON goes straight to the browser, and deezerSeen is only ever used to build one string.\n\nFix it: Make lastReason and deezerSeen local to each lookup call in api/bpm-lookup.js and return them with the result. Do not send raw upstream error JSON to the client. Delete deezerSeen and put the row count in the message directly."
     }
   ]
 }
