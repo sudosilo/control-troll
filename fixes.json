@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-11-02T22:22:57.837Z",
+  "builtAt": "2026-11-03T20:10:34.979Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -93,6 +93,26 @@
       ],
       "knownProblem": null,
       "snapshot": "snapshots/mission-operator.html"
+    },
+    {
+      "app": "skwiggle",
+      "url": "https://skwiggle.vercel.app",
+      "kind": "down",
+      "since": "2026-11-03",
+      "status": null,
+      "failing": [],
+      "errors": [
+        "load: page.goto: Timeout 30000ms exceeded."
+      ],
+      "features": [
+        "Drawing game where a line never stops, faster thins it and slower fattens it.",
+        "Modes include paint, plaid, survival, race, wash, outline, chaos, anti, auto and viz.",
+        "Pause, fill, erase, mask, clear mask and rewind work.",
+        "Zoom, reset view and hide UI work.",
+        "Save art downloads, share, AI filter and mint work, and the gallery opens."
+      ],
+      "knownProblem": null,
+      "snapshot": "snapshots/skwiggle.html"
     },
     {
       "app": "mary-jane-man",
