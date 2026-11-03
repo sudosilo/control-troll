@@ -1,81 +1,18 @@
 {
  "jobs": [
   {
-   "repo": "j30p4rdy",
-   "releases": [
-    {
-     "tag": "v2026.11.01",
-     "target": "f819ab762f7efc40cc2f1859329a02538c391506",
-     "name": "J30P4RDY 2026-11-01",
-     "body": "First release. This is version 2 of a Jeopardy style lyrics quiz. Players race to buzz in, with rebounds, Double and Final rounds, shot clocks, and a bigger bank of clues."
-    }
-   ],
-   "description": "A Jeopardy style lyrics quiz where players race to buzz in on song clues.",
-   "homepage": "https://j30p4rdy.vercel.app",
-   "topics": [
-    "game",
-    "music",
-    "quiz",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "infinicanvan",
-   "releases": [
-    {
-     "tag": "v2026.11.01",
-     "target": "0eb375a2f5331e2a07bcca1aa6bbb0b6116da4ba",
-     "name": "Infinicanvan 2026-11-01",
-     "body": "First release. An infinite canvas that zooms without limit, with a pen, emoji stamps, paint mode, and cat tools. This version adds tap to water, puddles, a sky, a bark trunk, grass, and resource gauges for growing trees."
-    }
-   ],
-   "description": "An infinite zooming canvas with drawing tools and trees that grow with the weather.",
-   "homepage": "https://infinicanvan.vercel.app",
-   "topics": [
-    "game",
-    "canvas",
-    "toy",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "2026-11-01-orange-decimalday",
-   "releases": [
-    {
-     "tag": "v2026.11.01",
-     "target": "cc1bdb3af9cd4b7aa1fa8727c2875221f1740260",
-     "name": "Decimal Day Clock 2026-11-01",
-     "body": "First release. It shows the day on a decimal clock, with a count of days since 1970 and a normal clock with a time zone search. Days are grouped into weeks of 100 days, and each day cell shows its old calendar date. A notepad counts days up from 1970."
-    }
-   ],
-   "description": "A single page decimal day clock with a day count since 1970 and time zone search.",
-   "homepage": "https://2026-11-01-orange-decimalday.vercel.app",
-   "topics": [
-    "tool",
-    "clock",
-    "time",
-    "vercel"
-   ]
-  },
-  {
    "repo": "2026-10-18-orange-testbed",
    "releases": [
     {
-     "tag": "v2026.10.31",
-     "target": "8b16eff46553a9a46517572a9b4e5a8daa21447d",
-     "name": "Agent Test Bed 2026-10-31",
-     "body": "The agent, steward, and grok turns for the day were played and merged into the city."
-    },
-    {
-     "tag": "v2026.11.01",
-     "target": "aff9c28afc85fc38e533758995d29bf625069db2",
-     "name": "Agent Test Bed 2026-11-01",
-     "body": "The agent, steward, and grok turns for the day were played and merged into the city."
-    },
-    {
-     "tag": "v2026.11.02",
-     "target": "8ee2910fdc63d8a5cbe3218a5de887a01e8bce96",
+     "tag": "v2026.11.02-2",
+     "target": "d1f0e5be592076957dcbed1488001793e184f147",
      "name": "Agent Test Bed 2026-11-02",
+     "body": "The grok and steward turns were played and merged as well."
+    },
+    {
+     "tag": "v2026.11.03",
+     "target": "d9ba13448fcba936d9c811126291a4a444198671",
+     "name": "Agent Test Bed 2026-11-03",
      "body": "The agent turn was played and merged into the city."
     }
    ],
@@ -85,125 +22,6 @@
     "agents",
     "game",
     "simulator",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "nanoverse",
-   "releases": [
-    {
-     "tag": "v2026.11.01",
-     "target": "0667c5b800db65fd035aa14e67932bb6a6b2509a",
-     "name": "NANOVERSE 2026-11-01",
-     "body": "Published version 19 of the world. It adds water with boats, docks, and bridges, farmland that grows into neighborhoods, an airport, and more street life. Two fixes stopped the world from freezing on phones and from crashing mobile Firefox."
-    },
-    {
-     "tag": "v2026.11.02",
-     "target": "18e8e025e89d8956c810468545ffa3afdcff1461",
-     "name": "NANOVERSE 2026-11-02",
-     "body": "Added a train, a big ship, a stadium, and more bridges. The world now renders lighter. The drag and pinch hint text was removed."
-    }
-   ],
-   "description": "Cell simulation world that renders to a canvas with audio.",
-   "homepage": "https://nanoverse-psi.vercel.app",
-   "topics": [
-    "game",
-    "simulation",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "termbeat",
-   "releases": [
-    {
-     "tag": "v2026.11.01",
-     "target": "603ddd2682e73fca60c2ff32c997adb7f57c2bec",
-     "name": "Termbeat 2026-11-01",
-     "body": "Added Matrix, Snow, and Waterfall modes. Added MS-DOS and Mac skins with hidden era easter eggs that answer back. The microphone now releases when you stop it, the address bar stays clean, and your settings are saved."
-    }
-   ],
-   "description": "Audio reactive terminal that reacts to music or the microphone, with themes and small games.",
-   "homepage": "https://termbeat.vercel.app",
-   "topics": [
-    "music",
-    "terminal",
-    "vercel",
-    "visualizer",
-    "web-audio"
-   ]
-  },
-  {
-   "repo": "algorithm-albatross",
-   "releases": [
-    {
-     "tag": "v2026.11.01",
-     "target": "e9ef33c1a8a68657a01d313ecbe2f343afc7a69c",
-     "name": "Algorithm Albatross 2026-11-01",
-     "body": "Added a fetcher that pulls instrumental tracks from an open music archive and checks for duplicates before adding them."
-    }
-   ],
-   "description": "Finds instrumental skeletons and cover pairs in songs, with bar by bar comparison and a tempo sweep.",
-   "homepage": "",
-   "topics": [
-    "analysis",
-    "audio",
-    "music",
-    "tool"
-   ]
-  },
-  {
-   "repo": "mohavetech-website",
-   "releases": [
-    {
-     "tag": "v2026.11.01",
-     "target": "afa13413a84a63b19b1200983e87d223d5a3780a",
-     "name": "App Index 2026-11-01",
-     "body": "The app index was synced with the live deployments."
-    }
-   ],
-   "description": "An index page that lists every app with its age, phone tags, and notes.",
-   "homepage": "https://mohavetech-website.vercel.app",
-   "topics": [
-    "index",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "field-twin",
-   "releases": [
-    {
-     "tag": "v2026.11.01",
-     "target": "5a134c8a5a361e7730851185839a04b7e476da30",
-     "name": "Field Twin 2026-11-01",
-     "body": "Added a floating map window. When you leave the app during a route, the map floats with only the next turn showing. Lockers now have names and their own pages, and GO ranks places by arrivals, picks, and logs. Entries and lockers take any number of photos, and the phone app asks for camera permission before any photo button. The place list gained mailbox, casino, parking structure, and diner types."
-    }
-   ],
-   "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
-   "homepage": "https://field-twin-teal.vercel.app",
-   "topics": [
-    "field-service",
-    "map",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "2026-10-30-orange-scores",
-   "releases": [
-    {
-     "tag": "v2026.10.31",
-     "target": "9a517097e4564c7ae4c5ff8c4f1c1a7b7d2d208e",
-     "name": "Score Hub 2026-10-31",
-     "body": "Registered FogWarren on the score hub so its scores show up there."
-    }
-   ],
-   "description": "A shared score service and hub page for the games",
-   "homepage": "https://2026-10-30-orange-scores.vercel.app",
-   "topics": [
-    "backend",
-    "scores",
-    "tool",
     "vercel"
    ]
   }
