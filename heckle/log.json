@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-03T23:29:15Z",
+      "repo": "field-twin",
+      "sha": "190fec43",
+      "message": "Field Twin Companion firmware build 4",
+      "heckle": "Build 4 of a binary blob, committed by a robot wearing your name, and the diff is zero lines of anything a human can read. You are stuffing compiled firmware into the repo that also serves the web app, so every build bloats git history forever and triggers another deploy. Nobody can review a .bin, which I assume is the point. This is a filibuster in file form.\n\nFix it: Stop committing field-twin-companion/firmware/field-twin-companion-v1.bin on every build. Upload it as a release asset or workflow artifact instead. Point the manifest at that URL."
+    },
+    {
+      "date": "2026-11-03T23:29:15Z",
+      "repo": "field-twin",
+      "sha": "53b1c644",
+      "message": "Avoid airport switch in GO routes around the airport fence",
+      "heckle": "You hardcoded a fence around one airport into index.html like the whole planet is one city, and it took a 50 line patch to the GO panel to do it. The AVOID AIRPORT toggle is inline-styled, copy pasted from the other toggles, and writes avoidAirport to localStorage with an empty catch that swallows every failure. Meanwhile the .ino comment now claims the board finds the GPS speed by itself across three baud rates, which is the kind of promise a campaign makes. Did you test that on a real GPS or just hope?\n\nFix it: Move the airport fence coordinates out of index.html into a data file. Log the failure in the localStorage catch in the goAirport click handler. Test the baud autodetect in field-twin-companion-v1.ino with a real module before bragging about it."
+    },
+    {
+      "date": "2026-11-03T23:29:15Z",
+      "repo": "field-twin",
+      "sha": "87f55acd",
+      "message": "Field Twin Companion firmware build 3",
+      "heckle": "Build 3, same crime as build 4 and build 2 and build 1. Another binary dropped into field-twin-companion/firmware, another unreadable diff, another round of the repo growing like a bailout package. Three of these in under an hour means the workflow fires on every tweak and nobody is asking whether the tweak was worth a megabyte.\n\nFix it: Gate the publish step in field-twin-companion-v1.yml so it only commits on tagged releases. Stop storing the binary in the app repo."
+    },
+    {
+      "date": "2026-11-03T23:29:15Z",
+      "repo": "field-twin",
+      "sha": "5e17c017",
+      "message": "Cameras cluster in teal count bubbles; Field Chat room",
+      "heckle": "Four unrelated features in one commit: camera clustering, a chat room, a rainbow strobe on the hardware screen, and CSS. That is an omnibus bill, and about as readable. The fcStar overlay in index.html flashes full screen colors four times every time a chat message lands, with no check for people prone to flash sensitivity, and the board does the same strobe for 1500 ms in drawScreen. Also .fc-msg b is hardcoded blue while the rest uses variables, so dark mode gets a nice unreadable name label.\n\nFix it: Split this into four commits next time. Add a reduced motion check before the fcStar animation in index.html. Replace the hardcoded color in .fc-msg b with a theme variable."
+    },
+    {
+      "date": "2026-11-03T23:29:15Z",
+      "repo": "field-twin",
+      "sha": "0de0a847",
+      "message": "Companion link: rename state helper that clashed with the state property",
+      "heckle": "You named a function setState on a Kotlin object that has a property called state, and it took a whole commit to find out the compiler disliked that. Fifteen lines changed in FieldTwinCompanion.kt just to rename it to announce. That is the commit equivalent of a government spending a month to fix a typo in its own letterhead. Clearly the file was never compiled before it was pushed.\n\nFix it: Build the Android target locally or in a branch before pushing to master. Keep the rename, but add a CI compile step so this class of mistake dies before it lands."
+    },
+    {
+      "date": "2026-11-03T23:29:15Z",
+      "repo": "field-twin",
+      "sha": "c427c9f1",
+      "message": "Phone app links to FT Companion over Bluetooth",
+      "heckle": "A 210 line Bluetooth class dropped in with no tests, and index.html grew 112 lines of companion logic on top of an already enormous single file. FieldTwinCompanion.kt swallows exceptions in empty catch blocks around scanning and the page push, so when the link silently dies you get a toggle that says on and a board that does nothing. The JS bridge in FieldTwinBridge.kt also exposes companionSend with a raw command string and no validation, so any page script can poke the board. The next commit proves this did not even compile.\n\nFix it: Validate the command string in companionSend in FieldTwinBridge.kt. Report errors from the empty catch blocks in FieldTwinCompanion.kt to the state text. Split the companion code out of index.html."
+    },
+    {
+      "date": "2026-11-03T23:29:15Z",
+      "repo": "field-twin",
+      "sha": "8ef1fb30",
+      "message": "Field Twin Companion firmware build 2",
+      "heckle": "Build 2. I am running out of ways to describe a binary file committed by a script. It is a blob, it is unreviewable, and it is sitting in the same repo as source code. The developer has now produced more firmware commits than actual reasons for them.\n\nFix it: Delete the committed binaries from field-twin-companion/firmware and ship them through releases. Add the folder to .gitignore."
+    },
+    {
+      "date": "2026-11-03T23:29:15Z",
+      "repo": "field-twin",
+      "sha": "1e8cf225",
+      "message": "Field Twin Companion browser installer page",
+      "heckle": "You removed [skip ci] from the build commit message in field-twin-companion-v1.yml, so every firmware build now pushes a commit that kicks off a fresh site deploy for a change to a file the site never reads. That is how you get four builds in an hour and four deploys of nothing. The installer page loads its script from a third party CDN at a pinned version but with no integrity hash, so whoever owns that link can run code next to your flash button. The manifest sets erase on install, so one wrong click wipes the board.\n\nFix it: Put [skip ci] back in the workflow commit message or ignore the firmware path in the deploy config. Add an integrity hash or self host the installer script in field-twin-companion-v1-flash.html. Warn about the erase in the page text."
+    },
+    {
+      "date": "2026-11-03T23:29:15Z",
+      "repo": "field-twin",
+      "sha": "41d877a9",
+      "message": "Field Twin Companion firmware build 1 [skip ci]",
+      "heckle": "Build 1, the one that started this binary parade. At least this one had the sense to say skip ci, a courtesy you revoked a few minutes later like a treaty. Still an unreadable blob in the app repo with nothing to review.\n\nFix it: Stop committing compiled output to this repo. Keep the build in an artifact or a release, and leave [skip ci] where it belongs in field-twin-companion-v1.yml."
+    },
+    {
+      "date": "2026-11-03T23:29:15Z",
+      "repo": "field-twin",
+      "sha": "8df94beb",
+      "message": "Field Twin Companion v1 firmware for the ESP32-C6 dashboard screen",
+      "heckle": "A 494 line firmware file in one .ino, with BLE, GPS, accelerometer, drawing, and routing all stuffed together like a spending bill nobody read. The workflow in field-twin-companion-v1.yml runs git pull --rebase and push from inside CI on master with no retry and no concurrency group, so two overlapping builds will collide and fail. The header comment promises the phone can leave its GPS off, but nothing here handles the board losing fix, which in a dashboard is the one thing that matters.\n\nFix it: Split field-twin-companion-v1.ino into modules for ble, gps, and display. Add a concurrency group to field-twin-companion-v1.yml. Show a no fix state on the screen when the GPS drops."
+    },
+    {
       "date": "2026-11-03T17:07:23Z",
       "repo": "algorithm-albatross",
       "sha": "61c10208",
@@ -1329,76 +1399,6 @@
       "sha": "8f43a25d74f5ba30f5d6be8af1c6683de36fe353",
       "message": "Seed: heard mode pulls every song Offset Listener has recognized",
       "heckle": "In tools/seed-cache.sh the heard mode runs curl -s against a public endpoint and writes the response straight to a file in the home folder with no status check. If that endpoint returns an error page, congratulations, your seed script now searches for songs titled with HTML. The silent flag guarantees you will never know why. It also reuses the same file name every run, so a failed download quietly feeds last time's stale list back in, which is exactly how a government keeps running on a continuing resolution.\n\nFix it: Use curl -sf in tools/seed-cache.sh so a failed download stops the script. Download to a temp file and move it only on success. Print how many lines you got before you start searching."
-    },
-    {
-      "date": "2026-10-24T04:43:44Z",
-      "repo": "song-offset-listener",
-      "sha": "5c837c57ab2bb442e60e03a37030cf713c3b5215",
-      "message": "Heard list: every recognized song as Title|Artist lines for the cache seed",
-      "heckle": "The new api/heard-list.js is an unauthenticated public edge route that dumps every song your listener ever recognized, which is basically a surveillance log of what strangers played in stores, handed to anyone who can type a URL. Every fetch is wrapped in an empty catch, so when Redis hiccups it returns a cheerful 200 with half a list and nobody learns anything. The scan loop caps at 200 rounds and just stops, no warning. Your error handling is a campaign promise: sounds great, delivers nothing.\n\nFix it: Require a shared secret header on api/heard-list.js before it answers. Log or return an error when the hash read or scan fails instead of swallowing it. Report when the 200 round cap truncates the list. Add a cache header so a crawler cannot hammer your Redis bill."
-    },
-    {
-      "date": "2026-10-24T04:43:44Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "ffe83edd781e1da5efe2a36ff2082bcb15548168",
-      "message": "Seed: middle mode for a third phone",
-      "heckle": "A third phone. You own three phones whose whole job is to ask a video site for song lists, and you are splitting the work with a mode literally called middle. In tools/seed-cache.sh the middle branch halves the file with head and tac and tail, so phone three and phone two now overlap on the same songs anyway since bottom just reverses the whole list. You built three workers that collide in the center like a coalition government. The setup file s also still pulls the mode through main with a default of bottom, so a typo quietly runs bottom.\n\nFix it: Split the list into real slices in tools/seed-cache.sh so phones never overlap, for example by line number modulo. Reject unknown modes in the s script instead of defaulting to bottom. Skip songs another phone already cached, which your own check route can do."
-    },
-    {
-      "date": "2026-10-24T04:43:44Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "93197f060e484420daff2b618a3b1e18a3932b40",
-      "message": "Setup: install from the main package server, repair interrupted installs",
-      "heckle": "The s script now overwrites the phone's apt sources.list with a hardcoded mirror, deletes the chosen mirror folders, and runs dpkg configure with all errors thrown in the trash. All of that sits inside a script you tell people to pipe straight from the internet into bash. That is a rubber stamp on your own supply chain. Redirecting stderr to /dev/null on dpkg means when it breaks you get a shrug and an infinite retry loop. You treated a package manager like a junk drawer.\n\nFix it: Stop overwriting sources.list in the s script unless the mirror is actually failing. Show dpkg errors instead of sending them to /dev/null. Cap the retry loop in s so it stops after a few tries. Pin the script to a commit hash so the pipe to bash is not a moving target."
-    },
-    {
-      "date": "2026-10-24T04:43:44Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "0d30e0a356e5ff69ced8da2ab29dd48e544bbf69",
-      "message": "Second phone setup waits for internet and resumes the seed instead of quitting",
-      "heckle": "The s script now loops forever in three places: waiting for the internet, retrying the install, and restarting the seed every 10 minutes until a stopped file disappears. There is no max, no log, and no way out except killing the terminal, so a bad network turns your second phone into a space heater with a wake lock on. A filibuster with a battery. Also tools/seed-cache.sh deletes the stopped marker at the top on every run, so the until loop in s can read a fresh blocked flag only if the script exits zero exactly right.\n\nFix it: Add a retry limit or a backoff ceiling to every until loop in the s script. Write a log line with a timestamp each time it restarts. Exit non zero from tools/seed-cache.sh when blocked instead of exit 0, so the caller does not guess from a marker file."
-    },
-    {
-      "date": "2026-10-24T04:43:44Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "532e4b801be5e2954b0f2176c7cd2b889331d793",
-      "message": "Setup script: safe to pipe into bash",
-      "heckle": "Thirty seconds after creating s, you wrapped the whole thing in a main function because it turns out piping a script into bash eats stdin and the first version would have broken. That is the commit message admitting the previous commit was broken, and you pushed both anyway. It still runs pkg update and installs the gh tool nobody uses, and still has no error checks between steps, so one failed clone and it happily keeps going into a missing folder.\n\nFix it: Add set -e or check each step in s so a failed clone stops the script. Drop gh from the install line since nothing calls it. Test a pipe to bash once on a real device before pushing."
-    },
-    {
-      "date": "2026-10-24T04:43:44Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "3bc79afc61d7a9c097c7af2f67a930961103ba31",
-      "message": "One line setup script for an extra seeding phone",
-      "heckle": "You added a shell script named s. One letter. In the repo root. Served from your public site and meant to be piped to bash, which is a great name for a thing that executes remote code on a phone. It has no error handling at all, so a failed pkg install walks right into a git clone and then a seed run on nothing. In vercel.json you reformatted five unrelated rewrite entries into a wall of multi line braces just to add a header block, burying the real change in noise like a rider on a spending bill.\n\nFix it: Rename s to something that says what it does, and keep the rewrite entries in vercel.json as they were. Add error checks to s after each step. Do not mix a reformat with a feature in the same commit."
-    },
-    {
-      "date": "2026-10-24T04:43:44Z",
-      "repo": "mill-ionaire",
-      "sha": "5113dd03865fd9140836bb49ffd223b137bdb423",
-      "message": "Numbers and emoji dies, matching sets, spelling bee, longer words, finishing line",
-      "heckle": "One commit. Numbers, emoji, matching sets, spelling bee, longer words, and a whole finishing line, 169 added lines in mill-ionaire-v2.html in a single push. That is an omnibus bill with a thousand riders and zero committee review. The new test block in mill-ionaire-v2-test.js plays 60 loops and then asserts procs.size is at least 2, a bar so low a toddler would clear it, and it depends on random orders showing up at all. The README paragraph and the how to play dialog now say the same thing twice in different words. Copy paste again, champ.\n\nFix it: Split this into one commit per feature so a bug can be traced. Make the order generator in mill-ionaire-v2.html seedable and assert exact kinds in mill-ionaire-v2-test.js instead of hoping random picks hit. Keep the how to play text in one place and load it into both spots."
-    },
-    {
-      "date": "2026-10-23T21:28:22Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "682434a5b31d6e123a14a0d2655c4061a0ba4019",
-      "message": "Live smash: donor search by song, artist or BPM, suggestions topped up from a BPM search",
-      "heckle": "Donor search arrives as a new api/song-search.js that builds a Deezer query with bpm_min and bpm_max operators, which the Deezer search API does not document, so your BPM search is a prayer typed into a box. The catch swallows every failure into an empty results array, and the suggestion top up in index.html wraps its fetch in an empty catch, so when it breaks the screen just sits there like a filibuster with no bill attached. Also bpm: null on every result means the list you built to match tempo has no tempo in it. A hidden liveBpmNow input stores state in the DOM like it is 2009.\n\nFix it: Verify the bpm_min syntax against a real Deezer response in api/song-search.js or drop the feature. Log the error in the empty catch in index.html instead of eating it. Fill in a real bpm on each result or stop calling it a BPM search. Keep the live BPM in a variable, not a hidden input."
-    },
-    {
-      "date": "2026-10-23T21:28:22Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "50f48288360022f0a0956cffc18034f1cb7cd0e3",
-      "message": "Typed and logged drop points with auto drop, start over, original speed switch, voice follows its real playback speed",
-      "heckle": "One commit, 152 lines added to a single index.html, and the message lists five features like a campaign platform nobody can fund: typed drop points, auto drop, start over, speed switch, voice speed following. Each one adds more global flags to a file that is already a swamp of state variables and try blocks with empty catches. The new stretchOn checkbox and dropIn field are stuffed into the same cramped toggleRow strips on a phone screen, so the controls are going to be a thumb fight. Bundling this much into one commit means when it breaks, you cannot revert one piece.\n\nFix it: Split index.html into separate script files before it collapses. Commit one feature at a time. Check the dropIn row at phone width because it has an input, a label, and buttons in one line. Replace the empty catch blocks with real logging."
-    },
-    {
-      "date": "2026-10-23T21:28:22Z",
-      "repo": "blue-agent",
-      "sha": "d01bf646835136636a68456b4f5c43c695a6c43e",
-      "message": "Log newest runs and errors at startup",
-      "heckle": "Congratulations, you made the start script run a debugging dump before the server, joined with a semicolon so a crash in show-runs.mjs does not matter and a hung Redis connect holds the whole boot hostage. The connect has no timeout, so if Redis is slow the server never comes up, a bailout with strings attached. It also prints up to 600 characters of raw events and 300 of run summaries into Railway logs, and nobody has checked whether those contain anything private. This is a throwaway debug script wired into production start like a permanent fixture.\n\nFix it: Add a connect timeout in show-runs.mjs so it cannot block boot. Run it as a separate command, not inside the start script in package.json. Strip or redact event text before logging it. Delete the whole thing once the bug is found."
     }
   ]
 }
