@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-04T23:44:22Z",
+      "repo": "2026-11-04-field-dispatch",
+      "sha": "e9d80cde",
+      "message": "Crews follow real road routes between start and end points",
+      "heckle": "The new api/route.js opens a Redis client at module level, swallows every connection error with an empty handler, and takes lat and lng from the query string with no rate limit, so anyone on earth can make your server hammer a free public routing service and fill your database with junk keys. The leg logic in index.html starts as a straight line and then snaps to the road once it arrives, so crews teleport sideways mid trip. A government shutdown has better continuity than that.\n\nFix it: Put a rate limit and a bounding box check on api/route.js. Log the Redis error instead of eating it. Fetch the route before the leg starts in the startLeg spot of index.html so crews never jump."
+    },
+    {
+      "date": "2026-11-04T23:44:22Z",
+      "repo": "2026-11-04-field-dispatch",
+      "sha": "c8625bc1",
+      "message": "Movement badge with motion sensing and 25 mph for 2 minutes driving rule",
+      "heckle": "A driving lock built on a phone motion sensor and a 25 mph threshold, and the escape hatch is a button labeled I am a passenger. Congratulations, the safety feature is an honor system, like a campaign promise. The new badge colors in index.html also ship pale yellow text on a pale yellow pill, which nobody can read in sunlight, and you are the one who wants this used outside.\n\nFix it: Make the b-maybe badge contrast readable in index.html. Add a timeout so the passenger button resets itself. Test the speed rule with a faked position feed before trusting it on a real road."
+    },
+    {
+      "date": "2026-11-04T23:44:22Z",
+      "repo": "2026-11-04-field-dispatch",
+      "sha": "c1d46494",
+      "message": "Stashed site scans with a daily cap",
+      "heckle": "api/scan.js caches scans forever in Redis, which sounds smart until you notice the daily cap that protects your key is also stored in the same database you connect to with an empty error handler. The scan cell is 500 meters, so two sites on opposite sides of a hill share one answer. And package.json pins redis but nothing else, so the intern is trusting luck for the rest. This reads like a bailout nobody audited.\n\nFix it: Fail closed in api/scan.js when Redis is down, so the cap cannot be skipped. Add an expiry to cached scans. Shrink CELL or say plainly in the UI that results are approximate."
+    },
+    {
+      "date": "2026-11-04T23:44:22Z",
+      "repo": "2026-11-04-field-dispatch",
+      "sha": "15a52b52",
+      "message": "Real cameras, camera repairs, satellite passes, Cameras tab",
+      "heckle": "Cameras, satellites, repairs, and a new tab in one commit, because small commits are for people who can count. api/cameras.js hands the browser raw video URLs from a state feed and index.html pulls two CDN scripts with no integrity hash. The ghost of api/sats.js returns a raw error string to the client on failure, so you are leaking stack text for fun. This is a filibuster in code form, long and going nowhere.\n\nFix it: Return a generic message from the catch in api/sats.js, not String(e). Add integrity attributes to the two new script tags in index.html. Split the camera, satellite, and repair work into separate commits."
+    },
+    {
+      "date": "2026-11-04T23:44:22Z",
+      "repo": "mohavetech-website",
+      "sha": "cc0cddd4",
+      "message": "sync with vercel, drop infinite-centerpoint",
+      "heckle": "Another hand pasted sync of the app index, and again fleet.html, index.html, and script-v52.js each carry their own copy of the same list, so one typo and three files disagree. The script file is renamed by version number every time, which is a ritual, not a build system. You deleted a whole app from the list in a commit message that reads like a text to a friend.\n\nFix it: Generate the list for index.html and fleet.html from one json file. Stop renaming script-v52.js and use a cache query string like you already do for troll.js. Say in the message why the app was dropped."
+    },
+    {
+      "date": "2026-11-04T23:44:22Z",
+      "repo": "2026-11-04-orange-hush",
+      "sha": "eddda421",
+      "message": "Add digest: release held notifications together on a preset interval",
+      "heckle": "The digest feature asks for POST_NOTIFICATIONS and schedules alarms in Digest.java, but a held notification list that lives in memory dies the moment Android kills the service, so the digest releases nothing and nobody knows. Also the DigestReceiver just calls Digest.post with no check that anything is waiting, so you can get an empty ping every hour. A busier nothing than a congressional recess.\n\nFix it: Persist held notifications in Digest.java instead of keeping them in memory. Skip the post in DigestReceiver when the list is empty. Re-register alarms after reboot, because right now a restart kills the schedule."
+    },
+    {
+      "date": "2026-11-04T23:44:22Z",
+      "repo": "2026-11-04-field-dispatch",
+      "sha": "03c99e20",
+      "message": "Keep one open ticket on the board and fix idle crew text",
+      "heckle": "The spawn fix swaps one random gate for another in index.html: if nothing is open, always spawn. So the board can never be empty, and the player can never rest, which the intern calls a feature. Spawning also depends on Math.random with no seed, so you can never replay a bug you just made. Three lines and you still found a way to be sloppy.\n\nFix it: Add a short delay before the forced ticket in the spawn spot of index.html so the board can breathe. Use a seeded random for spawns. Check the cap line above it so the forced ticket cannot beat the cap."
+    },
+    {
+      "date": "2026-11-04T23:44:22Z",
+      "repo": "2026-11-04-orange-hush",
+      "sha": "57cadc97",
+      "message": "Notification blocker app and APK build",
+      "heckle": "A notification blocker that asks for QUERY_ALL_PACKAGES, exports its listener service, and commits app/debug.keystore with the password written in app/build.gradle. It is a debug key, so fine, but it also ships the debug APK as the latest release by deleting the release and tag every push. Every install link breaks mid build. A cabinet reshuffle has more stability than this pipeline.\n\nFix it: Stop deleting the latest release in build.yml before the new one uploads, and edit it in place. Explain QUERY_ALL_PACKAGES or drop it from AndroidManifest.xml. Keep real signing material out of the repo before this leaves debug."
+    },
+    {
+      "date": "2026-11-04T23:44:22Z",
+      "repo": "2026-11-04-field-dispatch",
+      "sha": "216170c3",
+      "message": "First playable field dispatch prototype",
+      "heckle": "Three hundred lines of one index.html, with CSS crammed onto single lines so long that reading it is a punishment. The save lives in the page state and is stuffed with whatever S grows into, and nothing versions it, so every later change can corrupt old saves. A light theme with a cramped fixed header on a phone is a bold choice. The crew list scrolls under it like a rumor.\n\nFix it: Add a version number to the saved state in index.html so a schema change cannot wreck old saves. Give the header a fixed height and test it on a small phone. Break the CSS into readable lines."
+    },
+    {
+      "date": "2026-11-04T23:44:22Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "b5c05e6c",
+      "message": "steward 2026-11-04T185308 (#70)",
+      "heckle": "Another bot PR for another crosswalk, and the steward draws the exact same hatch rectangles on Cholla Street that it drew last time, with four hardcoded pairs of numbers and a pattern of lines, as if the world might change. The whole patch is one line of minified json, so no human will ever review it and the merge is a rubber stamp on a rubber stamp.\n\nFix it: Make the steward check for an existing crosswalk before calling place_hatch. Pretty print the contrib json so a review can read it. Reject a PR that only repeats earlier geometry."
+    },
+    {
       "date": "2026-11-04T17:20:02Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "42089752",
@@ -1329,76 +1399,6 @@
       "sha": "19e9bd3702ae810c7bf7869621cc8a2dacebb2b7",
       "message": "Show page errors on screen",
       "heckle": "You pasted a debug console into production. Every visitor now gets an orange error box over the bottom of the page, and the build meta tag is hardcoded to 3ff68a8-plus, a version string that is wrong the moment you make another commit. That is not versioning, that is a sticky note. The error handler also appends forever with no cap, so one looping failure fills the screen like an unread terms of service.\n\nFix it: Show the errBar in index.html only when the url has a debug flag. Replace the hardcoded build meta with a value stamped at deploy time or delete it. Cap the bar to the last five messages and add a close button."
-    },
-    {
-      "date": "2026-10-24T23:19:33Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "3ff68a8bb4dd80d0276129a971a26e47a3e43d34",
-      "message": "Never cache the page, so phones always get the newest version",
-      "heckle": "Two header rules in vercel.json for the slash route and index.html, copy pasted with one word changed, which is the full extent of your engineering here. Never cache the page means every phone reloads the whole page every visit, on mobile data, forever, because you could not be bothered to version your files. Your build is a blunt instrument swung like a filibuster, delaying everything to avoid one stale load.\n\nFix it: Merge the two header blocks in vercel.json into one source pattern. Switch to max-age=0 with must-revalidate so conditional requests still return a cheap 304. Use hashed or versioned names for scripts so the cache actually works."
-    },
-    {
-      "date": "2026-10-24T20:54:46Z",
-      "repo": "song-offset-listener",
-      "sha": "ba8238d4c50fa87d0434f6afa45312dfcd3d088f",
-      "message": "Auto pick: remember obscure tracks to skip",
-      "heckle": "One added line in api/auto-pick.js checkTempo and it duplicates the rank check the very next line already does. The previous commit was five minutes old and you already needed a sequel to fix it. This is a bailout for a bailout, and the cache logic now reads like a filibuster transcript with two branches saying the same thing.\n\nFix it: Merge the two rank checks in checkTempo into one condition so the cached path has a single exit. Stop pushing a fix every thirty seconds and test the function once before you commit."
-    },
-    {
-      "date": "2026-10-24T20:54:46Z",
-      "repo": "song-offset-listener",
-      "sha": "dc661741b1ae849cc8b4fb8b79075c05d873587d",
-      "message": "Auto pick: favor songs people know, clean titles",
-      "heckle": "Congratulations, MIN_RANK = 120000 is a magic number dropped in the middle of api/auto-pick.js like a campaign promise with no budget behind it. You also changed what the cache stores, so every old entry has no rank and slips past the filter, and obscure songs get cached with bpm null for thirty days. Did you learn caching from a cereal box?\n\nFix it: Move MIN_RANK to the top of api/auto-pick.js with a comment saying what it means. Version the cache key in checkTempo so old entries without a rank stop leaking through. Cut the thirty day lifetime on the negative cache entry, because one bad lookup should not blacklist a song for a month."
-    },
-    {
-      "date": "2026-10-24T20:54:46Z",
-      "repo": "song-offset-listener",
-      "sha": "29188b5f6f592acaa943f6213561fde3a84825ce",
-      "message": "Auto pick: answer within about 9 seconds",
-      "heckle": "You chopped the time budgets in api/auto-pick.js from eighteen seconds to nine and the wait between batches from 700 to 300 milliseconds, against an API you already know rate limits you. That is not tuning, that is a government shutdown deadline with hope as the strategy. The 6000 to 3000 cutoff for the second page quietly means most requests never get the random page at all.\n\nFix it: Pull the timing numbers in the handler into named constants so the next change is not a guessing game. Respect the one request per second limit on the mb helper instead of hammering it at 300 milliseconds. Log how often the second page is skipped before you decide the budget is right."
-    },
-    {
-      "date": "2026-10-24T20:54:46Z",
-      "repo": "song-offset-listener",
-      "sha": "9255baf98fe8ef4be0051bf6f8164fb10822892d",
-      "message": "Auto pick: time limits so slow lookups return what they have",
-      "heckle": "Magic numbers 6000, 12000, and 18000 are scattered through the handler in api/auto-pick.js, and the ternary inside the for loop condition is unreadable enough to qualify as a hostile act. You also rewrote the retry logic in mb in the same commit, because why would one change per commit ever occur to the intern. Half of these numbers get replaced in the next commit anyway.\n\nFix it: Hoist the deadline checks in the handler loop into a small helper called timeLeft. Keep the retry change in mb in its own commit. Name the constants once so you stop rewriting them."
-    },
-    {
-      "date": "2026-10-24T20:54:46Z",
-      "repo": "song-offset-listener",
-      "sha": "2cd2db2bcc3822755d4af6a89cdaf017fd2c428d",
-      "message": "Auto pick: reset trace each request",
-      "heckle": "The trace array in api/auto-pick.js is a module level variable, so it leaks between requests on a warm edge instance, and your fix is to clear it with trace.length = 0 at the top of the handler. Two concurrent requests will still stomp each other's debug output. It is a shared mutable global in a request handler, which is how you get a bill nobody voted for.\n\nFix it: Make trace a local array inside the handler and pass it into checkTempo. Delete the module level trace entirely once that is done."
-    },
-    {
-      "date": "2026-10-24T20:54:46Z",
-      "repo": "song-offset-listener",
-      "sha": "e32c5ac73df8f40b3a94d4c56485b3c12b3fb3e1",
-      "message": "Auto pick: debug trace",
-      "heckle": "You shipped debug plumbing straight into production in api/auto-pick.js: a ?debug parameter that hands anyone on the internet your candidate pool and the raw error text from the upstream API. A commit titled debug trace is the code equivalent of leaving the scaffolding up and charging rent. Also the trace holds a module level array again, because lessons do not stick.\n\nFix it: Gate the debug output in the handler behind an env flag or strip it before shipping. Stop echoing upstream error JSON back to callers in checkTempo. Keep the trace local to the request."
-    },
-    {
-      "date": "2026-10-24T20:54:46Z",
-      "repo": "song-offset-listener",
-      "sha": "88e2a171cc22684ea6fa6fd317db2657f49ea4eb",
-      "message": "Auto pick: exact tempo per candidate, half and double time count",
-      "heckle": "A thirty line rewrite of checkTempo in api/auto-pick.js that throws away the tempo filtered search you wrote earlier today and replaces it with fetch the track and compute it yourself. You went from batches of six to four, from 48 candidates to 28, and from 400 to 700 milliseconds, all inside one afternoon, like a budget that gets revised every hour. The folds of 1, 2, and 0.5 are fine, but nobody can tell if this version works because the commit stack is a flip flop festival.\n\nFix it: Pick one candidate strategy and write down why in a comment above checkTempo. Add a small test for the half and double time fold math. Stop revisiting batch sizes without numbers from real requests."
-    },
-    {
-      "date": "2026-10-24T20:54:46Z",
-      "repo": "song-offset-listener",
-      "sha": "33ac978fc53cc9250f0acfb66b18468d3ee377b5",
-      "message": "Auto pick: check more candidates per request",
-      "heckle": "Candidates jumped from 16 to 48 and the default spread from 4 to 6 in api/auto-pick.js, so the endpoint now makes up to 48 upstream lookups per request on an edge function. Three commits later you cut it back to 28. This is the fiscal policy of someone who spends first and reads the invoice after.\n\nFix it: Put a hard cap on upstream calls per request in the handler. Make spread a documented default constant. Stop shipping experiments straight to main."
-    },
-    {
-      "date": "2026-10-24T20:54:46Z",
-      "repo": "song-offset-listener",
-      "sha": "6d1f57f82d27542c401bd9f179d7d836cf16c0eb",
-      "message": "Auto pick: songs by genre tag, decade and BPM for Autosmash",
-      "heckle": "A brand new 92 line edge route, api/auto-pick.js, with no tests, a User-Agent string that literally says no-contact-configured to a public API that asks for a real contact, and a pool cache key built from a raw query string. The skip list is a comma separated query parameter, so enough skipped songs will blow the URL length. Ninety two lines landed in one commit and then fourteen minutes of repairs followed, which tells me exactly how much you ran it first.\n\nFix it: Set a real contact in the UA constant at the top of api/auto-pick.js. Move the skip list to a POST body or cap its length in the handler. Add a basic test for the handler's input validation. Run the thing once before you push it."
     }
   ]
 }
