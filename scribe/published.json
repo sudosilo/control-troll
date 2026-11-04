@@ -292,7 +292,12 @@
   "sudosilo/field-twin@v2026.11.01",
   "sudosilo/2026-10-30-orange-scores@v2026.10.31",
   "sudosilo/2026-10-18-orange-testbed@v2026.11.02-2",
-  "sudosilo/2026-10-18-orange-testbed@v2026.11.03"
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.03",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.03-2",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.04",
+  "sudosilo/algorithm-albatross@v2026.11.03",
+  "sudosilo/field-twin@v2026.11.03",
+  "sudosilo/67-idea-generator@v2026.11.03"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -1791,6 +1796,16 @@
    "t": [
     "clock",
     "time",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/67-idea-generator": {
+   "d": "A sixty second pitch recorder with timed prompts, saved takes, and voice playback",
+   "h": "https://67-idea-generator.vercel.app",
+   "t": [
+    "audio",
+    "pitch",
     "tool",
     "vercel"
    ]
