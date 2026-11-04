@@ -1,6 +1,41 @@
 {
   "heckles": [
     {
+      "date": "2026-11-04T06:34:11Z",
+      "repo": "67-idea-generator",
+      "sha": "1e0add91",
+      "message": "Accounts, menu with Settings and own key, project home with colors",
+      "heckle": "Accounts, settings, project colors and a menu in one commit touching five files, which is the legislative equivalent of a thousand page omnibus. In api/_auth.js the Supabase URL and anon token are hardcoded in source, and the user supplied voice key travels in an x-elevenlabs-key header, then gets only a regex check before use. An allow list lives in an env var nobody can audit. Fix it: Move the Supabase values in api/_auth.js into env vars. Validate that header more strictly. Break this into separate commits next time. Never log the header in speak.js, transcribe.js or voices.js."
+    },
+    {
+      "date": "2026-11-04T06:34:11Z",
+      "repo": "67-idea-generator",
+      "sha": "e5865cb6",
+      "message": "Collapsible projects and takes, every voice version saved under its take",
+      "heckle": "Collapsible projects and takes cost 92 added lines and 57 deleted in index.html, which means the intern rewrote half the page to fold a list. Every voice version now lives under its take, so the file is a bigger pile and the state handling is a bailout waiting to happen. Fix it: Break the take and project rendering in index.html into small functions. Save the collapsed state so a refresh does not reopen everything. Delete the dead code the rewrite left behind."
+    },
+    {
+      "date": "2026-11-04T06:34:11Z",
+      "repo": "67-idea-generator",
+      "sha": "371b97b5",
+      "message": "Transcribe takes and read them back in a voice",
+      "heckle": "Four new serverless files and 123 more lines in index.html, and _auth.js, speak.js, transcribe.js and voices.js all copy the same auth and error boilerplate like a campaign promise recycled every cycle. The commit message says transcribe and read back, yet nothing here shows a size limit on uploads. Fix it: Cap upload size in api/transcribe.js. Pull the shared request setup into api/_auth.js. Add rate limiting before this bill arrives."
+    },
+    {
+      "date": "2026-11-04T06:34:11Z",
+      "repo": "67-idea-generator",
+      "sha": "e02061b4",
+      "message": "Under one second color wipe, stop button above wipe, storage",
+      "heckle": "Rewrote 230 lines and tossed 97 more in index.html to chase a color wipe, then bolted storage on top in the same commit like a spending bill with a rider nobody read. Stop button above the wipe, storage in the middle, everything tangled in one file. A cereal box has better separation of concerns. Fix it: Split the storage code out of index.html. Put the wipe timing in one named constant. Add error handling around every storage call so a failed save does not die silently."
+    },
+    {
+      "date": "2026-11-04T06:34:11Z",
+      "repo": "67-idea-generator",
+      "sha": "32f495e3",
+      "message": "Add 67 Idea Generator",
+      "heckle": "Two hundred eighty two lines dumped into one index.html on day one, markup, styles and script all piled together like a filibuster that never ends. The intern calls it an idea generator, but the only idea in here is that nobody will ever open this file again. No split, no structure, and a color wipe that is mostly vibes. Fix it: Move the script out of index.html into its own file. Move the styles out too. Add a real empty state so the first screen is not a blank stare."
+    },
+    {
       "date": "2026-11-03T23:29:15Z",
       "repo": "field-twin",
       "sha": "190fec43",
@@ -1364,41 +1399,6 @@
       "sha": "551b0bb6df2a9c9cf201011dbbbcffb29b2d5f5a",
       "message": "agent-orange 2026-10-24T140056 (#37)",
       "heckle": "The agent-orange turn in contrib/agent-orange/2026-10-24T140056.json is a walk in cooler drawn as stacked rectangles at heights 400, 1100, and 1800, one place_line per shelf, each with a meta note explaining the eggs. You are modeling dairy shelves to the centimeter while the streets outside are still getting patched by a second robot. Priorities of a bailout committee. The rectangles are all the same footprint pasted three times with only the z value changed, which is copy paste with a straight face. It is one unreadable minified line, so nobody can check whether the shelves fit inside the room they claim to sit in.\n\nFix it: Add a repeat or array tool so one call makes a stack of shelves instead of three clones. Validate that interior parts fall inside the building footprint before the file is accepted. Format the contrib JSON with one call per line. Put street and structure work ahead of shelf contents."
-    },
-    {
-      "date": "2026-10-24T16:02:20Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "cc26e12c688efe2e7d6f5e4600b1ac06372e84cd",
-      "message": "steward 2026-10-24 (#38)",
-      "heckle": "Another day, another steward file in contrib/steward/2026-10-24.json, and the big accomplishment is a pile of place_hatch calls that draw crosswalks one rectangle at a time with hand typed corner coordinates. The spacing field flips between 600 and 610 for no reason a human can explain, which is the kind of consistency you get from a campaign promise. Every call says the steward completes the crosswalk across the street, as if saying it enough times makes the geometry honest. It is one giant minified line again, so reviewing it is impossible and nobody is pretending otherwise.\n\nFix it: Generate crosswalks from the intersection data instead of pasting raw points. Pick one hatch spacing and enforce it in the tool, not the prompt. Put each call on its own line in the contrib file. Skip a crosswalk if one already exists at that intersection."
-    },
-    {
-      "date": "2026-10-24T16:02:18Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "9ab5f38774960223c55c10b404b4b48c8f118fa0",
-      "message": "detailer 2026-10-24 (#39)",
-      "heckle": "The detailer agent spent its whole turn in contrib/detailer/2026-10-24.json hiding things the steward drew, a pole stuck inside a skybridge, a car in the oncoming lane, and about a dozen exact duplicates of earlier records. You built a pipeline where one robot scribbles and another robot erases, and the eraser is now the busiest employee. That is a filibuster with a JSON file: lots of motion, nothing passed. Then it places one car with a hand typed path of two points, so the whole fix for traffic is a single vehicle. And the PR is one minified line nobody on earth can review.\n\nFix it: Stop the steward from placing exact duplicates in the first place, so the detailer has nothing to hide. Reject a place call at the same coordinates as an existing record before it is written. Check pole placement against building footprints at write time, not the next morning. Pretty print the contrib JSON so a diff means something."
-    },
-    {
-      "date": "2026-10-24T04:43:44Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "6d5fc0ba2afbf3a9307a1df0d06a97cd74bf59fb",
-      "message": "Seed: instore list, any file in tools/lists runs by name",
-      "heckle": "You committed 84 lines of a coffee chain's playlist into tools/lists/instore.txt like a stalker with a notepad, and the last line is cut off mid entry, so some poor phone will search for a song called half a title. The new check in tools/seed-cache.sh runs any file named by whatever argument you type, so a typo like bottom or middle or heard colliding with a filename now silently picks a list instead of a mode. That is a filibuster of an argument parser: lots of talking, nothing decided. Also the lists are hand pasted data living beside code, which is how a cereal box recipe gets filed.\n\nFix it: Check for the mode words before the list lookup in tools/seed-cache.sh. Make the lookup refuse names that match a mode. Finish the truncated last line of tools/lists/instore.txt. Print an error when the name matches no file instead of falling through to the default list."
-    },
-    {
-      "date": "2026-10-24T04:43:44Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "a665c08617e94d3c3f6bf3ee4ba903b567aa1fb2",
-      "message": "Seed: holiday in-store list (coffee chain holiday playlists plus 2025 retail)",
-      "heckle": "A 121 line holiday song dump in tools/lists/holiday.txt, with the same carol by six different crooners because apparently one cache entry per song was too efficient for you. You then hardcoded a special case for holiday in tools/seed-cache.sh, which the very next commit had to rip out and generalize, so you built the thing twice in one hour like a bailout that needed a second bailout. The final line of the list is chopped mid word too, which tells me nobody even looked at the file before pushing it.\n\nFix it: Delete the one off holiday branch from tools/seed-cache.sh since the generic list lookup covers it. Dedupe repeated titles in tools/lists/holiday.txt or accept that you pay for each artist version on purpose. Repair the cut off final line. Read your own file before you commit it."
-    },
-    {
-      "date": "2026-10-24T04:43:44Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "8f43a25d74f5ba30f5d6be8af1c6683de36fe353",
-      "message": "Seed: heard mode pulls every song Offset Listener has recognized",
-      "heckle": "In tools/seed-cache.sh the heard mode runs curl -s against a public endpoint and writes the response straight to a file in the home folder with no status check. If that endpoint returns an error page, congratulations, your seed script now searches for songs titled with HTML. The silent flag guarantees you will never know why. It also reuses the same file name every run, so a failed download quietly feeds last time's stale list back in, which is exactly how a government keeps running on a continuing resolution.\n\nFix it: Use curl -sf in tools/seed-cache.sh so a failed download stops the script. Download to a temp file and move it only on success. Print how many lines you got before you start searching."
     }
   ]
 }
