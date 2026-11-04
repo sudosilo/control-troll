@@ -4,15 +4,15 @@
    "repo": "2026-10-18-orange-testbed",
    "releases": [
     {
-     "tag": "v2026.11.02-2",
-     "target": "d1f0e5be592076957dcbed1488001793e184f147",
-     "name": "Agent Test Bed 2026-11-02",
+     "tag": "v2026.11.03-2",
+     "target": "fe22a941d5136234a0a3e3ea98540d2c6c2469dc",
+     "name": "Agent Test Bed 2026-11-03",
      "body": "The grok and steward turns were played and merged as well."
     },
     {
-     "tag": "v2026.11.03",
-     "target": "d9ba13448fcba936d9c811126291a4a444198671",
-     "name": "Agent Test Bed 2026-11-03",
+     "tag": "v2026.11.04",
+     "target": "42089752a3b4bbc0f8746321ad2c84cf2a507fae",
+     "name": "Agent Test Bed 2026-11-04",
      "body": "The agent turn was played and merged into the city."
     }
    ],
@@ -22,6 +22,63 @@
     "agents",
     "game",
     "simulator",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "algorithm-albatross",
+   "releases": [
+    {
+     "tag": "v2026.11.03",
+     "target": "61c10208205421be7495643056de6771e85d04f0",
+     "name": "Algorithm Albatross 2026-11-03",
+     "body": "Added a bass line layer. It reads an eighth note bass pitch for each bar and compares it between songs, allowing for transposition and tempo changes."
+    }
+   ],
+   "description": "Finds instrumental skeletons and cover pairs in songs, with bar by bar comparison and a tempo sweep.",
+   "homepage": "",
+   "topics": [
+    "analysis",
+    "audio",
+    "music",
+    "tool"
+   ]
+  },
+  {
+   "repo": "field-twin",
+   "releases": [
+    {
+     "tag": "v2026.11.03",
+     "target": "190fec438acbf1a68e2129379560f1de99057b34",
+     "name": "Field Twin 2026-11-03",
+     "body": "Added the Field Twin Companion, a small dashboard screen that pairs with the phone app over Bluetooth. The phone sends it the route, turns, and lockers, and the companion screen has a browser installer page. An ALL LOCKERS switch shows every team locker as a pin, and the locker list can be read without signing in. Cameras on the map now group into teal count bubbles. A Field Chat room shares members with Cat Command Chat and flashes the map when a message arrives. GO now handles routes around the airport fence."
+    }
+   ],
+   "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
+   "homepage": "https://field-twin-teal.vercel.app",
+   "topics": [
+    "field-service",
+    "map",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "67-idea-generator",
+   "releases": [
+    {
+     "tag": "v2026.11.03",
+     "target": "1e0add911cad51e59ac83c601e8f164eb5bb61e2",
+     "name": "67 Idea Generator 2026-11-03",
+     "body": "Created the app. It gives you sixty seconds to tell someone about something you made, in a product spot, radio ad, how it got built, or deadpan infomercial style, with a color wipe that counts the time and marks for problem, solution, and features. Takes are saved, can be marked good, and can be read back in a chosen voice. You can sign in, keep takes in projects, and export good takes or all of them. Your own voice service key is kept on your device in Settings."
+    }
+   ],
+   "description": "A sixty second pitch recorder with timed prompts, saved takes, and voice playback",
+   "homepage": "https://67-idea-generator.vercel.app",
+   "topics": [
+    "tool",
+    "audio",
+    "pitch",
     "vercel"
    ]
   }

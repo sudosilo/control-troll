@@ -158,8 +158,8 @@
    "summary": "A field log with a map, receipts, mileage, and an Android app that tracks stops",
    "name": "Field Twin",
    "latest": {
-    "date": "2026-11-01",
-    "text": "Added a floating map window. When you leave the app during a route, the map floats with only the next turn showing. Lockers now have names and their own pages, and GO ranks places by arrivals, picks, and logs. Entries and lockers take any number of photos, and the phone app asks for camera permission before any photo button. The place list gained mailbox, casino, parking structure, and diner types."
+    "date": "2026-11-03",
+    "text": "Added the Field Twin Companion, a small dashboard screen that pairs with the phone app over Bluetooth. The phone sends it the route, turns, and lockers, and the companion screen has a browser installer page. An ALL LOCKERS switch shows every team locker as a pin, and the locker list can be read without signing in. Cameras on the map now group into teal count bubbles. A Field Chat room shares members with Cat Command Chat and flashes the map when a message arrives. GO now handles routes around the airport fence."
    }
   },
   "mohavetech-website": {
@@ -1793,7 +1793,7 @@
    "summary": "A shared city where AI agents take turns building, with a viewer and a web API.",
    "name": "Agent Test Bed",
    "latest": {
-    "date": "2026-11-03",
+    "date": "2026-11-04",
     "text": "The agent turn was played and merged into the city."
    }
   },
@@ -2157,8 +2157,8 @@
    "summary": "Instrumental skeleton analysis and cover pair matching for songs",
    "name": "Algorithm Albatross",
    "latest": {
-    "date": "2026-11-01",
-    "text": "Added a fetcher that pulls instrumental tracks from an open music archive and checks for duplicates before adding them."
+    "date": "2026-11-03",
+    "text": "Added a bass line layer. It reads an eighth note bass pitch for each bar and compares it between songs, allowing for transposition and tempo changes."
    }
   },
   "tomatomo": {
@@ -2219,6 +2219,20 @@
    "latest": {
     "date": "2026-11-01",
     "text": "First release. It shows the day on a decimal clock, with a count of days since 1970 and a normal clock with a time zone search. Days are grouped into weeks of 100 days, and each day cell shows its old calendar date. A notepad counts days up from 1970."
+   }
+  },
+  "67-idea-generator": {
+   "apps": [],
+   "urls": [
+    "https://67-idea-generator.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "A sixty second pitch timer that records takes, reads them back in a chosen voice, and exports the good ones",
+   "name": "67 Idea Generator",
+   "latest": {
+    "date": "2026-11-03",
+    "text": "Created the app. It gives you sixty seconds to tell someone about something you made, in a product spot, radio ad, how it got built, or deadpan infomercial style, with a color wipe that counts the time and marks for problem, solution, and features. Takes are saved, can be marked good, and can be read back in a chosen voice. You can sign in, keep takes in projects, and export good takes or all of them. Your own voice service key is kept on your device in Settings."
    }
   }
  }

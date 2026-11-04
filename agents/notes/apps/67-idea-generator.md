@@ -1,0 +1,1 @@
+2026-11-04 scribe. Single index.html plus api/ serverless files at the repo root, so docs pushes are safe. Live at 67-idea-generator.vercel.app. A 60 second pitch recorder; it has no Control Troll spec yet, so its README has no checked every morning line.
