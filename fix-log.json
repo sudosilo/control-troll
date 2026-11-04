@@ -1,308 +1,324 @@
 {
- "entries": [
-  {
-   "date": "2026-10-14",
-   "app": "snapshot-engine-pied",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Could not reach the app repo because the list_repos and add_repo tools were missing from this session, so no fix was attempted. Root returns 404 and no snapshot was saved, so it may be a backend needing a health route or a missing deploy."
-  },
-  {
-   "date": "2026-10-14",
-   "app": "topo-wars-server",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Could not reach the app repo because the list_repos and add_repo tools were missing from this session, so no fix was attempted. Root returns 404, likely a backend with no home page that needs a GET /health route."
-  },
-  {
-   "date": "2026-10-14",
-   "app": "groundcore-nine",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Could not reach the app repo because the list_repos and add_repo tools were missing from this session, so no fix was attempted. Root returned 404 today though the saved snapshot shows a full page, so the deploy likely broke or was removed."
-  },
-  {
-   "date": "2026-10-16",
-   "app": "mission-operator",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Could not reach the app repo because list_repos and add_repo are still missing from this session, and vercel.app is unreachable from the sandbox; the snapshot is a Vite shell loading /assets/index-Cd--pKmp.js, so the 404 is likely a missing hashed bundle from a broken or partial deploy."
-  },
-  {
-   "date": "2026-10-17",
-   "app": "snapshot-engine-pied",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "list_repos and add_repo are still missing from this session and account wide search is out of scope, so the app repo could not be reached and no fix was attempted; root still returns 404 and no snapshot exists, so it is either a backend needing GET /health or a missing deploy."
-  },
-  {
-   "date": "2026-10-17",
-   "app": "topo-wars-server",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "list_repos and add_repo are still missing from this session and account wide search is out of scope, so the app repo could not be reached and no fix was attempted; root still returns 404 with no snapshot, likely a backend that needs a GET /health route."
-  },
-  {
-   "date": "2026-10-17",
-   "app": "groundcore-nine",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "list_repos and add_repo are still missing from this session and account wide search is out of scope, so the app repo could not be reached and no fix was attempted; root returns 404 though the saved snapshot is a full GroundCore page, so the deploy likely broke or was removed."
-  },
-  {
-   "date": "2026-10-18",
-   "app": "snapshot-engine-pied",
-   "kind": "down",
-   "outcome": "repo not found",
-   "pullRequest": null,
-   "note": "No sudosilo repo matches snapshot-engine, and scribe/repos.json has no entry, so no fix was attempted."
-  },
-  {
-   "date": "2026-10-18",
-   "app": "topo-wars-server",
-   "kind": "down",
-   "outcome": "fixed",
-   "pullRequest": "https://github.com/sudosilo/topo-wars-server/pull/1",
-   "note": "Backend has no home page, so I added a GET /health route that pings Redis; add https://topo-wars-server.vercel.app/health to apps.json after merge."
-  },
-  {
-   "date": "2026-10-19",
-   "app": "field-twin-violet",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Repo sudosilo/field-twin-violet-api holds the phone app as a root index.html with no vercel.json, and the saved snapshot shows it was live, so the Vercel project was likely removed or unlinked; no code fix is evident and I did not push."
-  },
-  {
-   "date": "2026-10-19",
-   "app": "tower-builder-five",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Repo sudosilo/tower-builder holds only a vercel.json pointing at a missing tower-builder folder, so the game code lives only in snapshots/tower-builder-five.html and the deploy needs the developer to redeploy or supply the source."
-  },
-  {
-   "date": "2026-10-19",
-   "app": "termbeat",
-   "kind": "test-failing",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Live app matches the repo and has no hamburger menu or theme buttons at all, only load audio, mic and play, so the test is correct against the spec and the app lacks the themes; the developer must restore the fuller build."
-  },
-  {
-   "date": "2026-10-20",
-   "app": "pajamastan-warrants",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Repo sudosilo/pajamastan-warrants is a Docker FastAPI backend that already serves its page at / and has /status, with no vercel.json, so the 404 on the Vercel host means the deploy is gone or unlinked and no code fix applies."
-  },
-  {
-   "date": "2026-10-21",
-   "app": "field-twin-teal-gold",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "No sudosilo repo or scribe entry names teal-gold and no snapshot was saved; the field-twin family repos (field-twin, field-twin-violet-api, field-twin-viridian) are all plain index.html apps, so the Vercel project looks removed or deployed from the phone and the developer must say where it lives."
-  },
-  {
-   "date": "2026-10-21",
-   "app": "mary-jane-man",
-   "kind": "test-failing",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "The live URL and its saved snapshot both serve the Vercel Stumbler page, not a maze game, and no sudosilo repo matches, so the tests are correct against the spec and the developer must restore the game or say the app was replaced."
-  },
-  {
-   "date": "2026-10-23",
-   "app": "snapshot-engine-pied",
-   "kind": "down",
-   "outcome": "repo not found",
-   "pullRequest": null,
-   "note": "Still no sudosilo repo matches snapshot-engine and scribe/repos.json has no entry, so the developer must say where the code lives."
-  },
-  {
-   "date": "2026-10-23",
-   "app": "tower-builder-five",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Repo sudosilo/tower-builder is unchanged since 2026-10-18 and holds only vercel.json, README and CHANGELOG, so the game exists only in the saved snapshot and the developer must redeploy it."
-  },
-  {
-   "date": "2026-10-24",
-   "app": "topo-wars-server",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": "https://github.com/sudosilo/topo-wars-server/pull/1",
-   "note": "Pull request 1 adding /api/health is still open and unmerged, so the root still returns 404 until the developer merges it."
-  },
-  {
-   "date": "2026-10-24",
-   "app": "pajamastan-warrants",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Still 404 and the repo code already serves / and /status, so the developer must redeploy the Docker backend or repoint the vercel.app name."
-  },
-  {
-   "date": "2026-10-24",
-   "app": "frontend-sudosilo2-1771s-projects",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "This is a protected Vercel team URL that shows a login page and no repo is named for it, so the developer should link the public production URL (possibly ebutuoy.vercel.app from ebutuoy-frontend) in the index and apps.json instead."
-  },
-  {
-   "date": "2026-10-25",
-   "app": "termbeat",
-   "kind": "test-failing",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Live page still has only load audio, mic and play with no menu or themes and the repo has not been pushed since 2026-10-18, so the test is right and the developer must restore the fuller build."
-  },
-  {
-   "date": "2026-10-25",
-   "app": "mary-jane-man",
-   "kind": "test-failing",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Live URL still serves the Vercel Stumbler page and no sudosilo repo matches mary, maze or jane, so the developer must restore the game or say the app was replaced."
-  },
-  {
-   "date": "2026-10-26",
-   "app": "snapshot-engine-pied",
-   "kind": "down",
-   "outcome": "repo not found",
-   "pullRequest": null,
-   "note": "Still 404 and no sudosilo repo matches snapshot-engine, so the developer must say where the code lives."
-  },
-  {
-   "date": "2026-10-26",
-   "app": "tower-builder-five",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Still 404 and sudosilo/tower-builder is unchanged since 2026-10-18 with only vercel.json, so the developer must redeploy the game from the saved snapshot or the tower2 source."
-  },
-  {
-   "date": "2026-10-30",
-   "app": "snapshot-engine-pied",
-   "kind": "down",
-   "outcome": "repo not found",
-   "pullRequest": null,
-   "note": "Still 404 and no sudosilo repo matches snapshot-engine, so the developer must say where the code lives."
-  },
-  {
-   "date": "2026-10-30",
-   "app": "topo-wars-server",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": "https://github.com/sudosilo/topo-wars-server/pull/1",
-   "note": "Pull request 1 adding /api/health is still open and unmerged since 2026-10-18, so the root and /health still return 404 until the developer merges it."
-  },
-  {
-   "date": "2026-10-30",
-   "app": "tower-builder-five",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Still 404 and sudosilo/tower-builder is unchanged since 2026-10-18, so the developer must redeploy the game from the saved snapshot."
-  },
-  {
-   "date": "2026-10-31",
-   "app": "pajamastan-warrants",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Still 404 NOT_FOUND and the repo has not been pushed since 2026-10-20, so the developer must redeploy the Docker backend or repoint the vercel.app name."
-  },
-  {
-   "date": "2026-10-31",
-   "app": "androids",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Vercel says DEPLOYMENT_NOT_FOUND and sudosilo/androids is archived since 2026-10-22, so the developer must redeploy it or retire the link and its Control Troll spec."
-  },
-  {
-   "date": "2026-10-31",
-   "app": "mission-operator",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Vercel says DEPLOYMENT_PAUSED and sudosilo/mission-operator is archived, with the app now live as mission-operator-next, so the developer should retire this link or point the spec at the new name."
-  },
-  {
-   "date": "2026-11-01",
-   "app": "irrigation-station",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "The irrigation-station name returns DEPLOYMENT_NOT_FOUND, but the same demo is live at irrigation-demo.vercel.app from sudosilo/irrigation-demo, so the developer should point the link and spec at that name or redeploy the old one."
-  },
-  {
-   "date": "2026-11-01",
-   "app": "open-pipeline",
-   "kind": "down",
-   "outcome": "repo not found",
-   "pullRequest": null,
-   "note": "Vercel says DEPLOYMENT_NOT_FOUND and no sudosilo repo matches; the snapshot notes say it was deployed from a phone folder by CLI as a Stumbler fork, so the developer must redeploy it or retire the link."
-  },
-  {
-   "date": "2026-11-01",
-   "app": "termbeat",
-   "kind": "test-failing",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Live page still has no theme menu and the repo has not changed since 2026-10-18, so the test is right and the developer must restore the fuller build."
-  },
-  {
-   "date": "2026-11-02",
-   "app": "j30p4rdy",
-   "kind": "test-failing",
-   "outcome": "test fixed",
-   "pullRequest": "https://github.com/sudosilo/control-troll/pull/1",
-   "note": "The app works; v2 shows a Let's go splash after Start and fills the board only after it is dismissed, so the test now clicks #splashBtn first."
-  },
-  {
-   "date": "2026-11-02",
-   "app": "mary-jane-man",
-   "kind": "test-failing",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Live URL still serves the Vercel Stumbler page and no sudosilo repo matches, so the developer must restore the game or retire the spec."
-  },
-  {
-   "date": "2026-11-03",
-   "app": "snapshot-engine-pied",
-   "kind": "down",
-   "outcome": "repo not found",
-   "pullRequest": null,
-   "note": "Still 404 and no sudosilo repo matches, so the developer must say where the code lives or retire the link."
-  },
-  {
-   "date": "2026-11-03",
-   "app": "topo-wars-server",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": "https://github.com/sudosilo/topo-wars-server/pull/1",
-   "note": "Pull request 1 adding /api/health is still open and unmerged, so the root and /api/health both still return 404 until the developer merges it."
-  },
-  {
-   "date": "2026-11-03",
-   "app": "tower-builder-five",
-   "kind": "down",
-   "outcome": "needs decision",
-   "pullRequest": null,
-   "note": "Still 404 and sudosilo/tower-builder is unchanged since 2026-10-18, so the developer must redeploy the game from the saved snapshot or retire the link."
-  }
- ]
+  "entries": [
+    {
+      "date": "2026-10-14",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Could not reach the app repo because the list_repos and add_repo tools were missing from this session, so no fix was attempted. Root returns 404 and no snapshot was saved, so it may be a backend needing a health route or a missing deploy."
+    },
+    {
+      "date": "2026-10-14",
+      "app": "topo-wars-server",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Could not reach the app repo because the list_repos and add_repo tools were missing from this session, so no fix was attempted. Root returns 404, likely a backend with no home page that needs a GET /health route."
+    },
+    {
+      "date": "2026-10-14",
+      "app": "groundcore-nine",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Could not reach the app repo because the list_repos and add_repo tools were missing from this session, so no fix was attempted. Root returned 404 today though the saved snapshot shows a full page, so the deploy likely broke or was removed."
+    },
+    {
+      "date": "2026-10-16",
+      "app": "mission-operator",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Could not reach the app repo because list_repos and add_repo are still missing from this session, and vercel.app is unreachable from the sandbox; the snapshot is a Vite shell loading /assets/index-Cd--pKmp.js, so the 404 is likely a missing hashed bundle from a broken or partial deploy."
+    },
+    {
+      "date": "2026-10-17",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "list_repos and add_repo are still missing from this session and account wide search is out of scope, so the app repo could not be reached and no fix was attempted; root still returns 404 and no snapshot exists, so it is either a backend needing GET /health or a missing deploy."
+    },
+    {
+      "date": "2026-10-17",
+      "app": "topo-wars-server",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "list_repos and add_repo are still missing from this session and account wide search is out of scope, so the app repo could not be reached and no fix was attempted; root still returns 404 with no snapshot, likely a backend that needs a GET /health route."
+    },
+    {
+      "date": "2026-10-17",
+      "app": "groundcore-nine",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "list_repos and add_repo are still missing from this session and account wide search is out of scope, so the app repo could not be reached and no fix was attempted; root returns 404 though the saved snapshot is a full GroundCore page, so the deploy likely broke or was removed."
+    },
+    {
+      "date": "2026-10-18",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "repo not found",
+      "pullRequest": null,
+      "note": "No sudosilo repo matches snapshot-engine, and scribe/repos.json has no entry, so no fix was attempted."
+    },
+    {
+      "date": "2026-10-18",
+      "app": "topo-wars-server",
+      "kind": "down",
+      "outcome": "fixed",
+      "pullRequest": "https://github.com/sudosilo/topo-wars-server/pull/1",
+      "note": "Backend has no home page, so I added a GET /health route that pings Redis; add https://topo-wars-server.vercel.app/health to apps.json after merge."
+    },
+    {
+      "date": "2026-10-19",
+      "app": "field-twin-violet",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Repo sudosilo/field-twin-violet-api holds the phone app as a root index.html with no vercel.json, and the saved snapshot shows it was live, so the Vercel project was likely removed or unlinked; no code fix is evident and I did not push."
+    },
+    {
+      "date": "2026-10-19",
+      "app": "tower-builder-five",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Repo sudosilo/tower-builder holds only a vercel.json pointing at a missing tower-builder folder, so the game code lives only in snapshots/tower-builder-five.html and the deploy needs the developer to redeploy or supply the source."
+    },
+    {
+      "date": "2026-10-19",
+      "app": "termbeat",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Live app matches the repo and has no hamburger menu or theme buttons at all, only load audio, mic and play, so the test is correct against the spec and the app lacks the themes; the developer must restore the fuller build."
+    },
+    {
+      "date": "2026-10-20",
+      "app": "pajamastan-warrants",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Repo sudosilo/pajamastan-warrants is a Docker FastAPI backend that already serves its page at / and has /status, with no vercel.json, so the 404 on the Vercel host means the deploy is gone or unlinked and no code fix applies."
+    },
+    {
+      "date": "2026-10-21",
+      "app": "field-twin-teal-gold",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "No sudosilo repo or scribe entry names teal-gold and no snapshot was saved; the field-twin family repos (field-twin, field-twin-violet-api, field-twin-viridian) are all plain index.html apps, so the Vercel project looks removed or deployed from the phone and the developer must say where it lives."
+    },
+    {
+      "date": "2026-10-21",
+      "app": "mary-jane-man",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "The live URL and its saved snapshot both serve the Vercel Stumbler page, not a maze game, and no sudosilo repo matches, so the tests are correct against the spec and the developer must restore the game or say the app was replaced."
+    },
+    {
+      "date": "2026-10-23",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "repo not found",
+      "pullRequest": null,
+      "note": "Still no sudosilo repo matches snapshot-engine and scribe/repos.json has no entry, so the developer must say where the code lives."
+    },
+    {
+      "date": "2026-10-23",
+      "app": "tower-builder-five",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Repo sudosilo/tower-builder is unchanged since 2026-10-18 and holds only vercel.json, README and CHANGELOG, so the game exists only in the saved snapshot and the developer must redeploy it."
+    },
+    {
+      "date": "2026-10-24",
+      "app": "topo-wars-server",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": "https://github.com/sudosilo/topo-wars-server/pull/1",
+      "note": "Pull request 1 adding /api/health is still open and unmerged, so the root still returns 404 until the developer merges it."
+    },
+    {
+      "date": "2026-10-24",
+      "app": "pajamastan-warrants",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Still 404 and the repo code already serves / and /status, so the developer must redeploy the Docker backend or repoint the vercel.app name."
+    },
+    {
+      "date": "2026-10-24",
+      "app": "frontend-sudosilo2-1771s-projects",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "This is a protected Vercel team URL that shows a login page and no repo is named for it, so the developer should link the public production URL (possibly ebutuoy.vercel.app from ebutuoy-frontend) in the index and apps.json instead."
+    },
+    {
+      "date": "2026-10-25",
+      "app": "termbeat",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Live page still has only load audio, mic and play with no menu or themes and the repo has not been pushed since 2026-10-18, so the test is right and the developer must restore the fuller build."
+    },
+    {
+      "date": "2026-10-25",
+      "app": "mary-jane-man",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Live URL still serves the Vercel Stumbler page and no sudosilo repo matches mary, maze or jane, so the developer must restore the game or say the app was replaced."
+    },
+    {
+      "date": "2026-10-26",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "repo not found",
+      "pullRequest": null,
+      "note": "Still 404 and no sudosilo repo matches snapshot-engine, so the developer must say where the code lives."
+    },
+    {
+      "date": "2026-10-26",
+      "app": "tower-builder-five",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Still 404 and sudosilo/tower-builder is unchanged since 2026-10-18 with only vercel.json, so the developer must redeploy the game from the saved snapshot or the tower2 source."
+    },
+    {
+      "date": "2026-10-30",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "repo not found",
+      "pullRequest": null,
+      "note": "Still 404 and no sudosilo repo matches snapshot-engine, so the developer must say where the code lives."
+    },
+    {
+      "date": "2026-10-30",
+      "app": "topo-wars-server",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": "https://github.com/sudosilo/topo-wars-server/pull/1",
+      "note": "Pull request 1 adding /api/health is still open and unmerged since 2026-10-18, so the root and /health still return 404 until the developer merges it."
+    },
+    {
+      "date": "2026-10-30",
+      "app": "tower-builder-five",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Still 404 and sudosilo/tower-builder is unchanged since 2026-10-18, so the developer must redeploy the game from the saved snapshot."
+    },
+    {
+      "date": "2026-10-31",
+      "app": "pajamastan-warrants",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Still 404 NOT_FOUND and the repo has not been pushed since 2026-10-20, so the developer must redeploy the Docker backend or repoint the vercel.app name."
+    },
+    {
+      "date": "2026-10-31",
+      "app": "androids",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Vercel says DEPLOYMENT_NOT_FOUND and sudosilo/androids is archived since 2026-10-22, so the developer must redeploy it or retire the link and its Control Troll spec."
+    },
+    {
+      "date": "2026-10-31",
+      "app": "mission-operator",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Vercel says DEPLOYMENT_PAUSED and sudosilo/mission-operator is archived, with the app now live as mission-operator-next, so the developer should retire this link or point the spec at the new name."
+    },
+    {
+      "date": "2026-11-01",
+      "app": "irrigation-station",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "The irrigation-station name returns DEPLOYMENT_NOT_FOUND, but the same demo is live at irrigation-demo.vercel.app from sudosilo/irrigation-demo, so the developer should point the link and spec at that name or redeploy the old one."
+    },
+    {
+      "date": "2026-11-01",
+      "app": "open-pipeline",
+      "kind": "down",
+      "outcome": "repo not found",
+      "pullRequest": null,
+      "note": "Vercel says DEPLOYMENT_NOT_FOUND and no sudosilo repo matches; the snapshot notes say it was deployed from a phone folder by CLI as a Stumbler fork, so the developer must redeploy it or retire the link."
+    },
+    {
+      "date": "2026-11-01",
+      "app": "termbeat",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Live page still has no theme menu and the repo has not changed since 2026-10-18, so the test is right and the developer must restore the fuller build."
+    },
+    {
+      "date": "2026-11-02",
+      "app": "j30p4rdy",
+      "kind": "test-failing",
+      "outcome": "test fixed",
+      "pullRequest": "https://github.com/sudosilo/control-troll/pull/1",
+      "note": "The app works; v2 shows a Let's go splash after Start and fills the board only after it is dismissed, so the test now clicks #splashBtn first."
+    },
+    {
+      "date": "2026-11-02",
+      "app": "mary-jane-man",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Live URL still serves the Vercel Stumbler page and no sudosilo repo matches, so the developer must restore the game or retire the spec."
+    },
+    {
+      "date": "2026-11-03",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "repo not found",
+      "pullRequest": null,
+      "note": "Still 404 and no sudosilo repo matches, so the developer must say where the code lives or retire the link."
+    },
+    {
+      "date": "2026-11-03",
+      "app": "topo-wars-server",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": "https://github.com/sudosilo/topo-wars-server/pull/1",
+      "note": "Pull request 1 adding /api/health is still open and unmerged, so the root and /api/health both still return 404 until the developer merges it."
+    },
+    {
+      "date": "2026-11-03",
+      "app": "tower-builder-five",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Still 404 and sudosilo/tower-builder is unchanged since 2026-10-18, so the developer must redeploy the game from the saved snapshot or retire the link."
+    },
+    {
+      "date": "2026-11-04",
+      "app": "pajamastan-warrants",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Still 404 NOT_FOUND on the Vercel host while the repo already serves / and /status, so the developer must redeploy the Docker backend or retire the link."
+    },
+    {
+      "date": "2026-11-04",
+      "app": "mission-operator",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Still 503 DEPLOYMENT_PAUSED on an archived repo now live as mission-operator-next, so the developer must retire this link or point the spec at the new name."
+    }
+  ]
 }
