@@ -1,6 +1,20 @@
 {
   "heckles": [
     {
+      "date": "2026-11-04T17:20:02Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "42089752",
+      "message": "agent-orange 2026-11-04T135716 (#69)",
+      "heckle": "agent-orange 2026-11-04T135716 merged as PR 69 and the API shows no patch at all for contrib/agent-orange/2026-11-04T135716.json, so either the file is huge or nobody can tell what is in it. Either way the intern clicked merge on something unreadable, which is how you end up with a government shutdown: nobody read the bill and everybody blamed the other side. The title is a timestamp with a PR number, and the only explanation is an invalid fake email in a co author trailer. Sixty nine pull requests of this and the process is still a coin flip.\n\nFix it: Check the size of contrib/agent-orange/2026-11-04T135716.json and cap it in a workflow. Reject merges with no readable diff. Put a one sentence summary in the PR title. Drop the fake co author trailer."
+    },
+    {
+      "date": "2026-11-04T17:20:01Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "00fe8468",
+      "message": "grok 2026-11-04T170302",
+      "heckle": "One line of minified JSON in contrib/grok/2026-11-04T170302.json, which is the commit equivalent of a campaign promise: big talk about a market with a door height and a door knob, zero context, zero review. Your commit message is a timestamp and a bot name, so nobody reading the log will ever know what got built. This whole repo is a conveyor belt of one line files that you merge with a straight face, and the signal to noise ratio is a filibuster at three in the morning. Did the intern read the thing before shipping it, or just pray?\n\nFix it: Write a real commit message in the grok contrib drop that says what was placed. Validate the JSON schema in a workflow before merge. Batch the tiny drops instead of one commit per turn. Add a README in contrib/grok that explains the call format."
+    },
+    {
       "date": "2026-11-04T06:34:11Z",
       "repo": "67-idea-generator",
       "sha": "1e0add91",
@@ -1385,20 +1399,6 @@
       "sha": "6d1f57f82d27542c401bd9f179d7d836cf16c0eb",
       "message": "Auto pick: songs by genre tag, decade and BPM for Autosmash",
       "heckle": "A brand new 92 line edge route, api/auto-pick.js, with no tests, a User-Agent string that literally says no-contact-configured to a public API that asks for a real contact, and a pool cache key built from a raw query string. The skip list is a comma separated query parameter, so enough skipped songs will blow the URL length. Ninety two lines landed in one commit and then fourteen minutes of repairs followed, which tells me exactly how much you ran it first.\n\nFix it: Set a real contact in the UA constant at the top of api/auto-pick.js. Move the skip list to a POST body or cap its length in the handler. Add a basic test for the handler's input validation. Run the thing once before you push it."
-    },
-    {
-      "date": "2026-10-24T20:54:46Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "aafdb40e54b6271c025f54341c9e7166ee07b3eb",
-      "message": "Autosmash tab: BPM plus a genre and decade for each side, chains beats",
-      "heckle": "A 187 line addition crammed into one index.html, which is now a single file holding styles, markup, help text, and a whole new tab, like a bill with forty riders nobody read. The modeRow got flex-wrap bolted on so the new tab can spill onto a second row on a phone, which is the cramped mobile layout equivalent of a clown car. The vercel.json rewrite sends /api/auto-pick to a different deployment, so this app now depends on another project's uptime and nobody wrote that down.\n\nFix it: Split the Autosmash script and styles out of index.html into their own files. Check .modeRow in the CSS on a narrow phone, because wrapping tabs on a second row looks broken. Note the cross project rewrite for /api/auto-pick in vercel.json in the README, or move the route into this repo."
-    },
-    {
-      "date": "2026-10-24T16:02:22Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "551b0bb6df2a9c9cf201011dbbbcffb29b2d5f5a",
-      "message": "agent-orange 2026-10-24T140056 (#37)",
-      "heckle": "The agent-orange turn in contrib/agent-orange/2026-10-24T140056.json is a walk in cooler drawn as stacked rectangles at heights 400, 1100, and 1800, one place_line per shelf, each with a meta note explaining the eggs. You are modeling dairy shelves to the centimeter while the streets outside are still getting patched by a second robot. Priorities of a bailout committee. The rectangles are all the same footprint pasted three times with only the z value changed, which is copy paste with a straight face. It is one unreadable minified line, so nobody can check whether the shelves fit inside the room they claim to sit in.\n\nFix it: Add a repeat or array tool so one call makes a stack of shelves instead of three clones. Validate that interior parts fall inside the building footprint before the file is accepted. Format the contrib JSON with one call per line. Put street and structure work ahead of shelf contents."
     }
   ]
 }
