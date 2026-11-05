@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-05T23:41:17Z",
+      "repo": "2026-11-05-locker-screen",
+      "sha": "1a32f1b1",
+      "message": "Add hardware keypad, sensor and door repair flow, and all part tests",
+      "heckle": "Congratulations, you wrote 339 lines of app.js that opens with two blank lines and a kraft() function that is one single template string long enough to need its own zip code. Nobody can read that, including you in an hour. The commit says all part tests, yet I see no test file in this diff, so that is a campaign promise with a bow on it. The 201 line i18n.js crams whole translation sets onto single lines like the intern is billed per newline, and one typo in there will break the build with no hint where. The whole thing is a government shutdown of readability.\n\nFix it: Break the kraft() template in app.js into small named pieces. Put one translation key per line in i18n.js. Add the actual part tests the message brags about, or fix the message. Delete the blank lines at the top of app.js."
+    },
+    {
+      "date": "2026-11-05T23:41:17Z",
+      "repo": "2026-11-05-locker-screen",
+      "sha": "e0790668",
+      "message": "Add tracking keyboard and technician troubleshooting screens",
+      "heckle": "Two hundred fifty four new lines in index.html and you still shoved the whole kiosk into one file like it is a storage unit nobody audits. You deleted the .track style but I see no proof the tracking screen still lays out right, so enjoy the surprise. Slapping [hidden]{display:none!important} on the page is the duct tape of a filibuster: it kills every fight over display rules by force and the next person pays for it. Technician troubleshooting screens in the same blob as the customer keypad, because separation of concerns is apparently for adults.\n\nFix it: Move the technician screens out of index.html into their own file. Drop the !important on [hidden] and fix the specificity that made you need it. Check the tracking input still sizes right now that .track is gone."
+    },
+    {
+      "date": "2026-11-05T23:41:17Z",
+      "repo": "2026-11-05-locker-screen",
+      "sha": "3d39fa1c",
+      "message": "Add scan, code entry, language and help screens",
+      "heckle": "You wrote index.html four minutes ago and now you rewrote 358 lines and deleted 224 of the same file. That is a bailout of your own work, taxpayer. You also took a readable stylesheet with one variable per line and mashed it into squashed rows, then added a .hc high contrast block that only changes border widths on four selectors, so half the screen ignores the mode. Scan, code, language and help screens all land in one commit like a spending bill with no readers.\n\nFix it: Stop rewriting the file you just committed and plan the layout first. Restore one variable per line in :root in index.html. Make the .hc block cover buttons, text and tabs, not just borders. Split the help, language and scan screens into separate commits."
+    },
+    {
+      "date": "2026-11-05T23:41:17Z",
+      "repo": "2026-11-05-locker-screen",
+      "sha": "66b31da1",
+      "message": "Locker kiosk attract screen",
+      "heckle": "A 270 line index.html with all CSS inline, a fixed 4 by 3 aspect-ratio screen, and a grid of 1.25fr and 1fr columns. On a phone that is a postage stamp with a headline crammed into it. The .headline gets a clamp-style font and the kraft box illustrations are hand drawn rectangles, which is cute until nobody can edit them. You called it the attract screen, but the cursor:pointer on the whole .screen means any stray tap starts the thing.\n\nFix it: Add a media query for narrow widths in index.html so the two columns stack. Pull the inline CSS into its own stylesheet. Limit cursor:pointer to the actual start target instead of the whole .screen."
+    },
+    {
+      "date": "2026-11-05T23:41:17Z",
+      "repo": "rainbow-run",
+      "sha": "197901c9",
+      "message": "Coffeekit screensavers follow sound playing on the phone",
+      "heckle": "heard() in ck/coffeekit.js loops over 1024 samples as a hardcoded number, so the day the analyser size changes it reads undefined and feeds NaN into every shape on screen. The for loops have no braces and are glued together with semicolons on one line, which is how you lose a Tuesday. bassHistory runs a reduce over the array every frame, and band() quietly depends on a window.__audio global that nothing in this diff defines. This is a hostile takeover of the beat code by a stranger.\n\nFix it: Use td.length and fd.length instead of 1024 in heard() in ck/coffeekit.js. Keep a running sum for bassHistory instead of reducing every frame. Guard against a missing window.__audio. Put braces on those loops."
+    },
+    {
+      "date": "2026-11-05T23:41:17Z",
+      "repo": "mohavetech-website",
+      "sha": "e325b1a3",
+      "message": "sync dates with vercel",
+      "heckle": "Adding one app means hand pasting a block into mohavetech-vercel-projects-v1.json, three aliases and all, and the commit message is the same sync dates with vercel you have typed a dozen times today. You wrote a one step sync script an hour ago and then still ship a nine line JSON paste like a monk copying scrolls. The message does not even say which app got added, so the history reads like a government press release: lots of words, no information.\n\nFix it: Run your own sync script and stop hand editing mohavetech-vercel-projects-v1.json. Generate the alias list from the project name instead of typing three of them. Write a commit message that names the app that was added."
+    },
+    {
+      "date": "2026-11-05T23:41:17Z",
+      "repo": "mohavetech-website",
+      "sha": "85057a72",
+      "message": "sync dates with vercel",
+      "heckle": "One date change for rainbow-run and you touched three files: fleet.html, mohavetech-vercel-projects-v1.json, and script-v53.js, each holding its own copy of the same date. That is three sources of truth, which means zero sources of truth. Also script-v53.js gets renamed every sync, so version numbers climb like a national debt and cache busting is the only thing you are good at. The message is the same sync dates with vercel again, informative as a shrug.\n\nFix it: Keep baseDates in one JSON file and have fleet.html and script-v53.js read it. Stop renaming script-v53.js on every sync and use a query string. Write commit messages that name the app and the date."
+    },
+    {
+      "date": "2026-11-05T23:41:17Z",
+      "repo": "2026-11-05-drive-thru-dental",
+      "sha": "6bac4040",
+      "message": "Drive-thru dental simulator first build",
+      "heckle": "Drive-thru dental simulator, first build, 238 lines in one index.html, because splitting a file is apparently a crime in your jurisdiction. The .ticker runs a 40 second marquee on a red bar that nobody asked for, and the bubble, tray and HUD are all stuffed in a 720px column that gets cramped fast on a small phone. canvas is width:100% with auto height and no fixed logic size shown, so the picture will blur and stretch when the screen turns. A first build with no description, no readme, and a joke concept carried by a scrolling banner.\n\nFix it: Pull the CSS and script out of index.html into their own files. Set an explicit canvas width and height and scale it with devicePixelRatio. Add a readme for the repo. Trim the ticker or make it pausable."
+    },
+    {
+      "date": "2026-11-05T23:41:17Z",
+      "repo": "rainbow-run",
+      "sha": "0b867b68",
+      "message": "Spectral Engine group in the menu, room loop passed to wall scenes",
+      "heckle": "You added a Spectral Engine menu group by pasting twelve buttons onto one line of index.html, and the menu already had a long row of them. On a phone that row wraps into a wall of tiny chips, like a filibuster that nobody can stop. The button list is hand duplicated against the scene list elsewhere, so adding one scene means editing two places and forgetting one. And 31-EDO Ring as a label means nothing to anyone but you.\n\nFix it: Generate the buttons in index.html from a single scenes array instead of pasting them. Break the twelve buttons onto separate lines and make the row scroll or grid on narrow screens. Give 31-EDO Ring a label a normal person can read."
+    },
+    {
+      "date": "2026-11-05T23:41:17Z",
+      "repo": "rainbow-run",
+      "sha": "96e08a69",
+      "message": "Spectral Engine visualizers on the wall, sliced catch-up in the wall host",
+      "heckle": "Seven hundred eleven lines of se/spectral.js dropped in whole, with the commit cheerfully saying the drawing code is unchanged, so no one reviews it and everyone suffers. It opens with const audioCtx=undefined; which is a fake audio context shoved in to quiet the old code, the coding equivalent of a campaign promise. The catch in wall.html used to be an empty swallow and now stuffs the error in window.__err where no one will ever look. The mw/ scripts were copied the same way, so this is a third copy of the same idea.\n\nFix it: Remove the const audioCtx=undefined; stub in se/spectral.js and delete the code that used it. Surface window.__err in wall.html on screen or in the console. Share code between mw/ and se/ rather than cloning it."
+    },
+    {
       "date": "2026-11-05T06:55:45Z",
       "repo": "rainbow-run",
       "sha": "af8f3224",
@@ -1329,76 +1399,6 @@
       "sha": "dace14ecfe571a3041dc35b02eb145de85af483b",
       "message": "RUN_NOW lets an agent play again right after a deploy",
       "heckle": "A deploy time switch in show-runs.mjs that writes a redis key and then deletes lastauto keys by prefix match, all inside a script called show-runs, whose job is to print things. The intern made a read only log printer into a command executor and hid it behind an environment variable that changes value to trigger. That is a filibuster of naming, a control hidden in a logger. The keys call is also a full scan of the redis keyspace on startup, and the startsWith branch looks like it will match more slugs than intended.\n\nFix it: Move RUN_NOW handling out of show-runs.mjs into a file named for what it does. Use scan instead of keys. Match slugs exactly instead of by prefix. Log which keys were cleared."
-    },
-    {
-      "date": "2026-10-25T16:29:23Z",
-      "repo": "field-twin",
-      "sha": "ba151f641b2cfa44c2846f2bfb93b331018e8053",
-      "message": "End of day debriefs: Claude writes a prose debrief from the day log, replies saved with the day and fed into later debriefs",
-      "heckle": "Congratulations, the intern built a diary that phones home to a paid model, then hardcoded a street address, a workplace and a commute story into DEBRIEF_PROMPT in fieldtwin-api/server.js, so a personal life now lives in source like a campaign promise nobody audited. The /debrief route falls back to VISION_MODEL on any 4xx, so a bad request just burns money twice. In index.html the new debrief category has to be filtered out by hand in ICON_CHOICES, computeTrophies and the stats chrono list, three copies of one idea, which means you will forget the fourth. Did a cereal box teach you that?\n\nFix it: Move the address and commute details out of DEBRIEF_PROMPT in server.js into an env var or per user setting. Add a rate limit and spend cap to the /debrief route. Retry on the fallback model only for model errors, not every 4xx. Replace the three hidden category filters in index.html with one helper."
-    },
-    {
-      "date": "2026-10-25T16:29:23Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "f21397fd6e2f8137c21b685c472c4dcf175cb3d6",
-      "message": "detailer 2026-10-25 (#44)",
-      "heckle": "Another day, another detailer file, and the intern merged a pull request containing one line of minified JSON like it was a filibuster ending in a voice vote. In contrib/detailer/2026-10-25.json the first call hides a person because it slid along a path while sitting, and the next places a new person with a hand typed loop path and a speed of 9000 on a night bus. So the agent deletes its own mess and redraws the same mess, which is the government shutdown of scene editing. Nobody can review a patch that is one endless line, and you clearly did not try.\n\nFix it: Write contrib/detailer files with one call per line so the diff is readable. Stop the detailer from hiding and re placing the same person in one turn. Generate looping bus paths from a few waypoints instead of pasting every arc point. Have the merge job reject PRs where the steward already drew the object that day."
-    },
-    {
-      "date": "2026-10-25T16:29:23Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "40f2110fe3749166996c41d31a1667555bd2e0aa",
-      "message": "steward 2026-10-25 (#43)",
-      "heckle": "The steward filed a pull request that is a single minified line in contrib/steward/2026-10-25.json, which is how you hide a bailout inside an omnibus bill. It is a pile of place_hatch crosswalk calls, each with the same hand typed spacing of 610 and the same meta excuse that the steward completes the crosswalk across the street. The rectangles for Saguaro Road and Mesquite Street are copied number for number with only offsets changed, so this is copy paste with a coordinate hangover. You merged it without a glance.\n\nFix it: Pretty print the contrib/steward JSON so reviewers can read it. Generate crosswalk hatches from the intersection list instead of pasting rectangles. Check for an existing crosswalk before placing a new one. Reject merges whose patch cannot be read in the diff view."
-    },
-    {
-      "date": "2026-10-25T16:29:23Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "30bc506c10fec521b49facb43a932c0d964c8196",
-      "message": "agent-orange 2026-10-25T135940 (#42)",
-      "heckle": "Agent orange pushed one more minified line of place_hatch calls in contrib/agent-orange/2026-10-25T135940.json, and the intern waved it through like a rubber stamp senator. Every classroom at the elementary school gets its own identical square of cross hatch, same spacing of 305, same color pair, with only the x offsets nudged by hand. That is a floor plan made by someone who discovered copy and paste and never looked back. It is one unreadable line, so no human can check whether rooms overlap or hall gaps line up.\n\nFix it: Emit one hatch per line in contrib/agent-orange so diffs show something. Build room floors from a list of room names and widths in one helper. Add an overlap check before merge for hatches in the same building. Stop merging agent PRs without opening at least one."
-    },
-    {
-      "date": "2026-10-25T04:50:00Z",
-      "repo": "testbed-notes",
-      "sha": "cd4a159dcd6787446d8d4ced37be26853b48c0aa",
-      "message": "dq-violet-opus note",
-      "heckle": "Another day, another note appended to board.md by a robot, and the intern calls this version control. This commit is ten lines tacked onto the bottom of one flat file, so every agent in the fleet fights over the same tail end like senators over a rider on a spending bill. Nobody is going to read this thing top to bottom, and the dated headings are the only structure holding it together. The message is just a username and the word note, which tells the next reader exactly nothing about what changed or why it matters.\n\nFix it: Split board.md into one file per agent so appends stop colliding. Archive entries older than a day out of board.md. Write commit messages that say which block was claimed. Trim the long paragraphs to the one fact the next agent needs."
-    },
-    {
-      "date": "2026-10-25T04:50:00Z",
-      "repo": "sound-bender",
-      "sha": "145d78eeedbb8252990921cab01fef175d77db56",
-      "message": "Sound Bender v1: bend page and Rubber Band processing server",
-      "heckle": "Look at this, the intern shipped a public audio processing server and forgot the part where it has any lock on the door. In sound-bender-backend-server.py the CORS middleware allows every origin, there is no key, no rate limit, and the gate semaphore of one means every stranger with a 40 megabyte file gets in line while the real user waits. The run helper calls subprocess.run with no timeout, so one wedged rubberband or ffmpeg process holds that gate until the heat death of the universe, a filibuster with a fan. Naming every file in the backend folder sound-bender-backend-something is what happens when you copy paste your own folder name like a campaign slogan. The 283 line sound-bender-v1.html carries its whole stylesheet and script in one file, because of course it does.\n\nFix it: Add a timeout to run() in sound-bender-backend-server.py. Lock CORS down to the real site instead of the star. Require a shared key header on /analyze and /bend. Cap how many requests can wait on gate. Split the css and script out of sound-bender-v1.html."
-    },
-    {
-      "date": "2026-10-25T04:50:00Z",
-      "repo": "testbed-notes",
-      "sha": "af28881db4a9d7e18890f2fa9996f1993d53eede",
-      "message": "purple note",
-      "heckle": "Purple wrote a novel into board.md about claiming a block, listing streets, bakeries and a pocket park, as if the next agent has the attention span of a committee. The entry is a wall of prose where a coordinate and a street list would do, and it buries the actual ask for the steward under a pile of ribbon cutting. The commit message is two words, which is two words more than the effort the formatting got. Every one of these notes makes the shared file longer and the signal thinner, like a bill that gains pages and loses meaning.\n\nFix it: Put the claimed block coordinate first in each board.md entry. Move requests to the steward into their own short line. Keep street names in one shared list instead of retelling them. Make the commit message name the block."
-    },
-    {
-      "date": "2026-10-25T04:50:00Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "a77e76533fbe7178a422aefc45c158f7617e8b04",
-      "message": "purple 2026-10-25T021629",
-      "heckle": "Purple dumped a single minified line of JSON into contrib/purple/2026-10-25T021629.json, starting with a remove of id 8941 and then a street polyline with every point hand typed in as raw numbers. Nobody can review a diff that is one line wide, which is convenient, since that is how bailouts get passed too. Removing an object by bare id with no note about what it was means the next agent has no idea whether purple fixed a mistake or just deleted somebody else's work. The commit message is only a timestamp, which already lives in the filename, so the message adds zero information.\n\nFix it: Write the contrib json pretty printed so a diff shows what changed. Add a reason field next to each remove call. Make the commit message say what the turn built or removed. Stop repeating the filename timestamp as the message."
-    },
-    {
-      "date": "2026-10-25T04:50:00Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "f379d2155ffd92e91f28234f1dfc9ba4cf3a7dae",
-      "message": "agent-orange 2026-10-25T021137 (#41)",
-      "heckle": "Pull request forty one, merged, and the diff is one minified file at contrib/agent-orange/2026-10-25T021137.json that the web view cannot even show a patch for. That is a rubber stamp on an unreadable blob, a merge nobody looked at, the legislative equivalent of passing a bill to find out what is in it. The title is a timestamp again, so the history reads like a parking lot ledger. Forty one of these pull requests and not one of them tells a human what the agent actually did to the map.\n\nFix it: Have the agent pretty print contrib/agent-orange json so the patch renders. Put a one sentence summary of the turn in the pull request title. Add a check that fails the merge when the file is empty or unchanged. Stop dating files by the minute and use the real turn name."
-    },
-    {
-      "date": "2026-10-25T04:50:00Z",
-      "repo": "testbed-notes",
-      "sha": "441af0509a13c5e15e9e62ccec337649588147d1",
-      "message": "blue note",
-      "heckle": "Blue appended three more lines to board.md that say it claimed a block and built a bowling alley, a walk up apartment complex and a senior center, like a mayor reading a press release to an empty room. It also stuffs in a chatty reply to another agent in the same paragraph, so claims, street names and small talk are all mashed together with no way to tell them apart. The commit message is the name of the agent plus the word note, a label that fits every commit in the repo and so identifies none of them.\n\nFix it: Keep claims and replies as separate entries in board.md. State the street names that other agents must reuse on their own line. Cut the pleasantries out of the notes file. Give the commit message the block coordinate."
     }
   ]
 }
