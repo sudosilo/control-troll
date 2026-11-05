@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!--
   ╔══════════════════════════════════════════════════════════════╗
-  ║  COFFEE AUTOSIM v3  //  BLUE CODE  //  sudosilo              ║
+  ║  COFFEE AUTOSIM v4  //  BLUE CODE  //  sudosilo              ║
   ║                                                              ║
   ║  WHAT'S IN THIS FILE                                         ║
   ║  ─────────────────────────────────────────────────────────── ║
@@ -39,7 +39,7 @@
   ║  All simulation logic is after the <script> tag ~line 370    ║
   ╚══════════════════════════════════════════════════════════════╝
 -->
-<title>COFFEE AUTOSIM v3</title>
+<title>COFFEE AUTOSIM v4 Simulator</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@400;600;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -522,20 +522,102 @@ button{font-family:inherit;}
 /* Edit-mode affordance: lift the whole board so the outlines read clearly. */
 body.editing .blueprint{box-shadow:0 0 0 3px rgba(196,90,8,.18),0 3px 12px rgba(74,48,24,.14);}
 body.editing .gridlayer{opacity:.5;}
+
+/* ── v4 SIMULATOR UI (BLUE CODE) ── */
+.hamb{width:34px;height:30px;border:1px solid #2a6ab0;background:#eaf3fc;border-radius:4px;cursor:pointer;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;flex:0 0 auto;}
+.hamb span{display:block;width:16px;height:2px;background:#2a6ab0;border-radius:1px;}
+.topbar{justify-content:flex-start;}
+.topbar .controls{margin-left:auto;}
+.sim-tag.running{background:#eaf3fc;color:#1f4f88;border-color:#2a6ab0;animation:tagpulse 1.6s ease-in-out infinite;}
+.simstats{margin-bottom:7px;}
+.sbox-blue{border-color:#c4d8ee;}
+.sbox-blue .sl{color:#2a6ab0;}
+.sv-sm{font-size:11px;padding-top:4px;}
+.menu-shade{position:fixed;inset:0;background:rgba(40,30,20,.18);z-index:900;display:none;}
+.menu-shade.on{display:block;}
+.menu{position:fixed;top:0;left:0;bottom:0;width:min(330px,86vw);background:#fbf8f2;z-index:901;
+  border-right:3px solid #2a6ab0;box-shadow:4px 0 18px rgba(40,30,20,.18);overflow-y:auto;
+  transform:translateX(-105%);transition:transform .2s ease;font-family:var(--mono);padding:10px 12px 30px;}
+.menu.on{transform:translateX(0);}
+.menu-head,.report-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;
+  letter-spacing:.14em;color:#1f4f88;font-weight:bold;margin-bottom:8px;}
+.menu-x{font-family:var(--mono);font-size:10px;letter-spacing:.1em;border:1px solid #2a6ab0;color:#1f4f88;
+  background:#fff;border-radius:3px;padding:4px 10px;cursor:pointer;}
+.msec{border:1px solid #e0d6c4;border-radius:4px;background:#fff;margin-bottom:8px;}
+.msec summary{cursor:pointer;padding:9px 10px;font-size:11px;letter-spacing:.12em;color:#3a2410;font-weight:bold;
+  list-style:none;border-bottom:1px solid transparent;}
+.msec summary::-webkit-details-marker{display:none;}
+.msec summary::before{content:'+ ';color:#2a6ab0;}
+.msec[open] summary::before{content:'- ';}
+.msec[open] summary{border-bottom-color:#eee4d2;}
+.msec > *:not(summary){margin:8px 10px;}
+.mrow-note{font-family:var(--sans);font-size:12px;color:#5a4a38;line-height:1.4;min-height:50px;}
+.runbtn{display:block;width:calc(100% - 20px);font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+  padding:10px;border-radius:4px;border:1px solid var(--orange);background:var(--orange);color:#fff;cursor:pointer;}
+.runbtn-alt{background:#fff;color:var(--orange-dim);}
+.runbtn:disabled{opacity:.35;cursor:default;}
+.mbtn{font-family:var(--mono);font-size:10px;letter-spacing:.1em;border:1px solid #d4cab8;background:#fff;
+  color:#6a5a48;border-radius:3px;padding:6px 10px;cursor:pointer;}
+.mspeed{display:flex;flex-wrap:wrap;gap:5px;}
+.mfield{margin-bottom:10px;}
+.mfield label{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.08em;color:#5a4a38;margin-bottom:3px;}
+.mfield label b{color:#1f4f88;font-weight:bold;}
+.mfield input[type=range]{width:100%;accent-color:#2a6ab0;}
+.mfield .mtog{font-family:var(--mono);font-size:10px;border:1px solid #2a6ab0;border-radius:3px;padding:5px 10px;
+  background:#fff;color:#1f4f88;cursor:pointer;}
+.mfield .mtog.on{background:#2a6ab0;color:#fff;}
+.mhist{font-family:var(--sans);font-size:12px;color:#3a2410;}
+.mhist .hrow{border-bottom:1px dashed #e0d6c4;padding:6px 0;line-height:1.4;}
+.mhist .hrow b{font-family:var(--mono);color:#1f4f88;}
+.report-shade{position:fixed;inset:0;background:rgba(40,30,20,.3);z-index:950;display:none;
+  align-items:flex-start;justify-content:center;padding:14px 10px;overflow-y:auto;}
+.report-shade.on{display:flex;}
+.report{width:100%;max-width:520px;background:#fbf8f2;border:2px solid #2a6ab0;border-radius:6px;padding:12px 14px 18px;
+  font-family:var(--mono);box-shadow:0 8px 30px rgba(40,30,20,.3);}
+.report-body{font-family:var(--sans);font-size:13px;color:#3a2410;line-height:1.45;}
+.report-body h4{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#2a6ab0;margin:12px 0 4px;
+  border-bottom:1px solid #d8e4f0;padding-bottom:3px;}
+.report-body .rr{display:flex;justify-content:space-between;gap:10px;padding:2px 0;}
+.report-body .rr span:last-child{font-family:var(--mono);font-weight:bold;white-space:nowrap;}
+.report-body .bn{background:#fff3e8;border:1px solid #e0ac72;border-radius:4px;padding:7px 9px;margin-top:6px;}
+.report-body .bar{height:6px;background:#eee4d2;border-radius:3px;margin:1px 0 5px;overflow:hidden;}
+.report-body .bar i{display:block;height:100%;background:#2a6ab0;}
+.report-body .bar i.hot{background:var(--orange);}
+
+/* ── v4 STOCKROOM (BLUE CODE) ── */
+.stockroom{width:100%;max-width:960px;background:#fff;border:1px solid #c4d8ee;border-radius:4px;padding:6px 8px;
+  margin-bottom:7px;height:118px;overflow:hidden;font-family:var(--mono);box-shadow:0 1px 2px rgba(74,48,24,.06);}
+.sr-head{display:flex;justify-content:space-between;font-size:7.5px;letter-spacing:.1em;color:#2a6ab0;font-weight:bold;
+  margin-bottom:5px;white-space:nowrap;overflow:hidden;gap:8px;}
+.sr-head #sr-truck{color:#6a5a48;overflow:hidden;text-overflow:ellipsis;}
+.sr-head #sr-truck.in{color:#1f7a3a;}
+.sr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px 10px;}
+.sr-item{font-size:8px;color:#3a2410;height:22px;overflow:hidden;}
+.sr-item .srt{display:flex;justify-content:space-between;white-space:nowrap;}
+.sr-item .srb{height:5px;background:#eee4d2;border-radius:3px;margin-top:2px;overflow:hidden;}
+.sr-item .srb i{display:block;height:100%;background:#2a6ab0;transition:width .3s;}
+.sr-item.low .srb i{background:#c89020;}
+.sr-item.out .srb i{background:#aa2010;}
+.sr-item.out .srt span:first-child{color:#aa2010;}
+.minv .irow{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;border-bottom:1px dashed #e0d6c4;padding:6px 0;font-size:10px;color:#3a2410;}
+.minv .irow small{grid-column:1;color:#6a5a48;font-size:9px;}
+.minv .irow button{grid-row:1 / span 2;grid-column:2;font-family:var(--mono);font-size:10px;border:1px solid #2a6ab0;background:#fff;color:#1f4f88;border-radius:3px;padding:6px 10px;cursor:pointer;}
 </style>
 </head>
 <body>
 
 <!-- TOP BAR -->
 <div class="topbar">
-  <div class="title">COFFEE <span>AUTOSIM</span><sub>v3</sub></div>
+  <button class="hamb" id="hamb" onclick="openMenu()" aria-label="Simulator menu"><span></span><span></span><span></span></button>
+  <div class="title">COFFEE <span>AUTOSIM</span><sub>v4 SIMULATOR</sub></div>
   <div class="controls">
     <span style="font-family:var(--mono);font-size:8px;color:#9a7a58;letter-spacing:.1em;">SIM</span>
-    <button class="sp" onclick="setSpeed(.5)" id="sp-h">0.5×</button>
-    <button class="sp on"  onclick="setSpeed(1)"  id="sp-1">1×</button>
-    <button class="sp" onclick="setSpeed(2)"  id="sp-2">2×</button>
-    <button class="sp" onclick="setSpeed(4)"  id="sp-4">4×</button>
-    <div class="sim-tag">AUTO</div>
+    <button class="sp" data-spd="0.5" onclick="setSpeed(.5)" id="sp-h">0.5×</button>
+    <button class="sp on" data-spd="1" onclick="setSpeed(1)"  id="sp-1">1×</button>
+    <button class="sp" data-spd="2" onclick="setSpeed(2)"  id="sp-2">2×</button>
+    <button class="sp" data-spd="4" onclick="setSpeed(4)"  id="sp-4">4×</button>
+    <div class="sim-tag" id="sim-tag">OPEN FLOOR</div>
     <button class="btn-edit" id="btn-edit" onclick="toggleEdit()">REARRANGE</button>
   </div>
 </div>
@@ -573,6 +655,22 @@ body.editing .gridlayer{opacity:.5;}
     <div class="sl">DT WINDOW</div>
     <div class="dt-timer-val" id="dt-timer-val">--</div>
   </div>
+</div>
+
+<!-- SIM STATS: BLUE CODE v4. Live simulator readouts, fixed size so nothing moves. -->
+<div class="stats simstats">
+  <div class="sbox sbox-blue"><div class="sl" id="ss-clock-l">OPEN FLOOR</div><div class="sv" id="ss-clock">00:00</div></div>
+  <div class="sbox sbox-blue"><div class="sl">LOBBY LINE</div><div class="sv" id="ss-lq">0</div></div>
+  <div class="sbox sbox-blue"><div class="sl">DT LINE</div><div class="sv" id="ss-dq">0</div></div>
+  <div class="sbox sbox-blue"><div class="sl">AVG TICKET</div><div class="sv" id="ss-tick">--</div></div>
+  <div class="sbox sbox-blue"><div class="sl">CARS LOST</div><div class="sv" id="ss-balk">0</div></div>
+  <div class="sbox sbox-blue"><div class="sl">BOTTLENECK</div><div class="sv sv-sm" id="ss-bn">--</div></div>
+</div>
+
+<!-- STOCKROOM: BLUE CODE v4. Fixed size inventory strip with the next truck. -->
+<div class="stockroom">
+  <div class="sr-head"><span>STOCKROOM</span><span id="sr-truck">NO TRUCK ON THE WAY</span></div>
+  <div class="sr-grid" id="sr-grid"></div>
 </div>
 
 <!-- KDS SCREEN 1: EXPO (lobby left | DT right) -->
@@ -706,9 +804,58 @@ body.editing .gridlayer{opacity:.5;}
   <div class="lbgrid" id="lbgrid"></div>
 </div>
 
+
+
+<!-- SIMULATOR MENU: BLUE CODE v4. Upper left hamburger, left side overlay. -->
+<div class="menu-shade" id="menu-shade" onclick="closeMenu()"></div>
+<div class="menu" id="menu" aria-hidden="true">
+  <div class="menu-head"><span>SIMULATOR</span><button class="menu-x" onclick="closeMenu()" aria-label="Close menu">CLOSE</button></div>
+  <details class="msec" open>
+    <summary>SHIFT</summary>
+    <div class="mrow-note" id="m-state">Open floor. Customers arrive at the rates below and nothing is being scored.</div>
+    <button class="runbtn" id="m-run" onclick="runShift()">RUN SHIFT</button>
+    <button class="runbtn runbtn-alt" id="m-end" onclick="endShiftNow()">END SHIFT NOW</button>
+  </details>
+  <details class="msec" open>
+    <summary>SHIFT SETUP</summary>
+    <div id="m-setup"></div>
+    <button class="mbtn" onclick="resetSetup()">RESET SETUP</button>
+  </details>
+  <details class="msec">
+    <summary>INVENTORY AND SHIPMENTS</summary>
+    <div class="mrow-note">Every step uses stock. When something runs out the order stops at that step until a truck brings more. ORDER sends a truck for that item to fill it back to par.</div>
+    <div id="m-inv" class="minv"></div>
+    <button class="mbtn" onclick="orderAll()">ORDER EVERYTHING LOW</button>
+  </details>
+  <details class="msec">
+    <summary>SIM SPEED</summary>
+    <div class="mspeed">
+      <button class="sp" data-spd="0.5" onclick="setSpeed(.5)">0.5×</button>
+      <button class="sp on" data-spd="1" onclick="setSpeed(1)">1×</button>
+      <button class="sp" data-spd="2" onclick="setSpeed(2)">2×</button>
+      <button class="sp" data-spd="4" onclick="setSpeed(4)">4×</button>
+      <button class="sp" data-spd="8" onclick="setSpeed(8)">8×</button>
+      <button class="sp" data-spd="16" onclick="setSpeed(16)">16×</button>
+    </div>
+  </details>
+  <details class="msec">
+    <summary>PAST SHIFTS</summary>
+    <div id="m-hist" class="mhist"></div>
+    <button class="mbtn" onclick="clearHistory()">CLEAR PAST SHIFTS</button>
+  </details>
+</div>
+
+<!-- SHIFT REPORT: BLUE CODE v4 -->
+<div class="report-shade" id="report-shade">
+  <div class="report">
+    <div class="report-head"><span id="rp-title">SHIFT REPORT</span><button class="menu-x" onclick="closeReport()">CLOSE</button></div>
+    <div class="report-body" id="rp-body"></div>
+  </div>
+</div>
+
 <script>
 // ════════════════════════════════════════════════════════════════
-//  COFFEE AUTOSIM v3  //  BLUE CODE  //  sudosilo
+//  COFFEE AUTOSIM v4  //  BLUE CODE  //  sudosilo
 //
 //  SECTION MAP
 //  ──────────────────────────────────────────────────────────────
@@ -743,10 +890,14 @@ function paintBaristaSlider(){
   el.style.setProperty('--fill', pct + '%');
 }
 
+// BLUE CODE v4: SIM CLOCK. simNow() is simulated milliseconds since load.
+// It runs at the sim speed, so every measurement in a shift is in sim time.
+let simBase = 0, perfMark = performance.now();
+function simNow(){ return simBase + (performance.now() - perfMark) * spd; }
 function setSpeed(s){
+  simBase = simNow(); perfMark = performance.now();
   spd = s;
-  ['h','1','2','4'].forEach(id=>document.getElementById('sp-'+id).classList.remove('on'));
-  document.getElementById('sp-'+{0.5:'h',1:'1',2:'2',4:'4'}[s]).classList.add('on');
+  document.querySelectorAll('.sp[data-spd]').forEach(b=>b.classList.toggle('on', +b.dataset.spd === s));
 }
 const S  = ms => ms / spd;                          // scale ms by sim speed
 const ri = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
@@ -1550,7 +1701,7 @@ function updStats(){
   document.getElementById('st-split').textContent  = lobbyDone+'/'+dtDone;
   document.getElementById('st-mobile').textContent = mobileOrders;
   const avg = buildTimes.length
-    ? (buildTimes.reduce((a,b)=>a+b,0)/buildTimes.length/1000/spd).toFixed(0)+'s'
+    ? (buildTimes.reduce((a,b)=>a+b,0)/buildTimes.length/1000).toFixed(0)+'s'
     : '--s';
   document.getElementById('st-avg').textContent    = avg;
   document.getElementById('st-score').textContent  = totalScore;
@@ -1585,11 +1736,12 @@ setInterval(()=>{
 },500);
 
 // ── 14. LOBBY QUEUE BAR ─────────────────────────────────────────
-function renderQ(pool){
+function renderQ(pool, now){
   const bar=document.getElementById('qbar'); bar.innerHTML='';
-  pool.slice(0,4).forEach((o,i)=>{
+  const list = now ? [now, ...pool] : [null, ...pool];
+  list.slice(0,4).forEach((o,i)=>{
     const e=mk('div','qt'+(i===0?' on':''));
-    e.innerHTML='<div class="ql">'+(i===0?'NOW':'NEXT '+i)+'</div>'+o.name;
+    e.innerHTML='<div class="ql">'+(i===0?'NOW':'NEXT '+i)+'</div>'+(o?o.name:(i===0?'IDLE':'--'));
     bar.appendChild(e);
   });
 }
@@ -1623,6 +1775,7 @@ function runOrder(order, lane, staff, orderType, staffIdx, onDone){
   function doFree(i, cb){
     if(i >= order.free.length){ cb(); return; }
     const sid = order.free[i];
+    useStock(sid, ()=>updateK2Step(tid2, 'OUT OF '+stockName(sid), pct()), ()=>acquireStation(sid, lane, ()=>updateK2Step(tid2, 'WAIT '+lbl(sid), pct()), held=>{
     const ms = S(stime(sid) * baristaStepMultiplier(staffIdx, sid));
     actStation(sid, lane, staffIdx);
     updateTicketStep(tid1, sid, allStepsDone);
@@ -1636,19 +1789,21 @@ function runOrder(order, lane, staff, orderType, staffIdx, onDone){
       else{
         if(bar)bar.style.width='0%';
         freeDone.add(sid); allStepsDone.add(sid); stepsComplete++;
+        releaseStation(sid, held);
         doneStation(sid);
         updateTicketStep(tid1, null, allStepsDone);
         setTimeout(()=>doFree(i+1,cb), walkDelay());
       }
     }
     requestAnimationFrame(tick);
+    }));
   }
 
   function doLocked(){
     if(lockIdx >= order.locked.length){
       // ORDER COMPLETE
       const elapsed = performance.now()-t0;
-      buildTimes.push(elapsed); if(buildTimes.length>50)buildTimes.shift();
+      buildTimes.push(elapsed*spd); if(buildTimes.length>50)buildTimes.shift();
       totalOrders++;
       if(lane==='lobby') lobbyDone++; else dtDone++;
       if(orderType==='MOBILE'||orderType==='DD'||orderType==='GH'||orderType==='UE') mobileOrders++;
@@ -1669,6 +1824,7 @@ function runOrder(order, lane, staff, orderType, staffIdx, onDone){
 
     // House brew empty — auto refill
     if((sid==='house_brew'||sid==='house_brew2') && houseLevel<=0){
+      useStock('refill', ()=>updateK2Step(tid2, 'OUT OF '+stockName('refill'), pct()), ()=>acquireStation('house_brew', lane, null, held=>{
       actStation('house_brew', lane, staffIdx);
       const ms=S(stime('refill'));
       const t1=performance.now();
@@ -1677,11 +1833,14 @@ function runOrder(order, lane, staff, orderType, staffIdx, onDone){
         const bar=document.getElementById('tb-house_brew'); if(bar)bar.style.width=(p*100)+'%';
         if(p<1)requestAnimationFrame(rTick);
         else{ const b=document.getElementById('tb-house_brew');if(b)b.style.width='0%';
-          refillHouse(); doneStation('house_brew'); doLocked(); }
+          refillHouse(); releaseStation('house_brew', held); doneStation('house_brew'); doLocked(); }
       }
-      requestAnimationFrame(rTick); return;
+      requestAnimationFrame(rTick);
+      }));
+      return;
     }
 
+    useStock(sid, ()=>updateK2Step(tid2, 'OUT OF '+stockName(sid), pct()), ()=>acquireStation(sid, lane, ()=>updateK2Step(tid2, 'WAIT '+lbl(sid), pct()), held=>{
     const ms = S(stime(sid) * baristaStepMultiplier(staffIdx, sid));
     actStation(sid, lane, staffIdx);
     updateTicketStep(tid1, sid, allStepsDone);
@@ -1700,12 +1859,14 @@ function runOrder(order, lane, staff, orderType, staffIdx, onDone){
       else{
         if(barEl)barEl.style.width='0%';
         if(sid==='house_brew'||sid==='house_brew2') useHouse();
+        releaseStation(sid, held);
         doneStation(sid); allStepsDone.add(sid); stepsComplete++; lockIdx++;
         updateTicketStep(tid1, order.locked[lockIdx]||null, allStepsDone);
         setTimeout(doLocked, walkDelay()); // walk delay between stations
       }
     }
     requestAnimationFrame(sTick);
+    }));
   }
 
   doFree(0, ()=>doLocked());
@@ -1763,15 +1924,23 @@ function baristaStepMultiplier(staffIdx, sid){
 }
 
 // Per-barista lobby loop — each runs independently
+// BLUE CODE v4: baristas pull the next real customer from the lobby line.
+// An empty line means the barista stands idle and checks again shortly.
+const looping = [false, false, false];
+function startLoop(i){ if(looping[i]) return; looping[i] = true; baristaLoop(i); }
 function baristaLoop(staffIdx){
   // Stop if this barista is no longer active
-  if(!STAFF.lobby[staffIdx] || !STAFF.lobby[staffIdx].active) return;
+  if(!STAFF.lobby[staffIdx] || !STAFF.lobby[staffIdx].active){ looping[staffIdx] = false; return; }
 
-  if(lobbyPool.length===0) lobbyPool=[...ORDERS].sort(()=>Math.random()-.5);
-  const order = lobbyPool.shift();
-  const queueView = [order, ...lobbyPool.slice(0,3)];
-  // Only barista 0 updates the queue display to avoid flicker
-  if(staffIdx === 0) renderQ(queueView);
+  if(lobbyQ.length===0){
+    setTimeout(()=>baristaLoop(staffIdx), S(700));
+    return;
+  }
+  const cust = lobbyQ.shift();
+  const order = cust.order;
+  cust.start = simNow();
+  renderQ(lobbyQ.map(c=>c.order), order);
+  const busy0 = simNow();
 
   const staff = STAFF.lobby[staffIdx];
 
@@ -1779,16 +1948,18 @@ function baristaLoop(staffIdx){
   const fig = document.getElementById('barista-'+staffIdx);
   if(fig) fig.classList.add('active');
 
-  runOrder(order, 'lobby', staff, 'LOBBY', staffIdx, ()=>{
+  runOrder(order, 'lobby', staff, cust.type, staffIdx, ()=>{
     // Stop pulsing when order is complete and return figure to rest position
     if(fig) fig.classList.remove('active');
     returnBaristaToRest(staffIdx);
+    custDone(cust);
+    addBusy('lb'+staffIdx, simNow()-busy0, cust);
 
     // Re-check active state before scheduling next order
     if(STAFF.lobby[staffIdx].active){
       const gap = S(ri(400, 1000));
       setTimeout(()=>baristaLoop(staffIdx), gap);
-    }
+    } else looping[staffIdx] = false;
   });
 }
 
@@ -1825,7 +1996,7 @@ function setBaristas(n){
   // Kick off loops for newly activated baristas
   for(let i=0; i<n; i++){
     if(STAFF.lobby[i].active){
-      setTimeout(()=>baristaLoop(i), i * S(ri(500,1500)));
+      setTimeout(()=>startLoop(i), i * S(ri(500,1500)));
     }
   }
 
@@ -1838,17 +2009,9 @@ function setBaristas(n){
 // The order type is randomly MOBILE, DD, GH, or UE.
 // Mobile orders run concurrently with lobby orders on the same staff.
 const MOBILE_TYPES = ['MOBILE','DD','GH','UE'];
-function mobileInjectionLoop(){
-  const orderType = rp(MOBILE_TYPES);
-  if(ORDERS.length>0){
-    const order = ORDERS[ri(0, ORDERS.length-1)];
-    const staff = STAFF.lobby[lobbyStaffIdx++%STAFF.lobby.length];
-    // Fire without blocking lobby loop — just creates ticket + runs order
-    runOrder(order, 'lobby', staff, orderType, 0, ()=>{});
-    fireZebra(order.name, orderType);
-  }
-  setTimeout(mobileInjectionLoop, S(ri(20000, 45000)));
-}
+// BLUE CODE v4: mobile and delivery orders now join the same lobby line
+// as walk-ins at their own arrival rate, so they compete for the baristas.
+function mobileInjectionLoop(){ if(arrivalsOpen()) arriveLobby(rp(MOBILE_TYPES)); }
 
 // ── 17. DT CAR SYSTEM ───────────────────────────────────────────
 // BLUE CODE: See v2 comments for full slot-system documentation.
@@ -2054,9 +2217,9 @@ function advSlot(carNum,from,to,ms,cb){
   slideCar(elId,SLOTS[to],ms,cb);
 }
 
-function runCarLifecycle(carNum, order, staff){
+function runCarLifecycle(carNum, order, staff, cust){
   const elId=acquireCarEl(carNum);
-  if(!elId){ setTimeout(()=>runCarLifecycle(carNum,order,staff),1000); return; }
+  if(!elId){ setTimeout(()=>runCarLifecycle(carNum,order,staff,cust),1000); return; }
   // BLUE CODE: Each car gets a random style+color combo per spawn.
   // Ghost level matches which element slot it landed in:
   //   'car'  = 0 (fresh, full color)
@@ -2087,8 +2250,11 @@ function runCarLifecycle(carNum, order, staff){
                   if(dtf){dtf.classList.add('here');dtf.innerHTML='CAR #'+carNum+'<br>'+order.name.split(' ')[0];}
 
                   dtWindowBusy=true;
+                  if(cust) cust.start = simNow();
+                  const busy0 = simNow();
                   setTimeout(()=>{
                     runOrder(order,'dt',staff,'DT',()=>{
+                      if(cust){ custDone(cust); addBusy('dt'+STAFF.dt.indexOf(staff), simNow()-busy0, cust); }
                       stopDTTimer();
                       if(wp)wp.classList.remove('car-here');
                       if(dtf){dtf.classList.remove('here');dtf.innerHTML='DT<br>WIN';}
@@ -2096,6 +2262,7 @@ function runCarLifecycle(carNum, order, staff){
                       slideCar(elId,SLOTS.EXIT,700,()=>{
                         releaseCarEl(carNum);
                         dtWindowBusy=false;
+                        if(cust){ dtOnScreen--; dtDispatch(); }
                       });
                     });
                   },300);
@@ -2109,18 +2276,588 @@ function runCarLifecycle(carNum, order, staff){
   },100);
 }
 
-function dtSpawnLoop(){
-  if(carPool.available.length===0){ setTimeout(dtSpawnLoop,1500); return; }
-  dtCarId++;
-  const carNum=dtCarId;
-  if(dtPool.length===0) dtPool=[...ORDERS].sort(()=>Math.random()-.5);
-  const order=dtPool.shift();
-  const staff=STAFF.dt[dtStaffIdx++%STAFF.dt.length];
-  runCarLifecycle(carNum,order,staff);
-  setTimeout(dtSpawnLoop, S(ri(5000,10000)));
+// BLUE CODE v4: cars arrive at the drive-thru rate and wait in a line.
+// Only three fit on screen; the rest wait off screen and show in DT LINE.
+// A car that pulls up to a line at the limit drives off and counts as lost.
+function dtSpawnLoop(){ if(arrivalsOpen()) arriveDT(); }
+
+// BLUE CODE v4: ARRIVAL STREAMS. Each stream keeps its next arrival as a
+// sim timestamp, checked on a short real timer, so speed changes apply
+// to arrivals instantly and every rate stays true at any sim speed.
+const STREAMS = [
+  { rate:()=>CFG.lobbyPerHr,  fire:()=>arriveLobby('LOBBY'), next:0 },
+  { rate:()=>CFG.dtPerHr,     fire:dtSpawnLoop,              next:0 },
+  { rate:()=>CFG.mobilePerHr, fire:mobileInjectionLoop,      next:0 },
+];
+function scheduleStreams(){ const now=simNow(); STREAMS.forEach(st=>st.next = now + nextGap(st.rate())); }
+function tickStreams(){
+  const now = simNow();
+  STREAMS.forEach(st=>{
+    let guard = 0;
+    while(now >= st.next && guard++ < 20){
+      if(st.rate() > 0 && arrivalsOpen()) st.fire();
+      st.next += nextGap(st.rate());
+    }
+    if(st.next < now) st.next = now + nextGap(st.rate());
+  });
+}
+function dtDispatch(){
+  while(dtLine.length && carPool.available.length){
+    dtCarId++;
+    const cust = dtLine.shift();
+    const staff = STAFF.dt[dtStaffIdx++%STAFF.dt.length];
+    dtOnScreen++;
+    runCarLifecycle(dtCarId, cust.order, staff, cust);
+  }
 }
 
 
+// ════════════════════════════════════════════════════════════════
+// BLUE CODE v4: SIMULATOR CORE
+// ────────────────────────────────────────────────────────────────
+// This is what makes it a simulator and not a screensaver.
+//   SETUP     CFG holds the inputs: arrival rates per hour for lobby,
+//             drive-thru and mobile, shift length, espresso groups,
+//             drive-thru line limit, and the rush hour curve.
+//   CUSTOMERS Each arrival is a customer record stamped with its sim
+//             arrival time. Lobby and mobile join lobbyQ. Cars join
+//             dtLine. Baristas and the window pull from those lines.
+//   STATIONS  Every station is a shared resource with a capacity.
+//             A step waits when its station is full, and the wait is
+//             measured. That is how bottlenecks show up.
+//   SHIFT     RUN SHIFT clears the lines, resets the numbers, runs for
+//             the shift length in sim time, stops new arrivals, lets
+//             the last customers finish, then shows the shift report.
+//   OPEN      Outside a shift the floor stays open at the same rates so
+//             it never sits dead; the live readouts cover that too.
+// ════════════════════════════════════════════════════════════════
+const CFG_KEY = 'coffee-autosim:setup:v4';
+const HIST_KEY = 'coffee-autosim:history:v4';
+const CFG_DEFAULT = { lobbyPerHr:45, dtPerHr:35, mobilePerHr:15, shiftMin:30, espGroups:1, dtLimit:8, rush:false, stockPct:60, leadMin:12, autoOrder:true };
+const CFG_FIELDS = [
+  {k:'lobbyPerHr', label:'WALK-IN CUSTOMERS PER HOUR', min:0, max:150, step:5},
+  {k:'dtPerHr',    label:'DRIVE-THRU CARS PER HOUR',   min:0, max:120, step:5},
+  {k:'mobilePerHr',label:'MOBILE AND DELIVERY PER HOUR',min:0, max:80,  step:5},
+  {k:'shiftMin',   label:'SHIFT LENGTH, SIM MINUTES',  min:10, max:240, step:10},
+  {k:'espGroups',  label:'ESPRESSO GROUP HEADS',       min:1, max:3,   step:1},
+  {k:'dtLimit',    label:'CARS BEFORE THEY DRIVE OFF', min:3, max:20,  step:1},
+  {k:'stockPct',   label:'STARTING STOCK, PERCENT OF PAR', min:10, max:100, step:5},
+  {k:'leadMin',    label:'SHIPMENT LEAD TIME, SIM MINUTES', min:2, max:60, step:1},
+  {k:'rush',       label:'RUSH HOUR CURVE', toggle:true},
+  {k:'autoOrder',  label:'AUTO REORDER WHEN LOW', toggle:true},
+];
+let CFG = Object.assign({}, CFG_DEFAULT);
+try { const sv = JSON.parse(localStorage.getItem(CFG_KEY)||'null'); if(sv) CFG = Object.assign(CFG, sv); } catch(e){}
+function saveCfg(){ try{ localStorage.setItem(CFG_KEY, JSON.stringify(CFG)); }catch(e){} }
+
+// ── Lines ──
+const lobbyQ = [];    // waiting walk-in and mobile customers
+const dtLine = [];    // cars waiting off screen
+let dtOnScreen = 0;   // cars currently on the road graphic
+
+// ── Shift state ──
+const SH = { id:0, state:'open', t0:0, len:0, drainT0:0 };
+let M = null;
+function freshMetrics(){
+  return { arrived:{lobby:0,mobile:0,dt:0}, served:{lobby:0,mobile:0,dt:0}, balked:0,
+           ticket:{lobby:[],mobile:[],dt:[]}, wait:{lobby:[],mobile:[],dt:[]},
+           pending:0, maxLobbyQ:0, maxDtQ:0, busy:{}, cfg:Object.assign({},CFG) };
+}
+M = freshMetrics();
+
+function laneOf(c){ return c.lane==='dt' ? 'dt' : (c.type==='LOBBY' ? 'lobby' : 'mobile'); }
+function shiftClockMs(){
+  if(SH.state==='open') return simNow()-SH.t0;
+  if(SH.state==='running') return Math.min(simNow()-SH.t0, SH.len);
+  return SH.len;
+}
+function rushFactor(){
+  if(!CFG.rush) return 1;
+  const len = SH.state==='open' ? 60*60000 : SH.len;
+  const f = ((simNow()-SH.t0) % len) / len;
+  return 0.35 + 1.65*Math.sin(Math.PI*f);   // slow open, peak mid shift, slow close
+}
+// Exponential gap between arrivals for a rate per hour, in sim ms.
+function nextGap(perHr){
+  const r = perHr * rushFactor();
+  if(r <= 0) return 4000;
+  const g = -Math.log(1-Math.random()) * 3600000 / r;
+  return Math.min(Math.max(g, 400), 3600000);
+}
+function arrivalsOpen(){ return SH.state==='open' || SH.state==='running'; }
+
+function newCust(lane, type){
+  const c = { lane, type, order:rp(ORDERS), arr:simNow(), start:null, sh:SH.id };
+  M.arrived[laneOf(c)]++;
+  M.pending++;
+  return c;
+}
+function arriveLobby(type){
+  const c = newCust('lobby', type);
+  lobbyQ.push(c);
+  fireZebra(c.order.name, type);
+  if(lobbyQ.length > M.maxLobbyQ) M.maxLobbyQ = lobbyQ.length;
+  renderQ(lobbyQ.map(x=>x.order), currentLobbyNow());
+}
+function currentLobbyNow(){ const q=document.querySelector('#qbar .qt.on'); return q && !/IDLE/.test(q.textContent) ? {name:q.textContent.replace(/^NOW/,'')} : null; }
+function dtLineCount(){ return dtLine.length + dtOnScreen; }
+function arriveDT(){
+  if(dtLineCount() >= CFG.dtLimit){
+    // pulled up, saw the line, drove off
+    M.arrived.dt++; M.balked++;
+    return;
+  }
+  const c = newCust('dt', 'DT');
+  dtLine.push(c);
+  if(dtLineCount() > M.maxDtQ) M.maxDtQ = dtLineCount();
+  dtDispatch();
+}
+function custDone(c){
+  if(c.sh !== SH.id) return;
+  const ln = laneOf(c), now = simNow();
+  M.served[ln]++;
+  M.ticket[ln].push(now - c.arr);
+  if(c.start != null) M.wait[ln].push(c.start - c.arr);
+  M.pending = Math.max(0, M.pending-1);
+}
+function addBusy(key, ms, c){
+  if(!c || c.sh !== SH.id) return;
+  M.busy[key] = (M.busy[key]||0) + ms;
+}
+
+// ── Stations as shared resources ──
+const STN = {};
+function capOf(sid){
+  if(sid==='espresso') return CFG.espGroups;
+  if(sid==='cups'||sid==='lids') return 3;
+  if(sid==='ice'||sid==='house_brew'||sid==='house_brew2'||sid==='register'||sid==='milk_cold') return 2;
+  if(sid.indexOf('syrup_')===0) return 2;
+  return 1;
+}
+function stn(sid){
+  if(!STN[sid]) STN[sid] = { busy:0, q:[], busyMs:0, waitMs:0, uses:0, waits:0, sh:SH.id };
+  const s = STN[sid];
+  if(s.sh !== SH.id){ s.busyMs=0; s.waitMs=0; s.uses=0; s.waits=0; s.sh=SH.id; }
+  return s;
+}
+// acquireStation(sid, lane, onWait, go): go(held) runs once the station is free.
+function acquireStation(sid, lane, onWait, go){
+  const s = stn(sid);
+  if(s.busy < capOf(sid)){
+    s.busy++; s.uses++;
+    go({ t:simNow(), sh:SH.id });
+    return;
+  }
+  s.waits++;
+  if(onWait) onWait();
+  s.q.push({ t:simNow(), sh:SH.id, go });
+}
+function releaseStation(sid, held){
+  const s = stn(sid);
+  if(held && held.sh === SH.id) s.busyMs += simNow() - held.t;
+  s.busy = Math.max(0, s.busy-1);
+  while(s.q.length && s.busy < capOf(sid)){
+    const w = s.q.shift();
+    if(w.sh === SH.id) s.waitMs += simNow() - w.t;
+    s.busy++; s.uses++;
+    w.go({ t:simNow(), sh:SH.id });
+  }
+}
+// The biggest wait wins: a station, the barista crew (lobby line),
+// or the single drive-thru window (car line).
+function bottleneck(){
+  const sum = a => a.reduce((x,y)=>x+y,0);
+  const crew = [].concat(M.wait.lobby, M.wait.mobile), win = M.wait.dt;
+  let best = null;
+  const crewMs = sum(crew), winMs = sum(win);
+  if(crewMs > 0) best = { id:'_crew', name:'BARISTA CREW', waitMs:crewMs, waits:crew.filter(x=>x>1000).length };
+  if(winMs > 0 && (!best || winMs > best.waitMs)) best = { id:'_win', name:'DRIVE-THRU WINDOW', waitMs:winMs, waits:win.filter(x=>x>1000).length };
+  const st = stationBottleneck();
+  if(st && (!best || st.waitMs > best.waitMs)) best = Object.assign({ name:lbl(st.id) }, st);
+  const sk = stockBottleneck();
+  if(sk && (!best || sk.waitMs > best.waitMs)) best = sk;
+  return best;
+}
+function stationBottleneck(){
+  let best=null;
+  Object.keys(STN).forEach(k=>{
+    const s=stn(k);
+    if(s.waitMs>0 && (!best || s.waitMs>best.waitMs)) best={id:k, waitMs:s.waitMs, waits:s.waits};
+  });
+  return best;
+}
+
+// ── Number helpers (sim ms to text) ──
+function avg(a){ return a.length ? a.reduce((x,y)=>x+y,0)/a.length : 0; }
+function pctl(a,p){ if(!a.length) return 0; const b=[...a].sort((x,y)=>x-y); return b[Math.min(b.length-1, Math.floor(p*b.length))]; }
+function mmss(ms){ ms=Math.max(0,Math.round(ms/1000)); return String(Math.floor(ms/60)).padStart(2,'0')+':'+String(ms%60).padStart(2,'0'); }
+function secs(ms){ return ms ? (ms/1000 < 100 ? (ms/1000).toFixed(0)+'s' : mmss(ms)) : '--'; }
+
+// ── Live readouts ──
+function updSim(){
+  const lab = document.getElementById('ss-clock-l');
+  const clk = document.getElementById('ss-clock');
+  const tag = document.getElementById('sim-tag');
+  if(SH.state==='running'){
+    lab.textContent='SHIFT OF '+mmss(SH.len); clk.textContent=mmss(shiftClockMs());
+    tag.textContent='SHIFT RUNNING'; tag.classList.add('running');
+  } else if(SH.state==='drain'){
+    lab.textContent='LAST ORDERS'; clk.textContent=M.pending+' LEFT';
+    tag.textContent='CLOSING'; tag.classList.add('running');
+  } else {
+    lab.textContent='OPEN FLOOR'; clk.textContent=mmss(shiftClockMs());
+    tag.textContent='OPEN FLOOR'; tag.classList.remove('running');
+  }
+  document.getElementById('ss-lq').textContent = lobbyQ.length;
+  document.getElementById('ss-dq').textContent = dtLineCount();
+  const all = [...M.ticket.lobby, ...M.ticket.mobile, ...M.ticket.dt];
+  document.getElementById('ss-tick').textContent = all.length ? secs(avg(all)) : '--';
+  document.getElementById('ss-balk').textContent = M.balked;
+  const bn = bottleneck();
+  document.getElementById('ss-bn').textContent = bn ? bn.name : '--';
+  if(lobbyQ.length > M.maxLobbyQ) M.maxLobbyQ = lobbyQ.length;
+  if(dtLineCount() > M.maxDtQ) M.maxDtQ = dtLineCount();
+
+  // shift transitions
+  if(SH.state==='running' && simNow()-SH.t0 >= SH.len){
+    SH.state='drain'; SH.drainT0=simNow();
+    renderMenuState();
+  }
+  if(SH.state==='drain'){
+    // cars still in the off screen line at closing are served; stragglers capped at sim 20 minutes
+    if(M.pending<=0 || simNow()-SH.drainT0 > 20*60000) finishShift();
+  }
+}
+
+// ── Shift control ──
+function runShift(){
+  SH.id++;
+  SH.state='running'; SH.t0=simNow(); SH.len=CFG.shiftMin*60000;
+  lobbyQ.length=0; dtLine.length=0;
+  M = freshMetrics();
+  restockForShift();
+  scheduleStreams();
+  renderQ([], null);
+  renderMenuState();
+  closeMenu();
+  updSim();
+}
+function endShiftNow(){
+  if(SH.state!=='running') return;
+  SH.len = Math.max(60000, simNow()-SH.t0);
+  SH.state='drain'; SH.drainT0=simNow();
+  renderMenuState();
+}
+function finishShift(){
+  const R = buildReport();
+  SH.state='open'; SH.id++; SH.t0=simNow();
+  M = freshMetrics();
+  saveHistory(R);
+  renderMenuState(); renderHistory();
+  showReport(R);
+}
+
+function buildReport(){
+  // totalMs runs from opening to the last handoff, so rates and busy time include closing
+  const shiftMs = SH.len, totalMs = Math.max(shiftMs, simNow()-SH.t0), hrs = totalMs/3600000;
+  const lanes = ['lobby','mobile','dt'];
+  const served = lanes.reduce((a,l)=>a+M.served[l],0);
+  const arrived = lanes.reduce((a,l)=>a+M.arrived[l],0);
+  const all = [].concat(M.ticket.lobby, M.ticket.mobile, M.ticket.dt);
+  const stations = Object.keys(STN).map(k=>{ const s=stn(k); return {id:k, name:lbl(k), util:s.busyMs/(totalMs*capOf(k)), waitMs:s.waitMs, waits:s.waits, uses:s.uses}; })
+    .filter(s=>s.uses>0).sort((a,b)=>b.waitMs-a.waitMs || b.util-a.util);
+  const staff = [];
+  STAFF.lobby.forEach((s,i)=>{ if(M.busy['lb'+i]!=null || i<activeBaristas) staff.push({name:s.name, role:'LOBBY', util:(M.busy['lb'+i]||0)/totalMs}); });
+  STAFF.dt.forEach((s,i)=>staff.push({name:s.name, role:'DRIVE-THRU', util:(M.busy['dt'+i]||0)/totalMs}));
+  return {
+    when: new Date().toLocaleString(), cfg:M.cfg, baristas:activeBaristas, shiftMs, totalMs,
+    arrived, served, balked:M.balked, perHr: hrs ? served/hrs : 0,
+    lanes: lanes.map(l=>({ lane:l, arrived:M.arrived[l], served:M.served[l],
+      avgTicket:avg(M.ticket[l]), p90Ticket:pctl(M.ticket[l],.9), avgWait:avg(M.wait[l]) })),
+    avgTicket:avg(all), p90Ticket:pctl(all,.9),
+    maxLobbyQ:M.maxLobbyQ, maxDtQ:M.maxDtQ, stations, staff,
+    bottleneck: bottleneck(),
+    trucks: SM.trucks,
+    stock: Object.keys(ITEMS).map(k=>{ const m=SM.items[k]; let w=m.waitMs; ITEMS[k].wq.forEach(x=>{ if(x.sh===SH.id) w+=simNow()-x.t; });
+      return { name:ITEMS[k].name, used:m.used, recv:m.recv, outs:m.outs, waitMs:w, low:m.low, end:ITEMS[k].qty, par:ITEMS[k].par }; }),
+  };
+}
+
+const LANE_NAME = { lobby:'WALK-IN', mobile:'MOBILE AND DELIVERY', dt:'DRIVE-THRU' };
+function rr(a,b){ return '<div class="rr"><span>'+a+'</span><span>'+b+'</span></div>'; }
+function pc(x){ return Math.round(Math.min(1,x)*100)+'%'; }
+function showReport(R){
+  const c = R.cfg;
+  let h = '';
+  h += '<h4>SETUP</h4>';
+  h += rr('Baristas on the floor', R.baristas);
+  h += rr('Walk-ins per hour', c.lobbyPerHr) + rr('Drive-thru cars per hour', c.dtPerHr) + rr('Mobile and delivery per hour', c.mobilePerHr);
+  h += rr('Espresso group heads', c.espGroups) + rr('Drive-thru line limit', c.dtLimit) + rr('Rush hour curve', c.rush?'ON':'OFF');
+  if(c.stockPct!=null) h += rr('Starting stock', c.stockPct+'% of par') + rr('Shipment lead time', c.leadMin+' min') + rr('Auto reorder', c.autoOrder?'ON':'OFF');
+  h += rr('Shift length', mmss(R.shiftMs)) + rr('Doors closed to last handoff', mmss((R.totalMs||R.shiftMs)-R.shiftMs));
+  h += '<h4>RESULT</h4>';
+  h += rr('Customers who showed up', R.arrived) + rr('Customers served', R.served) + rr('Cars that drove off', R.balked);
+  h += rr('Served per hour', R.perHr.toFixed(1));
+  h += rr('Average ticket, arrival to handoff', secs(R.avgTicket)) + rr('Slowest tenth of tickets', secs(R.p90Ticket));
+  h += rr('Longest lobby line', R.maxLobbyQ) + rr('Longest drive-thru line', R.maxDtQ);
+  R.lanes.forEach(l=>{
+    h += '<h4>'+LANE_NAME[l.lane]+'</h4>';
+    h += rr('Showed up', l.arrived) + rr('Served', l.served);
+    h += rr('Average wait before anyone started', secs(l.avgWait));
+    h += rr('Average ticket', secs(l.avgTicket)) + rr('Slowest tenth', secs(l.p90Ticket));
+  });
+  if(R.bottleneck){
+    const why = R.bottleneck.id.indexOf('_stock_')===0 ? ' Orders sat half built waiting on a truck to restock it.'
+              : R.bottleneck.id==='_crew' ? ' Customers stood in the lobby line waiting for a free barista.'
+              : R.bottleneck.id==='_win' ? ' Cars sat in line because the window hands out one order at a time.'
+              : ' Orders stood at this station waiting for it to free up.';
+    h += '<div class="bn">Bottleneck: <b>'+R.bottleneck.name+'</b>.'+why+' Total waiting there was '+mmss(R.bottleneck.waitMs)+' of sim time across '+R.bottleneck.waits+' orders.</div>';
+  } else {
+    h += '<div class="bn">Nothing made anyone wait this shift.</div>';
+  }
+  h += '<h4>STAFF BUSY TIME</h4>';
+  R.staff.forEach(s=>{ h += rr(s.name+' '+s.role, pc(s.util)) + '<div class="bar"><i style="width:'+pc(s.util)+'"></i></div>'; });
+  if(R.stock){
+    h += '<h4>INVENTORY AND SHIPMENTS</h4>';
+    h += rr('Trucks unloaded', R.trucks);
+    const outs = R.stock.filter(x=>x.outs>0);
+    h += rr('Items that ran out', outs.length ? outs.map(x=>x.name).join(', ') : 'none');
+    R.stock.forEach(x=>{
+      h += rr(x.name, 'used '+x.used+', got '+x.recv+', ended '+x.end+(x.waitMs?', stuck '+mmss(x.waitMs):''));
+      h += '<div class="bar"><i class="'+(x.outs?'hot':'')+'" style="width:'+Math.min(100,Math.round(x.end/x.par*100))+'%"></i></div>';
+    });
+  }
+  h += '<h4>STATIONS</h4>';
+  R.stations.slice(0,10).forEach((s,i)=>{
+    h += rr(s.name, pc(s.util)+' busy, '+mmss(s.waitMs)+' waited') + '<div class="bar"><i class="'+(i===0&&s.waitMs>0?'hot':'')+'" style="width:'+pc(s.util)+'"></i></div>';
+  });
+  document.getElementById('rp-title').textContent = 'SHIFT REPORT';
+  document.getElementById('rp-body').innerHTML = h;
+  document.getElementById('report-shade').classList.add('on');
+}
+function closeReport(){ document.getElementById('report-shade').classList.remove('on'); }
+
+// ── History of past shifts ──
+let HIST = [];
+try { HIST = JSON.parse(localStorage.getItem(HIST_KEY)||'[]') || []; } catch(e){ HIST = []; }
+function saveHistory(R){
+  HIST.unshift(R); if(HIST.length>12) HIST.length=12;
+  try{ localStorage.setItem(HIST_KEY, JSON.stringify(HIST)); }catch(e){}
+}
+function clearHistory(){ HIST=[]; try{ localStorage.removeItem(HIST_KEY); }catch(e){} renderHistory(); }
+function renderHistory(){
+  const el = document.getElementById('m-hist'); if(!el) return;
+  if(!HIST.length){ el.innerHTML = '<div class="hrow">No finished shifts yet.</div>'; return; }
+  el.innerHTML = '';
+  HIST.forEach((R,i)=>{
+    const d = mk('div','hrow');
+    d.innerHTML = '<b>'+R.when+'</b><br>'+R.baristas+' barista crew, '+R.cfg.lobbyPerHr+' walk-ins, '+R.cfg.dtPerHr+' cars, '+R.cfg.mobilePerHr+' mobile per hour, '+R.cfg.espGroups+' espresso heads'+(R.cfg.rush?', rush curve':'')+
+      (R.cfg.stockPct!=null?', '+R.cfg.stockPct+'% stock, '+R.cfg.leadMin+' min trucks':'')+'<br>Served '+R.served+' of '+R.arrived+', '+R.balked+' cars lost, '+(R.trucks||0)+' trucks, average ticket '+secs(R.avgTicket)+(R.bottleneck?', bottleneck '+R.bottleneck.name:'');
+    d.style.cursor='pointer';
+    d.onclick = ()=>showReport(R);
+    el.appendChild(d);
+  });
+}
+
+// ── Menu ──
+function openMenu(){ document.getElementById('menu').classList.add('on'); document.getElementById('menu-shade').classList.add('on'); }
+function closeMenu(){ document.getElementById('menu').classList.remove('on'); document.getElementById('menu-shade').classList.remove('on'); }
+function renderSetup(){
+  const box = document.getElementById('m-setup'); box.innerHTML='';
+  CFG_FIELDS.forEach(f=>{
+    const w = mk('div','mfield');
+    if(f.toggle){
+      w.innerHTML = '<label>'+f.label+'</label>';
+      const b = mk('button','mtog'+(CFG[f.k]?' on':'')); b.type='button'; b.textContent = CFG[f.k]?'ON':'OFF';
+      b.onclick = ()=>{ CFG[f.k]=!CFG[f.k]; saveCfg(); b.textContent=CFG[f.k]?'ON':'OFF'; b.classList.toggle('on',CFG[f.k]); };
+      w.appendChild(b);
+    } else {
+      w.innerHTML = '<label>'+f.label+' <b>'+CFG[f.k]+'</b></label>';
+      const r = document.createElement('input'); r.type='range'; r.min=f.min; r.max=f.max; r.step=f.step; r.value=CFG[f.k];
+      r.oninput = ()=>{ CFG[f.k]=+r.value; w.querySelector('b').textContent=r.value; saveCfg(); if(f.k==='espGroups') kickStations(); if(/PerHr$/.test(f.k)) scheduleStreams(); };
+      w.appendChild(r);
+    }
+    box.appendChild(w);
+  });
+}
+function resetSetup(){ CFG = Object.assign({}, CFG_DEFAULT); saveCfg(); renderSetup(); kickStations(); }
+// a capacity raise lets waiting orders start right away
+function kickStations(){ Object.keys(STN).forEach(k=>{ const s=STN[k]; while(s.q.length && s.busy<capOf(k)){ const w=s.q.shift(); s.busy++; s.uses++; w.go({t:simNow(), sh:SH.id}); } }); }
+function renderMenuState(){
+  const st = document.getElementById('m-state'), run = document.getElementById('m-run'), end = document.getElementById('m-end');
+  if(SH.state==='running'){ st.textContent='Shift running. Every customer from the start of the shift is being timed. The report opens when the last order is handed off.'; run.disabled=true; end.disabled=false; }
+  else if(SH.state==='drain'){ st.textContent='Shift is over. Doors are closed to new customers and the crew is finishing the last orders.'; run.disabled=true; end.disabled=true; }
+  else { st.textContent='Open floor. Customers arrive at the rates below and nothing is being scored. Run a shift to measure this setup.'; run.disabled=false; end.disabled=true; }
+}
+
+
+// ════════════════════════════════════════════════════════════════
+// BLUE CODE v4: INVENTORY AND SHIPMENTS
+// ────────────────────────────────────────────────────────────────
+// Every station step uses one unit of an item. A step whose item is at
+// zero waits until a truck delivers. Trucks arrive after the lead time.
+//   AUTO REORDER ON   an item that drops to its reorder point gets a
+//                     truck sent for it, filling it back to par.
+//   AUTO REORDER OFF  nothing is ordered until an item runs dry, then a
+//                     manager emergency run goes out at double lead time.
+//   ORDER buttons in the menu send a truck for one item by hand.
+// A new shift restocks every item to the starting stock percent.
+// ════════════════════════════════════════════════════════════════
+const ITEMS = {
+  cups:    { name:'CUPS',         par:80, reorder:25, from:['cups'] },
+  lids:    { name:'LIDS',         par:80, reorder:25, from:['lids'] },
+  beans:   { name:'ESPRESSO',     par:50, reorder:15, from:['espresso'] },
+  milk:    { name:'MILK',         par:60, reorder:18, from:['steamer','milk_cold'] },
+  ice:     { name:'ICE BAGS',     par:40, reorder:12, from:['ice'] },
+  cbrew:   { name:'COLD BREW',    par:20, reorder:6,  from:['coldbrew'] },
+  syrup:   { name:'SYRUP',        par:90, reorder:25, from:[] },
+  pastry:  { name:'PASTRY CASE',  par:16, reorder:5,  from:['cold_case'] },
+  hot:     { name:'HOT FOOD',     par:10, reorder:3,  from:['hot_food'] },
+  grounds: { name:'DRIP GROUNDS', par:8,  reorder:2,  from:['refill'] },
+  blend:   { name:'BLEND BASE',   par:20, reorder:6,  from:['blender'] },
+};
+const ITEM_OF = {};
+Object.keys(ITEMS).forEach(k=>{
+  const it = ITEMS[k];
+  it.qty = Math.round(it.par * CFG.stockPct / 100); it.onOrder = 0; it.wq = [];
+  it.from.forEach(f=>{ ITEM_OF[f] = k; });
+});
+function itemFor(sid){ if(ITEM_OF[sid]) return ITEM_OF[sid]; if(sid.indexOf('syrup_')===0) return 'syrup'; return null; }
+function stockName(sid){ const k=itemFor(sid); return k ? ITEMS[k].name : lbl(sid); }
+let SM = null;   // per shift stock numbers
+function freshStockMetrics(){
+  const o = { trucks:0, items:{} };
+  Object.keys(ITEMS).forEach(k=>o.items[k]={ used:0, recv:0, outs:0, waitMs:0, waits:0, low:ITEMS[k].qty });
+  return o;
+}
+SM = freshStockMetrics();
+const TRUCKS = [];   // {at, k, qty, emergency}
+
+function useStock(sid, onWait, go){
+  const k = itemFor(sid);
+  if(!k){ go(); return; }
+  const it = ITEMS[k];
+  if(it.qty > 0 && !it.wq.length){
+    it.qty--; SM.items[k].used++;
+    if(it.qty < SM.items[k].low) SM.items[k].low = it.qty;
+    checkReorder(k);
+    go(); return;
+  }
+  SM.items[k].waits++;
+  if(!it.wq.length) SM.items[k].outs++;
+  if(onWait) onWait();
+  it.wq.push({ t:simNow(), sh:SH.id, go });
+  checkReorder(k);
+}
+function checkReorder(k){
+  const it = ITEMS[k];
+  if(it.onOrder > 0) return;
+  if(CFG.autoOrder && it.qty <= it.reorder) sendTruck(k, false);
+  else if(!CFG.autoOrder && it.qty <= 0) sendTruck(k, true);
+}
+function sendTruck(k, emergency){
+  const it = ITEMS[k];
+  const qty = Math.max(1, it.par - it.qty - it.onOrder + it.wq.length);
+  it.onOrder += qty;
+  const lead = CFG.leadMin * 60000 * (emergency ? 2 : 1);
+  TRUCKS.push({ at: simNow() + lead, k, qty, emergency });
+  renderInv();
+}
+function orderItem(k){ const it=ITEMS[k]; if(it.qty + it.onOrder < it.par) sendTruck(k, false); }
+function orderAll(){ Object.keys(ITEMS).forEach(k=>{ const it=ITEMS[k]; if(it.onOrder===0 && it.qty < it.par*0.6) sendTruck(k,false); }); }
+let truckMsgUntil = 0;
+function serveStockWaiters(k){
+  const it = ITEMS[k], now = simNow();
+  while(it.wq.length && it.qty > 0){
+    const w = it.wq.shift();
+    if(w.sh === SH.id) SM.items[k].waitMs += now - w.t;
+    it.qty--; SM.items[k].used++;
+    w.go();
+  }
+}
+function tickTrucks(){
+  const now = simNow(), landed = [];
+  for(let i=TRUCKS.length-1;i>=0;i--){
+    const tr = TRUCKS[i];
+    if(now >= tr.at){
+      TRUCKS.splice(i,1);
+      const it = ITEMS[tr.k];
+      it.onOrder = Math.max(0, it.onOrder - tr.qty);
+      it.qty += tr.qty;
+      SM.items[tr.k].recv += tr.qty; SM.trucks++;
+      landed.push(it.name);
+      serveStockWaiters(tr.k);
+      checkReorder(tr.k);
+    }
+  }
+  const el = document.getElementById('sr-truck');
+  if(landed.length){
+    el.textContent = 'TRUCK UNLOADED: ' + landed.join(', ');
+    el.classList.add('in'); truckMsgUntil = performance.now() + 4000;
+    if(document.getElementById('menu').classList.contains('on')) renderInv();
+  } else if(performance.now() > truckMsgUntil){
+    el.classList.remove('in');
+    if(TRUCKS.length){
+      const nx = TRUCKS.reduce((a,b)=>a.at<b.at?a:b);
+      el.textContent = (TRUCKS.length>1 ? TRUCKS.length+' TRUCKS OUT, ' : '') + 'NEXT ' + ITEMS[nx.k].name + ' IN ' + mmss(nx.at-now) + (nx.emergency?' EMERGENCY':'');
+    } else el.textContent = 'NO TRUCK ON THE WAY';
+  }
+  renderStock();
+}
+function restockForShift(){
+  TRUCKS.length = 0;
+  Object.keys(ITEMS).forEach(k=>{
+    const it = ITEMS[k];
+    it.onOrder = 0;
+    it.qty = Math.round(it.par * CFG.stockPct / 100);
+  });
+  SM = freshStockMetrics();
+  Object.keys(ITEMS).forEach(k=>{ serveStockWaiters(k); checkReorder(k); });
+  renderInv();
+}
+function stockBottleneck(){
+  let best = null;
+  Object.keys(ITEMS).forEach(k=>{
+    const it = ITEMS[k], m = SM.items[k];
+    let w = m.waitMs; it.wq.forEach(x=>{ if(x.sh===SH.id) w += simNow()-x.t; });
+    if(w > 0 && (!best || w > best.waitMs)) best = { id:'_stock_'+k, name:'OUT OF '+it.name, waitMs:w, waits:m.waits };
+  });
+  return best;
+}
+function renderStock(){
+  const g = document.getElementById('sr-grid'); if(!g) return;
+  if(!g.children.length){
+    Object.keys(ITEMS).forEach(k=>{
+      const d = mk('div','sr-item'); d.id = 'sri-'+k;
+      d.innerHTML = '<div class="srt"><span>'+ITEMS[k].name+'</span><span class="q"></span></div><div class="srb"><i></i></div>';
+      g.appendChild(d);
+    });
+  }
+  Object.keys(ITEMS).forEach(k=>{
+    const it = ITEMS[k], d = document.getElementById('sri-'+k);
+    d.querySelector('.q').textContent = it.qty + (it.onOrder ? ' +'+it.onOrder : '');
+    d.querySelector('i').style.width = Math.min(100, it.qty/it.par*100) + '%';
+    d.classList.toggle('out', it.qty <= 0);
+    d.classList.toggle('low', it.qty > 0 && it.qty <= it.reorder);
+  });
+}
+function renderInv(){
+  const box = document.getElementById('m-inv'); if(!box) return;
+  if(!box.children.length){
+    Object.keys(ITEMS).forEach(k=>{
+      const r = mk('div','irow'); r.id='inv-'+k;
+      r.innerHTML = '<span></span><button type="button">ORDER</button><small></small>';
+      r.querySelector('button').onclick = ()=>{ orderItem(k); renderInv(); };
+      box.appendChild(r);
+    });
+  }
+  Object.keys(ITEMS).forEach(k=>{
+    const it = ITEMS[k], r = document.getElementById('inv-'+k);
+    r.querySelector('span').textContent = it.name + '  ' + it.qty + ' of ' + it.par;
+    r.querySelector('small').textContent = (it.onOrder ? it.onOrder+' on the way' : 'nothing on order') + (it.wq.length ? ', '+it.wq.length+' orders stuck' : '');
+  });
+}
+setInterval(()=>{ if(document.getElementById('menu').classList.contains('on')) renderInv(); }, 1000);
 // ── 17b. FLOOR REARRANGE (drag to reposition, saved to localStorage) ──
 // BLUE CODE: Every movable floor element registers here with a stable key.
 // Stations hold references into EQUIP/FLAVORS, so moving a block rewrites the
@@ -2288,9 +3025,16 @@ setInterval(updLB, 10000);
 
 // Start with 1 active barista (ALEX)
 STAFF.lobby[0].active = true;
-setTimeout(()=>baristaLoop(0), 600);
-setTimeout(()=>{ dtPool=[...ORDERS].sort(()=>Math.random()-.5); dtSpawnLoop(); }, 2000);
-setTimeout(mobileInjectionLoop, S(ri(15000,25000)));
+renderSetup(); renderMenuState(); renderHistory(); renderQ([], null);
+setTimeout(()=>startLoop(0), 600);
+setTimeout(()=>{ for(let i=0;i<3;i++) arriveLobby('LOBBY'); }, 300);
+setTimeout(arriveDT, 2000);
+scheduleStreams();
+setInterval(tickStreams, 100);
+setInterval(tickTrucks, 250);
+renderStock(); renderInv();
+setInterval(updSim, 250);
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeMenu(); closeReport(); } });
 </script>
 </body>
 </html>
