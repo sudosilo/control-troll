@@ -319,6 +319,22 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "Still 503 DEPLOYMENT_PAUSED on an archived repo now live as mission-operator-next, so the developer must retire this link or point the spec at the new name."
+    },
+    {
+      "date": "2026-11-05",
+      "app": "j30p4rdy",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": "https://github.com/sudosilo/control-troll/pull/1",
+      "note": "Pull request 1 with the splash button click is still open and unmerged, so main still has the old test and keeps failing until it is merged."
+    },
+    {
+      "date": "2026-11-05",
+      "app": "mary-jane-man",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Live URL still serves the Vercel Stumbler page and no sudosilo repo matches, so the developer must restore the game or retire the spec."
     }
   ]
 }
