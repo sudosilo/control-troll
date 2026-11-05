@@ -1,33 +1,78 @@
 {
- "duration_api_ms": 0,
- "stop_reason": "stop_sequence",
- "session_id": "9f27c6ea-cb18-475e-955e-7c6733abf122",
- "total_cost_usd": 0,
+ "duration_api_ms": 64415,
+ "stop_reason": "end_turn",
+ "session_id": "edbb1130-5254-4af7-b818-ff9500a7448f",
+ "total_cost_usd": 0.1864139,
  "usage": {
+  "input_tokens": 20,
+  "cache_creation_input_tokens": 31633,
+  "cache_read_input_tokens": 296146,
+  "output_tokens": 6842,
   "output_tokens_details": {
-   "thinking_tokens": 0
+   "thinking_tokens": 1446
   },
-  "input_tokens": 0,
-  "cache_creation_input_tokens": 0,
-  "cache_read_input_tokens": 0,
-  "output_tokens": 0,
   "server_tool_use": {
    "web_search_requests": 0,
    "web_fetch_requests": 0
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 0,
-   "ephemeral_5m_input_tokens": 0
+   "ephemeral_1h_input_tokens": 6085,
+   "ephemeral_5m_input_tokens": 25548
   },
-  "inference_geo": "",
-  "iterations": [],
+  "inference_geo": "global",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 130,
+    "cache_read_input_tokens": 43601,
+    "cache_creation_input_tokens": 978,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 978,
+     "ephemeral_1h_input_tokens": 0
+    },
+    "type": "message"
+   }
+  ],
   "speed": "standard",
   "fallback_credit": null
  },
- "modelUsage": {},
+ "modelUsage": {
+  "claude-haiku-5-5": {
+   "inputTokens": 1208,
+   "outputTokens": 17,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "webSearchRequests": 0,
+   "costUSD": 0.0001293,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 0,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 20,
+   "outputTokens": 6842,
+   "cacheReadInputTokens": 296146,
+   "cacheCreationInputTokens": 31633,
+   "webSearchRequests": 0,
+   "costUSD": 0.1862846,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 1446,
+   "cacheCreationEphemeral5mInputTokens": 25548,
+   "cacheCreationEphemeral1hInputTokens": 6085,
+   "canonicalModel": "claude-sonnet-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
  "permission_denials": [],
- "terminal_reason": "api_error",
+ "terminal_reason": "completed",
  "fast_mode_state": "off",
  "fast_mode_disabled_reason": "sdk_opt_in_required",
  "subagent_stats": {
@@ -55,17 +100,52 @@
   "by_type": {}
  },
  "safety_stops": 0,
- "is_error": true,
- "num_turns": 1,
+ "is_error": false,
+ "num_turns": 10,
  "subtype": "success",
- "api_error_status": 429,
- "api_error_origin": "first_party",
- "api_error": "usage_limit_reached",
- "result": "You've hit your weekly limit \u00b7 resets 12am (UTC)",
+ "api_error_status": null,
+ "result": "I heckled 10 commits (4 in 2026-11-05-locker-screen, 3 in rainbow-run, 2 in mohavetech-website and 1 in 2026-11-05-drive-thru-dental), and I did not write a fleet verdict. The last one is due after 2026-11-06T01:06Z.\n\nThe log, state and notes are committed and pushed to main as \"heckle log\".",
+ "ttft_ms": 3141,
  "type": "result",
- "duration_ms": 483,
- "uuid": "e6fa28eb-a46c-47ee-b931-c856a3b9e5ca",
+ "duration_ms": 90622,
+ "uuid": "7be650dc-f027-4cb4-a776-0cb549a204ec",
+ "ttft_stream_ms": 2899,
+ "time_to_request_ms": 146,
+ "first_content_frame_ms": 2899,
  "queued_turn_count": 0,
  "result_index": 0,
- "model_usage_since_last_result": {}
+ "model_usage_since_last_result": {
+  "claude-haiku-5-5": {
+   "inputTokens": 1208,
+   "outputTokens": 17,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "webSearchRequests": 0,
+   "costUSD": 0.0001293,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 0,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 20,
+   "outputTokens": 6842,
+   "cacheReadInputTokens": 296146,
+   "cacheCreationInputTokens": 31633,
+   "webSearchRequests": 0,
+   "costUSD": 0.1862846,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 1446,
+   "cacheCreationEphemeral5mInputTokens": 25548,
+   "cacheCreationEphemeral1hInputTokens": 6085,
+   "canonicalModel": "claude-sonnet-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ }
 }
