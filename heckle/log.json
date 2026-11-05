@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-05T06:55:45Z",
+      "repo": "rainbow-run",
+      "sha": "af8f3224",
+      "message": "Screensavers group in the menu, link rain removed, beat passed to wall scenes",
+      "heckle": "You jammed another button group into the index.html menu, which was already a wall of tiny buttons on a phone screen, and then yanked Link rain out with a swap that rewrites a whole line instead of touching one button. Passing the beat to wall scenes is a nice idea until you notice nobody can tell what it does from the commit. Six lines changed in the menu and I still can't find a reason it needed its own commit. Did your last intern also commit in tiny dribbles like a leaky faucet?\n\nFix it: Squash these menu tweaks into one commit instead of dribbling them out. Put a one line comment in index.html saying what beat is and who consumes it. Test the group row at narrow widths so the buttons stop wrapping into mush."
+    },
+    {
+      "date": "2026-11-05T06:55:45Z",
+      "repo": "rainbow-run",
+      "sha": "80edee2e",
+      "message": "Coffeekit screensavers on the wall, downhill scrolls the right way",
+      "heckle": "Two hundred twenty three lines of ck/coffeekit.js dropped in one lump, wrapped in a giant closure with mode picked off a data attribute, and not one test to show the seven modes even run. Your comment says they run one step per sixtieth of a second, same on every phone, which is adorable, because a phone that drops frames will drift like a filibuster that never ends. The downhill.js fix swaps a scroll direction in a single dense line that nobody can read. And wall.html now sniffs a g query param like a fishing trip. A cereal box has better structure.\n\nFix it: Drive the animation off a shared clock in ck/coffeekit.js instead of assuming sixty steps per second everywhere. Break the downhill.js scroll line into readable statements. Whitelist the g value in wall.html instead of trusting the query string."
+    },
+    {
+      "date": "2026-11-05T06:55:45Z",
+      "repo": "rainbow-run",
+      "sha": "ce1524ca",
+      "message": "Copy the visualizer scripts",
+      "heckle": "You copied a pile of scripts into mw/ and called it a commit. Ants, battle, birds, each one fifty to seventy five lines of minified-looking soup with variables like h32, ch, tun and S, in a single file with zero explanation. This is a bailout of someone else's code that you pasted in with no tests and no tidy shared helpers, so every scene redeclares the same destructured VZ helpers on line two. Copy paste cloning at its finest. I've seen campaign promises with more structure than this folder.\n\nFix it: Pull the repeated per scene boilerplate in mw/ into viz-common.js. Give the single letter variables real names. Add a note in the repo saying where these scripts came from and how to resync them so they don't rot."
+    },
+    {
+      "date": "2026-11-05T06:55:45Z",
+      "repo": "rainbow-run",
+      "sha": "8bb5d725",
+      "message": "Wall host for the visualizers, 26 new scenes grouped in the menu",
+      "heckle": "Twenty six scenes and a brand new wall.html in one commit. That is a government omnibus bill, and about as reviewable. The wall host loads a sibling page in a fixed iframe with pointer-events off, and index.html now stacks z-indexes by hand, canvas 1 and panel 2, a fragile pile that breaks the minute you add a third layer. The scene buttons are crammed into rows of ten pixel padded buttons that will be a nightmare on a small phone. Did you let a toddler on the keyboard?\n\nFix it: Split the wall host and the scene list into separate commits next time. Replace the hardcoded z-index numbers in index.html with named CSS variables. Generate the scene buttons from a list instead of hand typing twenty six of them. Check the menu at 320 pixels wide."
+    },
+    {
+      "date": "2026-11-05T06:55:45Z",
+      "repo": "rainbow-run",
+      "sha": "a902de42",
+      "message": "Rain runs top to bottom down a row, with wind, clouds, sun, birds, plane, balloon, sailboat and a jumping fish",
+      "heckle": "Your commit message reads like a grocery list because the commit is a grocery list: wind, clouds, sun, birds, plane, balloon, sailboat and a fish, all dumped into index.html in one hundred twelve added lines. This is one app file turning into a landfill. The subtitle now says for rain a row stacks top to bottom, which means your own UI has to apologize for a scene behaving differently than every other scene. That's a feature held together with duct tape and a campaign slogan.\n\nFix it: Move the rain scene out of index.html into its own file under mw/. Make the stacking direction a scene property instead of a special case in the subtitle text. Break the sun, birds and fish into separate commits so one broken piece can be reverted alone."
+    },
+    {
+      "date": "2026-11-05T06:55:45Z",
+      "repo": "rainbow-run",
+      "sha": "318df5c7",
+      "message": "Fit zoom and nudge per phone, Quad and Nine wall layouts, stars scene",
+      "heckle": "One hundred forty lines added to index.html for per phone zoom, nudge, two layout modes and a stars scene, all in the same commit. You changed the intro sentence for the third time in three commits, which tells me you don't know what this app is. The new rowSize hidden rule bolted onto the authRow selector is the sort of sloppy CSS you only write at two in the morning. Quad and Nine are hardcoded layouts, so a six phone room gets nothing. Government shutdown energy.\n\nFix it: Make the wall layout a rows and columns pair in index.html instead of hardcoding Quad and Nine. Pick one sentence for the panel subtitle and stop rewriting it each commit. Put the stars scene in its own commit."
+    },
+    {
+      "date": "2026-11-05T06:55:45Z",
+      "repo": "rainbow-run",
+      "sha": "968f71de",
+      "message": "Rain scene in the single line style",
+      "heckle": "A rain scene that took sixty nine added lines inside index.html, and the first thing you touched was the subtitle text again, rewriting it to list the crow, the traffic or the rain. Next scene you will rewrite it again and the one after that, because you hardcoded a list of scene names into a sentence instead of generating it. The rain button is hand pasted into the scenes row like it's 1998. You have a scene list and you keep treating it like a post it note.\n\nFix it: Generate the scene buttons and the subtitle in index.html from one scenes array. Move the rain drawing code out of the page into its own module. Add a test or at least a note showing how rain syncs across phones."
+    },
+    {
+      "date": "2026-11-05T06:55:45Z",
+      "repo": "rainbow-run",
+      "sha": "c8d568a3",
+      "message": "Panel fades to a menu button, and a top down highway scene synced across the room",
+      "heckle": "Two unrelated features in one commit, a fading panel and a top down highway scene, because separating concerns is apparently a foreign language to you. The panel fade is a CSS opacity transition on #panel plus a new #menu hamburger pinned at forty eight by forty four pixels, but a faded panel with opacity zero can still sit on top and eat taps if it isn't also hidden. Whether anyone can find a menu button that appears after a timer, I can't tell. That is a bailout waiting to happen.\n\nFix it: Set pointer-events none or hidden on #panel once the fade ends in index.html. Split the highway scene from the menu change. Make the fade timer cancel on any touch so the panel doesn't vanish while someone is mid tap."
+    },
+    {
+      "date": "2026-11-05T06:55:45Z",
+      "repo": "rainbow-run",
+      "sha": "3ded2071",
+      "message": "Row size can be set by hand, and the row holds through a reconnect",
+      "heckle": "You swapped the Spot 1 of 1 label for a bare Spot 1 and bolted on a Row of 1 control with fewer and plus buttons, so now the UI has two counters that can disagree with the server. The comment says a manual row size wins while live, which is the exact kind of precedence rule that gets stuck forever after a reconnect. Your Auto button got shoved onto the second row like a stray sock. Seventeen lines and I count at least three new ways for the display to lie.\n\nFix it: Reset the manual row size flag in index.html when the room code changes. Show the server count next to the hand set count so they can't silently disagree. Move the Auto button back next to the thing it controls."
+    },
+    {
+      "date": "2026-11-05T06:55:45Z",
+      "repo": "rainbow-run",
+      "sha": "1b336050",
+      "message": "Remove seeded readme",
+      "heckle": "You deleted the only two lines of README.md, which were the project name and one description, and left the repo with no explanation at all. A seeded readme is not the problem. Having zero documentation for a phone wall app that needs a room code, a spot order and a server is the problem. You are fixing the wrong thing. This is the kind of cleanup that makes a repo worse, like cutting the budget for the one office that reads the paperwork.\n\nFix it: Write a real README.md with how to start a room, how to line up phones and what the stompbox API is. List the scene names and where the scripts under mw/ came from. Never delete a readme without replacing it."
+    },
+    {
       "date": "2026-11-04T23:44:22Z",
       "repo": "2026-11-04-field-dispatch",
       "sha": "e9d80cde",
@@ -1329,76 +1399,6 @@
       "sha": "441af0509a13c5e15e9e62ccec337649588147d1",
       "message": "blue note",
       "heckle": "Blue appended three more lines to board.md that say it claimed a block and built a bowling alley, a walk up apartment complex and a senior center, like a mayor reading a press release to an empty room. It also stuffs in a chatty reply to another agent in the same paragraph, so claims, street names and small talk are all mashed together with no way to tell them apart. The commit message is the name of the agent plus the word note, a label that fits every commit in the repo and so identifies none of them.\n\nFix it: Keep claims and replies as separate entries in board.md. State the street names that other agents must reuse on their own line. Cut the pleasantries out of the notes file. Give the commit message the block coordinate."
-    },
-    {
-      "date": "2026-10-25T04:50:00Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "42dedaa135eee341d6859d8118540ee7c76e1642",
-      "message": "blue 2026-10-25T021113",
-      "heckle": "Blue pushed contrib/blue/2026-10-25T021113.json straight to main as one minified line with no patch GitHub is willing to show, so the review was a vibe and a prayer. It landed the same minute as the agent-orange pull request next to it, and nothing checks that the two did not stomp the same block, a double booking nobody noticed until the map looks like a government shutdown. The message is a timestamp that duplicates the filename and says nothing about the fire station block the notes claim was built.\n\nFix it: Route blue through a pull request like the other agents instead of pushing to main. Pretty print contrib/blue json so diffs mean something. Add an overlap check between simultaneous contrib files. Make the message name the block that was claimed."
-    },
-    {
-      "date": "2026-10-24T23:19:33Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "274c6db67be78c1126ca6d430c2691bbbda10b3b",
-      "message": "Skip Vercel deploys for app-build-only changes",
-      "heckle": "One line in vercel.json and you still managed to build a trap. The ignoreCommand diffs HEAD^ against HEAD, so it only judges the last commit of a push. Push three commits where the first touches index.html and the last touches src-tauri, and Vercel skips the deploy and your page fix vanishes like a campaign promise after the election. Did you test this or just vibe it into existence?\n\nFix it: Compare against VERCEL_GIT_PREVIOUS_SHA instead of HEAD^ in the ignoreCommand in vercel.json. Add api and the root html files to the check explicitly so new folders do not silently count as skippable."
-    },
-    {
-      "date": "2026-10-24T23:19:33Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "0b39fe824348815519325952c382de130c30f013",
-      "message": "Profile: add your own YouTube key, with show button and saved song note",
-      "heckle": "You built a form that asks strangers to paste a Google API key into a page and then ship it to your server in a request header. Brilliant. The paragraph of explainer text in index.html hardcodes 1,400 songs and about 100 searches a day, numbers that will be wrong by Tuesday. The inline styles on that new card are thrown together like a rushed omnibus bill, and the eye button is a raw SVG path pasted in the middle of the markup.\n\nFix it: Drop the hardcoded song count and quota numbers from the profile card in index.html. Move the inline styles into the stylesheet. Say plainly on the card where the key is stored and that it travels to your server. Add an aria label that flips between show and hide on the ytEye button."
-    },
-    {
-      "date": "2026-10-24T23:19:33Z",
-      "repo": "song-offset-listener",
-      "sha": "aea444d81f009f1f0bdc9f946071b09cfbdfaadf",
-      "message": "YouTube search takes a visitor's own key, falls back to the shared one",
-      "heckle": "api/youtube-search.js now lets any anonymous visitor burn through your handler with whatever string matches a regex. A bad personal key means you quietly retry on the shared key anyway, so anyone can force two upstream calls per request and drain the shared quota faster than a government shutdown drains patience. Worse, results cached under the shared key are keyed the same as personal ones, so keyUsed lies on every cache hit. The regex is a length check wearing a trench coat.\n\nFix it: Rate limit the personal key path in api/youtube-search.js. Skip the shared fallback when the personal key fails for quota reasons. Strip keyUsed from the cached object before cacheSet. Never log the x-yt-key header."
-    },
-    {
-      "date": "2026-10-24T23:19:33Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "18a639b77eaade50c9b3dde49e4bfe9bc66326ae",
-      "message": "Android app keeps the page below the status bar and camera",
-      "heckle": "You are writing Kotlin as an array of JavaScript strings inside patch-android.cjs, and that is the most intern thing I have seen all week. The status bar color is hardcoded to a beige hex, and the light status bar flag is forced on regardless of theme, so the day you add a dark mode the icons vanish. Worse, the whole patch hides behind an includes check for mediaPlaybackRequiresUserGesture, so any build that already got the old patch skips the new inset code completely.\n\nFix it: Key the idempotence check in src-tauri/scripts/patch-android.cjs on the inset listener, not the autoplay line. Move the Kotlin into a real template file. Read the background color from one shared constant instead of a hex literal."
-    },
-    {
-      "date": "2026-10-24T23:19:33Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "6c5be28b04553723ce0a45489823e148cdd9bc17",
-      "message": "Android build signs even without secrets and logs which step failed",
-      "heckle": "Missing signing secrets used to stop the build. Now build-apps.yml shrugs, signs with a throwaway build key, and publishes anyway. Congratulations, you invented an update that will not install over the last one, which is the exact problem your own signing script exists to prevent. The failure step also dumps toJSON(steps) into a text file and uploads it to a public release, so your CI internals are now a download link.\n\nFix it: Fail the Check signing key step in .github/workflows/build-apps.yml again when secrets are missing. If you must keep the fallback, never attach it to a release. Upload the build log as a private workflow artifact instead of a release asset, and trim the steps dump to step names and outcomes."
-    },
-    {
-      "date": "2026-10-24T23:19:33Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "63a007f4f54ccb3efb65e24a5f1ff3f07a9cc129",
-      "message": "Start an app build with the signing key in place",
-      "heckle": "The message promises a build with the signing key in place. The diff is one comment in src-tauri/scripts/set-version.cjs getting three extra words. That is not a fix, that is a nudge dressed as work, a ceremonial ribbon cutting for a bridge that does not exist. You edited a comment to trip a path filter on a workflow, and then lied about it in the commit title like a politician explaining a rebate.\n\nFix it: Use the workflow_dispatch trigger already in .github/workflows/build-apps.yml instead of editing comments. Write commit messages that describe what changed. If you need a rebuild, tag it as an empty commit and say so."
-    },
-    {
-      "date": "2026-10-24T23:19:33Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "a24b494a67ef13906bb6b84da333005c0d454a63",
-      "message": "Signing script installs openssl if missing",
-      "heckle": "tools/android-signing.sh now calls pkg install, which only exists on one phone terminal. Run it anywhere else and set -e kills the script with a confusing error, all to fix a missing package on your own device. Meanwhile the script writes the keystore password to password.txt in plain text and then echoes it to the screen. Bold plan for a signing key, very open-government of you.\n\nFix it: Check for pkg, apt-get, or brew before installing in tools/android-signing.sh and print a clear message otherwise. Lock password.txt to mode 600 and stop echoing the password. Tell the user to store it in a password manager, then delete the file after the secret upload."
-    },
-    {
-      "date": "2026-10-24T23:19:33Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "f93533d4879529ec542a64de4a1123cfb87caf49",
-      "message": "Android and Windows app: Tauri wrapper around the live site, built and released",
-      "heckle": "A whole native app that is a browser pointed at your website, 158 lines of workflow, and a tauri.conf.json with csp set to null. You turned off the content security policy on a shell that loads a remote site with microphone permission. The version is 1.0 plus the run number, so every push of a typo fix is a public release. And why does the Windows build ship a downloadBootstrapper install? Hope your users like bailouts.\n\nFix it: Set a real csp in src-tauri/tauri.conf.json that allows only your own origin and the APIs you call. Gate the release job in .github/workflows/build-apps.yml behind workflow_dispatch or a tag so typo fixes do not publish. Pin the actions to commit hashes."
-    },
-    {
-      "date": "2026-10-24T23:19:33Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "19e9bd3702ae810c7bf7869621cc8a2dacebb2b7",
-      "message": "Show page errors on screen",
-      "heckle": "You pasted a debug console into production. Every visitor now gets an orange error box over the bottom of the page, and the build meta tag is hardcoded to 3ff68a8-plus, a version string that is wrong the moment you make another commit. That is not versioning, that is a sticky note. The error handler also appends forever with no cap, so one looping failure fills the screen like an unread terms of service.\n\nFix it: Show the errBar in index.html only when the url has a debug flag. Replace the hardcoded build meta with a value stamped at deploy time or delete it. Cap the bar to the last five messages and add a close button."
     }
   ]
 }
