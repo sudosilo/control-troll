@@ -172,8 +172,8 @@
    "summary": "An index page that lists every app with its age, phone tags, and notes",
    "name": "App Index",
    "latest": {
-    "date": "2026-11-01",
-    "text": "The app index was synced with the live deployments."
+    "date": "2026-11-05",
+    "text": "Added a one step sync that updates deploy dates from the live deployments. Added the drive-thru dental simulator, moved CoffeeKit One to Games, and removed retired apps and duplicates. Added monthly reviews under Statistics with the October 2026 deck."
    }
   },
   "ether-wand": {
@@ -340,8 +340,8 @@
    "summary": "Live blueprint simulator of a coffee shop floor with baristas",
    "name": "Coffee Autosim",
    "latest": {
-    "date": "2026-10-30",
-    "text": "Added a rearrangeable floor. A new Rearrange button lets you drag stations, counters, and fixtures to wherever they flow best, and the layout is remembered when you reload. Baristas walk to the new positions. Text and contrast were made easier to read."
+    "date": "2026-11-05",
+    "text": "Version 4 is a real shift simulator with arrivals, stations that contend for work, and a shift report. Added inventory and shipments with stock for each step, trucks with lead times, automatic reordering, a stockroom strip, and a report section."
    }
   },
   "pixelmill": {
@@ -416,8 +416,8 @@
    "summary": "A letter shop tycoon built around a simulated knee mill that grows into a factory floor.",
    "name": "Mill-ionaire",
    "latest": {
-    "date": "2026-10-30",
-    "text": "Added a cash out button that sends your score to the shared high score board. You can add an optional link beside your tag, and it shows under the tag on the board. High scores now have a place in the menu."
+    "date": "2026-11-06",
+    "text": "Order, lathe, and brake programs now resume when the game is reopened without a crash."
    }
   },
   "tinewood-keys": {
@@ -604,8 +604,8 @@
    "summary": "Private group chat app with reactions, voice notes, chess, GIFs, and notifications",
    "name": "Cat Command Chat",
    "latest": {
-    "date": "2026-10-31",
-    "text": "Added extra message sounds and look controls under About. Added a Tomatomo mode skin that gives the chat a pocket pet handheld look with pixel pets for every member."
+    "date": "2026-11-05",
+    "text": "Added rooms. A room switcher lets you create a room, share a room key, and manage room members. Each room has its own Claude member and its own alerts, and room rules cover messages, names, files, pictures, alerts, and chess. A review pass fixed room switching, guest views, and key entry from the menu. Rooms are explained in About."
    }
   },
   "datacenter-osint": {
@@ -1793,7 +1793,7 @@
    "summary": "A shared city where AI agents take turns building, with a viewer and a web API.",
    "name": "Agent Test Bed",
    "latest": {
-    "date": "2026-11-04",
+    "date": "2026-11-06",
     "text": "The agent turn was played and merged into the city."
    }
   },
@@ -2233,6 +2233,102 @@
    "latest": {
     "date": "2026-11-03",
     "text": "Created the app. It gives you sixty seconds to tell someone about something you made, in a product spot, radio ad, how it got built, or deadpan infomercial style, with a color wipe that counts the time and marks for problem, solution, and features. Takes are saved, can be marked good, and can be read back in a chosen voice. You can sign in, keep takes in projects, and export good takes or all of them. Your own voice service key is kept on your device in Settings."
+   }
+  },
+  "2026-11-04-field-dispatch": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-04-field-dispatch.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A field service dispatch game where crews drive real roads to repair cameras and fill tickets",
+   "name": "Field Dispatch",
+   "latest": {
+    "date": "2026-11-04",
+    "text": "Created Field Dispatch, a field service dispatch game on a real map of Nevada. Crews take tickets from an open board and follow real road routes between start and end points. Added real cameras to repair, satellite passes, plate reader service contracts at known locations that you can decline, and stashed wireless site scans with a daily cap. A movement badge uses motion sensing and a rule that you must drive 25 mph for 2 minutes. Added Tickets, Crew, Stock, Cameras, and Shop tabs and a restart option. The game code was split into smaller parts without changing how it plays."
+   }
+  },
+  "2026-11-04-orange-hush": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Tools",
+   "summary": "An Android notification blocker that holds alerts and releases them together on a schedule",
+   "name": "Hush",
+   "latest": {
+    "date": "2026-11-04",
+    "text": "Created Hush, an Android app that blocks notifications. Added a digest that holds blocked notifications and releases them together on a preset schedule, from every hour to once a day at 8 AM. The app is built into an installable APK automatically on every push."
+   }
+  },
+  "2026-11-05-drive-thru-dental": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-05-drive-thru-dental.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A drive-thru dental simulator game played in the browser",
+   "name": "Drive-Thru Dental Simulator",
+   "latest": {
+    "date": "2026-11-05",
+    "text": "Created the Drive-Thru Dental Simulator, a game where you run a dental window like a drive-thru. Patients arrive at the window, you can ask them to say it again, clear the tray, and hand out the order at the window."
+   }
+  },
+  "2026-11-05-locker-screen": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-05-locker-screen.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "A parcel locker kiosk screen with code entry, languages, and repair flows",
+   "name": "Locker Screen",
+   "latest": {
+    "date": "2026-11-05",
+    "text": "Created Locker Screen, a parcel locker kiosk with an attract screen. Added scan and code entry screens, a tracking number keyboard, language and help screens, and a high contrast option. Added technician troubleshooting screens, a hardware keypad, sensor and door repair flows, and tests for every part."
+   }
+  },
+  "coffeekit1": {
+   "apps": [
+    "coffeekit1"
+   ],
+   "urls": [
+    "https://coffeekit1.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A coffee shop training game with kitchen display orders and cleaning rounds",
+   "name": "CoffeeKit One",
+   "latest": {
+    "date": "2026-11-05",
+    "text": "Added CoffeeKit One as a copy of the live app. Version 2 makes light mode the default and adds a night shift option, a menu in the upper left, saved records, and a new shift button. The layout is steadier and sized for phones."
+   }
+  },
+  "hire-portal": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Tools",
+   "summary": "A practice job application portal that teaches what to share at each step",
+   "name": "Hire Portal",
+   "latest": {
+    "date": "2026-11-05",
+    "text": "Created Hire Portal, a practice job application that teaches what to share. Applicants make an account, upload a resume that is read for them, check what was pulled, answer work eligibility questions, and sign. Every step has a What to share panel that explains what an honest employer asks for and what to be careful about."
+   }
+  },
+  "rainbow-run": {
+   "apps": [],
+   "urls": [
+    "https://rainbow-run-ochre.vercel.app"
+   ],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "A wall of phones that shows synced visualizer scenes for the stompbox API",
+   "name": "Rainbow Run",
+   "latest": {
+    "date": "2026-11-05",
+    "text": "Added a Screensavers group and a Spectral Engine group to the menu. Coffeekit screensavers now follow the sound playing on the phone. Spectral Engine visualizers run on the wall, and the room loop and beat are passed to the wall scenes."
    }
   }
  }
