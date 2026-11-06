@@ -6,13 +6,13 @@
    "name": "materials select",
    "steps": [
     {
-     "clickSel": "#btn-steel"
+     "clickSel": "[data-mat=steel]"
     },
     {
-     "clickSel": "#btn-wood"
+     "clickSel": "[data-mat=wood]"
     },
     {
-     "seeSel": "#stat-budget"
+     "seeSel": "#s-budget"
     }
    ]
   },
@@ -21,10 +21,10 @@
    "name": "info panel opens",
    "steps": [
     {
-     "click": "?"
+     "clickSel": "#info-btn"
     },
     {
-     "seeSel": "#info-modal"
+     "seeSel": "#info-h"
     }
    ]
   }
