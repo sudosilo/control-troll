@@ -1,6 +1,34 @@
 {
   "heckles": [
     {
+      "date": "2026-11-06T06:56:32Z",
+      "repo": "kat-chat",
+      "sha": "f9aa8d86",
+      "message": "Database layout snapshot",
+      "heckle": "You committed a one line, minified, 4 KB wall of JSON called supabase/schema-snapshot.json, and the first table in it is chassisquiver_runs. That is another app's table sitting in the chat app's database like a stranger asleep on your couch. A snapshot with no script reference, no readme and no newline is just a ransom note nobody can read, and it will be stale by the next migration. Real engineers keep migrations in version control, intern.\n\nFix it: Delete supabase/schema-snapshot.json and keep real migration files instead. Pretty print anything you must keep so a diff means something. Split the chassisquiver tables out of the chat database. Add a line to the readme saying what generates the file."
+    },
+    {
+      "date": "2026-11-06T06:56:32Z",
+      "repo": "mohavetech-website",
+      "sha": "f092e2cd",
+      "message": "Cache-bust script tags so the Monthly Reviews section loads",
+      "heckle": "A cache buster glued on by hand, ?v=1793930958, pasted into index.html and monthlies.html like the section was going to load itself. Yet script-v53.js is still versioned by renaming the file, so you now run two cache strategies at once, which is a bipartisan compromise nobody asked for. That number is a timestamp you will forget to bump the minute you edit again, and the page will serve stale code until you remember. Also, the previous commit shipped a section that did not load, so you pushed it blind.\n\nFix it: Pick one cache strategy, either renamed files or query strings. Make the sync script stamp the version in index.html and monthlies.html so you stop hand pasting. Open the page after pushing next time."
+    },
+    {
+      "date": "2026-11-06T06:56:32Z",
+      "repo": "mohavetech-website",
+      "sha": "a7fc1620",
+      "message": "Add monthly reviews under Statistics with October 2026 deck",
+      "heckle": "Nearly 250 lines of new code and the highlight is a showMonthly function in script-v53.js that builds buttons with inline onclick strings and a giant style attribute, in a file already named like it is on its fifty third apology. The deck lives in an iframe with a fixed 80vh height, which will be a cramped mess on a phone. Every statistic in monthlies-data.js is typed in by hand, so the numbers are a campaign promise, not a report. The tab buttons are neon green on black while monthlies.html is cream and white, so the page fights itself like a divided congress.\n\nFix it: Move the button styling in script-v53.js into a CSS class. Generate the stats in monthlies-data.js from the real data instead of typing them. Drop the iframe or give monthlies.html a matching theme. Check the layout on a phone."
+    },
+    {
+      "date": "2026-11-06T06:56:32Z",
+      "repo": "mohavetech-website",
+      "sha": "533eb484",
+      "message": "Sync script finds the current script file instead of a fixed version",
+      "heckle": "The sync script used to hardcode script-v53.js, so you fixed it with a readdirSync, a regex, a sort and a slice(8) magic number that only works because the prefix happens to be eight characters. Rename the file pattern once and it silently grabs the wrong thing, which is the kind of austerity budget that blows up later. The fix also papers over the real problem, that you rename a whole script every sync like a witness protection program. Version in a query string, you animal.\n\nFix it: Stop renaming script-vNN.js and use one stable file name in mohavetech-sync-v1.js. Replace the slice(8) with a match group in the regex. Throw a clear error when no script file is found instead of reading undefined."
+    },
+    {
       "date": "2026-11-05T23:41:17Z",
       "repo": "2026-11-05-locker-screen",
       "sha": "1a32f1b1",
@@ -1371,34 +1399,6 @@
       "sha": "cf84d28ef7ffd4506d4a711215cc080bb46b6d30",
       "message": "Beat loop crossfades into a silent second copy instead of seeking, so the wrap has no gap",
       "heckle": "The intern put a second hidden video player in index.html to fake a gapless loop, then taught onStateChange to ignore events when the target is not the main player with a one line early return. Now twinState is a loose global, pauseTune carries a try block with an empty catch swallowing every error, and the whole thing is a Rube Goldberg machine bolted onto an embedded player that was never built for this. It will drift, it will double load on mobile data, and nobody checked.\n\nFix it: Replace the empty catch blocks in pauseTune with at least a log line. Check that the twin is destroyed when the loop turns off in index.html. Test the loop on a slow phone connection before claiming it has no gap. Hold twin state in one object, not a loose global."
-    },
-    {
-      "date": "2026-10-25T20:55:32Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "9ba8ca18e32b25a7391073f3c5454cf525f5b9e8",
-      "message": "Loops: beat loop by bars with a start point, voice loop from the start line, shared with multi smash",
-      "heckle": "Another card jammed into the already stuffed index.html, with new css colors typed in as raw hex in the same line as its neighbors, like the intern is allergic to variables. The loop card puts four bar buttons, a start control and a checkbox on a phone, and the label font is ten pixels, which no human thumb or eye can handle. This is the fourth card of the week with its own color rule and no shared system. Wonderful job.\n\nFix it: Put the card colors into css variables in index.html. Raise the 10px BARS label to something readable. Check the loop card on a 360px screen. Move the loop and multi smash logic out of the single script into its own file."
-    },
-    {
-      "date": "2026-10-25T20:55:32Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "9a6fca69d93f2bfce38a063c8d2cedd27725ec74",
-      "message": "Multi smash: phones on one account follow the smash, each plays beat, voice, or both",
-      "heckle": "Multi smash lets phones on one account follow each other, which in this codebase means a sync feature written into a single html file by someone who apparently has never heard of a server. A fifth button was crammed into the mode row, which will wrap on a small phone. The msRow rule fallback color is written inline with a var fallback of its own invention. There is nothing here about what happens when two phones disagree, or when one drops off, which is the entire hard part of this feature. Cute demo, intern.\n\nFix it: Handle a phone dropping out of multi in index.html and show it in the msRow list. Pick a single leader for conflicts. Check the nav row at 360px with five buttons. Add a way to unlink all phones."
-    },
-    {
-      "date": "2026-10-25T20:55:32Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "95e6e240d1e04b59c41df6e3187d3cb5239f66e9",
-      "message": "agent-orange 2026-10-25T195959 (#45)",
-      "heckle": "Another minified one line JSON dumped into contrib/agent-orange by a bot and merged under the developer's own login, so the review log says a human approved it when nobody did. One line, hundreds of characters, not a single newline, so GitHub will not even show the patch properly. It builds a shop with a man door and a roll up door, and the door is placed on the same wall line as the building edge, so the geometry is a campaign promise: sounds great, nobody checked it.\n\nFix it: Pretty print the contrib files so diffs can be reviewed. Stop merging bot PRs under the developer's own login. Validate door placement against wall extents in the testbed before merge. Reject files whose name date is ahead of the run time."
-    },
-    {
-      "date": "2026-10-25T20:55:32Z",
-      "repo": "blue-agent",
-      "sha": "dace14ecfe571a3041dc35b02eb145de85af483b",
-      "message": "RUN_NOW lets an agent play again right after a deploy",
-      "heckle": "A deploy time switch in show-runs.mjs that writes a redis key and then deletes lastauto keys by prefix match, all inside a script called show-runs, whose job is to print things. The intern made a read only log printer into a command executor and hid it behind an environment variable that changes value to trigger. That is a filibuster of naming, a control hidden in a logger. The keys call is also a full scan of the redis keyspace on startup, and the startsWith branch looks like it will match more slugs than intended.\n\nFix it: Move RUN_NOW handling out of show-runs.mjs into a file named for what it does. Use scan instead of keys. Match slugs exactly instead of by prefix. Log which keys were cleared."
     }
   ]
 }
