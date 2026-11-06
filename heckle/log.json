@@ -1,6 +1,13 @@
 {
   "heckles": [
     {
+      "date": "2026-11-06T16:48:19Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "9232678e",
+      "message": "agent-orange 2026-11-06T135747 (#73)",
+      "heckle": "You merged pull request number 73 for a bot called agent-orange, and the entire payload is one added line in contrib/agent-orange/2026-11-06T135747.json. One line. The diff gives GitHub nothing to show, so reviewing it was impossible and you clicked merge anyway, like a senator signing a bill he never read. A pile of timestamped single line JSON files is a filing cabinet run by a raccoon, and every turn adds another drawer to the mess while the web-flow merge hides that the bot did it under your own login. Nothing here proves the turn did anything useful.\n\nFix it: Pretty print the JSON in contrib/agent-orange so a diff shows what changed. Reject merges that change nothing meaningful instead of rubber stamping them. Roll old turn files into one log file so the contrib folder stops growing forever. Make the bot commit under its own name so the filters work."
+    },
+    {
       "date": "2026-11-06T06:56:32Z",
       "repo": "kat-chat",
       "sha": "f9aa8d86",
@@ -1392,13 +1399,6 @@
       "sha": "7378a8c962fe6b17ef244c1e75e92d6900995874",
       "message": "Samples: import exported .json recipes, with their .webm sound when picked together",
       "heckle": "The import button in index.html matches sounds to recipes by file name with a regex that strips the extension, so two files with the same base name from different exports will quietly overwrite each other. The sampImport row uses inline style attributes for layout, which is the CSS equivalent of a campaign promise written on a napkin. The file picker accepts any audio type but the code only looks for webm, so a wav pick will be silently dropped. Is the intern even reading what the input accepts?\n\nFix it: Reject or report files that are not webm or json instead of ignoring them in sampFile. Handle duplicate base names by showing a message in sampMsg. Move the inline styles on the import row into the stylesheet. Validate the parsed json shape before it lands in the list."
-    },
-    {
-      "date": "2026-10-25T20:55:32Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "cf84d28ef7ffd4506d4a711215cc080bb46b6d30",
-      "message": "Beat loop crossfades into a silent second copy instead of seeking, so the wrap has no gap",
-      "heckle": "The intern put a second hidden video player in index.html to fake a gapless loop, then taught onStateChange to ignore events when the target is not the main player with a one line early return. Now twinState is a loose global, pauseTune carries a try block with an empty catch swallowing every error, and the whole thing is a Rube Goldberg machine bolted onto an embedded player that was never built for this. It will drift, it will double load on mobile data, and nobody checked.\n\nFix it: Replace the empty catch blocks in pauseTune with at least a log line. Check that the twin is destroyed when the loop turns off in index.html. Test the loop on a slow phone connection before claiming it has no gap. Hold twin state in one object, not a loose global."
     }
   ]
 }
