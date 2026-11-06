@@ -1,6 +1,41 @@
 {
   "heckles": [
     {
+      "date": "2026-11-06T23:14:48Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "16d1bd9d",
+      "message": "grok 2026-11-06T170305",
+      "heckle": "This one skipped even the pull request and landed straight on the branch, a single line in contrib/grok/2026-11-06T170305.json. Grok is drawing Mesquite Cottage with negative coordinates like -62000 while the steward bot above it uses six digit positive ones, so two bots disagree about where the map even starts. Unreviewed, unpacked, and committed directly like a midnight executive order. Does the intern know what a branch protection rule is?\n\nFix it: Route grok commits through pull requests like the other bots. Agree on one coordinate origin across contrib/grok and contrib/steward. Put each call on its own line in the JSON so a human can read it."
+    },
+    {
+      "date": "2026-11-06T23:14:48Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "643d1cd9",
+      "message": "steward 2026-11-06T182944 (#74)",
+      "heckle": "Pull request 74 is one minified JSON line in contrib/steward/2026-11-06T182944.json, merged through the button under your own login without anyone reading it. The steward bot is placing crosswalk hatches on Chuckwalla Avenue and Agave Street with coordinates like 476688,243230, so a human would need a calculator and a prayer to review it. This is a rubber stamp factory, like a rider stapled onto a spending bill. A line that long is unreadable in any diff view.\n\nFix it: Pretty print the JSON in contrib/steward so diffs mean something. Have the steward bot validate its calls before the pull request opens. Stop merging these without a check that the file parses and the coordinates fall inside the map."
+    },
+    {
+      "date": "2026-11-06T23:14:46Z",
+      "repo": "field-twin",
+      "sha": "a93f8e9a",
+      "message": "Field Twin Companion firmware build 5",
+      "heckle": "Build 5 is the same crime as 6 and 7, a binary swap in field-twin-companion/firmware/field-twin-companion-v1.bin with a message that is just a number. If the board bricks after a flash, nobody can bisect this, because every build lives under the same name like a government shutdown that keeps getting renamed. You are hand compiling and hand committing like the pipeline is a rumor.\n\nFix it: Add a script that builds and releases the firmware so you stop hand pushing blobs. Keep one file per build or a manifest with build numbers in field-twin-companion/firmware. Put the actual change in the commit message."
+    },
+    {
+      "date": "2026-11-06T23:14:45Z",
+      "repo": "field-twin",
+      "sha": "d5b4264e",
+      "message": "Field Twin Companion firmware build 6",
+      "heckle": "Another day, another mystery binary shoved into field-twin-companion/firmware/field-twin-companion-v1.bin. Build 6 landed between two Claude commits that actually explain themselves, so the intern's own commits look even dumber next to them. The message is a number, and a number is not a changelog. This is a filibuster of information: lots of bytes, zero content. Rewriting the same file three times in one stretch bloats the repo for no reason.\n\nFix it: Name the build in the file or a manifest instead of overwriting field-twin-companion-v1.bin. Stop checking firmware into the main history. Say what build 6 changed in the commit message."
+    },
+    {
+      "date": "2026-11-06T23:14:44Z",
+      "repo": "field-twin",
+      "sha": "3eff40b6",
+      "message": "Field Twin Companion firmware build 7",
+      "heckle": "Build 7 of the firmware, and the whole commit is a binary blob at field-twin-companion/firmware/field-twin-companion-v1.bin. Nobody can review it, diff it, or tell what changed, which makes this a bailout with no audit. Builds 5, 6 and 7 all overwrite the same file named v1, so the version in the filename is a campaign promise that means nothing. Git history is now a landfill of compiled lumps, and the commit message does not even say what build 7 fixes. Did you learn versioning from a cereal box?\n\nFix it: Stop committing the .bin to git and attach it to a GitHub release instead. Put the build number inside the filename or a version.json next to field-twin-companion-v1.bin. Write what changed in the commit message, because build 7 tells me nothing."
+    },
+    {
       "date": "2026-11-06T16:48:19Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "9232678e",
@@ -1364,41 +1399,6 @@
       "sha": "00e27b95fe431b9d332923ad99a0e6743eb465f1",
       "message": "Acapella: follow the real speed when an upload refuses to change speed, and stop seek loops on slow streams",
       "heckle": "You bolted acaRateLocked onto appliedRate() in index.html like a guy taping a second steering wheel to a car that already drifts. The same file now has a pile of module level globals, acaSeeks, acaRateSet, acaRateLocked, and you reset all three by hand in two separate places, findAcapella and pickAca. Miss one in a future edit and the app plays at a ghost speed. A single file with 2900 lines and no tests is a filibuster written in HTML. The slow stream seek loop fix is a guess wearing a timeout, and I see no proof it works anywhere but your phone.\n\nFix it: Put the acapella state in one object with a reset function so findAcapella and pickAca call the same thing. Split the acapella player code out of index.html into its own script. Add a test for the rounded speed path, since a bug here is silent."
-    },
-    {
-      "date": "2026-10-25T20:55:32Z",
-      "repo": "mill-ionaire",
-      "sha": "6d7e8d671cd675d1930d91c2be844a96789da38a",
-      "message": "Press brake: brake tab and floor bay, brake program and hand bending, brackets, channel, box frames, giant chip, taco, donut and muffler man, big storefront sign orders",
-      "heckle": "Three hundred lines of press brake dumped into mill-ionaire-v2.html in one commit, because apparently splitting a single file game into modules is a filibuster the intern refuses to end. The brake is bolted onto a nav that already holds a lathe tab, so the tabs button rule got squeezed to padding 0 2px, which is how you cram a fifth tab onto a phone and call it responsive. The README paragraph about the brake is one giant wall of text that reads like a campaign promise nobody will check. And the test file keeps growing a new block per feature while old assertions keep getting loosened, which is a bailout for your own tests.\n\nFix it: Split the brake code out of mill-ionaire-v2.html into its own script. Break the README brake paragraph into short readable chunks. Check the tab bar at 360px wide and stop shrinking padding to hide the overflow. Stop weakening assertions in mill-ionaire-v2-test.js and write them against the new rules instead."
-    },
-    {
-      "date": "2026-10-25T20:55:32Z",
-      "repo": "mill-ionaire",
-      "sha": "a995ffda88fa2f5029ab28883344d959f3eb1f5c",
-      "message": "Lathe makes a picked part to stock, turned parts unlock as you go, blanks and bars cost money, shop buttons stop rebuilding on every cash tick",
-      "heckle": "Look at this, the intern changed the starting cash from zero to forty dollars and then rewrote the test to say forty, which is moving the goalposts like a government shutdown deal. The same commit added a second condition to the lathe loop in mill-ionaire-v2-test.js so it waits until stud stock reaches five before breaking, which means the test now cheats to pass the thing it is supposed to check. Blanks and bars now cost money, so a broke player with forty bucks can soft lock early, and nothing here shows what happens then. The shop button rebuild fix is the only adult decision in this pile.\n\nFix it: Revert the loop tweak in mill-ionaire-v2-test.js and fix the lathe timing instead. Test that a player at zero cash with no stock can still make a first sale. Keep the starting cash change in one named constant instead of a magic forty. Document the new stock rules in the README in plain short lines."
-    },
-    {
-      "date": "2026-10-25T20:55:32Z",
-      "repo": "mill-ionaire",
-      "sha": "7d5eb16ef6c598b67d532ba054976ca19af460e5",
-      "message": "Lathe takes a floor bay next to your mill, floor mill cap makes room for it, idle operators stay on the bottom row",
-      "heckle": "Another day, another test edited to match the code. In mill-ionaire-v2-test.js the exact cash check for buying a floor mill became a fuzzy absolute difference under one dollar, then the factory click got wrapped in a six try retry loop with six second clock jumps. That is not a fix, that is a filibuster against a flaky test, and the intern clearly cannot tell a race from a rounding bug. In mill-ionaire-v2.html the mill clamp became 11 when the lathe exists, so a loaded save with twelve mills quietly loses one. Players paid for that mill.\n\nFix it: Find out why cash is a fraction after a purchase and fix that, then restore the strict equality in mill-ionaire-v2-test.js. Remove the retry loop around facSel and wait on a real condition. Refund the mill cash when the clamp in the save loader trims a twelfth mill. Add a test for loading a save with twelve mills and a lathe."
-    },
-    {
-      "date": "2026-10-25T20:55:32Z",
-      "repo": "mill-ionaire",
-      "sha": "e2cebdbd202a9cff12639fab23cb60dce7ab5257",
-      "message": "Engine lathe at half the price of the next mill: lathe tab, lathe program, hand turning, turned part bins, turned part orders, mounted signs and sign posts",
-      "heckle": "A 346 line addition to a single html file, with a lathe tab, a lathe program, hand turning, bins, orders, mounted signs and posts, all in one commit. The intern did not ship a feature, the intern shipped a bailout package with no oversight. The mobile tab bar got a font size drop to 12px under 420 wide to fit the new tab, so the nav is now tiny text with min-width zero, which is a cramped mobile layout in plain sight. The shop tests were also switched from nth-child selectors to data-k selectors, which is the one smart thing here, and it still hurts to say.\n\nFix it: Split the lathe into its own file instead of growing mill-ionaire-v2.html forever. Replace the 12px tab text hack with a scrollable or two row nav. Break the README lathe paragraph into short lines. Commit features separately, one lathe piece at a time."
-    },
-    {
-      "date": "2026-10-25T20:55:32Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "7378a8c962fe6b17ef244c1e75e92d6900995874",
-      "message": "Samples: import exported .json recipes, with their .webm sound when picked together",
-      "heckle": "The import button in index.html matches sounds to recipes by file name with a regex that strips the extension, so two files with the same base name from different exports will quietly overwrite each other. The sampImport row uses inline style attributes for layout, which is the CSS equivalent of a campaign promise written on a napkin. The file picker accepts any audio type but the code only looks for webm, so a wav pick will be silently dropped. Is the intern even reading what the input accepts?\n\nFix it: Reject or report files that are not webm or json instead of ignoring them in sampFile. Handle duplicate base names by showing a message in sampMsg. Move the inline styles on the import row into the stylesheet. Validate the parsed json shape before it lands in the list."
     }
   ]
 }
