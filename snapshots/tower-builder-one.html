@@ -2,1574 +2,1245 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TOWER BUILDER</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F3F6F5">
+<title>Tower Builder</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
-
   :root {
-    --bg: #0a0f1a;
-    --grid: #1a2540;
-    --gridline: #1e2d50;
-    --blue: #00d4ff;
-    --yellow: #ffd000;
-    --red: #ff3c5a;
-    --green: #00ff88;
-    --steel: #7ab3d4;
-    --wood: #c8853a;
-    --panel: #0d1628;
-    --border: #1e3a5f;
+    --paper: #F3F6F5;
+    --sheet: #FFFFFF;
+    --ink: #1C2836;
+    --ink-soft: #5A6878;
+    --rule: #D5DEDC;
+    --rule-strong: #B7C5C2;
+    --hivis: #F4A100;
+    --hivis-ink: #2A1E00;
+    --target: #178A52;
+    --danger: #C8372D;
+    --wood: #B5712C;
+    --steel: #3D6E9E;
+    --concrete: #7A7A70;
+    --road: #4B4F55;
+    --cable: #8A4FB0;
+    --radius-sm: 6px;
+    --radius-lg: 14px;
+    color-scheme: light;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
+  html, body { height: 100%; }
   body {
-    background: var(--bg);
-    color: var(--blue);
-    font-family: 'Share Tech Mono', monospace;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  #header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 44px 5px 12px;
-    background: var(--panel);
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-
-  #title {
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 900;
-    font-size: 13px;
-    letter-spacing: 3px;
-    color: var(--blue);
-    text-shadow: 0 0 20px var(--blue);
-  }
-
-  .stat-group {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  }
-
-  .stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-  }
-
-  .stat-label {
-    font-size: 8px;
-  }
-
-  .stat-value {
-    font-size: 13px;
-    font-weight: bold;
-    color: var(--yellow);
-  }
-
-  .stat-value.green { color: var(--green); }
-  .stat-value.red { color: var(--red); }
-
-  #main {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-  }
-
-  #sidebar {
-    width: 160px;
-    background: var(--panel);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    padding: 8px;
-    gap: 7px;
-    flex-shrink: 0;
-    overflow-y: auto;
-  }
-
-  .section-title {
-    font-size: 9px;
-    letter-spacing: 3px;
-    opacity: 0.4;
-    text-transform: uppercase;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 4px;
-  }
-
-  .tool-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--blue);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    padding: 5px 7px;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    letter-spacing: 1px;
-  }
-
-  .tool-btn:hover { border-color: var(--blue); background: rgba(0,212,255,0.05); }
-  .tool-btn.active { border-color: var(--blue); background: rgba(0,212,255,0.12); color: #fff; }
-  .tool-btn.steel-btn.active { border-color: var(--steel); background: rgba(122,179,212,0.15); color: var(--steel); }
-  .tool-btn.wood-btn.active { border-color: var(--wood); background: rgba(200,133,58,0.15); color: var(--wood); }
-  .tool-btn.delete-btn.active { border-color: var(--red); background: rgba(255,60,90,0.12); color: var(--red); }
-  .tool-btn.concrete-btn.active { border-color: #a0a090; background: rgba(160,160,144,0.15); color: #d0d0c0; }
-
-  .material-info {
-    font-size: 9px;
-    opacity: 0.5;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Avenir Next", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
     line-height: 1.4;
-  }
-
-  .material-info span { display: block; }
-
-  #beam-length-container { display: flex; flex-direction: column; gap: 6px; }
-  #beam-length-container label { font-size: 9px; opacity: 0.6; }
-
-  input[type=range] {
-    width: 100%;
-    accent-color: var(--blue);
-  }
-
-  .length-display {
-    color: var(--yellow);
-    font-size: 11px;
-    text-align: center;
-  }
-
-  .cost-preview {
-    font-size: 10px;
-    text-align: center;
-    opacity: 0.6;
-  }
-
-  .action-btn {
-    background: transparent;
-    border: 1px solid;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 10px;
-    letter-spacing: 1px;
-    padding: 7px;
-    cursor: pointer;
-    transition: all 0.15s;
-    text-transform: uppercase;
-  }
-
-  .btn-test {
-    border-color: var(--green);
-    color: var(--green);
-  }
-  .btn-test:hover { background: rgba(0,255,136,0.1); }
-
-  .btn-clear {
-    border-color: var(--red);
-    color: var(--red);
-  }
-  .btn-clear:hover { background: rgba(255,60,90,0.1); }
-
-  .btn-build {
-    border-color: var(--yellow);
-    color: var(--yellow);
-  }
-  .btn-build:hover { background: rgba(255,208,0,0.1); }
-
-  .btn-quake {
-    border-color: #ff8c00;
-    color: #ff8c00;
-  }
-  .btn-quake:hover { background: rgba(255,140,0,0.1); }
-
-  #canvas-area {
-    flex: 1;
-    position: relative;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
-    background: var(--bg);
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:focus-visible { outline: 3px solid var(--steel); outline-offset: 2px; }
+  button:disabled { opacity: 0.4; cursor: default; }
+
+  #top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: var(--sheet);
+    border-bottom: 1px solid var(--rule);
+    flex-shrink: 0;
+  }
+  #brand { font-weight: 800; font-size: 17px; letter-spacing: -0.01em; }
+  #level-btn {
+    border: 1px solid var(--rule-strong);
+    background: var(--paper);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  #top .spacer { flex: 1; }
+  .round {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--rule-strong);
+    background: var(--sheet);
+    font-weight: 700;
+    font-size: 16px;
   }
 
-  canvas {
-    display: block;
-    position: absolute;
-    top: 0; left: 0;
+  #stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--sheet);
+    border-bottom: 1px solid var(--rule);
+    flex-shrink: 0;
   }
+  .stat { padding: 6px 12px 8px; }
+  .stat + .stat { border-left: 1px solid var(--rule); }
+  .stat-k { font-size: 12px; color: var(--ink-soft); }
+  .stat-v { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.15; }
+  .stat-v small { font-size: 13px; font-weight: 500; color: var(--ink-soft); }
+  .stat-v.low { color: var(--danger); }
+  .stat-v.met { color: var(--target); }
 
-  #instructions {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(13,22,40,0.9);
-    border: 1px solid var(--border);
-    padding: 5px 10px;
-    font-size: 9px;
-    letter-spacing: 1px;
-    opacity: 0.7;
-    white-space: nowrap;
-    pointer-events: none;
-  }
+  #stage { position: relative; flex: 1; min-height: 0; }
+  #cv { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; display: block; }
 
-  #message {
+  #hint {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 24px;
-    font-weight: 900;
-    letter-spacing: 4px;
+    left: 12px; right: 12px; top: 10px;
     text-align: center;
     pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s;
+  }
+  #hint span {
+    display: inline-block;
+    background: rgba(255,255,255,0.92);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  #hint.warn span { color: var(--danger); border-color: var(--danger); }
+
+  #phase {
+    position: absolute;
+    left: 50%; top: 10px;
+    transform: translateX(-50%);
+    background: var(--sheet);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px 10px;
+    min-width: 220px;
+    display: none;
+    pointer-events: none;
+  }
+  #phase.show { display: block; }
+  #phase-name { font-weight: 700; font-size: 14px; }
+  #phase-bar { height: 4px; background: var(--rule); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+  #phase-fill { height: 100%; width: 0; background: var(--hivis); }
+
+  #zoom {
+    position: absolute;
+    right: 10px; bottom: 10px;
+    display: flex; flex-direction: column; gap: 6px;
   }
 
-  #message.show { opacity: 1; }
-  #message.pass { color: var(--green); text-shadow: 0 0 40px var(--green); }
-  #message.fail { color: var(--red); text-shadow: 0 0 40px var(--red); }
-
-  #zoom-controls {
-    position: absolute;
-    bottom: 38px;
-    right: 8px;
+  #dock {
+    background: var(--sheet);
+    border-top: 1px solid var(--rule);
+    padding: 10px 12px 12px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  #mats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .mat {
+    border: 1.5px solid var(--rule-strong);
+    background: var(--sheet);
+    border-radius: var(--radius-sm);
+    padding: 6px 6px 7px;
+    text-align: left;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    min-width: 0;
   }
+  .mat .sw { width: 100%; height: 5px; border-radius: 3px; }
+  .mat .nm { font-weight: 700; font-size: 14px; display: block; }
+  .mat .pr { font-size: 12px; color: var(--ink-soft); display: block; }
+  .mat[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
 
-  .zoom-btn {
-    width: 28px;
-    height: 28px;
-    background: rgba(13,22,40,0.9);
-    border: 1px solid var(--border);
-    color: var(--blue);
+  #acts { display: flex; gap: 8px; }
+  .act {
+    border: 1px solid var(--rule-strong);
+    background: var(--paper);
+    border-radius: var(--radius-sm);
+    padding: 10px 0;
+    flex: 1;
     font-size: 14px;
-    line-height: 1;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.15s;
-    font-family: 'Share Tech Mono', monospace;
+    font-weight: 600;
   }
-
-  .zoom-btn:hover {
-    border-color: var(--blue);
-    background: rgba(0,212,255,0.1);
-    color: #fff;
-  }
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 16px;
-    letter-spacing: 3px;
-    text-align: center;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s;
-    color: var(--yellow);
-  }
-  #score-popup.show { opacity: 1; }
-
-  #phase-indicator {
-    position: absolute;
-    top: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 11px;
-    letter-spacing: 3px;
-    padding: 4px 14px;
-    border: 1px solid var(--border);
-    background: rgba(13,22,40,0.9);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s;
-    white-space: nowrap;
-  }
-  #phase-indicator.show { opacity: 1; }
-
-  .icon { font-size: 14px; }
-
-  .info-btn {
-    position: fixed;
-    top: 6px;
-    right: 8px;
-    z-index: 200;
-    background: rgba(13,22,40,0.95);
-    border: 1px solid var(--blue);
-    color: var(--blue);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: all 0.15s;
-    line-height: 1;
-    padding: 0;
-  }
-  .info-btn:hover { border-color: var(--blue); background: rgba(0,212,255,0.1); }
-
-  #info-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-  }
-  #info-modal.open { display: flex; }
-
-  #info-box {
-    background: #0d1628;
-    border: 1px solid var(--border);
-    width: min(480px, 94vw);
-    max-height: 86vh;
-    overflow-y: auto;
-    padding: 20px 22px 24px;
-    position: relative;
-    font-size: 12px;
-    line-height: 1.6;
-    color: rgba(200,220,255,0.85);
-  }
-
-  #info-close {
-    position: absolute;
-    top: 10px; right: 12px;
-    background: transparent;
+  .act[aria-pressed="true"] { background: #FBE3E1; border-color: var(--danger); color: var(--danger); }
+  #test-btn {
+    flex: 1.6;
+    background: var(--hivis);
     border: none;
-    color: var(--blue);
-    font-size: 16px;
-    cursor: pointer;
-    opacity: 0.6;
+    color: var(--hivis-ink);
+    font-weight: 800;
+    font-size: 15px;
+    border-radius: var(--radius-sm);
   }
-  #info-close:hover { opacity: 1; }
+  #test-btn.stop { background: var(--ink); color: #fff; }
 
-  #info-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 18px;
-    font-weight: 900;
-    letter-spacing: 4px;
-    color: var(--blue);
-    text-shadow: 0 0 16px var(--blue);
-    margin-bottom: 2px;
+  .veil {
+    position: fixed; inset: 0;
+    background: rgba(28,40,54,0.35);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 50;
+    padding: 12px;
   }
-
-  #info-sub {
-    font-size: 10px;
-    opacity: 0.4;
-    letter-spacing: 2px;
-    margin-bottom: 16px;
+  .veil.open { display: flex; }
+  @media (min-width: 640px) { .veil { align-items: center; } }
+  .sheet {
+    background: var(--sheet);
+    border-radius: var(--radius-lg);
+    width: min(460px, 100%);
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 20px 20px 18px;
+    position: relative;
   }
+  .sheet h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 4px; padding-right: 36px; }
+  .sheet h3 { font-size: 15px; font-weight: 700; margin: 14px 0 3px; }
+  .sheet p { color: var(--ink-soft); font-size: 14px; max-width: 62ch; }
+  .sheet .close { position: absolute; top: 14px; right: 14px; }
+  .sheet .row { display: flex; gap: 8px; margin-top: 16px; }
+  .sheet .row button { flex: 1; padding: 12px; border-radius: var(--radius-sm); font-weight: 700; border: 1px solid var(--rule-strong); background: var(--paper); }
+  .sheet .row button.primary { background: var(--hivis); border-color: var(--hivis); color: var(--hivis-ink); }
 
-  .info-section { margin-bottom: 14px; }
+  #res-lines { margin-top: 12px; border-top: 1px solid var(--rule); }
+  #res-lines div { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--rule); font-size: 14px; }
+  #res-lines div b { font-variant-numeric: tabular-nums; }
+  #res-title.pass { color: var(--target); }
+  #res-title.fail { color: var(--danger); }
 
-  .info-heading {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 9px;
-    letter-spacing: 3px;
-    color: var(--yellow);
-    margin-bottom: 5px;
+  #lv-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 4px; }
+  .lv-group { font-size: 15px; font-weight: 700; margin: 16px 0 6px; }
+  .lv {
+    border: 1.5px solid var(--rule-strong);
+    border-radius: var(--radius-sm);
+    background: var(--paper);
+    padding: 10px 6px;
+    text-align: center;
   }
+  .lv b { display: block; font-size: 20px; }
+  .lv span { display: block; font-size: 12px; color: var(--ink-soft); }
+  .lv.cur { border-color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
 
-  .info-section p { margin: 0 0 5px; }
+  .swatch-line { display: inline-block; width: 18px; height: 5px; border-radius: 3px; vertical-align: middle; margin-right: 6px; }
 
-  .mat-steel   { color: #7ab3d4; font-weight: bold; }
-  .mat-wood    { color: #c8853a; font-weight: bold; }
-  .mat-concrete{ color: #c0c0b0; font-weight: bold; }
+  @media (min-width: 760px) {
+    #dock { flex-direction: row; align-items: center; }
+    #mats { flex: 1.2; }
+    #acts { flex: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
 
-<div id="header">
-  <div id="title">TOWER BUILDER</div>
-  <div class="stat-group">
-    <div class="stat">
-      <span class="stat-label">Budget</span>
-      <span class="stat-value" id="stat-budget">$500</span>
-    </div>
-    <div class="stat">
-      <span class="stat-label">Spent</span>
-      <span class="stat-value red" id="stat-spent">$0</span>
-    </div>
-    <div class="stat">
-      <span class="stat-label">Target Height</span>
-      <span class="stat-value" id="stat-target">12</span>
-    </div>
-    <div class="stat">
-      <span class="stat-label">Score</span>
-      <span class="stat-value green" id="stat-score">0</span>
-    </div>
-    <div class="stat">
-      <span class="stat-label">Level</span>
-      <span class="stat-value" id="stat-level">1</span>
-    </div>
+<div id="top">
+  <div id="brand">Tower Builder</div>
+  <button id="level-btn" aria-label="Choose level">Level 1</button>
+  <div class="spacer"></div>
+  <button class="round" id="info-btn" aria-label="How to play">?</button>
+</div>
+
+<div id="stats">
+  <div class="stat"><div class="stat-k">Budget left</div><div class="stat-v" id="s-budget">$0</div></div>
+  <div class="stat"><div class="stat-k" id="s-mid-k">Height</div><div class="stat-v" id="s-height">0 <small>/ 6 m</small></div></div>
+  <div class="stat"><div class="stat-k">Score</div><div class="stat-v" id="s-score">0</div></div>
+</div>
+
+<div id="stage">
+  <canvas id="cv"></canvas>
+  <div id="hint"><span id="hint-text">Tap a support to start a beam</span></div>
+  <div id="phase"><div id="phase-name">Settling</div><div id="phase-bar"><div id="phase-fill"></div></div></div>
+  <div id="zoom">
+    <button class="round" id="z-in" aria-label="Zoom in">+</button>
+    <button class="round" id="z-fit" aria-label="Fit tower in view">&#9635;</button>
+    <button class="round" id="z-out" aria-label="Zoom out">&minus;</button>
   </div>
 </div>
 
-<button class="info-btn" onclick="toggleInfo()">?</button>
-
-<div id="info-modal">
-  <div id="info-box">
-    <button id="info-close" onclick="toggleInfo()">✕</button>
-    <div id="info-title">TOWER BUILDER</div>
-    <div id="info-sub">Built by Green Phone &nbsp;·&nbsp; single-file HTML</div>
-    <div class="info-section">
-      <div class="info-heading">OBJECTIVE</div>
-      <p>Build a tower tall enough to reach the green target height line, then survive a wind test followed by an earthquake. The taller you go past the target, the more bonus points you earn.</p>
-    </div>
-    <div class="info-section">
-      <div class="info-heading">HOW TO BUILD</div>
-      <p>Stay in BUILD mode. Tap any yellow ground anchor or blue junction to start a beam, then tap a grid point to place the other end. Every beam auto-creates a new junction at both ends that you can keep connecting to. Set max beam length with the slider — shorter beams cost less. Right-click or tap DELETE to remove beams.</p>
-    </div>
-    <div class="info-section">
-      <div class="info-heading">MATERIALS</div>
-      <p><span class="mat-steel">STEEL</span> $3/unit — strong in tension, bends before breaking, medium weight.</p>
-      <p><span class="mat-wood">WOOD</span> $1/unit — cheap and light, good for low-load bracing, snaps under heavy weight.</p>
-      <p><span class="mat-concrete">R. CONCRETE</span> $6/unit — most expensive, heaviest, best compression strength. Resists sway dramatically. Cracks suddenly when it fails.</p>
-    </div>
-    <div class="info-section">
-      <div class="info-heading">JOINTS &amp; BRACING</div>
-      <p>Every junction is a free hinge unless braced. Two beams at a joint will fold under load. You need at least three beams meeting at a point — a diagonal cross-brace — for the joint to hold its shape. Triangulation is the key principle of the whole game.</p>
-    </div>
-    <div class="info-section">
-      <div class="info-heading">TESTING</div>
-      <p>Hit TEST to run both phases back to back. Phase 1 applies wind — taller nodes sway more. Phase 2 shakes an earthquake side to side. Survive both and you pass the level. Beams glow red under stress and show a visible kink or crack when they fail so you can see exactly what gave way.</p>
-    </div>
-    <div class="info-section">
-      <div class="info-heading">BUDGET &amp; SCORING</div>
-      <p>Each level gives you a budget. Unspent money carries forward to the next level, so building efficiently early gives you more to work with later when you need concrete and steel up high. Score is based on height above target plus budget saved.</p>
-    </div>
-    <div class="info-section">
-      <div class="info-heading">NAVIGATION</div>
-      <p>Scroll up/down in BUILD mode to pan the view as your tower grows. Switch to PAN / ZOOM mode to drag the canvas freely or use pinch-to-zoom on touch. Ctrl+scroll zooms in either mode. The ⊡ button fits your whole structure in view.</p>
-    </div>
+<div id="dock">
+  <div id="mats"></div>
+  <div id="acts">
+    <button class="act" id="del-btn" aria-pressed="false">Erase</button>
+    <button class="act" id="undo-btn">Undo</button>
+    <button class="act" id="clear-btn">Clear</button>
+    <button id="test-btn">Test</button>
   </div>
 </div>
 
-<div id="main">
-  <div id="sidebar">
-    <div class="section-title">Canvas Mode</div>
-    <button class="tool-btn active" id="btn-mode-build" onclick="setCanvasMode('build')">
-      <span class="icon">✎</span> BUILD
-    </button>
-    <button class="tool-btn" id="btn-mode-pan" onclick="setCanvasMode('pan')">
-      <span class="icon">✥</span> PAN / ZOOM
-    </button>
-
-    <div class="section-title">Tool</div>
-    <button class="tool-btn active" id="btn-select" onclick="setTool('select')">
-      <span class="icon">↖</span> PLACE
-    </button>
-    <button class="tool-btn delete-btn" id="btn-delete" onclick="setTool('delete')">
-      <span class="icon">✕</span> DELETE
-    </button>
-
-    <div class="section-title">Material</div>
-    <button class="tool-btn steel-btn" id="btn-steel" onclick="setMaterial('steel')">
-      <span class="icon">▬</span> STEEL
-    </button>
-    <div class="material-info">
-      <span>Cost: $3/unit</span>
-      <span>Strength: 800N</span>
-      <span>Weight: 3kg/u</span>
-    </div>
-    <button class="tool-btn wood-btn" id="btn-wood" onclick="setMaterial('wood')">
-      <span class="icon">▬</span> WOOD
-    </button>
-    <div class="material-info">
-      <span>Cost: $1/unit</span>
-      <span>Strength: 300N</span>
-      <span>Weight: 1kg/u</span>
-    </div>
-    <button class="tool-btn concrete-btn" id="btn-concrete" onclick="setMaterial('concrete')">
-      <span class="icon">▬</span> R. CONCRETE
-    </button>
-    <div class="material-info">
-      <span>Cost: $6/unit</span>
-      <span>Strength: 1800N</span>
-      <span>Weight: 8kg/u</span>
-    </div>
-
-    <div class="section-title">Beam Length</div>
-    <div id="beam-length-container">
-      <label>Max length: <span id="max-len-label">5</span> units</label>
-      <input type="range" id="beam-length" min="1" max="5" value="3" oninput="updateLengthUI()">
-      <div class="length-display"><span id="length-val">3</span> units</div>
-      <div class="cost-preview">Est. cost: $<span id="cost-preview">9</span></div>
-    </div>
-
-    <div class="section-title">Actions</div>
-    <button class="action-btn btn-test" id="btn-test-main" onclick="runFullTest()">▶ TEST</button>
-    <button class="action-btn btn-clear" onclick="clearAll()">↺ CLEAR</button>
+<div class="veil" id="info-veil">
+  <div class="sheet" role="dialog" aria-labelledby="info-h">
+    <button class="round close" data-close aria-label="Close">&times;</button>
+    <h2 id="info-h">How to play</h2>
+    <p>Build a tower that reaches the green target line, then survive three tests in a row: its own weight, a steady wind, and an earthquake.</p>
+    <h3>Building</h3>
+    <p>Tap a support (the dark triangles) or any joint to pick it, then tap a grid point to place a beam. The new end stays picked so you can keep going. Tap the picked joint again to let go. Beams can be up to 4.5 m long and cables up to 30 m.</p>
+    <h3>Why towers fall</h3>
+    <p>Every joint is a pin, so it can rotate freely. A square of beams folds flat. A triangle cannot change shape, so diagonal braces are what keep a tower standing.</p>
+    <h3>Materials</h3>
+    <p><span class="swatch-line" style="background:var(--wood)"></span>Wood is cheap and light but weak.</p>
+    <p><span class="swatch-line" style="background:var(--steel)"></span>Steel is strong when pulled and when squeezed, but long steel beams buckle.</p>
+    <p><span class="swatch-line" style="background:var(--concrete)"></span>Concrete takes huge squeezing loads, is weaker when pulled, and is heavy, which hurts in an earthquake.</p>
+    <p><span class="swatch-line" style="background:var(--cable)"></span>Cable is light, cheap, and can reach far, but it only pulls. Push on it and it goes slack.</p>
+    <p><span class="swatch-line" style="background:var(--road)"></span>Road is what the truck drives on in bridge levels.</p>
+    <h3>Bridges</h3>
+    <p>From level 13 on, you build bridges. Lay road from one cliff edge to the other, then hold it up with trusses, arches, piers, or cables. The bridge settles under its own weight, then a truck drives across. If the road breaks or sags too far, the truck falls.</p>
+    <h3>Reading the test</h3>
+    <p>During a test, beams shift toward red as they near their limit. A beam that goes past it breaks. Some broken beams are survivable, but if the tower drops below the target line, the test fails.</p>
+    <h3>Moving around</h3>
+    <p>Drag with one finger to pan. Pinch or use the buttons to zoom. Your build for each level is kept on this device.</p>
   </div>
+</div>
 
-  <div id="canvas-area">
-    <canvas id="canvas"></canvas>
-    <div id="instructions" id="instructions">BUILD: scroll to pan up/down &nbsp;|&nbsp; PAN mode: scroll to zoom &nbsp;|&nbsp; Ctrl+scroll: zoom anywhere</div>
-    <div id="phase-indicator"></div>
-    <div id="zoom-controls">
-      <button class="zoom-btn" onclick="zoomBy(1.25)" title="Zoom in">+</button>
-      <button class="zoom-btn" onclick="fitView()" title="Fit view">⊡</button>
-      <button class="zoom-btn" onclick="zoomBy(0.8)" title="Zoom out">−</button>
-    </div>
-    <div id="message">STRUCTURE FAILED!</div>
-    <div id="score-popup">+250 BONUS</div>
+<div class="veil" id="lv-veil">
+  <div class="sheet" role="dialog" aria-labelledby="lv-h">
+    <button class="round close" data-close aria-label="Close">&times;</button>
+    <h2 id="lv-h">Levels</h2>
+    <p>Pass a level to open the next one.</p>
+    <div id="lv-list"></div>
+  </div>
+</div>
+
+<div class="veil" id="res-veil">
+  <div class="sheet" role="dialog" aria-labelledby="res-title">
+    <h2 id="res-title">It stood</h2>
+    <p id="res-reason"></p>
+    <div id="res-lines"></div>
+    <div class="row" id="res-row"></div>
   </div>
 </div>
 
 <script>
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-const area = document.getElementById('canvas-area');
-
-// ─── Game State ───────────────────────────────────────────────
-const GRID = 40; // px per unit
-const GRAVITY = 120; // pixels/s^2
-const TIMESTEP = 0.016;
-const SIM_STEPS = 12;
-const DAMPING = 0.92;
-const SPRING_K = 12000;   // stiffness — high means beams resist stretching
-const BREAK_STRAIN = { steel: 0.30, wood: 0.13, concrete: 0.08 }; // concrete very stiff, cracks suddenly
-
-let testMode = 'wind'; // 'wind' or 'quake'
-let carryover = 0; // unspent budget carried from previous level
-
+// SIM START
+const G = 9.8;
+const SUB = 16;
+const DAMP = 0.6;
+const TUNE = { wind: 4, quake: 0.05, str: 2.2 };
+const MATS = {
+  road:     { name: 'Road',     cost: 2, kg: 2.5, comp: 5e-7, ten: 6000,  cmp: 5000,  buckle: 2.4, max: 4.5, color: '#4B4F55' },
+  wood:     { name: 'Wood',     cost: 1, kg: 1.2, comp: 4e-6, ten: 1800,  cmp: 1500,  buckle: 2.2, max: 4.5, color: '#B5712C' },
+  steel:    { name: 'Steel',    cost: 3, kg: 3,   comp: 4e-7, ten: 9000,  cmp: 7500,  buckle: 2.6, max: 4.5, color: '#3D6E9E' },
+  concrete: { name: 'Concrete', cost: 5, kg: 5,   comp: 2e-7, ten: 3500,  cmp: 30000, buckle: 4.0, max: 4.5, color: '#7A7A70' },
+  cable:    { name: 'Cable',    cost: 1, kg: 0.3, comp: 3e-7, ten: 5000,  cmp: 0,     buckle: 1,   max: 30,  color: '#8A4FB0' }
+};
+const TOWER_MATS = ['wood', 'steel', 'concrete', 'cable'];
+const BRIDGE_MATS = ['road', 'wood', 'steel', 'cable'];
+function A0(xs) { return xs.map(x => [x, 0]); }
 const LEVELS = [
-  { budget: 500, targetHeight: 8,  label: 1 },
-  { budget: 700, targetHeight: 12, label: 2 },
-  { budget: 900, targetHeight: 16, label: 3 },
-  { budget: 1200,targetHeight: 20, label: 4 },
+  { kind: 'tower', target: 6,  budget: 150,  anchors: A0([-2, -1, 0, 1, 2]), wind: 0.8, quake: 0.6, note: 'Triangles hold their shape. Squares fold.' },
+  { kind: 'tower', target: 9,  budget: 260,  anchors: A0([-2, -1, 0, 1, 2]), wind: 1.0, quake: 0.8, note: 'Taller towers catch more wind up top.' },
+  { kind: 'tower', target: 12, budget: 420,  anchors: A0([-3, -2, 2, 3]), wind: 1.1, quake: 0.9, note: 'No support in the middle. Span the gap.' },
+  { kind: 'tower', target: 15, budget: 420,  anchors: A0([-2, -1, 1, 2]), wind: 1.25, quake: 1.05, note: 'Long beams in compression buckle. Keep them short.' },
+  { kind: 'tower', target: 18, budget: 520,  anchors: A0([-3, -1, 1, 3]), wind: 1.3, quake: 1.1, note: 'Concrete is strong when squeezed and weak when pulled. It is also heavy.' },
+  { kind: 'tower', target: 22, budget: 560,  anchors: A0([-2, -1, 0, 1, 2]), wind: 1.6, quake: 1.4, note: 'Heavy at the bottom, light at the top.' },
+  { kind: 'tower', target: 26, budget: 1050,  anchors: A0([-8, -2, -1, 0, 1, 2, 8]), wind: 1.6, quake: 1.4, note: 'Cables only pull, but they can reach far. Try guy wires to the outer supports.' },
+  { kind: 'tower', target: 30, budget: 560,  anchors: A0([-9, -1, 0, 1, 9]), wind: 1.6, quake: 1.45, note: 'A narrow base needs help from guy wires.' },
+  { kind: 'tower', target: 34, budget: 900,  anchors: A0([-10, -2, 2, 10]), wind: 1.7, quake: 1.5, note: 'Two feet and two guy points.' },
+  { kind: 'tower', target: 38, budget: 1600, anchors: A0([-12, -6, -2, -1, 1, 2, 6, 12]), wind: 1.6, quake: 1.45, note: 'Guy wires at more than one height share the load.' },
+  { kind: 'tower', target: 42, budget: 800, anchors: A0([-12, -1, 1, 12]), wind: 1.8, quake: 1.6, note: 'A needle. Keep the top light.' },
+  { kind: 'tower', target: 44, budget: 2600, anchors: A0([-16, -6, -4, -2, 0, 2, 4, 6, 16]), wind: 1.0, quake: 1.0, note: 'The tallest one. Everything you have learned.' },
+  { kind: 'bridge', span: 6,  depth: 4, anchors: [[-3, 0], [3, 0], [-3, -2], [3, -2]], truck: 0.5, budget: 75, note: 'Road beams carry the truck. Brace them from below.' },
+  { kind: 'bridge', span: 8,  depth: 4, anchors: [[-4, 0], [4, 0], [-4, -2], [4, -2]], truck: 0.55, budget: 105, note: 'Triangles under the road turn bending into pulling and pushing.' },
+  { kind: 'bridge', span: 10, depth: 5, anchors: [[-5, 0], [5, 0], [-5, -3], [5, -3]], truck: 0.6, budget: 135, note: 'A deeper truss is stronger.' },
+  { kind: 'bridge', span: 10, depth: 5, anchors: [[-5, 0], [5, 0]], truck: 0.6, budget: 130, note: 'No low supports. Build the truss above the road.' },
+  { kind: 'bridge', span: 12, depth: 6, anchors: [[-6, 0], [6, 0], [0, -6]], truck: 0.65, budget: 155, note: 'A pier in the middle. Use it.' },
+  { kind: 'bridge', span: 12, depth: 6, anchors: [[-6, 0], [6, 0], [-6, -4], [6, -4]], truck: 0.7, budget: 155, note: 'An arch below pushes out against the cliffs.' },
+  { kind: 'bridge', span: 14, depth: 6, anchors: [[-7, 0], [7, 0], [-10, 0], [10, 0]], truck: 0.7, budget: 290, note: 'Cables from tall pylons can hold the road up.' },
+  { kind: 'bridge', span: 16, depth: 7, anchors: [[-8, 0], [8, 0], [-8, -3], [8, -3]], truck: 0.75, budget: 210, note: 'Longer spans. Watch for buckling in the top chord.' },
+  { kind: 'bridge', span: 16, depth: 7, anchors: [[-8, 0], [8, 0], [-3, -7], [3, -7]], truck: 0.8, budget: 210, note: 'Two piers. Three short spans beat one long one.' },
+  { kind: 'bridge', span: 18, depth: 7, anchors: [[-9, 0], [9, 0], [-13, 0], [13, 0]], truck: 0.8, budget: 240, note: 'A suspension bridge needs strong anchors at each end.' },
+  { kind: 'bridge', span: 20, depth: 8, anchors: [[-10, 0], [10, 0], [-10, -4], [10, -4], [0, -8]], truck: 0.9, budget: 280, note: 'A heavier truck.' },
+  { kind: 'bridge', span: 24, depth: 8, anchors: [[-12, 0], [12, 0], [-12, -4], [12, -4], [-16, 0], [16, 0]], truck: 1.0, budget: 640, note: 'The last crossing. Mix every trick.' }
 ];
+LEVELS.forEach((L, i) => { L.n = i + 1; L.mats = L.kind === 'tower' ? TOWER_MATS : BRIDGE_MATS; });
 
-let level = 0;
-let score = 0;
-let tool = 'select';
-let canvasMode = 'build'; // 'build' or 'pan'
-let material = 'steel';
-let beamLength = 3;
-let testing = false;
-let simNodes = [], simBeams = [];
-let animFrame = null;
-let selectStart = null; // junction id we started drawing from
-let hoverPos = null;
-
-// Camera
-let camX = 0, camY = 0, camScale = 1;
-
-// Structure data
-let nodes = [];   // { id, gx, gy, fixed }
-let beams = [];   // { id, a, b, mat, len }
-let nextNodeId = 1, nextBeamId = 1;
-
-// ─── Init ─────────────────────────────────────────────────────
-function toggleInfo() {
-  document.getElementById('info-modal').classList.toggle('open');
+function capacity(mat, L) {
+  const M = MATS[mat];
+  return { ten: M.ten * TUNE.str, cmp: TUNE.str * M.cmp * Math.min(1, Math.pow(M.buckle / L, 2)) };
+}
+function floorAt(lv, x) {
+  if (lv.kind !== 'bridge') return 0;
+  const h = lv.span / 2;
+  return (x <= -h || x >= h) ? 0 : -lv.depth;
+}
+function canPlace(lv, gx, gy) {
+  if (lv.kind !== 'bridge') return gy >= 0;
+  const h = lv.span / 2;
+  if (gx <= -h || gx >= h) return gy >= 0;
+  return gy >= -lv.depth;
 }
 
-function init() {
-  resize();
-  // Ground anchor node
-  addGroundNodes();
-  updateStats();
-  render();
-}
-
-function resize() {
-  canvas.width = area.clientWidth;
-  canvas.height = area.clientHeight;
-  // Ground sits at bottom 15% — leaves 85% of screen as build space
-  camX = canvas.width / 2;
-  camY = canvas.height * 0.88;
-}
-
-function addGroundNodes() {
-  // Fixed anchor nodes along ground
-  const anchors = [-2,-1,0,1,2];
-  anchors.forEach(gx => {
-    nodes.push({ id: nextNodeId++, gx, gy: 0, fixed: true });
+function makeSim(nodes, beams, lv) {
+  const idx = new Map();
+  const sn = nodes.map((n, i) => {
+    idx.set(n.id, i);
+    return { id: n.id, gx: n.gx, gy: n.gy, x: n.gx, y: n.gy, px: n.gx, py: n.gy, vx: 0, vy: 0, fixed: n.fixed, m: 0.4, area: 0, w: 0, fx: 0 };
   });
-}
-
-// ─── Coordinate helpers ───────────────────────────────────────
-function worldToScreen(gx, gy) {
-  return {
-    x: camX + gx * GRID * camScale,
-    y: camY - gy * GRID * camScale
-  };
-}
-
-function screenToGrid(sx, sy) {
-  const gx = (sx - camX) / (GRID * camScale);
-  const gy = -(sy - camY) / (GRID * camScale);
-  return { gx: Math.round(gx), gy: Math.round(gy) };
-}
-
-function snapToGrid(sx, sy) {
-  const { gx, gy } = screenToGrid(sx, sy);
-  return { gx, gy };
-}
-
-// ─── Node management ─────────────────────────────────────────
-function findNode(gx, gy) {
-  return nodes.find(n => n.gx === gx && n.gy === gy);
-}
-
-function findNearestNode(gx, gy, radius = 0.5) {
-  let best = null, bestD = Infinity;
-  nodes.forEach(n => {
-    const d = Math.hypot(n.gx - gx, n.gy - gy);
-    if (d < radius && d < bestD) { bestD = d; best = n; }
+  const sb = beams.map(b => {
+    const a = idx.get(b.a), c = idx.get(b.b);
+    const A = sn[a], B = sn[c];
+    const L = Math.hypot(B.gx - A.gx, B.gy - A.gy);
+    const M = MATS[b.mat];
+    A.m += L * M.kg / 2; B.m += L * M.kg / 2;
+    A.area += L / 2; B.area += L / 2;
+    const cap = capacity(b.mat, L);
+    return { id: b.id, a, b: c, mat: b.mat, L, comp: M.comp * L, ten: cap.ten, cmp: cap.cmp, cable: b.mat === 'cable', road: b.mat === 'road', fs: 0, ratio: 0, broken: false };
   });
+  sn.forEach(n => { n.w = n.fixed ? 0 : 1 / n.m; });
+  let phases;
+  if (lv.kind === 'bridge') {
+    const h = lv.span / 2;
+    phases = [
+      { key: 'settle', label: 'Settling under its own weight', dur: 1.5 },
+      { key: 'cross', label: 'Truck crossing', dur: (lv.span + 6) / 3 }
+    ];
+  } else {
+    phases = [
+      { key: 'settle', label: 'Settling under its own weight', dur: 1.5 },
+      { key: 'wind', label: 'Wind test', dur: 4 },
+      { key: 'quake', label: 'Earthquake test', dur: 5 }
+    ];
+  }
+  const truck = lv.kind === 'bridge' ? { x: -lv.span / 2 - 3, axles: [{ y: 0, ok: true }, { y: 0, ok: true }], ang: 0 } : null;
+  return { nodes: sn, beams: sb, lv, phases, truck, t: 0, phase: 0, phaseT: 0, broken: 0, done: false, failed: null, peak: 0 };
+}
+
+const AXLE = 0.7;
+function roadUnder(sim, x, prevY) {
+  let best = null, bd = Infinity;
+  for (const b of sim.beams) {
+    if (!b.road || b.broken) continue;
+    const A = sim.nodes[b.a], B = sim.nodes[b.b];
+    const x0 = Math.min(A.x, B.x), x1 = Math.max(A.x, B.x);
+    if (x < x0 - 1e-6 || x > x1 + 1e-6 || x1 - x0 < 0.2) continue;
+    const t = (x - A.x) / (B.x - A.x);
+    const y = A.y + (B.y - A.y) * t;
+    const d = Math.abs(y - prevY);
+    if (d < bd) { bd = d; best = { b, A, B, t, y }; }
+  }
   return best;
 }
 
-function getOrCreateNode(gx, gy) {
-  if (gy < 0) return null; // below ground
-  let n = findNode(gx, gy);
-  if (!n) {
-    n = { id: nextNodeId++, gx, gy, fixed: false };
-    nodes.push(n);
+function stepSim(sim, dt) {
+  if (sim.done) return;
+  const h = dt / SUB, h2 = h * h, lv = sim.lv;
+  for (let s = 0; s < SUB; s++) {
+    sim.t += h; sim.phaseT += h;
+    if (sim.phaseT >= sim.phases[sim.phase].dur) {
+      sim.phase++; sim.phaseT = 0;
+      if (sim.phase >= sim.phases.length) { sim.done = true; return; }
+    }
+    const key = sim.phases[sim.phase].key, pt = sim.phaseT, dur = sim.phases[sim.phase].dur;
+    const gScale = key === 'settle' ? Math.min(1, pt / 0.6) : 1;
+    let qx = 0, gust = 0;
+    if (key === 'quake') {
+      const env = Math.min(1, pt / 1.2) * Math.min(1, Math.max(0, (dur - pt) / 0.8));
+      qx = lv.quake * TUNE.quake * env * (Math.sin(2 * Math.PI * 1.4 * pt) + 0.5 * Math.sin(2 * Math.PI * 2.7 * pt + 0.7));
+    }
+    if (key === 'wind') {
+      const env = Math.min(1, pt / 1.2);
+      gust = env * lv.wind * (0.8 + 0.2 * Math.sin(1.9 * pt) + 0.12 * Math.sin(6.1 * pt));
+    }
+    for (const n of sim.nodes) n.fx = 0;
+    if (key === 'cross') {
+      const T = sim.truck, hs = lv.span / 2;
+      T.x = -hs - 3 + 3 * pt;
+      const wHalf = lv.truck * 1000 * G / 2;
+      const xs = [T.x - AXLE, T.x + AXLE];
+      for (let k = 0; k < 2; k++) {
+        const ax = xs[k], A = T.axles[k];
+        if (ax <= -hs || ax >= hs) { A.y = 0; A.ok = true; continue; }
+        const r = roadUnder(sim, ax, A.y);
+        if (!r) { A.ok = false; continue; }
+        A.y = r.y; A.ok = true;
+        r.A.fx += (1 - r.t) * wHalf; r.B.fx += r.t * wHalf;
+      }
+      T.ang = Math.atan2(T.axles[1].y - T.axles[0].y, 2 * AXLE);
+    }
+    for (const n of sim.nodes) {
+      if (n.fixed) { n.x = n.gx + qx; n.y = n.gy; continue; }
+      let ax = 0;
+      if (gust) ax = TUNE.wind * gust * n.area * (1 + Math.min(n.gy, 24) / 10) / n.m;
+      else if (key === 'settle') ax = 0.05 * G * gScale;
+      n.vx += ax * h; n.vy -= (G * gScale + n.fx / n.m) * h;
+      n.px = n.x; n.py = n.y;
+      n.x += n.vx * h; n.y += n.vy * h;
+    }
+    for (const b of sim.beams) {
+      if (b.broken) continue;
+      const A = sim.nodes[b.a], B = sim.nodes[b.b];
+      const w = A.w + B.w;
+      if (!w) continue;
+      let dx = B.x - A.x, dy = B.y - A.y;
+      const d = Math.hypot(dx, dy) || 1e-6;
+      const C = d - b.L;
+      if (b.cable && C < 0) { b.fs *= 0.97; b.ratio = Math.max(0, b.fs / b.ten); continue; }
+      const at = b.comp / h2;
+      const dl = -C / (w + at);
+      dx /= d; dy /= d;
+      A.x -= A.w * dl * dx; A.y -= A.w * dl * dy;
+      B.x += B.w * dl * dx; B.y += B.w * dl * dy;
+      const f = -dl / h2;
+      b.fs += (f - b.fs) * 0.03;
+      b.ratio = b.fs >= 0 ? b.fs / b.ten : (b.cable ? 0 : -b.fs / b.cmp);
+      if (b.ratio > sim.peak) sim.peak = b.ratio;
+      if (b.ratio > 1) { b.broken = true; sim.broken++; }
+    }
+    for (const n of sim.nodes) {
+      if (n.fixed) continue;
+      n.vx = (n.x - n.px) / h; n.vy = (n.y - n.py) / h;
+      const k = 1 - DAMP * h;
+      n.vx *= k; n.vy *= k;
+      const fl = floorAt(lv, n.x);
+      if (n.y < fl) { n.y = fl; if (n.vy < 0) n.vy = 0; n.vx *= 0.8; }
+    }
   }
-  return n;
+  checkFail(sim);
 }
 
-// ─── Beam management ─────────────────────────────────────────
-const MAT = {
-  steel:    { cost: 3, strength: 800,  weight: 3,  color: '#7ab3d4', label: 'STEEL' },
-  wood:     { cost: 1, strength: 300,  weight: 1,  color: '#c8853a', label: 'WOOD'  },
-  concrete: { cost: 6, strength: 1800, weight: 8,  color: '#a0a090', label: 'R.CONC' }
-};
-
-function beamExists(a, b) {
-  return beams.some(bm => (bm.a === a && bm.b === b) || (bm.a === b && bm.b === a));
-}
-
-function placeBeam(ax, ay, bx, by) {
-  if (ax === bx && ay === by) return false;
-  const len = Math.hypot(bx - ax, by - ay);
-  if (len > beamLength + 0.01) return false;
-  if (by < 0 || ay < 0) return false;
-
-  const cost = len * MAT[material].cost;
-  const spent = getSpent();
-  const budget = LEVELS[level].budget + carryover;
-  if (spent + cost > budget) { flashMessage('OVER BUDGET!', 'fail'); return false; }
-
-  const na = getOrCreateNode(ax, ay);
-  const nb = getOrCreateNode(bx, by);
-  if (!na || !nb) return false;
-  if (beamExists(na.id, nb.id)) return false;
-
-  beams.push({ id: nextBeamId++, a: na.id, b: nb.id, mat: material, len });
-  updateStats();
-  return true;
-}
-
-function getSpent() {
-  return beams.reduce((s, bm) => s + bm.len * MAT[bm.mat].cost, 0);
-}
-
-function getTopHeight() {
-  if (nodes.length === 0) return 0;
-  const connected = new Set();
-  // Find all nodes reachable from ground via beams
-  const groundIds = new Set(nodes.filter(n => n.fixed).map(n => n.id));
-  let frontier = [...groundIds];
-  while (frontier.length) {
-    const cur = frontier.pop();
-    if (connected.has(cur)) continue;
-    connected.add(cur);
-    beams.forEach(bm => {
-      if (bm.a === cur && !connected.has(bm.b)) frontier.push(bm.b);
-      if (bm.b === cur && !connected.has(bm.a)) frontier.push(bm.a);
-    });
+function checkFail(sim) {
+  const lv = sim.lv;
+  if (lv.kind === 'bridge') {
+    const T = sim.truck;
+    const key = sim.phases[sim.phase] ? sim.phases[sim.phase].key : 'done';
+    if (key === 'settle') {
+      for (const b of sim.beams) {
+        if (!b.road) continue;
+        const A = sim.nodes[b.a], B = sim.nodes[b.b];
+        if (b.broken || Math.hypot(A.x - A.gx, A.y - A.gy) > 1.2 || Math.hypot(B.x - B.gx, B.y - B.gy) > 1.2) {
+          sim.done = true; sim.failed = 'Collapsed under its own weight'; return;
+        }
+      }
+    } else if (key === 'cross') {
+      for (const A of T.axles) {
+        if (!A.ok) { sim.done = true; sim.failed = 'The road broke and the truck fell'; return; }
+        if (A.y < -1.5) { sim.done = true; sim.failed = 'The road sagged too far and the truck fell'; return; }
+      }
+    }
+    return;
   }
+  if (standingHeight(sim) < lv.target - 1e-6) {
+    sim.done = true;
+    sim.failed = ['Collapsed under its own weight', 'Blown over by the wind', 'Shaken apart by the earthquake'][sim.phase];
+  }
+}
+
+function standingHeight(sim) {
+  const ok = new Uint8Array(sim.nodes.length);
+  const stack = [];
+  sim.nodes.forEach((n, i) => { if (n.fixed) { ok[i] = 1; stack.push(i); } });
+  const adj = sim.nodes.map(() => []);
+  for (const b of sim.beams) if (!b.broken) { adj[b.a].push(b.b); adj[b.b].push(b.a); }
   let top = 0;
-  nodes.forEach(n => {
-    if (connected.has(n.id)) top = Math.max(top, n.gy);
-  });
+  while (stack.length) {
+    const i = stack.pop();
+    for (const j of adj[i]) {
+      if (ok[j]) continue;
+      const n = sim.nodes[j];
+      if (Math.hypot(n.x - n.gx, n.y - n.gy) > 1.5 + 0.05 * n.gy) continue;
+      ok[j] = 1; stack.push(j);
+      if (n.gy > top) top = n.gy;
+    }
+  }
   return top;
 }
+// SIM END
 
-// ─── Stats ────────────────────────────────────────────────────
-function updateStats() {
-  const lv = LEVELS[level];
-  document.getElementById('stat-budget').textContent = '$' + (lv.budget + carryover);
-  document.getElementById('stat-spent').textContent = '$' + Math.ceil(getSpent());
-  document.getElementById('stat-target').textContent = lv.targetHeight + ' u';
-  document.getElementById('stat-score').textContent = score;
-  document.getElementById('stat-level').textContent = lv.label;
+
+// UI
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+const stage = document.getElementById('stage');
+const $ = id => document.getElementById(id);
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('tb2:' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('tb2:' + k, JSON.stringify(v)); } catch (e) {} }
+};
+
+const state = {
+  lv: 0,
+  unlocked: store.get('unlocked', 1),
+  best: store.get('best', {}),
+  nodes: [], beams: [], nid: 1, bid: 1,
+  mat: 'steel',
+  erase: false,
+  sel: null,
+  hover: null,
+  undo: [],
+  sim: null,
+  lastBuild: null
+};
+Object.keys(state.best).forEach(k => { const n = +k + 1; if (n <= LEVELS.length && n > state.unlocked) state.unlocked = n; });
+store.set('unlocked', state.unlocked);
+const cam = { x: 0, y: 0, s: 40 };
+let W = 0, H = 0, DPR = 1;
+
+function lvl() { return LEVELS[state.lv]; }
+
+function spent() {
+  return state.beams.reduce((s, b) => s + beamLen(b) * MATS[b.mat].cost, 0);
 }
+function nodeById(id) { return state.nodes.find(n => n.id === id); }
+function nodeAt(gx, gy) { return state.nodes.find(n => n.gx === gx && n.gy === gy); }
+function beamLen(b) { const A = nodeById(b.a), B = nodeById(b.b); return Math.hypot(A.gx - B.gx, A.gy - B.gy); }
 
-function updateLengthUI() {
-  beamLength = parseInt(document.getElementById('beam-length').value);
-  document.getElementById('length-val').textContent = beamLength;
-  document.getElementById('cost-preview').textContent = Math.ceil(beamLength * MAT[material].cost);
-  document.getElementById('max-len-label').textContent = beamLength;
-}
-
-function setTestMode(mode) {
-  testMode = mode;
-  document.getElementById('btn-mode-wind').classList.toggle('active', mode === 'wind');
-  document.getElementById('btn-mode-quake').classList.toggle('active', mode === 'quake');
-}
-
-function setTool(t) {
-  tool = t;
-  selectStart = null;
-  document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('btn-' + t)?.classList.add('active');
-}
-
-function setMaterial(m) {
-  material = m;
-  document.getElementById('btn-steel').classList.toggle('active', m === 'steel');
-  document.getElementById('btn-wood').classList.toggle('active', m === 'wood');
-  document.getElementById('btn-concrete').classList.toggle('active', m === 'concrete');
-  setTool('select');
-  updateLengthUI();
-}
-
-// ─── Physics Simulation ───────────────────────────────────────
-function getConnectedToGround() {
-  const groundIds = new Set(nodes.filter(n => n.fixed).map(n => n.id));
-  const connected = new Set(groundIds);
-  let changed = true;
-  while (changed) {
-    changed = false;
-    beams.forEach(bm => {
-      if (connected.has(bm.a) && !connected.has(bm.b)) { connected.add(bm.b); changed = true; }
-      if (connected.has(bm.b) && !connected.has(bm.a)) { connected.add(bm.a); changed = true; }
-    });
-  }
-  return connected;
-}
-
-function setPhaseIndicator(text, color) {
-  const el = document.getElementById('phase-indicator');
-  el.textContent = text;
-  el.style.color = color;
-  el.style.borderColor = color;
-  el.classList.add('show');
-}
-
-function hidePhaseIndicator() {
-  document.getElementById('phase-indicator').classList.remove('show');
-}
-
-function runTest() {
-  if (testing) return;
-  if (beams.length === 0) { flashMessage('ADD BEAMS FIRST', 'fail'); return; }
-
-  // Pre-check: any beam/node not connected to ground?
-  const connected = getConnectedToGround();
-  const floating = nodes.filter(n => !n.fixed && !connected.has(n.id));
-  if (floating.length > 0) {
-    flashMessage('FLOATING BEAMS — NOT GROUNDED!', 'fail');
-    return;
-  }
-
-  testing = true;
-  setPhaseIndicator(testMode === 'wind' ? '🌬 PHASE 1: WIND TEST' : '🌍 PHASE 2: EARTHQUAKE', testMode === 'wind' ? '#00d4ff' : '#ff8c00');
-
-  // Build sim nodes
-  simNodes = nodes.map(n => ({
-    id: n.id, gx: n.gx, gy: n.gy,
-    x: n.gx * GRID, y: n.gy * GRID,
-    vx: 0, vy: 0,
-    fixed: n.fixed,
-    mass: 0,
-    loadAbove: 0   // cumulative weight carried from above
-  }));
-
-  // Compute mass from beams (each beam distributes half its weight to each endpoint)
-  beams.forEach(bm => {
-    const na = simNodes.find(n => n.id === bm.a);
-    const nb = simNodes.find(n => n.id === bm.b);
-    const m = bm.len * MAT[bm.mat].weight;
-    if (na && !na.fixed) na.mass += m / 2;
-    if (nb && !nb.fixed) nb.mass += m / 2;
-  });
-  simNodes.forEach(n => { if (n.mass < 2) n.mass = 2; });
-
-  // Compute load above each node (sum of masses of all nodes above it in connected graph)
-  // This lets beams near the base feel the full weight of the tower above
-  simNodes.forEach(n => {
-    if (n.fixed) return;
-    let load = 0;
-    simNodes.forEach(other => {
-      if (!other.fixed && other.y > n.y) load += other.mass;
-    });
-    n.loadAbove = load;
-  });
-
-  simBeams = beams.map(bm => ({
-    ...bm,
-    restLen: bm.len * GRID,
-    broken: false,
-    stress: 0
-  }));
-
-  // Count how many active beams meet at each node — joints with only 2 beams are hinges
-  const jointValence = {};
-  simNodes.forEach(n => { jointValence[n.id] = 0; });
-  simBeams.forEach(bm => { jointValence[bm.a] = (jointValence[bm.a] || 0) + 1; jointValence[bm.b] = (jointValence[bm.b] || 0) + 1; });
-
-  let steps = 0;
-  const maxSteps = 500;
-  let failed = false;
-  let failReason = 'STRUCTURE FAILED!';
-
-  function simStep() {
-    if (!testing) return;
-    for (let s = 0; s < SIM_STEPS; s++) {
-      // Spring constraints (axial — resist stretch/compression)
-      simBeams.forEach(bm => {
-        if (bm.broken) return;
-        const na = simNodes.find(n => n.id === bm.a);
-        const nb = simNodes.find(n => n.id === bm.b);
-        if (!na || !nb) return;
-
-        const dx = nb.x - na.x;
-        const dy = nb.y - na.y;
-        const dist = Math.hypot(dx, dy) || 0.001;
-        const stretch = dist - bm.restLen;
-        const strain = Math.abs(stretch) / (bm.restLen || 1);
-
-        const avgLoad = ((na.loadAbove || 0) + (nb.loadAbove || 0)) / 2;
-        const loadFactor = 1 + avgLoad * 0.012;
-        const effectiveStrain = strain * loadFactor;
-        bm.stress = Math.min(1, effectiveStrain / BREAK_STRAIN[bm.mat]);
-
-        if (effectiveStrain > BREAK_STRAIN[bm.mat]) {
-          bm.broken = true;
-          failed = true;
-          const isVertical = Math.abs(dy) > Math.abs(dx);
-          if (bm.mat === 'wood') failReason = 'WOOD SNAPPED UNDER LOAD!';
-          else if (isVertical) failReason = 'STEEL BUCKLED!';
-          else failReason = 'STRUCTURE COLLAPSED!';
-          return;
-        }
-
-        const force = stretch * SPRING_K;
-        const fx = (dx / dist) * force;
-        const fy = (dy / dist) * force;
-
-        const dt = TIMESTEP / SIM_STEPS;
-        if (!na.fixed) { na.vx += (fx / na.mass) * dt; na.vy += (fy / na.mass) * dt; }
-        if (!nb.fixed) { nb.vx -= (fx / nb.mass) * dt; nb.vy -= (fy / nb.mass) * dt; }
-      });
-
-      // Angular spring — resist bending at joints, BUT only if the joint has 3+ beams (braced)
-      // Unbraced 2-beam joints are free hinges and will fold under load
-      simNodes.forEach(pivot => {
-        if (pivot.fixed) return;
-        const valence = jointValence[pivot.id] || 0;
-        if (valence < 3) return; // hinge — no rotational resistance
-
-        // Rotational stiffness scales with how well-braced the joint is
-        const rotK = (valence >= 4 ? 280 : 140) * SPRING_K / 1000;
-
-        const arms = simBeams
-          .filter(bm => !bm.broken && (bm.a === pivot.id || bm.b === pivot.id))
-          .map(bm => {
-            const other = simNodes.find(n => n.id === (bm.a === pivot.id ? bm.b : bm.a));
-            return other ? { x: other.x - pivot.x, y: other.y - pivot.y, node: other } : null;
-          }).filter(Boolean);
-
-        // For each pair of arms, push them toward their rest angle
-        for (let i = 0; i < arms.length; i++) {
-          for (let j = i + 1; j < arms.length; j++) {
-            const a = arms[i], b = arms[j];
-            const la = Math.hypot(a.x, a.y) || 0.001;
-            const lb = Math.hypot(b.x, b.y) || 0.001;
-            const cosA = (a.x * b.x + a.y * b.y) / (la * lb);
-            const angle = Math.acos(Math.max(-1, Math.min(1, cosA)));
-            // Rest angle between two beams — evenly distributed around the joint
-            const restAngle = (Math.PI * 2) / arms.length;
-            const angleDiff = angle - restAngle;
-            if (Math.abs(angleDiff) < 0.001) continue;
-
-            const torque = angleDiff * rotK;
-            const dt = TIMESTEP / SIM_STEPS;
-            // Apply corrective force perpendicular to each arm
-            const pax = -a.y / la, pay = a.x / la;
-            const pbx = -b.y / lb, pby = b.x / lb;
-            if (!a.node.fixed) { a.node.vx += pax * torque * dt / a.node.mass; a.node.vy += pay * torque * dt / a.node.mass; }
-            if (!b.node.fixed) { b.node.vx -= pbx * torque * dt / b.node.mass; b.node.vy -= pby * torque * dt / b.node.mass; }
-          }
-        }
-      });
-
-      // Integrate positions + wind + gravity
-      // dt is per-substep in seconds. Velocities in px/s, positions in px.
-      const dt = TIMESTEP / SIM_STEPS;
-      simNodes.forEach(n => {
-        if (!n.fixed) {
-          // Gravity (px/s^2)
-          n.vy -= GRAVITY * dt;
-
-          if (testMode === 'wind') {
-            const heightFactor = 1 + (n.y / GRID) * 0.15;
-            // Heavier nodes (concrete) resist wind more — force/mass naturally handles this
-            const gust = 1200 * Math.sin(steps * 0.13) + 550 * Math.sin(steps * 0.37 + n.id * 0.3) + (Math.random() - 0.5) * 400;
-            n.vx += (gust * heightFactor / n.mass) * dt;
-          } else {
-            // Earthquake: pure lateral ground shaking — wiggle wiggle wiggle
-            // All nodes get the same ground acceleration (base excitation model)
-            // Multiple frequencies mix to feel organic, no vertical tipping
-            const shake =
-              2800 * Math.sin(steps * 0.55) +
-              1800 * Math.sin(steps * 1.1 + 0.8) +
-               900 * Math.sin(steps * 2.3 + 1.4) +
-              (Math.random() - 0.5) * 600;
-            n.vx += (shake / n.mass) * dt;
-            // tiny vertical rumble only — no tipping force
-            n.vy += ((Math.random() - 0.5) * 120 / n.mass) * dt;
-          }
-
-          // Integrate position
-          n.x += n.vx * dt;
-          n.y += n.vy * dt;
-
-          // Damping
-          n.vx *= DAMPING;
-          n.vy *= DAMPING;
-
-          if (n.y < 0) { n.y = 0; n.vy = 0; }
-        }
-      });
-
-      // Drift check: if any non-fixed node has moved far from its original position, it's collapsed
-      for (const n of simNodes) {
-        if (!n.fixed) {
-          const drift = Math.hypot(n.x - n.gx * GRID, n.y - n.gy * GRID);
-          if (drift > GRID * 3.5) {
-            failed = true;
-            failReason = testMode === 'quake' ? 'SHOOK APART!' : 'TOWER TOPPLED!';
-          }
-        }
-      }
+function connectedSet() {
+  const ok = new Set(state.nodes.filter(n => n.fixed).map(n => n.id));
+  let grew = true;
+  while (grew) {
+    grew = false;
+    for (const b of state.beams) {
+      if (ok.has(b.a) && !ok.has(b.b)) { ok.add(b.b); grew = true; }
+      if (ok.has(b.b) && !ok.has(b.a)) { ok.add(b.a); grew = true; }
     }
-
-    steps++;
-    render();
-
-    if (failed || steps >= maxSteps) {
-      if (failed) {
-        setTimeout(() => {
-          flashMessage(failReason, 'fail');
-          hidePhaseIndicator();
-          testing = false;
-          document.getElementById('btn-test-main').textContent = '▶ TEST';
-          render();
-        }, 500);
-      } else {
-        // Phase complete — wind done, now run quake
-        if (testMode === 'wind') {
-          flashMessage('WIND: SURVIVED!', 'pass');
-          setTimeout(() => {
-            simNodes.forEach(n => { n.x = n.gx * GRID; n.y = n.gy * GRID; n.vx = 0; n.vy = 0; });
-            simBeams.forEach(bm => { bm.broken = false; bm.stress = 0; });
-            testMode = 'quake';
-            setPhaseIndicator('🌍 PHASE 2: EARTHQUAKE', '#ff8c00');
-            steps = 0; failed = false; failReason = 'STRUCTURE FAILED!';
-            animFrame = requestAnimationFrame(simStep);
-          }, 1200);
-        } else {
-          // Both phases passed — score it
-          const top = getTopHeight();
-          const target = LEVELS[level].targetHeight;
-          if (top >= target) {
-            const bonus = Math.max(0, (top - target)) * 50;
-            const efficiency = Math.max(0, 1 - getSpent() / LEVELS[level].budget);
-            const pts = 100 + bonus + Math.round(efficiency * 200);
-            score += pts;
-            updateStats();
-            document.getElementById('score-popup').textContent = '+' + pts + ' PTS';
-            document.getElementById('score-popup').classList.add('show');
-            setTimeout(() => document.getElementById('score-popup').classList.remove('show'), 2500);
-            const leftover = Math.floor(LEVELS[level].budget + carryover - getSpent());
-            carryover = leftover;
-            flashMessage('STANDING! +$' + leftover + ' SAVED', 'pass');
-            if (level < LEVELS.length - 1) {
-              setTimeout(() => { level++; updateStats(); clearAll(); }, 2500);
-            }
-          } else {
-            flashMessage('BUILD TALLER!', 'fail');
-          }
-          testing = false;
-          hidePhaseIndicator();
-          document.getElementById('btn-test-main').textContent = '▶ TEST';
-          render();
-        }
-      }
-      return;
-    }
-    animFrame = requestAnimationFrame(simStep);
   }
-
-  animFrame = requestAnimationFrame(simStep);
+  return ok;
+}
+function buildHeight() {
+  const ok = connectedSet();
+  let t = 0;
+  for (const n of state.nodes) if (ok.has(n.id) && n.gy > t) t = n.gy;
+  return t;
 }
 
-function runFullTest() {
-  if (testing) {
-    // Cancel mid-test
-    testing = false;
-    if (animFrame) cancelAnimationFrame(animFrame);
-    document.getElementById('btn-test-main').textContent = '▶ TEST';
-    render();
-    return;
+function roadGaps() {
+  const L = lvl();
+  if (L.kind !== 'bridge') return [];
+  const ok = connectedSet();
+  const iv = [];
+  for (const b of state.beams) {
+    if (b.mat !== 'road' || !ok.has(b.a)) continue;
+    const A = nodeById(b.a), B = nodeById(b.b);
+    if (Math.abs(A.gx - B.gx) < 0.2) continue;
+    iv.push([Math.min(A.gx, B.gx), Math.max(A.gx, B.gx)]);
   }
-  testMode = 'wind';
-  document.getElementById('btn-test-main').textContent = '■ CANCEL';
-  runTest();
+  iv.sort((p, q) => p[0] - q[0]);
+  const h = L.span / 2;
+  let reach = -h;
+  const gaps = [];
+  for (const [a, b] of iv) {
+    if (b <= reach) continue;
+    if (a > reach + 1e-6) gaps.push([reach, Math.min(a, h)]);
+    reach = Math.max(reach, b);
+    if (reach >= h) break;
+  }
+  if (reach < h - 1e-6) gaps.push([reach, h]);
+  return gaps;
+}
+function buildMats() {
+  const box = $('mats');
+  box.innerHTML = '';
+  box.style.gridTemplateColumns = 'repeat(' + lvl().mats.length + ', 1fr)';
+  for (const m of lvl().mats) {
+    const b = document.createElement('button');
+    b.className = 'mat';
+    b.dataset.mat = m;
+    b.innerHTML = '<span class="sw" style="background:' + MATS[m].color + '"></span><span class="nm">' + MATS[m].name + '</span><span class="pr">$' + MATS[m].cost + ' per m</span>';
+    b.addEventListener('click', () => { state.mat = m; state.erase = false; refresh(); });
+    box.appendChild(b);
+  }
 }
 
-function stopTest() {
-  testing = false;
-  if (animFrame) cancelAnimationFrame(animFrame);
-  document.getElementById('btn-test-main').textContent = '▶ TEST';
-  render();
+// Level and persistence
+function snapshot() {
+  return { nodes: state.nodes.map(n => ({ ...n })), beams: state.beams.map(b => ({ ...b })), nid: state.nid, bid: state.bid };
+}
+function restore(s) {
+  state.nodes = s.nodes.map(n => ({ ...n }));
+  state.beams = s.beams.map(b => ({ ...b }));
+  state.nid = s.nid; state.bid = s.bid;
+}
+function saveBuild() { store.set('build' + lvl().n, snapshot()); }
+function pushUndo() {
+  state.undo.push(snapshot());
+  if (state.undo.length > 80) state.undo.shift();
+}
+function freshLevel() {
+  state.nodes = []; state.beams = []; state.nid = 1; state.bid = 1;
+  for (const [gx, gy] of lvl().anchors) state.nodes.push({ id: state.nid++, gx, gy, fixed: true });
+}
+function loadLevel(i) {
+  state.lv = i;
+  state.sel = null; state.undo = []; state.erase = false;
+  const saved = store.get('build' + lvl().n, null);
+  const sameAnchors = saved && saved.nodes && lvl().anchors.every(([x, y]) => saved.nodes.some(n => n.fixed && n.gx === x && n.gy === y)) && saved.nodes.filter(n => n.fixed).length === lvl().anchors.length;
+  if (sameAnchors && saved.beams.every(b => lvl().mats.includes(b.mat))) restore(saved);
+  else freshLevel();
+  if (!lvl().mats.includes(state.mat) || state.kind !== lvl().kind) state.mat = lvl().kind === 'bridge' ? 'road' : 'steel';
+  state.kind = lvl().kind;
+  buildMats();
+  resize();
+  fitView();
+  hint(lvl().note);
+  refresh();
 }
 
-function clearAll() {
-  stopTest();
-  nodes = [];
-  beams = [];
-  nextNodeId = 1; nextBeamId = 1;
-  selectStart = null;
-  addGroundNodes();
-  updateStats();
-  render();
+// Editing
+function placeBeam(from, gx, gy) {
+  if (!canPlace(lvl(), gx, gy)) return lvl().kind === 'bridge' ? 'That spot is inside the rock' : 'Beams cannot go below ground';
+  const A = nodeById(from);
+  const len = Math.hypot(gx - A.gx, gy - A.gy);
+  if (len === 0) return null;
+  const mx = MATS[state.mat].max;
+  if (len > mx + 1e-9) return 'Too long. ' + MATS[state.mat].name + ' can be up to ' + mx + ' m';
+  const cost = len * MATS[state.mat].cost;
+  if (spent() + cost > lvl().budget + 1e-9) return 'Not enough budget for that beam';
+  let B = nodeAt(gx, gy);
+  if (B && state.beams.some(b => (b.a === A.id && b.b === B.id) || (b.a === B.id && b.b === A.id))) return 'Those joints are already connected';
+  if (B && B.fixed && A.fixed) return 'Supports are already fixed to the ground';
+  pushUndo();
+  if (!B) { B = { id: state.nid++, gx, gy, fixed: false }; state.nodes.push(B); }
+  state.beams.push({ id: state.bid++, a: A.id, b: B.id, mat: state.mat });
+  state.sel = B.id;
+  saveBuild();
+  return '';
+}
+function eraseAt(sx, sy) {
+  const g = toGrid(sx, sy);
+  const n = state.nodes.find(n => Math.hypot(n.gx - g.fx, n.gy - g.fy) < 0.35);
+  if (n) {
+    if (!state.beams.some(b => b.a === n.id || b.b === n.id)) return;
+    pushUndo();
+    state.beams = state.beams.filter(b => b.a !== n.id && b.b !== n.id);
+    pruneNodes(); saveBuild(); return;
+  }
+  let best = null, bd = 14;
+  for (const b of state.beams) {
+    const A = toScreen(nodeById(b.a).gx, nodeById(b.a).gy), B = toScreen(nodeById(b.b).gx, nodeById(b.b).gy);
+    const d = segDist(sx, sy, A.x, A.y, B.x, B.y);
+    if (d < bd) { bd = d; best = b; }
+  }
+  if (best) { pushUndo(); state.beams = state.beams.filter(b => b !== best); pruneNodes(); saveBuild(); }
+}
+function pruneNodes() {
+  const used = new Set();
+  state.beams.forEach(b => { used.add(b.a); used.add(b.b); });
+  state.nodes = state.nodes.filter(n => n.fixed || used.has(n.id));
+  if (state.sel && !nodeById(state.sel)) state.sel = null;
+}
+function segDist(px, py, ax, ay, bx, by) {
+  const dx = bx - ax, dy = by - ay;
+  const t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy || 1)));
+  return Math.hypot(px - ax - t * dx, py - ay - t * dy);
 }
 
-function flashMessage(msg, cls) {
-  const el = document.getElementById('message');
-  el.textContent = msg;
-  el.className = 'show ' + cls;
-  setTimeout(() => el.className = '', 2000);
+function tap(sx, sy) {
+  if (state.sim) return;
+  if (state.erase) { eraseAt(sx, sy); refresh(); return; }
+  const g = toGrid(sx, sy);
+  const near = state.nodes.find(n => Math.hypot(n.gx - g.fx, n.gy - g.fy) < 0.4);
+  if (state.sel == null) {
+    if (near) { state.sel = near.id; hint('Now tap where the beam should end'); }
+    else hint('Start from a support or an existing joint', true);
+  } else if (near && near.id === state.sel) {
+    state.sel = null; hint('Tap a support or joint to start a beam');
+  } else {
+    const err = placeBeam(state.sel, g.gx, g.gy);
+    if (err) hint(err, true);
+    else hint('Keep going, or tap the picked joint to let go');
+  }
+  refresh();
 }
 
-// ─── Rendering ────────────────────────────────────────────────
-function render() {
-  const W = canvas.width, H = canvas.height;
-  ctx.clearRect(0, 0, W, H);
+// Hint
+let hintTimer = 0;
+function hint(text, warn) {
+  $('hint-text').textContent = text;
+  $('hint').classList.toggle('warn', !!warn);
+  $('hint').style.display = '';
+  clearTimeout(hintTimer);
+  hintTimer = setTimeout(() => { $('hint').style.display = 'none'; }, warn ? 2600 : 4200);
+}
 
-  // Background
-  ctx.fillStyle = '#0a0f1a';
+// Stats and buttons
+function refresh() {
+  const left = lvl().budget - spent();
+  $('s-budget').textContent = '$' + Math.floor(left);
+  $('s-budget').classList.toggle('low', left < lvl().budget * 0.1);
+  if (lvl().kind === 'bridge') {
+    const ok = roadGaps().length === 0;
+    $('s-mid-k').textContent = 'Road';
+    $('s-height').innerHTML = (ok ? 'Joined' : 'Open') + ' <small>' + lvl().span + ' m gap</small>';
+    $('s-height').classList.toggle('met', ok);
+  } else {
+    const h = buildHeight();
+    $('s-mid-k').textContent = 'Height';
+    $('s-height').innerHTML = h + ' <small>/ ' + lvl().target + ' m</small>';
+    $('s-height').classList.toggle('met', h >= lvl().target);
+  }
+  const total = Object.values(state.best).reduce((a, b) => a + b, 0);
+  $('s-score').textContent = total;
+  $('level-btn').textContent = 'Level ' + lvl().n;
+  document.querySelectorAll('.mat').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mat === state.mat)));
+  $('del-btn').setAttribute('aria-pressed', String(state.erase));
+  const busy = !!state.sim;
+  ['undo-btn', 'clear-btn', 'del-btn', 'level-btn'].forEach(id => { $(id).disabled = busy; });
+  document.querySelectorAll('.mat').forEach(b => { b.disabled = busy; });
+  $('undo-btn').disabled = busy || state.undo.length === 0;
+  $('test-btn').textContent = busy ? 'Stop' : 'Test';
+  $('test-btn').classList.toggle('stop', busy);
+  draw();
+}
+
+// Camera
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 3);
+  W = stage.clientWidth; H = stage.clientHeight;
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  draw();
+}
+function toScreen(gx, gy) { return { x: cam.x + gx * cam.s, y: cam.y - gy * cam.s }; }
+function toGrid(sx, sy) {
+  const fx = (sx - cam.x) / cam.s, fy = (cam.y - sy) / cam.s;
+  return { fx, fy, gx: Math.round(fx), gy: Math.round(fy) };
+}
+function fitView() {
+  const L = lvl();
+  const xs = state.nodes.map(n => n.gx), ys = state.nodes.map(n => n.gy);
+  const bridge = L.kind === 'bridge';
+  const minX = Math.min(...xs, bridge ? -L.span / 2 - 3 : -4) - 1, maxX = Math.max(...xs, bridge ? L.span / 2 + 3 : 4) + 1;
+  const maxY = Math.max(...ys, bridge ? 3 : L.target) + 2;
+  const minY = bridge ? -L.depth - 1 : -1.2;
+  const s = Math.min(W / (maxX - minX), (H - 40) / (maxY - minY));
+  cam.s = Math.max(6, Math.min(70, s));
+  cam.x = W / 2 - ((minX + maxX) / 2) * cam.s;
+  cam.y = bridge ? H - (H - (maxY - minY) * cam.s) / 2 + minY * cam.s : H + minY * cam.s;
+  draw();
+}
+function zoomAt(f, sx, sy) {
+  const ns = Math.max(8, Math.min(120, cam.s * f));
+  const k = ns / cam.s;
+  cam.x = sx - (sx - cam.x) * k;
+  cam.y = sy - (sy - cam.y) * k;
+  cam.s = ns;
+  draw();
+}
+
+// Drawing
+function draw() {
+  if (!W) return;
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.fillStyle = '#F3F6F5';
   ctx.fillRect(0, 0, W, H);
-
-  drawGrid(W, H);
-  drawTargetLine();
-  drawGround();
+  drawGrid();
+  if (lvl().kind === 'bridge') drawCliffs(); else { drawGround(); drawTarget(); }
   drawBeams();
   drawNodes();
+  drawTruck();
   drawPreview();
 }
-
-function drawGrid(W, H) {
-  ctx.save();
-  const step = GRID * camScale;
-  const ox = ((camX % step) + step) % step;
-  const oy = ((camY % step) + step) % step;
-
-  ctx.strokeStyle = '#1a2540';
-  ctx.lineWidth = 0.5;
-
-  for (let x = ox; x < W; x += step) {
+function drawGrid() {
+  const s = cam.s;
+  const x0 = Math.floor((0 - cam.x) / s), x1 = Math.ceil((W - cam.x) / s);
+  const y0 = Math.floor((cam.y - H) / s), y1 = Math.ceil(cam.y / s);
+  ctx.lineWidth = 1;
+  for (let gx = x0; gx <= x1; gx++) {
+    const x = Math.round(cam.x + gx * s) + 0.5;
+    ctx.strokeStyle = gx % 5 === 0 ? '#C4D1CE' : '#DFE6E4';
     ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
   }
-  for (let y = oy; y < H; y += step) {
+  for (let gy = y0; gy <= y1; gy++) {
+    const y = Math.round(cam.y - gy * s) + 0.5;
+    ctx.strokeStyle = gy % 5 === 0 ? '#C4D1CE' : '#DFE6E4';
     ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    if (gy % 5 === 0 && gy !== 0) {
+      ctx.fillStyle = '#7C8A99';
+      ctx.font = '600 11px system-ui, sans-serif';
+      ctx.fillText(gy + ' m', 6, y - 4);
+    }
+  }
+}
+function drawGround() {
+  const y = cam.y;
+  let off = 0;
+  if (state.sim) { const a = state.sim.nodes.find(n => n.fixed); if (a) off = (a.x - a.gx) * cam.s; }
+  ctx.fillStyle = '#E4E9E3';
+  ctx.fillRect(0, y, W, H - y);
+  ctx.save();
+  ctx.beginPath(); ctx.rect(0, y, W, H - y); ctx.clip();
+  ctx.strokeStyle = '#B9C3B8';
+  ctx.lineWidth = 1;
+  for (let i = -H + (off % 10); i < W + H; i += 10) {
+    ctx.beginPath(); ctx.moveTo(i, y); ctx.lineTo(i - 14, y + 14); ctx.stroke();
   }
   ctx.restore();
+  ctx.strokeStyle = '#1C2836';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
 }
-
-function drawTargetLine() {
-  const target = LEVELS[level].targetHeight;
-  const { y } = worldToScreen(0, target);
+function drawCliffs() {
+  const L = lvl(), h = L.span / 2;
+  const l = toScreen(-h, 0), r = toScreen(h, 0), f = toScreen(0, -L.depth);
+  ctx.fillStyle = '#D9EAF2';
+  ctx.fillRect(l.x, f.y, r.x - l.x, H - f.y);
+  ctx.strokeStyle = '#9CC3D6';
+  ctx.lineWidth = 1;
+  for (let y = f.y + 8; y < H; y += 12) { ctx.beginPath(); ctx.moveTo(l.x, y); ctx.lineTo(r.x, y); ctx.stroke(); }
   ctx.save();
-  ctx.strokeStyle = '#00ff88';
-  ctx.lineWidth = 1.5;
-  ctx.setLineDash([8, 4]);
-  ctx.globalAlpha = 0.5;
   ctx.beginPath();
-  ctx.moveTo(0, y);
-  ctx.lineTo(canvas.width, y);
+  ctx.rect(0, l.y, l.x, H - l.y);
+  ctx.rect(r.x, r.y, W - r.x, H - r.y);
+  ctx.fillStyle = '#E4E9E3';
+  ctx.fill();
+  ctx.clip();
+  ctx.strokeStyle = '#B9C3B8';
+  for (let i = -H; i < W + H; i += 10) { ctx.beginPath(); ctx.moveTo(i, l.y); ctx.lineTo(i - H, l.y + H); ctx.stroke(); }
+  ctx.restore();
+  ctx.strokeStyle = '#1C2836';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, l.y); ctx.lineTo(l.x, l.y); ctx.lineTo(l.x, H);
+  ctx.moveTo(W, r.y); ctx.lineTo(r.x, r.y); ctx.lineTo(r.x, H);
   ctx.stroke();
+  if (!state.sim) {
+    const s = toScreen(-h - 2.2, 0), e = toScreen(h + 2.2, 0);
+    flag(s.x, s.y, '#178A52'); flag(e.x, e.y, '#178A52');
+  }
+}
+function flag(x, y, c) {
+  ctx.strokeStyle = '#1C2836'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - 26); ctx.stroke();
+  ctx.fillStyle = c;
+  ctx.beginPath(); ctx.moveTo(x, y - 26); ctx.lineTo(x + 14, y - 21); ctx.lineTo(x, y - 16); ctx.closePath(); ctx.fill();
+}
+function drawTruck() {
+  const sim = state.sim;
+  if (!sim || !sim.truck || sim.phases[sim.phase] && sim.phases[sim.phase].key !== 'cross' && !sim.done) return;
+  const T = sim.truck;
+  const p = toScreen(T.x, (T.axles[0].y + T.axles[1].y) / 2);
+  const s = cam.s;
+  ctx.save();
+  ctx.translate(p.x, p.y);
+  ctx.rotate(-T.ang);
+  const wr = 0.28 * s;
+  ctx.fillStyle = '#F4A100';
+  ctx.strokeStyle = '#1C2836';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.rect(-1.1 * s, -wr - 0.75 * s, 1.5 * s, 0.75 * s); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.rect(0.45 * s, -wr - 0.6 * s, 0.6 * s, 0.6 * s); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#1C2836';
+  for (const ax of [-0.7, 0.7]) { ctx.beginPath(); ctx.arc(ax * s, -wr, wr, 0, Math.PI * 2); ctx.fill(); }
+  ctx.restore();
+}
+function drawTarget() {
+  const y = cam.y - lvl().target * cam.s;
+  ctx.save();
+  ctx.strokeStyle = '#178A52';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([10, 6]);
+  ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#178A52';
+  ctx.font = '700 12px system-ui, sans-serif';
+  const label = 'Target ' + lvl().target + ' m';
+  const tw = ctx.measureText(label).width;
+  ctx.fillText(label, W - tw - 54, y - 6);
+  ctx.restore();
+}
+function mix(hexA, hexB, t) {
+  const a = parseInt(hexA.slice(1), 16), b = parseInt(hexB.slice(1), 16);
+  const r = Math.round(((a >> 16) & 255) * (1 - t) + ((b >> 16) & 255) * t);
+  const g = Math.round(((a >> 8) & 255) * (1 - t) + ((b >> 8) & 255) * t);
+  const bl = Math.round((a & 255) * (1 - t) + (b & 255) * t);
+  return 'rgb(' + r + ',' + g + ',' + bl + ')';
+}
+const WIDTH = { wood: 0.09, steel: 0.11, concrete: 0.17, road: 0.2, cable: 0.04 };
+function drawBeams() {
+  const sim = state.sim;
+  const list = sim ? sim.beams : state.beams;
+  for (const b of list) {
+    let A, B;
+    if (sim) {
+      const na = sim.nodes[b.a], nb = sim.nodes[b.b];
+      A = toScreen(na.x, na.y); B = toScreen(nb.x, nb.y);
+    } else {
+      const na = nodeById(b.a), nb = nodeById(b.b);
+      A = toScreen(na.gx, na.gy); B = toScreen(nb.gx, nb.gy);
+    }
+    const base = MATS[b.mat].color;
+    const lw = Math.max(b.mat === 'cable' ? 1.5 : 2, WIDTH[b.mat] * cam.s);
+    ctx.lineCap = b.mat === 'road' ? 'butt' : 'round';
+    if (sim && b.broken) {
+      const mx = (A.x + B.x) / 2, my = (A.y + B.y) / 2;
+      ctx.strokeStyle = 'rgba(200,55,45,0.55)';
+      ctx.lineWidth = Math.max(1.5, lw * 0.6);
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(mx - (B.x - A.x) * 0.06, my - (B.y - A.y) * 0.06); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(mx + (B.x - A.x) * 0.06, my + (B.y - A.y) * 0.06); ctx.lineTo(B.x, B.y); ctx.stroke();
+      ctx.setLineDash([]);
+      continue;
+    }
+    const t = sim ? Math.max(0, Math.min(1, (b.ratio - 0.25) / 0.75)) : 0;
+    ctx.strokeStyle = t > 0 ? mix(base, '#C8372D', t) : base;
+    ctx.lineWidth = lw;
+    ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.stroke();
+    if (b.mat === 'concrete') {
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      ctx.lineWidth = lw * 0.3;
+      ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.stroke();
+    } else if (b.mat === 'road') {
+      ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+      ctx.lineWidth = Math.max(1, lw * 0.12);
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.stroke();
+      ctx.setLineDash([]);
+    } else if (b.mat === 'wood') {
+      ctx.strokeStyle = 'rgba(255,240,215,0.45)';
+      ctx.lineWidth = Math.max(1, lw * 0.22);
+      ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.stroke();
+    }
+  }
+}
+function drawNodes() {
+  const sim = state.sim;
+  const list = sim ? sim.nodes : state.nodes;
+  const r = Math.max(3.5, cam.s * 0.11);
+  for (const n of list) {
+    const p = sim ? toScreen(n.x, n.y) : toScreen(n.gx, n.gy);
+    if (n.fixed) {
+      const sz = Math.max(8, cam.s * 0.3);
+      ctx.fillStyle = '#1C2836';
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(p.x - sz * 0.8, p.y + sz);
+      ctx.lineTo(p.x + sz * 0.8, p.y + sz);
+      ctx.closePath(); ctx.fill();
+    }
+    ctx.fillStyle = '#FFFFFF';
+    ctx.strokeStyle = '#1C2836';
+    ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    if (!sim && n.id === state.sel) {
+      ctx.strokeStyle = '#F4A100';
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(p.x, p.y, r + 5, 0, Math.PI * 2); ctx.stroke();
+    }
+  }
+}
+function drawPreview() {
+  if (state.sim || state.erase || state.sel == null || !state.hover) return;
+  const A = nodeById(state.sel);
+  if (!A) return;
+  const { gx, gy } = state.hover;
+  const len = Math.hypot(gx - A.gx, gy - A.gy);
+  if (len === 0) return;
+  const cost = len * MATS[state.mat].cost;
+  const ok = canPlace(lvl(), gx, gy) && len <= MATS[state.mat].max + 1e-9 && spent() + cost <= lvl().budget + 1e-9;
+  const pa = toScreen(A.gx, A.gy), pb = toScreen(gx, gy);
+  ctx.save();
+  ctx.strokeStyle = ok ? MATS[state.mat].color : '#C8372D';
+  ctx.globalAlpha = 0.6;
+  ctx.lineWidth = Math.max(1.5, WIDTH[state.mat] * cam.s);
+  ctx.setLineDash([8, 6]);
+  ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke();
   ctx.setLineDash([]);
   ctx.globalAlpha = 1;
-
-  ctx.fillStyle = '#00ff88';
-  ctx.font = '10px "Share Tech Mono"';
-  ctx.fillText('TARGET: ' + target + 'u', 8, y - 5);
+  ctx.fillStyle = ok ? '#1C2836' : '#C8372D';
+  ctx.font = '600 12px system-ui, sans-serif';
+  ctx.fillText(len.toFixed(1) + ' m  $' + Math.ceil(cost), pb.x + 10, pb.y - 10);
   ctx.restore();
 }
 
-function drawGround() {
-  const { y } = worldToScreen(0, 0);
-  ctx.save();
-  ctx.fillStyle = '#1a2540';
-  ctx.fillRect(0, y, canvas.width, canvas.height - y);
-
-  // Hatching
-  ctx.strokeStyle = '#243050';
-  ctx.lineWidth = 1;
-  const spacing = 12;
-  for (let i = 0; i < canvas.width + canvas.height; i += spacing) {
-    ctx.beginPath();
-    ctx.moveTo(i, y);
-    ctx.lineTo(i - canvas.height, y + canvas.height);
-    ctx.stroke();
+// Testing
+let raf = 0, lastT = 0;
+function startTest() {
+  if (state.sim) { stopTest(); return; }
+  state.sel = null; state.erase = false;
+  if (!state.beams.length) { hint('Place some beams first', true); refresh(); return; }
+  const ok = connectedSet();
+  if (state.nodes.some(n => !ok.has(n.id))) { hint('Some beams are not connected to a support', true); refresh(); return; }
+  if (lvl().kind === 'bridge') {
+    if (roadGaps().length) { hint('The road has a gap. Join the two cliffs with road', true); refresh(); return; }
+  } else if (buildHeight() < lvl().target) { hint('Build up to the green line before testing', true); refresh(); return; }
+  state.lastBuild = snapshot();
+  state.sim = makeSim(state.nodes, state.beams, lvl());
+  $('phase').classList.add('show');
+  $('hint').style.display = 'none';
+  lastT = performance.now();
+  refresh();
+  raf = requestAnimationFrame(loop);
+}
+function loop(now) {
+  const sim = state.sim;
+  if (!sim) return;
+  let el = Math.min(0.05, (now - lastT) / 1000);
+  lastT = now;
+  while (el > 0 && !sim.done) { const dt = Math.min(1 / 60, el); stepSim(sim, dt); el -= dt; }
+  const ph = sim.phases[Math.min(sim.phase, sim.phases.length - 1)];
+  $('phase-name').textContent = ph.label;
+  $('phase-fill').style.width = Math.min(100, sim.phaseT / ph.dur * 100) + '%';
+  draw();
+  if (sim.done) { setTimeout(() => finishTest(sim), 700); return; }
+  raf = requestAnimationFrame(loop);
+}
+function stopTest() {
+  cancelAnimationFrame(raf);
+  state.sim = null;
+  $('phase').classList.remove('show');
+  refresh();
+}
+function finishTest(sim) {
+  if (state.sim !== sim) return;
+  const L = lvl();
+  const cost = Math.ceil(spent());
+  const left = L.budget - cost;
+  const bridge = L.kind === 'bridge';
+  const h = bridge ? 0 : buildHeight();
+  const lines = [bridge ? ['Truck', L.truck + ' t across ' + L.span + ' m'] : ['Height', h + ' m of ' + L.target + ' m'], ['Spent', '$' + cost + ' of $' + L.budget], ['Beams broken', String(sim.broken)]];
+  let passed = !sim.failed;
+  $('res-row').innerHTML = '';
+  if (passed) {
+    const pts = Math.max(50, 100 * L.n + (bridge ? 0 : 40 * (h - L.target)) + Math.floor(left * (bridge ? 2 : 0.6)) - 30 * sim.broken);
+    lines.push(['Points', String(pts)]);
+    const prev = state.best[L.n] || 0;
+    if (pts > prev) { state.best[L.n] = pts; store.set('best', state.best); lines.push(['Best for this level', 'New best']); }
+    else lines.push(['Best for this level', String(prev)]);
+    if (L.n >= state.unlocked && L.n < LEVELS.length) { state.unlocked = L.n + 1; store.set('unlocked', state.unlocked); }
+    $('res-title').textContent = 'It stood';
+    $('res-title').className = 'pass';
+    $('res-reason').textContent = bridge ? (sim.broken ? 'The truck made it across, with some damage to the bridge.' : 'The truck made it across without a scratch.') : (sim.broken ? 'It survived all three tests, with some damage.' : 'It survived all three tests without a scratch.');
+    addResBtn('Keep building', () => closeRes());
+    if (L.n < LEVELS.length) addResBtn(LEVELS[L.n].kind !== L.kind ? 'On to bridges' : 'Next level', () => { closeRes(); loadLevel(state.lv + 1); }, true);
+    else addResBtn('All levels done', () => closeRes(), true);
+  } else {
+    $('res-title').textContent = 'It fell';
+    $('res-title').className = 'fail';
+    $('res-reason').textContent = sim.failed + '. ' + failTip(sim);
+    addResBtn('Back to building', () => closeRes(), true);
   }
-
-  ctx.strokeStyle = '#2a3f6e';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(0, y);
-  ctx.lineTo(canvas.width, y);
-  ctx.stroke();
-  ctx.restore();
+  $('res-lines').innerHTML = lines.map(l => '<div><span>' + l[0] + '</span><b>' + l[1] + '</b></div>').join('');
+  $('res-veil').classList.add('open');
+  $('phase').classList.remove('show');
 }
-
-function drawBeams() {
-  const bms = testing ? simBeams : beams;
-  const nds = testing ? simNodes : nodes;
-
-  bms.forEach(bm => {
-    const na = nds.find(n => n.id === bm.a);
-    const nb = nds.find(n => n.id === bm.b);
-    if (!na || !nb) return;
-
-    let pa, pb;
-    if (testing) {
-      pa = { x: camX + na.x * camScale, y: camY - na.y * camScale };
-      pb = { x: camX + nb.x * camScale, y: camY - nb.y * camScale };
-    } else {
-      pa = worldToScreen(na.gx, na.gy);
-      pb = worldToScreen(nb.gx, nb.gy);
-    }
-
-    const mat = MAT[bm.mat];
-    const isSteel = bm.mat === 'steel';
-    const lw = bm.mat === 'concrete' ? 5 * camScale : (isSteel ? 3.5 * camScale : 2.5 * camScale);
-
-    ctx.save();
-    ctx.lineCap = 'round';
-
-    if (bm.broken) {
-      // Highlight the failed beam with a red glow flash
-      if (isSteel) {
-        // Steel: draw a bent/kinked line through a mid-point offset sideways
-        const mx = (pa.x + pb.x) / 2;
-        const my = (pa.y + pb.y) / 2;
-        const dx = pb.x - pa.x, dy = pb.y - pa.y;
-        const len = Math.hypot(dx, dy) || 1;
-        // Perpendicular offset — kink amount based on beam length
-        const kink = len * 0.22;
-        const nx = -dy / len * kink, ny = dx / len * kink;
-
-        // Glow
-        ctx.shadowColor = '#ff3c5a';
-        ctx.shadowBlur = 12;
-        ctx.strokeStyle = 'rgba(255,60,90,0.85)';
-        ctx.lineWidth = lw * 1.3;
-        ctx.beginPath();
-        ctx.moveTo(pa.x, pa.y);
-        ctx.lineTo(mx + nx, my + ny);
-        ctx.lineTo(pb.x, pb.y);
-        ctx.stroke();
-        // Darker inner line for depth
-        ctx.shadowBlur = 0;
-        ctx.strokeStyle = 'rgba(255,160,80,0.6)';
-        ctx.lineWidth = lw * 0.4;
-        ctx.stroke();
-      } else {
-        // Wood: shattered dashes with orange tint
-        ctx.strokeStyle = 'rgba(220,100,30,0.5)';
-        ctx.lineWidth = lw;
-        ctx.setLineDash([3, 5]);
-        ctx.beginPath();
-        ctx.moveTo(pa.x, pa.y);
-        ctx.lineTo(pb.x, pb.y);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      }
-    } else {
-      // Live beam — color by stress
-      let color = mat.color;
-      if (testing) {
-        const t = Math.min(1, (bm.stress || 0) * 1.4);
-        color = lerpColor(mat.color, '#ff3c5a', t);
-      }
-      ctx.strokeStyle = color;
-      ctx.lineWidth = lw;
-      ctx.beginPath();
-      ctx.moveTo(pa.x, pa.y);
-      ctx.lineTo(pb.x, pb.y);
-      ctx.stroke();
-
-      // Concrete gets an extra inner highlight line for chunky look
-      if (bm.mat === 'concrete') {
-        ctx.strokeStyle = testing ? lerpColor('#c8c8b8', '#ff3c5a', Math.min(1,(bm.stress||0)*1.4)) : '#c8c8b8';
-        ctx.lineWidth = lw * 0.3;
-        ctx.globalAlpha = 0.5;
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-      }
-    }
-
-    ctx.restore();
-  });
-}
-
-function drawNodes() {
-  const nds = testing ? simNodes : nodes;
-
-  nds.forEach(n => {
-    let sx, sy;
-    if (testing) {
-      sx = camX + n.x * camScale;
-      sy = camY - n.y * camScale;
-    } else {
-      const p = worldToScreen(n.gx, n.gy);
-      sx = p.x; sy = p.y;
-    }
-
-    const r = n.fixed ? 7 * camScale : 5 * camScale;
-    ctx.save();
-    ctx.fillStyle = n.fixed ? '#ffd000' : '#00d4ff';
-    ctx.strokeStyle = n.fixed ? '#fff8e0' : '#a0eaff';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.arc(sx, sy, r, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
-
-    if (n.id === selectStart) {
-      ctx.strokeStyle = '#fff';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(sx, sy, r + 4, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-    ctx.restore();
-  });
-}
-
-function drawPreview() {
-  if (testing || tool !== 'select' || !selectStart || !hoverPos) return;
-  const startNode = nodes.find(n => n.id === selectStart);
-  if (!startNode) return;
-
-  const pa = worldToScreen(startNode.gx, startNode.gy);
-  const { gx, gy } = hoverPos;
-  const pb = worldToScreen(gx, gy);
-  const len = Math.hypot(gx - startNode.gx, gy - startNode.gy);
-  const valid = len <= beamLength && len > 0 && gy >= 0;
-
-  ctx.save();
-  ctx.strokeStyle = valid ? 'rgba(255,255,255,0.4)' : 'rgba(255,60,90,0.4)';
-  ctx.lineWidth = 2;
-  ctx.setLineDash([6, 4]);
-  ctx.beginPath();
-  ctx.moveTo(pa.x, pa.y);
-  ctx.lineTo(pb.x, pb.y);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  // Snap target
-  ctx.fillStyle = valid ? 'rgba(0,212,255,0.6)' : 'rgba(255,60,90,0.6)';
-  ctx.beginPath();
-  ctx.arc(pb.x, pb.y, 5 * camScale, 0, Math.PI * 2);
-  ctx.fill();
-
-  if (valid) {
-    ctx.fillStyle = '#fff';
-    ctx.font = `${10 * camScale}px "Share Tech Mono"`;
-    ctx.fillText(len.toFixed(1) + 'u  $' + Math.ceil(len * MAT[material].cost), pb.x + 8, pb.y - 8);
+function failTip(sim) {
+  if (sim.lv.kind === 'bridge') {
+    if (sim.phase === 0) return 'The road needs support. Add triangles above or below it.';
+    return 'Make the truss deeper, keep compressed beams short, or add another support.';
   }
-  ctx.restore();
+  if (sim.phase === 0) return 'Look for squares without a diagonal brace.';
+  if (sim.phase === 1) return 'A wider base and diagonal braces near the bottom help.';
+  return 'Try lighter materials up high and shorter beams.';
+}
+function addResBtn(text, fn, primary) {
+  const b = document.createElement('button');
+  b.textContent = text;
+  if (primary) b.className = 'primary';
+  b.onclick = fn;
+  $('res-row').appendChild(b);
+}
+function closeRes() {
+  $('res-veil').classList.remove('open');
+  cancelAnimationFrame(raf);
+  state.sim = null;
+  if (state.lastBuild) restore(state.lastBuild);
+  refresh();
 }
 
-function lerpColor(a, b, t) {
-  const ah = parseInt(a.slice(1), 16), bh = parseInt(b.slice(1), 16);
-  const ar = (ah >> 16) & 0xff, ag = (ah >> 8) & 0xff, ab = ah & 0xff;
-  const br = (bh >> 16) & 0xff, bg = (bh >> 8) & 0xff, bb = bh & 0xff;
-  const r = Math.round(ar + (br - ar) * t);
-  const g = Math.round(ag + (bg - ag) * t);
-  const bl = Math.round(ab + (bb - ab) * t);
-  return '#' + [r,g,bl].map(v => v.toString(16).padStart(2,'0')).join('');
+// Level picker
+function openLevels() {
+  const list = $('lv-list');
+  list.innerHTML = '';
+  LEVELS.forEach((L, i) => {
+    if (i === 0 || LEVELS[i - 1].kind !== L.kind) {
+      const hd = document.createElement('div');
+      hd.className = 'lv-group';
+      hd.style.gridColumn = '1 / -1';
+      hd.textContent = L.kind === 'bridge' ? 'Bridges' : 'Towers';
+      list.appendChild(hd);
+    }
+    const b = document.createElement('button');
+    b.className = 'lv' + (i === state.lv ? ' cur' : '');
+    const open = L.n <= state.unlocked;
+    b.disabled = !open;
+    b.innerHTML = '<b>' + L.n + '</b><span>' + (L.kind === 'bridge' ? L.span + ' m gap' : L.target + ' m') + '</span><span>' + (state.best[L.n] ? 'Best ' + state.best[L.n] : (open ? 'Not passed' : 'Locked')) + '</span>';
+    b.onclick = () => { $('lv-veil').classList.remove('open'); loadLevel(i); };
+    list.appendChild(b);
+  });
+  $('lv-veil').classList.add('open');
 }
 
-// ─── Input ────────────────────────────────────────────────────
-let isDragging = false, dragStart = null, dragMoved = false;
-let touchStartDist = null, touchStartCam = null;
-
-function setCanvasMode(mode) {
-  canvasMode = mode;
-  selectStart = null;
-  document.getElementById('btn-mode-build').classList.toggle('active', mode === 'build');
-  document.getElementById('btn-mode-pan').classList.toggle('active', mode === 'pan');
-  canvas.style.cursor = mode === 'pan' ? 'grab' : 'crosshair';
-  render();
-}
-
-// ── Mouse ──
-canvas.addEventListener('mousedown', e => {
-  if (e.button === 1) { e.preventDefault(); return; } // ignore middle
-  if (e.button === 2) { e.preventDefault(); selectStart = null; render(); return; }
-
-  if (canvasMode === 'pan') {
-    isDragging = true;
-    dragMoved = false;
-    dragStart = { x: e.offsetX - camX, y: e.offsetY - camY };
-    canvas.style.cursor = 'grabbing';
+// Input
+const pts = new Map();
+let gesture = null;
+cv.addEventListener('pointerdown', e => {
+  cv.setPointerCapture(e.pointerId);
+  pts.set(e.pointerId, { x: e.offsetX, y: e.offsetY });
+  if (pts.size === 1) gesture = { mode: 'tap', sx: e.offsetX, sy: e.offsetY, cx: cam.x, cy: cam.y };
+  else if (pts.size === 2) {
+    const [a, b] = [...pts.values()];
+    gesture = { mode: 'pinch', d: Math.hypot(a.x - b.x, a.y - b.y), mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2, s: cam.s, cx: cam.x, cy: cam.y };
+  }
+});
+cv.addEventListener('pointermove', e => {
+  if (!pts.has(e.pointerId)) {
+    if (e.pointerType === 'mouse') { state.hover = toGrid(e.offsetX, e.offsetY); draw(); }
     return;
   }
-
-  // BUILD mode
-  if (testing) return;
-  const sx = e.offsetX, sy = e.offsetY;
-  const { gx, gy } = snapToGrid(sx, sy);
-  const nearNode = findNearestNode(gx, gy, 0.6);
-
-  if (tool === 'delete') {
-    if (nearNode) {
-      beams = beams.filter(bm => bm.a !== nearNode.id && bm.b !== nearNode.id);
-      if (!nearNode.fixed) nodes = nodes.filter(n => n.id !== nearNode.id);
-      cleanOrphans(); updateStats();
-    } else { deleteNearBeam(sx, sy); }
-    render(); return;
-  }
-
-  if (tool === 'select') {
-    if (selectStart === null) {
-      if (nearNode) selectStart = nearNode.id;
-    } else {
-      const startNode = nodes.find(n => n.id === selectStart);
-      if (startNode) placeBeam(startNode.gx, startNode.gy, gx, gy);
-      selectStart = null;
-    }
-    render();
+  pts.set(e.pointerId, { x: e.offsetX, y: e.offsetY });
+  if (!gesture) return;
+  if (gesture.mode === 'pinch' && pts.size >= 2) {
+    const [a, b] = [...pts.values()];
+    const d = Math.hypot(a.x - b.x, a.y - b.y);
+    const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    const ns = Math.max(8, Math.min(120, gesture.s * d / (gesture.d || 1)));
+    const k = ns / gesture.s;
+    cam.s = ns;
+    cam.x = mx - (gesture.mx - gesture.cx) * k;
+    cam.y = my - (gesture.my - gesture.cy) * k;
+    draw();
+  } else if (gesture.mode === 'tap' || gesture.mode === 'pan') {
+    const dx = e.offsetX - gesture.sx, dy = e.offsetY - gesture.sy;
+    if (gesture.mode === 'tap' && Math.hypot(dx, dy) > 9) gesture.mode = 'pan';
+    if (gesture.mode === 'pan') { cam.x = gesture.cx + dx; cam.y = gesture.cy + dy; draw(); }
+    if (e.pointerType === 'mouse') state.hover = toGrid(e.offsetX, e.offsetY);
   }
 });
-
-canvas.addEventListener('mousemove', e => {
-  if (isDragging && canvasMode === 'pan') {
-    camX = e.offsetX - dragStart.x;
-    camY = e.offsetY - dragStart.y;
-    dragMoved = true;
-    render(); return;
+function endPointer(e) {
+  if (!pts.has(e.pointerId)) return;
+  pts.delete(e.pointerId);
+  if (gesture && gesture.mode === 'tap' && pts.size === 0 && e.type === 'pointerup') {
+    if (e.pointerType !== 'mouse') state.hover = toGrid(e.offsetX, e.offsetY);
+    tap(gesture.sx, gesture.sy);
   }
-  if (testing || canvasMode === 'pan') return;
-  hoverPos = snapToGrid(e.offsetX, e.offsetY);
-  render();
+  if (pts.size === 0) gesture = null;
+  else if (gesture && gesture.mode === 'pinch') gesture = { mode: 'none' };
+}
+cv.addEventListener('pointerup', endPointer);
+cv.addEventListener('pointercancel', endPointer);
+cv.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') { state.hover = null; draw(); } });
+cv.addEventListener('wheel', e => { e.preventDefault(); zoomAt(e.deltaY < 0 ? 1.12 : 1 / 1.12, e.offsetX, e.offsetY); }, { passive: false });
+cv.addEventListener('contextmenu', e => e.preventDefault());
+
+$('del-btn').onclick = () => { state.erase = !state.erase; state.sel = null; hint(state.erase ? 'Tap a beam or joint to erase it' : 'Tap a support or joint to start a beam'); refresh(); };
+$('undo-btn').onclick = () => { const s = state.undo.pop(); if (s) { restore(s); state.sel = null; saveBuild(); } refresh(); };
+$('clear-btn').onclick = () => { if (!state.beams.length) return; pushUndo(); freshLevel(); state.sel = null; saveBuild(); hint('Cleared. Undo brings it back'); refresh(); };
+$('test-btn').onclick = startTest;
+$('z-in').onclick = () => zoomAt(1.25, W / 2, H / 2);
+$('z-out').onclick = () => zoomAt(0.8, W / 2, H / 2);
+$('z-fit').onclick = fitView;
+$('info-btn').onclick = () => $('info-veil').classList.add('open');
+$('level-btn').onclick = openLevels;
+document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => b.closest('.veil').classList.remove('open'));
+document.querySelectorAll('#info-veil, #lv-veil').forEach(v => v.addEventListener('click', e => { if (e.target === v) v.classList.remove('open'); }));
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { document.querySelectorAll('#info-veil.open, #lv-veil.open').forEach(v => v.classList.remove('open')); state.sel = null; refresh(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z') { $('undo-btn').click(); }
 });
+window.addEventListener('resize', () => { resize(); });
+if (window.ResizeObserver) new ResizeObserver(() => { if (stage.clientHeight !== H || stage.clientWidth !== W) resize(); }).observe(stage);
 
-canvas.addEventListener('mouseup', e => {
-  if (canvasMode === 'pan') {
-    isDragging = false;
-    canvas.style.cursor = 'grab';
-  }
-});
-
-canvas.addEventListener('mouseleave', () => {
-  hoverPos = null; isDragging = false;
-  render();
-});
-
-canvas.addEventListener('contextmenu', e => { e.preventDefault(); });
-
-canvas.addEventListener('wheel', e => {
-  e.preventDefault();
-  if (canvasMode === 'pan' || e.ctrlKey || e.metaKey) {
-    // Zoom centered on cursor
-    const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
-    applyZoom(factor, e.offsetX, e.offsetY);
-  } else {
-    // Build mode — scroll pans up/down so you can reach your work area
-    camY -= e.deltaY * 1.2;
-    render();
-  }
-}, { passive: false });
-
-// ── Touch ──
-canvas.addEventListener('touchstart', e => {
-  e.preventDefault();
-  if (e.touches.length === 2) {
-    // Pinch — always works in both modes
-    touchStartDist = Math.hypot(
-      e.touches[0].clientX - e.touches[1].clientX,
-      e.touches[0].clientY - e.touches[1].clientY
-    );
-    touchStartCam = { x: camX, y: camY, scale: camScale };
-    isDragging = false;
-  } else if (e.touches.length === 1) {
-    const r = canvas.getBoundingClientRect();
-    if (canvasMode === 'pan') {
-      isDragging = true;
-      dragMoved = false;
-      dragStart = {
-        x: e.touches[0].clientX - r.left - camX,
-        y: e.touches[0].clientY - r.top - camY
-      };
-    } else {
-      // BUILD mode — record touch start for tap detection
-      isDragging = false;
-      dragStart = { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
-      dragMoved = false;
-    }
-  }
-}, { passive: false });
-
-canvas.addEventListener('touchmove', e => {
-  e.preventDefault();
-  const r = canvas.getBoundingClientRect();
-  if (e.touches.length === 2 && touchStartDist) {
-    const d = Math.hypot(
-      e.touches[0].clientX - e.touches[1].clientX,
-      e.touches[0].clientY - e.touches[1].clientY
-    );
-    const factor = d / touchStartDist;
-    const mx = (e.touches[0].clientX + e.touches[1].clientX) / 2 - r.left;
-    const my = (e.touches[0].clientY + e.touches[1].clientY) / 2 - r.top;
-    camScale = Math.max(0.25, Math.min(2.5, touchStartCam.scale * factor));
-    camX = mx - (mx - touchStartCam.x) * (camScale / touchStartCam.scale);
-    camY = my - (my - touchStartCam.y) * (camScale / touchStartCam.scale);
-    render();
-  } else if (e.touches.length === 1 && isDragging && canvasMode === 'pan') {
-    camX = e.touches[0].clientX - r.left - dragStart.x;
-    camY = e.touches[0].clientY - r.top - dragStart.y;
-    dragMoved = true;
-    render();
-  } else if (e.touches.length === 1 && canvasMode === 'build' && dragStart) {
-    const dx = Math.abs(e.touches[0].clientX - r.left - dragStart.x);
-    const dy = Math.abs(e.touches[0].clientY - r.top - dragStart.y);
-    if (dx > 8 || dy > 8) dragMoved = true; // finger moved too far — not a tap
-  }
-}, { passive: false });
-
-canvas.addEventListener('touchend', e => {
-  if (e.touches.length < 2) touchStartDist = null;
-
-  if (e.touches.length === 0) {
-    if (canvasMode === 'build' && !dragMoved && !testing && dragStart) {
-      // Treat as a tap in build mode — fire build logic
-      const sx = dragStart.x, sy = dragStart.y;
-      const { gx, gy } = snapToGrid(sx, sy);
-      const nearNode = findNearestNode(gx, gy, 0.6);
-
-      if (tool === 'delete') {
-        if (nearNode) {
-          beams = beams.filter(bm => bm.a !== nearNode.id && bm.b !== nearNode.id);
-          if (!nearNode.fixed) nodes = nodes.filter(n => n.id !== nearNode.id);
-          cleanOrphans(); updateStats();
-        } else { deleteNearBeam(sx, sy); }
-      } else if (tool === 'select') {
-        if (selectStart === null) {
-          if (nearNode) selectStart = nearNode.id;
-        } else {
-          const startNode = nodes.find(n => n.id === selectStart);
-          if (startNode) placeBeam(startNode.gx, startNode.gy, gx, gy);
-          selectStart = null;
-        }
-      }
-      render();
-    }
-    isDragging = false; dragStart = null; dragMoved = false;
-  }
-});
-
-// ─── Zoom helpers ──────────────────────────────────────────────
-function applyZoom(factor, mx, my) {
-  if (mx === undefined) { mx = canvas.width / 2; my = canvas.height / 2; }
-  const newScale = Math.max(0.25, Math.min(2.5, camScale * factor));
-  const actualFactor = newScale / camScale;
-  camX = mx - (mx - camX) * actualFactor;
-  camY = my - (my - camY) * actualFactor;
-  camScale = newScale;
-  render();
-}
-
-function zoomBy(factor) {
-  // Zoom toward the center of the canvas
-  applyZoom(factor, canvas.width / 2, canvas.height / 2);
-}
-
-function fitView() {
-  if (nodes.length === 0) { resize(); render(); return; }
-  const allNodes = nodes;
-  const xs = allNodes.map(n => n.gx);
-  const ys = allNodes.map(n => n.gy);
-  const minX = Math.min(...xs) - 3, maxX = Math.max(...xs) + 3;
-  const minY = 0, maxY = Math.max(...ys, LEVELS[level].targetHeight) + 3;
-
-  const W = canvas.width - 40, H = canvas.height - 40;
-  const scaleX = W / ((maxX - minX) * GRID);
-  const scaleY = H / ((maxY - minY) * GRID);
-  camScale = Math.max(0.2, Math.min(4, Math.min(scaleX, scaleY)));
-
-  const midGX = (minX + maxX) / 2;
-  const midGY = (minY + maxY) / 2;
-  camX = canvas.width / 2 - midGX * GRID * camScale;
-  camY = canvas.height / 2 + midGY * GRID * camScale;
-  render();
-}
-
-function deleteNearBeam(sx, sy) {
-  let closest = null, closestD = Infinity;
-  beams.forEach(bm => {
-    const na = nodes.find(n => n.id === bm.a);
-    const nb = nodes.find(n => n.id === bm.b);
-    if (!na || !nb) return;
-    const pa = worldToScreen(na.gx, na.gy);
-    const pb = worldToScreen(nb.gx, nb.gy);
-    const d = pointToSegDist(sx, sy, pa.x, pa.y, pb.x, pb.y);
-    if (d < closestD) { closestD = d; closest = bm; }
-  });
-  if (closest && closestD < 12) {
-    beams = beams.filter(b => b.id !== closest.id);
-    cleanOrphans();
-    updateStats();
-    render();
-  }
-}
-
-function pointToSegDist(px, py, ax, ay, bx, by) {
-  const dx = bx - ax, dy = by - ay;
-  const t = Math.max(0, Math.min(1, ((px-ax)*dx + (py-ay)*dy) / (dx*dx+dy*dy+0.001)));
-  return Math.hypot(px - (ax+t*dx), py - (ay+t*dy));
-}
-
-function cleanOrphans() {
-  const used = new Set();
-  beams.forEach(bm => { used.add(bm.a); used.add(bm.b); });
-  nodes = nodes.filter(n => n.fixed || used.has(n.id));
-}
-
-// ─── Start ────────────────────────────────────────────────────
-window.addEventListener('resize', () => { resize(); render(); });
-init();
+resize();
+loadLevel(Math.min(store.get('lastLevel', 0), state.unlocked - 1));
+const _load = loadLevel;
+loadLevel = function (i) { _load(i); store.set('lastLevel', i); };
+if (!store.get('seenInfo', false)) { $('info-veil').classList.add('open'); store.set('seenInfo', true); }
 </script>
 </body>
 </html>

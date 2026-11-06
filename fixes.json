@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-11-05T20:43:37.971Z",
+  "builtAt": "2026-11-06T20:10:10.899Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -130,6 +130,35 @@
       ],
       "knownProblem": null,
       "snapshot": "snapshots/j30p4rdy.html"
+    },
+    {
+      "app": "tower-builder-one",
+      "url": "https://tower-builder-one.vercel.app",
+      "kind": "test-failing",
+      "since": "2026-11-06",
+      "status": 200,
+      "failing": [
+        {
+          "test": "materials select",
+          "error": "locator.click: Timeout 6000ms exceeded.",
+          "testFile": "tests/tower-builder-one.json"
+        },
+        {
+          "test": "info panel opens",
+          "error": "locator.click: Timeout 6000ms exceeded.",
+          "testFile": "tests/tower-builder-one.json"
+        }
+      ],
+      "errors": [],
+      "features": [
+        "Build mode places beams of steel, wood or reinforced concrete between grid nodes within the budget.",
+        "Delete removes beams, and pan and zoom move the view.",
+        "Test runs a wind test then an earthquake against the target height.",
+        "Budget, spent, target height, score and level show, and clear resets.",
+        "Info panel explains the rules."
+      ],
+      "knownProblem": null,
+      "snapshot": "snapshots/tower-builder-one.html"
     }
   ]
 }

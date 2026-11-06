@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- COFFEEKIT v9 // expert mode + cleaning sink fix // sudosilo -->
+<!-- COFFEEKIT ONE v2 // light mode, menu, steady layout // sudosilo -->
+<script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("coffeekit1-theme")||"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}</script>
 <title>COFFEEKIT</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@400;600;700&display=swap');
@@ -42,6 +43,11 @@
   --free-lt:#6aaa70;
   --free-bg:#e0eed8;
   --free-bdr:#4a7a50;
+
+  --blue:#5aa0ff;
+  --menu-bg:#1a1208;
+  --menu-text:#e8dcc4;
+  --menu-line:#3a2c10;
 
   --mono:'Share Tech Mono',monospace;
   --sans:'DM Sans',sans-serif;
@@ -176,9 +182,108 @@ body{background:var(--shell);display:flex;flex-direction:column;align-items:cent
 .ov-btn:hover{background:rgba(232,101,10,0.15);}
 
 .log{width:100%;max-width:900px;margin-top:7px;font-family:var(--mono);font-size:9px;color:var(--orange-dim);text-align:center;letter-spacing:0.04em;min-height:14px;}
+
+/* ---- v2: LIGHT MODE ---- */
+:root[data-theme="light"]{
+  --shell:#f6f1e7;
+  --shell-mid:#ece3d2;
+  --orange-bg:#fff1e2;
+  --orange-dim:#e0b48c;
+  --kds-bg:#ffffff;
+  --kds-border:#d9cbb3;
+  --kds-green:#1f6fd1;
+  --kds-dim:#8a7458;
+  --kds-dimmer:#c9b9a0;
+  --blue:#1f6fd1;
+  --menu-bg:#ffffff;
+  --menu-text:#3a2410;
+  --menu-line:#d9cbb3;
+}
+[data-theme="light"] body{color-scheme:light;}
+[data-theme="light"] .title{color:var(--blue);}
+[data-theme="light"] .stat-l{color:#8a7458;}
+[data-theme="light"] .stat-v{color:#2a1a08;}
+[data-theme="light"] .mode-badge.expert{background:#e6f0ff;color:var(--blue);border-color:#9cc0f0;}
+[data-theme="light"] .mode-badge.cleaning{background:#f3e8ff;color:#7a3ab8;border-color:#c9a6ee;}
+[data-theme="light"] .kds{box-shadow:0 1px 6px rgba(60,40,10,0.12);}
+[data-theme="light"] .kds-step.done,[data-theme="light"] .kds-step.free-done{color:#b5a68c;border-color:#e2d6c0;}
+[data-theme="light"] .kds-step.current{box-shadow:0 0 4px rgba(31,111,209,0.35);}
+[data-theme="light"] .kds-step.clean-step{color:#7a3ab8;border-color:#c9a6ee;}
+[data-theme="light"] .kds-step.clean-done{color:#cbb8de;border-color:#e6dcf0;}
+[data-theme="light"] .ambient{background:#fbf7ef;border-top-color:#e6dccb;}
+[data-theme="light"] .amb-label{color:var(--blue);}
+[data-theme="light"] .queue-bar{background:#fbf7ef;border-top-color:#e6dccb;}
+[data-theme="light"] .q-ticket{border-right-color:#e6dccb;}
+[data-theme="light"] .overlay{background:rgba(246,241,231,0.92);}
+[data-theme="light"] .ov-sub{color:#7a4a28;}
+[data-theme="light"] .clean-overlay{background:rgba(246,241,231,0.95);}
+[data-theme="light"] .clean-box{background:#ffffff;border-color:#9b5ad8;}
+[data-theme="light"] .clean-title{color:#7a3ab8;}
+[data-theme="light"] .clean-btn{color:#7a3ab8;border-color:#9b5ad8;}
+[data-theme="light"] .clean-sub{color:#6a4a8a;}
+[data-theme="light"] .milk-overlay{background:rgba(60,40,10,0.35);}
+[data-theme="light"] .log{color:#a0521a;}
+
+/* ---- v2: STEADY LAYOUT, nothing below the KDS moves ---- */
+.topbar{padding-left:46px;min-height:36px;}
+.kds-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.kds-steps{min-height:44px;align-content:flex-start;}
+.kds-hint{min-height:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.amb-value{overflow:hidden;text-overflow:ellipsis;}
+.q-ticket{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.log{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.eq-timer{background:var(--blue);}
+
+/* ---- v2: PHONE SIZING ---- */
+@media(max-width:600px){
+  body{padding:8px;}
+  .blueprint{padding-bottom:95%;}
+  .eq{font-size:7px;}
+  .flv{font-size:6px;}
+  .ctr span{font-size:6px;}
+  .zlabel{font-size:6px;}
+  .kds-steps{min-height:64px;}
+  .q-ticket{font-size:9px;}
+  .q-label{font-size:7px;}
+}
+
+/* ---- v2: MENU, upper left overlay ---- */
+.menu-btn{position:fixed;top:10px;left:10px;z-index:400;width:36px;height:36px;border:1.5px solid var(--blue);background:var(--menu-bg);color:var(--blue);font-size:18px;line-height:1;border-radius:4px;cursor:pointer;font-family:var(--mono);}
+.menu-scrim{position:fixed;inset:0;z-index:380;display:none;}
+.menu-scrim.open{display:block;}
+.menu-panel{position:fixed;top:0;left:0;bottom:0;width:min(280px,80vw);background:var(--menu-bg);border-right:2px solid var(--blue);z-index:390;transform:translateX(-105%);transition:transform 0.2s;padding:58px 14px 14px;font-family:var(--mono);overflow-y:auto;box-shadow:4px 0 18px rgba(0,0,0,0.18);}
+.menu-panel.open{transform:none;}
+.menu-panel details{border-bottom:1px solid var(--menu-line);padding:10px 0;}
+.menu-panel summary{cursor:pointer;color:var(--blue);font-size:12px;letter-spacing:0.12em;list-style:none;}
+.menu-panel summary::before{content:'+ ';}
+.menu-panel details[open] summary::before{content:'- ';}
+.menu-opt{display:block;width:100%;margin-top:8px;padding:10px;font-family:var(--mono);font-size:11px;background:transparent;border:1.5px solid var(--menu-line);color:var(--menu-text);cursor:pointer;text-align:left;letter-spacing:0.06em;}
+.menu-opt.on{border-color:var(--blue);color:var(--blue);}
+.menu-stat{font-size:11px;color:var(--menu-text);margin-top:7px;letter-spacing:0.05em;}
+.menu-ver{font-size:9px;color:var(--blue);margin-top:14px;letter-spacing:0.1em;}
 </style>
 </head>
 <body>
+
+<button class="menu-btn" id="menu-btn" aria-label="Menu">&#9776;</button>
+<div class="menu-scrim" id="menu-scrim"></div>
+<div class="menu-panel" id="menu-panel">
+  <details open>
+    <summary>THEME</summary>
+    <button class="menu-opt" id="theme-light">LIGHT</button>
+    <button class="menu-opt" id="theme-dark">NIGHT SHIFT</button>
+  </details>
+  <details>
+    <summary>SHIFT</summary>
+    <button class="menu-opt" id="restart-btn">START A NEW SHIFT</button>
+  </details>
+  <details>
+    <summary>RECORDS</summary>
+    <div class="menu-stat" id="rec-best">BEST SHIFT SCORE: 0</div>
+    <div class="menu-stat" id="rec-orders">ORDERS SERVED ALL TIME: 0</div>
+  </details>
+  <div class="menu-ver">COFFEEKIT ONE v2</div>
+</div>
 
 <div class="topbar">
   <div class="title">COFFEE<span>KIT</span></div>
@@ -1010,7 +1115,7 @@ function completeStep(sid){
   }
 
   if(isOrderComplete()){
-    score+=50; done++; orderCount++; upd(); updateModeBadge();
+    score+=50; done++; orderCount++; upd(); updateModeBadge(); saveRecords();
     setTimeout(()=>{
       document.getElementById('ov-sub').textContent=
         current.name+'\n\n'+current.note+
@@ -1205,6 +1310,56 @@ buildFloor();
 shuffleQueue();
 loadNext();
 startAmbient();
+
+// ---- v2: RECORDS ----
+function readNum(k){try{return parseInt(localStorage.getItem(k)||'0',10)||0;}catch(e){return 0;}}
+function writeNum(k,v){try{localStorage.setItem(k,String(v));}catch(e){}}
+function showRecords(){
+  document.getElementById('rec-best').textContent='BEST SHIFT SCORE: '+readNum('coffeekit1-best');
+  document.getElementById('rec-orders').textContent='ORDERS SERVED ALL TIME: '+readNum('coffeekit1-orders');
+}
+function saveRecords(){
+  writeNum('coffeekit1-orders',readNum('coffeekit1-orders')+1);
+  if(score>readNum('coffeekit1-best')) writeNum('coffeekit1-best',score);
+  showRecords();
+}
+
+// ---- v2: THEME ----
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  try{localStorage.setItem('coffeekit1-theme',t);}catch(e){}
+  document.getElementById('theme-light').classList.toggle('on',t==='light');
+  document.getElementById('theme-dark').classList.toggle('on',t==='dark');
+}
+
+// ---- v2: MENU ----
+function setMenu(open){
+  document.getElementById('menu-panel').classList.toggle('open',open);
+  document.getElementById('menu-scrim').classList.toggle('open',open);
+}
+document.getElementById('menu-btn').addEventListener('click',()=>{
+  setMenu(!document.getElementById('menu-panel').classList.contains('open'));
+});
+document.getElementById('menu-scrim').addEventListener('click',()=>setMenu(false));
+document.getElementById('theme-light').addEventListener('click',()=>setTheme('light'));
+document.getElementById('theme-dark').addEventListener('click',()=>setTheme('dark'));
+
+// ---- v2: NEW SHIFT ----
+function restartShift(){
+  Object.keys(activeTimers).forEach(k=>{cancelAnimationFrame(activeTimers[k]);delete activeTimers[k];});
+  document.querySelectorAll('.eq-timer').forEach(b=>b.style.width='0%');
+  ['overlay','clean-overlay','milk-overlay'].forEach(id=>document.getElementById(id).classList.remove('show'));
+  score=0;done=0;orderCount=0;usageMap={};
+  cleaningMode=false;cleanQueue=[];cleanDone=new Set();
+  houseLevel=1.0;updateHouseDisplay();
+  upd();updateModeBadge();
+  shuffleQueue();loadNext();
+  setMenu(false);
+}
+document.getElementById('restart-btn').addEventListener('click',restartShift);
+
+setTheme(document.documentElement.getAttribute('data-theme')||'light');
+showRecords();
 </script>
 </body>
 </html>
