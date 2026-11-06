@@ -335,6 +335,30 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "Live URL still serves the Vercel Stumbler page and no sudosilo repo matches, so the developer must restore the game or retire the spec."
+    },
+    {
+      "date": "2026-11-06",
+      "app": "tower-builder-one",
+      "kind": "test-failing",
+      "outcome": "test fixed",
+      "pullRequest": "https://github.com/sudosilo/control-troll/pull/2",
+      "note": "The app works but was rebuilt with new ids, so the test now uses [data-mat], #s-budget, #info-btn and #info-h."
+    },
+    {
+      "date": "2026-11-06",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "repo not found",
+      "pullRequest": null,
+      "note": "Still 404 and no sudosilo repo matches, so the developer must say where the code lives or retire the link."
+    },
+    {
+      "date": "2026-11-06",
+      "app": "topo-wars-server",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": "https://github.com/sudosilo/topo-wars-server/pull/1",
+      "note": "Pull request 1 adding /api/health is still open and unmerged, so the root still returns 404."
     }
   ]
 }
