@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 32047,
+ "duration_api_ms": 20259,
  "stop_reason": "end_turn",
- "session_id": "5bc4bd00-f776-4ddd-bea5-8b715bf9629d",
- "total_cost_usd": 0.1188206,
+ "session_id": "a556ba05-b0c7-4427-96c7-7b78cf14e2ef",
+ "total_cost_usd": 0.1121081,
  "usage": {
-  "input_tokens": 16,
-  "cache_creation_input_tokens": 17421,
-  "cache_read_input_tokens": 189618,
-  "output_tokens": 2992,
+  "input_tokens": 14,
+  "cache_creation_input_tokens": 18327,
+  "cache_read_input_tokens": 161198,
+  "output_tokens": 2241,
   "output_tokens_details": {
-   "thinking_tokens": 95
+   "thinking_tokens": 38
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 17421,
+   "ephemeral_1h_input_tokens": 18327,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 80,
-    "cache_read_input_tokens": 29993,
-    "cache_creation_input_tokens": 374,
+    "output_tokens": 46,
+    "cache_read_input_tokens": 29695,
+    "cache_creation_input_tokens": 1578,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 374
+     "ephemeral_1h_input_tokens": 1578
     },
     "type": "message"
    }
@@ -38,35 +38,35 @@
   "fallback_credit": null
  },
  "modelUsage": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1208,
-   "outputTokens": 204,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
+  "claude-sonnet-5-5": {
+   "inputTokens": 14,
+   "outputTokens": 2241,
+   "cacheReadInputTokens": 161198,
+   "cacheCreationInputTokens": 18327,
    "webSearchRequests": 0,
-   "costUSD": 0.0002228,
+   "costUSD": 0.1118658,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 186,
+   "thinkingTokens": 38,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
+   "cacheCreationEphemeral1hInputTokens": 18327,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   },
-  "claude-sonnet-5-5": {
-   "inputTokens": 16,
-   "outputTokens": 2992,
-   "cacheReadInputTokens": 189618,
-   "cacheCreationInputTokens": 17421,
+  "claude-haiku-5-5": {
+   "inputTokens": 1208,
+   "outputTokens": 243,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.1185978,
+   "costUSD": 0.0002423,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 95,
+   "thinkingTokens": 225,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 17421,
-   "canonicalModel": "claude-sonnet-5-5",
+   "cacheCreationEphemeral1hInputTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
@@ -101,49 +101,49 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 8,
+ "num_turns": 7,
  "subtype": "success",
  "api_error_status": null,
- "result": "I heckled 5 commits (2 in the testbed, 3 field-twin firmware builds) and did not write a fleet verdict, because the last one was less than 7 days ago. The log, state and notes are committed and pushed to control-troll main.",
- "ttft_ms": 1905,
+ "result": "I heckled 3 commits, all in downfree-foundry, and did not write a fleet verdict because the last one is less than 7 days old.",
+ "ttft_ms": 1043,
  "type": "result",
- "duration_ms": 43663,
- "uuid": "625a017a-61a8-4360-9aec-04a43ebe8a78",
- "ttft_stream_ms": 1650,
- "time_to_request_ms": 141,
- "first_content_frame_ms": 1650,
+ "duration_ms": 28794,
+ "uuid": "319ab55d-58a4-4ad5-b3b4-b45bcf24e22e",
+ "ttft_stream_ms": 625,
+ "time_to_request_ms": 156,
+ "first_content_frame_ms": 625,
  "queued_turn_count": 0,
  "result_index": 0,
  "model_usage_since_last_result": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1208,
-   "outputTokens": 204,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
+  "claude-sonnet-5-5": {
+   "inputTokens": 14,
+   "outputTokens": 2241,
+   "cacheReadInputTokens": 161198,
+   "cacheCreationInputTokens": 18327,
    "webSearchRequests": 0,
-   "costUSD": 0.0002228,
+   "costUSD": 0.1118658,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 186,
+   "thinkingTokens": 38,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
+   "cacheCreationEphemeral1hInputTokens": 18327,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   },
-  "claude-sonnet-5-5": {
-   "inputTokens": 16,
-   "outputTokens": 2992,
-   "cacheReadInputTokens": 189618,
-   "cacheCreationInputTokens": 17421,
+  "claude-haiku-5-5": {
+   "inputTokens": 1208,
+   "outputTokens": 243,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.1185978,
+   "costUSD": 0.0002423,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 95,
+   "thinkingTokens": 225,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 17421,
-   "canonicalModel": "claude-sonnet-5-5",
+   "cacheCreationEphemeral1hInputTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
