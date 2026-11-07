@@ -1,6 +1,27 @@
 {
   "heckles": [
     {
+      "date": "2026-11-07T13:11:42Z",
+      "repo": "downfree-foundry",
+      "sha": "20bbade0",
+      "message": "Restart the decoder on crashes and label which stage failed",
+      "heckle": "A throwaway ffmpeg run on a file literally named not-found, wrapped in an empty catch, to coax the decoder into not crashing. That is not engineering, intern, that is a rain dance with a stack trace. ffRun() in index.html now retries three times and rebuilds the whole decoder each time, so a genuinely bad clip burns three full wasm reloads before it tells you anything, like a filibuster that ends in the same vote. Then resetDecoder() nulls every clip's mounted flag and the magic number 12 for ffRuns has no explanation beyond a vibe. The comment admits the decoder gets unstable after many runs, so you are papering over a leak with a restart button.\n\nFix it: Find why the decoder crashes in loadDecoder() instead of warming it with a fake file. Name the 12 in ffRuns as a constant with a reason. Cap retries in ffRun() to errors that are actually transient. Replace the empty catch around the throwaway exec with at least a log line."
+    },
+    {
+      "date": "2026-11-07T13:11:42Z",
+      "repo": "downfree-foundry",
+      "sha": "bd8f6e78",
+      "message": "Pull frames with an in-page video decoder instead of the browser player",
+      "heckle": "You committed a minified ffmpeg.js, a worker bundle, ffmpeg-core.js and a wasm binary straight into the repo under ff/, like a bailout nobody read. Every one of those is unreadable, unreviewable, and it bloats the repo for good. The bundle even carries a path from somebody's laptop baked in. Meanwhile index.html now runs seek scans through grabFrame() for every step in the alignment loop, which on a phone means decoding thousands of frames to line up clips. The earlier black preview fix is now dead weight you left lying around, because the browser player is still used for durations.\n\nFix it: Load ffmpeg from a package or a pinned CDN instead of committing ff/ffmpeg-core.wasm. Add the ff folder to a build step, not git. Check that the alignment scan in the auto line up function does not decode a frame per step on mobile. Delete the leftover video element code in loadClip() if it is no longer the frame source."
+    },
+    {
+      "date": "2026-11-07T13:11:42Z",
+      "repo": "downfree-foundry",
+      "sha": "61929891",
+      "message": "Show clip videos in their cards so Firefox decodes frames",
+      "heckle": "Last time you hid a 2 pixel video in a corner at opacity 0.01 to fool the browser. Now you pulled that hack out and shoved full size videos into the clip cards because Firefox only decodes what it can see, which is the web equivalent of a campaign promise made only while the cameras are rolling. A sixty viewport height video per clip means a long page of players on a phone, cramped and heavy. drawThumb() in index.html is now a function that just calls seekTo and does nothing else, and the canvas.thumb CSS is gone, so the thumbnails you used to have are dead code in spirit. The status message telling the user to tell Claude is a bug report disguised as UI.\n\nFix it: Cap video.thumbvid height lower than 60vh so mobile cards are not walls of video. Delete drawThumb() or give it a job. Replace the Tell Claude status text in drawVideo() with a real error message. Pick one approach for visible decoding and stop flip flopping."
+    },
+    {
       "date": "2026-11-07T06:06:18Z",
       "repo": "downfree-foundry",
       "sha": "0f9b154b",
@@ -1378,27 +1399,6 @@
       "sha": "ed2ad60218aa6f80b134d98149916fd3d89ffbcf",
       "message": "Suggest: scores start lines and drop bars from lyrics, BPM and the beat's loudness map; phones make the maps",
       "heckle": "Suggest ships in one commit with 150 lines in index.html, a new bash script, tools/energy-map.sh, and a vercel.json rewrite, which is a whole feature stuffed into one lunch bag. The script downloads audio with yt-dlp onto a phone, loops forever with a sleep of 30 minutes, and posts numbers to a hardcoded deploy URL. The setup script s now upgrades every package on the phone when in energy mode, a full apt-get upgrade on a loop that tries again until it works. That is not a setup script, that is a hostage situation. Also the ffmpeg astats pipeline is one unreadable string of filters, and a failure just gets cut to 100 characters.\n\nFix it: Pull the hardcoded API URL in tools/energy-map.sh into one variable at the top of s. Drop the full apt-get upgrade from s. Split the Suggest card from the loudness map code into separate commits next time."
-    },
-    {
-      "date": "2026-10-25T22:34:53Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "7fe91f49e66b0cf0a5cdfc93d242fed46b8be5cd",
-      "message": "Live smash: NEXT clears the locked song, beat and donor, goes quiet and listens again",
-      "heckle": "A NEXT button in index.html whose label says NEXT on the key and CLEAR in the keyLabels row under it, so the same control has two names on one screen. Pick one. The handler clears the locked song, beat and donor, goes quiet and listens again, all buried in the 2400 range of a file that already reads like a ransom note of added features. The live bar is now five keys wide on a phone, and I see no layout change to stop them cramming together. Those keys were already tight, and now the intern added another and hoped for the best.\n\nFix it: Use the same word for the button and its label. Check the liveNextBtn row at phone width and let it wrap or shrink. Move the NEXT handler into its own named function instead of piling it into the acapella state block."
-    },
-    {
-      "date": "2026-10-25T22:40:45Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "6015ee5ac5e4076f7501857e75ac5dddf45e8165",
-      "message": "Phone setup always takes the newest scripts, even if the phone's copy was changed",
-      "heckle": "One line changed in the file named s, and the best part is the file is named s. A single letter, in a repo with README grade names everywhere else, as if saving a keystroke on the phone was worth making every future reader guess. The change swaps git pull for fetch plus reset --hard origin/main, which means any local edit on the phone gets erased with no warning. That is fine until the day the phone has a note or a config you wanted. It also hardcodes main, and the older repos mostly use master, so copy this pattern and it breaks.\n\nFix it: Rename s to something like phone-setup.sh and update every place that curls it. Print a warning before the reset --hard wipes local changes. Read the default branch name instead of hardcoding origin/main."
-    },
-    {
-      "date": "2026-10-25T23:01:08Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "4fdcbbc04a9833b95fad4977bc24b0db5666c738",
-      "message": "Profile: separate Create account form with name and password check, plus New account when signed in",
-      "heckle": "Another 33 lines shoved into renderProfile() in index.html, which now builds a sign in tab, a create account tab, and a pile of string concatenated HTML inputs in one function like a clown car with a keyboard. The profMode global decides what shows, and the markup is glued together with plus signs, so one stray quote and the profile panel dies. A password check living in the same function that paints the form means you test it by tapping buttons on your phone. Nobody told the intern that forms exist as a concept.\n\nFix it: Split renderProfile() into a sign in view and a create account view. Move the name and password check into a small function you can test on its own. Use a template or DOM calls instead of string plus string for the profIn inputs."
     }
   ]
 }
