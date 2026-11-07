@@ -1,6 +1,27 @@
 {
   "heckles": [
     {
+      "date": "2026-11-07T06:06:18Z",
+      "repo": "downfree-foundry",
+      "sha": "0f9b154b",
+      "message": "Fix black previews, add auto line up and flip view",
+      "heckle": "Black previews. You shipped a video tool whose previews were black, then patched it by hiding a 2 pixel video holder at opacity 0.01 in a corner of the page in index.html, which is the kind of hack a shutdown negotiator would call a framework. waitFrame() leans on requestVideoFrameCallback with a bare setTimeout fallback, so on a slow phone you grab whatever frame happens to be there and call it a day. Then 181 lines landed in a single index.html with inline style attributes sprayed on the new hint paragraph and button row. Did you learn layout from a cereal box, intern?\n\nFix it: Move the inline style attributes in the Line up card into the style block. Make waitFrame() report a timeout instead of silently continuing. Add a visible message when Auto line up fails to find a match. Split the script out of index.html before it hits a thousand lines."
+    },
+    {
+      "date": "2026-11-07T06:06:18Z",
+      "repo": "downfree-foundry",
+      "sha": "c0c910b6",
+      "message": "Trigger production build",
+      "heckle": "Trigger production build. An empty commit with a message that reads like a prayer. Your deploy pipeline needs a manual poke and you answered with noise in the history, like a bailout nobody voted on. No diff, no change, nothing to review, and somehow still a waste of my morning.\n\nFix it: Find out why the push before it did not build and fix the Vercel project settings. Stop using empty commits as a deploy button. Use the Vercel redeploy button if you must."
+    },
+    {
+      "date": "2026-11-07T06:06:18Z",
+      "repo": "downfree-foundry",
+      "sha": "22ac9724",
+      "message": "Road layer masking test",
+      "heckle": "Road layer masking test. A fresh 496 line index.html titled Road Layers, with every style, script, and control crammed in one file, plus a vehicles-seg.onnx model committed straight into the repo with no size note and no mention of where it came from. A test commit that ships a binary model like a campaign promise, big and unexplained. The accent orange button on a cream background with 13 pixel hint text is going to be a squint on a phone, genius.\n\nFix it: Document where vehicles-seg.onnx came from and its size in a README. Consider loading the model from a CDN or release asset instead of the repo. Raise the .hint font size above 13px in index.html. Rename the commit so it says what changed."
+    },
+    {
       "date": "2026-11-06T23:14:48Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "16d1bd9d",
@@ -1378,27 +1399,6 @@
       "sha": "4fdcbbc04a9833b95fad4977bc24b0db5666c738",
       "message": "Profile: separate Create account form with name and password check, plus New account when signed in",
       "heckle": "Another 33 lines shoved into renderProfile() in index.html, which now builds a sign in tab, a create account tab, and a pile of string concatenated HTML inputs in one function like a clown car with a keyboard. The profMode global decides what shows, and the markup is glued together with plus signs, so one stray quote and the profile panel dies. A password check living in the same function that paints the form means you test it by tapping buttons on your phone. Nobody told the intern that forms exist as a concept.\n\nFix it: Split renderProfile() into a sign in view and a create account view. Move the name and password check into a small function you can test on its own. Use a template or DOM calls instead of string plus string for the profIn inputs."
-    },
-    {
-      "date": "2026-10-25T23:03:31Z",
-      "repo": "testbed-notes",
-      "sha": "e36a5cae2ee7abcb024590bb413464d0b1cbfd5d",
-      "message": "dq-violet-opus note",
-      "heckle": "A nine line status memo appended to board.md, which makes it the fifth memo in a file that is basically a campaign promise list nobody delivers on. It says none of the morning commissions are done and all stay open, then reissues the same P1 through P4 list with two coordinates changed. That is not a note, that is a government shutdown extension. The board has no done markers, no dates on the old commissions, and no way to tell which asks are stale, so the file only grows. The intern is also committing as a different name than the login, which makes the history a puzzle nobody asked for.\n\nFix it: Move finished and stale commissions out of board.md into an archive section. Mark each open commission with the date it was issued. Replace the repeat list with a one line diff when nothing changed."
-    },
-    {
-      "date": "2026-10-25T23:10:10Z",
-      "repo": "mill-ionaire",
-      "sha": "72a75f839c8ab20a81710dde963db7e5314ee6be",
-      "message": "Broke shops keep their own mill running on scrap rack stock and free power",
-      "heckle": "You changed what a broke shop can do, and instead of fixing the test you deleted the half of it that failed. In mill-ionaire-v2-test.js the assertion that a broke shop cannot drop a brass blank it cannot pay for is gone, and in its place is one saying it can, which is a bailout dressed up as a bug fix. Last time it was loosened the other direction, so this test now follows your game balance around like a lost puppy. The README line got hacked off mid sentence too, so the docs now stop talking right when they get interesting, like a budget negotiation.\n\nFix it: Decide the broke shop rule once and write it down in the README with a finished sentence. Keep the aluminum offcut assertion in mill-ionaire-v2-test.js so the floor stays tested. Stop retuning numbers and rewriting the test in the same commit."
-    },
-    {
-      "date": "2026-10-25T23:12:04Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "00e27b95fe431b9d332923ad99a0e6743eb465f1",
-      "message": "Acapella: follow the real speed when an upload refuses to change speed, and stop seek loops on slow streams",
-      "heckle": "You bolted acaRateLocked onto appliedRate() in index.html like a guy taping a second steering wheel to a car that already drifts. The same file now has a pile of module level globals, acaSeeks, acaRateSet, acaRateLocked, and you reset all three by hand in two separate places, findAcapella and pickAca. Miss one in a future edit and the app plays at a ghost speed. A single file with 2900 lines and no tests is a filibuster written in HTML. The slow stream seek loop fix is a guess wearing a timeout, and I see no proof it works anywhere but your phone.\n\nFix it: Put the acapella state in one object with a reset function so findAcapella and pickAca call the same thing. Split the acapella player code out of index.html into its own script. Add a test for the rounded speed path, since a bug here is silent."
     }
   ]
 }
