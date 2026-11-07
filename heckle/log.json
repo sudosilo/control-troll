@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-07T19:27:54Z",
+      "repo": "stinkin-badges",
+      "sha": "fbf152f5",
+      "message": "Use the email link login and allow the badge tool as a return address",
+      "heckle": "You spent an hour building a login code email, then ripped it out and went back to links, like a senate rewriting the same bill after every recess. setup/email.json is deleted, and setup/supabase.sh now scrapes uri_allow_list out of JSON with grep and sed, then splices it into a hand built JSON string with no escaping. One stray quote in that list and the PATCH eats your auth config. The script also still opens with a Termux shebang, so it runs on exactly one phone, yours.\n\nFix it: Parse the config in setup/supabase.sh with jq or node instead of grep and sed. Build the PATCH body with a real JSON encoder. Check the GET status code before trusting CUR."
+    },
+    {
+      "date": "2026-11-07T19:27:54Z",
+      "repo": "stinkin-badges",
+      "sha": "2b2eafd6",
+      "message": "Setup script for a shared Supabase project",
+      "heckle": "This commit adds setup/email.json and a custom login code email, and also deletes supabase/config.toml and supabase/templates/code.html that you committed an hour earlier. So the repo now holds two different ways to configure the same email template, and you killed one of them like a campaign promise the week after the election. setup/supabase.sh never checks that jq-less curl actually returned the tables, and it dumps the anon key into a file in your home folder with no mention of where it goes next.\n\nFix it: Pick one config path and delete the other for good. Add a README line in setup/ saying what to do with the env file. Make setup/supabase.sh stop on the first failing curl with set -e."
+    },
+    {
+      "date": "2026-11-07T19:27:54Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "d8c88f40",
+      "message": "grok 2026-11-07T170424",
+      "heckle": "One minified line of JSON from the bot, pushed straight to the branch without a pull request, because review is for people with standards. contrib/grok/2026-11-07T170424.json draws a market with three wall segments, then a brick hatch that covers a bigger box than the walls, then a dog walker parked thirty thousand units away from anything. The declare_penetration at the end sits inside the wall run with no checks on it. This is a government shutdown with a signature field.\n\nFix it: Make the grok bot open a pull request like the others. Validate hatch bounds against the wall pts before writing contrib/grok. Pretty print the JSON so a human can diff it."
+    },
+    {
+      "date": "2026-11-07T19:27:54Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "b3807ebd",
+      "message": "steward 2026-11-07T165947 (#76)",
+      "heckle": "Another steward turn, another one line wall of minified JSON, and you merged it under your own login like a rubber stamp at the DMV. contrib/steward/2026-11-07T165947.json is six crosswalk hatches that all repeat the same meta string, completes the crosswalk across the street, word for word. Nobody read this. Nobody can read this. The only review it got was a green merge button.\n\nFix it: Have the steward agent write one crosswalk per street and dedupe the meta text in contrib/steward. Add a size or schema check before the merge. Stop approving diffs you cannot scroll."
+    },
+    {
+      "date": "2026-11-07T19:27:54Z",
+      "repo": "pajamastan",
+      "sha": "4bb967b5",
+      "message": "pajamastan: add Links tab with badge tool",
+      "heckle": "You built an entire navigation group called Links to hold one link. That is a filibuster with a sidebar. In index.html the nav array now has a Links section with a single Links page, and that page has a single card with a single button. The .links-btn rule got wedged in above .footer-note in the middle of the stylesheet like someone dropped it from a moving car, and it is a one off instead of reusing whatever button style the other cards already use.\n\nFix it: Put the Badge Tool card under an existing nav group in the pages array in index.html. Reuse the existing button class instead of .links-btn. Add the link to the footer if you want a Links section later."
+    },
+    {
+      "date": "2026-11-07T19:27:54Z",
+      "repo": "stinkin-badges",
+      "sha": "20ce47c8",
+      "message": "Badge backend: mockup reader and Supabase schema",
+      "heckle": "A whole server.js in one commit, with the rate limiter being a plain in memory Map in a process that Railway will restart whenever it feels like it, so your twenty per hour cap resets on every deploy. The migration in supabase/migrations/20261107160000_badges.sql uses bare create policy lines, while setup/tables.json does drop policy if exists first, so running the migration twice blows up and the two copies of the same schema already disagree. Two sources of truth for one database, nice work.\n\nFix it: Add drop policy if exists before each create policy in supabase/migrations/20261107160000_badges.sql. Delete the duplicate schema from setup/tables.json or generate it from the migration. Move the hits Map in server.js to the database or accept it is cosmetic."
+    },
+    {
+      "date": "2026-11-07T19:27:54Z",
+      "repo": "pajamastan-badge-tool",
+      "sha": "ff5fb9c9",
+      "message": "Redesign interface: pinned preview, compact tabbed controls",
+      "heckle": "You redesigned a phone tool and set the base font to twelve pixels in index.html, so your thumbs now need tweezers. The muted color went to a pale gray on an off white background, which reads like fine print on a bailout. The old blue accent became near black, so every active tab and button is now the same funeral shade. Two hundred eighty five lines added and a hundred fifty three removed in one file, in one go, in one sitting.\n\nFix it: Raise the body font in index.html to at least 14px and keep inputs at 16px so iOS stops zooming. Darken --muted until it passes contrast on --bg. Give the active tab a real color. Split the script out of index.html before it grows again."
+    },
+    {
+      "date": "2026-11-07T19:27:54Z",
+      "repo": "pajamastan-badge-tool",
+      "sha": "afeaa505",
+      "message": "Add gradient editor for band, background, and overlay text, plus text angle",
+      "heckle": "Another hundred sixty five lines crammed into the same single index.html, this time a gradient editor for three different things. The CSS variable --badge-accent got renamed to --band-fill, which is the kind of rename that leaves orphan references behind. The original band color is still hardcoded as 1f4e9c in the fallback, so the old blue is lurking in two places. This is a single file hoarder in the final stage.\n\nFix it: Grep index.html for any leftover --badge-accent use. Replace the hardcoded 1f4e9c fallbacks with one variable. Split gradient code into its own script file."
+    },
+    {
+      "date": "2026-11-07T19:27:54Z",
+      "repo": "pajamastan-badge-tool",
+      "sha": "0976142b",
+      "message": "Add watermark image, background removal, and text overlay",
+      "heckle": "Watermark, background removal and text overlay in one commit, one file, one hundred eighty eight added lines, shipped like a rider slipped into a must pass bill. The new .wm and .ov rules in index.html stack z-index values one through four with no comment, and background removal is a checkbox with no sign of what it does to a slow phone with a big photo. The overlay text is rotated minus twenty four degrees, a number that seems to have come from a dartboard.\n\nFix it: Show a spinner while the background removal in index.html runs. Name the z-index layers with variables. Make the overlay angle a setting instead of a magic number. Downscale big photos before processing."
+    },
+    {
+      "date": "2026-11-07T19:27:54Z",
+      "repo": "pajamastan-badge-tool",
+      "sha": "5af2c231",
+      "message": "Add orientation tabs, saved templates, and per template people",
+      "heckle": "Orientation tabs, saved templates and per template people in one go, and the saved data lives in the browser with no export, so clearing site data deletes the whole roster of badges like a debt ceiling default. The @page style for print size is now in its own style tag with a fixed 3.375in by 2.125in, so portrait mode prints cropped unless some script swaps it, and I can only see that the style tag has an id, not that anything is guaranteed to change it. The chips row scrolls sideways on a phone with no hint it scrolls.\n\nFix it: Confirm the pageStyle element in index.html is rewritten when orientation flips. Add a fade or arrow to the .chips row. Add an export and import button for saved templates."
+    },
+    {
       "date": "2026-11-07T13:11:42Z",
       "repo": "downfree-foundry",
       "sha": "20bbade0",
@@ -1329,76 +1399,6 @@
       "sha": "1d0e9beb640c17e952a4beea24e0ff5f4d6464ed",
       "message": "Treasurer role: budget_issue tool, budget shown to every agent, /api/budget",
       "heckle": "Treasurer role with a budget_issue tool, and you wrote the tool schema as one 600 character line in blue-agent-server-v5.js, the file name already admitting there were four failed attempts before it. A new /api/budget route hands the budget to every agent, and I see no sign anyone checks that only the treasurer can call it beyond a description string that says Treasurer only. A description is not a permission check, genius.\n\nFix it: Enforce the treasurer role in the budget_issue handler in blue-agent-server-v5.js, not in prose. Put a size cap and type check on the budget payload. Check whether /api/budget needs auth at all before it leaks city plans to anyone with curl."
-    },
-    {
-      "date": "2026-10-26T04:55:58Z",
-      "repo": "blue-agent",
-      "sha": "0a81c19a06dae58dfc1b3363299344c72ac09eb3",
-      "message": "Add lavender, the city treasurer: treasurer role, budget_issue tool, budget shown to every agent",
-      "heckle": "Add lavender, the city treasurer. This is the same feature as the next commit, pushed twice, like a government that passes the same bill in both chambers and still cannot fund anything. Two commits for one idea means the first one was broken or incomplete and you hit push anyway. The intern does not know what git commit amend does.\n\nFix it: Squash related work before pushing. Check the new instruction file under blue-agent-backend/instructions for any copied text from the violet one. Write a commit message that says what changed, not just a role name."
-    },
-    {
-      "date": "2026-10-26T04:55:58Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "7ea548a04d48e8c9cbf24dc24fbcb7e985e8c946",
-      "message": "agent-orange 2026-10-26T015809 (#50)",
-      "heckle": "agent-orange 2026-10-26T015809 (#50) is a one line minified JSON blob of place_line calls, nothing a human can review, merged under your own login like a rubber stamp. Every call stuffs a different furniture item into one building at heights like 1100 and 1300 with no check that the pieces do not overlap, so a stack of high chairs may be sitting inside a salsa cart. Reviewing this was impossible, which I assume was the point.\n\nFix it: Pretty print contrib files so a diff is readable. Make scripts/check.mjs reject overlapping interior pieces before merge. Stop auto merging PRs nobody could possibly read."
-    },
-    {
-      "date": "2026-10-26T04:55:58Z",
-      "repo": "steward-repo",
-      "sha": "521a0b97c1438ed573a6dd62566fb8b3cd220bd3",
-      "message": "Paper boys only on duty 6 to 8 AM Arizona time, timed turn files, no repeat water taps, own duplicate cleanup",
-      "heckle": "Paper boys only on duty 6 to 8 AM Arizona time, and your workflow play.yml now has three cron lines, 11:47, 13:00 and 15:00, so the steward runs three times a day for a job that is supposedly two hours long. The cron is UTC and you are doing Arizona time math by hand in your head, which is a bold choice for someone who cannot be trusted with a clock. Also agent.mjs files in detailer and steward now duplicate the same turn timestamp regex line like a copy paste clone.\n\nFix it: Share the turn filename helper between detailer/agent.mjs and steward/agent.mjs. Comment each cron line in play.yml with the local time it means. Confirm the three runs cannot collide on the same turn file."
-    },
-    {
-      "date": "2026-10-26T04:55:58Z",
-      "repo": "blue-agent",
-      "sha": "3cf597ef1b2a444bcca5ced44a12a0332e85ec69",
-      "message": "Violet: seam infrastructure goes to the steward, Commissioner of Public Works",
-      "heckle": "Violet: seam infrastructure goes to the steward. You rewrote a prompt file blue-agent-instructions-violet-v1.txt so the governor now knows the steward is also called tangerine and also the Commissioner of Public Works, three names for one robot, like a bureaucracy that renamed itself after losing the budget fight. If the agent id is steward, the display name Tangerine, and the title Commissioner, the prompt is now a confusing pile that a model will misread.\n\nFix it: Pick one name per role in blue-agent-instructions-violet-v1.txt and stick to it. Remove the also known as chain. Test one violet turn to see it still commissions the right agent id."
-    },
-    {
-      "date": "2026-10-26T04:55:58Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "52041a73aaf47bedd1212eb9bfb9999205d3b07f",
-      "message": "blue: Ocotillo Courts housing on [-1,2]",
-      "heckle": "blue: Ocotillo Courts housing on [-1,2]. A single commit adds one minified JSON file at contrib/blue/2026-10-26T012937.json pushed straight to main with no PR, no review, no description of what it does. Housing with no units declared in meta means the new census you built an hour earlier has to guess from floor area, which makes your own tax roll fiction.\n\nFix it: Add meta.units to the building records in contrib/blue. Route blue through a PR like the other agents. Make commit messages list what was actually placed."
-    },
-    {
-      "date": "2026-10-26T04:55:58Z",
-      "repo": "blue-agent",
-      "sha": "a8e4608607394a17db1a5de08a6f8bc3c6a02026",
-      "message": "Violet: add the owner's city backlog",
-      "heckle": "Violet: add the owner's city backlog. You pasted 23 lines of wishlist into blue-agent-instructions-violet-v1.txt, then told the model never to issue all of it at once, so the prompt contradicts itself like a budget that promises tax cuts and spending hikes together. The prompt is now long enough that the actual instructions get buried, and nothing tracks which backlog items are done.\n\nFix it: Move the backlog out of the prompt into its own file the server loads. Add a done flag per item so Violet does not recommission finished work. Trim the prompt back to instructions only."
-    },
-    {
-      "date": "2026-10-25T21:47:04Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "f49c44f8c76e99990c22102039fb22fd15d9a9b3",
-      "message": "All-voice songs count as their own acapella; 100 song a cappella seed list; Autosmash accepts both kinds",
-      "heckle": "You committed a 100 line a cappella list to tools/lists/acappella.txt that is mostly one group over and over, so the seed list is a fan page, not a data set. Then ALL_VOICE_ARTISTS in index.html hardcodes a list of group names into a regex, so every new singing group needs a code push, the exact opposite of data driven. The NO_VOCALS regex next to it already looks like a cat walked on a keyboard, and now there is a second one. Seed-cache.sh gets a special case for acappella that copies the classical case line for line. Copy paste is your whole architecture.\n\nFix it: Move the artist names out of the ALL_VOICE_ARTISTS regex into a list file. Add variety to tools/lists/acappella.txt so one group does not own the seed. Fold the acappella and classical cases in seed-cache.sh into one setting."
-    },
-    {
-      "date": "2026-10-25T21:50:58Z",
-      "repo": "mill-ionaire",
-      "sha": "7709947f1c5d9619d819fcb982b7ec5f509ac6db",
-      "message": "Inventory: tap any bin to see every finish in it with counts and what open orders want, part bins show pictures, labeled sections",
-      "heckle": "The bin detail view lands as 70 lines of HTML and CSS in mill-ionaire-v2.html, a single file that now holds the whole game, all styles, and every rule like a bloated omnibus bill nobody read. The drow grid uses fixed pixel columns of 48px, 40px and 28 percent, which will get squeezed on a narrow phone and wrap the counts into the labels. The test checks text with regexes like open orders want [2-9], which would pass if the number was wrong anywhere in that range. Tests that pass on almost right are how this repo ended up loosening the asserts every other commit.\n\nFix it: Make the drow grid in mill-ionaire-v2.html responsive so counts stay readable at phone width. Tighten the open orders regex in mill-ionaire-v2-test.js to the exact expected number. Split the CSS into its own file before the next feature."
-    },
-    {
-      "date": "2026-10-25T22:00:43Z",
-      "repo": "song-offset-listener",
-      "sha": "23bca0f6e4a53977aeae81976eceab0da2a3499f",
-      "message": "Loudness maps for instrumentals, made on the phones; saved-song picks accept any genre and a count",
-      "heckle": "api/energy.js takes a POST that stores a loudness map for any video id and sends Access-Control-Allow-Origin star on everything. From what the diff shows there is no key, no token and no check on who is posting, so any stranger on the internet can write junk maps into your Redis, the same way a campaign donor writes a bill. The handler also wraps the whole thing in a catch that returns status 200 with the error text, so every failure looks like a success to monitoring. The queue GET refills itself from saved searches inside a request, which will be slow on an edge function.\n\nFix it: Require a shared secret header on the POST in api/energy.js and reject the rest. Return a real error status from the catch in handler. Clamp the length of the total and voice arrays before storing them."
-    },
-    {
-      "date": "2026-10-25T22:00:45Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "ed2ad60218aa6f80b134d98149916fd3d89ffbcf",
-      "message": "Suggest: scores start lines and drop bars from lyrics, BPM and the beat's loudness map; phones make the maps",
-      "heckle": "Suggest ships in one commit with 150 lines in index.html, a new bash script, tools/energy-map.sh, and a vercel.json rewrite, which is a whole feature stuffed into one lunch bag. The script downloads audio with yt-dlp onto a phone, loops forever with a sleep of 30 minutes, and posts numbers to a hardcoded deploy URL. The setup script s now upgrades every package on the phone when in energy mode, a full apt-get upgrade on a loop that tries again until it works. That is not a setup script, that is a hostage situation. Also the ffmpeg astats pipeline is one unreadable string of filters, and a failure just gets cut to 100 characters.\n\nFix it: Pull the hardcoded API URL in tools/energy-map.sh into one variable at the top of s. Drop the full apt-get upgrade from s. Split the Suggest card from the loudness map code into separate commits next time."
     }
   ]
 }
