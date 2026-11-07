@@ -158,8 +158,8 @@
    "summary": "A field log with a map, receipts, mileage, and an Android app that tracks stops",
    "name": "Field Twin",
    "latest": {
-    "date": "2026-11-03",
-    "text": "Added the Field Twin Companion, a small dashboard screen that pairs with the phone app over Bluetooth. The phone sends it the route, turns, and lockers, and the companion screen has a browser installer page. An ALL LOCKERS switch shows every team locker as a pin, and the locker list can be read without signing in. Cameras on the map now group into teal count bubbles. A Field Chat room shares members with Cat Command Chat and flashes the map when a message arrives. GO now handles routes around the airport fence."
+    "date": "2026-11-06",
+    "text": "The Field Twin Companion now draws the streets around you, sent by the phone from OpenStreetMap and refreshed as you drive. The companion shows up more reliably over Bluetooth and can also link over a USB cable. Team lockers shown without signing in now show only the locker, not who shared it or when. Info buttons were brought up to date."
    }
   },
   "mohavetech-website": {
@@ -417,7 +417,7 @@
    "name": "Mill-ionaire",
    "latest": {
     "date": "2026-11-06",
-    "text": "Order, lathe, and brake programs now resume when the game is reopened without a crash."
+    "text": "Order, lathe, and brake programs now resume when the game is reopened without a crash. After a power drop on reopen, floor machines trip their emergency stops for the crew to reset, and your mill boots before its program resumes. The crew looks at any machine that sits still and says why in a bubble, and says what they fix while they work. Lasers can now run out of assist gas. Checks for the finance minute and the machine settings line are steadier."
    }
   },
   "tinewood-keys": {
@@ -604,8 +604,8 @@
    "summary": "Private group chat app with reactions, voice notes, chess, GIFs, and notifications",
    "name": "Cat Command Chat",
    "latest": {
-    "date": "2026-11-05",
-    "text": "Added rooms. A room switcher lets you create a room, share a room key, and manage room members. Each room has its own Claude member and its own alerts, and room rules cover messages, names, files, pictures, alerts, and chess. A review pass fixed room switching, guest views, and key entry from the menu. Rooms are explained in About."
+    "date": "2026-11-06",
+    "text": "Chat rooms now set up from GitHub with no phone sign in needed. Info buttons were brought up to date with how things work now."
    }
   },
   "datacenter-osint": {
@@ -748,8 +748,8 @@
    "summary": "Search and watch tool for code repos, archives, and sites",
    "name": "Repo Find",
    "latest": {
-    "date": "2026-10-08",
-    "text": "Updated the comic skin."
+    "date": "2026-11-04",
+    "text": "Added the Resolve tab. Look up software by purpose across GitHub and Software Heritage, label results with a bucket, kinds of data and a plain description, load any account's public repos, and export. Added the Rabbit tab, where black windows fill with code from a random repo found by the stumble terms, hold for ten seconds, then refill. Every pull is logged, exportable, and included in backup."
    }
   },
   "nanoverse": {
@@ -1328,8 +1328,8 @@
    "summary": "Second version of the tower builder game, with an info button explaining the rules.",
    "name": "Tower Builder 2",
    "latest": {
-    "date": "2026-09-02",
-    "text": "First version of the second tower builder. It adds an info button that explains the rules."
+    "date": "2026-11-05",
+    "text": "Rebuilt the game with a light theme, a real truss physics engine, a level picker, undo, erase, saved builds, and a phone friendly layout. There are now twelve tower levels with tighter budgets, cables for guy wires, and twelve bridge levels with road beams and a truck crossing."
    }
   },
   "tower-builder": {
@@ -1426,8 +1426,8 @@
    "summary": "Background poller that watches GitHub repos by category, saves alerts to Postgres, and serves them over a read API.",
    "name": "Threat Poller",
    "latest": {
-    "date": "2026-08-01",
-    "text": "Created the threat intel poller with three category rules for watched repos. Alerts now save to Postgres so they persist between runs. Added a read API that returns the latest alerts for the dashboard."
+    "date": "2026-11-04",
+    "text": "Added routes for the watchlist, the catalog and site checks, with a schema file for the new tables."
    }
   },
   "termbeat": {
@@ -1691,8 +1691,8 @@
    "summary": "A retro styled catalog page for the developer's apps",
    "name": "Retro Software Catalog",
    "latest": {
-    "date": "2026-10-17",
-    "text": "Created the retro software catalog. Added retro social link buttons in the footer. Added Field Twin Glaucous, Inkrunner, Tapperator, and the catalog itself, and fixed the Control Troll address."
+    "date": "2026-11-05",
+    "text": "Removed Tunnel FX from the catalog. Labeled CoffeeKit One as a game and Coffee Autosim as a simulator."
    }
   },
   "tapperator": {
@@ -1729,8 +1729,8 @@
    "summary": "A phone inventory app for parts, vendors, orders, and locations",
    "name": "Field Twin Violet",
    "latest": {
-    "date": "2026-10-21",
-    "text": "Sign in now also works when handed over from one more Field Twin app. Removed an address from the app."
+    "date": "2026-11-06",
+    "text": "Added company parts, working and not working counts, and a Count stuff action for taking inventory. The company parts list loads in one tap from Setup, shows in the parts picker with kind and customer filters, and can be exported as a count sheet in the warehouse layout or imported back to set counts. Label photos now match the parts library, and one photo can hold several parts, each matched on its own. Added ticket tracking on orders, Undo for wrong history entries, a read only check link, and weekly inventory reports every Friday morning. Truck is now the default location for parts."
    }
   },
   "five-minute-momentum-engine": {
@@ -2329,6 +2329,20 @@
    "latest": {
     "date": "2026-11-05",
     "text": "Added a Screensavers group and a Spectral Engine group to the menu. Coffeekit screensavers now follow the sound playing on the phone. Spectral Engine visualizers run on the wall, and the room loop and beat are passed to the wall scenes."
+   }
+  },
+  "downfree-foundry": {
+   "apps": [],
+   "urls": [
+    "https://downfree-foundry.vercel.app"
+   ],
+   "private": false,
+   "name": "Road Layers",
+   "summary": "A browser tool that stacks cars from several drive clips onto one road",
+   "category": "Tools",
+   "latest": {
+    "date": "2026-11-06",
+    "text": "Created Road Layers, a test page that stacks cars from several drives onto one road. You pick two or more clips of the same stretch, line them up with an auto line up and a flip view, and build a composite that you can play and record. Clip videos show in their cards, and frames are now pulled with a built in video decoder that restarts after a crash and says which stage failed."
    }
   }
  }

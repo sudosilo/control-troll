@@ -1,166 +1,59 @@
 {
  "jobs": [
   {
-   "repo": "2026-11-04-field-dispatch",
+   "repo": "downfree-foundry",
    "releases": [
-    {
-     "tag": "v2026.11.04",
-     "target": "6bf417bbdf4d993dc4ea62f07bba39d79845017c",
-     "name": "Field Dispatch 2026-11-04",
-     "body": "Created Field Dispatch, a field service dispatch game on a real map of Nevada. Crews take tickets from an open board and follow real road routes between start and end points. Added real cameras to repair, satellite passes, plate reader service contracts at known locations that you can decline, and stashed wireless site scans with a daily cap. A movement badge uses motion sensing and a rule that you must drive 25 mph for 2 minutes. Added Tickets, Crew, Stock, Cameras, and Shop tabs and a restart option. The game code was split into smaller parts without changing how it plays."
-    }
-   ],
-   "description": "A field service dispatch game on a real map of Nevada",
-   "homepage": "https://2026-11-04-field-dispatch.vercel.app",
-   "topics": [
-    "game",
-    "map",
-    "simulator",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "2026-11-04-orange-hush",
-   "releases": [
-    {
-     "tag": "v2026.11.04",
-     "target": "eddda4214e38163302902ec20bc6c21eb465d716",
-     "name": "Hush 2026-11-04",
-     "body": "Created Hush, an Android app that blocks notifications. Added a digest that holds blocked notifications and releases them together on a preset schedule, from every hour to once a day at 8 AM. The app is built into an installable APK automatically on every push."
-    }
-   ],
-   "description": "An Android app that blocks notifications and releases them in a digest",
-   "homepage": "",
-   "topics": [
-    "android",
-    "tool",
-    "notifications"
-   ]
-  },
-  {
-   "repo": "2026-11-05-drive-thru-dental",
-   "releases": [
-    {
-     "tag": "v2026.11.05",
-     "target": "6bac404068104f301df959302b30227ac6e9e2fa",
-     "name": "Drive-Thru Dental Simulator 2026-11-05",
-     "body": "Created the Drive-Thru Dental Simulator, a game where you run a dental window like a drive-thru. Patients arrive at the window, you can ask them to say it again, clear the tray, and hand out the order at the window."
-    }
-   ],
-   "description": "A drive-thru dental simulator game",
-   "homepage": "https://2026-11-05-drive-thru-dental.vercel.app",
-   "topics": [
-    "game",
-    "simulator",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "2026-11-05-locker-screen",
-   "releases": [
-    {
-     "tag": "v2026.11.05",
-     "target": "1a32f1b1c51ae3db33c851dc365864a161436459",
-     "name": "Locker Screen 2026-11-05",
-     "body": "Created Locker Screen, a parcel locker kiosk with an attract screen. Added scan and code entry screens, a tracking number keyboard, language and help screens, and a high contrast option. Added technician troubleshooting screens, a hardware keypad, sensor and door repair flows, and tests for every part."
-    }
-   ],
-   "description": "A parcel locker kiosk screen with code entry, languages, and technician repair flows",
-   "homepage": "https://2026-11-05-locker-screen.vercel.app",
-   "topics": [
-    "kiosk",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "coffeekit1",
-   "releases": [
-    {
-     "tag": "v2026.11.05",
-     "target": "ed0cdefdca2c6465a84cc4192f3ee5112f63cffb",
-     "name": "CoffeeKit One 2026-11-05",
-     "body": "Added CoffeeKit One as a copy of the live app. Version 2 makes light mode the default and adds a night shift option, a menu in the upper left, saved records, and a new shift button. The layout is steadier and sized for phones."
-    }
-   ],
-   "description": "A coffee shop training game with kitchen orders and cleaning rounds",
-   "homepage": "https://coffeekit1.vercel.app",
-   "topics": [
-    "game",
-    "restaurant-tech",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "hire-portal",
-   "releases": [
-    {
-     "tag": "v2026.11.05",
-     "target": "a8b57c5dffa25645f71c9554b05d04a61362084a",
-     "name": "Hire Portal 2026-11-05",
-     "body": "Created Hire Portal, a practice job application that teaches what to share. Applicants make an account, upload a resume that is read for them, check what was pulled, answer work eligibility questions, and sign. Every step has a What to share panel that explains what an honest employer asks for and what to be careful about."
-    }
-   ],
-   "description": "A practice job application that teaches applicants what to share and what to withhold",
-   "homepage": "",
-   "topics": [
-    "tool",
-    "education",
-    "demo"
-   ]
-  },
-  {
-   "repo": "rainbow-run",
-   "releases": [
-    {
-     "tag": "v2026.11.04",
-     "target": "af8f3224f63f4457f2d3252dd1be2934dce84f39",
-     "name": "Rainbow Run 2026-11-04",
-     "body": "Created Rainbow Run, a visualizer pedal for the stompbox API. Added a wall host that runs many visualizer scenes across phones lined up side by side, grouped in a menu, with a rain scene, a top down highway scene, and a stars scene. Row size can be set by hand and holds through a reconnect. Added Quad and Nine wall layouts, fit zoom and nudge for each phone, and a panel that fades to a menu button. Added Coffeekit screensavers to the wall."
-    },
-    {
-     "tag": "v2026.11.05",
-     "target": "197901c91e83598250f0db91f9652207abfd244c",
-     "name": "Rainbow Run 2026-11-05",
-     "body": "Added a Screensavers group and a Spectral Engine group to the menu. Coffeekit screensavers now follow the sound playing on the phone. Spectral Engine visualizers run on the wall, and the room loop and beat are passed to the wall scenes."
-    }
-   ],
-   "description": "A visualizer pedal where a pixel crow flies across phones lined up side by side",
-   "homepage": "https://rainbow-run-ochre.vercel.app",
-   "topics": [
-    "visualizer",
-    "music",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "2026-10-18-orange-testbed",
-   "releases": [
-    {
-     "tag": "v2026.11.04-2",
-     "target": "b5c05e6c106361c4e9abf06999ba692d75af48dc",
-     "name": "Agent Test Bed 2026-11-04",
-     "body": "The agent turn was played and merged into the city. The grok and steward turns were played and merged as well."
-    },
-    {
-     "tag": "v2026.11.05",
-     "target": "3cdd8801ae6f8f51051b4168f71da153a9be93e0",
-     "name": "Agent Test Bed 2026-11-05",
-     "body": "The agent, grok, and steward turns for the day were played and merged into the city."
-    },
     {
      "tag": "v2026.11.06",
-     "target": "9232678e6c340c588057bbadc8d085a4832ec180",
-     "name": "Agent Test Bed 2026-11-06",
-     "body": "The agent turn was played and merged into the city."
+     "target": "20bbade0e519e48624b0fbd1ce0c63082ee0ec7e",
+     "name": "Road Layers 2026-11-06",
+     "body": "Created Road Layers, a test page that stacks cars from several drives onto one road. You pick two or more clips of the same stretch, line them up with an auto line up and a flip view, and build a composite that you can play and record. Clip videos show in their cards, and frames are now pulled with a built in video decoder that restarts after a crash and says which stage failed."
     }
    ],
-   "description": "A shared city that AI agents build one turn at a time",
-   "homepage": "https://2026-10-18-orange-testbed.vercel.app",
+   "description": "Road Layers stacks cars from several drive clips onto one road in the browser.",
+   "homepage": "https://downfree-foundry.vercel.app",
    "topics": [
-    "agents",
-    "game",
-    "simulator",
+    "tool",
+    "video",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "field-twin-violet-api",
+   "releases": [
+    {
+     "tag": "v2026.11.06",
+     "target": "78db614c88ab448275bce12c4d8631be0b2500bc",
+     "name": "Field Twin Violet 2026-11-06",
+     "body": "Added company parts, working and not working counts, and a Count stuff action for taking inventory. The company parts list loads in one tap from Setup, shows in the parts picker with kind and customer filters, and can be exported as a count sheet in the warehouse layout or imported back to set counts. Label photos now match the parts library, and one photo can hold several parts, each matched on its own. Added ticket tracking on orders, Undo for wrong history entries, a read only check link, and weekly inventory reports every Friday morning. Truck is now the default location for parts."
+    }
+   ],
+   "description": "A phone inventory app for parts, vendors, reorder levels, orders, and storage locations.",
+   "homepage": "https://field-twin-violet.vercel.app",
+   "topics": [
+    "field",
+    "inventory",
+    "supabase",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "field-twin",
+   "releases": [
+    {
+     "tag": "v2026.11.06",
+     "target": "0e4daa57881a1b05473c57697c74725a8fb6c47f",
+     "name": "Field Twin 2026-11-06",
+     "body": "The Field Twin Companion now draws the streets around you, sent by the phone from OpenStreetMap and refreshed as you drive. The companion shows up more reliably over Bluetooth and can also link over a USB cable. Team lockers shown without signing in now show only the locker, not who shared it or when. Info buttons were brought up to date."
+    }
+   ],
+   "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
+   "homepage": "https://field-twin-teal.vercel.app",
+   "topics": [
+    "field-service",
+    "map",
+    "tool",
     "vercel"
    ]
   },
@@ -168,10 +61,10 @@
    "repo": "kat-chat",
    "releases": [
     {
-     "tag": "v2026.11.05",
-     "target": "f5ea5b85197ebb2b31024144ce76939d4e723209",
-     "name": "Cat Command Chat 2026-11-05",
-     "body": "Added rooms. A room switcher lets you create a room, share a room key, and manage room members. Each room has its own Claude member and its own alerts, and room rules cover messages, names, files, pictures, alerts, and chess. A review pass fixed room switching, guest views, and key entry from the menu. Rooms are explained in About."
+     "tag": "v2026.11.06",
+     "target": "b0d31d454b43629d27176aded044c79e69fea6dc",
+     "name": "Cat Command Chat 2026-11-06",
+     "body": "Chat rooms now set up from GitHub with no phone sign in needed. Info buttons were brought up to date with how things work now."
     }
    ],
    "description": "A private group chat app with reactions, voice notes, chess, GIFs, and notifications.",
@@ -186,22 +79,10 @@
    "repo": "mill-ionaire",
    "releases": [
     {
-     "tag": "v2026.11.04",
-     "target": "d156753ae1bac8ce63264aae6db2fbab84f4cea0",
-     "name": "Mill-ionaire 2026-11-04",
-     "body": "Added spoken orders. A caller says the word, you spell it into its slots, and a wrong spelling docks half the price. Made the check for the hand bend steadier."
-    },
-    {
-     "tag": "v2026.11.05",
-     "target": "4a0d0d1acc36094ce088b43bfc591a7ea5418286",
-     "name": "Mill-ionaire 2026-11-05",
-     "body": "Added a warehouse with three times the floor, flatbed truck orders, and specialist crews for new breakdowns. Added an office building with sales managers who ship ready orders and linguistics engineers who spell spoken orders. Added laser cutters and metal printers, spare parts, and a statistics page in the menu. The caller's voice now plays even when shop sound is muted. Machines keep working when others stop, and every machine has a work the order queue button."
-    },
-    {
-     "tag": "v2026.11.06",
-     "target": "a97dc69181af761c3f12e915c99ba6d6a5e4d3c2",
+     "tag": "v2026.11.06-2",
+     "target": "0b2023ddcfe36df5c430deedae6327026aa60bfa",
      "name": "Mill-ionaire 2026-11-06",
-     "body": "Order, lathe, and brake programs now resume when the game is reopened without a crash."
+     "body": "Order, lathe, and brake programs now resume when the game is reopened without a crash. After a power drop on reopen, floor machines trip their emergency stops for the crew to reset, and your mill boots before its program resumes. The crew looks at any machine that sits still and says why in a bubble, and says what they fix while they work. Lasers can now run out of assist gas. Checks for the finance minute and the machine settings line are steadier."
     }
    ],
    "description": "A letter shop tycoon built around a simulated knee mill that grows into a factory.",
@@ -214,45 +95,78 @@
    ]
   },
   {
-   "repo": "mohavetech-website",
+   "repo": "repofind",
    "releases": [
     {
      "tag": "v2026.11.04",
-     "target": "cc0cddd4a8a45caa0f4e1083f346a6c9dcedb7c6",
-     "name": "App Index 2026-11-04",
-     "body": "The app index was synced with the live deployments and a retired app was dropped."
-    },
-    {
-     "tag": "v2026.11.05",
-     "target": "f092e2cdbd5082c4f194e9f83fdefff3d7aca276",
-     "name": "App Index 2026-11-05",
-     "body": "Added a one step sync that updates deploy dates from the live deployments. Added the drive-thru dental simulator, moved CoffeeKit One to Games, and removed retired apps and duplicates. Added monthly reviews under Statistics with the October 2026 deck."
+     "target": "1e3daf1e4998acac9a2396dd84ae20e9e85ca44c",
+     "name": "Repo Find 2026-11-04",
+     "body": "Added the Resolve tab. Look up software by purpose across GitHub and Software Heritage, label results with a bucket, kinds of data and a plain description, load any account's public repos, and export. Added the Rabbit tab, where black windows fill with code from a random repo found by the stumble terms, hold for ten seconds, then refill. Every pull is logged, exportable, and included in backup."
     }
    ],
-   "description": "An index page that lists every app with its age, phone tags, and notes.",
-   "homepage": "https://mohavetech-website.vercel.app",
+   "description": "Search and watch tool for code repos, archives, and sites.",
+   "homepage": "https://repofind-delta.vercel.app",
    "topics": [
-    "index",
+    "search",
     "tool",
     "vercel"
    ]
   },
   {
-   "repo": "coffee-autosim",
+   "repo": "tower2",
    "releases": [
     {
      "tag": "v2026.11.05",
-     "target": "2b40563c10deea6aa5c53c7546bd5d23edd86942",
-     "name": "Coffee Autosim 2026-11-05",
-     "body": "Version 4 is a real shift simulator with arrivals, stations that contend for work, and a shift report. Added inventory and shipments with stock for each step, trucks with lead times, automatic reordering, a stockroom strip, and a report section."
+     "target": "f02a078d9cc6aa10b08469d40fd7832dbc4b76f8",
+     "name": "Tower Builder 2 2026-11-05",
+     "body": "Rebuilt the game with a light theme, a real truss physics engine, a level picker, undo, erase, saved builds, and a phone friendly layout. There are now twelve tower levels with tighter budgets, cables for guy wires, and twelve bridge levels with road beams and a truck crossing."
     }
    ],
-   "description": "A live blueprint simulator of a coffee shop floor with baristas.",
-   "homepage": "https://coffee-autosim.vercel.app",
+   "description": "Second version of the tower builder game, with an info button explaining the rules.",
+   "homepage": "",
    "topics": [
-    "restaurant-tech",
+    "game",
     "simulator",
     "vercel"
+   ]
+  },
+  {
+   "repo": "mohave-wtf",
+   "releases": [
+    {
+     "tag": "v2026.11.05",
+     "target": "43e1d5d0c5b451528936b6110a4aac7ad71a834c",
+     "name": "Retro Software Catalog 2026-11-05",
+     "body": "Removed Tunnel FX from the catalog. Labeled CoffeeKit One as a game and Coffee Autosim as a simulator."
+    }
+   ],
+   "description": "A retro styled software catalog that lists the developer's apps.",
+   "homepage": "https://mohave-wtf.vercel.app",
+   "topics": [
+    "catalog",
+    "retro",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "threat-poller",
+   "releases": [
+    {
+     "tag": "v2026.11.04",
+     "target": "1c2b16674ed4f928399f053696c6b42692bac7bf",
+     "name": "Threat Poller 2026-11-04",
+     "body": "Added routes for the watchlist, the catalog and site checks, with a schema file for the new tables."
+    }
+   ],
+   "description": "Background poller that watches GitHub repos by category, saves alerts to Postgres, and serves them over a read API.",
+   "homepage": "",
+   "topics": [
+    "backend",
+    "monitoring",
+    "postgres",
+    "railway",
+    "redis"
    ]
   }
  ]
