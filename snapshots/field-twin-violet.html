@@ -103,13 +103,17 @@
   .ft-sites a{flex:1;display:flex;align-items:center;justify-content:center;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:14px;font-weight:800;letter-spacing:.3px;color:#5a6d85;text-decoration:none}
   .ft-sites a.on{color:#0b4ea2;box-shadow:inset 0 -4px 0 #0a1b2e}
   #vendorFilter, #customerFilter { margin-top: 8px; }
+  header { position: relative; padding-right: 54px !important; }
+  .info-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; border-radius: 50%; border: 2px solid #0b4ea2; background: #fff; color: #0b4ea2; font: italic 800 17px Georgia, serif; cursor: pointer; padding: 0; }
+  .help h3 { color: #0b4ea2; margin: 14px 0 4px; font-size: 15px; }
+  .help p { margin: 0 0 6px; line-height: 1.45; }
 </style>
 </head>
 <body>
 <script>if (window.top !== window.self) document.documentElement.classList.add("framed");</script>
 <script src="field-twin-violet-v3-config.js"></script>
 <div class="top">
-<header><h1>Field Twin Violet</h1><span id="status"></span></header>
+<header><h1>Field Twin Violet</h1><span id="status"></span><button class="info-btn" data-act="help" aria-label="How Violet works">i</button></header>
 <nav class="ft-sites" aria-label="Field Twin apps"><a href="https://field-twin-teal.vercel.app/#map">Field map</a><a class="on" aria-current="page" href="https://field-twin-violet.vercel.app/">Inventory</a><a href="https://field-twin-glaucous.vercel.app/">Roads</a></nav>
 <nav id="nav" hidden>
   <button data-tab="home">Home</button>
@@ -441,6 +445,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     const o = await fetchAll("violet_orders").catch(() => S.server.violet_orders || []);
     S.server = { violet_holders: h, violet_catalog: c, violet_events: e, violet_orders: o };
     S.lastSync = nowIso();
+    claudeSnapshot();
     await idb.set("data:" + S.user.id, { server: S.server, lastSync: S.lastSync });
   }
 
@@ -704,7 +709,13 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     if (S.itemCompany === "mine") list = list.filter((c) => !c.company);
     if (S.itemCompany === "bad") list = list.filter((c) => notWorking(d, c.id) > 1e-9);
     if (S.itemLoc) list = list.filter((c) => (d.byCatalog.get(c.id) || []).some((it) => it.holder === S.itemLoc));
-    if (q) list = list.filter((c) => [c.name, c.part_number, c.model, c.manufacturer, c.vendor, c.customer].some((v) => norm(v).includes(q)) || [...d.serials.values()].some((s) => s.catalog_id === c.id && norm(s.serial).includes(q)));
+    if (q) {
+      const ws = q.split(/\s+/).filter(Boolean);
+      list = list.filter((c) => {
+        const hay = norm([c.name, c.part_number, c.model, c.manufacturer, c.vendor, c.customer].join(" "));
+        return ws.every((w) => hay.includes(w)) || [...d.serials.values()].some((st) => st.catalog_id === c.id && norm(st.serial).includes(q));
+      });
+    }
     list.sort((a, b) => partLabel(a).localeCompare(partLabel(b)));
     const kindChips = [["", "All"], ...Object.entries(ITEM_KINDS).map(([k, v]) => [k, v + "s"])]
       .map(([k, v]) => `<button class="btn small ${S.itemKind === k ? "on" : ""}" data-itemkind="${k}">${esc(v)}</button>`)
@@ -735,7 +746,10 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
         </div>`;
       })
       .join("");
-    return `${locChip}
+    const listPns = new Set(catalog().map((c) => norm(c.part_number)));
+    const missing = NV11_PARTS.filter((p) => !listPns.has(norm(p.pn))).length;
+    const listCard = missing ? `<div class="card"><b>Company parts list</b><p class="muted">${missing} parts from the NV11 warehouse list are not in your items yet.</p><button class="btn primary wide" data-act="load-nv11">Add them to my items</button></div>` : "";
+    return `${listCard}${locChip}
       <div class="chips">${kindChips}</div>
       <div class="chips">${ownChips}</div>
       ${vendorSel}
@@ -1148,7 +1162,20 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     return { ...blankItem(), catalog_id: c.id, name: c.name, kind: c.kind, part_number: c.part_number, manufacturer: c.manufacturer, model: c.model, unit: c.unit || "each" };
   }
 
+  // Default location: where new parts land and where used parts come from, unless you pick another. It is the
+  // one chosen in Setup, or your truck when nothing is chosen.
+  function defaultHolder() {
+    let pick = "";
+    try { pick = localStorage.getItem("violetDefaultLoc") || ""; } catch (e) {}
+    const hs = holders();
+    if (pick && hs.some((h) => h.id === pick)) return pick;
+    const truck = hs.find((h) => h.kind === "truck");
+    return truck ? truck.id : "";
+  }
   function newLog(type = "received") {
+    const def = defaultHolder();
+    const intoDefault = type === "received" || type === "pulled";
+    const fromDefault = type === "moved" || type === "installed" || type === "returned" || type === "written_off";
     return {
       type,
       photo: null,
@@ -1160,7 +1187,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       picking: false,
       pickQ: "",
       items: [],
-      f: { from_holder: "", to_holder: "", vendor: "", customer: "", locker_id: "", site: "", symptom: "", cause: "", condition: type === "pulled" || type === "returned" ? "failed" : "good", note: "", happened_at: localInput() },
+      f: { from_holder: fromDefault ? def : "", to_holder: intoDefault ? def : "", vendor: "", customer: "", locker_id: "", site: "", symptom: "", cause: "", condition: type === "pulled" || type === "returned" ? "failed" : "good", note: "", happened_at: localInput() },
     };
   }
 
@@ -1199,18 +1226,40 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     return row;
   }
 
+  // The parts list for Add stuff and the other actions: every item you have, plus every part on the company list
+  // even before it is in your stock. Filter by kind and by customer, and search any word of the name or either number.
+  function pickerPool() {
+    const have = catalog();
+    const pns = new Set(have.map((c) => norm(c.part_number)).filter(Boolean));
+    const fromList = NV11_PARTS.filter((p) => !pns.has(norm(p.pn))).map((p) => ({
+      id: "nv11:" + p.pn, kind: "part", name: p.name, part_number: p.pn, model: p.old || "", manufacturer: "", vendor: "", customer: "Amazon", company: true, _list: true,
+    }));
+    return have.concat(fromList);
+  }
   function renderPicker() {
     const L = S.log;
-    const q = norm(L.pickQ);
+    const words = norm(L.pickQ).split(/\s+/).filter(Boolean);
     const d = derive();
-    const list = catalog()
-      .filter((c) => !q || [c.name, c.part_number, c.model, c.vendor].some((v) => norm(v).includes(q)))
-      .sort((a, b) => partLabel(a).localeCompare(partLabel(b)))
-      .slice(0, 40);
+    const pool = pickerPool();
+    const kind = L.pickKind || "";
+    const cust = L.pickCust || "";
+    const custs = [...new Set(pool.map((c) => c.customer).filter(Boolean))].sort();
+    const list = pool
+      .filter((c) => !kind || c.kind === kind)
+      .filter((c) => !cust || (c.customer || "") === cust)
+      .filter((c) => { const hay = norm([c.name, c.part_number, c.model, c.manufacturer, c.vendor, c.customer].join(" ")); return words.every((w) => hay.includes(w)); })
+      .sort((a, b) => (b.company ? 1 : 0) - (a.company ? 1 : 0) || partLabel(a).localeCompare(partLabel(b)));
+    const kindChips = [["", "All"], ["part", "Parts"], ["tool", "Tools"], ["consumable", "Consumables"]]
+      .map(([k, v]) => `<button class="btn small ${kind === k ? "on" : ""}" data-act="pick-kind" data-k="${k}">${v}</button>`).join("");
+    const custChips = custs.length ? [["", "Every customer"], ...custs.map((c) => [c, c])]
+      .map(([k, v]) => `<button class="btn small ${cust === k ? "on" : ""}" data-act="pick-cust" data-k="${esc(k)}">${esc(v)}</button>`).join("") : "";
     return `<div class="card">
-      <h3>Pick from your items</h3>
-      <input id="pickSearch" value="${esc(L.pickQ)}" placeholder="Search name or part number">
-      <div class="list">${list.map((c) => `<div class="tap row item" data-pick="${c.id}"><div class="thumbcell">${c.ref_photo ? `<img class="thumb" data-photo="${esc(c.ref_photo)}" alt="">` : '<div class="thumb empty">No photo</div>'}</div><div><b>${esc(partLabel(c))}</b><br><span class="muted">${fmtNum(onHand(d, c.id))} on hand</span></div></div>`).join("") || '<div class="muted">No items yet. Use Take photo or Type it in.</div>'}</div>
+      <h3>Pick from the parts list</h3>
+      <div class="chips">${kindChips}</div>
+      ${custChips ? `<div class="chips">${custChips}</div>` : ""}
+      <input id="pickSearch" value="${esc(L.pickQ)}" placeholder="Search, like LCD, door lock, or a part number">
+      <p class="muted">${list.length} match${list.length === 1 ? "" : "es"}</p>
+      <div class="list">${list.slice(0, 80).map((c) => `<div class="tap row item" data-pick="${esc(c.id)}"><div class="thumbcell">${c.ref_photo ? `<img class="thumb" data-photo="${esc(c.ref_photo)}" alt="">` : '<div class="thumb empty">No photo</div>'}</div><div><b>${esc(partLabel(c))}</b>${c.company ? ' <span class="pill co">Company</span>' : ""}${c.customer ? ' <span class="pill">' + esc(c.customer) + "</span>" : ""}<br><span class="muted">${c._list ? "On the company list, none in stock yet" : fmtNum(onHand(d, c.id)) + " working on hand"}${c.model ? " · " + esc(c.model) : ""} · ${esc(ITEM_KINDS[c.kind] || c.kind)}</span></div></div>`).join("") || '<div class="muted">Nothing matches. Try fewer words, or use Type it in.</div>'}</div>
       <button class="btn wide" data-act="pick-close">Close list</button>
     </div>`;
   }
@@ -1235,7 +1284,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       <div class="card">
         <div class="pickrow">
           <label class="btn primary">Take photo<input id="photoInput" type="file" accept="image/*" capture="environment" hidden></label>
-          <button class="btn" data-act="pick-open">Pick from my items</button>
+          <button class="btn" data-act="pick-open">Pick from parts list</button>
           <button class="btn" data-act="add-item">Type it in</button>
         </div>
         <p class="muted">${apiReady ? "A photo of a label, box, packing slip, or the part itself fills in the details for you." : "Barcodes read from photos right on the phone. Label reading turns on when you are signed in, or in demo mode once a token is set under Setup."}</p>
@@ -1331,6 +1380,14 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     render();
   }
 
+  // Turns the label reader's raw error into plain words.
+  function readerError(msg, status) {
+    const m = String(msg || "");
+    if (/credit balance is too low/i.test(m)) return "The label reader's Claude account is out of credit, so the photo was not read. Pick the part from the parts list instead, or add credit and take the photo again.";
+    if (/x-api-key|authentication|invalid api key/i.test(m)) return "The label reader's Claude key was turned down, so the photo was not read. Pick the part from the parts list instead.";
+    if (/overloaded|529/i.test(m)) return "The label reader is busy right now. Take the photo again in a minute, or pick the part from the parts list.";
+    return m || `label reader answered ${status}`;
+  }
   async function handlePhoto(file) {
     const L = S.log;
     L.error = "";
@@ -1359,14 +1416,44 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
           body: JSON.stringify({ image: dataUrl, barcodes: L.barcodes }),
         });
         const j = await r.json().catch(() => ({}));
-        if (!r.ok) throw new Error(j.error || `label reader answered ${r.status}`);
+        if (!r.ok) throw new Error(readerError(j.error, r.status));
         L.extracted = j.result;
-        const read = (j.result.items || []).map((it) => {
+        let read = (j.result.items || []).map((it) => {
           const base = { ...blankItem(), ...it, include: true };
           const c = findCatalog(base);
           return c ? { ...base, catalog_id: c.id } : base;
         });
+        // Check the photo against the parts library, your items plus the company list. A material number or old
+        // material number anywhere on the label is a sure match; otherwise the closest name counts as a guess.
+        // Every item in the photo is checked against the parts library on its own, so one photo can hold several
+        // parts. With a single item, the whole label counts toward its match.
+        const raw = read.length ? read : [{}];
+        const matched = [];
+        for (const it of raw) {
+          const src = raw.length === 1 ? { item: it, rest: j.result } : { item: it };
+          const lib = await libraryMatch(src, raw.length === 1 ? L.barcodes : []);
+          if (lib) {
+            const one = { ...itemFromCatalog(lib.c), quantity: Number(it.quantity) > 0 ? Number(it.quantity) : 1, include: true };
+            if (it.serial) one.serial = it.serial;
+            if (lib.c.customer && !L.f.customer) L.f.customer = lib.c.customer;
+            if (lib.c.vendor && !L.f.vendor) L.f.vendor = lib.c.vendor;
+            matched.push({ item: one, lib });
+          } else if (it.name || it.part_number) matched.push({ item: it, lib: null });
+        }
+        read = matched.map((m) => m.item);
         L.items = L.items.filter((it) => it.catalog_id || it.name || it.part_number).concat(read);
+        const allSure = matched.length > 0 && matched.every((m) => m.lib && m.lib.sure);
+        if (allSure && L.type === "received" && L.f.to_holder) {
+          L.status = "";
+          render();
+          toast(`Added ${matched.map((m) => fmtNum(m.item.quantity) + " " + partLabel(m.lib.c)).join(", ")} to ${holderName(L.f.to_holder)}`);
+          return saveLog();
+        }
+        if (matched.some((m) => m.lib)) {
+          const named = matched.filter((m) => m.lib).map((m) => partLabel(m.lib.c));
+          L.status = `Matched from the parts list: ${named.join(", ")}. Check ${matched.length > 1 ? "each one" : "it"} and tap Save.`;
+          return render();
+        }
         if (j.result.shipment && j.result.shipment.vendor && !L.f.vendor) L.f.vendor = j.result.shipment.vendor;
         L.status = read.length ? `Read ${read.length} item${read.length > 1 ? "s" : ""}${j.cached ? " (saved reading)" : ""}` : "Nothing readable on the label. Fill it in by hand.";
       } else {
@@ -1383,6 +1470,41 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       if (!L.items.length) L.items.push(blankItem());
     }
     render();
+  }
+
+  async function libraryMatch(result, barcodes) {
+    const pool = pickerPool();
+    const lc = (v) => String(v || "").toLowerCase();
+    const hay = lc(JSON.stringify(result || {}) + " " + (barcodes || []).join(" "));
+    // Numbers count only as whole numbers on the label, never as a piece of a longer number or of two numbers run
+    // together, so a stray string of digits cannot pick the wrong part.
+    const tokens = new Set(hay.split(/[^a-z0-9]+/).filter((t) => t.length >= 6));
+    let hit = null;
+    for (const c of pool) {
+      const nums = [c.part_number, c.model].map((v) => lc(v).replace(/[^a-z0-9]/g, "")).filter((v) => v.length >= 7);
+      if (nums.some((v) => tokens.has(v))) { hit = c; break; }
+    }
+    let sure = !!hit;
+    if (!hit) {
+      const words = new Set(hay.split(/[^a-z0-9.]+/).filter((w) => w.length >= 3));
+      let best = 0;
+      for (const c of pool) {
+        const ws = lc(c.name).split(/[^a-z0-9.]+/).filter((w) => w.length >= 3 && !["amz", "amazon", "for", "the", "and", "with"].includes(w));
+        if (ws.length < 2) continue;
+        const score = ws.filter((w) => words.has(w)).length / ws.length;
+        if (score > best) { best = score; hit = c; }
+      }
+      if (best < 0.6) hit = null;
+    }
+    if (!hit) return null;
+    if (hit._list) {
+      // a company list part seen for the first time: add it to your items
+      const row = { id: uuid(), owner: uid(), kind: "part", name: hit.name, part_number: hit.part_number, manufacturer: "", model: hit.model || "", unit: "each",
+        vendor: "", customer: hit.customer || "Amazon", min_qty: 0, ref_photo: null, created_at: nowIso(), company: true };
+      await enqueue("violet_catalog", row);
+      hit = catalogById(row.id) || row;
+    }
+    return { c: hit, sure };
   }
 
   function findCatalog(it) {
@@ -1591,9 +1713,15 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
         ${S.syncError ? `<p class="err">Last upload failed: ${esc(S.syncError)}</p>` : ""}
         <button class="btn" data-act="sync">Upload now</button>`}
       </div>
+      <h2>Weekly reports</h2>
+      <div class="card"><button class="btn primary wide" data-act="reports">Open weekly reports</button><p class="muted">A report of your stock, this week's entries and week over week trends is made for you every Friday morning.</p></div>
       <h2>Export</h2>
       <div class="card row"><button class="btn" data-act="csv-stock">Stock CSV</button><button class="btn" data-act="csv-events">History CSV</button></div>
-      <div class="card"><b>Company parts list</b><p class="muted">Adds every part on the NV11 warehouse list as a company part for Amazon, ready to count. Parts already in here are kept and only get marked as company parts.</p><button class="btn primary wide" data-act="load-nv11">Add the NV11 company parts list</button></div>
+      <div class="card"><button class="btn primary wide" data-act="check-link">Copy check link for Claude</button><p class="muted">Lets Claude read your items and history to check entries. The copy updates every time the app uploads.</p></div>
+      <div class="card"><b>Company parts list</b><p class="muted">Adds every part on the NV11 warehouse list as a company part for Amazon, ready to count. Parts already in here are kept and only get marked as company parts.</p><button class="btn primary wide" data-act="load-nv11">Add the NV11 company parts list</button><button class="btn wide" style="margin-top:8px" data-act="export-nv11">NV11 count sheet</button><label class="btn wide" style="margin-top:8px;text-align:center">Import a count sheet<input id="countSheetInput" type="file" accept=".xlsx,.xls,.csv" hidden></label><p class="muted">Saves the NV11 list in the warehouse's own columns with Actual Count filled in from your stock, plus working and not working.</p></div>
+      <h2>Default location</h2>
+      <div class="card"><p class="muted">New parts go here and used parts come from here unless you pick another location.</p>
+        <select id="defaultLoc">${holders().map((h) => `<option value="${h.id}" ${defaultHolder() === h.id ? "selected" : ""}>${esc(h.name)}</option>`).join("")}</select></div>
       <h2>Label reader</h2>
       <form id="settingsForm" class="card">
         <p class="muted">Signed in, the label reader works with nothing filled in here. These boxes are only for a different address or for demo mode.</p>
@@ -1630,7 +1758,9 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       ["Condition", CONDITIONS[e.condition] || e.condition], ["Symptom", e.symptom], ["Cause", e.cause], ["Note", e.note], ["Entered by", e.source],
       ["Ticket", e.ticket], ["Order", e.order_id ? orderLabel(orders().find((o) => o.id === e.order_id)) : ""], ["Attribution", e.unordered ? "Sent without an order" : ""],
     ].filter(([, v]) => v);
+    const canUndo = !e.serial && e.source !== "undo" && ["received", "written_off", "installed", "moved", "returned", "pulled"].includes(e.type) && !events().some((x) => x.extracted && x.extracted.undo_of === e.id);
     openModal(`<h2>${esc(TYPES[e.type] || e.type)}</h2><table>${rowsHtml.map(([k, v]) => `<tr><td class="muted">${k}</td><td>${esc(v)}</td></tr>`).join("")}</table>
+      ${canUndo ? `<button class="btn wide" data-act="undo-event" data-ev="${e.id}">Undo this, it was wrong</button>` : ""}
       <div class="chips">${c ? `<button class="btn small" data-catalog="${c.id}">Open item</button>` : ""}${e.serial ? `<button class="btn small" data-serial="${esc(e.serial)}">Full history of this serial</button>` : ""}</div>${photoStrip(e.photos)}`);
   }
 
@@ -1662,9 +1792,9 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     }, 1000);
   }
   // ----- Company parts list -----
-  // The warehouse list for storage location NV11 (plant 5104), typed in from the company spreadsheet. Material number
+  // The warehouse list for storage location NV11 (plant 5104), typed in from the company spreadsheet, word for word. Material number
   // becomes the part number and the old material number goes in Model, so either one finds the part in search.
-  const NV11_PARTS = [{"pn":"30000006490","name":"AMZ OCCUPANCY SENSR COLLECTR - 5 LIGHT","old":"20100087"},{"pn":"30000006491","name":"AMZ OCCUPANCY SENSOR EMITTER - 5 LIGHT","old":"20100088"},{"pn":"30000006556","name":"AMZ OCCUPANCY SENSR COLLECTR - 3 LIGHT","old":"20100480"},{"pn":"30000006557","name":"AMZ OCCUPANCY SENSOR EMITTER - 3 LIGHT","old":"20100481"},{"pn":"30000006574","name":"AMZ ADA KEYPAD/GEN2.5/GEN3.0","old":"20100530"},{"pn":"30000006598","name":"302 KEY, LOCKER AMAZON GEN2.5/GEN3","old":"20100632"},{"pn":"30000006630","name":"APC UPS BATTERY REPLACEMENT RBC17","old":"20101450"},{"pn":"30000006692","name":"AMZ LEVELER HOLE PLUGS","old":"20109040"},{"pn":"30000006710","name":"CAMERA COVER","old":"20109215"},{"pn":"30000006738","name":"LATCH HOOK KITS (10 PCS SCREWS, 5 LATCHES)","old":"20109325"},{"pn":"30000006750","name":"ACRYLIC PANEL FOR SCANNER GEN 3.0","old":"20109405"},{"pn":"30000006756","name":"12V ADAPTOR FOR SCREEN NA","old":"20109414"},{"pn":"30000006801","name":"BRACKETS FOR 10.4\" SCREEN","old":"20109514"},{"pn":"30000006817","name":"GEN 3.0 SCREEN SHADING CURTAIN W/OUT","old":"20109557"},{"pn":"30000006824","name":"DATA CABLE FOR UPS APC-BR700G","old":"20190451"},{"pn":"30000006842","name":"ODIN MOTOR DOOR LOCK V1.1","old":"40100065"},{"pn":"30000006851","name":"FISHEYE CAMERA SY017HD","old":""},{"pn":"30000006853","name":"DOOR LOCK 6TH GEN (POST GEN2.5)","old":"20100080C"},{"pn":"30000006854","name":"LP COM/ALARM BOARD REVC (PRE GEN2.5)","old":"20100151C"},{"pn":"30000007024","name":"AMZ MD DOOR (LEFT) G3 OUTDOOR SQUID INK","old":"20108521S"},{"pn":"30000007031","name":"AMZ SM DOOR (LEFT) G3 OUTDOOR SQUID INK","old":"20108523S"},{"pn":"30000007059","name":"MD DOOR G3 INDOOR CORE LKR","old":"20108532S"},{"pn":"30000007104","name":"AMZ DOOR PIN BUSHING STAINLESS STEEL (1 BAG)","old":"20109536A"},{"pn":"30000007110","name":"ODIN MTR DR LOCK (NEW SPRING)","old":"40100011A"},{"pn":"30000007121","name":"IPC ADVANTECH ARK2232L 1902-T12V NA","old":"20100400F"},{"pn":"30000007126","name":"KRISTAL 10.4\" LCD104-019 INDOOR","old":"20100449"},{"pn":"30000007127","name":"KRISTAL 10.4\" LCD104-020 OUTDOOR","old":"20100449A"},{"pn":"30000007128","name":"UPS APC-BR700G NA","old":"20100450"},{"pn":"30000007129","name":"A/C","old":"20100458"},{"pn":"30000007134","name":"AMAZON ESIM","old":"20107705"},{"pn":"30000007135","name":"LAN SWITCH D-LINK NA","old":"20109537"},{"pn":"30000007142","name":"ODIN BATTERY PACK (PANASONIC/DESAY)","old":"40100024"},{"pn":"30000007181","name":"GEN4.0 UPR EMRGNCY RAIL KIT SQUID INK","old":"40101010S"},{"pn":"30000007182","name":"IP C-BOARD 20PT (DOOR-CTRL PCB)","old":"20100401F"},{"pn":"30000007185","name":"ODIN LPWAN MODULE BG95","old":"40100033A"},{"pn":"30000007189","name":"ODIN BLE CORE-BOARD (nRF5x) V1.2","old":"40100036F"},{"pn":"30000007216","name":"POWER ADAPTOR 12V FOR TOUCH SCREEN","old":"20100030B"},{"pn":"30000007228","name":"AMAZON IP C-BOARD POWER CABLE REV","old":"20100410E"},{"pn":"30000007243","name":"RB 30000007471 OR 30000007472","old":"20100003C"},{"pn":"30000007244","name":"C-BOARD 23-PT (DRCTRL PCB)","old":"20100401G"},{"pn":"30000007245","name":"AMZ LOCKER CRADLEPT PGRMD BY NOC","old":"20100768"},{"pn":"30000007294","name":"333.0 G SCANNER","old":"20100070"},{"pn":"30000007522","name":"ETHERNET TO USB FOR UPS TO IPC","old":"20100451"}];
+  const NV11_PARTS = [{"pn":"30000006490","name":"AMZ OCCUPANCY SENSR COLLECTR - 5 LIGHTS","old":"20100087"},{"pn":"30000006491","name":"AMZ OCCUPANCY SENSOR EMITTER - 5 LIGHTS","old":"20100088"},{"pn":"30000006556","name":"AMZ OCCUPANCY SENSR COLLECTR - 3 LIGHTS","old":"20100480"},{"pn":"30000006557","name":"AMZ OCCUPANCY SENSOR EMITTER - 3 LIGHTS","old":"20100481"},{"pn":"30000006574","name":"AMZ ADA KEYPAD/GEN2.5/GEN3.0","old":"20100530"},{"pn":"30000006598","name":"302 KEY, LOCKER AMAZON GEN2.5/GEN3/GEN4","old":"20100632"},{"pn":"30000006630","name":"APC UPS BATTERY REPLACEMENT RBC17, BR700","old":"20101450"},{"pn":"30000006692","name":"AMZ LEVELER HOLE PLUGS","old":"20109040"},{"pn":"30000006710","name":"CAMERA COVER","old":"20109215"},{"pn":"30000006738","name":"LATCH HOOK KITS (10 PCS SCREWS, 5 LATCH","old":"20109325"},{"pn":"30000006750","name":"ACRYLIC PANEL FOR SCANNER GEN 3.0","old":"20109405"},{"pn":"30000006756","name":"12V ADAPTOR FOR SCREEN \\NA","old":"20109414"},{"pn":"30000006801","name":"BRACKETS FOR 10.4\" SCREEN","old":"20109514"},{"pn":"30000006817","name":"GEN 3.0 SCREEN SHADING CURTAIN W/OUT MAG","old":"20109557"},{"pn":"30000006824","name":"DATA CABLE FOR UPS APC-BR700G","old":"20190451"},{"pn":"30000006842","name":"ODIN MOTOR DOOR LOCK V1.1","old":"40100065"},{"pn":"30000006851","name":"FISHEYE CAMERA SY017HD","old":""},{"pn":"30000006853","name":"DOOR LOCK 6TH GEN (POST GEN2.5)","old":"20100080C"},{"pn":"30000006854","name":"LP COM/ALARM BOARD REVC(PRE GEN2.5)","old":"20100151C"},{"pn":"30000007024","name":"AMZ MD DOOR(LEFT )/G3 OUTDOOR/SQUID INK","old":"20108521S"},{"pn":"30000007031","name":"AMZ SM DOOR(LEFT )/G3 OUTDOOR/SQUID INK","old":"20108523S"},{"pn":"30000007059","name":"MD DOOR /G3 INDOOR /CORE LKR","old":"20108532S"},{"pn":"30000007104","name":"AMZ DOOR PIN BUSHNG\\STAINL STEEL(1BAG=10","old":"20109536A"},{"pn":"30000007110","name":"ODIN MTR DR LOCK (NEW SPRNG) RB 3...6842","old":"40100011A"},{"pn":"30000007121","name":"IPC ADVANTECH ARK2232L 1902-T12V\\NA","old":"20100400F"},{"pn":"30000007126","name":"KRISTAL 10.4\" LCD104-019\\INDOOR","old":"20100449"},{"pn":"30000007127","name":"KRISTAL 10.4\" LCD104-020\\OUTDOOR","old":"20100449A"},{"pn":"30000007128","name":"UPS APC-BR700G/NA","old":"20100450"},{"pn":"30000007129","name":"A/C","old":"20100458"},{"pn":"30000007134","name":"AMAZON ESIM","old":"20107705"},{"pn":"30000007135","name":"LAN SWITCH MODEL \\D-LINK \\NA","old":"20109537"},{"pn":"30000007142","name":"ODIN BATTERY PACK (PANASONIC/DESAY)","old":"40100024"},{"pn":"30000007181","name":"GEN4.0 UPR EMRGNCY RAIL KIT\\SQUID INK","old":"40101010S"},{"pn":"30000007182","name":"IP C-BOARD-20PT (DOOR-CTRL PCB)","old":"20100401F"},{"pn":"30000007185","name":"ODIN LPWAN MODULE BG95","old":"40100033A"},{"pn":"30000007189","name":"ODIN BLE CORE-BOARD (nRF5x) V1.2","old":"40100036F"},{"pn":"30000007216","name":"POWER ADAPTOR 12V FOR TOUCH SCREEN","old":"20100030B"},{"pn":"30000007228","name":"AMAZON IP C-BOARD POWER CABLE REV","old":"20100410E"},{"pn":"30000007243","name":"RB 30000007471 or 30000007472","old":"20100003C"},{"pn":"30000007244","name":"C-BOARD 23-PT(DRCTRL PCB)","old":"20100401G"},{"pn":"30000007245","name":"AMZ LOCKER CRADLEPT PGRMD BY NOC","old":"20100768"},{"pn":"30000007294","name":"333.0 G SCANNER","old":"20100070"},{"pn":"30000007522","name":"ETHERNET TO USB FOR UPS TO IPC - FOR APC","old":"20100451"}];
   async function loadNv11() {
     let added = 0, updated = 0;
     const owner = uid();
@@ -1687,6 +1817,150 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     toast(added || updated ? `Company list loaded: ${added} new items${updated ? ", " + updated + " updated" : ""}` : "Company list was already loaded");
     render();
     sync();
+  }
+
+  // The count sheet in the warehouse's own layout: same columns as the NV11 spreadsheet, with Actual Count filled
+  // from your stock across every location, split into working and not working beside it.
+  function exportNv11() {
+    const d = derive();
+    const out = [["Plnt", "SLoc", "Material", "Material Number", "Old material no.", "Actual Count", "Working", "Not working"]];
+    for (const p of NV11_PARTS) {
+      const c = catalog().find((x) => norm(x.part_number) === norm(p.pn));
+      const good = c ? onHand(d, c.id) : 0;
+      const bad = c ? notWorking(d, c.id) : 0;
+      out.push(["5104", "NV11", p.pn, p.name, p.old || "", fmtNum(good + bad), fmtNum(good), fmtNum(bad)]);
+    }
+    download(`temple-nv11-count-${new Date().toISOString().slice(0, 10)}.csv`, csv(out));
+  }
+
+  // Undo: logs the exact opposite of a wrong entry, so the counts go back and the history shows both.
+  async function undoEvent(id) {
+    const e = events().find((x) => x.id === id);
+    if (!e) return;
+    const back = { ...clean(e), id: uuid(), happened_at: nowIso(), created_at: nowIso(), photos: [], source: "undo", note: "Undo of a wrong entry", extracted: { undo_of: e.id } };
+    delete back.order_id; delete back.ticket; delete back.unordered;
+    if (e.type === "received" || e.type === "pulled") { back.type = "written_off"; back.from_holder = e.to_holder; back.to_holder = null; }
+    else if (e.type === "written_off" || e.type === "installed" || e.type === "returned") { back.type = "received"; back.to_holder = e.from_holder; back.from_holder = null; back.locker_id = ""; back.site = ""; }
+    else if (e.type === "moved") { back.from_holder = e.to_holder; back.to_holder = e.from_holder; }
+    await enqueue("violet_events", back);
+    closeModal();
+    toast("Undone");
+    render();
+    sync();
+  }
+
+  // Check copy for Claude: after every upload, a read-only copy of your items, locations and recent history is
+  // saved as one file in your own photo storage. The link from Copy check link lets Claude read that file, and
+  // nothing else, so it can check each entry as you make it. The link keeps working as the file is replaced.
+  let snapBusy = false;
+  async function claudeSnapshot() {
+    if (S.demo || !S.user || snapBusy) return;
+    snapBusy = true;
+    try {
+      const snap = { saved_at: nowIso(), holders: holders(), catalog: catalog().map((c) => { const x = clean(c); delete x.ref_photo; return x; }),
+        events: events().slice().sort(sortEvents).reverse().slice(0, 800).map((e) => { const x = clean(e); delete x.photos; delete x.extracted; return x; }) };
+      const blob = new Blob([JSON.stringify(snap)], { type: "application/json" });
+      const path = S.user.id + "/claude-check-v1.json";
+      let r = await sb.storage.from(BUCKET).upload(path, blob, { upsert: true, contentType: "application/json" });
+      if (r.error) r = await sb.storage.from(BUCKET).upload(path, new Blob([JSON.stringify(snap)], { type: "image/jpeg" }), { upsert: true, contentType: "image/jpeg" });
+    } catch (e) {} finally { snapBusy = false; }
+  }
+  // Weekly reports: GitHub builds one every Friday morning into your folder and lists it in violet_reports.
+  async function showReports() {
+    if (S.demo) return toast("Reports come from your account, leave demo data first");
+    if (!S.user) return toast("Sign in first");
+    openModal('<h2>Weekly reports</h2><p class="muted">Loading reports</p>');
+    const { data, error } = await sb.from("violet_reports").select("id, week_of, path, summary").order("week_of", { ascending: false }).limit(104);
+    if (error) return openModal(`<h2>Weekly reports</h2><p class="err">Could not load reports: ${esc(error.message)}</p>`);
+    if (!data || !data.length) return openModal('<h2>Weekly reports</h2><p class="muted">Your first report shows up here Friday morning.</p>');
+    S.reports = data;
+    openModal(`<h2>Weekly reports</h2><div class="card list">${data.map((r, i) => {
+      const a = (r.summary && r.summary.all) || {}, prev = data[i + 1] && data[i + 1].summary && data[i + 1].summary.all;
+      const ch = prev ? Number(a.units || 0) - Number(prev.units || 0) : null;
+      const chTxt = ch === null ? "" : ch === 0 ? " · no change" : ` · ${ch > 0 ? "up" : "down"} ${fmtNum(Math.abs(ch))}`;
+      return `<div class="tap" data-act="report-open" data-path="${esc(r.path)}"><b>Week ending ${esc(new Date(r.week_of + "T12:00:00").toLocaleDateString([], { month: "short", day: "numeric", year: "numeric" }))}</b> <span class="muted">${fmtNum(Number(a.units || 0))} on hand${chTxt} · ${fmtNum(Number((r.summary && r.summary.entries_week) || 0))} entries</span></div>`;
+    }).join("")}</div>`);
+  }
+  async function openReport(path) {
+    const w = window.open("", "_blank");
+    const r = await sb.storage.from(BUCKET).createSignedUrl(path, 3600);
+    if (r.error || !r.data) { if (w) w.close(); return toast("Could not open that report: " + (r.error ? r.error.message : "no link")); }
+    if (w) w.location = r.data.signedUrl; else location.href = r.data.signedUrl;
+  }
+
+  // How Violet works: the info button at the top right.
+  function showHelp() {
+    const sec = (t, ...ps) => `<h3>${t}</h3>${ps.map((p) => `<p>${p}</p>`).join("")}`;
+    openModal(`<div class="help"><h2>How Violet works</h2>
+      ${sec("What it is", "Violet keeps track of every part, tool and consumable you have, where each one sits, and everything that happened to it. Nothing is ever typed over: every change is an entry in History, and the counts are worked out from those entries.")}
+      ${sec("Home", "The What happened buttons log what you did: Add stuff, Move stuff, Installed, Pulled bad part, Sent back, and Used up or tossed. Count stuff counts a location: pick it, type how many of each item work and how many do not, and Violet logs the difference so the counts match the shelf. The tiles show your items, what is running low, what is installed at lockers, and each location.")}
+      ${sec("Adding parts", "In any entry, pick items from the full list, which includes the NV11 company parts list. Filter it by kind, by customer such as Amazon, HP, Otto or hospital, or type words to search. New parts go to your default location, your truck, unless you pick another.", "Take a photo of a part label and the reader finds each part in the photo and matches it to the list by its part number. Several parts in one photo work. When every part in the photo is a sure match, they are all added in one go. When one is not sure, you pick from the closest guesses. If the reader cannot run, the message says why in plain words, such as being out of credit.")}
+      ${sec("Items", "Every item with its stock by location. Filter by kind, vendor, customer, company parts, your own, or not working, and search by name, part number or serial. Company parts are marked Company and carry the customer they belong to. Each item has its own page with its photos, where it is, and its history.")}
+      ${sec("Working and not working", "Every count is split into working and not working. Parts tracked by serial number are marked one at a time with Works or Does not work on the item page. Pulled bad part logs a failed part with its symptom and cause, and the Failures tab adds those up by part, site, symptom and cause.")}
+      ${sec("Order", "Log what you ordered with the ticket it was for. An order still open after ten days is flagged Never received, or Part of it never came. Parts that arrive are matched to orders, and anything that came in with no order, or as a swap, is flagged so you can attribute it. Ticket report spreadsheet lists every order and arrival by ticket.")}
+      ${sec("History", "Every entry, newest first. Tap one to see it. A wrong entry has an Undo button, which logs the opposite entry, so the counts go back and nothing is erased from the record.")}
+      ${sec("Count sheets", "In Setup, NV11 count sheet saves the warehouse sheet in its own columns with Actual Count filled in from your stock. Import a count sheet reads a filled in sheet, as a spreadsheet file or CSV, and sets every counted part to the count on the sheet in your default location.")}
+      ${sec("Weekly reports", "Every Friday morning a report of your inventory is made for you: what is on hand by section and location, the change from last week, every entry that week, anything not working or running low, and week over week charts of stock and entries. Open them from Weekly reports in Setup.")}
+      ${sec("Your data", "Signed in, everything saves to your account and matches across your phones. Saves made offline wait on the phone and upload when you are back online, and Setup shows how many are waiting. Only you can see your inventory, photos and reports. Stock CSV and History CSV export everything.")}
+    </div>`);
+  }
+
+  async function copyCheckLink() {
+    if (!S.user) return toast("Sign in first");
+    await claudeSnapshot();
+    const r = await sb.storage.from(BUCKET).createSignedUrl(S.user.id + "/claude-check-v1.json", 60 * 60 * 24 * 365);
+    if (r.error || !r.data) return toast("Could not make the link: " + (r.error ? r.error.message : "no link"));
+    const url = r.data.signedUrl;
+    try { await navigator.clipboard.writeText(url); toast("Check link copied, paste it to Claude"); }
+    catch (e) { openModal(`<h2>Check link</h2><p class="muted">Copy this and paste it to Claude.</p><textarea rows="6" readonly>${esc(url)}</textarea>`); }
+  }
+
+  // Import a count sheet in the warehouse layout (the NV11 spreadsheet, as a spreadsheet file or CSV). Each row
+  // with a number in Actual Count sets that part's total, working, and the difference lands in your default
+  // location as found or missing, so the app matches the sheet. Rows with Actual Count left empty are skipped.
+  async function loadSheetLib() {
+    if (window.XLSX) return window.XLSX;
+    await new Promise((ok, bad) => { const sc = document.createElement("script"); sc.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"; sc.onload = ok; sc.onerror = () => bad(new Error("could not load the spreadsheet reader")); document.head.appendChild(sc); });
+    return window.XLSX;
+  }
+  async function importCountSheet(file) {
+    try {
+      const X = await loadSheetLib();
+      const wb = X.read(await file.arrayBuffer(), { type: "array" });
+      const rows = X.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, raw: true, defval: "" });
+      const head = (rows[0] || []).map((h) => String(h).trim().toLowerCase());
+      const iMat = head.indexOf("material"), iCount = head.indexOf("actual count"), iName = head.indexOf("material number"), iOld = head.indexOf("old material no.");
+      if (iMat < 0 || iCount < 0) return toast("That sheet has no Material and Actual Count columns");
+      const holder = defaultHolder();
+      if (!holder) return toast("Add a location first");
+      const d = derive();
+      const owner = uid();
+      let set = 0;
+      for (const r of rows.slice(1)) {
+        const pn = String(r[iMat] === "" ? "" : typeof r[iMat] === "number" ? Math.round(r[iMat]) : r[iMat]).trim();
+        const cnt = r[iCount];
+        if (!pn || cnt === "" || cnt === null || !isFinite(Number(cnt))) continue;
+        let c = catalog().find((x) => norm(x.part_number) === norm(pn));
+        if (!c) {
+          const listed = NV11_PARTS.find((x) => x.pn === pn);
+          c = { id: uuid(), owner, kind: "part", name: (listed && listed.name) || String(r[iName] || pn), part_number: pn, manufacturer: "", model: (listed && listed.old) || String(r[iOld] || ""), unit: "each",
+            vendor: "", customer: "Amazon", min_qty: 0, ref_photo: null, created_at: nowIso(), company: true };
+          await enqueue("violet_catalog", c);
+        }
+        const total = (d.byCatalog.get(c.id) || []).filter((it) => it.cond !== "bad").reduce((a, it) => a + it.qty, 0);
+        const diff = Number(cnt) - total;
+        if (Math.abs(diff) < 1e-9) continue;
+        await enqueue("violet_events", {
+          id: uuid(), owner, happened_at: nowIso(), created_at: nowIso(), type: diff > 0 ? "received" : "written_off", catalog_id: c.id, serial: "", qty: Math.abs(diff), condition: "good",
+          from_holder: diff > 0 ? null : holder, to_holder: diff > 0 ? holder : null, locker_id: "", site: "", symptom: "", cause: "",
+          note: diff > 0 ? "Found during count sheet import" : "Missing at count sheet import", vendor: "", customer: c.customer || "Amazon", source: "count", extracted: null, photos: [],
+        });
+        set++;
+      }
+      toast(set ? `Count sheet imported, ${set} part${set === 1 ? "" : "s"} updated` : "Count sheet matched, nothing changed");
+      render();
+      sync();
+    } catch (e) { toast("Could not read that sheet: " + e.message); }
   }
 
   // ----- Count stuff -----
@@ -1901,7 +2175,17 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       return render();
     }
     if (t.dataset.pick) {
-      const c = catalogById(t.dataset.pick);
+      let c = catalogById(t.dataset.pick);
+      if (!c && t.dataset.pick.startsWith("nv11:")) {
+        // a company list part picked before it was in stock: add it as an item now
+        const p = NV11_PARTS.find((x) => "nv11:" + x.pn === t.dataset.pick);
+        if (p) {
+          c = { id: uuid(), owner: uid(), kind: "part", name: p.name, part_number: p.pn, manufacturer: "", model: p.old || "", unit: "each",
+            vendor: "", customer: "Amazon", min_qty: 0, ref_photo: null, created_at: nowIso(), company: true };
+          await enqueue("violet_catalog", c);
+          c = catalogById(c.id) || c;
+        }
+      }
       if (c) {
         S.log.items = S.log.items.filter((it) => it.catalog_id || it.name || it.part_number);
         S.log.items.push(itemFromCatalog(c));
@@ -1943,6 +2227,12 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       case "edit-item": return editItemForm(t.dataset.cat);
       case "count-pick": return countPick();
       case "load-nv11": return loadNv11();
+      case "check-link": return copyCheckLink();
+      case "reports": return showReports();
+      case "help": return showHelp();
+      case "report-open": return openReport(t.dataset.path);
+      case "undo-event": return undoEvent(t.dataset.ev);
+      case "export-nv11": return exportNv11();
       case "attr-auto": return setAttribution(t.dataset.ev, { unordered: true });
       case "attr-link": return attrLinkPicker(t.dataset.ev);
       case "attr-pick": { const o = orders().find((x) => x.id === t.dataset.order); return setAttribution(t.dataset.ev, { order_id: t.dataset.order, unordered: false, ...(o && o.ticket ? { ticket: o.ticket } : {}) }); }
@@ -1955,6 +2245,8 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       case "log-back": S.log = null; S.tab = S.itemId ? "items" : "home"; return render();
       case "pick-open": S.log.picking = true; return render();
       case "pick-close": S.log.picking = false; return render();
+      case "pick-kind": S.log.pickKind = t.dataset.k || ""; return render();
+      case "pick-cust": S.log.pickCust = t.dataset.k || ""; return render();
       case "add-item": S.log.items.push(blankItem()); return render();
       case "remove-item": S.log.items.splice(Number(t.dataset.item), 1); return render();
       case "save-log": return saveLog();
@@ -2088,6 +2380,12 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   });
 
   document.addEventListener("change", async (ev) => {
+    if (ev.target.id === "countSheetInput" && ev.target.files[0]) { const f = ev.target.files[0]; ev.target.value = ""; return importCountSheet(f); }
+    if (ev.target.id === "defaultLoc") {
+      try { localStorage.setItem("violetDefaultLoc", ev.target.value); } catch (e) {}
+      toast("Default location saved");
+      return;
+    }
     const t = ev.target;
     if (S.log && t.dataset.f && t.value === "@new") {
       const name = (window.prompt("Name of the new location, for example Storage unit or Second truck") || "").trim();
