@@ -359,6 +359,22 @@
       "outcome": "needs decision",
       "pullRequest": "https://github.com/sudosilo/topo-wars-server/pull/1",
       "note": "Pull request 1 adding /api/health is still open and unmerged, so the root still returns 404."
+    },
+    {
+      "date": "2026-11-07",
+      "app": "pajamastan-warrants",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Still 404 and the repo has not been pushed since 2026-10-20, so the developer must redeploy the Docker backend or retire the link."
+    },
+    {
+      "date": "2026-11-07",
+      "app": "mission-operator",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Still 503 DEPLOYMENT_PAUSED on an archived repo now live as mission-operator-next, so the developer must retire this link or repoint the spec."
     }
   ]
 }
