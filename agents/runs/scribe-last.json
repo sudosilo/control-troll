@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 192928,
+ "duration_api_ms": 104376,
  "stop_reason": "end_turn",
- "session_id": "6d5309cf-de20-408a-b15d-2df1a9f13588",
- "total_cost_usd": 0.46362620000000004,
+ "session_id": "217647b4-612c-43b3-8b2c-6a61139896db",
+ "total_cost_usd": 0.4368302,
  "usage": {
-  "input_tokens": 38,
-  "cache_creation_input_tokens": 53972,
-  "cache_read_input_tokens": 829130,
-  "output_tokens": 16462,
+  "input_tokens": 42,
+  "cache_creation_input_tokens": 48997,
+  "cache_read_input_tokens": 924585,
+  "output_tokens": 14802,
   "output_tokens_details": {
-   "thinking_tokens": 4246
+   "thinking_tokens": 4249
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 53972,
+   "ephemeral_1h_input_tokens": 48997,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 459,
-    "cache_read_input_tokens": 66352,
-    "cache_creation_input_tokens": 566,
+    "output_tokens": 308,
+    "cache_read_input_tokens": 63027,
+    "cache_creation_input_tokens": 573,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 566
+     "ephemeral_1h_input_tokens": 573
     },
     "type": "message"
    }
@@ -38,35 +38,35 @@
   "fallback_credit": null
  },
  "modelUsage": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1207,
-   "outputTokens": 17,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
+  "claude-sonnet-5-5": {
+   "inputTokens": 42,
+   "outputTokens": 14802,
+   "cacheReadInputTokens": 924585,
+   "cacheCreationInputTokens": 48997,
    "webSearchRequests": 0,
-   "costUSD": 0.0001292,
+   "costUSD": 0.4365505,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 0,
+   "thinkingTokens": 4249,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
+   "cacheCreationEphemeral1hInputTokens": 48997,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   },
-  "claude-sonnet-5-5": {
-   "inputTokens": 38,
-   "outputTokens": 16462,
-   "cacheReadInputTokens": 829130,
-   "cacheCreationInputTokens": 53972,
+  "claude-haiku-5-5": {
+   "inputTokens": 1207,
+   "outputTokens": 318,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.463497,
+   "costUSD": 0.0002797,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 4246,
+   "thinkingTokens": 301,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 53972,
-   "canonicalModel": "claude-sonnet-5-5",
+   "cacheCreationEphemeral1hInputTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
@@ -101,49 +101,49 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 19,
+ "num_turns": 22,
  "subtype": "success",
  "api_error_status": null,
- "result": "I documented 12 repos this run. Each got a \"docs: scribe update\" commit with a new CHANGELOG.md and README.md. All 12 pushes landed.\n\nSeven were first-time backfills: 2026-11-04-field-dispatch, 2026-11-04-orange-hush, 2026-11-05-drive-thru-dental, 2026-11-05-locker-screen, coffeekit1, hire-portal, and rainbow-run. The other five were updates with real new commits: 2026-10-18-orange-testbed, kat-chat, mill-ionaire, mohavetech-website, and coffee-autosim.\n\nNo backfills remain apart from forks, empty repos, and non-app repos. Four updated repos still need docs next run: mohave-wtf, repofind, threat-poller, and tower2. They went over the 12-repo limit.\n\nEvery repo I pushed to was safe to push. Each has a root index.html or vercel.json, except the Android app orange-hush, which has no web deploy.\n\nI did not check the Vercel deployments after the pushes. The releases, descriptions, links, and topics are queued in scribe/publish.json for the scribe-publish workflow. I did not run that workflow or confirm it. I also updated the profile page in sudosilo/sudosilo, pushed \"scribe state\" to control-troll, and added notes to agents/notes/general.md. I could reach every repo.",
- "ttft_ms": 1998,
+ "result": "I documented 9 repos this run and pushed all of them. Two repos I could not reach, and one new backfill is done.\n\nThe nine are downfree-foundry (the new backfill, Road Layers), field-twin-violet-api, field-twin, kat-chat, mill-ionaire, repofind, tower2, mohave-wtf and threat-poller. The profile page in sudosilo/sudosilo is updated. The state files, publish jobs and notes are pushed to control-troll.\n\nThe two I could not reach are mission-operator and free-as-in-links. Both are archived on GitHub, so pushes return a 403. I only moved their saved state forward so they stop showing up as new work.\n\nitchy-troll and the 2026-10-18-orange-testbed had only bot commits since the last run. I refreshed their saved state and wrote no docs for them.\n\nBeyond those two, no real backfills remain. What is left is forks, empty repos and non-app repos.",
+ "ttft_ms": 1134,
  "type": "result",
- "duration_ms": 266352,
- "uuid": "7ee19f52-0017-4e74-96fa-9cc32e91d812",
- "ttft_stream_ms": 1743,
- "time_to_request_ms": 149,
- "first_content_frame_ms": 1744,
+ "duration_ms": 154689,
+ "uuid": "f2dac0bd-30d5-4920-83e4-7c35cb8ddc5e",
+ "ttft_stream_ms": 723,
+ "time_to_request_ms": 140,
+ "first_content_frame_ms": 723,
  "queued_turn_count": 0,
  "result_index": 0,
  "model_usage_since_last_result": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1207,
-   "outputTokens": 17,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
+  "claude-sonnet-5-5": {
+   "inputTokens": 42,
+   "outputTokens": 14802,
+   "cacheReadInputTokens": 924585,
+   "cacheCreationInputTokens": 48997,
    "webSearchRequests": 0,
-   "costUSD": 0.0001292,
+   "costUSD": 0.4365505,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 0,
+   "thinkingTokens": 4249,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
+   "cacheCreationEphemeral1hInputTokens": 48997,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   },
-  "claude-sonnet-5-5": {
-   "inputTokens": 38,
-   "outputTokens": 16462,
-   "cacheReadInputTokens": 829130,
-   "cacheCreationInputTokens": 53972,
+  "claude-haiku-5-5": {
+   "inputTokens": 1207,
+   "outputTokens": 318,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.463497,
+   "costUSD": 0.0002797,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 4246,
+   "thinkingTokens": 301,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 53972,
-   "canonicalModel": "claude-sonnet-5-5",
+   "cacheCreationEphemeral1hInputTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
