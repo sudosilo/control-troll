@@ -323,7 +323,17 @@
   "sudosilo/repofind@v2026.11.04",
   "sudosilo/tower2@v2026.11.05",
   "sudosilo/mohave-wtf@v2026.11.05",
-  "sudosilo/threat-poller@v2026.11.04"
+  "sudosilo/threat-poller@v2026.11.04",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.07",
+  "sudosilo/downfree-foundry@v2026.11.07",
+  "sudosilo/field-twin@v2026.11.07",
+  "sudosilo/field-twin-violet-api@v2026.11.07",
+  "sudosilo/hire-portal@v2026.11.07",
+  "sudosilo/pajamastan@v2026.11.07",
+  "sudosilo/rainbow-run@v2026.11.07",
+  "sudosilo/stompbox-lab@v2026.11.07",
+  "sudosilo/pajamastan-badge-tool@v2026.11.07",
+  "sudosilo/stinkin-badges@v2026.11.07"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -1884,7 +1894,7 @@
   },
   "sudosilo/hire-portal": {
    "d": "A practice job application that teaches applicants what to share and what to withhold",
-   "h": "",
+   "h": "https://hire-portal-six.vercel.app",
    "t": [
     "demo",
     "education",
@@ -1907,6 +1917,26 @@
     "tool",
     "vercel",
     "video"
+   ]
+  },
+  "sudosilo/pajamastan-badge-tool": {
+   "d": "A badge designer with templates, people, and a paper mockup reader.",
+   "h": "https://pajamastan-badge-tool.vercel.app",
+   "t": [
+    "badges",
+    "pajamastan",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/stinkin-badges": {
+   "d": "The backend that reads badge mockups and saves badge data for the badge tool.",
+   "h": "",
+   "t": [
+    "backend",
+    "nodejs",
+    "pajamastan",
+    "supabase"
    ]
   }
  }
