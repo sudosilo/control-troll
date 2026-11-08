@@ -1,6 +1,20 @@
 {
   "heckles": [
     {
+      "date": "2026-11-08T22:12:25Z",
+      "repo": "downfree-foundry",
+      "sha": "d75adaaf",
+      "message": "Composite: pick which roadside things to cut out from everything the current model knows",
+      "heckle": "You added a class picker to the downfree-foundry index.html and the default selection is still just vehicles, so most of it does nothing until somebody finds the checkboxes. The empty check for \"Check at least one thing to cut out\" sits inside the build function after work.width and work.height are already overwritten and the counts array is built, like locking the door after the burglars finish dinner. Also there is a byClass object declared and then never used in the patch, which is dead code with the commitment of a campaign promise. CLASS_NAMES is a hand typed lookup of 22 COCO numbers, and one typo and your zebra becomes a parking meter. The label text on layerBase also changed without anyone checking the other copy that mentions cars.\n\nFix it: Move the readClassPick check to the very top of the build handler in index.html. Delete the unused byClass or actually use it. Generate CLASS_NAMES from the model labels instead of typing them. Grep index.html for leftover car wording."
+    },
+    {
+      "date": "2026-11-08T22:12:25Z",
+      "repo": "pajamastan-space-administration",
+      "sha": "3699d8e7",
+      "message": "Live satellite positions from CelesTrak with space weather hazard coloring, tap for details and orbit",
+      "heckle": "Another 1323 line pajamastan-space-administration-v3.html, born by copying v2 whole and renaming it, because apparently git branches are a foreign concept to the intern. Now vercel.json points the root rewrite at v3 while v1 and v2 rot in the repo like unread campaign pamphlets. The api file is called pajamastan-space-administration-v1-tle.js, so the proxy is stamped v1 while the page is v3, which is a naming scheme with the coherence of a filibuster. The TLE proxy does at least allowlist the group names, I hate that I had to say that. But the whole page is one giant inline blob with fixed pixel badges at top 64px, a stress box 112px wide and a scale box on the left, and both will stack on a small phone like clowns in a car.\n\nFix it: Stop duplicating the page per version, keep one html file and use git history. Delete the dead v1 and v2 html files. Rename api/pajamastan-space-administration-v1-tle.js to something without a version. Check the stressbadge and scalebadge in pajamastan-space-administration-v3.html at 320px wide."
+    },
+    {
       "date": "2026-11-08T17:58:29Z",
       "repo": "downfree-foundry",
       "sha": "44ec993c",
@@ -1385,20 +1399,6 @@
       "sha": "0459dd216d7155e42b8a29d345416cb6bf7883f4",
       "message": "grok 2026-10-26T223513",
       "heckle": "Another contrib file, another single line of minified JSON that no human can review, pushed straight to main with no pull request. This one lays paving from negative twenty five thousand to negative eight thousand on a street the previous push already drew somewhere else, so the same two streets keep getting redrawn at new coordinates like a campaign promise recycled every election. A driveway is closed with a polygon that exits the chunk it was never told about.\n\nFix it: Make contrib/grok/2026-10-26T223513.json pretty printed so a diff means something. Reject a file that redraws a street name with different points in the validator. Require a pull request for contrib pushes instead of letting the agent commit to main."
-    },
-    {
-      "date": "2026-10-27T00:32:35Z",
-      "repo": "blue-agent",
-      "sha": "27bd6a0874f9d6f210998bf2ad5e02db96f1c44c",
-      "message": "Runner posts its newest runs to the runner-status branch",
-      "heckle": "You bolted a status mirror onto startRun in blue-agent-server-v6.js that fires publishStatus on every start and every finish, so each agent run now spams a GitHub write, and the server file is a single v6 monolith that keeps growing like a continuing resolution. The deploy script is a phone shell script that pipes railway variables through grep and cut to scrape AGENT_KEYS, which means your secrets pass through a one line parser written by someone who just learned pipes exist.\n\nFix it: Debounce publishStatus in blue-agent-server-v6.js so a burst of runs makes one write. Catch and log failures inside publishStatus so a GitHub hiccup cannot take down a run. Stop scraping secrets with grep in blue-agent-deploy-v1.sh and use the CLI's json output."
-    },
-    {
-      "date": "2026-10-27T00:32:35Z",
-      "repo": "blue-agent",
-      "sha": "79312c9219280f3b35899258533f29226138ae38",
-      "message": "Olive joins: GPT through OpenRouter",
-      "heckle": "Look at agentIdFor in blue-agent-server-v6.js. You wrote AGENT_KEYS[slug] || String(model).includes('/') ? slug : ..., and the ternary swallows the whole or expression, so operator precedence is doing a coin flip with your agent ids. It happens to work today because you eyeballed one case, which is how a bailout gets sold too. Then you hardcoded a slash in the model string as the test for a different vendor, so the next model name with a slash breaks every id. The olive instruction file is a wall of prose with no sanity check at all.\n\nFix it: Wrap the condition in parentheses in agentIdFor so the precedence is explicit. Replace the slash sniffing with a real provider field in the instruction header. Add one test that feeds agentIdFor three slugs and checks the ids."
     }
   ]
 }
