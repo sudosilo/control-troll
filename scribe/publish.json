@@ -1,20 +1,58 @@
 {
  "jobs": [
   {
+   "repo": "2026-10-18-orange-testbed",
+   "releases": [
+    {
+     "tag": "v2026.11.07",
+     "target": "d8c88f408943be131658d08620e88794e5575566",
+     "name": "Agent Test Bed 2026-11-07",
+     "body": "The agent, steward, and grok turns for the day were played and merged into the city."
+    }
+   ],
+   "description": "A shared city that AI agents build one turn at a time",
+   "homepage": "https://2026-10-18-orange-testbed.vercel.app",
+   "topics": [
+    "agents",
+    "game",
+    "simulator",
+    "vercel"
+   ]
+  },
+  {
    "repo": "downfree-foundry",
    "releases": [
     {
-     "tag": "v2026.11.06",
-     "target": "20bbade0e519e48624b0fbd1ce0c63082ee0ec7e",
-     "name": "Road Layers 2026-11-06",
-     "body": "Created Road Layers, a test page that stacks cars from several drives onto one road. You pick two or more clips of the same stretch, line them up with an auto line up and a flip view, and build a composite that you can play and record. Clip videos show in their cards, and frames are now pulled with a built in video decoder that restarts after a crash and says which stage failed."
+     "tag": "v2026.11.07",
+     "target": "b133c945ab9780ce13969298feabe053fed311f8",
+     "name": "Road Layers 2026-11-07",
+     "body": "Added a Record tab to Road Layers. It records from the phone camera and keeps a timing log with the GPS position."
     }
    ],
    "description": "Road Layers stacks cars from several drive clips onto one road in the browser.",
    "homepage": "https://downfree-foundry.vercel.app",
    "topics": [
     "tool",
-    "video",
+    "vercel",
+    "video"
+   ]
+  },
+  {
+   "repo": "field-twin",
+   "releases": [
+    {
+     "tag": "v2026.11.07",
+     "target": "a32813b4e48c0ba3ca2be8a8be3c156ef7dd4f4e",
+     "name": "Field Twin 2026-11-07",
+     "body": "The odometer check now pulls the newest readings from other phones before it warns. Added a daily miles box that works out miles off the clock by elimination. A leg check compares each leg with the road route and flags side trips."
+    }
+   ],
+   "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
+   "homepage": "https://field-twin-teal.vercel.app",
+   "topics": [
+    "field-service",
+    "map",
+    "tool",
     "vercel"
    ]
   },
@@ -22,10 +60,10 @@
    "repo": "field-twin-violet-api",
    "releases": [
     {
-     "tag": "v2026.11.06",
-     "target": "78db614c88ab448275bce12c4d8631be0b2500bc",
-     "name": "Field Twin Violet 2026-11-06",
-     "body": "Added company parts, working and not working counts, and a Count stuff action for taking inventory. The company parts list loads in one tap from Setup, shows in the parts picker with kind and customer filters, and can be exported as a count sheet in the warehouse layout or imported back to set counts. Label photos now match the parts library, and one photo can hold several parts, each matched on its own. Added ticket tracking on orders, Undo for wrong history entries, a read only check link, and weekly inventory reports every Friday morning. Truck is now the default location for parts."
+     "tag": "v2026.11.07",
+     "target": "b25e624601998f3801b3ea91ca79a401bb321edb",
+     "name": "Field Twin Violet 2026-11-07",
+     "body": "Added a way to log an order from outside the app."
     }
    ],
    "description": "A phone inventory app for parts, vendors, reorder levels, orders, and storage locations.",
@@ -39,134 +77,115 @@
    ]
   },
   {
-   "repo": "field-twin",
+   "repo": "hire-portal",
    "releases": [
     {
-     "tag": "v2026.11.06",
-     "target": "0e4daa57881a1b05473c57697c74725a8fb6c47f",
-     "name": "Field Twin 2026-11-06",
-     "body": "The Field Twin Companion now draws the streets around you, sent by the phone from OpenStreetMap and refreshed as you drive. The companion shows up more reliably over Bluetooth and can also link over a USB cable. Team lockers shown without signing in now show only the locker, not who shared it or when. Info buttons were brought up to date."
+     "tag": "v2026.11.07",
+     "target": "3ac337572699c12f1f4f578a6f65ba8b45b5aa70",
+     "name": "Hire Portal 2026-11-07",
+     "body": "Added a headshot upload for the badge, saved with the profile. Added a company template with a complete profile view that can be downloaded."
     }
    ],
-   "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
-   "homepage": "https://field-twin-teal.vercel.app",
+   "description": "A practice job application that teaches applicants what to share and what to withhold",
+   "homepage": "https://hire-portal-six.vercel.app",
    "topics": [
-    "field-service",
-    "map",
+    "demo",
+    "education",
+    "tool"
+   ]
+  },
+  {
+   "repo": "pajamastan",
+   "releases": [
+    {
+     "tag": "v2026.11.07",
+     "target": "4bb967b54de25def5f58b4165710cf24e01b79b4",
+     "name": "Pajamastan 2026-11-07",
+     "body": "Added a Links tab that includes the badge tool."
+    }
+   ],
+   "description": "The official site of the micronation of Pajamastan.",
+   "homepage": "https://pajamastan.vercel.app",
+   "topics": [
+    "atlas",
+    "micronation",
+    "pajamastan",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "rainbow-run",
+   "releases": [
+    {
+     "tag": "v2026.11.07",
+     "target": "a0e977cbf655332e3f5c3fc874e6c9c3d834ad0a",
+     "name": "Rainbow Run 2026-11-07",
+     "body": "Added a stadium mode with a seating planner, and pictures and video that play on every screen, including YouTube videos and a stunt shared across the crowd. The host signs in, each room gets its own database, and entry kiosks give out one time seat tickets that a seat page can scan with the camera. Added a hype meter that turns the crowd red when phones shake. The microphone now drives the Spectral Engine scenes, and a floor virus spreads between phones that find each other by sound. The menu now has drop down sections."
+    }
+   ],
+   "description": "A visualizer pedal where a pixel crow flies across phones lined up side by side",
+   "homepage": "https://rainbow-run-ochre.vercel.app",
+   "topics": [
+    "music",
+    "vercel",
+    "visualizer"
+   ]
+  },
+  {
+   "repo": "stompbox-lab",
+   "releases": [
+    {
+     "tag": "v2026.11.07",
+     "target": "bfcab4b95436484abe4df5085d0da3c9d4d75d68",
+     "name": "Stompbox Lab 2026-11-07",
+     "body": "Added a stadium mode to the band server with a seating plan and picture and video cues for every screen. A demo cue runs an animation across the crowd, and show videos can be saved and timed with a beacon. The host signs in, each room gets its own database, and YouTube videos and stunts play on every screen. Added a hype meter, entry kiosks with one time seat tickets, and a floor virus that spreads between phones by sound."
+    }
+   ],
+   "description": "A pedal board and synth with grooves that play across many phones.",
+   "homepage": "https://stompbox-lab.vercel.app",
+   "topics": [
+    "band-sync",
+    "music",
+    "pedals",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "pajamastan-badge-tool",
+   "releases": [
+    {
+     "tag": "v2026.11.07",
+     "target": "79950a514170828d59b7b810a8170fc60b2cbaae",
+     "name": "Badge Tool 2026-11-07",
+     "body": "Created the badge tool, a page for designing name badges. Added orientation tabs, saved templates with people for each template, a watermark image with background removal, text overlays, and a gradient editor with text angle. The layout editor drags and snaps, with style presets, card seals and patterns, a tilt preview, and more fonts. Email link login saves templates and people to the cloud, and a drawing reader turns a paper mockup into a layout."
+    }
+   ],
+   "description": "A badge designer with templates, people, and a paper mockup reader.",
+   "homepage": "https://pajamastan-badge-tool.vercel.app",
+   "topics": [
     "tool",
-    "vercel"
+    "pajamastan",
+    "vercel",
+    "badges"
    ]
   },
   {
-   "repo": "kat-chat",
+   "repo": "stinkin-badges",
    "releases": [
     {
-     "tag": "v2026.11.06",
-     "target": "b0d31d454b43629d27176aded044c79e69fea6dc",
-     "name": "Cat Command Chat 2026-11-06",
-     "body": "Chat rooms now set up from GitHub with no phone sign in needed. Info buttons were brought up to date with how things work now."
+     "tag": "v2026.11.07",
+     "target": "fbf152f5d3d964c56a802204b4e98b105dcddb2e",
+     "name": "Stinkin Badges 2026-11-07",
+     "body": "Created the backend for the badge tool. It reads paper mockups with an AI model and saves to a shared cloud database. Sign in uses email links, and the badge tool is allowed as a return address."
     }
    ],
-   "description": "A private group chat app with reactions, voice notes, chess, GIFs, and notifications.",
-   "homepage": "https://kat-chat-flame.vercel.app",
-   "topics": [
-    "chat",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "mill-ionaire",
-   "releases": [
-    {
-     "tag": "v2026.11.06-2",
-     "target": "0b2023ddcfe36df5c430deedae6327026aa60bfa",
-     "name": "Mill-ionaire 2026-11-06",
-     "body": "Order, lathe, and brake programs now resume when the game is reopened without a crash. After a power drop on reopen, floor machines trip their emergency stops for the crew to reset, and your mill boots before its program resumes. The crew looks at any machine that sits still and says why in a bubble, and says what they fix while they work. Lasers can now run out of assist gas. Checks for the finance minute and the machine settings line are steadier."
-    }
-   ],
-   "description": "A letter shop tycoon built around a simulated knee mill that grows into a factory.",
-   "homepage": "https://mill-ionaire.vercel.app",
-   "topics": [
-    "game",
-    "simulator",
-    "tycoon",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "repofind",
-   "releases": [
-    {
-     "tag": "v2026.11.04",
-     "target": "1e3daf1e4998acac9a2396dd84ae20e9e85ca44c",
-     "name": "Repo Find 2026-11-04",
-     "body": "Added the Resolve tab. Look up software by purpose across GitHub and Software Heritage, label results with a bucket, kinds of data and a plain description, load any account's public repos, and export. Added the Rabbit tab, where black windows fill with code from a random repo found by the stumble terms, hold for ten seconds, then refill. Every pull is logged, exportable, and included in backup."
-    }
-   ],
-   "description": "Search and watch tool for code repos, archives, and sites.",
-   "homepage": "https://repofind-delta.vercel.app",
-   "topics": [
-    "search",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "tower2",
-   "releases": [
-    {
-     "tag": "v2026.11.05",
-     "target": "f02a078d9cc6aa10b08469d40fd7832dbc4b76f8",
-     "name": "Tower Builder 2 2026-11-05",
-     "body": "Rebuilt the game with a light theme, a real truss physics engine, a level picker, undo, erase, saved builds, and a phone friendly layout. There are now twelve tower levels with tighter budgets, cables for guy wires, and twelve bridge levels with road beams and a truck crossing."
-    }
-   ],
-   "description": "Second version of the tower builder game, with an info button explaining the rules.",
-   "homepage": "",
-   "topics": [
-    "game",
-    "simulator",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "mohave-wtf",
-   "releases": [
-    {
-     "tag": "v2026.11.05",
-     "target": "43e1d5d0c5b451528936b6110a4aac7ad71a834c",
-     "name": "Retro Software Catalog 2026-11-05",
-     "body": "Removed Tunnel FX from the catalog. Labeled CoffeeKit One as a game and Coffee Autosim as a simulator."
-    }
-   ],
-   "description": "A retro styled software catalog that lists the developer's apps.",
-   "homepage": "https://mohave-wtf.vercel.app",
-   "topics": [
-    "catalog",
-    "retro",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "threat-poller",
-   "releases": [
-    {
-     "tag": "v2026.11.04",
-     "target": "1c2b16674ed4f928399f053696c6b42692bac7bf",
-     "name": "Threat Poller 2026-11-04",
-     "body": "Added routes for the watchlist, the catalog and site checks, with a schema file for the new tables."
-    }
-   ],
-   "description": "Background poller that watches GitHub repos by category, saves alerts to Postgres, and serves them over a read API.",
+   "description": "The backend that reads badge mockups and saves badge data for the badge tool.",
    "homepage": "",
    "topics": [
     "backend",
-    "monitoring",
-    "postgres",
-    "railway",
-    "redis"
+    "pajamastan",
+    "nodejs",
+    "supabase"
    ]
   }
  ]

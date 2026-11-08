@@ -86,8 +86,8 @@
    "summary": "The official site of the micronation of Pajamastan",
    "name": "Pajamastan",
    "latest": {
-    "date": "2026-10-12",
-    "text": "Released version three. Added an atlas, inventory tabs, a grouped hamburger menu, and a creator seal."
+    "date": "2026-11-07",
+    "text": "Added a Links tab that includes the badge tool."
    }
   },
   "parkingten": {
@@ -158,8 +158,8 @@
    "summary": "A field log with a map, receipts, mileage, and an Android app that tracks stops",
    "name": "Field Twin",
    "latest": {
-    "date": "2026-11-06",
-    "text": "The Field Twin Companion now draws the streets around you, sent by the phone from OpenStreetMap and refreshed as you drive. The companion shows up more reliably over Bluetooth and can also link over a USB cable. Team lockers shown without signing in now show only the locker, not who shared it or when. Info buttons were brought up to date."
+    "date": "2026-11-07",
+    "text": "The odometer check now pulls the newest readings from other phones before it warns. Added a daily miles box that works out miles off the clock by elimination. A leg check compares each leg with the road route and flags side trips."
    }
   },
   "mohavetech-website": {
@@ -204,8 +204,8 @@
    "summary": "A guitar pedal board and synth with looped grooves shared across phones",
    "name": "Stompbox Lab",
    "latest": {
-    "date": "2026-10-15",
-    "text": "Every phone in a room now gets the list of every other phone. Fixed seating so each phone gets the right message. Added more grooves: House, Jungle, Disco, Funk, Boom Bap, Trap, Reggaeton, and Rock, each with its own tempo."
+    "date": "2026-11-07",
+    "text": "Added a stadium mode to the band server with a seating plan and picture and video cues for every screen. A demo cue runs an animation across the crowd, and show videos can be saved and timed with a beacon. The host signs in, each room gets its own database, and YouTube videos and stunts play on every screen. Added a hype meter, entry kiosks with one time seat tickets, and a floor virus that spreads between phones by sound."
    }
   },
   "spectral-engine": {
@@ -1729,8 +1729,8 @@
    "summary": "A phone inventory app for parts, vendors, orders, and locations",
    "name": "Field Twin Violet",
    "latest": {
-    "date": "2026-11-06",
-    "text": "Added company parts, working and not working counts, and a Count stuff action for taking inventory. The company parts list loads in one tap from Setup, shows in the parts picker with kind and customer filters, and can be exported as a count sheet in the warehouse layout or imported back to set counts. Label photos now match the parts library, and one photo can hold several parts, each matched on its own. Added ticket tracking on orders, Undo for wrong history entries, a read only check link, and weekly inventory reports every Friday morning. Truck is now the default location for parts."
+    "date": "2026-11-07",
+    "text": "Added a way to log an order from outside the app."
    }
   },
   "five-minute-momentum-engine": {
@@ -1793,8 +1793,8 @@
    "summary": "A shared city where AI agents take turns building, with a viewer and a web API.",
    "name": "Agent Test Bed",
    "latest": {
-    "date": "2026-11-06",
-    "text": "The agent turn was played and merged into the city."
+    "date": "2026-11-07",
+    "text": "The agent, steward, and grok turns for the day were played and merged into the city."
    }
   },
   "steward-repo": {
@@ -2313,8 +2313,8 @@
    "summary": "A practice job application portal that teaches what to share at each step",
    "name": "Hire Portal",
    "latest": {
-    "date": "2026-11-05",
-    "text": "Created Hire Portal, a practice job application that teaches what to share. Applicants make an account, upload a resume that is read for them, check what was pulled, answer work eligibility questions, and sign. Every step has a What to share panel that explains what an honest employer asks for and what to be careful about."
+    "date": "2026-11-07",
+    "text": "Added a headshot upload for the badge, saved with the profile. Added a company template with a complete profile view that can be downloaded."
    }
   },
   "rainbow-run": {
@@ -2327,8 +2327,8 @@
    "summary": "A wall of phones that shows synced visualizer scenes for the stompbox API",
    "name": "Rainbow Run",
    "latest": {
-    "date": "2026-11-05",
-    "text": "Added a Screensavers group and a Spectral Engine group to the menu. Coffeekit screensavers now follow the sound playing on the phone. Spectral Engine visualizers run on the wall, and the room loop and beat are passed to the wall scenes."
+    "date": "2026-11-07",
+    "text": "Added a stadium mode with a seating planner, and pictures and video that play on every screen, including YouTube videos and a stunt shared across the crowd. The host signs in, each room gets its own database, and entry kiosks give out one time seat tickets that a seat page can scan with the camera. Added a hype meter that turns the crowd red when phones shake. The microphone now drives the Spectral Engine scenes, and a floor virus spreads between phones that find each other by sound. The menu now has drop down sections."
    }
   },
   "downfree-foundry": {
@@ -2341,8 +2341,34 @@
    "summary": "A browser tool that stacks cars from several drive clips onto one road",
    "category": "Tools",
    "latest": {
-    "date": "2026-11-06",
-    "text": "Created Road Layers, a test page that stacks cars from several drives onto one road. You pick two or more clips of the same stretch, line them up with an auto line up and a flip view, and build a composite that you can play and record. Clip videos show in their cards, and frames are now pulled with a built in video decoder that restarts after a crash and says which stage failed."
+    "date": "2026-11-07",
+    "text": "Added a Record tab to Road Layers. It records from the phone camera and keeps a timing log with the GPS position."
+   }
+  },
+  "pajamastan-badge-tool": {
+   "apps": [],
+   "urls": [
+    "https://pajamastan-badge-tool.vercel.app"
+   ],
+   "private": false,
+   "category": "Pajamastan",
+   "summary": "A badge designer with templates, people, and a paper mockup reader",
+   "name": "Badge Tool",
+   "latest": {
+    "date": "2026-11-07",
+    "text": "Created the badge tool, a page for designing name badges. Added orientation tabs, saved templates with people for each template, a watermark image with background removal, text overlays, and a gradient editor with text angle. The layout editor drags and snaps, with style presets, card seals and patterns, a tilt preview, and more fonts. Email link login saves templates and people to the cloud, and a drawing reader turns a paper mockup into a layout."
+   }
+  },
+  "stinkin-badges": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "The backend that reads badge mockups and saves badge data",
+   "name": "Stinkin Badges",
+   "latest": {
+    "date": "2026-11-07",
+    "text": "Created the backend for the badge tool. It reads paper mockups with an AI model and saves to a shared cloud database. Sign in uses email links, and the badge tool is allowed as a return address."
    }
   }
  }
