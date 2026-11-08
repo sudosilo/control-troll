@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 31200,
+ "duration_api_ms": 15203,
  "stop_reason": "end_turn",
- "session_id": "02d52460-60b7-4235-a2e8-cebf57703457",
- "total_cost_usd": 0.16138010000000003,
+ "session_id": "cdb7fbe8-4c6d-4ad0-a301-7afe4b835f46",
+ "total_cost_usd": 0.0833149,
  "usage": {
-  "input_tokens": 14,
-  "cache_creation_input_tokens": 28146,
-  "cache_read_input_tokens": 180343,
-  "output_tokens": 3060,
+  "input_tokens": 12,
+  "cache_creation_input_tokens": 14537,
+  "cache_read_input_tokens": 132796,
+  "output_tokens": 1162,
   "output_tokens_details": {
-   "thinking_tokens": 272
+   "thinking_tokens": 59
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 28146,
+   "ephemeral_1h_input_tokens": 14537,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 55,
-    "cache_read_input_tokens": 38988,
-    "cache_creation_input_tokens": 2104,
+    "output_tokens": 178,
+    "cache_read_input_tokens": 27044,
+    "cache_creation_input_tokens": 439,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 2104
+     "ephemeral_1h_input_tokens": 439
     },
     "type": "message"
    }
@@ -40,14 +40,14 @@
  "modelUsage": {
   "claude-haiku-5-5": {
    "inputTokens": 1208,
-   "outputTokens": 26,
+   "outputTokens": 245,
    "cacheReadInputTokens": 0,
    "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.0001338,
+   "costUSD": 0.0002433,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 0,
+   "thinkingTokens": 227,
    "cacheCreationEphemeral5mInputTokens": 0,
    "cacheCreationEphemeral1hInputTokens": 0,
    "canonicalModel": "claude-haiku-5-5",
@@ -55,17 +55,17 @@
    "costBasis": "list"
   },
   "claude-sonnet-5-5": {
-   "inputTokens": 14,
-   "outputTokens": 3060,
-   "cacheReadInputTokens": 180343,
-   "cacheCreationInputTokens": 28146,
+   "inputTokens": 12,
+   "outputTokens": 1162,
+   "cacheReadInputTokens": 132796,
+   "cacheCreationInputTokens": 14537,
    "webSearchRequests": 0,
-   "costUSD": 0.1612463,
+   "costUSD": 0.0830716,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 272,
+   "thinkingTokens": 59,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 28146,
+   "cacheCreationEphemeral1hInputTokens": 14537,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
@@ -101,30 +101,30 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 7,
+ "num_turns": 6,
  "subtype": "success",
  "api_error_status": null,
- "result": "I heckled 3 commits (one in downfree-foundry, two in hire-portal) and wrote no fleet verdict, because the last one was less than 7 days old.",
- "ttft_ms": 1920,
+ "result": "I'm finishing up the heckler run, and the last step is done. The `heckle log` commit is pushed to main.\n\nI heckled 0 commits this run and wrote no fleet verdict.\n\nEvery new commit was filtered out: the pajamastan-badge-tool and rainbow-run commits are Claude-authored, and the heckle-troll ones carry `[no heckle]`. blue-agent had a push but no commits since the last check. The last fleet verdict was written on 2026-11-06, so the next one isn't due until after 2026-11-13.",
+ "ttft_ms": 2355,
  "type": "result",
- "duration_ms": 44296,
- "uuid": "7b19a03e-847f-4f78-804d-613d2582cb2b",
- "ttft_stream_ms": 1681,
- "time_to_request_ms": 177,
- "first_content_frame_ms": 1681,
+ "duration_ms": 20027,
+ "uuid": "89261818-9651-4494-aa99-1879ee6ba429",
+ "ttft_stream_ms": 2122,
+ "time_to_request_ms": 162,
+ "first_content_frame_ms": 2122,
  "queued_turn_count": 0,
  "result_index": 0,
  "model_usage_since_last_result": {
   "claude-haiku-5-5": {
    "inputTokens": 1208,
-   "outputTokens": 26,
+   "outputTokens": 245,
    "cacheReadInputTokens": 0,
    "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.0001338,
+   "costUSD": 0.0002433,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 0,
+   "thinkingTokens": 227,
    "cacheCreationEphemeral5mInputTokens": 0,
    "cacheCreationEphemeral1hInputTokens": 0,
    "canonicalModel": "claude-haiku-5-5",
@@ -132,17 +132,17 @@
    "costBasis": "list"
   },
   "claude-sonnet-5-5": {
-   "inputTokens": 14,
-   "outputTokens": 3060,
-   "cacheReadInputTokens": 180343,
-   "cacheCreationInputTokens": 28146,
+   "inputTokens": 12,
+   "outputTokens": 1162,
+   "cacheReadInputTokens": 132796,
+   "cacheCreationInputTokens": 14537,
    "webSearchRequests": 0,
-   "costUSD": 0.1612463,
+   "costUSD": 0.0830716,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 272,
+   "thinkingTokens": 59,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 28146,
+   "cacheCreationEphemeral1hInputTokens": 14537,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
