@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-08T17:58:29Z",
+      "repo": "downfree-foundry",
+      "sha": "44ec993c",
+      "message": "Road tracking: lock onto your own lane on multi lane roads and map the other lane lines",
+      "heckle": "You wrote a lane detector in a single index.html, and the peak finder is a quadruple nested loop over a 48 by W/4 accumulator, run per frame, on a phone. The non maximum suppression scan checks 7 by 17 neighbors for every cell above threshold, which is O(cells times 119) of pure hope. The magic numbers 0.12, 0.15, 30 and 60 to 120 are scattered like campaign promises, and loosening the tracking penalty from dx/60 to dx/120 just makes the lines jump lanes more easily. Hand tuned thresholds with no test footage in the repo.\n\nFix it: Move the Hough voting out of index.html into its own worker so the UI thread stops choking. Name the thresholds as constants at the top of the road tracking script. Add one saved test clip so the lane picker can be checked. Skip the full neighbor scan for cells under the threshold."
+    },
+    {
+      "date": "2026-11-08T17:58:29Z",
+      "repo": "downfree-foundry",
+      "sha": "68148c1a",
+      "message": "Add Road tab: lane line, vanishing point and bend tracking saved per recording",
+      "heckle": "A fourth tab bolted onto a video compositor, 263 added lines in one file that already carried a recorder and a map. The Road tab makes you pick a recording and then also offers a file input for the same video, so which one wins? The tab switcher is still hand rolled show and hide by id, now with four views, which is a filibuster of boolean flags. The ONNX runtime and Leaflet both load from a CDN with no fallback, so offline in a car, the one place this thing is used, it dies.\n\nFix it: Decide whether roadPick or roadFile wins and delete the other. Replace the tab toggling in showTab with one data driven loop. Bundle or cache ort.min.js and Leaflet for offline use. Split index.html before it hits three thousand lines."
+    },
+    {
+      "date": "2026-11-08T17:58:29Z",
+      "repo": "downfree-foundry",
+      "sha": "37cf078c",
+      "message": "Add Map tab: coverage routes, spot search and projects",
+      "heckle": "Spot search goes to a public geocoder from the browser with whatever the user typed, and the Leaflet tile layer is pulled from a CDN, so your map is a dependency on somebody else's uptime and goodwill. The hitrow and proj blocks use word-break:break-all on file names, which will chop names mid word like a shutdown chopping a budget. Projects live next to recordings in the same storage with no migration story, and the tap to list hits logic walks every recording on every tap.\n\nFix it: Debounce the spot search and handle a failed geocode without a blank panel. Index the routes once instead of scanning every recording per tap. Version the projects storage so the next schema change does not eat data. Use overflow-wrap:anywhere instead of break-all."
+    },
+    {
+      "date": "2026-11-08T17:58:29Z",
+      "repo": "downfree-foundry",
+      "sha": "337441f1",
+      "message": "Add stop motion capture by distance or time, alongside or instead of full video",
+      "heckle": "You added a capture mode dropdown and a frame interval dropdown with nine options mixing feet and seconds in one select by prefixing values with d and t, then parsing the string later. That is a type system made of letters. Both at once means the camera is encoding video while also grabbing stills on a phone that you are separately trying to stop at 5 percent battery. Cramped on mobile too, the grid now holds four selects.\n\nFix it: Split the stop motion select into a mode and a value instead of d25 and t0.5 strings. Throttle still capture while video is recording so the encoder does not starve. Test that the stills counter in stStills survives a reload. Give the settings grid one column on narrow screens."
+    },
+    {
+      "date": "2026-11-08T17:58:29Z",
+      "repo": "downfree-foundry",
+      "sha": "826f39df",
+      "message": "Save recordings inside the app with a library, crash recovery and battery stop",
+      "heckle": "Crash recovery that writes every few seconds sounds grown up until you notice the library keeps whole video blobs in browser storage with no quota check beyond a status line, so the first long drive eats the phone. You deleted the stSeg parts saved stat and the download links, so there is no longer any way to get a file out unless the library buttons work. The battery API is not on every browser, and the stBatt stat just shows a question mark forever there.\n\nFix it: Check navigator.storage.estimate before every segment write and stop gracefully. Bring back an export button for each saved part in libList. Handle a missing battery API by hiding the battery stop select in index.html. Warn before delete in the library."
+    },
+    {
+      "date": "2026-11-08T17:58:29Z",
+      "repo": "pajamastan-space-administration",
+      "sha": "2bf17ba9",
+      "message": "Solar burst simulator: flare, proton storm, CME impact on magnetosphere; NASA DONKI proxy",
+      "heckle": "pajamastan-space-administration-v2.html is 1065 lines and is the v1 file from the last commit copied whole and extended, so you now ship two 700 plus line pages that share ninety percent of their code. The api file is named v1-donki.js but serves the v2 page, because naming is apparently optional. The proxy falls back to DEMO_KEY, which the page also hardcodes as DONKI_KEY in client code, so a public rate limited key is wired into the browser and the proxy you just wrote gets bypassed by the catch block in the page.\n\nFix it: Delete the v1 page or make v2 import the shared code. Rename the api file to match what it serves. Remove DONKI_KEY and the direct api.nasa.gov call from the page so everything goes through the proxy. Set NASA_API_KEY in the project settings."
+    },
+    {
+      "date": "2026-11-08T17:58:29Z",
+      "repo": "pajamastan-space-administration",
+      "sha": "f89de430",
+      "message": "Globe with live solar activity, magnetosphere, poles, satellite risk",
+      "heckle": "725 lines of HTML, CSS and script in one file, pushed with a vercel.json that rewrites root to a file with a version number in its name, so every future version means editing the rewrite. The topbar is fixed at 54px with an ellipsized title, and the page sets maximum-scale=1 and overflow hidden on the body, which blocks pinch zoom for anyone who needs it and traps content on small screens. The satellite risk readout is computed from whatever feed answered first, and the page just prints a cross when one fails.\n\nFix it: Point the vercel.json rewrite at an index.html that never changes name. Remove maximum-scale=1 from the viewport meta tag. Show a stale data note with a timestamp when a feed fails instead of a bare cross. Split the script into its own file."
+    },
+    {
+      "date": "2026-11-08T17:58:29Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "b84f6803",
+      "message": "steward 2026-11-08T171449 (#78)",
+      "heckle": "Another steward turn, another one line minified JSON blob, and this one is a crosswalk made of place_hatch rectangles whose coordinates mirror the ones from the previous hour. Every call repeats the same boilerplate meta text, completes the crosswalk across the street, for each of six rectangles, so the file is mostly one sentence photocopied. Nobody reviews these PRs, they merge themselves under your login like an unread bill, and the file is named to the second so the folder grows forever.\n\nFix it: Make the steward emit one crosswalk call with a repeat count in contrib/steward instead of six copies. Dedupe against shapes already on the map before placing. Reject a PR whose geometry overlaps an existing hatch. Archive old contrib files."
+    },
+    {
+      "date": "2026-11-08T17:58:29Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "4ec17efb",
+      "message": "grok 2026-11-08T170407",
+      "heckle": "The grok bot committed straight to the branch with no PR, again, under your login, so there is no review and no checks at all. The file stacks a cottage and a corner market with door width checks of 914 and a wall segment one meter long that it calls a wall with a door height. The second place_line puts a wall at z 1200 with a door width of 1000, which fails its own 914 rule, and nothing stopped it. The checks arrays are decoration.\n\nFix it: Make the grok bot open PRs like the other agents. Run the door_width and door_height checks in CI against contrib files and fail the merge. Reject walls whose zmin conflicts with the building height. Add a guard against direct pushes to the branch."
+    },
+    {
+      "date": "2026-11-08T17:58:29Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "09647f01",
+      "message": "agent-orange 2026-11-08T135742 (#77)",
+      "heckle": "Merged a pull request that changes one file, contrib/agent-orange/2026-11-08T135742.json, and the patch shows nothing at all, so you approved a blank check. A PR with an empty diff passing through is a bailout with no recipient. The date in the file name comes from a run, but there is no content to date, so the folder has gained a ghost.\n\nFix it: Fail the merge workflow when a contrib file is empty or zero bytes. Delete the empty file from contrib/agent-orange. Make the agent skip the commit when it has no calls to place."
+    },
+    {
       "date": "2026-11-08T00:42:58Z",
       "repo": "downfree-foundry",
       "sha": "b133c945",
@@ -1329,76 +1399,6 @@
       "sha": "79312c9219280f3b35899258533f29226138ae38",
       "message": "Olive joins: GPT through OpenRouter",
       "heckle": "Look at agentIdFor in blue-agent-server-v6.js. You wrote AGENT_KEYS[slug] || String(model).includes('/') ? slug : ..., and the ternary swallows the whole or expression, so operator precedence is doing a coin flip with your agent ids. It happens to work today because you eyeballed one case, which is how a bailout gets sold too. Then you hardcoded a slash in the model string as the test for a different vendor, so the next model name with a slash breaks every id. The olive instruction file is a wall of prose with no sanity check at all.\n\nFix it: Wrap the condition in parentheses in agentIdFor so the precedence is explicit. Replace the slash sniffing with a real provider field in the instruction header. Add one test that feeds agentIdFor three slugs and checks the ids."
-    },
-    {
-      "date": "2026-10-27T00:32:35Z",
-      "repo": "mill-ionaire",
-      "sha": "5def2ee42cbb43623a800b39f7d54f3201b2ce1f",
-      "message": "Redeploy the five axis CNC update after the  daily limit reset",
-      "heckle": "An empty commit, again. Zero files changed, a message that blames the hosting quota like a politician blaming the last administration, and a Claude trailer riding along as if the robot did the pushing for you. You hit a daily deploy limit on a single html game because you push like a toddler hammering an elevator button. This is a filibuster against your own build pipeline, and the only thing it produced is one more row in git log for the next person to scroll past.\n\nFix it: Stop pushing empty commits and batch your changes into fewer pushes in mill-ionaire. Trigger redeploys from the dashboard or a deploy hook instead of polluting history. Put the real change in the commit message so the log says what shipped."
-    },
-    {
-      "date": "2026-10-26T20:45:00Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "29ae57728f28cdce87dd6fc5bfb972a75f62e592",
-      "message": "agent-orange 2026-10-26T195755 (#54)",
-      "heckle": "Another contrib file from agent-orange, another single line of minified JSON that no human can review, merged through the web button like a rubber stamp at a budget vote. You are drawing a spinner of scratch off tickets and a floor tub of ice melt at the coordinates of a grocery store, and the only check anywhere is a shelf_height field the agent wrote about itself. That is the intern grading their own homework with a gold star. Nothing validates that these parts sit inside the building they claim.\n\nFix it: Add a schema and bounds check that rejects contrib/agent-orange/*.json when a part falls outside its building footprint. Pretty print the JSON so a diff is readable. Require the PR to fail on zero effect calls instead of auto merging."
-    },
-    {
-      "date": "2026-10-26T20:45:00Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "d7bf303ac998ffbfc7e5ee5c3eb61de006e5e9da",
-      "message": "Split screen instrumental and acapella, working clear, tap to play",
-      "heckle": "One commit, 121 lines added to a single index.html, and the whole thing is another pile in a file that already needed a funeral. You ripped out the tuneSlot iframe sizing and replaced it with two panes, a tapCover with a !important to beat your own CSS, and the vibe of a committee that cannot agree on a budget. Two embedded players on a phone, pointer-events none on the iframes, and everything hangs on tap covers. The commit message says working clear, which is a campaign promise, not a test result.\n\nFix it: Drop the !important on .tapCover.live in index.html and fix the specificity properly. Move the split screen script and styles out of the single file. Check the two pane grid on a narrow phone width, since 1fr 1fr with an 8px gap squeezes both screens. Add a fallback when an iframe fails to load."
-    },
-    {
-      "date": "2026-10-26T20:45:00Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "1bbcbb1291691a44a93c8673c53ab9734ffb84d9",
-      "message": "steward 2026-10-26T173920 (#53)",
-      "heckle": "The steward drew crosswalks again, via another minified one liner merged under your login, and it also renamed itself in agent.json to Commissioner of Public Works, because apparently even the robots need a promotion to feel important. The about text now lists paper routes and a Saturday parade, which is scope creep worthy of a bailout bill. Several of those crosswalk hatches share the same spacing and color copied by hand with no dedup, so the detailer will hide them tomorrow and the loop starts over.\n\nFix it: Have the steward check for existing crosswalks before placing new ones in contrib/steward. Stop hand copying hatch coordinates and generate them from the intersection. Keep agent.json about short and true to what the agent actually does."
-    },
-    {
-      "date": "2026-10-26T20:45:00Z",
-      "repo": "blue-agent",
-      "sha": "d5af6b1d10fa31d5a007b91bf8c47c0345b735c9",
-      "message": "Add plum, the water authority: water role, water_orders_issue tool",
-      "heckle": "You added a fifth government office to a city of robots, complete with its own role, its own tool, and an instruction file that reads like a municipal code written by a drunk. blue-agent-server-v5.js now has a water_orders_issue tool copy pasted from commission_issue with the words changed, so the schema clones are multiplying like agencies after an election. The instruction file plum-v1.txt is a wall of prose in one paragraph with PLAY HOURS UTC: 2 jammed in the header, and you are shipping a v5 server file while a v6 sits next to it.\n\nFix it: Build one generic orders tool in blue-agent-server-v5.js that takes the office name instead of cloning the schema. Break the plum instructions file into sections. Decide whether v5 or v6 is the live server and delete the other."
-    },
-    {
-      "date": "2026-10-26T20:45:00Z",
-      "repo": "steward-repo",
-      "sha": "ef50a2b6d96310243cf870f6b4f9b10a403a8095",
-      "message": "Detailer stands down here when DETAILER_ON_BLUE is set",
-      "heckle": "Two lines in play.yml and you still managed to build a switch that depends on a repo variable nobody can see from the file. The step condition reads matrix.agent != 'detailer' || vars.DETAILER_ON_BLUE != '1', which is a string compare against a magic value, a coin flip dressed as configuration. If the variable is unset, both runners will play the detailer at once and double the mess, like two branches of government both claiming the same budget line.\n\nFix it: Document DETAILER_ON_BLUE in the repo README next to play.yml. Fail loudly in the workflow when the variable is missing. Remove the detailer from the matrix entirely once it lives on blue-agent."
-    },
-    {
-      "date": "2026-10-26T20:45:00Z",
-      "repo": "blue-agent",
-      "sha": "0eb998f7f78945a416cef54947d92cd6981e780d",
-      "message": "Runner v6: detailer role with screenshots and inspector",
-      "heckle": "Runner v6 is an 893 line file added whole, a full copy of v5 with a new import on top, because versioning by cloning files is how interns avoid learning git. blue-agent-server-v6.js drops in next to v5 with the same helpers, the same keyFor trick, and the same pile of env vars read at the top. Then detailer-eye-v1.js hand rolls a PNG encoder and a CRC table in 196 lines instead of reaching for a library, so now you own a bug factory for image bytes. A filibuster has more structure.\n\nFix it: Delete blue-agent-server-v5.js or turn the shared parts into one module so v6 is not a copy. Replace the hand rolled PNG code in detailer-eye-v1.js with a tested library. Add a test that renders one known view and compares it."
-    },
-    {
-      "date": "2026-10-26T20:45:00Z",
-      "repo": "charley-douglass",
-      "sha": "3c07c3b45cd5e1e80dbfff41f123862fec1c7641",
-      "message": "The Charley Douglass, first version",
-      "heckle": "First version, 599 lines of HTML, CSS, and script in one index.html, pushed in a single drop like a midnight spending bill nobody read. It is a light cream theme, which at least spares my eyes, but the title is a person's name jammed into an h1 with letter spacing, and the whole app has no tests and no split between style and logic. Recording controls, beat dots, and wood grain colors all live in one root block of CSS variables. The mobile padding is handled, I will grudgingly admit, so do not let it go to your head.\n\nFix it: Split the script out of index.html into its own file. Rename the app and title to something that is not a person. Add a README that says what it does. Add error handling around the recording and microphone permission paths."
-    },
-    {
-      "date": "2026-10-26T20:45:00Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "6f6545726ad44c99a8154c1186434f3b6e23d526",
-      "message": "agent-orange 2026-10-26T140521 (#52)",
-      "heckle": "Yet another timestamped agent-orange contrib PR, landed through the web merge button under your login, so the history says you personally approved it while the actual reviewer was nobody. One file, one line, minified, impossible to eyeball. This is the testbed equivalent of rubber stamping a pile of paperwork at 2 in the afternoon because the committee ran out of coffee. The repo now has dozens of these and no gate that proves any of them landed something sensible.\n\nFix it: Add a CI check in the testbed repo that validates each contrib json before merge. Stop auto merging PRs that touch only one file with no summary. Add the agent's own reasoning to the PR body so a human can read it."
-    },
-    {
-      "date": "2026-10-26T04:55:58Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "ac6211f1d5896f46f595c646cf3d7eee457e7066",
-      "message": "Census and tax roll: housing units, population, businesses and assessed value, recounted live on the City Hall tab and in state output",
-      "heckle": "Census and tax roll: you bolted a whole municipal bureaucracy onto engine.js, a 63 line census function wedged into a file whose summary() is already one unreadable minified line, and you did it with the formatting discipline of a filibuster. The charter promises nobody can edit the count, then asks builders to declare meta.units honestly, which is an honor system for a pile of bots that cheat for points. Also city-charter.txt renumbered ARTICLE 6 to 7 and I bet nothing else that cites article numbers got touched.\n\nFix it: Validate meta.units in engine.js against floor area and reject absurd values instead of trusting it. Break census() into its own module so summary() stops being a landfill. Grep agent-rules.txt and the other rule files for stale ARTICLE 6 references."
     }
   ]
 }
