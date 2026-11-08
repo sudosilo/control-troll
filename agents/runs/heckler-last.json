@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 50787,
+ "duration_api_ms": 31200,
  "stop_reason": "end_turn",
- "session_id": "1d35e107-3d37-42a8-b718-d77205746965",
- "total_cost_usd": 0.2138292,
+ "session_id": "02d52460-60b7-4235-a2e8-cebf57703457",
+ "total_cost_usd": 0.16138010000000003,
  "usage": {
-  "input_tokens": 16,
-  "cache_creation_input_tokens": 32559,
-  "cache_read_input_tokens": 220799,
-  "output_tokens": 6124,
+  "input_tokens": 14,
+  "cache_creation_input_tokens": 28146,
+  "cache_read_input_tokens": 180343,
+  "output_tokens": 3060,
   "output_tokens_details": {
-   "thinking_tokens": 1408
+   "thinking_tokens": 272
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 32559,
+   "ephemeral_1h_input_tokens": 28146,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 183,
-    "cache_read_input_tokens": 45001,
-    "cache_creation_input_tokens": 504,
+    "output_tokens": 55,
+    "cache_read_input_tokens": 38988,
+    "cache_creation_input_tokens": 2104,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 504
+     "ephemeral_1h_input_tokens": 2104
     },
     "type": "message"
    }
@@ -38,35 +38,35 @@
   "fallback_credit": null
  },
  "modelUsage": {
-  "claude-sonnet-5-5": {
-   "inputTokens": 16,
-   "outputTokens": 6124,
-   "cacheReadInputTokens": 220799,
-   "cacheCreationInputTokens": 32559,
-   "webSearchRequests": 0,
-   "costUSD": 0.2135879,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 1408,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 32559,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
   "claude-haiku-5-5": {
    "inputTokens": 1208,
-   "outputTokens": 241,
+   "outputTokens": 26,
    "cacheReadInputTokens": 0,
    "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.0002413,
+   "costUSD": 0.0001338,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 221,
+   "thinkingTokens": 0,
    "cacheCreationEphemeral5mInputTokens": 0,
    "cacheCreationEphemeral1hInputTokens": 0,
    "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 14,
+   "outputTokens": 3060,
+   "cacheReadInputTokens": 180343,
+   "cacheCreationInputTokens": 28146,
+   "webSearchRequests": 0,
+   "costUSD": 0.1612463,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 272,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 28146,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
@@ -101,49 +101,49 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 9,
+ "num_turns": 7,
  "subtype": "success",
  "api_error_status": null,
- "result": "I heckled 10 commits this run and did not write a fleet verdict, because the last one is under 7 days old.\n\nI posted the 10 commit comments, added them to `heckle/log.json`, and pushed \"heckle log\" to control-troll main.\n\nSome claims in the heckles are weaker than they should be. The Railway restart jab on `server.js` rests on my assumption about where it runs, not on anything in the diff. The jab that `setup/supabase.sh` fails to check its tables step is wrong, since it does check the status code. Both are already posted as commit comments.",
- "ttft_ms": 1188,
+ "result": "I heckled 3 commits (one in downfree-foundry, two in hire-portal) and wrote no fleet verdict, because the last one was less than 7 days old.",
+ "ttft_ms": 1920,
  "type": "result",
- "duration_ms": 75121,
- "uuid": "ff7408f6-6716-4bd6-b679-11c37b0df5e5",
- "ttft_stream_ms": 794,
- "time_to_request_ms": 154,
- "first_content_frame_ms": 795,
+ "duration_ms": 44296,
+ "uuid": "7b19a03e-847f-4f78-804d-613d2582cb2b",
+ "ttft_stream_ms": 1681,
+ "time_to_request_ms": 177,
+ "first_content_frame_ms": 1681,
  "queued_turn_count": 0,
  "result_index": 0,
  "model_usage_since_last_result": {
-  "claude-sonnet-5-5": {
-   "inputTokens": 16,
-   "outputTokens": 6124,
-   "cacheReadInputTokens": 220799,
-   "cacheCreationInputTokens": 32559,
-   "webSearchRequests": 0,
-   "costUSD": 0.2135879,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 1408,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 32559,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
   "claude-haiku-5-5": {
    "inputTokens": 1208,
-   "outputTokens": 241,
+   "outputTokens": 26,
    "cacheReadInputTokens": 0,
    "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.0002413,
+   "costUSD": 0.0001338,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 221,
+   "thinkingTokens": 0,
    "cacheCreationEphemeral5mInputTokens": 0,
    "cacheCreationEphemeral1hInputTokens": 0,
    "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 14,
+   "outputTokens": 3060,
+   "cacheReadInputTokens": 180343,
+   "cacheCreationInputTokens": 28146,
+   "webSearchRequests": 0,
+   "costUSD": 0.1612463,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 272,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 28146,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
