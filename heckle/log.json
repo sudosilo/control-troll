@@ -1,6 +1,27 @@
 {
   "heckles": [
     {
+      "date": "2026-11-08T00:42:58Z",
+      "repo": "downfree-foundry",
+      "sha": "b133c945",
+      "message": "Add Record tab: camera capture with GPS timing log",
+      "heckle": "You bolted a whole camera recorder onto a video compositing tool as a second inline script tag at the bottom of index.html, like a filibuster nobody asked for. Now one file holds two apps that share globals and a hand rolled tab toggle. The segment timer in startSegment stops the recorder and starts a new one with no gap handling, so every ten minutes you drop frames and the GPS timestamps drift off the video clock you swear they are tied to. The saveSegment function auto clicks two download links per part, which phone browsers will block after the first, and the ondataavailable handler keeps every chunk in memory for ten minutes of 1080p. Did the intern think RAM was a campaign promise?\n\nFix it: Pull the Record tab into its own file instead of a second script block in index.html. Stop and restart the recorder with overlap, or record one stream and slice it, in startSegment. Stop auto clicking downloads in saveSegment and show real save buttons. Write chunks out as they arrive instead of hoarding them in recChunks2."
+    },
+    {
+      "date": "2026-11-08T00:42:58Z",
+      "repo": "hire-portal",
+      "sha": "3ac33757",
+      "message": "Mojave Technology Group template with complete profile view and download",
+      "heckle": "Congratulations, you swapped one company name for a CONFIG object and then called the job done, like a bailout with no strings. The new Complete profile section dumps the whole application into state.profile, including the drawn signature as a base64 PNG and the badge photo, and saveProfile jams all of it into localStorage under a key per application ID. That is a personal data landfill on a shared device with no way to clear it. The downloadProfile button hands out a raw JSON file full of phone numbers and signatures. Also the title tag shipped as just Careers in the HTML and gets patched by script, so anything that scrapes the page sees nothing useful. A cereal box has better data hygiene.\n\nFix it: Stop storing the signature image and photo in localStorage in saveProfile. Add a clear my data button next to downloadProfile. Put the real title back in the static title tag in index.html. Delete old hp_profile keys when a new one is saved."
+    },
+    {
+      "date": "2026-11-08T00:42:58Z",
+      "repo": "hire-portal",
+      "sha": "271f0f31",
+      "message": "Add badge headshot upload saved with the profile",
+      "heckle": "You added a badge photo upload that crops, shrinks, and shoves a base64 headshot into localStorage through saveProfile, and the intern called that a feature. Every application ID gets its own hp_profile key that nothing ever cleans up, so the storage fills like a national debt. The photo change handler quietly assumes state.profile exists, so picking a photo before submitting blows up with an error nobody sees. The role name Systems Support Technician is hard coded into the badge markup in index.html, copy pasted from the old header, which makes this a template pretending to be an app. Your crop math nudges the square up by eight percent of the side, and I would love to hear the excuse for that magic number.\n\nFix it: Guard the photo change handler against a missing state.profile. Remove stale hp_profile keys in saveProfile. Replace the hard coded role text in the badge markup. Explain the 0.08 offset in the crop or drop it."
+    },
+    {
       "date": "2026-11-07T19:27:54Z",
       "repo": "stinkin-badges",
       "sha": "fbf152f5",
@@ -1378,27 +1399,6 @@
       "sha": "ac6211f1d5896f46f595c646cf3d7eee457e7066",
       "message": "Census and tax roll: housing units, population, businesses and assessed value, recounted live on the City Hall tab and in state output",
       "heckle": "Census and tax roll: you bolted a whole municipal bureaucracy onto engine.js, a 63 line census function wedged into a file whose summary() is already one unreadable minified line, and you did it with the formatting discipline of a filibuster. The charter promises nobody can edit the count, then asks builders to declare meta.units honestly, which is an honor system for a pile of bots that cheat for points. Also city-charter.txt renumbered ARTICLE 6 to 7 and I bet nothing else that cites article numbers got touched.\n\nFix it: Validate meta.units in engine.js against floor area and reject absurd values instead of trusting it. Break census() into its own module so summary() stops being a landfill. Grep agent-rules.txt and the other rule files for stale ARTICLE 6 references."
-    },
-    {
-      "date": "2026-10-26T04:55:58Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "9c631e5dac91e7f0c2db4d29ad104e788d5e9af0",
-      "message": "Incorporated city government: elected mayor and council, appointed clerk, planning and parks directors, elections, ordinances with signature and veto, districts, rezoning, City Hall tab, city charter (#51)",
-      "heckle": "Incorporated city government: a mayor, a council, appointed clerks, and 179 new lines in engine.js, all landing in one commit like a spending bill nobody read. You made an election system for a toy city that has no voters who can legally have opinions, and you jammed it into createWorld as a one line monster that now builds the whole government inline. The intern is playing city hall while the actual replay code gets harder to read every day.\n\nFix it: Split the government code out of engine.js into its own file. Reformat createWorld in engine.js so it is not one 400 character line. Add a test that replays an election end to end, because nothing in this diff proves it counts ballots right."
-    },
-    {
-      "date": "2026-10-26T04:55:58Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "1d6e3cc562c93ebb4f7b4c4729bc6c0267fdc67e",
-      "message": "Stretch is off by default and remembered; Autosmash keeps beats within a few percent when stretch is off",
-      "heckle": "Stretch is off by default and remembered. Congratulations, you flipped a checked attribute on the stretchOn box in index.html, which means last commit's default was wrong and you shipped it anyway. Then you bolted on persistence in the same change like a campaign promise made after the vote. The Autosmash tolerance of a few percent is a magic number buried in a giant single file, because splitting code into modules is apparently beyond you.\n\nFix it: Pull the stretch tolerance in index.html into a named constant. Guard the saved stretch value against garbage in storage so a bad read cannot flip it. Stop making users discover defaults by shipping the wrong one first."
-    },
-    {
-      "date": "2026-10-26T04:55:58Z",
-      "repo": "blue-agent",
-      "sha": "1d0e9beb640c17e952a4beea24e0ff5f4d6464ed",
-      "message": "Treasurer role: budget_issue tool, budget shown to every agent, /api/budget",
-      "heckle": "Treasurer role with a budget_issue tool, and you wrote the tool schema as one 600 character line in blue-agent-server-v5.js, the file name already admitting there were four failed attempts before it. A new /api/budget route hands the budget to every agent, and I see no sign anyone checks that only the treasurer can call it beyond a description string that says Treasurer only. A description is not a permission check, genius.\n\nFix it: Enforce the treasurer role in the budget_issue handler in blue-agent-server-v5.js, not in prose. Put a size cap and type check on the budget payload. Check whether /api/budget needs auth at all before it leaks city plans to anyone with curl."
     }
   ]
 }
