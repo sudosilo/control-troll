@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 46189,
+ "duration_api_ms": 25204,
  "stop_reason": "end_turn",
- "session_id": "b381ac4b-4d83-4b22-92c7-d39423761f0b",
- "total_cost_usd": 0.2090593,
+ "session_id": "002cd11f-3e7f-497d-9d30-dd9ae6f06809",
+ "total_cost_usd": 0.13476370000000001,
  "usage": {
   "input_tokens": 18,
-  "cache_creation_input_tokens": 32299,
-  "cache_read_input_tokens": 255560,
-  "output_tokens": 5401,
+  "cache_creation_input_tokens": 20666,
+  "cache_read_input_tokens": 224644,
+  "output_tokens": 2947,
   "output_tokens_details": {
-   "thinking_tokens": 252
+   "thinking_tokens": 333
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 32299,
+   "ephemeral_1h_input_tokens": 20666,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 81,
-    "cache_read_input_tokens": 44822,
-    "cache_creation_input_tokens": 423,
+    "output_tokens": 114,
+    "cache_read_input_tokens": 32880,
+    "cache_creation_input_tokens": 732,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 423
+     "ephemeral_1h_input_tokens": 732
     },
     "type": "message"
    }
@@ -38,35 +38,35 @@
   "fallback_credit": null
  },
  "modelUsage": {
-  "claude-sonnet-5-5": {
-   "inputTokens": 18,
-   "outputTokens": 5401,
-   "cacheReadInputTokens": 255560,
-   "cacheCreationInputTokens": 32299,
-   "webSearchRequests": 0,
-   "costUSD": 0.20879799999999998,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 252,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 32299,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
   "claude-haiku-5-5": {
    "inputTokens": 1208,
-   "outputTokens": 281,
+   "outputTokens": 17,
    "cacheReadInputTokens": 0,
    "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.0002613,
+   "costUSD": 0.0001293,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 263,
+   "thinkingTokens": 0,
    "cacheCreationEphemeral5mInputTokens": 0,
    "cacheCreationEphemeral1hInputTokens": 0,
    "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 18,
+   "outputTokens": 2947,
+   "cacheReadInputTokens": 224644,
+   "cacheCreationInputTokens": 20666,
+   "webSearchRequests": 0,
+   "costUSD": 0.13463440000000002,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 333,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 20666,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
@@ -104,46 +104,46 @@
  "num_turns": 9,
  "subtype": "success",
  "api_error_status": null,
- "result": "I heckled 10 commits (5 in downfree-foundry, 2 in pajamastan-space-administration, 3 in 2026-10-18-orange-testbed) and did not write a fleet verdict, because the last one is under 7 days old.",
- "ttft_ms": 1192,
+ "result": "I heckled 2 commits (one in pajamastan-space-administration, one in downfree-foundry) and did not write a fleet verdict, since the last one is under 7 days old.\n\nI wrote the downfree-foundry heckle from the patch alone, so its claim that `byClass` is never used could be wrong if the rest of `index.html` uses it.",
+ "ttft_ms": 1227,
  "type": "result",
- "duration_ms": 70547,
- "uuid": "50aa61a2-ab7b-4ff3-bfec-174e57df2665",
- "ttft_stream_ms": 760,
- "time_to_request_ms": 188,
- "first_content_frame_ms": 761,
+ "duration_ms": 35216,
+ "uuid": "da95daf3-c6b2-47a8-a7f8-ff72193ad055",
+ "ttft_stream_ms": 765,
+ "time_to_request_ms": 184,
+ "first_content_frame_ms": 765,
  "queued_turn_count": 0,
  "result_index": 0,
  "model_usage_since_last_result": {
-  "claude-sonnet-5-5": {
-   "inputTokens": 18,
-   "outputTokens": 5401,
-   "cacheReadInputTokens": 255560,
-   "cacheCreationInputTokens": 32299,
-   "webSearchRequests": 0,
-   "costUSD": 0.20879799999999998,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 252,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 32299,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
   "claude-haiku-5-5": {
    "inputTokens": 1208,
-   "outputTokens": 281,
+   "outputTokens": 17,
    "cacheReadInputTokens": 0,
    "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.0002613,
+   "costUSD": 0.0001293,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 263,
+   "thinkingTokens": 0,
    "cacheCreationEphemeral5mInputTokens": 0,
    "cacheCreationEphemeral1hInputTokens": 0,
    "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 18,
+   "outputTokens": 2947,
+   "cacheReadInputTokens": 224644,
+   "cacheCreationInputTokens": 20666,
+   "webSearchRequests": 0,
+   "costUSD": 0.13463440000000002,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 333,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 20666,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
