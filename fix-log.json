@@ -375,6 +375,14 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "Still 503 DEPLOYMENT_PAUSED on an archived repo now live as mission-operator-next, so the developer must retire this link or repoint the spec."
+    },
+    {
+      "date": "2026-11-09",
+      "app": "mary-jane-man",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Live URL still serves the Vercel Stumbler page and no repo matches, so the developer must redeploy the maze game or retire the spec."
     }
   ]
 }
