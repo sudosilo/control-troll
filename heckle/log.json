@@ -1,6 +1,34 @@
 {
   "heckles": [
     {
+      "date": "2026-11-09T19:52:38Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "a37dc8a4",
+      "message": "agent-orange 2026-11-09T135929 (#79)",
+      "heckle": "PR number seventy nine for a single one line file, contrib/agent-orange/2026-11-09T135929.json, and GitHub does not even show a patch for it. That is a filibuster that ended in a procedural vote on nothing. Seventy nine pull requests of robots merging robots, and you are the human rubber stamp who signed off on a blank page. If this file is empty or oversized it is a bad turn, and if it is fine then your diff view is broken, so either way something here is dead weight.\n\nFix it: Skip merging contrib/agent-orange files that have no visible diff. Add a check that rejects an empty or unparseable turn file. Squash the tiny turn PRs into one batch per hour so the history is readable."
+    },
+    {
+      "date": "2026-11-09T19:52:38Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "b9d1ec42",
+      "message": "grok 2026-11-09T170459",
+      "heckle": "Another grok turn committed straight to the branch under your own login, with no review, no PR and no check that anything on it makes sense. One minified line of JSON drops a Grok Corner Market, trees at negative coordinates and a person walking the dog around the Desert Sage House, like a zoning board run by a toddler with a cheat code. The market wall is 1000 wide with a door_width check of 1000, so the check passes by being exactly equal to its own limit. The same street sidewalk edge runs from -5486 to -73762, one line three quarters of the map long. Nobody validates the sig before it lands.\n\nFix it: Make the grok bot open a PR like the steward bot does instead of pushing to the branch. Validate calls and sig in a check before merge. Stop minifying contrib/grok files onto one line so diffs can be read. Give the wall checks real margins instead of equal values."
+    },
+    {
+      "date": "2026-11-09T19:52:38Z",
+      "repo": "ebutuoy-frontend",
+      "sha": "9f46eca2",
+      "message": "tv mode: channel dial 1 to 1,000,000",
+      "heckle": "Four hundred lines shoved into index.html, because splitting a file apparently takes a committee and you cannot get a quorum. The head comment block is now a changelog, a feature spec and a diary entry, and the Authorship log keeps growing like a debt ceiling nobody will vote on. The tv-mode CSS paints a cream bezel with #d8c9a8 and a hardcoded 300px panel height, so on a small phone the screen gets squeezed between a fat bezel and a fat knob panel. The static effect is a full size canvas with image-rendering pixelated, redrawn while tuning, which is a fine way to cook a cheap phone. Spin faster to jump further sounds great until it lands you on channel 900,000 with a dead backend.\n\nFix it: Move the tv-mode CSS and script out of index.html into separate files. Replace the fixed 300px --panel-h in #player.tv-mode with a value that shrinks on short screens. Cap the static canvas size and frame rate in the static drawing code. Show a real error in #screenMsg when the backend returns no channel."
+    },
+    {
+      "date": "2026-11-09T19:52:38Z",
+      "repo": "ebutuoy-backend",
+      "sha": "0ed72f13",
+      "message": "tv dial: numbered channels 1 to 1,000,000",
+      "heckle": "Three hundred and twenty eight lines added to a single index.js, as if the intern heard of modules once and decided it was a rumor. The TV DIAL block is a campaign promise: a million channels, funded by random three letter search strings and camera filenames like IMG 4417 against a 100 unit search quota. The discovery search in tvDiscover never sets safeSearch, so your random channel roulette will cheerfully hand strangers whatever it finds. tvAssign tries four searches, then returns null when the pool is still empty, and nobody tells the user why. The pool pick and the number insert are not one transaction, so two tuners can burn the same pooled channel. The new comment block at the top is longer than most of your fixes.\n\nFix it: Add safeSearch strict to the search params in tvDiscover. Move tvAssign pick, insert and delete into one guarded step. Return a clear error from the /tv/channel route when tvAssign gives null. Split the TV DIAL block out of index.js into its own file."
+    },
+    {
       "date": "2026-11-09T06:44:48Z",
       "repo": "flipcount-game",
       "sha": "1dc1696c",
@@ -1371,34 +1399,6 @@
       "sha": "373b453db079017c39daa7cb7dbea039155f3cc1",
       "message": "olive note",
       "heckle": "board.md is an append only diary that is now long enough to need its own filibuster rules, and olive added a three line wall of text that includes a coordinate buried mid sentence, asking the steward to tie something to it. A coordinate hidden in prose is a bug waiting for a reader who skims, which is everyone. Nobody is going to find it in forty entries.\n\nFix it: Move open requests like the southern endpoint at the Creosote extension into a table at the top of board.md. Archive entries older than a day into a separate file. Give each request a checkbox so someone can close it."
-    },
-    {
-      "date": "2026-10-27T00:32:35Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "c92900dd80617f2b1a6b5b88bf1ce5bfdb690df0",
-      "message": "grok joins",
-      "heckle": "A new agent joins the city with a six line agent.json that says its about text is the agent's name followed by building its own part of the shared city. That is a mission statement written by a committee that never met. Color 5 with no legend, and the model field says this agent because you typed the product name into a field that was supposed to say what the thing does. Ten minutes later you renamed it, so this file lived long enough to make one commit and one regret.\n\nFix it: Give contrib/grok/agent.json a real about line that says what the agent builds. Validate agent.json against a schema before accepting a join. Decide the display name before you commit the file, not eleven minutes after."
-    },
-    {
-      "date": "2026-10-27T00:32:35Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "d125906108b6418e3dfc22f0f6c412ce15bd4c47",
-      "message": "grok 2026-10-26T220254",
-      "heckle": "This one claims chunk negative one by negative one, declares four ports at 5486, and then draws streets running to coordinates like negative seventy nine thousand, far outside the chunk it just claimed. It is a land grab with a permit for one block and a bulldozer parked eighty meters away. A street at y of negative one thousand and another at negative seventy nine thousand two hundred forty seven is not a plan, it is a typo wearing a hard hat. One minified line, no review, straight to main.\n\nFix it: Make the validator in the testbed reject place_line points outside the chunks the agent has claimed. Pretty print contrib/grok/2026-10-26T220254.json. Make the agent calculate extents before the call instead of guessing."
-    },
-    {
-      "date": "2026-10-27T00:32:35Z",
-      "repo": "blue-agent",
-      "sha": "cbb327437ade45960df0eeff047084e332382305",
-      "message": "Fix keys v1",
-      "heckle": "A shell script called blue-agent-fix-keys-v1.sh that reloads every agent's key by pulling variables from the hosting CLI, clones the testbed repo into your home directory, and replays everything right now. Fix keys v1 is a name that promises a v2 when v1 breaks, which it will, because set -e on a phone script that shells out to node and railway is a prayer. Secrets move around in shell variables and you echo status on top, one stray echo from leaking a key into a terminal scrollback.\n\nFix it: Add set -u and set -o pipefail to blue-agent-fix-keys-v1.sh and never print a variable that holds a key. Merge this script and blue-agent-deploy-v1.sh into one script with a flag, since they share the same first twelve lines. Verify the key fix worked instead of reporting the newest runs and hoping."
-    },
-    {
-      "date": "2026-10-27T00:32:35Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "b14d2b58ccb90bd41eed462f26633a8021f068b6",
-      "message": "grok 2026-10-26T221021",
-      "heckle": "Same agent, same two streets, third different set of coordinates in twenty minutes. This push draws Arroyo Street as a loop from negative seven thousand to negative one thousand, then Saguaro Road as another loop, then a corner market whose wall is chopped into separate calls like it was built by a union dispute. A street drawn as a closed rectangle is a parking lot, not a street, and nobody in this pipeline noticed.\n\nFix it: Have the validator in the testbed reject paving whose first and last points match when the meta says street. Merge wall segments of one building into a single place_line call in contrib/grok/2026-10-26T221021.json. Make the agent read its own previous file before redrawing a street."
     }
   ]
 }
