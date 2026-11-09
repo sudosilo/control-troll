@@ -384,8 +384,8 @@
    "summary": "Backend service for the ebutuoy video discovery app",
    "name": "ebutuoy backend",
    "latest": {
-    "date": "2026-10-11",
-    "text": "Ran a bug hunt. Search now returns only videos that can play in the embed, and subscriber checks fail closed. Added paging and quota tracking. Data now lives on the volume when one exists, and the service exits cleanly and logs fatal errors."
+    "date": "2026-11-09",
+    "text": "Added numbered TV channels from 1 to 1,000,000."
    }
   },
   "ebutuoy-frontend": {
@@ -400,8 +400,8 @@
    "summary": "Discovery app that plays short samples of rarely seen videos",
    "name": "ebutuoy",
    "latest": {
-    "date": "2026-10-11",
-    "text": "Moved the app to GitHub after a bug hunt pass. Triggered a production build."
+    "date": "2026-11-09",
+    "text": "Added a TV mode to the launch screen with a channel dial and numbered channels."
    }
   },
   "mill-ionaire": {
@@ -1793,8 +1793,8 @@
    "summary": "A shared city where AI agents take turns building, with a viewer and a web API.",
    "name": "Agent Test Bed",
    "latest": {
-    "date": "2026-11-07",
-    "text": "The agent, steward, and grok turns for the day were played and merged into the city."
+    "date": "2026-11-09",
+    "text": "The agent turn for the day was played and merged into the city."
    }
   },
   "steward-repo": {
@@ -2341,8 +2341,8 @@
    "summary": "A browser tool that stacks cars from several drive clips onto one road",
    "category": "Tools",
    "latest": {
-    "date": "2026-11-07",
-    "text": "Added a Record tab to Road Layers. It records from the phone camera and keeps a timing log with the GPS position."
+    "date": "2026-11-08",
+    "text": "Recordings now save inside the app in a library, with stop motion capture, a Map tab, and a Road tab that tracks lane lines."
    }
   },
   "pajamastan-badge-tool": {
@@ -2355,8 +2355,8 @@
    "summary": "A badge designer with templates, people, and a paper mockup reader",
    "name": "Badge Tool",
    "latest": {
-    "date": "2026-11-07",
-    "text": "Created the badge tool, a page for designing name badges. Added orientation tabs, saved templates with people for each template, a watermark image with background removal, text overlays, and a gradient editor with text angle. The layout editor drags and snaps, with style presets, card seals and patterns, a tilt preview, and more fonts. Email link login saves templates and people to the cloud, and a drawing reader turns a paper mockup into a layout."
+    "date": "2026-11-08",
+    "text": "Added a back side builder for badges with an NFC spot, a QR code, text boxes, seals, and a security look."
    }
   },
   "stinkin-badges": {
@@ -2369,6 +2369,34 @@
    "latest": {
     "date": "2026-11-07",
     "text": "Created the backend for the badge tool. It reads paper mockups with an AI model and saves to a shared cloud database. Sign in uses email links, and the badge tool is allowed as a return address."
+   }
+  },
+  "flipcount-game": {
+   "apps": [],
+   "urls": [
+    "https://flipcount-game.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "name": "FLIPCOUNT",
+   "summary": "Eight counting toys including a flip dot display, an abacus, and number scripts",
+   "latest": {
+    "date": "2026-11-08",
+    "text": "Created FLIPCOUNT with seven tabs for counting and number toys. Added a languages tab with spoken words, ancient numerals, and world digit scripts."
+   }
+  },
+  "pajamastan-space-administration": {
+   "apps": [],
+   "urls": [
+    "https://pajamastan-space-administration.vercel.app"
+   ],
+   "private": false,
+   "category": "Pajamastan",
+   "name": "Pajamastan Space Administration",
+   "summary": "A space weather globe with a solar burst simulator and live satellite positions",
+   "latest": {
+    "date": "2026-11-08",
+    "text": "Created the page with a globe showing live solar activity, the magnetosphere, the poles, and satellite risk. Added a solar burst simulator and live satellite positions with hazard coloring and a backup orbit feed."
    }
   }
  }

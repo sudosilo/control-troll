@@ -1,13 +1,94 @@
 {
  "jobs": [
   {
+   "repo": "ebutuoy-frontend",
+   "releases": [
+    {
+     "tag": "v2026.11.09",
+     "target": "9f46eca255fb2185b3b382babde26639ca053525",
+     "name": "ebutuoy 2026-11-09",
+     "body": "Added a TV mode to the launch screen. A cream colored TV cabinet has a knob that speeds up when you spin it fast, channel buttons, and a box to type a channel number. Each number from 1 to 1,000,000 plays that channel's videos newest first in thirty second samples."
+    }
+   ],
+   "description": "Discovery app that plays short samples of rarely seen videos from small channels.",
+   "homepage": "https://ebutuoy.vercel.app",
+   "topics": [
+    "discovery",
+    "frontend",
+    "vercel",
+    "video"
+   ]
+  },
+  {
+   "repo": "ebutuoy-backend",
+   "releases": [
+    {
+     "tag": "v2026.11.09",
+     "target": "0ed72f137146a4e57ad3ab585c4e3d8707aedf28",
+     "name": "ebutuoy backend 2026-11-09",
+     "body": "Added numbered TV channels from 1 to 1,000,000. Each number is tied to one channel the first time it is tuned. New routes serve a channel, its videos, and stats."
+    }
+   ],
+   "description": "Backend service for ebutuoy that finds little seen videos and remembers what was served.",
+   "homepage": "",
+   "topics": [
+    "api",
+    "backend",
+    "railway",
+    "video"
+   ]
+  },
+  {
+   "repo": "downfree-foundry",
+   "releases": [
+    {
+     "tag": "v2026.11.08",
+     "target": "d75adaafd7c6569c71f28580e7ef4519071d846a",
+     "name": "Road Layers 2026-11-08",
+     "body": "Recordings now save inside the app in a library with crash recovery. Added stop motion capture, a Map tab with coverage routes, and a Road tab that tracks lane lines and bends. The composite step lets you pick which roadside things to cut out."
+    }
+   ],
+   "description": "Road Layers stacks cars from several drive clips onto one road in the browser.",
+   "homepage": "https://downfree-foundry.vercel.app",
+   "topics": [
+    "tool",
+    "vercel",
+    "video"
+   ]
+  },
+  {
+   "repo": "pajamastan-badge-tool",
+   "releases": [
+    {
+     "tag": "v2026.11.08",
+     "target": "8d5e3c46d6298a1b28bf141f4cb5f8c2af413fe5",
+     "name": "Badge Tool 2026-11-08",
+     "body": "Added a back side builder for badges with an NFC spot, a QR code, text boxes, seals, and a security look. The Back view can be opened at any time."
+    }
+   ],
+   "description": "A badge designer with templates, people, and a paper mockup reader.",
+   "homepage": "https://pajamastan-badge-tool.vercel.app",
+   "topics": [
+    "badges",
+    "pajamastan",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
    "repo": "2026-10-18-orange-testbed",
    "releases": [
     {
-     "tag": "v2026.11.07",
-     "target": "d8c88f408943be131658d08620e88794e5575566",
-     "name": "Agent Test Bed 2026-11-07",
-     "body": "The agent, steward, and grok turns for the day were played and merged into the city."
+     "tag": "v2026.11.08",
+     "target": "b84f6803b39a101db69570331c999f6fb1f98bcc",
+     "name": "Agent Test Bed 2026-11-08",
+     "body": "The agent, grok, and steward turns for the day were played and merged into the city."
+    },
+    {
+     "tag": "v2026.11.09",
+     "target": "a37dc8a46dcc907bf12d632176514907e1737251",
+     "name": "Agent Test Bed 2026-11-09",
+     "body": "The agent turn for the day was played and merged into the city."
     }
    ],
    "description": "A shared city that AI agents build one turn at a time",
@@ -20,172 +101,85 @@
    ]
   },
   {
-   "repo": "downfree-foundry",
+   "repo": "flipcount-game",
    "releases": [
     {
-     "tag": "v2026.11.07",
-     "target": "b133c945ab9780ce13969298feabe053fed311f8",
-     "name": "Road Layers 2026-11-07",
-     "body": "Added a Record tab to Road Layers. It records from the phone camera and keeps a timing log with the GPS position."
+     "tag": "v2026.11.08",
+     "target": "ca8830431d3a27180c26ebbe13f754c70002f320",
+     "name": "FLIPCOUNT 2026-11-08",
+     "body": "Created FLIPCOUNT with seven tabs for counting and number toys. Added a languages tab with spoken words, ancient numerals, and world digit scripts."
     }
    ],
-   "description": "Road Layers stacks cars from several drive clips onto one road in the browser.",
-   "homepage": "https://downfree-foundry.vercel.app",
+   "description": "Counting toys with a flip dot display, an abacus, and number scripts from many languages.",
+   "homepage": "https://flipcount-game.vercel.app",
    "topics": [
+    "game",
     "tool",
-    "vercel",
-    "video"
+    "numbers",
+    "vercel"
    ]
   },
   {
-   "repo": "field-twin",
+   "repo": "pajamastan-space-administration",
    "releases": [
     {
-     "tag": "v2026.11.07",
-     "target": "a32813b4e48c0ba3ca2be8a8be3c156ef7dd4f4e",
-     "name": "Field Twin 2026-11-07",
-     "body": "The odometer check now pulls the newest readings from other phones before it warns. Added a daily miles box that works out miles off the clock by elimination. A leg check compares each leg with the road route and flags side trips."
+     "tag": "v2026.11.08",
+     "target": "148feea8455315caba4f847b916e34547f91d3c4",
+     "name": "Pajamastan Space Administration 2026-11-08",
+     "body": "Created the page with a globe showing live solar activity and satellite risk. Added a solar burst simulator and live satellite positions with hazard coloring and a backup orbit feed."
     }
    ],
-   "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
-   "homepage": "https://field-twin-teal.vercel.app",
+   "description": "A space weather globe with a solar burst simulator and live satellite positions.",
+   "homepage": "https://pajamastan-space-administration.vercel.app",
    "topics": [
-    "field-service",
     "map",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "field-twin-violet-api",
-   "releases": [
-    {
-     "tag": "v2026.11.07",
-     "target": "b25e624601998f3801b3ea91ca79a401bb321edb",
-     "name": "Field Twin Violet 2026-11-07",
-     "body": "Added a way to log an order from outside the app."
-    }
-   ],
-   "description": "A phone inventory app for parts, vendors, reorder levels, orders, and storage locations.",
-   "homepage": "https://field-twin-violet.vercel.app",
-   "topics": [
-    "field",
-    "inventory",
-    "supabase",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "hire-portal",
-   "releases": [
-    {
-     "tag": "v2026.11.07",
-     "target": "3ac337572699c12f1f4f578a6f65ba8b45b5aa70",
-     "name": "Hire Portal 2026-11-07",
-     "body": "Added a headshot upload for the badge, saved with the profile. Added a company template with a complete profile view that can be downloaded."
-    }
-   ],
-   "description": "A practice job application that teaches applicants what to share and what to withhold",
-   "homepage": "https://hire-portal-six.vercel.app",
-   "topics": [
-    "demo",
-    "education",
-    "tool"
-   ]
-  },
-  {
-   "repo": "pajamastan",
-   "releases": [
-    {
-     "tag": "v2026.11.07",
-     "target": "4bb967b54de25def5f58b4165710cf24e01b79b4",
-     "name": "Pajamastan 2026-11-07",
-     "body": "Added a Links tab that includes the badge tool."
-    }
-   ],
-   "description": "The official site of the micronation of Pajamastan.",
-   "homepage": "https://pajamastan.vercel.app",
-   "topics": [
-    "atlas",
-    "micronation",
     "pajamastan",
+    "space-weather",
     "vercel"
    ]
   },
   {
-   "repo": "rainbow-run",
+   "repo": "ordersim",
    "releases": [
     {
-     "tag": "v2026.11.07",
-     "target": "a0e977cbf655332e3f5c3fc874e6c9c3d834ad0a",
-     "name": "Rainbow Run 2026-11-07",
-     "body": "Added a stadium mode with a seating planner, and pictures and video that play on every screen, including YouTube videos and a stunt shared across the crowd. The host signs in, each room gets its own database, and entry kiosks give out one time seat tickets that a seat page can scan with the camera. Added a hype meter that turns the crowd red when phones shake. The microphone now drives the Spectral Engine scenes, and a floor virus spreads between phones that find each other by sound. The menu now has drop down sections."
+     "tag": "v2026.11.08",
+     "target": "96698cfaf0361d00269d8ef94181a780ab5bda69",
+     "name": "ORDERSIM 2026-11-08",
+     "body": "Version three adds a tutorial, drive thru and daily shift scenarios, paper rolls, allergy confirms, 86 items, voids, offline screens, achievements, career stats, and a graded shift report."
     }
    ],
-   "description": "A visualizer pedal where a pixel crow flies across phones lined up side by side",
-   "homepage": "https://rainbow-run-ochre.vercel.app",
+   "description": "Restaurant kitchen rush game with a leaderboard.",
+   "homepage": "https://ordersim.vercel.app",
    "topics": [
-    "music",
-    "vercel",
-    "visualizer"
-   ]
-  },
-  {
-   "repo": "stompbox-lab",
-   "releases": [
-    {
-     "tag": "v2026.11.07",
-     "target": "bfcab4b95436484abe4df5085d0da3c9d4d75d68",
-     "name": "Stompbox Lab 2026-11-07",
-     "body": "Added a stadium mode to the band server with a seating plan and picture and video cues for every screen. A demo cue runs an animation across the crowd, and show videos can be saved and timed with a beacon. The host signs in, each room gets its own database, and YouTube videos and stunts play on every screen. Added a hype meter, entry kiosks with one time seat tickets, and a floor virus that spreads between phones by sound."
-    }
-   ],
-   "description": "A pedal board and synth with grooves that play across many phones.",
-   "homepage": "https://stompbox-lab.vercel.app",
-   "topics": [
-    "band-sync",
-    "music",
-    "pedals",
+    "game",
+    "restaurant-tech",
+    "simulator",
     "vercel"
    ]
   },
   {
-   "repo": "pajamastan-badge-tool",
+   "repo": "stackloom-meta",
    "releases": [
     {
-     "tag": "v2026.11.07",
-     "target": "79950a514170828d59b7b810a8170fc60b2cbaae",
-     "name": "Badge Tool 2026-11-07",
-     "body": "Created the badge tool, a page for designing name badges. Added orientation tabs, saved templates with people for each template, a watermark image with background removal, text overlays, and a gradient editor with text angle. The layout editor drags and snaps, with style presets, card seals and patterns, a tilt preview, and more fonts. Email link login saves templates and people to the cloud, and a drawing reader turns a paper mockup into a layout."
-    }
-   ],
-   "description": "A badge designer with templates, people, and a paper mockup reader.",
-   "homepage": "https://pajamastan-badge-tool.vercel.app",
-   "topics": [
-    "tool",
-    "pajamastan",
-    "vercel",
-    "badges"
-   ]
-  },
-  {
-   "repo": "stinkin-badges",
-   "releases": [
+     "tag": "v2026.11.08",
+     "target": "304c9fe20f57da0dadc4b0b7520587dfe493cc79",
+     "name": "Stackloom 2026-11-08",
+     "body": "Added version 3 with a Bubble line, a Card line, and premium art orders. Product lines now open by hiring senior developers."
+    },
     {
-     "tag": "v2026.11.07",
-     "target": "fbf152f5d3d964c56a802204b4e98b105dcddb2e",
-     "name": "Stinkin Badges 2026-11-07",
-     "body": "Created the backend for the badge tool. It reads paper mockups with an AI model and saves to a shared cloud database. Sign in uses email links, and the badge tool is allowed as a return address."
+     "tag": "v2026.11.09",
+     "target": "73232455e258fc8d4843dbb6f12dd67e4079069f",
+     "name": "Stackloom 2026-11-09",
+     "body": "Added the Runner line, the math gate runner from the phone ads, opened by hiring an ad producer."
     }
    ],
-   "description": "The backend that reads badge mockups and saves badge data for the badge tool.",
-   "homepage": "",
+   "description": "A studio game with orders, terminals, agents, developers, and offices.",
+   "homepage": "https://stackloom-meta.vercel.app",
    "topics": [
-    "backend",
-    "pajamastan",
-    "nodejs",
-    "supabase"
+    "game",
+    "management",
+    "simulator",
+    "vercel"
    ]
   }
  ]
