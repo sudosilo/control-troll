@@ -1,6 +1,27 @@
 {
   "heckles": [
     {
+      "date": "2026-11-09T06:44:48Z",
+      "repo": "flipcount-game",
+      "sha": "1dc1696c",
+      "message": "FLIPCOUNT seven tab build",
+      "heckle": "Nearly two thousand lines of index.html dropped in one commit called FLIPCOUNT seven tab build, like a spending bill nobody read before the vote. CSS, markup and every game script share one file, so one missing brace in there takes down all seven tabs at once. The viewport meta sets maximum-scale=1 and user-scalable=no, which locks out anyone who needs to pinch zoom, and the body has user-select none on top of it. You built a calculator toy and then fenced it in like a campaign rally. Did you think the intern badge came with a refactor budget?\n\nFix it: Split the inline style and script out of index.html into real files. Remove user-scalable=no and maximum-scale=1 from the viewport meta. Drop user-select none from the html,body rule so people can copy the numbers. Write a commit message that says what changed instead of a tab count."
+    },
+    {
+      "date": "2026-11-09T06:44:48Z",
+      "repo": "flipcount-game",
+      "sha": "ca883043",
+      "message": "Add LANGUAGES tab: spoken words, ancient numerals and world digit scripts",
+      "heckle": "Another 494 lines shoved into the same index.html, because apparently files are a luxury for other people. The two new link tags in the head pull hieroglyph and Ethiopic fonts from a public CDN at pinned versions, and the page has no fallback if jsdelivr hiccups, so your ancient numerals turn into empty boxes. Then comes the pile of per language functions like french, german, koreanSino and sumerianWords all sitting in one script with cuneiformSVG, a pattern copied six times in a row like a filibuster that refuses to end. The .lang-glyph box is a fixed 46px font with overflow-x auto, so long number words on a phone become a sideways scroll hunt.\n\nFix it: Move the language converters out of index.html into their own module. Add a font stack fallback to .lang-glyph.hiero and .lang-glyph.geez so missing fonts degrade gracefully. Wrap long words in .lang-glyph instead of relying on overflow-x auto. Self host the two font files instead of trusting the CDN links."
+    },
+    {
+      "date": "2026-11-09T06:44:48Z",
+      "repo": "pajamastan-space-administration",
+      "sha": "148feea8",
+      "message": "Backup orbit feed when CelesTrak refuses, skip bad orbit records",
+      "heckle": "You copied the whole page into pajamastan-space-administration-v4.html again, 1362 lines, and left v1 through v3 rotting in the repo like old campaign signs. The git history exists for a reason, intern. The backup feed in backupTLE hits a third party TLE site straight from the browser with no key and no rate handling, and the starlink entry asks for 12 pages at 100 each, all fired at once in Promise.allSettled like a bailout nobody budgeted. The empty catch around twoline2satrec swallows every bad record silently, and DONKI_KEY is still the DEMO_KEY fallback sitting in client code.\n\nFix it: Edit one html file in place and delete the v1, v2 and v3 copies from the repo. Move the backup TLE fetch behind your api proxy so the browser stops hitting a third party directly. Cap the starlink page requests and run them in sequence. Log skipped records in the twoline2satrec catch instead of swallowing them. Move DONKI_KEY into a server side environment variable."
+    },
+    {
       "date": "2026-11-08T22:12:25Z",
       "repo": "downfree-foundry",
       "sha": "d75adaaf",
@@ -1378,27 +1399,6 @@
       "sha": "b14d2b58ccb90bd41eed462f26633a8021f068b6",
       "message": "grok 2026-10-26T221021",
       "heckle": "Same agent, same two streets, third different set of coordinates in twenty minutes. This push draws Arroyo Street as a loop from negative seven thousand to negative one thousand, then Saguaro Road as another loop, then a corner market whose wall is chopped into separate calls like it was built by a union dispute. A street drawn as a closed rectangle is a parking lot, not a street, and nobody in this pipeline noticed.\n\nFix it: Have the validator in the testbed reject paving whose first and last points match when the meta says street. Merge wall segments of one building into a single place_line call in contrib/grok/2026-10-26T221021.json. Make the agent read its own previous file before redrawing a street."
-    },
-    {
-      "date": "2026-10-27T00:32:35Z",
-      "repo": "blue-agent",
-      "sha": "837a31acf05d9181aee30ee81c7cf4c491c56a68",
-      "message": "Add lilac, technology advisor doctrine",
-      "heckle": "A thirty four line doctrine file for an advisor that is told to behave like a space agency, a research agency, and a space force, in a city where the main rule is that the tape measure is the law. You are writing a cabinet of flower named bureaucrats for a toy city, and the org chart is longer than the working code. Lilac is an advisor with no power, which makes it a committee with a title, and that is the most realistic government thing you have ever shipped. The commit message has no body and no explanation of what lilac can actually touch.\n\nFix it: State in blue-agent-instructions-lilac-v1.txt exactly which tools lilac may call and which it may not. Cut the roleplay paragraphs to the rules the runner enforces. Add the play hours reason to the commit message."
-    },
-    {
-      "date": "2026-10-27T00:32:35Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "15aa7eb77fa6c6e352d0400a77a0ccfea09fb841",
-      "message": "agent shows as Brick in brick red, Purple gets its own purple",
-      "heckle": "You renamed an agent in contrib/grok/agent.json to Brick but left the model field saying this agent and the folder still named grok, so the identity is split three ways like a coalition government. Color 5 became color 1, which is a magic number with no legend anywhere in the diff, and purple got a color 3 in a brand new file. I cannot tell if three is purple or a typo.\n\nFix it: Rename the contrib/grok folder to match the new Brick name, or put the display name in one field only. Replace the bare color numbers in agent.json with a shared palette file that maps numbers to names. Check that no two agents share a color number before merge."
-    },
-    {
-      "date": "2026-10-27T00:32:35Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "0459dd216d7155e42b8a29d345416cb6bf7883f4",
-      "message": "grok 2026-10-26T223513",
-      "heckle": "Another contrib file, another single line of minified JSON that no human can review, pushed straight to main with no pull request. This one lays paving from negative twenty five thousand to negative eight thousand on a street the previous push already drew somewhere else, so the same two streets keep getting redrawn at new coordinates like a campaign promise recycled every election. A driveway is closed with a polygon that exits the chunk it was never told about.\n\nFix it: Make contrib/grok/2026-10-26T223513.json pretty printed so a diff means something. Reject a file that redraws a street name with different points in the validator. Require a pull request for contrib pushes instead of letting the agent commit to main."
     }
   ]
 }
