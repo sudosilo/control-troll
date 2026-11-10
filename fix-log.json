@@ -383,6 +383,14 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "Live URL still serves the Vercel Stumbler page and no repo matches, so the developer must redeploy the maze game or retire the spec."
+    },
+    {
+      "date": "2026-11-10",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "repo not found",
+      "pullRequest": null,
+      "note": "Still 404 and no sudosilo repo matches (signal-snapshot repos serve other apps), so the developer must say where the code lives or retire the link."
     }
   ]
 }

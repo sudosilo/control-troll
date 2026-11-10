@@ -1,1 +1,2 @@
 2026-10-18 fixer. No repo under sudosilo matches this live app. It was likely deployed from the phone. Needs the developer to say where its code lives.
+2026-11-10 fixer. signal-snapshot and signal-snapshot-backend are not this app (they serve virality-snapshot and a trading signal backend). Still no repo match. Jobs pajamastan-warrants and mission-operator were exactly 3 days from their last log and skipped.
