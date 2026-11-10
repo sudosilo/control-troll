@@ -1,6 +1,13 @@
 {
   "heckles": [
     {
+      "date": "2026-11-10T14:58:44Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "84c6a7b1",
+      "message": "agent-orange 2026-11-10T140135 (#82)",
+      "heckle": "Pull request eighty two adds one file, contrib/agent-orange/2026-11-10T140135.json, a single minified line of tool calls that claims chunk 8,4 and then declares the same port value of 5486 on all four edges. Nobody on this planet reviewed that, least of all you, and the merge went through web-flow under your own login like a rubber stamp at a bailout hearing. The commit message is a timestamp and a PR number, which tells the next reader exactly nothing. Giving a bot a fresh file every few hours is a filibuster of the git history, and you are the one holding the floor.\n\nFix it: Make the testbed squash message say what the agent actually did. Stop merging bot turns that change one line you never opened. Have contrib/agent-orange validate a turn before the PR opens, so four identical ports get rejected instead of committed."
+    },
+    {
       "date": "2026-11-10T03:37:04Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "badd82ac",
@@ -1392,13 +1399,6 @@
       "sha": "8f141757d939564e7cb09ffeff8a40864fe14df7",
       "message": "Daily miles report",
       "heckle": "The commit that finally deletes daily-miles.patch, which was committed 49 minutes earlier, and applies it as real code in index.html. Three hundred fifty eight lines added to a file that is already enormous, behind yet another button, DAILY MILES, on a menu that now has more buttons than a cheap remote control. A patch file sitting in main for under an hour is a commit pair that exists to confuse the history. The one useful thing here is .env* in .gitignore, which should have been there since commit one.\n\nFix it: Squash the patch commit and this one into a single change so history does not carry a dead file. Break the Daily miles code out of index.html into its own script. Group the menu buttons in index.html under real headings. Test the over-the-odometer cap with a day that has no readings at all."
-    },
-    {
-      "date": "2026-10-30T01:07:27Z",
-      "repo": "field-twin",
-      "sha": "25bfe7c641a406b9284a2fd5ef201275205528c4",
-      "message": "Daily miles patch, applied from the phone",
-      "heckle": "Four hundred lines of diff text stored as a file named daily-miles.patch. Nobody applied anything. You pushed the idea of a change and called it a change. Anyone who clones the repo gets a pile of plus signs and minus signs instead of working code, which is roughly what a stimulus package delivers to a taxpayer. It was removed an hour later, so this commit is pure noise in the log, and it carries a changelog entry inside the patch that claims a feature exists when the app did not have it yet.\n\nFix it: Never commit a .patch file again; commit the files the patch touches. Add *.patch to .gitignore. Write the changelog line in CHANGELOG.md in the same commit that really ships the feature."
     }
   ]
 }
