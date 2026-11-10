@@ -344,7 +344,19 @@
   "sudosilo/pajamastan-space-administration@v2026.11.08",
   "sudosilo/ordersim@v2026.11.08",
   "sudosilo/stackloom-meta@v2026.11.08",
-  "sudosilo/stackloom-meta@v2026.11.09"
+  "sudosilo/stackloom-meta@v2026.11.09",
+  "sudosilo/2026-11-09-orange-icefiles@v2026.11.09",
+  "sudosilo/lv-liquor-map@v2026.11.09",
+  "sudosilo/particular-lenticular@v2026.11.09",
+  "sudosilo/scorpion-supper@v2026.11.09",
+  "sudosilo/strudel-samples@v2026.11.09",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.10",
+  "sudosilo/downfree-foundry@v2026.11.09",
+  "sudosilo/parcelsun-kq@v2026.11.09",
+  "sudosilo/smash-bender@v2026.11.09",
+  "sudosilo/stompbox-lab@v2026.11.09",
+  "sudosilo/rainbow-run@v2026.11.09",
+  "sudosilo/mill-ionaire@v2026.11.09"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -1273,7 +1285,7 @@
   },
   "sudosilo/parcelsun-kq": {
    "d": "A solar heat model for a parcel locker with a four module default.",
-   "h": "",
+   "h": "https://parcelsun-kq.vercel.app",
    "t": [
     "heat",
     "simulator",
@@ -1968,6 +1980,56 @@
     "pajamastan",
     "space-weather",
     "vercel"
+   ]
+  },
+  "sudosilo/2026-11-09-orange-icefiles": {
+   "d": "A novelty agent ID card maker with photo, license classes, and front and back export",
+   "h": "https://2026-11-09-orange-icefiles.vercel.app",
+   "t": [
+    "mobile",
+    "novelty",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/lv-liquor-map": {
+   "d": "A Las Vegas map of liquor stores, casino bars, and bars with filters and CSV export",
+   "h": "https://lv-liquor-map.vercel.app",
+   "t": [
+    "map",
+    "openstreetmap",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/particular-lenticular": {
+   "d": "A phone toy that blends three photos into a tilting lenticular picture",
+   "h": "https://particular-lenticular.vercel.app",
+   "t": [
+    "mobile",
+    "photo",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/scorpion-supper": {
+   "d": "An endless arcade game where a scorpion eats to grow and hides from coyotes",
+   "h": "https://scorpion-supper.vercel.app",
+   "t": [
+    "arcade",
+    "game",
+    "mobile",
+    "vercel"
+   ]
+  },
+  "sudosilo/strudel-samples": {
+   "d": "Sound clips for Strudel: samples('github:sudosilo/strudel-samples')",
+   "h": "",
+   "t": [
+    "audio",
+    "music",
+    "samples",
+    "strudel"
    ]
   }
  }
