@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-10T03:37:04Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "badd82ac",
+      "message": "agent-orange 2026-11-09T231044 (#81)",
+      "heckle": "Pull request eighty one for contrib/agent-orange/2026-11-09T231044.json and GitHub shows no patch at all for it. Either the file is enormous or the diff is empty, and you merged it anyway like a senator voting on a bill he did not read. Nothing in the commit message says what the agent did, only a timestamp. This is the intern clicking approve on a blank page.\n\nFix it: Check the file size of contrib/agent-orange/2026-11-09T231044.json and reject oversized or empty turns. Require a one line summary in the PR title. Stop merging pull requests without opening them."
+    },
+    {
+      "date": "2026-11-10T03:37:04Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "8fab5c0b",
+      "message": "steward 2026-11-09T213759 (#80)",
+      "heckle": "contrib/steward/2026-11-09T213759.json is one minified line of place_hatch calls, every crosswalk hatch hand repeated with the same spacing 610 and color 7 in the same blob. You merged pull request eighty with a rubber stamp and nobody read it. The meta field repeats the exact steward string completes the crosswalk across the street on every call, which is a bot repeating itself like a campaign speech. A single line of JSON is unreviewable.\n\nFix it: Pretty print the contrib JSON so diffs mean something. Drop the repeated meta text and store it once. Add a check that rejects overlapping hatch points before merge."
+    },
+    {
+      "date": "2026-11-10T03:37:04Z",
+      "repo": "scorpion-supper",
+      "sha": "5fb8fb98",
+      "message": "Scorpion Supper v7: endless growth eater with coyotes and coops",
+      "heckle": "Version seven is a 671 line single html file named scorpion-supper-v7.html, with a vercel.json that rewrites root to it. Six older versions are presumably rotting beside it. The first comment calls it a blue phone source device, which is a build log pasted inside shipped code. The body has touch-action none and user-select none with overscroll disabled, so one wrong gesture and the player is locked in, like a filibuster with a sand theme.\n\nFix it: Delete the older scorpion-supper version files or move them to an archive folder. Remove the blue phone source device comment from scorpion-supper-v7.html. Pull the inline script out into its own file."
+    },
+    {
+      "date": "2026-11-10T03:37:04Z",
+      "repo": "lv-liquor-map",
+      "sha": "8eb60978",
+      "message": "LV liquor map v3",
+      "heckle": "Another 682 line page dropped into the repo as lv-liquor-map-v3.html, and vercel.json rewrites to it like a hand me down. Leaflet loads from a CDN with no integrity hash, so if that host burps your map is a blank rectangle. The viewport meta has user-scalable=no, which locks out anyone who needs to zoom the page. The map is a copy of v2 with a bow on it, and versioned filenames are the intern's idea of version control.\n\nFix it: Add integrity and crossorigin attributes to the Leaflet link and script tags in lv-liquor-map-v3.html. Remove user-scalable=no and maximum-scale from the viewport meta. Use git history for versions instead of renaming files."
+    },
+    {
+      "date": "2026-11-10T03:37:04Z",
+      "repo": "lv-liquor-map",
+      "sha": "ed4dd715",
+      "message": "LV liquor map v4: server data route, parallel mirrors, no empty cache",
+      "heckle": "api/lv-liquor-map-v4-data.js fires every Overpass mirror at once with Promise.any, so each visitor hammers four public servers for one answer. That is a hostile takeover of free infrastructure, and you set Access-Control-Allow-Origin to star on top. The old v3 html is still sitting in the repo next to v4, so you are copy pasting entire 700 line pages like a clerk in a cursed copy room. The cache header says twelve hours, so one stale answer sticks for half a day.\n\nFix it: Query one mirror first and fall back to the next only on failure in lv-liquor-map-v4-data.js. Delete lv-liquor-map-v3.html. Stop duplicating the whole page each version and edit one file. Limit CORS to your own site."
+    },
+    {
+      "date": "2026-11-10T03:37:04Z",
+      "repo": "downfree-foundry",
+      "sha": "cbc04a34",
+      "message": "Music: reliable play and pause, drag to pan without being pulled back; color-coded drum assignments for each kind of cutout",
+      "heckle": "The commit says reliable play and pause, which is a confession that the previous commit, shipped a few hours earlier, was not reliable. You are patching your own patch in the same index.html. The new tintMode select quietly replaced the old tint checkbox, so anything that read the tint id is now a ghost reference waiting to throw. Also the .fl small rule tucked into the end of the stylesheet is the work of someone who has never heard of organization.\n\nFix it: Search index.html for any leftover use of the old tint checkbox id and remove it. Write one play and pause test before calling it reliable. Group the new .assign and .arow styles with the other Music tab rules."
+    },
+    {
+      "date": "2026-11-10T03:37:04Z",
+      "repo": "downfree-foundry",
+      "sha": "c1878eb5",
+      "message": "Add Music tab: find kick, snare and hi-hat hits; cutouts pop in on hits with the song in Composite and recordings",
+      "heckle": "Four hundred and forty lines added to one index.html in a single commit, and the intern calls that a Music tab. The same file now carries a Record tab, a Road tab, a Music tab and a second inline script, so it reads like a campaign promise nobody can audit. The .tabs flex-wrap fix with min-width 64px shows you cramming tabs onto a phone instead of rethinking the layout. Hit detection with no test is just vibes with a canvas.\n\nFix it: Move the Music tab script out of index.html into its own file. Test the kick, snare and hi-hat band detection on one fixed clip. Turn the tab bar into a scroll or menu instead of wrapping rows. Stop landing four hundred lines in one commit."
+    },
+    {
+      "date": "2026-11-10T03:37:04Z",
+      "repo": "smash-bender",
+      "sha": "383e5c17",
+      "message": "Sample log: Save slice to GitHub, Add sound clip",
+      "heckle": "server/static/index.html grew a Save slice and Add sound clip panel that sends audio to a public publish route, and the whole thing is another hand pasted panel jammed into one giant HTML file. The clippanel has a file input and a name box and zero visible check on file size before upload, so a phone user dumping a forty minute recording gets a spinner and a prayer. Stacking features like this is how a government shutdown starts.\n\nFix it: Check file.size in the clipgo handler before uploading. Show errors from the publish response in clipmsg instead of silently failing. Split the inline script out of server/static/index.html before it gets any bigger."
+    },
+    {
+      "date": "2026-11-10T03:37:04Z",
+      "repo": "smash-bender",
+      "sha": "abccc54f",
+      "message": "Chop: exact note timing, cleaner notes, original slice plays in sync under the notes",
+      "heckle": "You rewrote mini() into clean() and timed() in server/chop.py and the old mini() went straight in the trash with nothing to prove the new one is better. The clean() function shifts notes by an octave when they sit six semitones off the neighbor average, which is a hardcoded guess dressed up as signal processing. The magic 0.07 and 0.08 thresholds look like you rolled dice. Every note-based filibuster ends with one guy yelling constants.\n\nFix it: Name the 0.07 and 0.08 thresholds as constants at the top of server/chop.py. Add a test with a known melody for clean() and timed(). Delete any leftover callers of the old mini() if they remain."
+    },
+    {
+      "date": "2026-11-10T03:37:04Z",
+      "repo": "smash-bender",
+      "sha": "c1c71c27",
+      "message": "Publish endpoint: clips go to the Strudel sample repo on GitHub",
+      "heckle": "server/app.py now has a /api/publish route with CORS wide open to every origin, no auth, and a server GitHub token behind it. Congratulations, any webpage on earth can make your server write files into your repo. That is a bailout with no oversight. The clean() regex on the name is the only gate, and the file upload has no size limit at all, so one fat POST and the worker chokes. Whoever taught you backend work did it with crayons.\n\nFix it: Require a shared secret header on publish in server/app.py. Replace allow_origins star in the CORSMiddleware line with your actual frontend origin. Cap the bytes read from file.read() in publish. Check the GitHub response status in gh() instead of assuming it worked."
+    },
+    {
       "date": "2026-11-09T19:52:38Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "a37dc8a4",
@@ -1329,76 +1399,6 @@
       "sha": "25bfe7c641a406b9284a2fd5ef201275205528c4",
       "message": "Daily miles patch, applied from the phone",
       "heckle": "Four hundred lines of diff text stored as a file named daily-miles.patch. Nobody applied anything. You pushed the idea of a change and called it a change. Anyone who clones the repo gets a pile of plus signs and minus signs instead of working code, which is roughly what a stimulus package delivers to a taxpayer. It was removed an hour later, so this commit is pure noise in the log, and it carries a changelog entry inside the patch that claims a feature exists when the app did not have it yet.\n\nFix it: Never commit a .patch file again; commit the files the patch touches. Add *.patch to .gitignore. Write the changelog line in CHANGELOG.md in the same commit that really ships the feature."
-    },
-    {
-      "date": "2026-10-30T01:07:27Z",
-      "repo": "field-twin",
-      "sha": "dc8ad9fdcb379de990ff9ad76277a04c3dfce077",
-      "message": "Export, mileage and search spreadsheets save into Downloads in the phone app",
-      "heckle": "At least this one has real code in it. The saveFile bridge in src-tauri/android/FieldTwinBridge.kt writes spreadsheets into Downloads, and the three duplicated blob and anchor download blocks in index.html collapsed into one saveTextFile call. That is the first time this repo removed copy paste instead of making more, and it pains me. But the Kotlin branches on SDK_INT, returns plain strings starting with error, and the JavaScript side has to parse those strings to know whether the save worked, which is a handshake designed by a man who dislikes types.\n\nFix it: Return a structured result from saveFile in FieldTwinBridge.kt instead of an error: string. Show the user a visible failure when the save fails in saveTextFile. Test the pre SDK 29 branch on an old phone or delete it. Name the saved files with the vehicle so they do not pile up."
-    },
-    {
-      "date": "2026-10-27T15:26:00Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "fe052b3076fcb0fc9ddb94b876d1a692bd627f10",
-      "message": "agent-orange 2026-10-27T135623 (#56)",
-      "heckle": "One line of minified JSON, one file, merged as a pull request like it was a constitutional amendment. The contrib file for this turn is a single unreadable blob of place_line calls that GitHub will not even render as a diff, so nobody, including you, reviewed a single coordinate. A rolling cart of sprinkler nozzles drawn as a closed rectangle at height 900 and a bucket of primer drawn as an eight point polygon is a lot of ceremony for objects the detailer will probably hide tomorrow anyway. Merging bot output by hand through a PR with a co-author trailer is a bailout with extra paperwork.\n\nFix it: Let the agent push contrib/agent-orange straight to main or auto merge, instead of a PR per turn. Pretty print the JSON in contrib/agent-orange so a diff is readable. Add a validator that rejects duplicate or overlapping interior shapes before the merge."
-    },
-    {
-      "date": "2026-10-27T09:07:09Z",
-      "repo": "blue-agent",
-      "sha": "cc8749cb99a6c602ce48814ad9b6504591cbcab3",
-      "message": "Claude agents use their own Anthropic key; OpenRouter only for non Cla",
-      "heckle": "You rewrote callModel's routing a third time this week and the new fallback needs two environment flags to be set just right before it does anything, which is a policy debate dressed up as a ternary. The comment above OPENROUTER_FALLBACK is longer than the logic it explains. The credit regex shrank so a bad key now throws instead of falling back, which you will discover at 3am. And blue-agent-deploy-v2.sh is v2 of a script sitting next to a v6 server, so your naming scheme is a filibuster with no end date.\n\nFix it: Delete the unused authentication branch assumptions and document the two flags in one place in blue-agent-server-v6.js. Stop shipping a numbered deploy script per whim and keep one blue-agent-deploy.sh. Make the deploy script fail loudly if the AGENT_KEYS lookup comes back empty."
-    },
-    {
-      "date": "2026-10-27T09:07:09Z",
-      "repo": "blue-agent",
-      "sha": "ffbda2363f9a128c8176ce8a6f20af4ea178c0a9",
-      "message": "Retry turns that hit an OpenRouter key limit on the next check",
-      "heckle": "One regex gained the words limit exceeded and you called it a feature. In autoTick the retry check matches any error string containing credit, 402, billing, afford, or now limit exceeded, so the next provider hiccup with a similar sentence deletes the slot key and replays the turn forever. A one line patch to a string match, with no test, from a dev who clearly thinks regexes are a personality.\n\nFix it: Cap retries per slot in autoTick so a stuck turn cannot loop every check. Match on a real status code from the error object instead of prose in blue-agent-server-v6.js. Log when the key gets deleted so you can see the loop."
-    },
-    {
-      "date": "2026-10-27T09:07:09Z",
-      "repo": "blue-agent",
-      "sha": "7fc536ff10fd2f4c358a136ddf9385a821daa667",
-      "message": "Scheduler: just after midnight UTC, yesterday's last slot still counts",
-      "heckle": "Congratulations, you invented a date bug and a fix for it in the same afternoon. In autoTick, slotDay is computed by subtracting 86400000 milliseconds from now, which is wrong on any day that is not exactly that long and will smile at you every time a clock changes. The bigger sin is that an agent whose list is empty of due hours now replays yesterday's last slot, so the first minute after midnight every agent fires again like a government stopgap that nobody voted on.\n\nFix it: Build slotDay from UTC date parts instead of subtracting milliseconds in autoTick. Add a test that runs the scheduler at 00:01 UTC and asserts it plays exactly once. Check that the lastauto key written for yesterday cannot block today's first slot."
-    },
-    {
-      "date": "2026-10-27T09:07:09Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "fbadfe7619210068595d22329c3099e0c9edb94c",
-      "message": "agent-orange 2026-10-27T015508 (#55)  Co-authored-by: agent-orange <ag",
-      "heckle": "Another bot PR, another one line minified blob that GitHub refuses to render, so nobody reviewed it and nobody will. This turn drops a rolling bin of playground balls, a kiln, and a step stool at the sink, with the stool sitting around x 16044 while the rest of the classroom sits near 50000 to 59000, so the stool is apparently in a different postal code. The merge button got more review than the geometry.\n\nFix it: Add a checker in the build that rejects an interior part more than a few meters from its building's other parts in contrib/agent-orange. Pretty print contrib files so a diff is readable. Stop merging bot PRs with no human glance."
-    },
-    {
-      "date": "2026-10-27T09:07:09Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "1ed630265be033854f9adf848fb2e58c0b0da962",
-      "message": "Live city: viewer and API read turns straight from GitHub, so new turn",
-      "heckle": "You made every API call hit the repo tree, and every server instance downloads files into tmp like a raccoon in a dumpster. In api/_lib.js syncLive has no failure backoff and no lock beyond a single promise, liveAt is declared and I can barely see it used, and the whole thing leans on a token env var that is simply assumed. Then vercel.json got reindented for no reason, which is the diff equivalent of rearranging chairs on a sinking ship. index.html swallows every manifest error in an empty catch.\n\nFix it: Add a backoff after a failed sync in syncLive in api/_lib.js. Remove the unused liveAt variable or enforce the fifteen second limit it promises. Revert the whitespace churn in vercel.json. Show a visible banner in index.html when the live manifest fails."
-    },
-    {
-      "date": "2026-10-27T09:07:09Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "1c16b88e33acf4adfb299f94dff97ea7ee602bfc",
-      "message": "olive 2026-10-27T004442",
-      "heckle": "A 271 call turn on one unreadable line, pushed straight to main with no review, by an agent that joined forty minutes ago. Every port is declared 5486 on all four edges, which is not a design, it is a copy paste with ambition. The street centerlines are one long run of meta strings repeating half of double yellow centerline until your eyes bleed.\n\nFix it: Require new agents to go through a pull request for their first turn in contrib/olive. Add a build step that fails on identical port values on all four edges of a chunk. Pretty print the turn file."
-    },
-    {
-      "date": "2026-10-27T09:07:09Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "6dde9221b878c071bb171a530dfcb51b035d20fa",
-      "message": "olive joins",
-      "heckle": "A new agent shows up with a tilde prefixed latest alias for its model field, which means the model changes under you and your city's history lies about who built what. The about text is a brochure, olive green arcades and shaded courtyards, the kind of copy a developer writes when they ran out of ideas and used a thesaurus. Color 8 sits there with no legend anywhere.\n\nFix it: Pin an exact model string in contrib/olive/agent.json. Cut the about text to one honest sentence. Add a color legend to the viewer so number 8 means something."
-    },
-    {
-      "date": "2026-10-27T09:07:09Z",
-      "repo": "testbed-notes",
-      "sha": "373b453db079017c39daa7cb7dbea039155f3cc1",
-      "message": "olive note",
-      "heckle": "board.md is an append only diary that is now long enough to need its own filibuster rules, and olive added a three line wall of text that includes a coordinate buried mid sentence, asking the steward to tie something to it. A coordinate hidden in prose is a bug waiting for a reader who skims, which is everyone. Nobody is going to find it in forty entries.\n\nFix it: Move open requests like the southern endpoint at the Creosote extension into a table at the top of board.md. Archive entries older than a day into a separate file. Give each request a checkbox so someone can close it."
     }
   ]
 }
