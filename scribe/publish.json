@@ -1,93 +1,107 @@
 {
  "jobs": [
   {
-   "repo": "ebutuoy-frontend",
+   "repo": "2026-11-09-orange-icefiles",
    "releases": [
     {
      "tag": "v2026.11.09",
-     "target": "9f46eca255fb2185b3b382babde26639ca053525",
-     "name": "ebutuoy 2026-11-09",
-     "body": "Added a TV mode to the launch screen. A cream colored TV cabinet has a knob that speeds up when you spin it fast, channel buttons, and a box to type a channel number. Each number from 1 to 1,000,000 plays that channel's videos newest first in thirty second samples."
+     "target": "45f6227a188f14dc6a93a14ca5c3bd067cfbbb4f",
+     "name": "Ice Files 2026-11-09",
+     "body": "Created Ice Files, a novelty member ID maker for field agents of a frozen drink company. You fill in your details and add a photo, and it builds a card with a front and a back. Added a his or her choice, a license back for each persona, and a fix for phone screens that clipped the card."
     }
    ],
-   "description": "Discovery app that plays short samples of rarely seen videos from small channels.",
-   "homepage": "https://ebutuoy.vercel.app",
+   "description": "A novelty agent ID card maker with photo, license classes, and front and back export",
+   "homepage": "https://2026-11-09-orange-icefiles.vercel.app",
    "topics": [
-    "discovery",
-    "frontend",
+    "tool",
     "vercel",
-    "video"
+    "novelty",
+    "mobile"
    ]
   },
   {
-   "repo": "ebutuoy-backend",
+   "repo": "lv-liquor-map",
    "releases": [
     {
      "tag": "v2026.11.09",
-     "target": "0ed72f137146a4e57ad3ab585c4e3d8707aedf28",
-     "name": "ebutuoy backend 2026-11-09",
-     "body": "Added numbered TV channels from 1 to 1,000,000. Each number is tied to one channel the first time it is tuned. New routes serve a channel, its videos, and stats."
+     "target": "ed4dd715e7b69c9a9b496bffb8a28f978487170c",
+     "name": "LV Liquor Intel 2026-11-09",
+     "body": "Created LV Liquor Intel, a map of liquor sellers in Las Vegas, Paradise, and Henderson, with a first version and a faster second one. Markers are colored for standalone liquor stores, casino and resort liquor, and bars. Version four loads its data through a server route that tries several data mirrors at once and never keeps an empty result."
     }
    ],
-   "description": "Backend service for ebutuoy that finds little seen videos and remembers what was served.",
+   "description": "A Las Vegas map of liquor stores, casino bars, and bars with filters and CSV export",
+   "homepage": "https://lv-liquor-map.vercel.app",
+   "topics": [
+    "map",
+    "tool",
+    "vercel",
+    "openstreetmap"
+   ]
+  },
+  {
+   "repo": "particular-lenticular",
+   "releases": [
+    {
+     "tag": "v2026.11.09",
+     "target": "a9bc6d3004a3905b283aa677dd5323e11571192f",
+     "name": "Lenticular Tilt 2026-11-09",
+     "body": "Created Lenticular Tilt, a phone toy that turns three photos into a tilting lenticular picture."
+    }
+   ],
+   "description": "A phone toy that blends three photos into a tilting lenticular picture",
+   "homepage": "https://particular-lenticular.vercel.app",
+   "topics": [
+    "tool",
+    "mobile",
+    "vercel",
+    "photo"
+   ]
+  },
+  {
+   "repo": "scorpion-supper",
+   "releases": [
+    {
+     "tag": "v2026.11.09",
+     "target": "5fb8fb983bb2644de18f14ed765577114fab59fc",
+     "name": "Scorpion Supper 2026-11-09",
+     "body": "Added Scorpion Supper version seven, an endless growth eater with coyotes and coops. You steer a scorpion on an open range and eat to grow, and the world scales up as you do."
+    }
+   ],
+   "description": "An endless arcade game where a scorpion eats to grow and hides from coyotes",
+   "homepage": "https://scorpion-supper.vercel.app",
+   "topics": [
+    "game",
+    "arcade",
+    "mobile",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "strudel-samples",
+   "releases": [
+    {
+     "tag": "v2026.11.09",
+     "target": "3ae60d4806954018c1895638cab78a840f0528cb",
+     "name": "Strudel Samples 2026-11-09",
+     "body": "Created a sample pack for the Strudel music tool, with a map that lets Strudel load clips straight from this repo. Added short spoken clips and a puller script that fetches them, with a run log and a fallback when the first host fails. Candidate clips were sorted, trimmed, and joined into the final set."
+    }
+   ],
+   "description": "Sound clips for Strudel: samples('github:sudosilo/strudel-samples')",
    "homepage": "",
    "topics": [
-    "api",
-    "backend",
-    "railway",
-    "video"
-   ]
-  },
-  {
-   "repo": "downfree-foundry",
-   "releases": [
-    {
-     "tag": "v2026.11.08",
-     "target": "d75adaafd7c6569c71f28580e7ef4519071d846a",
-     "name": "Road Layers 2026-11-08",
-     "body": "Recordings now save inside the app in a library with crash recovery. Added stop motion capture, a Map tab with coverage routes, and a Road tab that tracks lane lines and bends. The composite step lets you pick which roadside things to cut out."
-    }
-   ],
-   "description": "Road Layers stacks cars from several drive clips onto one road in the browser.",
-   "homepage": "https://downfree-foundry.vercel.app",
-   "topics": [
-    "tool",
-    "vercel",
-    "video"
-   ]
-  },
-  {
-   "repo": "pajamastan-badge-tool",
-   "releases": [
-    {
-     "tag": "v2026.11.08",
-     "target": "8d5e3c46d6298a1b28bf141f4cb5f8c2af413fe5",
-     "name": "Badge Tool 2026-11-08",
-     "body": "Added a back side builder for badges with an NFC spot, a QR code, text boxes, seals, and a security look. The Back view can be opened at any time."
-    }
-   ],
-   "description": "A badge designer with templates, people, and a paper mockup reader.",
-   "homepage": "https://pajamastan-badge-tool.vercel.app",
-   "topics": [
-    "badges",
-    "pajamastan",
-    "tool",
-    "vercel"
+    "music",
+    "audio",
+    "strudel",
+    "samples"
    ]
   },
   {
    "repo": "2026-10-18-orange-testbed",
    "releases": [
     {
-     "tag": "v2026.11.08",
-     "target": "b84f6803b39a101db69570331c999f6fb1f98bcc",
-     "name": "Agent Test Bed 2026-11-08",
-     "body": "The agent, grok, and steward turns for the day were played and merged into the city."
-    },
-    {
-     "tag": "v2026.11.09",
-     "target": "a37dc8a46dcc907bf12d632176514907e1737251",
-     "name": "Agent Test Bed 2026-11-09",
+     "tag": "v2026.11.10",
+     "target": "84c6a7b16134770e8b71ff135691191ed33096ea",
+     "name": "Agent Test Bed 2026-11-10",
      "body": "The agent turn for the day was played and merged into the city."
     }
    ],
@@ -101,84 +115,114 @@
    ]
   },
   {
-   "repo": "flipcount-game",
+   "repo": "downfree-foundry",
    "releases": [
-    {
-     "tag": "v2026.11.08",
-     "target": "ca8830431d3a27180c26ebbe13f754c70002f320",
-     "name": "FLIPCOUNT 2026-11-08",
-     "body": "Created FLIPCOUNT with seven tabs for counting and number toys. Added a languages tab with spoken words, ancient numerals, and world digit scripts."
-    }
-   ],
-   "description": "Counting toys with a flip dot display, an abacus, and number scripts from many languages.",
-   "homepage": "https://flipcount-game.vercel.app",
-   "topics": [
-    "game",
-    "tool",
-    "numbers",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "pajamastan-space-administration",
-   "releases": [
-    {
-     "tag": "v2026.11.08",
-     "target": "148feea8455315caba4f847b916e34547f91d3c4",
-     "name": "Pajamastan Space Administration 2026-11-08",
-     "body": "Created the page with a globe showing live solar activity and satellite risk. Added a solar burst simulator and live satellite positions with hazard coloring and a backup orbit feed."
-    }
-   ],
-   "description": "A space weather globe with a solar burst simulator and live satellite positions.",
-   "homepage": "https://pajamastan-space-administration.vercel.app",
-   "topics": [
-    "map",
-    "pajamastan",
-    "space-weather",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "ordersim",
-   "releases": [
-    {
-     "tag": "v2026.11.08",
-     "target": "96698cfaf0361d00269d8ef94181a780ab5bda69",
-     "name": "ORDERSIM 2026-11-08",
-     "body": "Version three adds a tutorial, drive thru and daily shift scenarios, paper rolls, allergy confirms, 86 items, voids, offline screens, achievements, career stats, and a graded shift report."
-    }
-   ],
-   "description": "Restaurant kitchen rush game with a leaderboard.",
-   "homepage": "https://ordersim.vercel.app",
-   "topics": [
-    "game",
-    "restaurant-tech",
-    "simulator",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "stackloom-meta",
-   "releases": [
-    {
-     "tag": "v2026.11.08",
-     "target": "304c9fe20f57da0dadc4b0b7520587dfe493cc79",
-     "name": "Stackloom 2026-11-08",
-     "body": "Added version 3 with a Bubble line, a Card line, and premium art orders. Product lines now open by hiring senior developers."
-    },
     {
      "tag": "v2026.11.09",
-     "target": "73232455e258fc8d4843dbb6f12dd67e4079069f",
-     "name": "Stackloom 2026-11-09",
-     "body": "Added the Runner line, the math gate runner from the phone ads, opened by hiring an ad producer."
+     "target": "cbc04a346f68806c07bd120c2f5220353a42a1f5",
+     "name": "Road Layers 2026-11-09",
+     "body": "Added a Music tab to Road Layers. It finds kick, snare, and hi-hat hits in a song, and cutouts pop in on the hits with the song playing in the composite and in recordings. Play and pause are more reliable, dragging to pan no longer pulls you back, and each kind of cutout gets a color coded drum."
     }
    ],
-   "description": "A studio game with orders, terminals, agents, developers, and offices.",
-   "homepage": "https://stackloom-meta.vercel.app",
+   "description": "Road Layers stacks cars from several drive clips onto one road in the browser.",
+   "homepage": "https://downfree-foundry.vercel.app",
+   "topics": [
+    "tool",
+    "vercel",
+    "video"
+   ]
+  },
+  {
+   "repo": "parcelsun-kq",
+   "releases": [
+    {
+     "tag": "v2026.11.09",
+     "target": "bee89135cfaf2c1fd27fe84824e4cef03be2107c",
+     "name": "Parcelsun 2026-11-09",
+     "body": "Parcelsun version five adds a layout editor in the 3D model, door numbers shown on the doors, and a door numbers card with per column numbering, a skipped starter, and door search. Added version four and version five styles, Q units, and outside and inside corners."
+    }
+   ],
+   "description": "A solar heat model for a parcel locker with a four module default.",
+   "homepage": "https://parcelsun-kq.vercel.app",
+   "topics": [
+    "heat",
+    "simulator",
+    "solar",
+    "threejs"
+   ]
+  },
+  {
+   "repo": "smash-bender",
+   "releases": [
+    {
+     "tag": "v2026.11.09",
+     "target": "383e5c175e6f3ea4af853be53a28a5a70ce961ea",
+     "name": "Smash Bender 2026-11-09",
+     "body": "Added a chop tool that cuts a slice from a sample, reads its notes, and writes Strudel code with a link to open it. Chop timing is exact, the notes are cleaner, and the original slice plays in sync under the notes. The sample log can chop any sample into notes, save a slice to GitHub, and add a sound clip. A publish endpoint sends clips to the Strudel sample repo."
+    }
+   ],
+   "description": "A processing server for song mashups with phone scripts",
+   "homepage": "",
+   "topics": [
+    "audio",
+    "backend",
+    "music",
+    "python"
+   ]
+  },
+  {
+   "repo": "stompbox-lab",
+   "releases": [
+    {
+     "tag": "v2026.11.09",
+     "target": "d585bf93e37995d9201e60046629b3ab67d7e2eb",
+     "name": "Stompbox Lab 2026-11-09",
+     "body": "Added a train window scene where Stompbox notes and pedals become passing scenery."
+    }
+   ],
+   "description": "A pedal board and synth with grooves that play across many phones.",
+   "homepage": "https://stompbox-lab.vercel.app",
+   "topics": [
+    "band-sync",
+    "music",
+    "pedals",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "rainbow-run",
+   "releases": [
+    {
+     "tag": "v2026.11.09",
+     "target": "4b9b35208cf8dc51d98e27cc7f7c82950b1c1d76",
+     "name": "Rainbow Run 2026-11-09",
+     "body": "Added a train window scene to the wall, where Stompbox notes and pedals become passing scenery."
+    }
+   ],
+   "description": "A visualizer pedal where a pixel crow flies across phones lined up side by side",
+   "homepage": "https://rainbow-run-ochre.vercel.app",
+   "topics": [
+    "music",
+    "vercel",
+    "visualizer"
+   ]
+  },
+  {
+   "repo": "mill-ionaire",
+   "releases": [
+    {
+     "tag": "v2026.11.09",
+     "target": "776102d019be94a351a42d64b6a17726af08f77e",
+     "name": "Mill-ionaire 2026-11-09",
+     "body": "Added filament printers. A plastic 3D printer takes a floor bay and prints letters, numbers and emoji in white, black, red, blue or yellow filament, the color of whatever spool it has loaded. Owning one brings in orders in filament colors that only a printer can make. Thin parts like a 1 print fast and a fat 8 or an emoji takes longer, a printer works the colors already on its spool first, a different color means an operator swaps the spool, and now and then a print turns to spaghetti and gets scraped off the bed. Tapping a printer opens a keypad that prints any part ahead into the bins in the picked spool color, and orders take from the bins first."
+    }
+   ],
+   "description": "A letter shop tycoon built around a simulated knee mill that grows into a factory.",
+   "homepage": "https://mill-ionaire.vercel.app",
    "topics": [
     "game",
-    "management",
     "simulator",
+    "tycoon",
     "vercel"
    ]
   }

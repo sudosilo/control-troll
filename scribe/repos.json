@@ -28,8 +28,8 @@
    "summary": "A solar heat model for a parcel locker with a four module default",
    "name": "Parcelsun",
    "latest": {
-    "date": "2026-10-13",
-    "text": "First release, built over four versions in one day. A parcel locker solar heat model, then a board strip, hat shadow, console gear heat, and back view. Then a field style locker look with a four module default, and finally even service seams, cabinet louvers, and console panel detail."
+    "date": "2026-11-09",
+    "text": "Parcelsun version five adds a layout editor in the 3D model, door numbers shown on the doors, and a door numbers card with per column numbering, a skipped starter, and door search. Added version four and version five styles, Q units, and outside and inside corners."
    }
   },
   "chassisquiver": {
@@ -204,8 +204,8 @@
    "summary": "A guitar pedal board and synth with looped grooves shared across phones",
    "name": "Stompbox Lab",
    "latest": {
-    "date": "2026-11-07",
-    "text": "Added a stadium mode to the band server with a seating plan and picture and video cues for every screen. A demo cue runs an animation across the crowd, and show videos can be saved and timed with a beacon. The host signs in, each room gets its own database, and YouTube videos and stunts play on every screen. Added a hype meter, entry kiosks with one time seat tickets, and a floor virus that spreads between phones by sound."
+    "date": "2026-11-09",
+    "text": "Added a train window scene where Stompbox notes and pedals become passing scenery."
    }
   },
   "spectral-engine": {
@@ -416,8 +416,8 @@
    "summary": "A letter shop tycoon built around a simulated knee mill that grows into a factory floor.",
    "name": "Mill-ionaire",
    "latest": {
-    "date": "2026-11-06",
-    "text": "Order, lathe, and brake programs now resume when the game is reopened without a crash. After a power drop on reopen, floor machines trip their emergency stops for the crew to reset, and your mill boots before its program resumes. The crew looks at any machine that sits still and says why in a bubble, and says what they fix while they work. Lasers can now run out of assist gas. Checks for the finance minute and the machine settings line are steadier."
+    "date": "2026-11-09",
+    "text": "Added filament printers. A plastic 3D printer takes a floor bay and prints letters, numbers and emoji in white, black, red, blue or yellow filament, the color of whatever spool it has loaded. Owning one brings in orders in filament colors that only a printer can make. Thin parts like a 1 print fast and a fat 8 or an emoji takes longer, a printer works the colors already on its spool first, a different color means an operator swaps the spool, and now and then a print turns to spaghetti and gets scraped off the bed. Tapping a printer opens a keypad that prints any part ahead into the bins in the picked spool color, and orders take from the bins first."
    }
   },
   "tinewood-keys": {
@@ -1793,7 +1793,7 @@
    "summary": "A shared city where AI agents take turns building, with a viewer and a web API.",
    "name": "Agent Test Bed",
    "latest": {
-    "date": "2026-11-09",
+    "date": "2026-11-10",
     "text": "The agent turn for the day was played and merged into the city."
    }
   },
@@ -2103,8 +2103,8 @@
    "summary": "A server that sings one song's words on another song's timing and notes.",
    "name": "Smash Bender",
    "latest": {
-    "date": "2026-10-30",
-    "text": "Added a listening check for words understood and sounds-like, a key strength reading from singing loudness, and a lab toolbox installer. Added an overlay baseline that puts one song's voice on another's music untouched, and a melody reader that plays an acapella's tune on piano. Ready-made instrumental and acapella files now skip splitting. Experiments run in a capped loop that logs the idea, the change, and the measurements for each run, and a sample log page shows every run set with pads, scores, ratings, and a progress trend. Added stages two and three with Auto-Tune and a voice tool, an Instrument tool, projects with uploads, an import endpoint other apps can call, and clips that start partway into each song."
+    "date": "2026-11-09",
+    "text": "Added a chop tool that cuts a slice from a sample, reads its notes, and writes Strudel code with a link to open it. Chop timing is exact, the notes are cleaner, and the original slice plays in sync under the notes. The sample log can chop any sample into notes, save a slice to GitHub, and add a sound clip. A publish endpoint sends clips to the Strudel sample repo."
    }
   },
   "mission-operator-next": {
@@ -2327,8 +2327,8 @@
    "summary": "A wall of phones that shows synced visualizer scenes for the stompbox API",
    "name": "Rainbow Run",
    "latest": {
-    "date": "2026-11-07",
-    "text": "Added a stadium mode with a seating planner, and pictures and video that play on every screen, including YouTube videos and a stunt shared across the crowd. The host signs in, each room gets its own database, and entry kiosks give out one time seat tickets that a seat page can scan with the camera. Added a hype meter that turns the crowd red when phones shake. The microphone now drives the Spectral Engine scenes, and a floor virus spreads between phones that find each other by sound. The menu now has drop down sections."
+    "date": "2026-11-09",
+    "text": "Added a train window scene to the wall, where Stompbox notes and pedals become passing scenery."
    }
   },
   "downfree-foundry": {
@@ -2341,8 +2341,8 @@
    "summary": "A browser tool that stacks cars from several drive clips onto one road",
    "category": "Tools",
    "latest": {
-    "date": "2026-11-08",
-    "text": "Recordings now save inside the app in a library, with stop motion capture, a Map tab, and a Road tab that tracks lane lines."
+    "date": "2026-11-09",
+    "text": "Added a Music tab to Road Layers. It finds kick, snare, and hi-hat hits in a song, and cutouts pop in on the hits with the song playing in the composite and in recordings. Play and pause are more reliable, dragging to pan no longer pulls you back, and each kind of cutout gets a color coded drum."
    }
   },
   "pajamastan-badge-tool": {
@@ -2397,6 +2397,74 @@
    "latest": {
     "date": "2026-11-08",
     "text": "Created the page with a globe showing live solar activity, the magnetosphere, the poles, and satellite risk. Added a solar burst simulator and live satellite positions with hazard coloring and a backup orbit feed."
+   }
+  },
+  "2026-11-09-orange-icefiles": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-09-orange-icefiles.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "A novelty agent ID card maker with a photo and a front and back export.",
+   "name": "Ice Files",
+   "latest": {
+    "date": "2026-11-09",
+    "text": "Created Ice Files, a novelty member ID maker for field agents of a frozen drink company. You fill in your details and add a photo, and it builds a card with a front and a back. Added a his or her choice, a license back for each persona, and a fix for phone screens that clipped the card."
+   }
+  },
+  "lv-liquor-map": {
+   "apps": [],
+   "urls": [
+    "https://lv-liquor-map.vercel.app"
+   ],
+   "private": false,
+   "category": "Maps and Research",
+   "summary": "A map of Las Vegas liquor stores, casino bars, and bars with filters.",
+   "name": "LV Liquor Intel",
+   "latest": {
+    "date": "2026-11-09",
+    "text": "Created LV Liquor Intel, a map of liquor sellers in Las Vegas, Paradise, and Henderson, with a first version and a faster second one. Markers are colored for standalone liquor stores, casino and resort liquor, and bars. Version four loads its data through a server route that tries several data mirrors at once and never keeps an empty result."
+   }
+  },
+  "particular-lenticular": {
+   "apps": [],
+   "urls": [
+    "https://particular-lenticular.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "A phone toy that blends three photos into a tilting lenticular picture.",
+   "name": "Lenticular Tilt",
+   "latest": {
+    "date": "2026-11-09",
+    "text": "Created Lenticular Tilt, a phone toy that turns three photos into a tilting lenticular picture."
+   }
+  },
+  "scorpion-supper": {
+   "apps": [],
+   "urls": [
+    "https://scorpion-supper.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "An endless arcade game where a scorpion eats to grow and hides from coyotes.",
+   "name": "Scorpion Supper",
+   "latest": {
+    "date": "2026-11-09",
+    "text": "Added Scorpion Supper version seven, an endless growth eater with coyotes and coops. You steer a scorpion on an open range and eat to grow, and the world scales up as you do."
+   }
+  },
+  "strudel-samples": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "A pack of short sound clips that Strudel can load by name.",
+   "name": "Strudel Samples",
+   "latest": {
+    "date": "2026-11-09",
+    "text": "Created a sample pack for the Strudel music tool, with a map that lets Strudel load clips straight from this repo. Added short spoken clips and a puller script that fetches them, with a run log and a fallback when the first host fails. Candidate clips were sorted, trimmed, and joined into the final set."
    }
   }
  }
