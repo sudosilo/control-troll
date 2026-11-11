@@ -1,0 +1,2339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Road Layers</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{
+  --bg:#f6f4ef;--card:#ffffff;--ink:#1e2328;--muted:#5d6670;--line:#ddd8cc;
+  --accent:#d2601a;--accent-ink:#ffffff;--soft:#fbeee4;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:22px;margin:4px 0 2px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:0 0 14px}
+.card h2{font-size:15px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+label{font-size:14px}
+input[type=file]{width:100%;font-size:15px}
+.clip{border:1px solid var(--line);border-radius:10px;padding:10px;margin:10px 0 0}
+video.thumbvid{width:100%;max-height:60vh;display:block;border-radius:6px;background:#e9e5dc;object-fit:contain}
+.clip-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sw{width:14px;height:14px;border-radius:4px;flex:none}
+.name{font-weight:600;word-break:break-all;flex:1;min-width:120px}
+.row{display:flex;align-items:center;gap:10px;margin-top:8px}
+.row input[type=range]{flex:1}
+.num{width:70px;text-align:right;font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid label{display:flex;flex-direction:column;gap:4px}
+.grid input,.grid select{font-size:15px;padding:6px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+button{font:inherit;font-weight:600;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:10px 14px;cursor:pointer}
+button.ghost{background:#fff;color:var(--accent)}
+button:disabled{opacity:.45;cursor:default}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+canvas{width:100%;height:auto;display:block;border-radius:8px;background:#e9e5dc}
+.status{font-size:14px;color:var(--muted);margin-top:8px;min-height:20px;font-variant-numeric:tabular-nums}
+.bar{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;width:0;background:var(--accent)}
+.layers{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}
+.layers label{display:flex;align-items:center;gap:6px}
+.hint{font-size:13px;color:var(--muted);margin:6px 0 0}
+a.save{display:inline-block;margin-top:10px;color:var(--accent);font-weight:600}
+.tabs{display:flex;gap:8px;margin:0 0 14px}
+.tabs{flex-wrap:wrap}
+.tabs button{flex:1;background:#fff;color:var(--accent);padding:10px 6px;min-width:64px}
+.tabs button.on{background:var(--accent);color:var(--accent-ink)}
+#recPreview{width:100%;display:block;border-radius:8px;background:#e9e5dc;max-height:55vh;object-fit:contain}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center}
+.stat b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+.lib{border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:10px}
+.lib-top{display:flex;gap:8px;align-items:center}
+.lib-top b{flex:1;word-break:break-all}
+.lib-sub{font-size:13px;color:var(--muted);margin:4px 0 0 30px}
+.lib .btns{margin:8px 0 0 30px}
+.lib .btns button{padding:6px 10px;font-size:14px}
+.lib input[type=checkbox]{width:20px;height:20px}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:20px;margin-right:6px;vertical-align:middle}
+.tag.v{background:#e3eef3;color:#1f6f8b}
+.tag.s{background:var(--soft);color:#a8480f}
+#recBig{width:100%;font-size:20px;padding:16px}
+#recBig.live{background:#b3261e;border-color:#b3261e}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#b3261e;margin-right:6px;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.2}}
+#segList a{display:block}
+#map{height:62vh;border-radius:8px;border:1px solid var(--line);background:#e9e5dc}
+.legend{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:90px;height:8px;border-radius:4px;background:linear-gradient(90deg,rgba(210,96,26,.25),rgba(210,96,26,1))}
+.hitrow{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px;margin-top:8px}
+.hitrow b{flex:1;font-size:14px;word-break:break-all}
+.proj{border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:10px}
+.proj .btns button{padding:6px 10px;font-size:14px}
+.inrow{display:flex;gap:8px;margin-top:10px}
+.inrow input,.inrow select{flex:1;font-size:15px;padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);min-width:0}
+.flashes{display:flex;gap:8px;margin-top:10px}
+.fl{flex:1;text-align:center;font-weight:800;font-size:13px;letter-spacing:.08em;padding:10px 0;border-radius:10px;border:2px solid var(--line);color:var(--muted);transition:background .08s}
+.fl.on{color:#fff}
+#flkick.on{background:#d2601a;border-color:#d2601a}
+#flsnare.on{background:#1f6f8b;border-color:#1f6f8b}
+#flhats.on{background:#3f8f3a;border-color:#3f8f3a}
+.band{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-top:8px}
+.band .row{margin-top:4px}
+.band b{display:inline-block;min-width:70px}
+.trig{font-size:14px;padding:4px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink)}
+.assign{margin-top:8px}
+.arow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.arow:last-child{border-bottom:0}
+.arow .chip{width:16px;height:16px;border-radius:5px;flex:none}
+.arow span{flex:1;font-size:15px}
+.arow select{font-size:15px;padding:6px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+.fl small{display:block;font-weight:600;font-size:11px;letter-spacing:0;margin-top:2px;opacity:.85}
+</style>
+</head>
+<body>
+<main>
+<h1>Road Layers</h1>
+<p class="sub">Record drives with timing, then stack their cars onto one road.</p>
+<div class="tabs"><button id="tabRec">Record</button><button id="tabComp" class="on">Composite</button><button id="tabMap">Map</button><button id="tabRoad">Road</button><button id="tabMusic">Music</button></div>
+
+<div id="mapView" hidden>
+<section class="card">
+<h2>Where you've filmed</h2>
+<div id="map"></div>
+<div class="legend">Filmed once <i></i> many times</div>
+<p class="hint">Every recording is drawn along its route. Stretches filmed more often show darker. Tap the map to list the recordings that pass through that spot.</p>
+<div class="status" id="mapStatus"></div>
+<div id="hits"></div>
+<div id="hitActions" hidden>
+<div class="btns"><button id="hitUse">Use checked in Composite</button></div>
+<div class="inrow"><select id="hitProj"></select><button id="hitAdd" class="ghost">Add to project</button></div>
+</div>
+</section>
+
+<section class="card">
+<h2>Projects</h2>
+<p class="hint" style="margin-top:0">A project is a saved group of recordings for one stretch of road.</p>
+<div class="inrow"><input id="projName" placeholder="New project name" maxlength="60"><button id="projNew">Create</button></div>
+<div id="projList"></div>
+</section>
+</div>
+
+<div id="recView" hidden>
+<section class="card">
+<h2>Record a drive</h2>
+<video id="recPreview" muted playsinline autoplay></video>
+<div class="stats">
+<div class="stat"><b id="stSpeed">0</b><span>mph</span></div>
+<div class="stat"><b id="stTime">0:00</b><span>recording</span></div>
+<div class="stat"><b id="stGps">none</b><span>GPS accuracy</span></div>
+<div class="stat"><b id="stPts">0</b><span>GPS points</span></div>
+<div class="stat"><b id="stStills">0</b><span>stop motion frames</span></div>
+<div class="stat"><b id="stSize">0</b><span>MB this part</span></div>
+<div class="stat"><b id="stBatt">?</b><span>battery</span></div>
+</div>
+<div class="grid" style="margin-top:10px">
+<label>Quality<select id="recRes"><option value="1280x720">720p</option><option value="1920x1080" selected>1080p</option></select></label>
+<label>Capture style<select id="capMode"><option value="video" selected>Full video</option><option value="stills">Stop motion</option><option value="both">Both at once</option></select></label>
+<label>Stop motion frame every<select id="stillEvery"><option value="d10">10 feet</option><option value="d25" selected>25 feet</option><option value="d50">50 feet</option><option value="d100">100 feet</option><option value="d250">250 feet</option><option value="t0.5">half second</option><option value="t1">1 second</option><option value="t2">2 seconds</option><option value="t5">5 seconds</option></select></label>
+<label>Split into parts every<select id="recSplit"><option value="5">5 minutes</option><option value="10" selected>10 minutes</option><option value="20">20 minutes</option></select></label>
+<label>Stop when battery reaches<select id="battStop"><option value="5" selected>5%</option><option value="10">10%</option><option value="15">15%</option></select></label>
+</div>
+<div class="btns"><button id="camBtn" class="ghost">Start camera</button></div>
+<div class="btns"><button id="recBig" disabled>Record</button></div>
+<div class="status" id="recStatus">Mount the phone sideways in the same spot every drive, then tap Start camera.</div>
+<p class="hint">Recordings save inside the app every few seconds, so a crash or reload keeps everything up to that moment. Each part keeps its GPS, speed and heading tied to the video's clock.</p>
+</section>
+</div>
+
+<section class="card">
+<h2>Library</h2>
+<div class="status" id="libStorage" style="margin-top:0"></div>
+<div id="libList"></div>
+<div class="grid" style="margin-top:10px"><label>Stop motion plays at<select id="stillFps"><option value="4">4 frames per second</option><option value="8" selected>8 frames per second</option><option value="12">12 frames per second</option><option value="24">24 frames per second</option></select></label></div>
+<div class="btns"><button id="libUse">Use checked items in Composite</button></div>
+<p class="hint">Full video parts and stop motion sets are marked. In Composite, pick a full video as Base so it supplies the road, and stop motion sets layer on top. Save to phone copies an item out to Downloads. The app keeps its own copy either way.</p>
+</section>
+
+<div id="compView">
+<section class="card">
+<h2>1. Clips</h2>
+<input id="files" type="file" accept="video/*" multiple>
+<p class="hint">Add parts from the Library above, or pick video files from the phone. The clip marked Base supplies the road.</p>
+<div id="clipList"></div>
+</section>
+
+<section class="card" id="alignCard" hidden>
+<h2>2. Line up</h2>
+<p class="hint" style="margin-top:0">Each drive started recording at a different spot on the road. Line up makes every clip start at the same spot. Tap Auto line up first.</p>
+<div class="btns" style="margin:0 0 10px"><button id="autoBtn">Auto line up</button></div>
+<canvas id="alignCanvas"></canvas>
+<div class="layers"><label><input type="radio" name="amode" value="flip" checked> Flip between them</label><label><input type="radio" name="amode" value="blend"> See through</label></div>
+<p class="hint" id="alignHint">The picture flips between the Base clip and one other clip. When they are lined up, the road, signs and hills stay still and only the cars change. If things jump, nudge that clip's Start slider.</p>
+</section>
+
+<section class="card">
+<h2>3. Build</h2>
+<div class="grid">
+<label>Length (seconds)<input id="dur" type="number" min="1" max="30" step="1" value="6"></label>
+<label>Frames per second<input id="fps" type="number" min="2" max="15" step="1" value="8"></label>
+<label>Width (pixels)<select id="width"><option>480</option><option selected>640</option><option>854</option></select></label>
+<label>Detection strength<input id="conf" type="number" min="0.1" max="0.9" step="0.05" value="0.35"></label>
+</div>
+<div class="layers"><label><input id="layerBase" type="checkbox" checked> Layer base clip cutouts too</label></div>
+<p class="hint" style="margin-bottom:0">What to cut out:</p>
+<div class="layers" id="classPick">
+<label><input type="checkbox" value="vehicles" checked> Cars, trucks, buses, motorcycles</label>
+<label><input type="checkbox" value="people"> People and bicycles</label>
+<label><input type="checkbox" value="street"> Traffic lights, stop signs, hydrants, parking meters, benches</label>
+<label><input type="checkbox" value="animals"> Animals and birds</label>
+<label><input type="checkbox" value="trains"> Trains</label>
+</div>
+<div class="btns"><button id="buildBtn" disabled>Build composite</button></div>
+<div class="bar"><i id="barFill"></i></div>
+<div class="status" id="status">Load clips to start.</div>
+</section>
+
+<section class="card" id="outCard" hidden>
+<h2>4. Result</h2>
+<canvas id="out"></canvas>
+<div class="row"><input id="scrub" type="range" min="0" max="0" value="0"><span class="num" id="frameNum">0</span></div>
+<div class="layers" id="layerToggles"></div>
+<div class="grid" style="margin-top:6px"><label>Tint cutouts<select id="tintMode"><option value="off">no tint</option><option value="clip">by clip</option><option value="drum">by drum color</option></select></label></div>
+<div class="grid" style="margin-top:10px">
+<label>Play with song<select id="compSong"><option value="">No song</option></select></label>
+<label>Cutouts stay up for<select id="holdSel"><option value="0.1">0.1 second</option><option value="0.2" selected>0.2 second</option><option value="0.4">0.4 second</option><option value="0.8">0.8 second</option></select></label>
+</div>
+<p class="hint" style="margin-bottom:0">With a song picked, each kind of cutout pops in on its drum. The video loops under the song and recording keeps the sound.</p>
+<div class="assign" data-assign></div>
+<div class="btns">
+<button id="playBtn">Play</button>
+<button id="recBtn" class="ghost">Record video</button>
+</div>
+<div id="saveWrap"></div>
+<div class="status" id="outStatus"></div>
+</section>
+</div>
+
+<div id="musicView" hidden>
+<section class="card">
+<h2>Music hits</h2>
+<p class="hint" style="margin-top:0">Load a song. The app finds every kick, snare and hi-hat hit. In Composite, each clip's cutouts can then pop in on one of those.</p>
+<input id="songFile" type="file" accept="audio/*">
+<div class="btns"><button id="songGo">Find hits</button></div>
+<div class="bar"><i id="songBar"></i></div>
+<div class="status" id="songStatus"></div>
+<div id="songPanel" hidden>
+<div class="stats">
+<div class="stat"><b id="sBpm">0</b><span>beats per minute</span></div>
+<div class="stat"><b id="sLen">0:00</b><span>length</span></div>
+<div class="stat"><b id="sNow">0:00</b><span>playing at</span></div>
+</div>
+<div class="flashes"><span class="fl" id="flkick">KICK / BASS</span><span class="fl" id="flsnare">SNARE</span><span class="fl" id="flhats">HI-HAT</span></div>
+<canvas id="beatCanvas" width="1000" height="320" style="margin-top:10px;touch-action:pan-y"></canvas>
+<div class="grid" style="margin-top:8px">
+<label>Show<select id="beatZoom"><option value="0">whole song</option><option value="30">30 seconds</option><option value="10" selected>10 seconds</option></select></label>
+<label>Scroll<input id="beatScroll" type="range" min="0" max="1000" value="0"></label>
+</div>
+<div class="btns"><button id="songPlay">Play</button><button id="songStop" class="ghost">Back to start</button></div>
+<div class="layers"><label><input id="followHead" type="checkbox" checked> Follow the playhead</label></div>
+<p class="hint" style="margin-top:4px">Drag the timeline sideways to look around. That turns off Follow the playhead. Tap the timeline to jump the song there.</p>
+<div id="bandRows"></div>
+<p class="hint">Raise sensitivity to catch quieter hits, lower it to keep only the strong ones.</p>
+</div>
+</section>
+<section class="card">
+<h2>What pops on each drum</h2>
+<p class="hint" style="margin-top:0">Each drum has a color. Assign each kind of thing the app finds to a drum, to always, or to never. Composite uses this table.</p>
+<div class="assign" data-assign></div>
+</section>
+<section class="card">
+<h2>Saved songs</h2>
+<div id="songList"></div>
+</section>
+</div>
+
+<div id="roadView" hidden>
+<section class="card">
+<h2>Road tracking</h2>
+<p class="hint" style="margin-top:0">Finds the lane lines, vanishing point and lane width in every frame of a recording. Cars placed later ride along this track. Runs after the drive, not while recording.</p>
+<div class="inrow"><select id="roadPick"></select></div>
+<input id="roadFile" type="file" accept="video/*" style="margin-top:10px">
+<div class="grid" style="margin-top:10px">
+<label>Frames per second to track<select id="roadFps"><option value="2">2</option><option value="4" selected>4</option><option value="8">8</option></select></label>
+<label>Lane width<select id="laneFt"><option value="12" selected>12 feet (highway)</option><option value="11">11 feet</option><option value="10">10 feet (city)</option></select></label>
+</div>
+<div class="btns"><button id="roadGo">Track road</button></div>
+<div class="bar"><i id="roadBar"></i></div>
+<div class="status" id="roadStatus"></div>
+<canvas id="roadCanvas" style="margin-top:10px"></canvas>
+<div class="row"><input id="roadScrub" type="range" min="0" max="0" value="0"><span class="num" id="roadNum">0</span></div>
+<div class="stats">
+<div class="stat"><b id="rsConf">0</b><span>confidence</span></div>
+<div class="stat"><b id="rsLane">0</b><span>lane width px</span></div>
+<div class="stat"><b id="rsBend">0</b><span>bend</span></div>
+</div>
+<div class="legend" style="flex-wrap:wrap"><span style="color:#2e7d32">left line</span><span style="color:#1f6f8b">right line</span><span style="color:#d2601a">lane center</span><span style="color:#8a3fa0">vanishing point and horizon</span></div>
+</section>
+</div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="ff/ffmpeg.js"></script>
+<script>
+if (window.ort){
+  ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/";
+  ort.env.wasm.numThreads = 1;
+}
+
+const COLORS = ["#d2601a","#1f6f8b","#3f8f3a","#8a3fa0","#b8901a","#c23b4a","#2d6e5e","#6b4f2a"];
+// Roadside things the current model (trained on the COCO set) already knows, by class number.
+const CLASS_GROUPS = {
+  vehicles: [2, 3, 5, 7],                       // car, motorcycle, bus, truck
+  people: [0, 1],                               // person, bicycle
+  street: [9, 10, 11, 12, 13],                  // traffic light, fire hydrant, stop sign, parking meter, bench
+  animals: [14, 15, 16, 17, 18, 19, 20, 21, 22, 23], // bird, cat, dog, horse, sheep, cow, elephant, bear, zebra, giraffe
+  trains: [6]
+};
+const CLASS_NAMES = { 0: "person", 1: "bicycle", 2: "car", 3: "motorcycle", 5: "bus", 6: "train", 7: "truck", 9: "traffic light", 10: "fire hydrant", 11: "stop sign", 12: "parking meter", 13: "bench", 14: "bird", 15: "cat", 16: "dog", 17: "horse", 18: "sheep", 19: "cow", 20: "elephant", 21: "bear", 22: "zebra", 23: "giraffe" };
+let ACTIVE_CLASSES = CLASS_GROUPS.vehicles.slice();
+function readClassPick(){
+  const on = [...document.querySelectorAll("#classPick input:checked")].map(x => x.value);
+  ACTIVE_CLASSES = on.flatMap(g => CLASS_GROUPS[g] || []);
+  return ACTIVE_CLASSES;
+}
+const MODEL_SIZE = 640;
+
+const $ = id => document.getElementById(id);
+const clips = [];
+let baseIdx = 0;
+let selectedIdx = -1;
+let session = null;
+let frames = [];
+let outW = 0, outH = 0, outFps = 8;
+let busy = false;
+
+const work = document.createElement("canvas");
+const workCtx = work.getContext("2d", { willReadFrequently: true });
+const lb = document.createElement("canvas");
+lb.width = MODEL_SIZE; lb.height = MODEL_SIZE;
+const lbCtx = lb.getContext("2d", { willReadFrequently: true });
+const tintCanvas = document.createElement("canvas");
+const tintCtx = tintCanvas.getContext("2d");
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+// Each clip video is shown right in its card. Firefox only decodes frames for videos it can see.
+function waitFrame(v, ms){
+  return new Promise(resolve => {
+    let done = false;
+    const finish = () => { if (!done){ done = true; resolve(); } };
+    if (v.requestVideoFrameCallback) v.requestVideoFrameCallback(finish);
+    setTimeout(finish, ms);
+  });
+}
+
+function seekTo(v, t){
+  return new Promise(resolve => {
+    t = Math.max(0, Math.min(t, (v.duration || 0) - 0.05));
+    let done = false;
+    const finish = async () => {
+      if (done) return; done = true;
+      v.removeEventListener("seeked", finish);
+      for (let k = 0; k < 20 && v.readyState < 2; k++) await sleep(50);
+      await waitFrame(v, 250);
+      resolve();
+    };
+    v.addEventListener("seeked", finish);
+    setTimeout(finish, 4000);
+    if (Math.abs(v.currentTime - t) < 0.0005) v.currentTime = t + 0.001; else v.currentTime = t;
+  });
+}
+
+function isBlack(ctx, w, h){
+  const d = ctx.getImageData(0, 0, w, h).data;
+  let sum = 0, n = 0;
+  for (let i = 0; i < d.length; i += 64){ sum += d[i + 3] ? d[i] + d[i + 1] + d[i + 2] : 0; n++; }
+  return sum / n < 6;
+}
+let blankWarned = false;
+
+// Draws a video frame, retrying once if the browser handed back a black frame.
+async function drawVideo(v, ctx, w, h){
+  ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h);
+  ctx.drawImage(v, 0, 0, w, h);
+  for (let k = 0; k < 4 && isBlack(ctx, w, h); k++){
+    await sleep(150);
+    await waitFrame(v, 300);
+    ctx.drawImage(v, 0, 0, w, h);
+  }
+  if (isBlack(ctx, w, h) && !blankWarned){
+    blankWarned = true;
+    setStatus("The browser is returning empty frames from this video. Tell Claude.");
+  }
+}
+
+function loadClip(file){
+  return new Promise((resolve, reject) => {
+    const v = document.createElement("video");
+    v.muted = true; v.playsInline = true; v.preload = "auto";
+    v.setAttribute("muted", ""); v.setAttribute("playsinline", "");
+    v.className = "thumbvid";
+    $("clipList").appendChild(v);
+    v.src = URL.createObjectURL(file);
+    v.addEventListener("loadeddata", async () => {
+      if (!isFinite(v.duration)){
+        await new Promise(r => { v.addEventListener("durationchange", function h(){ if (isFinite(v.duration)){ v.removeEventListener("durationchange", h); r(); } }); v.currentTime = 1e9; setTimeout(r, 4000); });
+        v.currentTime = 0;
+      }
+      try { await v.play(); } catch (e) {}
+      await waitFrame(v, 400);
+      v.pause();
+      resolve(v);
+    }, { once: true });
+    v.addEventListener("error", () => reject(new Error("Could not open " + file.name)), { once: true });
+    v.load();
+  });
+}
+
+$("files").addEventListener("change", async e => {
+  const list = [...e.target.files];
+  e.target.value = "";
+  await addClipFiles(list);
+});
+
+async function addClipFiles(list){
+  if (!list.length) return;
+  setStatus("Opening clips...");
+  for (const f of list){
+    try {
+      const v = await loadClip(f);
+      clips.push({ id: nextClipId++, file: f, mounted: null, name: f.name, video: v, offset: 0, enabled: true, thumb: null, range: null, num: null });
+    } catch (err){ setStatus(err.message); }
+  }
+  if (selectedIdx < 0 && clips.length > 1) selectedIdx = baseIdx === 0 ? 1 : 0;
+  renderClips();
+  for (const c of clips) await drawThumb(c);
+  updateAlign();
+  $("buildBtn").disabled = clips.length < 2;
+  setStatus(clips.length < 2 ? "Add at least one more clip." : clips.length + " clips ready.");
+}
+
+async function drawThumb(c){
+  await seekTo(c.video, c.offset);
+}
+
+function setOffset(c, val){
+  c.offset = Math.round(val * 10) / 10;
+  if (c.range) c.range.value = c.offset;
+  if (c.num) c.num.textContent = c.offset.toFixed(1) + "s";
+}
+
+function renderClips(){
+  const wrap = $("clipList");
+  wrap.innerHTML = "";
+  clips.forEach((c, i) => {
+    const d = document.createElement("div");
+    d.className = "clip";
+    const dur = c.video.duration || 0;
+    d.innerHTML =
+      '<div class="clip-top"><span class="sw" style="background:' + COLORS[i % COLORS.length] + '"></span>' +
+      '<span class="name"></span>' +
+      '<label><input type="radio" name="base"' + (i === baseIdx ? " checked" : "") + '> Base</label></div>' +
+      '<div class="vslot" style="margin-top:8px"></div>' +
+      '<div class="row"><span style="font-size:14px">Start</span><input type="range" min="0" max="' + Math.max(0, dur - 0.1).toFixed(1) + '" step="0.1" value="' + c.offset + '"><span class="num">' + c.offset.toFixed(1) + 's</span></div>' +
+      '<div class="hint">Length ' + dur.toFixed(1) + "s</div>";
+    d.querySelector(".name").textContent = "Clip " + (i + 1) + ": " + c.name;
+    d.querySelector(".vslot").appendChild(c.video);
+    c.thumb = c.video;
+    c.range = d.querySelector("input[type=range]");
+    c.num = d.querySelector(".num");
+    d.querySelector("input[type=radio]").addEventListener("change", () => {
+      baseIdx = i;
+      if (selectedIdx === i) selectedIdx = clips.findIndex((_, k) => k !== i);
+      renderClips();
+      Promise.all([]).then(async () => { for (const cc of clips) await drawThumb(cc); updateAlign(); });
+    });
+    let thumbTimer = null;
+    c.range.addEventListener("input", () => {
+      setOffset(c, parseFloat(c.range.value));
+      if (i !== baseIdx) selectedIdx = i;
+      clearTimeout(thumbTimer);
+      thumbTimer = setTimeout(async () => { await drawThumb(c); updateAlign(); }, 120);
+    });
+    wrap.appendChild(d);
+  });
+}
+
+// Line up view: flips between the base frame and the selected clip, or blends them.
+const alignA = document.createElement("canvas"), alignB = document.createElement("canvas");
+let flipShowB = false, flipTimer = null, hasB = false;
+
+function alignMode(){ const r = document.querySelector("input[name=amode]:checked"); return r ? r.value : "flip"; }
+
+function paintAlign(){
+  const cv = $("alignCanvas");
+  if (!alignA.width) return;
+  cv.width = alignA.width; cv.height = alignA.height;
+  const ctx = cv.getContext("2d");
+  if (!hasB){ ctx.drawImage(alignA, 0, 0); return; }
+  if (alignMode() === "blend"){
+    ctx.globalAlpha = 1; ctx.drawImage(alignA, 0, 0);
+    ctx.globalAlpha = 0.5; ctx.drawImage(alignB, 0, 0); ctx.globalAlpha = 1;
+  } else {
+    ctx.drawImage(flipShowB ? alignB : alignA, 0, 0);
+    const label = flipShowB ? "Clip " + (selectedIdx + 1) : "Base (clip " + (baseIdx + 1) + ")";
+    ctx.font = "bold 20px system-ui,sans-serif";
+    const tw = ctx.measureText(label).width;
+    ctx.fillStyle = "rgba(255,255,255,0.85)"; ctx.fillRect(8, 8, tw + 16, 30);
+    ctx.fillStyle = COLORS[(flipShowB ? selectedIdx : baseIdx) % COLORS.length];
+    ctx.fillText(label, 16, 30);
+  }
+}
+
+function startFlip(){
+  clearInterval(flipTimer);
+  flipTimer = setInterval(() => { if (alignMode() === "flip" && hasB){ flipShowB = !flipShowB; paintAlign(); } }, 700);
+}
+document.querySelectorAll("input[name=amode]").forEach(r => r.addEventListener("change", paintAlign));
+
+let alignRunning = false, alignAgain = false;
+async function updateAlign(){
+  if (!clips.length || busy) return;
+  if (alignRunning){ alignAgain = true; return; }
+  alignRunning = true;
+  do {
+    alignAgain = false;
+    const base = clips[baseIdx];
+    const W = 480, H = evenSize(W, base);
+    alignA.width = W; alignA.height = H; alignB.width = W; alignB.height = H;
+    const other = clips[selectedIdx];
+    hasB = !!(other && selectedIdx !== baseIdx);
+    try {
+      const a = await grabFrame(base, base.offset, W, H);
+      alignA.getContext("2d").drawImage(a, 0, 0); a.close();
+      if (hasB){
+        const b = await grabFrame(other, other.offset, W, H);
+        alignB.getContext("2d").drawImage(b, 0, 0); b.close();
+      }
+      if (!busy) setStatus(clips.length + " clips ready.");
+    } catch (err){ setStatus("Could not read frames: " + (err && err.message ? err.message : err)); }
+    $("alignCard").hidden = false;
+    paintAlign();
+  } while (alignAgain);
+  alignRunning = false;
+  startFlip();
+}
+
+// Auto line up: finds the moment in each clip that looks most like the base frame.
+const SIG_W = 64, SIG_H = 36;
+const sigCanvas = document.createElement("canvas");
+sigCanvas.width = SIG_W; sigCanvas.height = SIG_H;
+const sigCtx = sigCanvas.getContext("2d", { willReadFrequently: true });
+
+function signature(img){
+  sigCtx.drawImage(img, 0, 0, SIG_W, SIG_H);
+  if (img.close) img.close();
+  const d = sigCtx.getImageData(0, 0, SIG_W, SIG_H).data;
+  // edge strength image, so different sun and sky on different days matter less
+  const g = new Float32Array(SIG_W * SIG_H);
+  for (let i = 0, p = 0; i < g.length; i++, p += 4) g[i] = 0.3 * d[p] + 0.59 * d[p + 1] + 0.11 * d[p + 2];
+  const e = new Float32Array(SIG_W * SIG_H);
+  for (let y = 1; y < SIG_H - 1; y++) for (let x = 1; x < SIG_W - 1; x++){
+    const i = y * SIG_W + x;
+    e[i] = Math.abs(g[i + 1] - g[i - 1]) + Math.abs(g[i + SIG_W] - g[i - SIG_W]);
+  }
+  let m = 0; for (const x of e) m += x; m /= e.length;
+  let sd = 0; for (const x of e) sd += (x - m) * (x - m); sd = Math.sqrt(sd / e.length) || 1;
+  for (let i = 0; i < e.length; i++) e[i] = (e[i] - m) / sd;
+  return e;
+}
+
+function diff(a, b){ let s = 0; for (let i = 0; i < a.length; i++) s += Math.abs(a[i] - b[i]); return s / a.length; }
+
+$("autoBtn").addEventListener("click", async () => {
+  if (busy || clips.length < 2) return;
+  busy = true; $("autoBtn").disabled = true; $("buildBtn").disabled = true;
+  try {
+    const base = clips[baseIdx];
+    const ref = signature(await grabFrame(base, base.offset, SIG_W, SIG_H));
+    const others = clips.map((_, k) => k).filter(k => k !== baseIdx);
+    for (let n = 0; n < others.length; n++){
+      const c = clips[others[n]];
+      const dur = c.video.duration || 0;
+      const step = dur > 120 ? 2 : dur > 30 ? 1 : 0.25;
+      let best = Infinity, bestT = 0;
+      for (let t = 0; t < dur - 0.1; t += step){
+        const sc = diff(ref, signature(await grabFrame(c, t, SIG_W, SIG_H)));
+        if (sc < best){ best = sc; bestT = t; }
+        setStatus("Lining up clip " + (others[n] + 1) + ": " + Math.round(100 * t / dur) + "%");
+      }
+      // finer passes around the best spot
+      for (const fine of [0.25, 0.1]){
+        const center = bestT, span = fine === 0.25 ? step : 0.25;
+        for (let t = Math.max(0, center - span); t <= Math.min(dur - 0.1, center + span); t += fine){
+          const sc = diff(ref, signature(await grabFrame(c, t, SIG_W, SIG_H)));
+          if (sc < best){ best = sc; bestT = t; }
+        }
+      }
+      setOffset(c, bestT);
+      await drawThumb(c);
+    }
+    setStatus("Lined up. Check the flipping picture, then build.");
+    selectedIdx = others[0];
+  } finally {
+    busy = false; $("autoBtn").disabled = false; $("buildBtn").disabled = clips.length < 2;
+  }
+  updateAlign();
+});
+
+// Frames come from a video decoder that runs inside the page, so the browser's video player is only used for previews.
+let ff = null, ffLoading = null, nextClipId = 0;
+async function loadDecoder(){
+  if (ff) return ff;
+  if (!ffLoading) ffLoading = (async () => {
+    setStatus("Loading video decoder (about 32 MB, first time only)...");
+    const f = new FFmpegWASM.FFmpeg();
+    const root = location.origin + "/ff/";
+    await f.load({ coreURL: root + "ffmpeg-core.js", wasmURL: root + "ffmpeg-core.wasm" });
+    // A throwaway first run settles the decoder; without it the first real run can crash.
+    try { await f.exec(["-hide_banner", "-i", "not-found"]); } catch (e) {}
+    ff = f;
+    return f;
+  })();
+  try { return await ffLoading; } catch (e){ ffLoading = null; throw e; }
+}
+async function clipPath(c){
+  await loadDecoder();
+  if (!c.mounted){
+    const dir = "/in" + c.id;
+    try { await ff.createDir(dir); } catch (e) {}
+    await ff.mount("WORKERFS", { files: [c.file] }, dir);
+    c.mounted = dir + "/" + c.file.name;
+  }
+  return c.mounted;
+}
+// The decoder gets unstable after many runs, so it is restarted every so often and after any crash.
+let ffRuns = 0;
+async function resetDecoder(){
+  try { if (ff) ff.terminate(); } catch (e) {}
+  ff = null; ffLoading = null; ffRuns = 0;
+  for (const c of clips) c.mounted = null;
+  await loadDecoder();
+}
+let ffQueue = Promise.resolve();
+function ffRun(job){
+  const safe = async () => {
+    let lastErr = null;
+    for (let attempt = 0; attempt < 3; attempt++){
+      try {
+        if (ffRuns >= 12) await resetDecoder();
+        ffRuns++;
+        return await job();
+      } catch (e){
+        lastErr = e;
+        await resetDecoder();
+      }
+    }
+    throw new Error("Decoder: " + (lastErr && lastErr.message ? lastErr.message : lastErr));
+  };
+  const p = ffQueue.then(safe);
+  ffQueue = p.catch(() => {});
+  return p;
+}
+
+function evenSize(w, c){
+  let h = Math.round(w * c.video.videoHeight / c.video.videoWidth) || Math.round(w * 9 / 16);
+  return h - (h % 2);
+}
+
+// One frame from a clip at time t, as an ImageBitmap of size w by h.
+function grabFrame(c, t, w, h){
+  return ffRun(async () => {
+    const path = await clipPath(c);
+    const out = "/grab.jpg";
+    await ff.exec(["-ss", Math.max(0, t).toFixed(3), "-i", path, "-frames:v", "1", "-vf", "scale=" + w + ":" + h, "-q:v", "3", "-y", out]);
+    const data = await ff.readFile(out);
+    try { await ff.deleteFile(out); } catch (e) {}
+    return createImageBitmap(new Blob([data], { type: "image/jpeg" }));
+  });
+}
+
+// A run of frames from a clip, as JPEG blobs.
+function grabRange(c, t, dur, fps, w, h){
+  return ffRun(async () => {
+    const path = await clipPath(c);
+    const dir = "/run" + c.id;
+    try { await ff.createDir(dir); } catch (e) {}
+    for (const e of await ff.listDir(dir)) if (!e.isDir) { try { await ff.deleteFile(dir + "/" + e.name); } catch (x) {} }
+    await ff.exec(["-ss", Math.max(0, t).toFixed(3), "-i", path, "-t", dur.toFixed(3), "-vf", "fps=" + fps + ",scale=" + w + ":" + h, "-q:v", "3", "-y", dir + "/f%05d.jpg"]);
+    const names = (await ff.listDir(dir)).filter(e => !e.isDir).map(e => e.name).sort();
+    const out = [];
+    for (const n of names){
+      const d = await ff.readFile(dir + "/" + n);
+      out.push(new Blob([d], { type: "image/jpeg" }));
+      try { await ff.deleteFile(dir + "/" + n); } catch (e) {}
+    }
+    return out;
+  });
+}
+
+function setStatus(t){ $("status").textContent = t; }
+function setBar(f){ $("barFill").style.width = (Math.max(0, Math.min(1, f)) * 100).toFixed(1) + "%"; }
+
+async function loadModel(){
+  if (session) return;
+  setStatus("Loading car model (about 14 MB)...");
+  session = await ort.InferenceSession.create("vehicles-seg.onnx", { executionProviders: ["wasm"], graphOptimizationLevel: "all" });
+}
+
+function iou(a, b){
+  const x1 = Math.max(a.x1, b.x1), y1 = Math.max(a.y1, b.y1);
+  const x2 = Math.min(a.x2, b.x2), y2 = Math.min(a.y2, b.y2);
+  const inter = Math.max(0, x2 - x1) * Math.max(0, y2 - y1);
+  const u = (a.x2 - a.x1) * (a.y2 - a.y1) + (b.x2 - b.x1) * (b.y2 - b.y1) - inter;
+  return u > 0 ? inter / u : 0;
+}
+
+// Runs the model on the frame currently drawn in "work" (W x H) and returns masked car cutouts.
+async function detectCars(W, H, conf){
+  const S = MODEL_SIZE;
+  const s = S / Math.max(W, H);
+  const nw = Math.round(W * s), nh = Math.round(H * s);
+  lbCtx.fillStyle = "#000"; lbCtx.fillRect(0, 0, S, S);
+  lbCtx.drawImage(work, 0, 0, W, H, 0, 0, nw, nh);
+  const px = lbCtx.getImageData(0, 0, S, S).data;
+  const area = S * S;
+  const input = new Float32Array(3 * area);
+  for (let p = 0, q = 0; p < area; p++, q += 4){
+    input[p] = px[q] / 255; input[p + area] = px[q + 1] / 255; input[p + 2 * area] = px[q + 2] / 255;
+  }
+  const feeds = {}; feeds[session.inputNames[0]] = new ort.Tensor("float32", input, [1, 3, S, S]);
+  let out;
+  try { out = await session.run(feeds); }
+  catch (e){ throw new Error("Car model: " + (e && e.message ? e.message : e)); }
+  let det = null, proto = null;
+  for (const k of session.outputNames){ const t = out[k]; if (t.dims.length === 3) det = t; else if (t.dims.length === 4) proto = t; }
+  const dd = det.data, pd = proto.data;
+  let C, N, chMajor;
+  if (det.dims[1] < det.dims[2]){ C = det.dims[1]; N = det.dims[2]; chMajor = true; } else { N = det.dims[1]; C = det.dims[2]; chMajor = false; }
+  const get = chMajor ? (c, i) => dd[c * N + i] : (c, i) => dd[i * C + c];
+  const nm = proto.dims[1], mh = proto.dims[2], mw = proto.dims[3];
+  const nc = C - 4 - nm;
+
+  const cands = [];
+  for (let i = 0; i < N; i++){
+    let best = 0, cls = -1;
+    for (const k of ACTIVE_CLASSES){ if (k >= nc) continue; const sc = get(4 + k, i); if (sc > best){ best = sc; cls = k; } }
+    if (best < conf) continue;
+    const cx = get(0, i), cy = get(1, i), w = get(2, i), h = get(3, i);
+    cands.push({ i, score: best, cls,
+      x1: Math.max(0, cx - w / 2), y1: Math.max(0, cy - h / 2),
+      x2: Math.min(nw, cx + w / 2), y2: Math.min(nh, cy + h / 2) });
+  }
+  cands.sort((a, b) => b.score - a.score);
+  const kept = [];
+  for (const c of cands){
+    if (kept.length >= 40) break;
+    if (kept.every(k => iou(k, c) < 0.5)) kept.push(c);
+  }
+
+  const cuts = [];
+  const plane = mh * mw;
+  for (const k of kept){
+    const coeffs = new Float32Array(nm);
+    for (let j = 0; j < nm; j++) coeffs[j] = get(4 + nc + j, k.i);
+    // mask in proto space, only inside the box (plus one cell of margin)
+    const mx1 = Math.max(0, Math.floor(k.x1 * mw / S) - 1), my1 = Math.max(0, Math.floor(k.y1 * mh / S) - 1);
+    const mx2 = Math.min(mw - 1, Math.ceil(k.x2 * mw / S) + 1), my2 = Math.min(mh - 1, Math.ceil(k.y2 * mh / S) + 1);
+    const bx1 = k.x1 * mw / S, by1 = k.y1 * mh / S, bx2 = k.x2 * mw / S, by2 = k.y2 * mh / S;
+    const mask = new Float32Array(plane);
+    for (let y = my1; y <= my2; y++){
+      for (let x = mx1; x <= mx2; x++){
+        if (x + 0.5 < bx1 - 0.5 || x + 0.5 > bx2 + 0.5 || y + 0.5 < by1 - 0.5 || y + 0.5 > by2 + 0.5) continue;
+        const o = y * mw + x;
+        let sum = 0;
+        for (let j = 0; j < nm; j++) sum += coeffs[j] * pd[j * plane + o];
+        mask[o] = 1 / (1 + Math.exp(-sum));
+      }
+    }
+    // cutout at output resolution
+    const ox1 = Math.max(0, Math.floor(k.x1 / s)), oy1 = Math.max(0, Math.floor(k.y1 / s));
+    const ox2 = Math.min(W, Math.ceil(k.x2 / s)), oy2 = Math.min(H, Math.ceil(k.y2 / s));
+    const bw = ox2 - ox1, bh = oy2 - oy1;
+    if (bw < 4 || bh < 4) continue;
+    const img = workCtx.getImageData(ox1, oy1, bw, bh);
+    const a = img.data;
+    const scale = s * mw / S;
+    let solid = 0;
+    for (let yy = 0; yy < bh; yy++){
+      const fy = (oy1 + yy + 0.5) * scale - 0.5;
+      const y0 = Math.max(0, Math.min(mh - 1, Math.floor(fy))), y1 = Math.min(mh - 1, y0 + 1), ty = Math.max(0, Math.min(1, fy - y0));
+      for (let xx = 0; xx < bw; xx++){
+        const fx = (ox1 + xx + 0.5) * scale - 0.5;
+        const x0 = Math.max(0, Math.min(mw - 1, Math.floor(fx))), x1 = Math.min(mw - 1, x0 + 1), tx = Math.max(0, Math.min(1, fx - x0));
+        const m = (mask[y0 * mw + x0] * (1 - tx) + mask[y0 * mw + x1] * tx) * (1 - ty) +
+                  (mask[y1 * mw + x0] * (1 - tx) + mask[y1 * mw + x1] * tx) * ty;
+        let al = (m - 0.4) / 0.2; al = al < 0 ? 0 : al > 1 ? 1 : al;
+        a[(yy * bw + xx) * 4 + 3] = Math.round(al * 255);
+        if (al > 0.5) solid++;
+      }
+    }
+    if (solid < 12) continue;
+    const bmp = await createImageBitmap(img);
+    cuts.push({ x: ox1, y: oy1, w: bw, h: bh, bottom: oy2, cls: k.cls, score: k.score, bmp });
+  }
+  return cuts;
+}
+
+function canvasToBlob(c){ return new Promise(r => c.toBlob(r, "image/jpeg", 0.9)); }
+
+function freeFrames(){
+  for (const f of frames) for (const c of f.cuts) { try { c.bmp.close(); } catch (e) {} }
+  frames = [];
+}
+
+$("buildBtn").addEventListener("click", async () => {
+  if (busy || clips.length < 2) return;
+  busy = true; stopPlay();
+  $("buildBtn").disabled = true; $("files").disabled = true;
+  try {
+    await loadModel();
+    freeFrames();
+    const fps = Math.max(2, Math.min(15, parseInt($("fps").value) || 8));
+    const W = parseInt($("width").value) || 640;
+    const conf = parseFloat($("conf").value) || 0.35;
+    const layerBase = $("layerBase").checked;
+    const base = clips[baseIdx];
+    const H = evenSize(W, base);
+    let dur = parseFloat($("dur").value) || 6;
+    for (const c of clips) dur = Math.min(dur, (c.video.duration || 0) - c.offset - 0.1);
+    const n = Math.floor(dur * fps);
+    if (n < 2){ setStatus("Clips are too short after their start points."); return; }
+    work.width = W; work.height = H;
+    outW = W; outH = H; outFps = fps;
+    const counts = clips.map(() => 0);
+    const byClass = {};
+    if (!readClassPick().length){ setStatus("Check at least one thing to cut out."); return; }
+    const t0 = performance.now();
+    await loadDecoder();
+    const runs = [];
+    for (let k = 0; k < clips.length; k++){
+      setStatus("Pulling frames from clip " + (k + 1) + " of " + clips.length + "...");
+      setBar(0.15 * k / clips.length);
+      runs[k] = await grabRange(clips[k], clips[k].offset, n / fps, fps, W, H);
+    }
+    const m = Math.min(n, ...runs.map(r => r.length));
+    if (m < 2){ setStatus("The decoder returned no frames from these clips."); return; }
+    const steps = m * clips.length;
+    let step = 0;
+    const tDetect = performance.now();
+    for (let i = 0; i < m; i++){
+      const frame = { blob: runs[baseIdx][i], cuts: [] };
+      for (let k = 0; k < clips.length; k++){
+        if (k !== baseIdx || layerBase){
+          const bmp = await createImageBitmap(runs[k][i]);
+          workCtx.drawImage(bmp, 0, 0, W, H); bmp.close();
+          const cuts = await detectCars(W, H, conf);
+          for (const cut of cuts){ cut.clip = k; frame.cuts.push(cut); byClass[cut.cls] = (byClass[cut.cls] || 0) + 1; }
+          counts[k] += cuts.length;
+        }
+        step++;
+        setBar(0.15 + 0.85 * step / steps);
+        const per = (performance.now() - tDetect) / step;
+        const left = Math.round(per * (steps - step) / 1000);
+        setStatus("Masking frame " + (i + 1) + " of " + m + ", clip " + (k + 1) + ". About " + left + "s left.");
+      }
+      frame.cuts.sort((a, b) => a.bottom - b.bottom); // farther cars first, closer cars drawn on top
+      frames.push(frame);
+    }
+    const secs = ((performance.now() - t0) / 1000).toFixed(0);
+    const kinds = Object.entries(byClass).sort((a, b) => b[1] - a[1]).map(([c, n]) => (CLASS_NAMES[c] || "class " + c) + " " + n).join(", ");
+    setStatus("Done in " + secs + "s. Cutouts per clip: " + counts.map((c, k) => "clip " + (k + 1) + " " + c).join(", ") + ". By kind: " + (kinds || "none") + ".");
+    showResult();
+  } catch (err){
+    setStatus("Build stopped: " + (err && err.message ? err.message : err));
+  } finally {
+    busy = false;
+    $("buildBtn").disabled = clips.length < 2; $("files").disabled = false;
+  }
+});
+
+function showResult(){
+  const cv = $("out");
+  cv.width = outW; cv.height = outH;
+  $("outCard").hidden = false;
+  $("scrub").max = frames.length - 1; $("scrub").value = 0;
+  const tg = $("layerToggles");
+  tg.innerHTML = "";
+  clips.forEach((c, k) => {
+    const l = document.createElement("label");
+    l.innerHTML = '<input type="checkbox"' + (c.enabled ? " checked" : "") + '><span class="sw" style="background:' + COLORS[k % COLORS.length] + '"></span><span></span>';
+    l.lastChild.textContent = "Clip " + (k + 1) + (k === baseIdx ? " (base)" : "") + " cutouts";
+    l.firstChild.addEventListener("change", e => { c.enabled = e.target.checked; if (!playing) drawFrame(cur); });
+    tg.appendChild(l);
+  });
+  cur = 0; drawFrame(0);
+}
+
+let cur = 0, playing = false, recorder = null, recChunks = [];
+
+// ---- drum assignments: which kind of cutout pops on which drum ----
+const DRUM_COLORS = { kick: "#d2601a", snare: "#1f6f8b", hats: "#3f8f3a", always: "#7a7f86", never: "#c9c4b8" };
+const DRUM_NAMES = { always: "always", kick: "kick / bass", snare: "snare", hats: "hi-hat", never: "never" };
+const KINDS = [
+  { key: "trucks", name: "Trucks and buses", classes: [5, 7], def: "kick" },
+  { key: "cars", name: "Cars", classes: [2], def: "snare" },
+  { key: "moto", name: "Motorcycles and bicycles", classes: [3, 1], def: "hats" },
+  { key: "street", name: "Traffic lights, signs, hydrants, meters, benches", classes: [9, 10, 11, 12, 13], def: "hats" },
+  { key: "people", name: "People", classes: [0], def: "always" },
+  { key: "animals", name: "Animals and birds", classes: [14, 15, 16, 17, 18, 19, 20, 21, 22, 23], def: "always" },
+  { key: "trains", name: "Trains", classes: [6], def: "kick" }
+];
+const KIND_OF = {};
+for (const k of KINDS) for (const c of k.classes) KIND_OF[c] = k.key;
+let ASSIGN = {};
+try { ASSIGN = JSON.parse(localStorage.getItem("drumAssign") || "{}"); } catch (e) {}
+for (const k of KINDS) if (!ASSIGN[k.key]) ASSIGN[k.key] = k.def;
+function saveAssign(){ try { localStorage.setItem("drumAssign", JSON.stringify(ASSIGN)); } catch (e) {} }
+function drumFor(cls){ return ASSIGN[KIND_OF[cls]] || "always"; }
+
+// draws the table into every place that shows it, and keeps them in step
+function renderAssign(){
+  for (const box of document.querySelectorAll("[data-assign]")){
+    box.innerHTML = "";
+    for (const k of KINDS){
+      const row = document.createElement("div");
+      row.className = "arow";
+      row.innerHTML = '<i class="chip"></i><span></span><select>' + Object.keys(DRUM_NAMES).map(d => '<option value="' + d + '">' + DRUM_NAMES[d] + '</option>').join("") + '</select>';
+      row.querySelector("span").textContent = k.name;
+      row.querySelector(".chip").style.background = DRUM_COLORS[ASSIGN[k.key]];
+      const sel = row.querySelector("select");
+      sel.value = ASSIGN[k.key];
+      sel.addEventListener("change", () => {
+        ASSIGN[k.key] = sel.value; saveAssign(); renderAssign();
+        if (typeof renderFlashLabels === "function") renderFlashLabels();
+        if (frames.length && !playing) drawFrame(cur);
+      });
+      box.appendChild(row);
+    }
+  }
+}
+
+// true when a hit of this band happened within the hold time before t
+function hitActive(times, t, hold){
+  if (!times || !times.length) return false;
+  let lo = 0, hi = times.length - 1, idx = -1;
+  while (lo <= hi){ const m = (lo + hi) >> 1; if (times[m] <= t){ idx = m; lo = m + 1; } else hi = m - 1; }
+  return idx >= 0 && t - times[idx] < hold;
+}
+function cutVisible(cut, songT){
+  const c = clips[cut.clip];
+  if (!c || !c.enabled) return false;
+  const drum = drumFor(cut.cls);
+  if (drum === "never") return false;
+  if (drum === "always" || songT == null || !compSongData) return true;
+  return hitActive(compSongData.bands[drum] && compSongData.bands[drum].times, songT, parseFloat($("holdSel").value) || 0.2);
+}
+
+async function drawFrame(i, songT){
+  const f = frames[i]; if (!f) return;
+  const ctx = $("out").getContext("2d");
+  const bg = await createImageBitmap(f.blob);
+  ctx.drawImage(bg, 0, 0, outW, outH); bg.close();
+  const tintMode = $("tintMode").value, tint = tintMode !== "off";
+  let shown = 0;
+  for (const c of f.cuts){
+    if (!cutVisible(c, songT)) continue;
+    shown++;
+    if (tint){
+      tintCanvas.width = c.w; tintCanvas.height = c.h;
+      tintCtx.globalCompositeOperation = "source-over";
+      tintCtx.clearRect(0, 0, c.w, c.h);
+      tintCtx.drawImage(c.bmp, 0, 0);
+      tintCtx.globalCompositeOperation = "source-atop";
+      tintCtx.globalAlpha = 0.45;
+      tintCtx.fillStyle = tintMode === "drum" ? DRUM_COLORS[drumFor(c.cls)] : COLORS[c.clip % COLORS.length];
+      tintCtx.fillRect(0, 0, c.w, c.h);
+      tintCtx.globalAlpha = 1;
+      ctx.drawImage(tintCanvas, c.x, c.y);
+    } else {
+      ctx.drawImage(c.bmp, c.x, c.y);
+    }
+  }
+  $("scrub").value = i;
+  $("frameNum").textContent = (i + 1) + "/" + frames.length;
+  const kinds = {};
+  for (const c of f.cuts) if (cutVisible(c, songT)) kinds[c.cls] = (kinds[c.cls] || 0) + 1;
+  $("outStatus").textContent = shown + " cutouts on this frame" + (shown ? ": " + Object.entries(kinds).map(([c, n]) => n + " " + (CLASS_NAMES[c] || c)).join(", ") : "");
+}
+
+$("scrub").addEventListener("input", e => { stopPlay(); cur = parseInt(e.target.value); drawFrame(cur); });
+$("tintMode").addEventListener("change", () => { if (!playing) drawFrame(cur); });
+renderAssign();
+
+function stopPlay(){ playing = false; $("playBtn").textContent = "Play"; if (songAudio) songAudio.pause(); }
+
+// ---- song playback for the composite ----
+let compSongData = null, songAudio = null, songNode = null, songCtx = null, songStreamDest = null;
+async function prepSong(){
+  const id = $("compSong").value;
+  if (!id){ compSongData = null; return null; }
+  if (!compSongData || compSongData.id !== id){
+    const s = await loadSong(id);
+    if (!s) { compSongData = null; return null; }
+    compSongData = s.data; compSongData.id = id;
+    if (!songAudio){ songAudio = new Audio(); songAudio.preload = "auto"; }
+    if (songAudio._url) URL.revokeObjectURL(songAudio._url);
+    songAudio._url = URL.createObjectURL(s.file);
+    songAudio.src = songAudio._url;
+  }
+  return compSongData;
+}
+$("compSong").addEventListener("change", () => { stopPlay(); compSongData = null; });
+
+async function playSongLoop(){
+  if (songAudio.ended || songAudio.currentTime >= songAudio.duration - 0.05) songAudio.currentTime = 0;
+  try { await songAudio.play(); } catch (e){ $("outStatus").textContent = "Could not play the song: " + e.message; stopPlay(); return; }
+  while (playing){
+    const t = songAudio.currentTime;
+    cur = Math.floor(t * outFps) % frames.length;
+    await drawFrame(cur, t);
+    if (songAudio.ended){
+      if (recorder) finishRecording(); else stopPlay();
+      break;
+    }
+    await sleep(25);
+  }
+}
+
+async function playLoop(){
+  if (await prepSong()) return playSongLoop();
+  while (playing && frames.length){
+    const t0 = performance.now();
+    await drawFrame(cur);
+    cur++;
+    if (cur >= frames.length){
+      cur = 0;
+      if (recorder){ finishRecording(); }
+    }
+    await sleep(Math.max(0, 1000 / outFps - (performance.now() - t0)));
+  }
+}
+
+$("playBtn").addEventListener("click", async () => {
+  if (!frames.length) return;
+  if (playing){ stopPlay(); return; }
+  playing = true; $("playBtn").textContent = "Pause"; playLoop();
+});
+
+$("recBtn").addEventListener("click", async () => {
+  if (!frames.length || recorder) return;
+  if ($("compSong").value) await prepSong();
+  const types = ["video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm", "video/mp4"];
+  const type = types.find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t));
+  if (!type){ $("outStatus").textContent = "This browser cannot record the canvas."; return; }
+  const useSong = !!$("compSong").value;
+  const stream = $("out").captureStream(useSong ? 30 : outFps);
+  if (useSong && songAudio){
+    // route the song into the recording as well as the speaker
+    try {
+      if (!songCtx){
+        songCtx = new AudioContext();
+        songNode = songCtx.createMediaElementSource(songAudio);
+        songStreamDest = songCtx.createMediaStreamDestination();
+        songNode.connect(songCtx.destination);
+        songNode.connect(songStreamDest);
+      }
+      songCtx.resume();
+      for (const tr of songStreamDest.stream.getAudioTracks()) stream.addTrack(tr);
+    } catch (e){ $("outStatus").textContent = "Recording without sound: " + e.message; }
+  }
+  recChunks = [];
+  recorder = new MediaRecorder(stream, { mimeType: type, videoBitsPerSecond: 6000000 });
+  recorder.ondataavailable = e => { if (e.data && e.data.size) recChunks.push(e.data); };
+  recorder.onstop = () => {
+    const blob = new Blob(recChunks, { type: type.split(";")[0] });
+    const ext = type.indexOf("mp4") >= 0 ? "mp4" : "webm";
+    const a = document.createElement("a");
+    a.className = "save"; a.href = URL.createObjectURL(blob);
+    a.download = "road-layers-" + Date.now() + "." + ext;
+    a.textContent = "Save recorded video (" + (blob.size / 1048576).toFixed(1) + " MB)";
+    $("saveWrap").innerHTML = ""; $("saveWrap").appendChild(a);
+    recorder = null; $("recBtn").disabled = false;
+  };
+  $("recBtn").disabled = true;
+  $("saveWrap").innerHTML = "";
+  stopPlay(); cur = 0;
+  (async () => {
+    if (useSong){ await prepSong(); if (songAudio) songAudio.currentTime = 0; }
+    recorder.start();
+    playing = true; $("playBtn").textContent = "Pause"; playLoop();
+  })();
+});
+
+function finishRecording(){
+  stopPlay();
+  if (recorder && recorder.state !== "inactive") recorder.stop();
+}
+
+</script>
+<script>
+// ---------------- Record tab ----------------
+function showTab(name){
+  for (const [t, v] of [["tabRec", "recView"], ["tabComp", "compView"], ["tabMap", "mapView"], ["tabRoad", "roadView"], ["tabMusic", "musicView"]]){
+    $(v).hidden = t !== name;
+    $(t).classList.toggle("on", t === name);
+  }
+  // the Library card sits outside the views; hide it on the map tab
+  const lib = $("libList").closest("section");
+  if (lib) lib.hidden = name === "tabMap" || name === "tabRoad" || name === "tabMusic";
+  if (name === "tabMusic") renderSongs();
+  if (name === "tabComp") refreshSongPicker();
+  if (name === "tabMap") openMap();
+  if (name === "tabRoad") openRoad();
+}
+$("tabRec").addEventListener("click", () => showTab("tabRec"));
+$("tabComp").addEventListener("click", () => showTab("tabComp"));
+$("tabMap").addEventListener("click", () => showTab("tabMap"));
+$("tabRoad").addEventListener("click", () => showTab("tabRoad"));
+$("tabMusic").addEventListener("click", () => showTab("tabMusic"));
+
+// Storage layout inside the app (origin private file system):
+//   drives/<drive>/part01/c000001.bin ...   chunks while recording
+//   drives/<drive>/part01.webm              finished video
+//   drives/<drive>/part01_timing.json       GPS log tied to the video clock
+const CHUNK_MS = 4000;
+let camStream = null, recorder2 = null, recording = false, stopping = false;
+let geoWatch = null, wakeLock = null, lastFix = null;
+let driveId = "", segIndex = 0, segStartPerf = 0, segTimer = null, tickTimer = null;
+let segLog = null, segDir = null, chunkNo = 0, recBytes = 0, writeChain = Promise.resolve();
+let battery = null;
+const recMime = ["video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm", "video/mp4"].find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t)) || "";
+const recExt = recMime.indexOf("mp4") >= 0 ? "mp4" : "webm";
+
+function recSay(t){ $("recStatus").textContent = t; }
+function pad(n, w){ return String(n).padStart(w || 2, "0"); }
+function stamp(d){ return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()) + "_" + pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds()); }
+function mb(n){ return (n / 1048576).toFixed(n < 10485760 ? 1 : 0) + " MB"; }
+
+async function root(){ return navigator.storage.getDirectory(); }
+async function drivesDir(){ return (await root()).getDirectoryHandle("drives", { create: true }); }
+async function writeFile(dir, name, data){
+  const fh = await dir.getFileHandle(name, { create: true });
+  const w = await fh.createWritable();
+  await w.write(data); await w.close();
+}
+async function listEntries(dir){ const out = []; for await (const [n, h] of dir.entries()) out.push([n, h]); return out; }
+
+// Joins a part's chunk files into one video file, then removes the chunks.
+async function assemblePart(driveDir, partName){
+  let chunkDir;
+  try { chunkDir = await driveDir.getDirectoryHandle(partName); } catch (e){ return; }
+  const names = (await listEntries(chunkDir)).filter(([n, h]) => h.kind === "file" && n.startsWith("c")).map(([n]) => n).sort();
+  if (names.length){
+    let ext = recExt;
+    try { const m = JSON.parse(await (await (await chunkDir.getFileHandle("meta.json")).getFile()).text()); if (m.mime && m.mime.indexOf("mp4") >= 0) ext = "mp4"; } catch (e) {}
+    const fh = await driveDir.getFileHandle(partName + "." + ext, { create: true });
+    const w = await fh.createWritable();
+    for (const n of names) await w.write(await (await chunkDir.getFileHandle(n)).getFile());
+    await w.close();
+    try { const t = await (await chunkDir.getFileHandle("timing.json")).getFile(); await writeFile(driveDir, partName + "_timing.json", t); } catch (e) {}
+  }
+  await driveDir.removeEntry(partName, { recursive: true });
+}
+
+// After a crash or reload, finish any part that was still recording.
+async function recoverParts(){
+  try {
+    const dd = await drivesDir();
+    for (const [dn, dh] of await listEntries(dd)){
+      if (dh.kind !== "directory") continue;
+      for (const [pn, ph] of await listEntries(dh)) if (ph.kind === "directory" && /^part\d+$/.test(pn)) await assemblePart(dh, pn);
+    }
+  } catch (e) {}
+}
+
+async function grabWakeLock(){ try { if ("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen"); } catch (e) {} }
+document.addEventListener("visibilitychange", () => { if (recording && document.visibilityState === "visible") grabWakeLock(); });
+
+// ---- battery rule ----
+async function setupBattery(){
+  if (!navigator.getBattery){ $("stBatt").textContent = "n/a"; return; }
+  try {
+    battery = await navigator.getBattery();
+    const show = () => {
+      $("stBatt").textContent = Math.round(battery.level * 100) + "%" + (battery.charging ? "+" : "");
+      checkBattery();
+    };
+    battery.addEventListener("levelchange", show);
+    battery.addEventListener("chargingchange", show);
+    show();
+  } catch (e){ $("stBatt").textContent = "n/a"; }
+}
+function checkBattery(){
+  if (!battery || !recording || battery.charging) return;
+  const limit = parseInt($("battStop").value) || 5;
+  if (battery.level * 100 <= limit) stopRecording("Battery reached " + limit + "%. Recording stopped and saved.");
+}
+
+// ---- storage rule: stop before the phone runs out of room for the app ----
+async function storageLeft(){
+  try { const e = await navigator.storage.estimate(); return { used: e.usage || 0, quota: e.quota || 0, left: (e.quota || 0) - (e.usage || 0) }; }
+  catch (e){ return null; }
+}
+
+$("camBtn").addEventListener("click", async () => {
+  if (camStream){ for (const t of camStream.getTracks()) t.stop(); camStream = null; }
+  const [w, h] = $("recRes").value.split("x").map(Number);
+  try {
+    camStream = await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: { facingMode: { ideal: "environment" }, width: { ideal: w }, height: { ideal: h }, frameRate: { ideal: 30 } }
+    });
+  } catch (e){ recSay("Camera blocked: " + (e && e.message ? e.message : e)); return; }
+  $("recPreview").srcObject = camStream;
+  const st = camStream.getVideoTracks()[0].getSettings();
+  recSay("Camera on at " + (st.width || "?") + "x" + (st.height || "?") + ", " + Math.round(st.frameRate || 0) + " fps. Starting GPS...");
+  startGeo();
+  $("recBig").disabled = false;
+  $("camBtn").textContent = "Restart camera";
+});
+
+function startGeo(){
+  if (geoWatch !== null || !navigator.geolocation) return;
+  geoWatch = navigator.geolocation.watchPosition(p => {
+    const c = p.coords;
+    if (lastFix && c.speed == null && recording){
+      // no speed from the phone: estimate it from the move since the last fix
+      const dt = (p.timestamp - lastFixTime) / 1000;
+      if (dt > 0) estSpeed = haversine(lastFix.latitude, lastFix.longitude, c.latitude, c.longitude) / dt;
+    } else if (c.speed != null) estSpeed = c.speed;
+    lastFix = c; lastFixTime = p.timestamp;
+    $("stSpeed").textContent = c.speed != null ? Math.round(c.speed * 2.23694) : "?";
+    $("stGps").textContent = Math.round(c.accuracy) + " m";
+    if (recording && segLog){
+      segLog.gps.push({
+        t: +((performance.now() - segStartPerf) / 1000).toFixed(3), // seconds into this video part
+        fixTime: p.timestamp,
+        lat: c.latitude, lon: c.longitude, alt: c.altitude,
+        acc: c.accuracy, speed: c.speed, heading: c.heading
+      });
+      $("stPts").textContent = segLog.gps.length;
+    }
+    if (!recording) recSay("Camera and GPS ready. Tap Record.");
+  }, e => {
+    $("stGps").textContent = "off";
+    if (!recording) recSay("GPS problem: " + e.message + ". Video still records without location.");
+  }, { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 });
+}
+
+async function startSegment(){
+  const dd = await drivesDir();
+  const driveDir = await dd.getDirectoryHandle(driveId, { create: true });
+  const partName = "part" + pad(segIndex + 1);
+  segDir = await driveDir.getDirectoryHandle(partName, { create: true });
+  chunkNo = 0; recBytes = 0;
+  const [w] = $("recRes").value.split("x").map(Number);
+  const st = camStream.getVideoTracks()[0].getSettings();
+  segLog = { drive: driveId, part: segIndex + 1, mime: recMime, width: st.width, height: st.height, fps: st.frameRate, startWall: null, gps: [] };
+  await writeFile(segDir, "meta.json", JSON.stringify({ mime: recMime }));
+  const thisDir = segDir, thisLog = segLog;
+  const rec = new MediaRecorder(camStream, { mimeType: recMime, videoBitsPerSecond: w >= 1920 ? 8000000 : 5000000 });
+  rec.ondataavailable = e => {
+    if (!e.data || !e.data.size) return;
+    const n = ++chunkNo;
+    recBytes += e.data.size;
+    $("stSize").textContent = (recBytes / 1048576).toFixed(0);
+    const data = e.data;
+    writeChain = writeChain.then(async () => {
+      await writeFile(thisDir, "c" + pad(n, 6) + ".bin", data);
+      await writeFile(thisDir, "timing.json", JSON.stringify(thisLog));
+      if (n % 5 === 0){
+        const s = await storageLeft();
+        if (s && s.quota && s.left < 300 * 1048576) stopRecording("App storage almost full. Recording stopped and saved.");
+      }
+    }).catch(err => { recSay("Save error: " + (err && err.message ? err.message : err)); });
+  };
+  const done = new Promise(r => { rec.onstop = r; });
+  rec.onstart = () => {
+    segStartPerf = performance.now();
+    thisLog.startWall = new Date().toISOString();
+    if (lastFix) thisLog.gps.push({ t: 0, fixTime: Date.now(), lat: lastFix.latitude, lon: lastFix.longitude, alt: lastFix.altitude, acc: lastFix.accuracy, speed: lastFix.speed, heading: lastFix.heading, carried: true });
+  };
+  rec.start(CHUNK_MS);
+  recorder2 = rec;
+  // finish this part: wait for the last chunk, write timing, join chunks into one file
+  rec.finish = async () => {
+    if (rec.state !== "inactive") rec.stop();
+    await done;
+    await writeChain;
+    await writeFile(thisDir, "timing.json", JSON.stringify(thisLog));
+    await assemblePart(driveDir, partName);
+    refreshLibrary();
+  };
+  const mins = parseInt($("recSplit").value) || 10;
+  clearTimeout(segTimer);
+  segTimer = setTimeout(async () => {
+    if (!recording) return;
+    const old = recorder2;
+    segIndex++;
+    await startSegment();          // new part starts first so there is no gap
+    old.finish();
+  }, mins * 60000);
+}
+
+async function stopRecording(msg){
+  if (!recording || stopping) return;
+  stopping = true;
+  recording = false;
+  clearTimeout(segTimer); clearInterval(tickTimer);
+  recSay("Saving...");
+  try { if (recorder2) await recorder2.finish(); }
+  catch (e){ msg = "Save error: " + (e && e.message ? e.message : e); }
+  recorder2 = null;
+  try { await stopStills(); }
+  catch (e){ msg = "Save error: " + (e && e.message ? e.message : e); }
+  refreshLibrary();
+  try { if (wakeLock) await wakeLock.release(); } catch (e) {}
+  wakeLock = null;
+  $("recBig").classList.remove("live");
+  $("recBig").textContent = "Record";
+  $("camBtn").disabled = false; $("recRes").disabled = false; $("capMode").disabled = false; $("stillEvery").disabled = false;
+  stopping = false;
+  recSay(msg || "Stopped and saved in the Library below.");
+}
+
+$("recBig").addEventListener("click", async () => {
+  if (!camStream || stopping) return;
+  if (recording){ stopRecording(); return; }
+  const mode = captureMode();
+  if (mode !== "stills" && !recMime){ recSay("This browser cannot record video."); return; }
+  if (!navigator.storage || !navigator.storage.getDirectory){ recSay("This browser has no app storage for recordings."); return; }
+  if (battery && !battery.charging && battery.level * 100 <= (parseInt($("battStop").value) || 5)){ recSay("Battery is too low to start."); return; }
+  try { if (navigator.storage.persist) await navigator.storage.persist(); } catch (e) {}
+  recording = true;
+  driveId = stamp(new Date()); segIndex = 0;
+  await grabWakeLock();
+  try {
+    const t0 = performance.now();
+    if (mode !== "stills") await startSegment();
+    if (mode !== "video") await startStills(mode === "both" ? segStartPerf || t0 : t0);
+  }
+  catch (e){ recording = false; recSay("Could not start: " + (e && e.message ? e.message : e)); return; }
+  $("recBig").classList.add("live");
+  $("recBig").textContent = "Stop";
+  $("camBtn").disabled = true; $("recRes").disabled = true; $("capMode").disabled = true; $("stillEvery").disabled = true;
+  const t0 = performance.now();
+  tickTimer = setInterval(() => {
+    const s = Math.floor((performance.now() - t0) / 1000);
+    $("stTime").textContent = Math.floor(s / 60) + ":" + pad(s % 60);
+    checkBattery();
+    if (s % 15 === 0) storageLeft().then(x => { if (x && x.quota && x.left < 300 * 1048576) stopRecording("App storage almost full. Recording stopped and saved."); });
+  }, 1000);
+  $("recStatus").innerHTML = '<span class="dot"></span>' + (mode === "stills" ? "Capturing stop motion." : mode === "both" ? "Recording video and stop motion." : "Recording.") + " Saving into the app as it goes. Keep this screen open.";
+});
+
+
+// ---------------- Stop motion ----------------
+// Frames are grabbed from the live camera at fixed distances (using GPS speed between fixes) or fixed times.
+let lastFixTime = 0, estSpeed = null;
+let stillsDir = null, stillsLog = null, stillTimer = null, stillN = 0, stillDist = 0, stillLastTick = 0, stillLastAt = 0, stillBusy = false;
+let stillChain = Promise.resolve();
+const stillCanvas = document.createElement("canvas");
+const stillCtx = stillCanvas.getContext("2d");
+
+function haversine(a1, o1, a2, o2){
+  const R = 6371000, r = Math.PI / 180;
+  const da = (a2 - a1) * r, dob = (o2 - o1) * r;
+  const h = Math.sin(da / 2) ** 2 + Math.cos(a1 * r) * Math.cos(a2 * r) * Math.sin(dob / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+function captureMode(){ return $("capMode").value; }
+
+async function startStills(t0){
+  const dd = await drivesDir();
+  const driveDir = await dd.getDirectoryHandle(driveId, { create: true });
+  stillsDir = await driveDir.getDirectoryHandle("stills", { create: true });
+  const every = $("stillEvery").value;
+  const byDist = every[0] === "d";
+  const step = parseFloat(every.slice(1)) * (byDist ? 0.3048 : 1); // meters or seconds
+  stillsLog = { drive: driveId, mode: byDist ? "distance" : "time", every: every, stepMeters: byDist ? step : null, stepSeconds: byDist ? null : step, startWall: new Date().toISOString(), frames: [] };
+  stillN = 0; stillDist = 0; stillLastTick = performance.now(); stillLastAt = performance.now() - 1e9;
+  $("stStills").textContent = "0";
+  const thisDir = stillsDir, thisLog = stillsLog;
+  clearInterval(stillTimer);
+  stillTimer = setInterval(() => {
+    const now = performance.now();
+    const dt = (now - stillLastTick) / 1000;
+    stillLastTick = now;
+    if (byDist){
+      stillDist += (estSpeed || 0) * dt;
+      if (stillDist >= step){ stillDist -= step; if (stillDist > step) stillDist = 0; grabStill(thisDir, thisLog, t0); }
+    } else if ((now - stillLastAt) / 1000 >= step){
+      stillLastAt = now; grabStill(thisDir, thisLog, t0);
+    }
+  }, 50);
+}
+
+function grabStill(dir, log, t0){
+  if (stillBusy) return;            // camera can't keep up: skip rather than pile up
+  const v = $("recPreview");
+  if (!v.videoWidth) return;
+  stillBusy = true;
+  stillCanvas.width = v.videoWidth; stillCanvas.height = v.videoHeight;
+  stillCtx.drawImage(v, 0, 0);
+  const n = ++stillN;
+  const entry = {
+    n, file: "f" + pad(n, 6) + ".jpg",
+    t: +((performance.now() - t0) / 1000).toFixed(3),
+    wall: Date.now(),
+    lat: lastFix ? lastFix.latitude : null, lon: lastFix ? lastFix.longitude : null,
+    speed: estSpeed, heading: lastFix ? lastFix.heading : null
+  };
+  stillCanvas.toBlob(blob => {
+    stillBusy = false;
+    if (!blob) return;
+    log.frames.push(entry);
+    $("stStills").textContent = log.frames.length;
+    stillChain = stillChain.then(async () => {
+      await writeFile(dir, entry.file, blob);
+      if (n % 10 === 0) await writeFile(dir, "stills.json", JSON.stringify(log));
+    }).catch(err => recSay("Save error: " + (err && err.message ? err.message : err)));
+  }, "image/jpeg", 0.9);
+}
+
+async function stopStills(){
+  clearInterval(stillTimer); stillTimer = null;
+  if (!stillsDir) return;
+  for (let k = 0; k < 20 && stillBusy; k++) await sleep(50);
+  await stillChain;
+  await writeFile(stillsDir, "stills.json", JSON.stringify(stillsLog));
+  stillsDir = null;
+}
+
+// Turns a stop motion set into a video so Composite can use it like any clip.
+async function stillsToVideo(item, fps){
+  const files = [];
+  for (const [n, h] of await listEntries(item.dir)) if (h.kind === "file" && /^f\d+\.jpg$/.test(n)) files.push(await h.getFile());
+  files.sort((a, b) => a.name.localeCompare(b.name));
+  if (files.length < 2) throw new Error("Stop motion set has fewer than 2 frames.");
+  // renumber so the sequence has no gaps
+  const seq = files.map((f, i) => new File([f], "s" + pad(i + 1, 6) + ".jpg", { type: "image/jpeg" }));
+  return ffRun(async () => {
+    const dir = "/st" + Date.now();
+    await ff.createDir(dir);
+    await ff.mount("WORKERFS", { files: seq }, dir);
+    const out = "/stills_out.mp4";
+    await ff.exec(["-framerate", String(fps), "-i", dir + "/s%06d.jpg", "-vf", "scale=trunc(iw/2)*2:trunc(ih/2)*2", "-c:v", "libx264", "-preset", "ultrafast", "-crf", "20", "-pix_fmt", "yuv420p", "-y", out]);
+    const data = await ff.readFile(out);
+    try { await ff.deleteFile(out); } catch (e) {}
+    try { await ff.unmount(dir); } catch (e) {}
+    if (!data || !data.length) throw new Error("Could not build video from stop motion frames.");
+    return new File([data], "drive_" + item.drive + "_stopmotion.mp4", { type: "video/mp4" });
+  });
+}
+
+async function scanLibrary(){
+  const parts = [];
+  {
+    const dd = await drivesDir();
+    for (const [dn, dh] of await listEntries(dd)){
+      if (dh.kind !== "directory") continue;
+      const entries = await listEntries(dh);
+      const names = entries.map(([n]) => n);
+      for (const [n, h] of entries){
+        if (h.kind !== "file" || !/^part\d+\.(webm|mp4)$/.test(n)) continue;
+        const f = await h.getFile();
+        const tname = n.replace(/\.(webm|mp4)$/, "_timing.json");
+        let gpsN = 0, speed = null, track = [];
+        if (names.includes(tname)){
+          try {
+            const t = JSON.parse(await (await (await dh.getFileHandle(tname)).getFile()).text());
+            gpsN = t.gps.length;
+            track = t.gps.filter(g => g.lat != null && !g.carried).map(g => [g.lat, g.lon]);
+            if (!track.length) track = t.gps.filter(g => g.lat != null).map(g => [g.lat, g.lon]);
+            const sp = t.gps.map(g => g.speed).filter(x => x != null);
+            if (sp.length) speed = Math.round(sp.reduce((a, b) => a + b, 0) / sp.length * 2.23694);
+          } catch (e) {}
+        }
+        parts.push({ kind: "video", drive: dn, name: n, tname: names.includes(tname) ? tname : null, dir: dh, handle: h, size: f.size, gpsN, speed, track, id: dn + "/" + n });
+      }
+      const st = entries.find(([n, h]) => n === "stills" && h.kind === "directory");
+      if (st){
+        let count = 0, size = 0, info = null;
+        for (const [n, h] of await listEntries(st[1])){
+          if (h.kind !== "file") continue;
+          if (/^f\d+\.jpg$/.test(n)){ count++; size += (await h.getFile()).size; }
+        }
+        try { info = JSON.parse(await (await (await st[1].getFileHandle("stills.json")).getFile()).text()); } catch (e) {}
+        const track = info && info.frames ? info.frames.filter(f => f.lat != null).map(f => [f.lat, f.lon]) : [];
+        if (count) parts.push({ kind: "stills", drive: dn, name: "stills", dir: st[1], parentDir: dh, size, count, info, track, id: dn + "/stills" });
+      }
+      if (!entries.length) { try { await dd.removeEntry(dn); } catch (e) {} }
+    }
+  }
+  return parts;
+}
+
+// ---------------- Library ----------------
+async function refreshLibrary(){
+  const list = $("libList");
+  if (!navigator.storage || !navigator.storage.getDirectory){ list.textContent = "This browser has no app storage."; return; }
+  let parts;
+  try { parts = await scanLibrary(); }
+  catch (e){ list.textContent = "Could not read the library: " + e.message; return; }
+  parts.sort((a, b) => (b.drive + b.name).localeCompare(a.drive + a.name));
+  list.innerHTML = "";
+  if (!parts.length) list.innerHTML = '<p class="hint">No recordings yet.</p>';
+  for (const p of parts){
+    const d = document.createElement("div");
+    d.className = "lib";
+    d.innerHTML = '<div class="lib-top"><input type="checkbox"><b></b></div><div class="lib-sub"></div>' +
+      '<div class="btns"><button class="ghost" data-a="save">Save to phone</button><button class="ghost" data-a="del">Delete</button></div>';
+    const tag = document.createElement("span");
+    tag.className = "tag " + (p.kind === "stills" ? "s" : "v");
+    tag.textContent = p.kind === "stills" ? "Stop motion" : "Full video";
+    const title = d.querySelector("b");
+    title.textContent = "Drive " + p.drive.replace("_", " ") + (p.kind === "stills" ? "" : ", " + p.name.replace(/\.(webm|mp4)$/, "").replace("part", "part "));
+    title.prepend(tag);
+    if (p.kind === "stills"){
+      const every = p.info && p.info.every ? (p.info.every[0] === "d" ? "every " + p.info.every.slice(1) + " ft" : "every " + p.info.every.slice(1) + " s") : "";
+      d.querySelector(".lib-sub").textContent = p.count + " frames" + (every ? ", " + every : "") + ", " + mb(p.size);
+      d.querySelector('[data-a="save"]').textContent = "Save as video to phone";
+    } else {
+      d.querySelector(".lib-sub").textContent = mb(p.size) + (p.gpsN ? ", " + p.gpsN + " GPS points" : ", no GPS") + (p.speed != null ? ", avg " + p.speed + " mph" : "");
+    }
+    d.querySelector("input").libPart = p;
+    d.querySelector('[data-a="save"]').addEventListener("click", async e => {
+      const go = (blob, name) => { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); };
+      if (p.kind === "stills"){
+        const btn = e.target; btn.disabled = true; btn.textContent = "Building video...";
+        try {
+          go(await stillsToVideo(p, parseInt($("stillFps").value) || 8), "drive_" + p.drive + "_stopmotion.mp4");
+          try { go(await (await p.dir.getFileHandle("stills.json")).getFile(), "drive_" + p.drive + "_stopmotion_timing.json"); } catch (x) {}
+        } catch (x){ $("libStorage").textContent = x.message; }
+        btn.disabled = false; btn.textContent = "Save as video to phone";
+        return;
+      }
+      const f = await p.handle.getFile();
+      go(f, "drive_" + p.drive + "_" + p.name);
+      if (p.tname) go(await (await p.dir.getFileHandle(p.tname)).getFile(), "drive_" + p.drive + "_" + p.tname);
+    });
+    const del = d.querySelector('[data-a="del"]');
+    del.addEventListener("click", async () => {
+      if (del.dataset.armed !== "1"){ del.dataset.armed = "1"; del.textContent = "Tap again to delete"; setTimeout(() => { del.dataset.armed = ""; del.textContent = "Delete"; }, 3000); return; }
+      if (p.kind === "stills") await p.parentDir.removeEntry("stills", { recursive: true });
+      else {
+        await p.dir.removeEntry(p.name);
+        if (p.tname) { try { await p.dir.removeEntry(p.tname); } catch (e) {} }
+        try { await p.dir.removeEntry(p.name.replace(/\.(webm|mp4)$/, "_road.json")); } catch (e) {}
+      }
+      refreshLibrary();
+    });
+    list.appendChild(d);
+  }
+  const s = await storageLeft();
+  $("libStorage").textContent = s && s.quota ? "App storage: " + mb(s.used) + " used, " + mb(Math.max(0, s.left)) + " free." : "";
+}
+
+$("libUse").addEventListener("click", async () => {
+  const picked = [...document.querySelectorAll("#libList input[type=checkbox]:checked")].map(x => x.libPart);
+  if (!picked.length){ $("libStorage").textContent = "Check one or more parts first."; return; }
+  await useInComposite(picked, $("libUse"), t => $("libStorage").textContent = t);
+});
+
+async function useInComposite(picked, btn, say){
+  picked = picked.slice().sort((a, b) => (a.kind === "video" ? 0 : 1) - (b.kind === "video" ? 0 : 1)); // full video first so it becomes Base
+  const files = [];
+  btn.disabled = true;
+  try {
+    for (const p of picked){
+      if (p.kind === "stills"){
+        say("Building stop motion video for drive " + p.drive + "...");
+        files.push(await stillsToVideo(p, parseInt($("stillFps").value) || 8));
+      } else {
+        const f = await p.handle.getFile();
+        files.push(new File([f], "drive_" + p.drive + "_" + p.name, { type: f.type }));
+      }
+    }
+  } catch (e){ say("Could not load: " + e.message); btn.disabled = false; return; }
+  btn.disabled = false;
+  say("");
+  refreshLibrary();
+  showTab("tabComp");
+  for (const x of document.querySelectorAll("#libList input[type=checkbox]")) x.checked = false;
+  await addClipFiles(files);
+}
+
+
+// ---------------- Map and projects ----------------
+let map = null, mapItems = [], routeLayer = null, hitMarker = null, highlightLayer = null;
+const HIT_METERS = 80;
+
+async function loadProjects(){
+  try { return JSON.parse(await (await (await (await root()).getFileHandle("projects.json")).getFile()).text()); }
+  catch (e){ return []; }
+}
+async function saveProjects(list){ await writeFile(await root(), "projects.json", JSON.stringify(list)); }
+
+function itemLabel(p){
+  return (p.kind === "stills" ? "Stop motion, " : "Full video, ") + "drive " + p.drive.replace("_", " ") + (p.kind === "stills" ? "" : ", " + p.name.replace(/\.(webm|mp4)$/, "").replace("part", "part "));
+}
+
+async function openMap(){
+  if (!window.L){ $("mapStatus").textContent = "The map library did not load. Check the connection and reload."; return; }
+  if (!map){
+    map = L.map("map", { zoomControl: true }).setView([35.65, -114.85], 8); // Las Vegas to Laughlin
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "&copy; OpenStreetMap contributors" }).addTo(map);
+    routeLayer = L.layerGroup().addTo(map);
+    highlightLayer = L.layerGroup().addTo(map);
+    map.on("click", e => findHits(e.latlng.lat, e.latlng.lng));
+  }
+  setTimeout(() => map.invalidateSize(), 50);
+  await drawRoutes();
+  await renderProjects();
+}
+
+async function drawRoutes(){
+  mapItems = await scanLibrary();
+  routeLayer.clearLayers();
+  const withGps = mapItems.filter(p => p.track && p.track.length);
+  // each route is semi transparent, so places filmed more often stack up darker
+  for (const p of withGps){
+    if (p.track.length === 1) L.circleMarker(p.track[0], { radius: 5, color: "#d2601a", weight: 0, fillOpacity: 0.35 }).addTo(routeLayer);
+    else L.polyline(p.track, { color: "#d2601a", weight: 7, opacity: 0.3, lineCap: "round", lineJoin: "round" }).addTo(routeLayer);
+  }
+  $("mapStatus").textContent = withGps.length + " of " + mapItems.length + " recordings have GPS." + (mapItems.length > withGps.length ? " Ones without GPS can't be placed on the map." : "");
+  if (withGps.length && !map._fitOnce){
+    map._fitOnce = true;
+    map.fitBounds(L.latLngBounds(withGps.flatMap(p => p.track)), { padding: [20, 20], maxZoom: 15 });
+  }
+}
+
+function distToTrack(lat, lon, track){
+  let best = Infinity;
+  for (let i = 0; i < track.length; i++){
+    best = Math.min(best, haversine(lat, lon, track[i][0], track[i][1]));
+    if (i > 0){
+      // also check the midpoint so sparse GPS points still count
+      const m = [(track[i][0] + track[i - 1][0]) / 2, (track[i][1] + track[i - 1][1]) / 2];
+      best = Math.min(best, haversine(lat, lon, m[0], m[1]));
+    }
+  }
+  return best;
+}
+
+async function findHits(lat, lon){
+  if (hitMarker) hitMarker.remove();
+  hitMarker = L.circle([lat, lon], { radius: HIT_METERS, color: "#1f6f8b", weight: 2, fillOpacity: 0.1 }).addTo(map);
+  const hits = mapItems.filter(p => p.track && p.track.length && distToTrack(lat, lon, p.track) <= HIT_METERS);
+  showHitList(hits, hits.length + (hits.length === 1 ? " recording passes" : " recordings pass") + " through this spot.");
+}
+
+function showHitList(hits, msg){
+  const box = $("hits");
+  box.innerHTML = "";
+  $("mapStatus").textContent = msg;
+  highlightLayer.clearLayers();
+  for (const p of hits){
+    if (p.track.length > 1) L.polyline(p.track, { color: "#1f6f8b", weight: 4, opacity: 0.9 }).addTo(highlightLayer);
+    const r = document.createElement("label");
+    r.className = "hitrow";
+    r.innerHTML = '<input type="checkbox" checked><b></b>';
+    r.querySelector("b").textContent = itemLabel(p);
+    r.querySelector("input").libPart = p;
+    box.appendChild(r);
+  }
+  $("hitActions").hidden = !hits.length;
+  refreshProjectPicker();
+}
+
+function checkedHits(){ return [...document.querySelectorAll("#hits input:checked")].map(x => x.libPart); }
+
+$("hitUse").addEventListener("click", async () => {
+  const picked = checkedHits();
+  if (!picked.length){ $("mapStatus").textContent = "Check one or more recordings first."; return; }
+  await useInComposite(picked, $("hitUse"), t => $("mapStatus").textContent = t);
+});
+
+async function refreshProjectPicker(){
+  const projects = await loadProjects();
+  const sel = $("hitProj");
+  sel.innerHTML = "";
+  if (!projects.length){ const o = document.createElement("option"); o.value = ""; o.textContent = "Create a project below first"; sel.appendChild(o); return; }
+  for (const pr of projects){ const o = document.createElement("option"); o.value = pr.id; o.textContent = pr.name; sel.appendChild(o); }
+}
+
+$("hitAdd").addEventListener("click", async () => {
+  const id = $("hitProj").value;
+  const picked = checkedHits();
+  if (!id || !picked.length) return;
+  const projects = await loadProjects();
+  const pr = projects.find(x => x.id === id);
+  if (!pr) return;
+  let added = 0;
+  for (const p of picked) if (!pr.items.includes(p.id)){ pr.items.push(p.id); added++; }
+  await saveProjects(projects);
+  $("mapStatus").textContent = "Added " + added + " to " + pr.name + ".";
+  renderProjects();
+});
+
+$("projNew").addEventListener("click", async () => {
+  const name = $("projName").value.trim();
+  if (!name) return;
+  const projects = await loadProjects();
+  projects.push({ id: "p" + Date.now(), name, items: [], created: new Date().toISOString() });
+  await saveProjects(projects);
+  $("projName").value = "";
+  renderProjects(); refreshProjectPicker();
+});
+
+async function renderProjects(){
+  const projects = await loadProjects();
+  const box = $("projList");
+  box.innerHTML = "";
+  if (!projects.length){ box.innerHTML = '<p class="hint">No projects yet.</p>'; return; }
+  const byId = new Map(mapItems.map(p => [p.id, p]));
+  for (const pr of projects){
+    const items = pr.items.map(id => byId.get(id)).filter(Boolean);
+    const gone = pr.items.length - items.length;
+    const d = document.createElement("div");
+    d.className = "proj";
+    d.innerHTML = '<b></b><div class="lib-sub" style="margin-left:0"></div><div class="btns"><button class="ghost" data-a="show">Show on map</button><button class="ghost" data-a="use">Use in Composite</button><button class="ghost" data-a="del">Delete project</button></div>';
+    d.querySelector("b").textContent = pr.name;
+    d.querySelector(".lib-sub").textContent = items.length + " recordings" + (gone ? ", " + gone + " deleted from the library" : "");
+    d.querySelector('[data-a="show"]').addEventListener("click", () => {
+      showHitList(items, pr.name + ": " + items.length + " recordings.");
+      const pts = items.flatMap(p => p.track || []);
+      if (pts.length) map.fitBounds(L.latLngBounds(pts), { padding: [20, 20], maxZoom: 16 });
+      $("map").scrollIntoView({ behavior: "smooth" });
+    });
+    const useBtn = d.querySelector('[data-a="use"]');
+    useBtn.addEventListener("click", () => { if (items.length) useInComposite(items, useBtn, t => $("mapStatus").textContent = t); });
+    const del = d.querySelector('[data-a="del"]');
+    del.addEventListener("click", async () => {
+      if (del.dataset.armed !== "1"){ del.dataset.armed = "1"; del.textContent = "Tap again to delete"; setTimeout(() => { del.dataset.armed = ""; del.textContent = "Delete project"; }, 3000); return; }
+      await saveProjects((await loadProjects()).filter(x => x.id !== pr.id));
+      renderProjects(); refreshProjectPicker();
+    });
+    box.appendChild(d);
+  }
+}
+
+
+// ---------------- Road tracking ----------------
+// Classic lane finding: edges plus white and yellow paint, a vote for the strongest left and right
+// lines, then a curve fit along each so bends are followed. Coordinates are saved as fractions of the frame.
+let roadItems = [], roadTrack = null, roadFrames = [], roadSrc = null;
+const RW = 480;
+const roadWork = document.createElement("canvas");
+const roadCtx = roadWork.getContext("2d", { willReadFrequently: true });
+
+async function openRoad(){
+  roadItems = (await scanLibrary()).filter(p => p.kind === "video");
+  const sel = $("roadPick");
+  sel.innerHTML = "";
+  const o0 = document.createElement("option"); o0.value = ""; o0.textContent = roadItems.length ? "Pick a recording from the Library" : "No recordings in the Library yet"; sel.appendChild(o0);
+  roadItems.forEach((p, i) => { const o = document.createElement("option"); o.value = String(i); o.textContent = itemLabel(p); sel.appendChild(o); });
+}
+$("roadPick").addEventListener("change", () => { if ($("roadPick").value !== "") $("roadFile").value = ""; });
+$("roadFile").addEventListener("change", () => { if ($("roadFile").files.length) $("roadPick").value = ""; });
+
+function videoMeta(file){
+  return new Promise((resolve, reject) => {
+    const v = document.createElement("video");
+    v.muted = true; v.preload = "metadata";
+    v.src = URL.createObjectURL(file);
+    v.onloadedmetadata = async () => {
+      if (!isFinite(v.duration)){
+        await new Promise(r => { v.ondurationchange = () => { if (isFinite(v.duration)) r(); }; v.currentTime = 1e9; setTimeout(r, 5000); });
+      }
+      resolve({ w: v.videoWidth, h: v.videoHeight, dur: v.duration });
+      URL.revokeObjectURL(v.src);
+    };
+    v.onerror = () => reject(new Error("Could not open the video."));
+  });
+}
+
+// least squares fit of x = a*y^2 + b*y + c
+function fitQuad(pts){
+  let n = 0, sy = 0, sy2 = 0, sy3 = 0, sy4 = 0, sx = 0, sxy = 0, sxy2 = 0;
+  for (const [x, y, w] of pts){
+    n += w; sy += w * y; sy2 += w * y * y; sy3 += w * y * y * y; sy4 += w * y * y * y * y;
+    sx += w * x; sxy += w * x * y; sxy2 += w * x * y * y;
+  }
+  const M = [[sy4, sy3, sy2], [sy3, sy2, sy], [sy2, sy, n]], V = [sxy2, sxy, sx];
+  const det = m => m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+  const D = det(M);
+  if (Math.abs(D) < 1e-9) return null;
+  const col = (k) => M.map((r, i) => r.map((v, j) => j === k ? V[i] : v));
+  return [det(col(0)) / D, det(col(1)) / D, det(col(2)) / D];
+}
+
+function trackFrame(img, W, H, prev){
+  const d = img.data;
+  const top = Math.round(H * (prev ? Math.max(0.3, prev.vp[1] / H) : 0.42)), bot = Math.round(H * 0.94);
+  // edge and paint score per pixel in the road zone
+  const gray = new Float32Array(W * H);
+  for (let i = 0, p = 0; i < W * H; i++, p += 4) gray[i] = 0.3 * d[p] + 0.59 * d[p + 1] + 0.11 * d[p + 2];
+  const pts = [];
+  for (let y = top + 1; y < bot - 1; y++){
+    for (let x = 1; x < W - 1; x++){
+      const i = y * W + x, p = i * 4;
+      const gx = gray[i + 1] - gray[i - 1];
+      const r = d[p], g = d[p + 1], b = d[p + 2];
+      const white = Math.min(r, g, b) > 170 && Math.max(r, g, b) - Math.min(r, g, b) < 40;
+      const yellow = r > 140 && g > 110 && b < 0.7 * g && r - b > 60;
+      if (Math.abs(gx) > 38 || white || yellow) pts.push([x, y, (white || yellow) ? 2 : 1]);
+    }
+  }
+  // vote: line x = xb + m*(bot - y), xb is where it meets the bottom of the zone
+  const span = bot - top;
+  const best = { L: null, R: null }, lines = { L: [], R: [] };
+  for (const side of ["L", "R"]){
+    const mLo = side === "L" ? 0.25 : -3.2, mHi = side === "L" ? 3.2 : -0.25;
+    const MB = 48, XB = Math.ceil(W * 3 / 4);
+    const acc = new Float32Array(MB * XB);
+    const nearTop = bot - span * 0.5;      // vote only with the near half, where lines are close to straight
+    for (const [x, y, w] of pts){
+      if (y < nearTop) continue;
+      const t = bot - y;
+      for (let mi = 0; mi < MB; mi++){
+        const m = mLo + (mHi - mLo) * mi / (MB - 1);
+        const xb = x - m * t;               // bottom crossing
+        const bi = Math.round((xb + W) / 4);
+        if (bi >= 0 && bi < XB) acc[mi * XB + bi] += w;
+      }
+    }
+    // collect every line peak, then pick the one nearest the middle: that is your own lane's line
+    const score = new Float32Array(MB * XB);
+    for (let mi = 0; mi < MB; mi++) for (let bi = 0; bi < XB; bi++){
+      let v = acc[mi * XB + bi];
+      const m = mLo + (mHi - mLo) * mi / (MB - 1), xb = bi * 4 - W;
+      // left line should sit left of center at the bottom, right line right of center
+      if (side === "L" ? xb > W * 0.55 : xb < W * 0.45) continue;
+      if (prev && prev[side]){ const dx = Math.abs(xb - prev[side].xb), dm = Math.abs(m - prev[side].m); v *= 1 / (1 + dx / 120 + dm / 1.5); }
+      score[mi * XB + bi] = v;
+    }
+    const peaks = [];
+    let top1 = 0;
+    for (let mi = 0; mi < MB; mi++) for (let bi = 0; bi < XB; bi++){
+      const v = score[mi * XB + bi];
+      if (v <= span * 0.12) continue;
+      let isMax = true;
+      for (let a = -3; a <= 3 && isMax; a++) for (let c = -8; c <= 8; c++){
+        const ma = mi + a, bc = bi + c;
+        if ((a || c) && ma >= 0 && ma < MB && bc >= 0 && bc < XB && score[ma * XB + bc] > v){ isMax = false; break; }
+      }
+      if (!isMax) continue;
+      const m = mLo + (mHi - mLo) * mi / (MB - 1), xb = bi * 4 - W;
+      // the same painted line seen twice: keep the stronger one
+      const dup = peaks.find(p => Math.abs(p.xb - xb) < 30);
+      if (dup){ if (v > dup.votes){ dup.votes = v; dup.m = m; dup.xb = xb; } continue; }
+      peaks.push({ m, xb, votes: v });
+      top1 = Math.max(top1, v);
+    }
+    const strong = peaks.filter(p => p.votes >= top1 * 0.15);
+    lines[side] = strong.map(p => ({ m: p.m, xb: p.xb }));
+    if (strong.length){
+      strong.sort((p, q) => side === "L" ? q.xb - p.xb : p.xb - q.xb);   // nearest the middle first
+      best[side] = strong[0];
+    }
+    // don't jump to a different painted line just because this frame lost the dashes: hold the last one a while
+    const old = prev && prev[side];
+    const outward = old && best[side] && (side === "L" ? best[side].xb < old.xb : best[side].xb > old.xb);
+    if (old && (prev.heldN || 0) < 10 && (!best[side] || (outward && Math.abs(best[side].xb - old.xb) > W * 0.2))){
+      best[side] = { m: old.m, xb: old.xb, votes: span * 0.2, held: true };
+    }
+  }
+  if (!best.L || !best.R){
+    return prev ? Object.assign({}, prev, { conf: prev.conf * 0.6, held: true }) : null;
+  }
+  // trace each line upward step by step so it follows bends, then fit a curve to the traced points
+  const rows = new Map();
+  for (const pt of pts){ const k = pt[1] >> 2; if (!rows.has(k)) rows.set(k, []); rows.get(k).push(pt); }
+  const curve = {};
+  for (const side of ["L", "R"]){
+    const ln = best[side];
+    const traced = [];
+    let x = ln.xb, slope = ln.m, misses = 0;   // slope: pixels of x per pixel going up
+    for (let y = bot - 2; y > top; y -= 4){
+      x += slope * 4;
+      if (x < -W * 0.5 || x > W * 1.5) break;
+      const ww = 4 + 10 * (y - top) / span;
+      const cand = (rows.get(y >> 2) || []).filter(([px]) => Math.abs(px - x) <= ww);
+      if (cand.length){
+        let sw = 0, sx = 0;
+        for (const [px, , w] of cand){ sw += w; sx += w * px; }
+        const nx = sx / sw;
+        traced.push([nx, y, 1]);
+        x = nx; misses = 0;
+        if (traced.length >= 4){
+          const a = traced[traced.length - 4], b2 = traced[traced.length - 1];
+          const ns = (b2[0] - a[0]) / Math.max(1, a[1] - b2[1]);
+          slope = slope * 0.5 + ns * 0.5;
+        }
+      } else if (++misses > 35) break;   // keeps going through the gaps in dashed lane lines
+    }
+    const q = traced.length >= 10 ? fitQuad(traced) : null;
+    curve[side] = q || [0, -ln.m, ln.xb + ln.m * bot];
+  }
+  // vanishing point from the straight parts
+  const yv = bot - (best.R.xb - best.L.xb) / (best.L.m - best.R.m);
+  const xv = best.L.xb + best.L.m * (bot - yv);
+  const at = (c, y) => c[0] * y * y + c[1] * y + c[2];
+  const lane = at(curve.R, bot) - at(curve.L, bot);
+  const conf = Math.min(1, (best.L.votes + best.R.votes) / (span * 3));
+  // bend: how far the lane center at the far end drifts from the straight line to the vanishing point
+  const yf = top + span * 0.1;
+  const cFar = (at(curve.L, yf) + at(curve.R, yf)) / 2;
+  const sFar = (best.L.xb + best.L.m * (bot - yf) + best.R.xb + best.R.m * (bot - yf)) / 2;
+  const sideHeld = best.L.held || best.R.held;
+  const out = { heldN: sideHeld ? (prev && prev.heldN || 0) + 1 : 0, L: { m: best.L.m, xb: best.L.xb }, R: { m: best.R.m, xb: best.R.xb }, curveL: curve.L, curveR: curve.R, vp: [xv, yv], lane, bend: (cFar - sFar) / W * 10, top, bot, conf, lines };
+  if (prev && !prev.held){
+    // light smoothing so the overlay doesn't jitter
+    const k = 0.35;
+    out.vp = [prev.vp[0] * k + out.vp[0] * (1 - k), prev.vp[1] * k + out.vp[1] * (1 - k)];
+    out.curveL = out.curveL.map((v, i) => prev.curveL[i] * k + v * (1 - k));
+    out.curveR = out.curveR.map((v, i) => prev.curveR[i] * k + v * (1 - k));
+    out.lane = prev.lane * k + out.lane * (1 - k);
+  }
+  return out;
+}
+
+function drawRoad(i){
+  const f = roadFrames[i], tr = roadTrack && roadTrack.frames[i];
+  if (!f) return;
+  const cv = $("roadCanvas");
+  cv.width = roadTrack.W; cv.height = roadTrack.H;
+  const ctx = cv.getContext("2d");
+  createImageBitmap(f).then(bmp => {
+    ctx.drawImage(bmp, 0, 0); bmp.close();
+    $("roadNum").textContent = (i + 1) + "/" + roadFrames.length;
+    if (!tr){ $("rsConf").textContent = "0"; return; }
+    const at = (c, y) => c[0] * y * y + c[1] * y + c[2];
+    const line = (fn, color, w) => { ctx.strokeStyle = color; ctx.lineWidth = w; ctx.beginPath(); for (let y = tr.top; y <= tr.bot; y += 3){ const x = fn(y); y === tr.top ? ctx.moveTo(x, y) : ctx.lineTo(x, y); } ctx.stroke(); };
+    ctx.globalAlpha = 0.18; ctx.fillStyle = "#d2601a";
+    ctx.beginPath();
+    for (let y = tr.top; y <= tr.bot; y += 3) ctx.lineTo(at(tr.curveL, y), y);
+    for (let y = tr.bot; y >= tr.top; y -= 3) ctx.lineTo(at(tr.curveR, y), y);
+    ctx.fill(); ctx.globalAlpha = 1;
+    if (tr.lines) for (const l of [...tr.lines.L, ...tr.lines.R]) line(y => l.xb + l.m * (tr.bot - y), "rgba(90,90,90,0.55)", 2);
+    line(y => at(tr.curveL, y), "#2e7d32", 4);
+    line(y => at(tr.curveR, y), "#1f6f8b", 4);
+    line(y => (at(tr.curveL, y) + at(tr.curveR, y)) / 2, "#d2601a", 2);
+    ctx.strokeStyle = "#8a3fa0"; ctx.lineWidth = 1.5; ctx.setLineDash([6, 6]);
+    ctx.beginPath(); ctx.moveTo(0, tr.vp[1]); ctx.lineTo(roadTrack.W, tr.vp[1]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = "#8a3fa0"; ctx.beginPath(); ctx.arc(tr.vp[0], tr.vp[1], 6, 0, 7); ctx.fill();
+    $("rsConf").textContent = Math.round(tr.conf * 100) + "%" + (tr.held ? " held" : "");
+    $("rsLane").textContent = Math.round(tr.lane);
+    $("rsBend").textContent = Math.abs(tr.bend) < 0.3 ? "straight" : (tr.bend < 0 ? "left " : "right ") + Math.abs(tr.bend).toFixed(1);
+  });
+}
+$("roadScrub").addEventListener("input", e => drawRoad(parseInt(e.target.value)));
+
+$("roadGo").addEventListener("click", async () => {
+  const idx = $("roadPick").value;
+  let file = null, item = null;
+  if (idx !== ""){ item = roadItems[parseInt(idx)]; file = await item.handle.getFile(); }
+  else if ($("roadFile").files.length) file = $("roadFile").files[0];
+  if (!file){ $("roadStatus").textContent = "Pick a recording or a video file first."; return; }
+  const btn = $("roadGo"); btn.disabled = true;
+  try {
+    const meta = await videoMeta(file);
+    const fps = parseInt($("roadFps").value) || 4;
+    const H = Math.round(RW * meta.h / meta.w / 2) * 2;
+    const clip = { id: nextClipId++, file, mounted: null, video: { videoWidth: meta.w, videoHeight: meta.h } };
+    $("roadStatus").textContent = "Pulling frames...";
+    $("roadBar").style.width = "5%";
+    // pull in chunks of 20 seconds so memory stays low on long recordings
+    roadFrames = [];
+    for (let t = 0; t < meta.dur; t += 20){
+      const chunk = await grabRange(clip, t, Math.min(20, meta.dur - t), fps, RW, H);
+      roadFrames.push(...chunk);
+      $("roadBar").style.width = (5 + 45 * Math.min(1, (t + 20) / meta.dur)) + "%";
+      $("roadStatus").textContent = "Pulling frames... " + roadFrames.length;
+    }
+    roadWork.width = RW; roadWork.height = H;
+    roadTrack = { W: RW, H, fps, laneFeet: parseInt($("laneFt").value) || 12, source: item ? item.id : file.name, frames: [] };
+    let prev = null, good = 0;
+    for (let i = 0; i < roadFrames.length; i++){
+      const bmp = await createImageBitmap(roadFrames[i]);
+      roadCtx.drawImage(bmp, 0, 0); bmp.close();
+      const tr = trackFrame(roadCtx.getImageData(0, 0, RW, H), RW, H, prev);
+      roadTrack.frames.push(tr);
+      if (tr) prev = tr;
+      if (tr && !tr.held) good++;
+      if (i % 4 === 0){ $("roadBar").style.width = (50 + 50 * i / roadFrames.length) + "%"; $("roadStatus").textContent = "Tracking frame " + (i + 1) + " of " + roadFrames.length; await sleep(0); }
+    }
+    $("roadBar").style.width = "100%";
+    $("roadScrub").max = roadFrames.length - 1; $("roadScrub").value = 0;
+    drawRoad(0);
+    let msg = "Road found in " + good + " of " + roadFrames.length + " frames.";
+    if (item){
+      // save as fractions of the frame so it works at any size
+      const norm = { version: 1, fps, laneFeet: roadTrack.laneFeet, aspect: H / RW, frames: roadTrack.frames.map((f, i) => f ? {
+        t: +(i / fps).toFixed(3), conf: +f.conf.toFixed(3), held: !!f.held,
+        vp: [f.vp[0] / RW, f.vp[1] / RW], top: f.top / RW, bot: f.bot / RW, lane: f.lane / RW, bend: +f.bend.toFixed(3),
+        left: [f.curveL[0] * RW, f.curveL[1], f.curveL[2] / RW], right: [f.curveR[0] * RW, f.curveR[1], f.curveR[2] / RW],
+        others: f.lines ? [...f.lines.L, ...f.lines.R].map(l => [l.m, l.xb / RW]) : []
+      } : null) };
+      await writeFile(item.dir, item.name.replace(/\.(webm|mp4)$/, "_road.json"), JSON.stringify(norm));
+      msg += " Saved with the recording.";
+    }
+    $("roadStatus").textContent = msg;
+  } catch (e){ $("roadStatus").textContent = "Road tracking stopped: " + (e && e.message ? e.message : e); }
+  btn.disabled = false;
+});
+
+
+// ---------------- Music hits ----------------
+// Splits the song into three frequency bands, follows each band's loudness every 10 ms,
+// and marks a hit wherever loudness jumps well above what came just before.
+const HOP = 0.01, BANDS = [
+  { key: "kick",  name: "Kick",   color: "#d2601a", filters: [["lowpass", 120, 0.7], ["lowpass", 120, 0.7]], gap: 0.15, sens: 1.6 },
+  { key: "snare", name: "Snare",  color: "#1f6f8b", filters: [["bandpass", 300, 0.8], ["lowpass", 900, 0.7]], gap: 0.15, sens: 1.6 },
+  { key: "hats",  name: "Hi-hat", color: "#3f8f3a", filters: [["highpass", 7000, 0.7]], gap: 0.07, sens: 1.6 }
+];
+let song = null, songTimer = null;
+const musicAudio = new Audio();
+musicAudio.preload = "auto";
+
+async function musicDir(){ return (await root()).getDirectoryHandle("music", { create: true }); }
+
+function pickHits(d, sens, gapHops){
+  const n = d.length, W = 50;
+  const ps = new Float64Array(n + 1), ps2 = new Float64Array(n + 1);
+  for (let i = 0; i < n; i++){ ps[i + 1] = ps[i] + d[i]; ps2[i + 1] = ps2[i] + d[i] * d[i]; }
+  const out = [];
+  let last = -1e9;
+  for (let i = 0; i < n - 1; i++){
+    const v = d[i];
+    if (v <= 0) continue;
+    const a = Math.max(0, i - W), b = Math.min(n, i + W + 1), m = b - a;
+    const mean = (ps[b] - ps[a]) / m, sd = Math.sqrt(Math.max(0, (ps2[b] - ps2[a]) / m - mean * mean));
+    if (v < mean + (3.2 - sens) * sd || v < 0.12 * (3.2 - sens)) continue;
+    let peak = true;
+    for (let k = Math.max(0, i - 3); k <= Math.min(n - 1, i + 3); k++) if (d[k] > v){ peak = false; break; }
+    if (!peak || i - last < gapHops) continue;
+    out.push(+(i * HOP).toFixed(3));
+    last = i;
+  }
+  return out;
+}
+
+// a kick's attack also reaches the snare band, so snare hits sitting on a kick are dropped
+function dropKickBleed(snareTimes, kickTimes){
+  let j = 0;
+  return snareTimes.filter(t => {
+    while (j < kickTimes.length && kickTimes[j] < t - 0.04) j++;
+    return !(j < kickTimes.length && Math.abs(kickTimes[j] - t) <= 0.04);
+  });
+}
+function bandTimes(data, key){
+  const b = BANDS.find(x => x.key === key), band = data.bands[key];
+  let t = pickHits(Float32Array.from(band.onset), band.sens, Math.round(b.gap / HOP));
+  if (key === "snare" && data.bands.kick) t = dropKickBleed(t, data.bands.kick.times);
+  return t;
+}
+
+function estimateBpm(dA, dB){
+  const n = Math.min(dA.length, dB.length);
+  const d = new Float32Array(n);
+  for (let i = 0; i < n; i++) d[i] = dA[i] + dB[i];
+  let best = 0, bestLag = 50;
+  for (let lag = 30; lag <= 100; lag++){
+    let sum = 0;
+    for (let i = lag; i < n; i++) sum += d[i] * d[i - lag];
+    if (sum > best){ best = sum; bestLag = lag; }
+  }
+  let bpm = 60 / (bestLag * HOP);
+  while (bpm < 80) bpm *= 2;
+  while (bpm > 170) bpm /= 2;
+  return Math.round(bpm);
+}
+
+async function analyzeSong(file, onProgress){
+  const buf = await file.arrayBuffer();
+  const ac = new AudioContext();
+  const audio = await ac.decodeAudioData(buf.slice(0));
+  ac.close();
+  const SR = 22050, len = Math.ceil(audio.duration * SR), hop = Math.round(SR * HOP);
+  // waveform for drawing
+  const ch = audio.getChannelData(0), P = 2000, step = Math.max(1, Math.floor(ch.length / P)), peaks = [];
+  for (let i = 0; i < P; i++){ let m = 0; for (let j = i * step; j < Math.min(ch.length, (i + 1) * step); j += 4) m = Math.max(m, Math.abs(ch[j])); peaks.push(+m.toFixed(3)); }
+  const data = { name: file.name, duration: audio.duration, peaks, bands: {} };
+  let bi = 0;
+  for (const b of BANDS){
+    onProgress && onProgress(bi / BANDS.length, "Listening for " + b.name.toLowerCase() + " hits...");
+    const oac = new OfflineAudioContext(1, len, SR);
+    const src = oac.createBufferSource(); src.buffer = audio;
+    let node = src;
+    for (const [type, f, q] of b.filters){ const bq = oac.createBiquadFilter(); bq.type = type; bq.frequency.value = f; bq.Q.value = q; node.connect(bq); node = bq; }
+    node.connect(oac.destination); src.start();
+    const x = (await oac.startRendering()).getChannelData(0);
+    const n = Math.floor(x.length / hop);
+    const env = new Float32Array(n);
+    for (let i = 0; i < n; i++){ let s2 = 0; const a = i * hop; for (let j = a; j < Math.min(x.length, a + hop * 2); j++) s2 += x[j] * x[j]; env[i] = Math.sqrt(s2 / (hop * 2)); }
+    const sorted = Array.from(env).sort((p, q) => p - q), p95 = sorted[Math.floor(sorted.length * 0.95)] || 1e-6;
+    // rise in loudness over the last 30 ms, measured against this band's normal loud level,
+    // so faint bleed from other drums stays small
+    const d = new Float32Array(n);
+    for (let i = 0; i < n; i++){
+      const prevMax = Math.max(i >= 1 ? env[i - 1] : 0, i >= 2 ? env[i - 2] : 0, i >= 3 ? env[i - 3] : 0);
+      d[i] = Math.max(0, env[i] - prevMax) / p95;
+    }
+    data.bands[b.key] = { onset: Array.from(d, v => +v.toFixed(3)), sens: b.sens, on: true, times: pickHits(d, b.sens, Math.round(b.gap / HOP)) };
+    bi++;
+    await sleep(0);
+  }
+  data.bands.snare.times = bandTimes(data, "snare");
+  data.bpm = estimateBpm(data.bands.kick.onset, data.bands.snare.onset);
+  return data;
+}
+
+async function saveSong(id, file, data){
+  const md = await musicDir();
+  const dir = await md.getDirectoryHandle(id, { create: true });
+  if (file) await writeFile(dir, "audio", file);
+  const meta = Object.assign({}, data); delete meta.id;
+  await writeFile(dir, "song.json", JSON.stringify(meta));
+}
+async function loadSong(id){
+  try {
+    const dir = await (await musicDir()).getDirectoryHandle(id);
+    const data = JSON.parse(await (await (await dir.getFileHandle("song.json")).getFile()).text());
+    const file = await (await dir.getFileHandle("audio")).getFile();
+    return { data, file };
+  } catch (e){ return null; }
+}
+async function listSongs(){
+  const out = [];
+  try {
+    for (const [id, h] of await listEntries(await musicDir())){
+      if (h.kind !== "directory") continue;
+      try {
+        const d = JSON.parse(await (await (await h.getFileHandle("song.json")).getFile()).text());
+        out.push({ id, name: d.name, duration: d.duration, bpm: d.bpm, counts: Object.fromEntries(Object.entries(d.bands).map(([k, v]) => [k, v.times.length])) });
+      } catch (e) {}
+    }
+  } catch (e) {}
+  return out.sort((a, b) => b.id.localeCompare(a.id));
+}
+
+function fmtTime(t){ t = Math.max(0, t || 0); return Math.floor(t / 60) + ":" + String(Math.floor(t % 60)).padStart(2, "0"); }
+
+function openSongView(id, file, data){
+  song = { id, file, data };
+  if (musicAudio._url) URL.revokeObjectURL(musicAudio._url);
+  musicAudio._url = URL.createObjectURL(file);
+  musicAudio.src = musicAudio._url;
+  $("songPanel").hidden = false;
+  $("sBpm").textContent = data.bpm;
+  $("sLen").textContent = fmtTime(data.duration);
+  renderBands();
+  drawBeats();
+}
+
+function renderBands(){
+  const box = $("bandRows");
+  box.innerHTML = "";
+  for (const b of BANDS){
+    const band = song.data.bands[b.key];
+    const d = document.createElement("div");
+    d.className = "band";
+    d.innerHTML = '<label><input type="checkbox"' + (band.on ? " checked" : "") + '> <b style="color:' + b.color + '">' + b.name + '</b> <span class="cnt"></span></label>' +
+      '<div class="row"><span style="font-size:14px">Sensitivity</span><input type="range" min="0.4" max="3" step="0.1" value="' + band.sens + '"><span class="num sv">' + band.sens.toFixed(1) + '</span></div>';
+    d.querySelector(".cnt").textContent = band.times.length + " hits";
+    d.querySelector("input[type=checkbox]").addEventListener("change", e => { band.on = e.target.checked; drawBeats(); persist(); });
+    const r = d.querySelector("input[type=range]");
+    let t = null;
+    r.addEventListener("input", () => {
+      band.sens = parseFloat(r.value);
+      d.querySelector(".sv").textContent = band.sens.toFixed(1);
+      band.times = bandTimes(song.data, b.key);
+      if (b.key === "kick"){ song.data.bands.snare.times = bandTimes(song.data, "snare"); renderBandCounts(); }
+      d.querySelector(".cnt").textContent = band.times.length + " hits";
+      drawBeats();
+      clearTimeout(t); t = setTimeout(persist, 400);
+    });
+    box.appendChild(d);
+  }
+}
+function renderBandCounts(){
+  document.querySelectorAll("#bandRows .band").forEach((el, i) => { el.querySelector(".cnt").textContent = song.data.bands[BANDS[i].key].times.length + " hits"; });
+}
+function persist(){ if (song) saveSong(song.id, null, song.data).then(() => { if (compSongData && compSongData.id === song.id) compSongData = null; }); }
+
+function viewWindow(){
+  const dur = song.data.duration, z = parseFloat($("beatZoom").value);
+  const len = z && z < dur ? z : dur;
+  const start = (dur - len) * (parseInt($("beatScroll").value) / 1000);
+  return [start, len];
+}
+
+function drawBeats(){
+  if (!song) return;
+  const cv = $("beatCanvas"), ctx = cv.getContext("2d"), W = cv.width, H = cv.height;
+  const [v0, vl] = viewWindow();
+  const X = t => (t - v0) / vl * W;
+  ctx.fillStyle = "#fbfaf7"; ctx.fillRect(0, 0, W, H);
+  // waveform
+  const pk = song.data.peaks, dur = song.data.duration, wH = 70;
+  ctx.fillStyle = "#cfc8ba";
+  for (let i = 0; i < pk.length; i++){
+    const t = i / pk.length * dur; if (t < v0 || t > v0 + vl) continue;
+    const x = X(t), h = pk[i] * wH;
+    ctx.fillRect(x, wH / 2 + 4 - h / 2, Math.max(1, W / (pk.length * vl / dur)), h);
+  }
+  // hit lanes
+  BANDS.forEach((b, i) => {
+    const band = song.data.bands[b.key], y = 84 + i * 66;
+    ctx.fillStyle = "#efebe3"; ctx.fillRect(0, y, W, 58);
+    ctx.fillStyle = band.on ? b.color : "#bbb";
+    for (const t of band.times){ if (t < v0 || t > v0 + vl) continue; ctx.fillRect(X(t) - 2.5, y + 4, 5, 50); }
+    ctx.fillStyle = "rgba(93,102,112,0.85)"; ctx.font = "bold 32px system-ui,sans-serif"; ctx.fillText(b.name, 10, y + 41);
+  });
+  // seconds ruler
+  ctx.fillStyle = "#5d6670"; ctx.font = "26px system-ui,sans-serif";
+  const stepS = vl > 120 ? 30 : vl > 40 ? 10 : vl > 15 ? 5 : 1;
+  for (let t = Math.ceil(v0 / stepS) * stepS; t <= v0 + vl; t += stepS) ctx.fillText(fmtTime(t), X(t) + 2, H - 4);
+  // playhead
+  const ph = musicAudio.currentTime;
+  if (ph >= v0 && ph <= v0 + vl){ ctx.fillStyle = "#b3261e"; ctx.fillRect(X(ph) - 2, 0, 4, H); }
+}
+$("beatZoom").addEventListener("change", drawBeats);
+$("beatScroll").addEventListener("input", () => { $("followHead").checked = false; drawBeats(); });
+// drag sideways to pan the view, tap to jump the song
+(() => {
+  const cv = $("beatCanvas");
+  let down = null;
+  cv.addEventListener("pointerdown", e => { down = { x: e.clientX, y: e.clientY, scroll: parseInt($("beatScroll").value), moved: false }; });
+  cv.addEventListener("pointermove", e => {
+    if (!down || !song) return;
+    const dx = e.clientX - down.x;
+    if (!down.moved && Math.abs(dx) < 8) return;
+    if (!down.moved && Math.abs(e.clientY - down.y) > Math.abs(dx)) { down = null; return; }  // vertical: let the page scroll
+    down.moved = true;
+    const dur = song.data.duration, [, vl] = viewWindow();
+    if (vl >= dur) return;
+    const r = cv.getBoundingClientRect();
+    const dt = -dx / r.width * vl;
+    const v = Math.min(1000, Math.max(0, down.scroll + dt / (dur - vl) * 1000));
+    $("beatScroll").value = Math.round(v);
+    $("followHead").checked = false;
+    drawBeats();
+  });
+  const up = e => {
+    if (down && !down.moved && song){
+      const r = cv.getBoundingClientRect(), [v0, vl] = viewWindow();
+      musicAudio.currentTime = Math.max(0, Math.min(song.data.duration - 0.05, v0 + (e.clientX - r.left) / r.width * vl));
+      tickMusic();
+    }
+    down = null;
+  };
+  cv.addEventListener("pointerup", up);
+  cv.addEventListener("pointercancel", () => { down = null; });
+})();
+
+function renderFlashLabels(){
+  for (const d of ["kick", "snare", "hats"]){
+    const el = $("fl" + d);
+    const kinds = KINDS.filter(k => ASSIGN[k.key] === d).map(k => k.name.split(",")[0].toLowerCase());
+    el.innerHTML = "";
+    el.append(DRUM_NAMES[d].toUpperCase());
+    const sm = document.createElement("small"); sm.textContent = kinds.length ? kinds.join(", ") : "nothing assigned";
+    el.appendChild(sm);
+  }
+}
+renderFlashLabels();
+
+function tickMusic(){
+  if (!song) return;
+  const t = musicAudio.currentTime;
+  $("sNow").textContent = fmtTime(t);
+  for (const b of BANDS){
+    const band = song.data.bands[b.key];
+    $("fl" + b.key).classList.toggle("on", band.on && !musicAudio.paused && hitActive(band.times, t, 0.12));
+  }
+  // keep the playhead in view while playing
+  const [v0, vl] = viewWindow(), dur = song.data.duration;
+  if ($("followHead").checked && !musicAudio.paused && (t < v0 || t > v0 + vl * 0.9) && vl < dur){
+    $("beatScroll").value = Math.round(Math.min(1, Math.max(0, (t - vl * 0.1) / (dur - vl))) * 1000);
+  }
+  drawBeats();
+}
+// the button follows the audio's own play and pause events, so it can't get out of step
+musicAudio.addEventListener("play", () => { $("songPlay").textContent = "Pause"; clearInterval(songTimer); songTimer = setInterval(tickMusic, 30); });
+musicAudio.addEventListener("pause", () => { $("songPlay").textContent = "Play"; clearInterval(songTimer); tickMusic(); });
+musicAudio.addEventListener("ended", () => { $("songPlay").textContent = "Play"; clearInterval(songTimer); tickMusic(); });
+$("songPlay").addEventListener("click", async () => {
+  if (!song) return;
+  if (musicAudio.paused || musicAudio.ended){
+    if (musicAudio.ended) musicAudio.currentTime = 0;
+    try { await musicAudio.play(); } catch (e){ $("songStatus").textContent = "Could not play: " + e.message; }
+  } else musicAudio.pause();
+});
+$("songStop").addEventListener("click", () => { musicAudio.pause(); musicAudio.currentTime = 0; $("beatScroll").value = 0; $("followHead").checked = true; tickMusic(); });
+
+$("songGo").addEventListener("click", async () => {
+  const f = $("songFile").files[0];
+  if (!f){ $("songStatus").textContent = "Pick a song file first."; return; }
+  const btn = $("songGo"); btn.disabled = true;
+  musicAudio.pause();
+  try {
+    const data = await analyzeSong(f, (p, msg) => { $("songBar").style.width = (p * 100) + "%"; $("songStatus").textContent = msg; });
+    $("songBar").style.width = "100%";
+    const id = "s" + Date.now();
+    await saveSong(id, f, data);
+    openSongView(id, f, data);
+    $("songStatus").textContent = "Found " + data.bands.kick.times.length + " kick, " + data.bands.snare.times.length + " snare and " + data.bands.hats.times.length + " hi-hat hits. Saved in the app.";
+    renderSongs();
+  } catch (e){ $("songStatus").textContent = "Could not read this song: " + (e && e.message ? e.message : e); }
+  btn.disabled = false;
+});
+
+async function renderSongs(){
+  const box = $("songList");
+  const songs = await listSongs();
+  box.innerHTML = songs.length ? "" : '<p class="hint">No songs yet.</p>';
+  for (const s of songs){
+    const d = document.createElement("div");
+    d.className = "proj";
+    d.innerHTML = '<b></b><div class="lib-sub" style="margin-left:0"></div><div class="btns"><button class="ghost" data-a="open">Open</button><button class="ghost" data-a="del">Delete</button></div>';
+    d.querySelector("b").textContent = s.name;
+    d.querySelector(".lib-sub").textContent = fmtTime(s.duration) + ", " + s.bpm + " bpm, " + (s.counts.kick || 0) + " kick, " + (s.counts.snare || 0) + " snare, " + (s.counts.hats || 0) + " hi-hat";
+    d.querySelector('[data-a="open"]').addEventListener("click", async () => {
+      const x = await loadSong(s.id);
+      if (x){ musicAudio.pause(); $("songPlay").textContent = "Play"; openSongView(s.id, x.file, x.data); $("songPanel").scrollIntoView({ behavior: "smooth" }); }
+    });
+    const del = d.querySelector('[data-a="del"]');
+    del.addEventListener("click", async () => {
+      if (del.dataset.armed !== "1"){ del.dataset.armed = "1"; del.textContent = "Tap again to delete"; setTimeout(() => { del.dataset.armed = ""; del.textContent = "Delete"; }, 3000); return; }
+      await (await musicDir()).removeEntry(s.id, { recursive: true });
+      if (song && song.id === s.id){ song = null; $("songPanel").hidden = true; musicAudio.pause(); }
+      renderSongs(); refreshSongPicker();
+    });
+    box.appendChild(d);
+  }
+}
+
+async function refreshSongPicker(){
+  const sel = $("compSong"), keep = sel.value;
+  const songs = await listSongs();
+  sel.innerHTML = '<option value="">No song</option>';
+  for (const s of songs){ const o = document.createElement("option"); o.value = s.id; o.textContent = s.name; sel.appendChild(o); }
+  if (songs.some(s => s.id === keep)) sel.value = keep;
+}
+refreshSongPicker();
+
+(async () => { await setupBattery(); await recoverParts(); await refreshLibrary(); })();
+</script>
+</body>
+</html>
