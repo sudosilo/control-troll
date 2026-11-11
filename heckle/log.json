@@ -1,6 +1,48 @@
 {
   "heckles": [
     {
+      "date": "2026-11-11T01:17:43Z",
+      "repo": "city-seek",
+      "sha": "dfc4bb75",
+      "message": "Eighteen new hidden items: office, outdoor and random",
+      "heckle": "Eighteen new hidden items and you shoved all of them into cityseek-art.js as one-line functions with eleven statements jammed on each row. The mug function alone draws a handle, a cup, coffee, and steam in a single line you cannot read without a magnifying glass and a stiff drink. Seventy four lines added to a file that was already a wall of minified crayon scribbles. Did the intern get paid by the semicolon? This is a filibuster in canvas form, a lot of motion and nothing anyone can review.\n\nFix it: Break the mug, laptop, and notes functions in cityseek-art.js onto multiple lines. Pull the repeated rr and fs pairs into a helper. Drop the unused sticker option on laptop or actually use it."
+    },
+    {
+      "date": "2026-11-11T01:17:43Z",
+      "repo": "city-seek",
+      "sha": "2ba7f5f9",
+      "message": "Office props, sports fields, basketball courts, traffic cones, office item placement",
+      "heckle": "Office props, basketball courts, traffic cones, and the commit message is a grocery list with no verb. In cityseek-world.js you stacked three chance rolls on one line to drop a cooler, a printer, and a cabinet, then a for loop whose bound calls h.ri on every iteration, so the mug count changes while the loop runs. That is a campaign promise: the number sounds fine until someone checks it. You also nudged the clutter thresholds from 0.85 to 0.8 and 0.86 and 0.92 by feel, with no comment explaining why.\n\nFix it: Compute h.ri(0, 3) once before the loop in the office furniture function of cityseek-world.js. Put the three chance rolls on separate lines. Name the clutterWork thresholds so the next edit is not a guess."
+    },
+    {
+      "date": "2026-11-11T01:17:43Z",
+      "repo": "city-seek",
+      "sha": "16431d70",
+      "message": "Sound toggle, look alike message, Bluebird hints",
+      "heckle": "You added a Sound effects checkbox in city-seek-v2.html and the file is still called v2 while the thing inside has clearly moved on, because naming a file is apparently harder than shipping a bluebird. The help text now has a new paragraph about poking pigeons stacked right under the card counter paragraph, so the instructions are a wall of text on a phone where nobody will read it. The miss toast says Close, but that is a look alike, which is a lot of words for a toast that vanishes in a second.\n\nFix it: Rename city-seek-v2.html or stop pretending versions mean anything. Break the help details section in city-seek-v2.html into short lines. Shorten the onMiss toast text."
+    },
+    {
+      "date": "2026-11-11T01:17:43Z",
+      "repo": "city-seek",
+      "sha": "86c1854a",
+      "message": "Tap reactions, word bubbles, flying birds, live doors and sound",
+      "heckle": "One hundred twenty nine added lines in cityseek-engine.js for tap reactions, word bubbles, and flying birds, and the moverPos function is a nest of modulo math and arc trig that no one will touch again without crying. The fxItems, bubbles, active, and lastR variables are lumped on one line like laundry. Cars honk, dogs bark, skylights crack, and the commit title reads like a patch note written by a toddler on a sugar rush. One bad pts array and the bird teleports like a bailout check.\n\nFix it: Split the new variable declaration at the top of cityseek-engine.js into one per line. Comment what perch, fly, and off mean in moverPos. Guard moverPos against an empty pts array."
+    },
+    {
+      "date": "2026-11-11T01:17:43Z",
+      "repo": "city-seek",
+      "sha": "5232c8d3",
+      "message": "Bluebird, tap reactions and synth sound effects",
+      "heckle": "Eighty lines added to cityseek-art.js for a bluebird, and the bird function is the same unreadable one line canvas soup as everything else, with a flap value that special cases negative numbers just to hide the wings. The commit mixes art, a Bluebird item entry, and the synth sound effects in one lump, so reviewing it is like reading a spending bill with forty riders attached. The title lists three features and the diff makes you hunt for each.\n\nFix it: Split the bird art, the item catalog entry, and the sound code into separate commits. Break the bird function in cityseek-art.js into readable lines. Document what o.flap values mean."
+    },
+    {
+      "date": "2026-11-11T01:17:43Z",
+      "repo": "city-seek",
+      "sha": "df89b335",
+      "message": "Outside doors that swing, flying birds and Bluebird hunt, tap reactions setup",
+      "heckle": "Swinging doors, flying birds, and a Bluebird hunt, all dumped into cityseek-world.js with a commit title that is half the feature list of the next two commits. The w.spr function now stuffs a var declaration, an assignment chain, and a return onto one line just to tag kind and center onto the item. The skylight loop got the same treatment, a monster line with a nested block and three property assignments. You are bolting state onto items after creation like taping parts onto a car and calling it a redesign.\n\nFix it: Make w.spr in cityseek-world.js return the item through a small helper instead of patching k, cx, and cy on after the fact. Reformat the skylight loop onto several lines. Write commit titles that describe one change."
+    },
+    {
       "date": "2026-11-10T21:20:08Z",
       "repo": "city-seek",
       "sha": "3203148a",
@@ -1357,48 +1399,6 @@
       "sha": "d0ed16125587298452d0f529607292bff8f7ed2b",
       "message": "Job starter takes song one artist and track; score matches words by co",
       "heckle": "Seven positional arguments in a bash script, and you renumbered every index by hand in sbjob.sh. That is how you end up passing the artist where the file goes at two in the morning. Nothing checks that the arguments exist, so a missing one feeds an empty string straight into the JSON. score.py also now imports difflib in the middle of the file, like a guy who forgot his wallet and went back for it at the register.\n\nFix it: Check the argument count at the top of sbjob.sh and print the usage line when it is short. Move the import difflib in score.py to the top with the other imports. Use named flags instead of seven positional slots."
-    },
-    {
-      "date": "2026-10-30T10:09:42Z",
-      "repo": "smash-bender",
-      "sha": "9e5d9e1bf6fcc4a3202774987737e7605881ba08",
-      "message": "Frosty benchmark: phone downloader, job id saved, scorer",
-      "heckle": "A downloader that pipes a search string into yt-dlp and scp's the result onto a server, written as a phone script with set -e and zero quoting discipline. In sbget.sh the search words go into ytsearch1: unchecked, and the server hostname is hardwired to an ssh alias that only exists on your phone. sbjob.sh now writes last_job into /opt, so two jobs at once clobber each other like two interns fighting over the one working stapler. The score.py copy of the word compare is already out of date by the next commit.\n\nFix it: Write the job id to a file named after the job in sbjob.sh instead of one shared last_job. Quote and validate the NAME argument in sbget.sh. Put the ssh host in a variable at the top."
-    },
-    {
-      "date": "2026-10-30T10:09:42Z",
-      "repo": "mohavetech-website",
-      "sha": "9fa8f72eadf8c71ae62b0af71d5b3670d40e5564",
-      "message": "sync with vercel, refresh view colors",
-      "heckle": "Another sync commit, another pile of churn nobody can review. fleet.html moved 80 lines to reorder two names, because the RAW list is a hand sorted template literal that you shuffle every time you add a repo. script-v49.js shows zero lines changed while index.html points at it, so the renaming ritual is the only thing happening here. Renaming a JS file each sync to dodge the cache is a filibuster against your own browser.\n\nFix it: Keep the RAW list in fleet.html sorted by code or generate it, so adding one repo is one line. Stop renaming script-vNN.js and use a query string version in index.html. Commit with a message that says what changed."
-    },
-    {
-      "date": "2026-10-30T10:09:42Z",
-      "repo": "mohavetech-website",
-      "sha": "0befa5030354f6afe13cf75e5678b5fd892d86a0",
-      "message": "sync with vercel, keep view menu",
-      "heckle": "Keep view menu, says the message, right after the diff deleted a dozen hard coded location.href buttons for ships, trains, planes, cars, and fish out of index.html. So the menu was built twice, once by hand and once by script, and you needed a sync commit to notice. Meanwhile troll.js got a fresh vizmark block that appends a script tag with Date.now() in the URL, which means that file is never cached again. The 64 line script-v48.js rewrite is a baseDates dump that nobody will ever diff.\n\nFix it: Delete the old button markup in index.html for good, not per sync. Replace Date.now() in the troll.js vizmark block with a fixed version number. Stop hand pasting baseDates into script-v48.js."
-    },
-    {
-      "date": "2026-10-30T10:09:42Z",
-      "repo": "pdf-yourself",
-      "sha": "78fd29ccd7f3a30b014a0cc65baa54b6a2103311",
-      "message": "Add PDF text editor",
-      "heckle": "One 406 line index.html with the CSS, markup, and script all mashed into a single file, committed with a Claude co-author trailer, so I assume the intern supervised. It declares color-scheme light and hardwires a pale grey background, which is the one smart decision in here, and I hate that I noticed it. There is no sign of a package, a test, or any error handling for a scanned PDF with no text layer. The sticky .bar will eat a third of a phone screen in landscape.\n\nFix it: Handle PDFs with no text layer in index.html and tell the user instead of showing a blank page. Split the script out of index.html so it can be read. Check the .bar height on a small landscape phone."
-    },
-    {
-      "date": "2026-10-30T10:09:42Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "5fe1d477738f28bf3186e93dd04f31a587279eaa",
-      "message": "Compare against the last deployed commit when deciding to skip a build",
-      "heckle": "One line in vercel.json and a prayer. You swapped HEAD^ for ${VERCEL_GIT_PREVIOUS_SHA:-HEAD^} in ignoreCommand, which works until that variable points at a commit that was never built, and then the git diff fails and Vercel builds anyway or skips something it should not. This is the third time this repo has fought its own skip rule, a bailout that keeps needing another bailout. Nobody tested it, and the push right after it is literally named Trigger deploy.\n\nFix it: Test the ignoreCommand in vercel.json locally with a made up previous SHA that does not exist. Add a fallback so a failed git diff means build, not skip. Stop pushing empty Trigger deploy commits to cover for it."
-    },
-    {
-      "date": "2026-10-30T10:09:42Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "a57921f51b78a86b438ffd926096ba94374015fd",
-      "message": "Trigger deploy",
-      "heckle": "An empty commit with a Claude trailer and a message that says Trigger deploy. No diff, no change, no idea. This is the whole development process in one commit: push nothing, hope Vercel wakes up, and call it shipping. It landed twenty seconds before the vercel.json fix, which tells me the build skip rule was eating your pushes and you answered by poking it with nothing.\n\nFix it: Fix the ignoreCommand in vercel.json so real commits deploy without a poke. Use the dashboard redeploy button instead of an empty commit. Write what the commit is for in the message."
     }
   ]
 }
