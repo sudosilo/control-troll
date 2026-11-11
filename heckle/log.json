@@ -1,6 +1,34 @@
 {
   "heckles": [
     {
+      "date": "2026-11-11T11:06:08Z",
+      "repo": "rainbow-run",
+      "sha": "fc5bd3d5",
+      "message": "Play a song, and the song and chiptune drive the Spectral Engine and Screensaver scenes like the mic does",
+      "heckle": "You bolted a song player onto index.html and the clever trick is that you lie to every scene by assigning micRead to cw.__audio, so a file upload pretends to be a microphone. That is a duct tape fake mustache on a function and it will bite the first time a scene reads real mic data and gets song data instead. The micNote paragraph now reads like a hostage statement with three sources of sound crammed into one sentence. And a hidden file input driven by a button, with no word about what happens on a phone that refuses autoplay? Bold plan for an intern who still treats the audio context like a vending machine.\n\nFix it: Give the song its own __song reader instead of aliasing micRead in index.html. Handle the autoplay block and a failed decode with a visible message near the songFile input. Split the micNote text into short lines so a phone can read it. Revoke the object URL when a new song loads."
+    },
+    {
+      "date": "2026-11-11T11:06:08Z",
+      "repo": "mohavetech-website",
+      "sha": "210028e4",
+      "message": "sync dates with vercel",
+      "heckle": "Another sync commit, another day of you hand dragging the same date through three files like a congressman filibustering his own bill. fleet.html, mohavetech-vercel-projects-v1.json, and script-v53.js all carry the same chassisquiver and field-twin dates, so one change is typed three times and any typo ships quietly. The json also picked up git-main aliases and dropped a rainbow-run one, which is just noise from whatever scraped it. A diff this dull should come from a script, not from a human who is clearly not trusted with copy and paste.\n\nFix it: Generate baseDates in script-v53.js from mohavetech-vercel-projects-v1.json at build time. Make fleet.html read the same json instead of its own date list. Strip the git-branch aliases from the sync output. Stop committing this by hand."
+    },
+    {
+      "date": "2026-11-11T11:06:08Z",
+      "repo": "mohavetech-website",
+      "sha": "7ef089c5",
+      "message": "sync dates with vercel",
+      "heckle": "A commit titled sync dates with vercel whose entire contents are one alias line deleted from mohavetech-vercel-projects-v1.json. Minus one, plus nothing, like a bailout that rescues no one. You made a commit, a push, and a deploy to remove a git-master hostname that your own previous sync added. That is not maintenance, that is a dog chasing its tail with a git client. Nobody asked for this, least of all the build queue.\n\nFix it: Squash noise like this into the next real sync instead of committing it alone. Filter git-master aliases in the sync script so they never land in mohavetech-vercel-projects-v1.json. Skip the push when the date map did not change."
+    },
+    {
+      "date": "2026-11-11T11:06:08Z",
+      "repo": "mohavetech-website",
+      "sha": "03754ecb",
+      "message": "sync dates with vercel",
+      "heckle": "This sync ate its own tail. In script-v53.js the baseDates keys 2026-11-04-field-dispatch and 2026-11-05-drive-thru-dental got rewritten to 2026-11-06 names, so your date sync renamed apps whose names merely start with a date, and the entries now point at repos that do not exist. Then you hand pasted twenty new apps into index.html and fleet.html on top of that, in two separate lists that have to agree like a coalition government. Eighty some lines changed across four files and the one thing that matters, the key names, got mangled.\n\nFix it: Restore the 2026-11-04-field-dispatch and 2026-11-05-drive-thru-dental keys in script-v53.js. Match only the trailing date field when syncing, never the name. Generate the app lists in index.html and fleet.html from the one json file. Add a check that every baseDates key matches a real project name."
+    },
+    {
       "date": "2026-11-11T01:17:43Z",
       "repo": "city-seek",
       "sha": "dfc4bb75",
@@ -1371,34 +1399,6 @@
       "sha": "e61acf1b810c72392659a77f5cc096fbbe463f5d",
       "message": "Stage two: send any sample to ElevenLabs for four refined versions, logged like stage one",
       "heckle": "stage2.py opens jsonl files with bare open() in a loop and never closes them, and find_parent rescans every experiment file for each request, which is a full filesystem crawl to find one row. Worse, it calls an outside API with a key from the environment and the post endpoint in server/app.py has no auth at all and wildcard CORS, so any stranger can spend your credits. This is a bailout with a hole in the treasury.\n\nFix it: Add an auth check to /api/stage2 in server/app.py. Close files in stage2.find_parent with context managers. Index runs by key instead of rescanning every file per request. Cap queued jobs per hour."
-    },
-    {
-      "date": "2026-10-30T18:03:06Z",
-      "repo": "mohavetech-website",
-      "sha": "f07aed7846f6cd4a81279440f896a3dc7a646938",
-      "message": "Itch stripe: purple stripes on itch.io apps in every view, itch badge on main page",
-      "heckle": "You edited about thirty html files by pasting the same script tag into each one like a human photocopier, and itch.js fetches a ledger straight from a raw file URL on every page load with a hardcoded REPO_TO_HUB map that already has a dozen hand typed guesses. troll.js now has an itchmark block that appends a button with a style string and a setTimeout retry at 2500 ms, which is the sound of someone who does not know when the data arrives. Purple on black, in 11 pixel monospace, on a phone. Good luck reading it.\n\nFix it: Load itch.js once from a shared include instead of editing every page. Cache the ledger fetch and handle a failed fetch in itch.js. Replace the setTimeout retry in troll.js with a real promise chain. Make the badge text larger than eleven pixels."
-    },
-    {
-      "date": "2026-10-30T18:03:06Z",
-      "repo": "2026-10-30-orange-scores",
-      "sha": "a4a5830e4e0adb1449a86997bf203982f2809429",
-      "message": "Load URLHAUS_KEY",
-      "heckle": "A commit titled Load URLHAUS_KEY with zero files changed, zero additions, zero deletions. You pushed nothing and named it like you accomplished something, which is a campaign promise in git form. If the point was to make the host reload an environment variable, say so, because a reader of this history sees an empty envelope and a title that sounds like secrets handling.\n\nFix it: Do not push empty commits to force a variable reload. Use the host's redeploy button instead. Write a message that says why when an empty commit is truly needed."
-    },
-    {
-      "date": "2026-10-30T10:09:42Z",
-      "repo": "smash-bender",
-      "sha": "20560142e6da7bf811a864cdb2e72e6206d2b849",
-      "message": "Match song two's words to song one's words and sing each on song one's",
-      "heckle": "You bolted a difflib.SequenceMatcher onto pipeline.py and called it alignment, and pair_words quietly drops every insert and delete opcode, so any line that does not match just vanishes from the plan. The replace branch maps by k * nb // na, which is a guess dressed up as math. Then you copy pasted the same SequenceMatcher loop into score.py, so the scorer and the pipeline now grade their own homework with two separate copies that will drift apart by Friday.\n\nFix it: Move pair_words into one shared function and import it in score.py. Handle the delete and insert opcodes in pair_words in pipeline.py. Add a test with two lyric sets that barely overlap, because right now you have no idea what happens there."
-    },
-    {
-      "date": "2026-10-30T10:09:42Z",
-      "repo": "smash-bender",
-      "sha": "d0ed16125587298452d0f529607292bff8f7ed2b",
-      "message": "Job starter takes song one artist and track; score matches words by co",
-      "heckle": "Seven positional arguments in a bash script, and you renumbered every index by hand in sbjob.sh. That is how you end up passing the artist where the file goes at two in the morning. Nothing checks that the arguments exist, so a missing one feeds an empty string straight into the JSON. score.py also now imports difflib in the middle of the file, like a guy who forgot his wallet and went back for it at the register.\n\nFix it: Check the argument count at the top of sbjob.sh and print the usage line when it is short. Move the import difflib in score.py to the top with the other imports. Use named flags instead of seven positional slots."
     }
   ]
 }
