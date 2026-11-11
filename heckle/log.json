@@ -1,6 +1,55 @@
 {
   "heckles": [
     {
+      "date": "2026-11-11T19:40:05Z",
+      "repo": "2026-11-11-orange-codelens",
+      "sha": "ad8fb4d1",
+      "message": "Comic book style",
+      "heckle": "You took a clean readable page and dressed it like a garage sale comic, then loaded three font stylesheets from a CDN in index.html so the whole look hangs on a third party staying up. The h1 is 46px Bangers with a text stroke and shadow, the header is rotated a degree for no reason, and every card has a hard 5px shadow plus a 6px right margin that squeezes a phone screen already crowded by Comic Neue body text. This is a redesign that makes a code explainer harder to read, which is a bold move for a tool whose whole job is readability. A comic font on code explanations is a campaign promise with no policy behind it.\n\nFix it: Self host the fonts or drop the CDN links at the top of index.html. Remove the header rotate transform. Cut the card right margin and shadow size on narrow screens. Keep the code blocks in plain monospace so nobody squints."
+    },
+    {
+      "date": "2026-11-11T19:40:05Z",
+      "repo": "2026-11-11-orange-codelens",
+      "sha": "57f19296",
+      "message": "Trigger production build",
+      "heckle": "An empty commit. Zero files changed, and the message is the entire contribution. You pushed nothing to make Vercel do something, which tells me the deploy on the first commit did not take and you reached for the shove instead of checking why. It is the software version of a government shutdown, lots of motion and nothing produced. Also the message says production build like it was an event.\n\nFix it: Find out why the first push did not build and fix the project link. Stop using empty commits as a deploy button. Add a vercel.json or confirm the project root so the next push just works."
+    },
+    {
+      "date": "2026-11-11T19:40:05Z",
+      "repo": "2026-11-11-orange-codelens",
+      "sha": "c2608b63",
+      "message": "Code Lens: explain functions from GitHub repos in plain English",
+      "heckle": "One 964 line index.html dropped in a single commit, CSS, parser, explainer tables and UI all mashed into one file like a filibuster that refuses to end. The fetch to api.github.com in the repo loader sends no auth, so the anonymous limit of 60 requests an hour will die after a few clicks and the user gets a raw error string in the status line. The function list is built by string concatenated innerHTML, and you only escape some of it, so every spot is a bet on you remembering esc(). Acorn from a CDN means offline and blocked networks get a dead page.\n\nFix it: Catch the rate limit response in the fetch helper near line 119 and say so in plain words. Use textContent or one shared escape for every innerHTML build in the function list and the explain tab. Split the explainer tables out of index.html into their own file. Show a clear message when the acorn script fails to load."
+    },
+    {
+      "date": "2026-11-11T19:40:05Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "0491d9f6",
+      "message": "steward 2026-11-11T185243 (#86)",
+      "heckle": "Another steward PR, another single minified line in contrib/steward/2026-11-11T185243.json, and this one places crosswalk hatches with six digit coordinates and a note in meta saying the steward completes the crosswalk. The bot is narrating its own homework inside the data. Nobody reads minified one line JSON in review, so the PR number is the only thing a human could possibly approve, and you merged it under your own login like a rubber stamp at a ribbon cutting.\n\nFix it: Pretty print the contrib JSON so a diff is readable. Validate the calls against a schema before the PR opens. Drop the steward commentary out of meta."
+    },
+    {
+      "date": "2026-11-11T19:40:05Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "64c5879f",
+      "message": "agent-orange 2026-11-11T170853 (#85)",
+      "heckle": "Merged PR 85 and the GitHub API shows contrib/agent-orange/2026-11-11T170853.json with a one line addition and no patch to look at. I cannot tell you what it does because the diff will not even show, which is perfect for an approval process that already did not look. This is a bailout with no audit.\n\nFix it: Make the agent write a readable summary file beside each turn. Reject merges where the patch is empty. Stop auto merging what nobody inspects."
+    },
+    {
+      "date": "2026-11-11T19:40:05Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "eabbbd6e",
+      "message": "grok 2026-11-11T170358",
+      "heckle": "The grok bot pushed straight to the branch under your name, no PR, no review, with negative coordinates around minus 68000 for a thing called Caliche Cottage with door widths checked in a meta array. At least the other bots go through a PR, this one skips the line like a lobbyist. Building a cottage out of one minified line is a hell of a way to run a design tool.\n\nFix it: Route grok through a PR like the others. Branch protect the default branch so a bot cannot bypass review. Check that negative coordinates are legal before they land."
+    },
+    {
+      "date": "2026-11-11T19:40:05Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "dc571f52",
+      "message": "agent-orange 2026-11-11T140632 (#84)",
+      "heckle": "Third time today the agent-orange bot appears with a single line file at contrib/agent-orange/2026-11-11T140632.json and the commit has nothing to read. Same ceremony, same unreadable output, same merge by someone who clearly cannot be bothered. Your review process is a campaign promise: loud on announcement, absent on delivery.\n\nFix it: Add a CI check that fails on empty or unreadable contrib patches. Pretty print the file. Rate limit how many bot PRs merge in a day."
+    },
+    {
       "date": "2026-11-11T11:06:08Z",
       "repo": "rainbow-run",
       "sha": "fc5bd3d5",
@@ -1350,55 +1399,6 @@
       "sha": "c25c7a9f3abfe4cbd8f5d1aaa168592afe5a5966",
       "message": "Comments open in a pop-up panel instead of filling each pad",
       "heckle": "You made a pop-up sheet for comments and slapped it on server/static/index.html with .cmt using all: unset, which strips every default the browser gives a button. Then you pinned .sheet to the bottom with max-height: 40vh on the paragraph, so on a phone with the keyboard up your comment panel is a keyhole. This is a filibuster in CSS form: lots of talking, nothing visible. Also, you keep piling styles into one giant inline style block like the intern who never heard of a second file.\n\nFix it: Move the inline style block in server/static/index.html into its own stylesheet. Stop using all: unset on .cmt and .sheet .close and give them real focus and hit areas. Test .sheet on a small screen with the keyboard open. Close the sheet on Escape and on a tap outside it."
-    },
-    {
-      "date": "2026-10-30T18:03:06Z",
-      "repo": "smash-bender",
-      "sha": "1c9d2c5e7f1e12198ec73fabec162599e848a625",
-      "message": "Sample log: stage three tab, Send to Auto-Tune, download button on every sample",
-      "heckle": "Stage three is a third copy of the tab you made an hour ago, wired by hand in server/static/index.html with another hardcoded button id. The tab row is a button with role tab and no arrow key handling, so the ARIA you copied is a campaign promise: sounds official, delivers nothing. Your stage names are now baked into three separate strings. Cereal box engineering, with a download link tacked on as a closing argument.\n\nFix it: Build the tabs in server/static/index.html from a stage array instead of pasting tab3. Add arrow key handling to the tablist or drop the tab roles. Keep stage names in one place shared with the server."
-    },
-    {
-      "date": "2026-10-30T18:03:06Z",
-      "repo": "smash-bender",
-      "sha": "67c9265ad29945ac4a092ea52b0c9bb3b7764c22",
-      "message": "Processing API: Auto-Tune tool, stage three, stage limit",
-      "heckle": "In server/app.py send_stage2 you added a stage limit by reading the parent record and bailing at stage 3, and the endpoint is still called stage2. It parses int(body[\"run\"]) twice with no guard, so a junk run value throws a 500 instead of the 400 you wrote for exactly this. CORS is wide open with allow_origins star on an endpoint that queues hour long jobs, so anyone on earth can burn your queue. Bailout level planning.\n\nFix it: Wrap the int conversion of run in send_stage2 in server/app.py and return a 400. Lock allow_origins to your own page. Rate limit or require a token on /api/stage2. Rename the endpoint or stop pretending it is stage two."
-    },
-    {
-      "date": "2026-10-30T18:03:06Z",
-      "repo": "smash-bender",
-      "sha": "deb7c9eeadced386ec5a05d1fbfa93c6f0e416f0",
-      "message": "Auto-Tune tool (WORLD) and stage three: send any stage one or two sample to ElevenLabs or Auto-Tune",
-      "heckle": "server/autotune.py reads sys.argv by position like it is 1994, with the key, scale and speed as bare strings and no usage check, so a missing argument is a raw IndexError. Your key parsing falls back to root 0 when the name is unknown, so a typo in the key silently tunes everything to C. The stage2.py find_parent now does string splits on pipe characters to guess what kind of record it is, which is a government shutdown waiting for one experiment name with a pipe in it.\n\nFix it: Use argparse in server/autotune.py and reject an unknown key. Stop encoding record type in a pipe delimited string in find_parent in server/stage2.py and store a real field. Close the file handles in find_parent with a with block."
-    },
-    {
-      "date": "2026-10-30T18:03:06Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "d929322a99fa0c8b30486b90688bb3f6939e10d0",
-      "message": "steward 2026-10-30T171312 (#59)",
-      "heckle": "Another steward turn merged as one minified line in contrib/steward, five crosswalk hatches that each say in the meta that the steward completes the crosswalk. Completes it how, exactly, since the previous turns already drew crosswalks on the same streets? Nobody reviewed this PR, GitHub cannot even render a single line of JSON, and the whole process is a bailout machine printing coordinates at itself. Three of the five rectangles are near mirror copies with only the sign flipped.\n\nFix it: Pretty print the contrib json so diffs are reviewable. Have the steward check for existing crosswalk hatches before placing more. Validate duplicate geometry in the merge step instead of trusting the turn."
-    },
-    {
-      "date": "2026-10-30T18:03:06Z",
-      "repo": "smash-bender",
-      "sha": "63fcece6f9183ee63787dd1b219ad75682ba44ff",
-      "message": "Experiment runs keep each sample's placed voice and music for stage two",
-      "heckle": "In server/experiment.py you shell out to cp to copy a wav you could copy with shutil, and you do it with check=True so one missing file kills the entire run. Then you write absolute paths for voice, instrument, acapella and reference into every log record, so the jsonl is welded to this one server's folder layout. Every sample now drags four paths around like campaign donors. The inst copy also happens once per stamp and never gets cleaned up, so disk fills quietly.\n\nFix it: Replace the cp subprocess in server/experiment.py with shutil.copyfile. Store paths relative to the data folder. Add cleanup for kept voice and inst files when an experiment is deleted."
-    },
-    {
-      "date": "2026-10-30T18:03:06Z",
-      "repo": "smash-bender",
-      "sha": "ab8802c768211bd2d0ae470f1e8a1525d2813e65",
-      "message": "Sample log: stage one and stage two tabs, Send to ElevenLabs on every sample",
-      "heckle": "You stuffed another 74 lines into server/static/index.html, which is now a single file doing tabs, trends, pads, ratings, sending and playback, held together with template strings. The .send button uses all: unset again and the disabled style only changes color, so on a bright phone screen a dead button looks alive. And you hardcoded the vendor into the button text, so every tool you add means editing markup like it is a hostage negotiation.\n\nFix it: Make the send button label come from the tool list returned by the server in index.html. Give the disabled .send a visible state beyond color. Split the script out of index.html. Escape every value you drop into a template string."
-    },
-    {
-      "date": "2026-10-30T18:03:06Z",
-      "repo": "smash-bender",
-      "sha": "e61acf1b810c72392659a77f5cc096fbbe463f5d",
-      "message": "Stage two: send any sample to ElevenLabs for four refined versions, logged like stage one",
-      "heckle": "stage2.py opens jsonl files with bare open() in a loop and never closes them, and find_parent rescans every experiment file for each request, which is a full filesystem crawl to find one row. Worse, it calls an outside API with a key from the environment and the post endpoint in server/app.py has no auth at all and wildcard CORS, so any stranger can spend your credits. This is a bailout with a hole in the treasury.\n\nFix it: Add an auth check to /api/stage2 in server/app.py. Close files in stage2.find_parent with context managers. Index runs by key instead of rescanning every file per request. Cap queued jobs per hour."
     }
   ]
 }
