@@ -356,7 +356,20 @@
   "sudosilo/smash-bender@v2026.11.09",
   "sudosilo/stompbox-lab@v2026.11.09",
   "sudosilo/rainbow-run@v2026.11.09",
-  "sudosilo/mill-ionaire@v2026.11.09"
+  "sudosilo/mill-ionaire@v2026.11.09",
+  "sudosilo/city-seek@v2026.11.10",
+  "sudosilo/skyflow-orange@v2026.11.10",
+  "sudosilo/spyhunt@v2026.11.10",
+  "sudosilo/spyhunt-server@v2026.11.10",
+  "sudosilo/mohavetech-website@v2026.11.11",
+  "sudosilo/mohavetech-website@v2026.11.10",
+  "sudosilo/parcelsun-kq@v2026.11.10",
+  "sudosilo/strudel-samples@v2026.11.10",
+  "sudosilo/field-twin@v2026.11.10",
+  "sudosilo/chassisquiver@v2026.11.10",
+  "sudosilo/field-twin-violet-api@v2026.11.10",
+  "sudosilo/lv-liquor-map@v2026.11.10",
+  "sudosilo/rainbow-run@v2026.11.10"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -2030,6 +2043,42 @@
     "music",
     "samples",
     "strudel"
+   ]
+  },
+  "sudosilo/city-seek": {
+   "d": "A zoomable generated city where you hunt for hidden items, with towers, birds, and sound.",
+   "h": "https://city-seek.vercel.app",
+   "t": [
+    "game",
+    "hidden-object",
+    "vercel"
+   ]
+  },
+  "sudosilo/skyflow-orange": {
+   "d": "A tower crane game where you stack crates as high as they will stand before the clock runs out.",
+   "h": "https://skyflow-orange.vercel.app",
+   "t": [
+    "crane",
+    "game",
+    "vercel"
+   ]
+  },
+  "sudosilo/spyhunt": {
+   "d": "A phone map game where red and blue spies hunt each other using a shared game code.",
+   "h": "https://spyhunt.vercel.app",
+   "t": [
+    "game",
+    "map",
+    "vercel"
+   ]
+  },
+  "sudosilo/spyhunt-server": {
+   "d": "The small server that shares player positions between phones for the Spy Hunt game.",
+   "h": "",
+   "t": [
+    "backend",
+    "game",
+    "nodejs"
    ]
   }
  }
