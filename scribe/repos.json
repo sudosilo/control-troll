@@ -28,8 +28,8 @@
    "summary": "A solar heat model for a parcel locker with a four module default",
    "name": "Parcelsun",
    "latest": {
-    "date": "2026-11-09",
-    "text": "Parcelsun version five adds a layout editor in the 3D model, door numbers shown on the doors, and a door numbers card with per column numbering, a skipped starter, and door search. Added version four and version five styles, Q units, and outside and inside corners."
+    "date": "2026-11-10",
+    "text": "Added a Locker Screen kiosk to Parcelsun. Codes and scans swing a door open on the 3D model, doors can be tapped to open and close, and the tech repair flow opens the matching door. Versions two to five are now set up, with a screen on two and three and a Bluetooth phone pickup on four and five. Added a wrap graphic that stretches a photo across the bank front, or joins several photos side by side."
    }
   },
   "chassisquiver": {
@@ -42,8 +42,8 @@
    "summary": "A phone app that scores road quality from steering wheel vibration",
    "name": "Field Twin Glaucous",
    "latest": {
-    "date": "2026-10-20",
-    "text": "Added one sign in across the Field Twin apps."
+    "date": "2026-11-10",
+    "text": "Added one look across the Field Twin apps, so the map, inventory, and roads share a design. Added a night look that follows sunset and sunrise, and a drawn sign for every kind of place."
    }
   },
   "anthropic-percentage-pop-up-game": {
@@ -158,8 +158,8 @@
    "summary": "A field log with a map, receipts, mileage, and an Android app that tracks stops",
    "name": "Field Twin",
    "latest": {
-    "date": "2026-11-07",
-    "text": "The odometer check now pulls the newest readings from other phones before it warns. Added a daily miles box that works out miles off the clock by elimination. A leg check compares each leg with the road route and flags side trips."
+    "date": "2026-11-10",
+    "text": "Added one look across the Field Twin apps, so the map, inventory, and roads share a design. Added a night look that follows sunset and sunrise, and a drawn sign for every kind of place."
    }
   },
   "mohavetech-website": {
@@ -172,8 +172,8 @@
    "summary": "An index page that lists every app with its age, phone tags, and notes",
    "name": "App Index",
    "latest": {
-    "date": "2026-11-05",
-    "text": "Added a one step sync that updates deploy dates from the live deployments. Added the drive-thru dental simulator, moved CoffeeKit One to Games, and removed retired apps and duplicates. Added monthly reviews under Statistics with the October 2026 deck."
+    "date": "2026-11-11",
+    "text": "Added a dark mode for the modern look with a menu switch. Stars now run behind the links, and the panels are see through. The retro look got stars too. Deploy dates were synced."
    }
   },
   "ether-wand": {
@@ -1729,8 +1729,8 @@
    "summary": "A phone inventory app for parts, vendors, orders, and locations",
    "name": "Field Twin Violet",
    "latest": {
-    "date": "2026-11-07",
-    "text": "Added a way to log an order from outside the app."
+    "date": "2026-11-10",
+    "text": "Added one look across the Field Twin apps, so the map, inventory, and roads share a design. Added a night look that follows sunset and sunrise, and a drawn sign for every kind of place."
    }
   },
   "five-minute-momentum-engine": {
@@ -2327,8 +2327,8 @@
    "summary": "A wall of phones that shows synced visualizer scenes for the stompbox API",
    "name": "Rainbow Run",
    "latest": {
-    "date": "2026-11-09",
-    "text": "Added a train window scene to the wall, where Stompbox notes and pedals become passing scenery."
+    "date": "2026-11-10",
+    "text": "Added a play a song feature. The song and its chiptune now drive the Spectral Engine and Screensaver scenes the way the microphone does."
    }
   },
   "downfree-foundry": {
@@ -2423,8 +2423,8 @@
    "summary": "A map of Las Vegas liquor stores, casino bars, and bars with filters.",
    "name": "LV Liquor Intel",
    "latest": {
-    "date": "2026-11-09",
-    "text": "Created LV Liquor Intel, a map of liquor sellers in Las Vegas, Paradise, and Henderson, with a first version and a faster second one. Markers are colored for standalone liquor stores, casino and resort liquor, and bars. Version four loads its data through a server route that tries several data mirrors at once and never keeps an empty result."
+    "date": "2026-11-10",
+    "text": "Version four now ships with store data baked in from an open places dataset. Added a grocery layer and merged in street map data."
    }
   },
   "particular-lenticular": {
@@ -2463,8 +2463,64 @@
    "summary": "A pack of short sound clips that Strudel can load by name.",
    "name": "Strudel Samples",
    "latest": {
-    "date": "2026-11-09",
-    "text": "Created a sample pack for the Strudel music tool, with a map that lets Strudel load clips straight from this repo. Added short spoken clips and a puller script that fetches them, with a run log and a fallback when the first host fails. Candidate clips were sorted, trimmed, and joined into the final set."
+    "date": "2026-11-10",
+    "text": "Added a word puller that grabs every short clip of one word. The first pull was the word hello, trimmed tight with misses dropped and a hello supercut added. Every sample is now named by its words, show, episode, and clip id, and a catalog lists them all."
+   }
+  },
+  "city-seek": {
+   "apps": [],
+   "urls": [
+    "https://city-seek.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A zoomable generated city where you hunt for hidden items.",
+   "name": "City Seek",
+   "latest": {
+    "date": "2026-11-10",
+    "text": "Created City Seek, a huge zoomable city that is built fresh each time, with hidden items to find. Version three added a city builder with see through interiors, sandboxes, and towers, plus a tower floor view and an x-ray zoom. Ten of every hidden item are spread across the city, and tray cards count the copies you have found. Added swinging outside doors, flying birds, a Bluebird hunt, tap reactions, word bubbles, and synth sound effects with a sound toggle. Added office props, sports fields, basketball courts, traffic cones, and eighteen new hidden items."
+   }
+  },
+  "skyflow-orange": {
+   "apps": [
+    "skyflow-orange"
+   ],
+   "urls": [
+    "https://skyflow-orange.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A tower crane game where you stack crates before time runs out.",
+   "name": "Sky Flow",
+   "latest": {
+    "date": "2026-11-10",
+    "text": "Created Sky Flow, a crane game where you stack crates as high as they will stand before the clock runs out. Added timed rounds, scoring, sound, and a leaderboard."
+   }
+  },
+  "spyhunt": {
+   "apps": [],
+   "urls": [
+    "https://spyhunt.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A phone map game where red and blue spies hunt each other.",
+   "name": "Spy Hunt",
+   "latest": {
+    "date": "2026-11-10",
+    "text": "Created Spy Hunt, a phone map game where players join a game by code as a red spy or a blue spy. The map shows the other players in the same game. You can set the cycle length, the number of spies, and your slot number."
+   }
+  },
+  "spyhunt-server": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "The server that shares player positions for Spy Hunt.",
+   "name": "Spy Hunt Server",
+   "latest": {
+    "date": "2026-11-10",
+    "text": "Created the Spy Hunt server, which keeps track of where each player in a game is. Each phone sends its position and gets back the other players it has seen recently. Players who go quiet for a minute are dropped."
    }
   }
  }

@@ -1,145 +1,109 @@
 {
  "jobs": [
   {
-   "repo": "2026-11-09-orange-icefiles",
-   "releases": [
-    {
-     "tag": "v2026.11.09",
-     "target": "45f6227a188f14dc6a93a14ca5c3bd067cfbbb4f",
-     "name": "Ice Files 2026-11-09",
-     "body": "Created Ice Files, a novelty member ID maker for field agents of a frozen drink company. You fill in your details and add a photo, and it builds a card with a front and a back. Added a his or her choice, a license back for each persona, and a fix for phone screens that clipped the card."
-    }
-   ],
-   "description": "A novelty agent ID card maker with photo, license classes, and front and back export",
-   "homepage": "https://2026-11-09-orange-icefiles.vercel.app",
-   "topics": [
-    "tool",
-    "vercel",
-    "novelty",
-    "mobile"
-   ]
-  },
-  {
-   "repo": "lv-liquor-map",
-   "releases": [
-    {
-     "tag": "v2026.11.09",
-     "target": "ed4dd715e7b69c9a9b496bffb8a28f978487170c",
-     "name": "LV Liquor Intel 2026-11-09",
-     "body": "Created LV Liquor Intel, a map of liquor sellers in Las Vegas, Paradise, and Henderson, with a first version and a faster second one. Markers are colored for standalone liquor stores, casino and resort liquor, and bars. Version four loads its data through a server route that tries several data mirrors at once and never keeps an empty result."
-    }
-   ],
-   "description": "A Las Vegas map of liquor stores, casino bars, and bars with filters and CSV export",
-   "homepage": "https://lv-liquor-map.vercel.app",
-   "topics": [
-    "map",
-    "tool",
-    "vercel",
-    "openstreetmap"
-   ]
-  },
-  {
-   "repo": "particular-lenticular",
-   "releases": [
-    {
-     "tag": "v2026.11.09",
-     "target": "a9bc6d3004a3905b283aa677dd5323e11571192f",
-     "name": "Lenticular Tilt 2026-11-09",
-     "body": "Created Lenticular Tilt, a phone toy that turns three photos into a tilting lenticular picture."
-    }
-   ],
-   "description": "A phone toy that blends three photos into a tilting lenticular picture",
-   "homepage": "https://particular-lenticular.vercel.app",
-   "topics": [
-    "tool",
-    "mobile",
-    "vercel",
-    "photo"
-   ]
-  },
-  {
-   "repo": "scorpion-supper",
-   "releases": [
-    {
-     "tag": "v2026.11.09",
-     "target": "5fb8fb983bb2644de18f14ed765577114fab59fc",
-     "name": "Scorpion Supper 2026-11-09",
-     "body": "Added Scorpion Supper version seven, an endless growth eater with coyotes and coops. You steer a scorpion on an open range and eat to grow, and the world scales up as you do."
-    }
-   ],
-   "description": "An endless arcade game where a scorpion eats to grow and hides from coyotes",
-   "homepage": "https://scorpion-supper.vercel.app",
-   "topics": [
-    "game",
-    "arcade",
-    "mobile",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "strudel-samples",
-   "releases": [
-    {
-     "tag": "v2026.11.09",
-     "target": "3ae60d4806954018c1895638cab78a840f0528cb",
-     "name": "Strudel Samples 2026-11-09",
-     "body": "Created a sample pack for the Strudel music tool, with a map that lets Strudel load clips straight from this repo. Added short spoken clips and a puller script that fetches them, with a run log and a fallback when the first host fails. Candidate clips were sorted, trimmed, and joined into the final set."
-    }
-   ],
-   "description": "Sound clips for Strudel: samples('github:sudosilo/strudel-samples')",
-   "homepage": "",
-   "topics": [
-    "music",
-    "audio",
-    "strudel",
-    "samples"
-   ]
-  },
-  {
-   "repo": "2026-10-18-orange-testbed",
+   "repo": "city-seek",
    "releases": [
     {
      "tag": "v2026.11.10",
-     "target": "84c6a7b16134770e8b71ff135691191ed33096ea",
-     "name": "Agent Test Bed 2026-11-10",
-     "body": "The agent turn for the day was played and merged into the city."
+     "target": "dfc4bb757b9c16ee3d8ff73d0bf9913e55dd1d72",
+     "name": "City Seek 2026-11-10",
+     "body": "Created City Seek, a huge zoomable city that is built fresh each time, with hidden items to find. Version three added a city builder with see through interiors, sandboxes, and towers, plus a tower floor view and an x-ray zoom. Ten of every hidden item are spread across the city, and tray cards count the copies you have found. Added swinging outside doors, flying birds, a Bluebird hunt, tap reactions, word bubbles, and synth sound effects with a sound toggle. Added office props, sports fields, basketball courts, traffic cones, and eighteen new hidden items."
     }
    ],
-   "description": "A shared city that AI agents build one turn at a time",
-   "homepage": "https://2026-10-18-orange-testbed.vercel.app",
+   "description": "A zoomable generated city where you hunt for hidden items, with towers, birds, and sound.",
+   "homepage": "https://city-seek.vercel.app",
    "topics": [
-    "agents",
     "game",
-    "simulator",
+    "hidden-object",
     "vercel"
    ]
   },
   {
-   "repo": "downfree-foundry",
+   "repo": "skyflow-orange",
    "releases": [
     {
-     "tag": "v2026.11.09",
-     "target": "cbc04a346f68806c07bd120c2f5220353a42a1f5",
-     "name": "Road Layers 2026-11-09",
-     "body": "Added a Music tab to Road Layers. It finds kick, snare, and hi-hat hits in a song, and cutouts pop in on the hits with the song playing in the composite and in recordings. Play and pause are more reliable, dragging to pan no longer pulls you back, and each kind of cutout gets a color coded drum."
+     "tag": "v2026.11.10",
+     "target": "fa05045e40f035f9cf641527b34079f0e375f0a2",
+     "name": "Sky Flow 2026-11-10",
+     "body": "Created Sky Flow, a crane game where you stack crates as high as they will stand before the clock runs out. Added timed rounds, scoring, sound, and a leaderboard."
     }
    ],
-   "description": "Road Layers stacks cars from several drive clips onto one road in the browser.",
-   "homepage": "https://downfree-foundry.vercel.app",
+   "description": "A tower crane game where you stack crates as high as they will stand before the clock runs out.",
+   "homepage": "https://skyflow-orange.vercel.app",
    "topics": [
+    "game",
+    "crane",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "spyhunt",
+   "releases": [
+    {
+     "tag": "v2026.11.10",
+     "target": "3da475e69f3d7c0bccd22c47f55258f3ffb89634",
+     "name": "Spy Hunt 2026-11-10",
+     "body": "Created Spy Hunt, a phone map game where players join a game by code as a red spy or a blue spy. The map shows the other players in the same game. You can set the cycle length, the number of spies, and your slot number."
+    }
+   ],
+   "description": "A phone map game where red and blue spies hunt each other using a shared game code.",
+   "homepage": "https://spyhunt.vercel.app",
+   "topics": [
+    "game",
+    "map",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "spyhunt-server",
+   "releases": [
+    {
+     "tag": "v2026.11.10",
+     "target": "b7c7a6f229b8215f22d0749bb3927cb7de486381",
+     "name": "Spy Hunt Server 2026-11-10",
+     "body": "Created the Spy Hunt server, which keeps track of where each player in a game is. Each phone sends its position and gets back the other players it has seen recently. Players who go quiet for a minute are dropped."
+    }
+   ],
+   "description": "The small server that shares player positions between phones for the Spy Hunt game.",
+   "homepage": "",
+   "topics": [
+    "backend",
+    "game",
+    "nodejs"
+   ]
+  },
+  {
+   "repo": "mohavetech-website",
+   "releases": [
+    {
+     "tag": "v2026.11.11",
+     "target": "27cadcb491006d1ec542d97000bc05cc2446abaa",
+     "name": "App Index 2026-11-11",
+     "body": "Added a dark mode for the modern look with a menu switch. Stars now run behind the links, and the panels are see through. The retro look got stars too. Deploy dates were synced."
+    },
+    {
+     "tag": "v2026.11.10",
+     "target": "a2a184bbd43a569188c79590b83d2a930042943d",
+     "name": "App Index 2026-11-10",
+     "body": "Added a retro look for the hub with a menu switch back to the classic look. The retro look became the default, and then a modern look with moving stars replaced it as the default. Sync now adds new apps to Unsorted and drops deleted ones. Fixed sync so it no longer renames apps whose name starts with their old date."
+    }
+   ],
+   "description": "An index page that lists every app with its age, phone tags, and notes.",
+   "homepage": "https://mohavetech-website.vercel.app",
+   "topics": [
+    "index",
     "tool",
-    "vercel",
-    "video"
+    "vercel"
    ]
   },
   {
    "repo": "parcelsun-kq",
    "releases": [
     {
-     "tag": "v2026.11.09",
-     "target": "bee89135cfaf2c1fd27fe84824e4cef03be2107c",
-     "name": "Parcelsun 2026-11-09",
-     "body": "Parcelsun version five adds a layout editor in the 3D model, door numbers shown on the doors, and a door numbers card with per column numbering, a skipped starter, and door search. Added version four and version five styles, Q units, and outside and inside corners."
+     "tag": "v2026.11.10",
+     "target": "cc6fb3cacbb2af9d7a90d9fbd92230e9f68cdcf4",
+     "name": "Parcelsun 2026-11-10",
+     "body": "Added a Locker Screen kiosk to Parcelsun. Codes and scans swing a door open on the 3D model, doors can be tapped to open and close, and the tech repair flow opens the matching door. Versions two to five are now set up, with a screen on two and three and a Bluetooth phone pickup on four and five. Added a wrap graphic that stretches a photo across the bank front, or joins several photos side by side."
     }
    ],
    "description": "A solar heat model for a parcel locker with a four module default.",
@@ -152,40 +116,99 @@
    ]
   },
   {
-   "repo": "smash-bender",
+   "repo": "strudel-samples",
    "releases": [
     {
-     "tag": "v2026.11.09",
-     "target": "383e5c175e6f3ea4af853be53a28a5a70ce961ea",
-     "name": "Smash Bender 2026-11-09",
-     "body": "Added a chop tool that cuts a slice from a sample, reads its notes, and writes Strudel code with a link to open it. Chop timing is exact, the notes are cleaner, and the original slice plays in sync under the notes. The sample log can chop any sample into notes, save a slice to GitHub, and add a sound clip. A publish endpoint sends clips to the Strudel sample repo."
+     "tag": "v2026.11.10",
+     "target": "a30a19d78a88e8a3092609ede352ff5374f0bdeb",
+     "name": "Strudel Samples 2026-11-10",
+     "body": "Added a word puller that grabs every short clip of one word. The first pull was the word hello, trimmed tight with misses dropped and a hello supercut added. Every sample is now named by its words, show, episode, and clip id, and a catalog lists them all."
     }
    ],
-   "description": "A processing server for song mashups with phone scripts",
+   "description": "Sound clips for Strudel: samples('github:sudosilo/strudel-samples')",
    "homepage": "",
    "topics": [
     "audio",
-    "backend",
     "music",
-    "python"
+    "samples",
+    "strudel"
    ]
   },
   {
-   "repo": "stompbox-lab",
+   "repo": "field-twin",
    "releases": [
     {
-     "tag": "v2026.11.09",
-     "target": "d585bf93e37995d9201e60046629b3ab67d7e2eb",
-     "name": "Stompbox Lab 2026-11-09",
-     "body": "Added a train window scene where Stompbox notes and pedals become passing scenery."
+     "tag": "v2026.11.10",
+     "target": "32fddb425721f34ce9e9edb5c3cfbadc0bd190cb",
+     "name": "Field Twin 2026-11-10",
+     "body": "Added one look across the Field Twin apps, so the map, inventory, and roads share a design. Added a night look that follows sunset and sunrise, and a drawn sign for every kind of place."
     }
    ],
-   "description": "A pedal board and synth with grooves that play across many phones.",
-   "homepage": "https://stompbox-lab.vercel.app",
+   "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
+   "homepage": "https://field-twin-teal.vercel.app",
    "topics": [
-    "band-sync",
-    "music",
-    "pedals",
+    "field-service",
+    "map",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "chassisquiver",
+   "releases": [
+    {
+     "tag": "v2026.11.10",
+     "target": "834107785ef1753e00599b16e7db7827cf1d1259",
+     "name": "Field Twin Glaucous 2026-11-10",
+     "body": "Added one look across the Field Twin apps, so the map, inventory, and roads share a design. Added a night look that follows sunset and sunrise, and a drawn sign for every kind of place."
+    }
+   ],
+   "description": "A phone app that logs road quality from vibration and shows it on a map with a vehicle garage.",
+   "homepage": "https://field-twin-glaucous.vercel.app",
+   "topics": [
+    "field",
+    "maps",
+    "roads",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "field-twin-violet-api",
+   "releases": [
+    {
+     "tag": "v2026.11.10",
+     "target": "d3aabee099e1000355b61342201eb5143f711d1a",
+     "name": "Field Twin Violet 2026-11-10",
+     "body": "Added one look across the Field Twin apps, so the map, inventory, and roads share a design. Added a night look that follows sunset and sunrise, and a drawn sign for every kind of place."
+    }
+   ],
+   "description": "A phone inventory app for parts, vendors, reorder levels, orders, and storage locations.",
+   "homepage": "https://field-twin-violet.vercel.app",
+   "topics": [
+    "field",
+    "inventory",
+    "supabase",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "lv-liquor-map",
+   "releases": [
+    {
+     "tag": "v2026.11.10",
+     "target": "8a0f102d5c7d4762c9455413d1d5dce681405ed8",
+     "name": "LV Liquor Intel 2026-11-10",
+     "body": "Version four now ships with store data baked in from an open places dataset. Added a grocery layer and merged in street map data."
+    }
+   ],
+   "description": "A Las Vegas map of liquor stores, casino bars, and bars with filters and CSV export",
+   "homepage": "https://lv-liquor-map.vercel.app",
+   "topics": [
+    "map",
+    "openstreetmap",
+    "tool",
     "vercel"
    ]
   },
@@ -193,10 +216,10 @@
    "repo": "rainbow-run",
    "releases": [
     {
-     "tag": "v2026.11.09",
-     "target": "4b9b35208cf8dc51d98e27cc7f7c82950b1c1d76",
-     "name": "Rainbow Run 2026-11-09",
-     "body": "Added a train window scene to the wall, where Stompbox notes and pedals become passing scenery."
+     "tag": "v2026.11.10",
+     "target": "fc5bd3d54c0f259d4012964371eaa5879d9ff2eb",
+     "name": "Rainbow Run 2026-11-10",
+     "body": "Added a play a song feature. The song and its chiptune now drive the Spectral Engine and Screensaver scenes the way the microphone does."
     }
    ],
    "description": "A visualizer pedal where a pixel crow flies across phones lined up side by side",
@@ -205,25 +228,6 @@
     "music",
     "vercel",
     "visualizer"
-   ]
-  },
-  {
-   "repo": "mill-ionaire",
-   "releases": [
-    {
-     "tag": "v2026.11.09",
-     "target": "776102d019be94a351a42d64b6a17726af08f77e",
-     "name": "Mill-ionaire 2026-11-09",
-     "body": "Added filament printers. A plastic 3D printer takes a floor bay and prints letters, numbers and emoji in white, black, red, blue or yellow filament, the color of whatever spool it has loaded. Owning one brings in orders in filament colors that only a printer can make. Thin parts like a 1 print fast and a fat 8 or an emoji takes longer, a printer works the colors already on its spool first, a different color means an operator swaps the spool, and now and then a print turns to spaghetti and gets scraped off the bed. Tapping a printer opens a keypad that prints any part ahead into the bins in the picked spool color, and orders take from the bins first."
-    }
-   ],
-   "description": "A letter shop tycoon built around a simulated knee mill that grows into a factory.",
-   "homepage": "https://mill-ionaire.vercel.app",
-   "topics": [
-    "game",
-    "simulator",
-    "tycoon",
-    "vercel"
    ]
   }
  ]
