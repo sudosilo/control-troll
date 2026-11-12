@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 49123,
+ "duration_api_ms": 11587,
  "stop_reason": "end_turn",
- "session_id": "5a83ad3f-bcd4-48a4-9b34-f7414deda993",
- "total_cost_usd": 0.21167709999999998,
+ "session_id": "c703e564-a9f6-4267-9d16-b380631dd266",
+ "total_cost_usd": 0.0931068,
  "usage": {
-  "input_tokens": 18,
-  "cache_creation_input_tokens": 31428,
-  "cache_read_input_tokens": 258298,
-  "output_tokens": 5997,
+  "input_tokens": 12,
+  "cache_creation_input_tokens": 16769,
+  "cache_read_input_tokens": 139745,
+  "output_tokens": 1190,
   "output_tokens_details": {
-   "thinking_tokens": 708
+   "thinking_tokens": 184
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 31428,
+   "ephemeral_1h_input_tokens": 16769,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 35,
-    "cache_read_input_tokens": 43889,
-    "cache_creation_input_tokens": 485,
+    "output_tokens": 293,
+    "cache_read_input_tokens": 29310,
+    "cache_creation_input_tokens": 405,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 485
+     "ephemeral_1h_input_tokens": 405
     },
     "type": "message"
    }
@@ -40,11 +40,11 @@
  "modelUsage": {
   "claude-haiku-5-5": {
    "inputTokens": 1208,
-   "outputTokens": 17,
+   "outputTokens": 23,
    "cacheReadInputTokens": 0,
    "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.0001293,
+   "costUSD": 0.00013230000000000002,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
    "thinkingTokens": 0,
@@ -55,17 +55,17 @@
    "costBasis": "list"
   },
   "claude-sonnet-5-5": {
-   "inputTokens": 18,
-   "outputTokens": 5997,
-   "cacheReadInputTokens": 258298,
-   "cacheCreationInputTokens": 31428,
+   "inputTokens": 12,
+   "outputTokens": 1190,
+   "cacheReadInputTokens": 139745,
+   "cacheCreationInputTokens": 16769,
    "webSearchRequests": 0,
-   "costUSD": 0.21154779999999998,
+   "costUSD": 0.0929745,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 708,
+   "thinkingTokens": 184,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 31428,
+   "cacheCreationEphemeral1hInputTokens": 16769,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
@@ -101,27 +101,27 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 9,
+ "num_turns": 6,
  "subtype": "success",
  "api_error_status": null,
- "result": "I heckled 10 commits and did not write a fleet verdict, because the last one is under 7 days old.",
- "ttft_ms": 1269,
+ "result": "I'm wrapping up: the run is committed and pushed, and I heckled 0 commits and wrote no fleet verdict.\n\n- **Nothing to heckle:** `blue-agent` had a push but no commits since the last check. `heckle-troll` only had its own `[no heckle]` log commit.\n- **Fleet verdict:** the last one is 6 days old, so it isn't due until after 2026-11-13T06:56Z.\n- **Notes:** I added a line to `agents/notes/general.md`.\n- **Not done:** that file is 53 lines, over the 40-line limit in `agents/notes/rules.md`, so it still needs condensing.",
+ "ttft_ms": 1353,
  "type": "result",
- "duration_ms": 82436,
- "uuid": "d3795137-b214-4059-89d5-4b81ae00cec3",
- "ttft_stream_ms": 758,
- "time_to_request_ms": 152,
- "first_content_frame_ms": 759,
+ "duration_ms": 17543,
+ "uuid": "d3018be5-2313-41fa-9626-9e5970e1e4e3",
+ "ttft_stream_ms": 831,
+ "time_to_request_ms": 148,
+ "first_content_frame_ms": 831,
  "queued_turn_count": 0,
  "result_index": 0,
  "model_usage_since_last_result": {
   "claude-haiku-5-5": {
    "inputTokens": 1208,
-   "outputTokens": 17,
+   "outputTokens": 23,
    "cacheReadInputTokens": 0,
    "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.0001293,
+   "costUSD": 0.00013230000000000002,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
    "thinkingTokens": 0,
@@ -132,17 +132,17 @@
    "costBasis": "list"
   },
   "claude-sonnet-5-5": {
-   "inputTokens": 18,
-   "outputTokens": 5997,
-   "cacheReadInputTokens": 258298,
-   "cacheCreationInputTokens": 31428,
+   "inputTokens": 12,
+   "outputTokens": 1190,
+   "cacheReadInputTokens": 139745,
+   "cacheCreationInputTokens": 16769,
    "webSearchRequests": 0,
-   "costUSD": 0.21154779999999998,
+   "costUSD": 0.0929745,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 708,
+   "thinkingTokens": 184,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 31428,
+   "cacheCreationEphemeral1hInputTokens": 16769,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
