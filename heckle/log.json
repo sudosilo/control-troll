@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-12T02:17:59Z",
+      "repo": "delivery-twin",
+      "sha": "4d429900",
+      "message": "Hide road controls",
+      "heckle": "You hid the road controls by gluing a second style attribute onto buttons that already had one. Open index.html around roadQualityBtn and roadHeatBtn and you will find style=\"display:none\" style=\"display:none\", a duplicate attribute that browsers ignore and linters scream about. Eleven lines changed to accomplish nothing the previous commit had not already done, which is the commit equivalent of a filibuster. Did a cereal box teach you find and replace?\n\nFix it: Delete the duplicated style attributes in index.html on the Roads and Road hazards buttons. Stop hiding features with inline display:none and use one hidden class or remove the markup. Squash your back to back hide commits next time."
+    },
+    {
+      "date": "2026-11-12T02:17:59Z",
+      "repo": "song-offset-listener",
+      "sha": "f0843e90",
+      "message": "BLUE PHONE: Song Offset Listener v2, the distilled build at the site root; the old build with every experiment is kept at /classic with archive notes; ear lock clip length fix in all three pages",
+      "heckle": "You call this distilled? You kept the entire old app as offset-listener-v1.html and served it at /classic, so the repo now ships two giant pages plus a 26 line archive note explaining which failed experiments you were too attached to delete. That is git's whole job, intern. Then you smuggled a bug fix into three pages at once. In offset-listener-v1.html the new peaks line computes (cs[j] - med) / mad twice, once for zz and again inside the push, so your isFinite check guards a value you then ignore.\n\nFix it: Push z: zz in the peaks line of offset-listener-v1.html. Delete the archived page and let git history hold it. Fix shared bugs once, not in three copies. Cut the archive notes down to something a human will read."
+    },
+    {
+      "date": "2026-11-12T02:17:59Z",
+      "repo": "song-offset-listener",
+      "sha": "2414c98b",
+      "message": "BLUE PHONE: offset listener simplified comic book skin, everything technical moved into a left side menu, BPM only shows when found, buttons never move",
+      "heckle": "You dressed an audio sync tool as a comic book and called it simplified. The head of offset-listener-v1.html now pulls Bangers and Comic Neue from Google Fonts, so the whole look hangs on a third party being up, and a polka dot radial gradient sits behind every control like a bad bounce house. Two hundred twenty three lines added and 182 removed to repaint a page you will repaint again Thursday. Comic Sans as a fallback is a hate crime against typography, and that was your fallback.\n\nFix it: Self host the two fonts or use a system stack in offset-listener-v1.html. Test the left side menu on a narrow phone, since the body padding is 16px and cramped. Drop the dot background, it hurts legibility. Stop rewriting the skin in every commit."
+    },
+    {
+      "date": "2026-11-12T02:17:59Z",
+      "repo": "delivery-twin",
+      "sha": "2405f0a5",
+      "message": "Hide road controls",
+      "heckle": "Hiding road controls by slapping display:none on everything is not removing a feature, it is hiding a body under a rug. In index.html the Roads and Road hazards headings and the Quality, Heat map, Crashes, Construction and Crash history buttons are all still in the DOM with style=\"display:none\", so the code, handlers and map layers behind them still load and run for nothing. Thirteen lines changed and not one deleted feature. Passing off a hidden feature as a cleanup is a bailout, not a fix.\n\nFix it: Remove the road buttons and their headings from index.html if the feature is dead. Remove the matching handlers and layer fetches so phones stop loading them. If you want a toggle, use a class, not inline style on seven elements."
+    },
+    {
+      "date": "2026-11-12T02:17:59Z",
+      "repo": "song-offset-listener",
+      "sha": "358668ce",
+      "message": "BLUE PHONE: offset listener Listen retries as plain WAV when the recorded clip is empty or AudD cannot fingerprint it, and stops any ear tune before listening",
+      "heckle": "Your Listen button now records twice when the first clip comes back empty, which is your way of admitting the first recorder does not work on phones. The new recordWavClip in offset-listener-v1.html grabs the mic through createScriptProcessor, a function deprecated for years, and pushes raw Float32 chunks into an array with no cap beyond hope. This was bolted on as a retry instead of figuring out why the webm clip was empty. Retry logic is a campaign promise: it sounds like governance until you check the results.\n\nFix it: Replace createScriptProcessor in recordWavClip with an AudioWorklet. Find out why the MediaRecorder clip comes back empty instead of papering over it. Stop every mic stream track after the retry. Cap the retry at one attempt and say so in the UI."
+    },
+    {
+      "date": "2026-11-12T02:17:59Z",
+      "repo": "song-offset-listener",
+      "sha": "e15b3853",
+      "message": "BLUE PHONE: offset listener gets ear lock, same method as zone director, plus the control loop, learned per video offsets, tune by ear button and ear lock toggle",
+      "heckle": "Three hundred fifty lines went into offset-listener-v1.html in one commit, and a copy of the ear lock from zone director arrived with them. That is copy paste cloning dressed up as same method, so now two pages need the same bug fixes, as the next commit proves by patching the same code. The UI got an earTuneBtn and an earToggle checked by default, so every user is opted into the phone listening to itself on first load. The status text sits at 0.85rem in gray 999 on white, unreadable outdoors.\n\nFix it: Move the ear lock code into one shared script file instead of pasting it into every page. Make earToggle default off or ask before the mic starts. Darken the gray hint text in offset-listener-v1.html. Split giant commits so a human can review them."
+    },
+    {
+      "date": "2026-11-12T02:17:59Z",
+      "repo": "delivery-twin",
+      "sha": "34c9f8fb",
+      "message": "Delivery Twin from Field Twin",
+      "heckle": "You cloned an entire app, 35 files, and named it Delivery Twin. The README.md still says Field Twin is a phone friendly field log and still claims it is live at field-twin-teal.vercel.app, and the CHANGELOG.md is the other repo's history pasted wholesale, including Parcelsun locker survey entries for a delivery product. A fork with the label peeled off is not a new app. It is a rename with a clone's maintenance bill. Shipping field-twin-companion-v1-flash.html in a delivery repo is also just baggage you did not look at.\n\nFix it: Rewrite README.md and CHANGELOG.md so they describe Delivery Twin and stop pointing at the Field Twin live link. Delete the companion firmware and flash page from this repo. Decide whether this is one app with a mode switch, because that is what it is."
+    },
+    {
+      "date": "2026-11-12T02:17:59Z",
+      "repo": "pajamastan",
+      "sha": "d4481693",
+      "message": "Combined Pajamastan and MTG creator seal",
+      "heckle": "You rewrote 188 lines and removed 176 in a single index.html to change a footer seal. That is a whole page reindented and swapped out for a logo, which makes the diff unreadable and the blame useless. The same seal went into a pile of other repos in the same ten minutes, so this is a shared snippet copied by hand into every app. Copy pasting the same block everywhere is a pork barrel with no committee.\n\nFix it: Keep the seal in one shared script file instead of pasting it into each index.html. Stop reformatting whole pages when changing a block. Commit the pasting script on its own so the page diff stays small. Check the pasted flag image does not bloat the page on mobile."
+    },
+    {
+      "date": "2026-11-12T02:17:59Z",
+      "repo": "infinicanvan",
+      "sha": "1c13e718",
+      "message": "Combined Pajamastan and MTG creator seal",
+      "heckle": "Another day, another hand pasted seal. The commit adds 42 lines to index.html and drops 3 for a logo that has nothing to do with an infinite canvas, and it landed in the same minute as a stack of identical commits in other repos. Same message, same block, a dozen repos, zero reuse. It is a bailout for your own laziness. The intern discovered the idea of a shared include and chose not to learn it.\n\nFix it: Load the seal from one hosted script tag in index.html instead of inlining it. Verify the seal does not cover canvas controls on a small phone. Write a commit message that names the repo's actual change."
+    },
+    {
+      "date": "2026-11-12T02:17:59Z",
+      "repo": "mill-ionaire",
+      "sha": "05b53b2a",
+      "message": "Combined Pajamastan and MTG creator seal",
+      "heckle": "In mill-ionaire-v2.html you pasted a base64 JPEG flag straight into a script as FLAG_SRC, on one line, in a file that is already past 4900 lines. Then you reindented the comment banner by two spaces, which changed a line for the purity of nothing. The banner still says drop this one block into any page, and you proved it by dropping it into a dozen, which is how clones start. A single 4900 line HTML file with an inline image blob is a government shutdown of editing.\n\nFix it: Move FLAG_SRC to a real image file and reference it by path in mill-ionaire-v2.html. Break the giant file into scripts so edits are reviewable. Stop touching comment indentation in commits that are supposed to change behavior. Share the seal block, do not clone it."
+    },
+    {
       "date": "2026-11-11T19:40:05Z",
       "repo": "2026-11-11-orange-codelens",
       "sha": "ad8fb4d1",
@@ -1329,76 +1399,6 @@
       "sha": "cf3320879278530a361d3138cc4d027371d313b8",
       "message": "Import accepts music_start and voice_start",
       "heckle": "In server/app.py the import endpoint takes two more form fields and runs float(music_start or 0) on them, so a letter in the field throws a 500 instead of a clean 422. You changed the positional argument list for runner.run_experiment by adding two floats to the end, with no keyword names, so any other caller breaks without a sound. This service still has no auth on the job endpoint and wildcard CORS, and you keep adding inputs to it like piling more luggage on a bus with no brakes.\n\nFix it: Declare music_start and voice_start as float form fields with bounds in server/app.py so bad input gets a 422. Pass them to runner.run_experiment by keyword. Lock down CORS to your own origins. Add a shared key check on the import and start routes."
-    },
-    {
-      "date": "2026-10-30T22:26:10Z",
-      "repo": "gladhand-dockyard",
-      "sha": "58362f81561ecda526f6da140d135f7ee34544ad",
-      "message": "v23: Drive section on the launch menu with every ride, full ride lineup at the city home lot",
-      "heckle": "A trailer backing trainer now has a Drive section for every ride, because apparently the dockyard needed a sports car, a helicopter, an ambulance, and a van to teach anyone to back up a trailer. The EGGS table in index.html is a pile of hand typed coordinates and paint hex codes, one line of city spawn data per vehicle, so moving the lot means editing numbers by feel. The launch menu gets another section stacked into one dispatch card, which on a small screen is a scroll through a junk drawer. Focus left the building around version fourteen.\n\nFix it: Move the EGGS vehicle data in index.html into a named config with one entry per row, not a wall of literals. Group the Drive section behind its own screen instead of stacking it in the dispatch card. Decide what this app is and cut the rides that are not trailers."
-    },
-    {
-      "date": "2026-10-30T22:26:10Z",
-      "repo": "song-offset-listener",
-      "sha": "4957411071510f7205751d5e441377768d37347f",
-      "message": "Smash Bender queue carries music_start and voice_start",
-      "heckle": "This is the same two field change as the one you just made in the other repo, pasted here by hand, so now two repos must agree on a job shape and neither one has a schema. In api/bender.js the job takes music_start and voice_start with a Math.max and a Math.round wrapped around Number(b.music_start), but no upper limit, so someone can queue a job starting nine million seconds into a song. Your seconds field has a clamp of 10 to 240 and these two got nothing. Inconsistent, like a tax code.\n\nFix it: Clamp music_start and voice_start to a sane maximum in api/bender.js, the same way seconds is clamped. Write the job shape down once and share it between the repos. Reject jobs that are missing the video ids with a useful message. Add a rate limit on the queue action."
-    },
-    {
-      "date": "2026-10-30T22:26:10Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "ea4f89c21c95e823015fb032174e5948716794d8",
-      "message": "Smash Bender sends music_start and voice_start so both clips start lined up at the drop or the sample",
-      "heckle": "You are POSTing music_start and voice_start from index.html to an unauthenticated /api/bender queue that any stranger on the internet can fill, and the whole timing math lives in a new benderStarts function that has no test and returns rounded floats from a pile of optional arguments. The shell relay reads the values with jq and a quiet default of 0, so a bad value silently becomes zero and you get clips that are misaligned with no error. That is a campaign promise with a footnote. Also the failure message just says could not queue it, which tells nobody anything.\n\nFix it: Test benderStarts in index.html with a drop before, at, and after the start. Validate music_start and voice_start in tools/bender-relay.sh and fail loudly on garbage. Show the real error from the queue call. Put a shared secret on the queue endpoint."
-    },
-    {
-      "date": "2026-10-30T22:26:10Z",
-      "repo": "gladhand-dockyard",
-      "sha": "317ee576e29375021e88dd9ae8cf6364ee8d1cd7",
-      "message": "v24: tank fire buttons get their own panel, truck only buttons hide while riding, side column scrolls",
-      "heckle": "You gave the tank its own fire panel pinned at bottom 200px, and made the side column scroll with the scrollbar hidden. So on a short phone in landscape, buttons slide off the bottom with no hint they exist. Hiding the scrollbar is hiding the evidence. The offsets are all magic numbers like 162px, 200px, and 262px stacked against each other, so one new button and the fire panel sits on top of the side column. Plan the layout like you plan a budget: badly and after the vote.\n\nFix it: Compute the side column height from the real layout in index.html instead of hard coded 162px, 200px, and 262px. Show a fade or arrow when #side can scroll. Use CSS variables for the shared offsets. Test it on a short landscape screen."
-    },
-    {
-      "date": "2026-10-30T22:26:10Z",
-      "repo": "gladhand-dockyard",
-      "sha": "201828e0d86c615934064550ccaa61a9e61218c6",
-      "message": "v25: driver view shows holes, craters, scorch, debris, marks, fire, smoke and flying chunks",
-      "heckle": "Driver view now draws holes, craters, scorch, debris, fire, smoke, and flying chunks, in one commit, in one file, with no profiling. The new line that builds colors for each object in the first person renderer is a nested ternary eleven deep, which is what a government shutdown looks like when written as code. Then you call fpHoleBoxes and fpDecals every frame, and for every wall with a breach you build fresh boxes, so a phone will turn into a hand warmer. Nobody asked whether the draw loop caches anything. Clearly not.\n\nFix it: Replace the object type color ternary in index.html with a lookup table. Cache the hole boxes per object until its damage changes. Cap the number of decals and debris pieces drawn per frame. Measure the frame time on an actual phone before adding more effects."
-    },
-    {
-      "date": "2026-10-30T22:26:10Z",
-      "repo": "gladhand-dockyard",
-      "sha": "1073403c931c9baafc5a66f28d20792ebf3999df",
-      "message": "v26: chimes off, continuous engine voices for semi, tank, helicopter, cars and bike, noise tire screech",
-      "heckle": "You turned the chimes off by making tone() return early when the type is triangle. That is not a feature, that is a hack with a comment saying BLUE PHONE on it. Every future triangle sound silently dies and you will blame the browser. Then you added fifty lines of continuous engine oscillators and a noise screech with no sign of a cap on voices, so a phone with a weak audio thread will crackle like a town hall mic. Also the sound toggle is read from localStorage in a bare try block that swallows everything.\n\nFix it: Replace the triangle check in tone() in index.html with an explicit mute list by sound name. Cap the number of live engine voices and stop them when the ride changes. Add a master gain so you can turn the whole mess down. Log the swallowed localStorage error instead of hiding it."
-    },
-    {
-      "date": "2026-10-30T22:26:10Z",
-      "repo": "gladhand-dockyard",
-      "sha": "a3f42ff2c3492cef49b4e00ad12b84b655be38bd",
-      "message": "v27: shells punch through light stuff and blast holes in walls, scorch and bullet pocks on walls, beeps removed",
-      "heckle": "Shells now punch through things and the damage state is stored in per area objects that pruneDmg filters on every call, with eleven chained filter clauses jammed on one line. That line is longer than a filibuster and twice as unreadable. You cut the gear shift beep and replaced it with a 70 hertz square thump, so the sound design is whatever you hummed this afternoon. You shipped a feature list longer than the test list, which is zero tests, because the game has none.\n\nFix it: Break the pruneDmg line in index.html into one statement per damage kind. Make the expiry times named constants instead of 1800 and 5400 sitting in the middle of a filter. Add a plain test that damage actually expires. Put the sound settings in one table instead of scattering tone calls."
-    },
-    {
-      "date": "2026-10-30T22:26:10Z",
-      "repo": "2026-10-23-orange-smash",
-      "sha": "811acc514bad5e0d5a3d05400643919401f34344",
-      "message": "Samples list: song names on their own line, buttons wrap below",
-      "heckle": "Three lines changed and you still found a way to do it badly. You added flex-wrap to .sampRow and then bolted on two rules keyed off the #sampList id, so the specificity war in index.html now has an ID selector holding a rifle. The font size of 10px on .seg buttons is a tap target for an ant, on a phone, where this thing is supposed to live. You fixed a cramped row by making the buttons smaller and calling it layout. That is a bailout with a press conference.\n\nFix it: Raise the .seg font size in index.html to at least 12px and give it a real minimum height for thumbs. Drop the #sampList prefix and use a class instead. Delete the dead .sampRow .rt flex rule that the new one overrides."
-    },
-    {
-      "date": "2026-10-30T22:26:10Z",
-      "repo": "gladhand-dockyard",
-      "sha": "08446be816695a24700d51028e91b3a17c14c251",
-      "message": "v28: tank rounds take chunks out of walls, smooth engine sound without blips, tire screech sound off",
-      "heckle": "Version twenty eight of a single index.html, and the title tag is still being bumped by hand like a kid updating a scoreboard with a marker. You are now carving craters out of walls with a tank in a trailer backing sim, which is mission creep worse than a defense appropriations bill. The new ret variable in the wall damage block is declared, assigned, and tangled into one line of semicolon soup that nobody, including you, can review. The RED PHONE and BLUE PHONE comments pile up in the header like campaign yard signs after the election.\n\nFix it: Split the hole carving code in index.html into named functions with real line breaks. Stop hand editing the title and read the version from one constant. Move the RED PHONE and BLUE PHONE history out of the head comment into a changelog file. Break the single file into modules before it hits ten thousand lines."
-    },
-    {
-      "date": "2026-10-30T18:03:06Z",
-      "repo": "smash-bender",
-      "sha": "c25c7a9f3abfe4cbd8f5d1aaa168592afe5a5966",
-      "message": "Comments open in a pop-up panel instead of filling each pad",
-      "heckle": "You made a pop-up sheet for comments and slapped it on server/static/index.html with .cmt using all: unset, which strips every default the browser gives a button. Then you pinned .sheet to the bottom with max-height: 40vh on the paragraph, so on a phone with the keyboard up your comment panel is a keyhole. This is a filibuster in CSS form: lots of talking, nothing visible. Also, you keep piling styles into one giant inline style block like the intern who never heard of a second file.\n\nFix it: Move the inline style block in server/static/index.html into its own stylesheet. Stop using all: unset on .cmt and .sheet .close and give them real focus and hit areas. Test .sheet on a small screen with the keyboard open. Close the sheet on Escape and on a tap outside it."
     }
   ]
 }
