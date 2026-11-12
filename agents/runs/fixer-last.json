@@ -1,78 +1,33 @@
 {
- "duration_api_ms": 15188,
- "stop_reason": "end_turn",
- "session_id": "b1e7ac64-e40d-4bfc-a795-d21daa1a69ce",
- "total_cost_usd": 0.11229349999999999,
+ "duration_api_ms": 0,
+ "stop_reason": "stop_sequence",
+ "session_id": "1024f8f1-ef0c-492d-a822-da743e0d96d4",
+ "total_cost_usd": 0,
  "usage": {
-  "input_tokens": 12,
-  "cache_creation_input_tokens": 18966,
-  "cache_read_input_tokens": 150748,
-  "output_tokens": 2120,
   "output_tokens_details": {
-   "thinking_tokens": 330
+   "thinking_tokens": 0
   },
+  "input_tokens": 0,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "output_tokens": 0,
   "server_tool_use": {
    "web_search_requests": 0,
    "web_fetch_requests": 0
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 18966,
+   "ephemeral_1h_input_tokens": 0,
    "ephemeral_5m_input_tokens": 0
   },
-  "inference_geo": "global",
-  "iterations": [
-   {
-    "input_tokens": 2,
-    "output_tokens": 469,
-    "cache_read_input_tokens": 33038,
-    "cache_creation_input_tokens": 650,
-    "cache_creation": {
-     "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 650
-    },
-    "type": "message"
-   }
-  ],
+  "inference_geo": "",
+  "iterations": [],
   "speed": "standard",
   "fallback_credit": null
  },
- "modelUsage": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1207,
-   "outputTokens": 20,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
-   "webSearchRequests": 0,
-   "costUSD": 0.0001307,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 0,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
-  "claude-sonnet-5-5": {
-   "inputTokens": 12,
-   "outputTokens": 2120,
-   "cacheReadInputTokens": 150748,
-   "cacheCreationInputTokens": 18966,
-   "webSearchRequests": 0,
-   "costUSD": 0.1121628,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 330,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 18966,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  }
- },
+ "modelUsage": {},
  "permission_denials": [],
- "terminal_reason": "completed",
+ "terminal_reason": "api_error",
  "fast_mode_state": "off",
  "fast_mode_disabled_reason": "sdk_opt_in_required",
  "subagent_stats": {
@@ -100,52 +55,17 @@
   "by_type": {}
  },
  "safety_stops": 0,
- "is_error": false,
- "num_turns": 6,
+ "is_error": true,
+ "num_turns": 1,
  "subtype": "success",
- "api_error_status": null,
- "result": "Everything is pushed, so I'm giving you the summary now.\n\nSeven apps were failing today. I worked two of them and skipped the rest.\n\npajamastan-warrants still returns 404. Its repo has not been pushed since 2026-10-20, and the code already serves a home page. The Docker backend needs a redeploy, or the link should be retired. No code change was possible, so I logged it as needs decision.\n\nmission-operator still returns 503 because its repo is archived. The app now lives as mission-operator-next, which returns 200. The developer needs to retire the old link or repoint the spec. I logged it as needs decision.\n\nI skipped snapshot-engine-pied because it was logged yesterday with the same error. I skipped mary-jane-man because it was logged two days ago. I skipped topo-wars-server, tower-builder-one and j30p4rdy because each already has an open pull request waiting for the developer. For topo-wars-server that is the health route. For tower-builder-one and j30p4rdy it is the test fixes. The topo-wars-server health URL still returns 404 until that pull request is merged.\n\nI opened no new pull requests. The open ones are sudosilo/control-troll/pull/1, sudosilo/control-troll/pull/2 and sudosilo/topo-wars-server/pull/1. I added two entries to fix-log.json and one note to agents/notes/general.md, and pushed them to main as commit 63c6610.",
- "ttft_ms": 1226,
+ "api_error_status": 429,
+ "api_error_origin": "first_party",
+ "api_error": "usage_limit_reached",
+ "result": "You've hit your weekly limit \u00b7 resets 12am (UTC)",
  "type": "result",
- "duration_ms": 19534,
- "uuid": "f30c00de-2135-4ee3-b399-2a247b1096c0",
- "ttft_stream_ms": 729,
- "time_to_request_ms": 194,
- "first_content_frame_ms": 730,
+ "duration_ms": 693,
+ "uuid": "6a1db895-a501-4a6d-a938-497150dc5399",
  "queued_turn_count": 0,
  "result_index": 0,
- "model_usage_since_last_result": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1207,
-   "outputTokens": 20,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
-   "webSearchRequests": 0,
-   "costUSD": 0.0001307,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 0,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
-  "claude-sonnet-5-5": {
-   "inputTokens": 12,
-   "outputTokens": 2120,
-   "cacheReadInputTokens": 150748,
-   "cacheCreationInputTokens": 18966,
-   "webSearchRequests": 0,
-   "costUSD": 0.1121628,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 330,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 18966,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  }
- }
+ "model_usage_since_last_result": {}
 }
