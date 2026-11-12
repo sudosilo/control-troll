@@ -1,78 +1,33 @@
 {
- "duration_api_ms": 96927,
- "stop_reason": "end_turn",
- "session_id": "f9d597e7-ad5f-41fa-baa8-123c808602fc",
- "total_cost_usd": 0.37804600000000005,
+ "duration_api_ms": 0,
+ "stop_reason": "stop_sequence",
+ "session_id": "a6178de2-7c2f-4bf2-aef1-f160338444d6",
+ "total_cost_usd": 0,
  "usage": {
-  "input_tokens": 32,
-  "cache_creation_input_tokens": 45752,
-  "cache_read_input_tokens": 637148,
-  "output_tokens": 13113,
   "output_tokens_details": {
-   "thinking_tokens": 3654
+   "thinking_tokens": 0
   },
+  "input_tokens": 0,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "output_tokens": 0,
   "server_tool_use": {
    "web_search_requests": 0,
    "web_fetch_requests": 0
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 45752,
+   "ephemeral_1h_input_tokens": 0,
    "ephemeral_5m_input_tokens": 0
   },
-  "inference_geo": "global",
-  "iterations": [
-   {
-    "input_tokens": 2,
-    "output_tokens": 522,
-    "cache_read_input_tokens": 58196,
-    "cache_creation_input_tokens": 502,
-    "cache_creation": {
-     "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 502
-    },
-    "type": "message"
-   }
-  ],
+  "inference_geo": "",
+  "iterations": [],
   "speed": "standard",
   "fallback_credit": null
  },
- "modelUsage": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1207,
-   "outputTokens": 17,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
-   "webSearchRequests": 0,
-   "costUSD": 0.0001292,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 0,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
-  "claude-sonnet-5-5": {
-   "inputTokens": 32,
-   "outputTokens": 13113,
-   "cacheReadInputTokens": 637148,
-   "cacheCreationInputTokens": 45752,
-   "webSearchRequests": 0,
-   "costUSD": 0.37791680000000005,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 3654,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 45752,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  }
- },
+ "modelUsage": {},
  "permission_denials": [],
- "terminal_reason": "completed",
+ "terminal_reason": "api_error",
  "fast_mode_state": "off",
  "fast_mode_disabled_reason": "sdk_opt_in_required",
  "subagent_stats": {
@@ -100,52 +55,17 @@
   "by_type": {}
  },
  "safety_stops": 0,
- "is_error": false,
- "num_turns": 16,
+ "is_error": true,
+ "num_turns": 1,
  "subtype": "success",
- "api_error_status": null,
- "result": "I documented 12 repos this run. Three other repos with changes were left for next run, and I did not condense `agents/notes/general.md`.\n\nThe 12 were four new repos (city-seek, skyflow-orange, spyhunt, spyhunt-server) and eight with new commits (mohavetech-website, parcelsun-kq, strudel-samples, field-twin, chassisquiver, field-twin-violet-api, lv-liquor-map, rainbow-run). Each got one \"docs: scribe update\" commit, and no deploy risk turned up. I updated the profile page in sudosilo/sudosilo. I pushed `scribe state` to control-troll main with the `scribe/publish.json` jobs and the notes.\n\nNo real backfills remain except control-troll, heckle-troll and sudosilo, which are skipped on purpose. Two repos with real new commits did not fit under the cap of 12: 2026-10-30-orange-scores and the testbed repo's bot turns. I left both unrefreshed so the next run picks them up. A third, 2026-11-09-orange-icefiles, had no new commits and only got its push time refreshed. I reached every repo I tried.\n\n`agents/notes/general.md` is now about 50 lines, over the 40-line limit. I added my note but did not condense it.",
- "ttft_ms": 1329,
+ "api_error_status": 429,
+ "api_error_origin": "first_party",
+ "api_error": "usage_limit_reached",
+ "result": "You've hit your weekly limit \u00b7 resets 12am (UTC)",
  "type": "result",
- "duration_ms": 163465,
- "uuid": "82ec7a63-7706-4c5b-b1e9-51a93bc01dc8",
- "ttft_stream_ms": 807,
- "time_to_request_ms": 164,
- "first_content_frame_ms": 807,
+ "duration_ms": 340,
+ "uuid": "ef0290af-8c6e-4f05-b696-a4499a1ef8c9",
  "queued_turn_count": 0,
  "result_index": 0,
- "model_usage_since_last_result": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1207,
-   "outputTokens": 17,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
-   "webSearchRequests": 0,
-   "costUSD": 0.0001292,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 0,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
-  "claude-sonnet-5-5": {
-   "inputTokens": 32,
-   "outputTokens": 13113,
-   "cacheReadInputTokens": 637148,
-   "cacheCreationInputTokens": 45752,
-   "webSearchRequests": 0,
-   "costUSD": 0.37791680000000005,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 3654,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 45752,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  }
- }
+ "model_usage_since_last_result": {}
 }
