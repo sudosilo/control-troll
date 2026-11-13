@@ -369,7 +369,26 @@
   "sudosilo/chassisquiver@v2026.11.10",
   "sudosilo/field-twin-violet-api@v2026.11.10",
   "sudosilo/lv-liquor-map@v2026.11.10",
-  "sudosilo/rainbow-run@v2026.11.10"
+  "sudosilo/rainbow-run@v2026.11.10",
+  "sudosilo/delivery-twin@v2026.11.11",
+  "sudosilo/delivery-twin@v2026.11.12",
+  "sudosilo/mail-ionaire@v2026.11.11",
+  "sudosilo/mail-ionaire@v2026.11.12",
+  "sudosilo/thanks-for-watching@v2026.11.12",
+  "sudosilo/2026-11-11-orange-codelens@v2026.11.11",
+  "sudosilo/downfree-foundry@v2026.11.12",
+  "sudosilo/smash-bender@v2026.11.12",
+  "sudosilo/song-offset-listener@v2026.11.11",
+  "sudosilo/mill-ionaire@v2026.11.11",
+  "sudosilo/pajamastan@v2026.11.11",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.10-2",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.11",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.12",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.13",
+  "sudosilo/parcelsun-kq@v2026.11.11",
+  "sudosilo/parcelsun-kq@v2026.11.12",
+  "sudosilo/field-twin@v2026.11.11",
+  "sudosilo/field-twin@v2026.11.12"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -2079,6 +2098,44 @@
     "backend",
     "game",
     "nodejs"
+   ]
+  },
+  "sudosilo/delivery-twin": {
+   "d": "A phone friendly field log with a map, receipts, and mileage, now with a food spots layer.",
+   "h": "https://delivery-twin.vercel.app",
+   "t": [
+    "field",
+    "map",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/mail-ionaire": {
+   "d": "A mail room tycoon game cloned from Mill-ionaire, with its own save and score board.",
+   "h": "https://mail-ionaire.vercel.app",
+   "t": [
+    "game",
+    "tycoon",
+    "vercel"
+   ]
+  },
+  "sudosilo/thanks-for-watching": {
+   "d": "A shuffle player for uploaded media with profiles, badges, a trim editor, and email code sign in.",
+   "h": "https://thanks-for-watching.vercel.app",
+   "t": [
+    "media",
+    "supabase",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-11-11-orange-codelens": {
+   "d": "A page that explains functions from GitHub repos in plain English.",
+   "h": "https://2026-11-11-orange-codelens.vercel.app",
+   "t": [
+    "developer-tools",
+    "tool",
+    "vercel"
    ]
   }
  }
