@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-13T19:48:37Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "9465a931",
+      "message": "grok 2026-11-13T170846",
+      "heckle": "The grok bot pushed contrib/grok/2026-11-13T170846.json straight to the branch with no pull request, no review and no check, under your own name, three times in under two minutes at 170726, 170813 and 170846. It defines a lot with a zone, then places a Brittlebush Cottage with a wall height of 3658 and hand typed coordinates. Three machine commits in two minutes is a loop with no brakes, and your branch protection is a decorative sign. Every other bot at least goes through a pull request. This one just walks in the front door.\n\nFix it: Make grok open a pull request like the other bots instead of pushing to the branch. Turn on branch protection for the main branch of the testbed. Rate limit the grok turns so three do not land in two minutes. Pretty print the contrib JSON files."
+    },
+    {
+      "date": "2026-11-13T19:48:37Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "bffbbb02",
+      "message": "steward 2026-11-13T184712 (#88)",
+      "heckle": "The steward bot added contrib/steward/2026-11-13T184712.json with place_hatch calls painting a crosswalk across Saguaro Road using negative coordinates in the tens of thousands. Notice the two hatches have swapped corner order, one going from 83448 to 80448 and the other from 79248 to 84734, so the rectangle winding flips between them and the lines will render inconsistently. The whole thing is still one minified line that no one on earth can read, merged by you as pull request 88 without a comment. You are running a city planning department where the planner is a script and the inspector is asleep.\n\nFix it: Normalize point winding in the hatch calls before writing contrib/steward files. Pretty print the JSON so a review is possible. Add a lint step that checks hatch polygons for consistent winding. Read the bot output before merging it."
+    },
+    {
+      "date": "2026-11-13T19:48:37Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "97755743",
+      "message": "agent-orange 2026-11-13T185250 (#89)",
+      "heckle": "This pull request added contrib/agent-orange/2026-11-13T185250.json and GitHub shows no patch for it at all, so the merge went through with nothing visible to review. You merged a file nobody could read, under your own login, and the history now says you approved it. That is a rubber stamp the size of a federal budget line. The robot turn naming scheme, the date and the time, is fine, but the content is a black box. Either the file is too big for the diff view or it is empty, and you did not bother to find out which.\n\nFix it: Open contrib/agent-orange/2026-11-13T185250.json and check it is not empty or oversized. Add a size limit on contrib files in the testbed workflow. Block merges where the changed file shows no patch. Review before you press merge."
+    },
+    {
+      "date": "2026-11-13T19:48:37Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "2569e085",
+      "message": "agent-orange 2026-11-13T194647 (#90)",
+      "heckle": "A one line minified JSON file at contrib/agent-orange/2026-11-13T194647.json holding place_line calls that draw puffs of drill smoke coming out of a second floor window, each puff a closed eleven point polygon with a bob animation in the meta. That is eleven hand typed coordinate triples per puff, which no human can review, so the pull request merge button was clicked on faith like a bailout vote. The only thing visible in the diff is a single unreadable line, so a typo in one number would sit there unseen. This repo is a merge queue for robot art and the review step is you pressing a green button.\n\nFix it: Pretty print the contrib JSON so a diff can show which call changed. Add a validation check on contrib files that fails on bad coordinates before merge. Use a shape helper for circles instead of eleven typed points. Do not merge turns you did not look at."
+    },
+    {
+      "date": "2026-11-13T19:48:37Z",
+      "repo": "delivery-twin",
+      "sha": "f91b83a7",
+      "message": "Fog of war spots",
+      "heckle": "You renamed Food spots to Spots in index.html and then ripped out about seventy five lines of the old marker code in favor of a DtSquare class that extends L.CircleMarker and overrides the private _updatePath, so you are now depending on Leaflet internals that can change under you in any minor release. dtFoodOn flipped from default off to default on, with the check now being not equal to zero, so every existing user suddenly gets a map full of gray squares and a heavier data load without asking. The step5.sh that did this was also pushed, deleting 202 lines of itself next commit. The function names still say Food while the menu says Spots, so the naming is half renamed.\n\nFix it: Stop overriding the private _updatePath in DtSquare, draw with a canvas layer or a supported marker. Keep dtFoodOn default off or add a first run prompt. Rename the dtFood functions to match Spots. Delete step5.sh from the repo."
+    },
+    {
+      "date": "2026-11-13T19:48:37Z",
+      "repo": "delivery-twin",
+      "sha": "2197e9f4",
+      "message": "Add step 6 script",
+      "heckle": "step6.sh is two lines, one of which is a sed call with six dash e expressions, three kinds of quote escaping and ampersand escapes, aimed at index.html to hide the lockers menu. Nobody can review that line and nobody can trust it, including you. If any pattern misses, sed exits zero and the app ships with half the lockers hidden and half not, which is how you get a menu that looks haunted. You pushed a script that edits the code instead of pushing the code. Do the interns at least get a lanyard where you work?\n\nFix it: Delete step6.sh from the repo root. Apply the lockers hide edit directly in index.html. Check that the edit actually landed by grepping for lockerPageBtn before you commit. Stop treating the repo as a scratch pad."
+    },
+    {
+      "date": "2026-11-13T19:48:37Z",
+      "repo": "delivery-twin",
+      "sha": "7decce34",
+      "message": "Add step 7 script",
+      "heckle": "Another step script, step7.sh, dropped in the repo root. It is a sed command with escaped quotes nested inside escaped quotes that rewrites index.html by matching exact whitespace, so one stray space in the heading line and it silently does nothing. You are patching a four thousand line file with regular expressions like you are defusing a bomb with oven mitts. The next commit applies it and then deletes it, which means this commit exists only to prove you needed two tries. This is the sixth time the pattern shows up and I am starting to think it is a lifestyle.\n\nFix it: Remove step7.sh from the repo. Make the legendRows change straight in index.html with an editor. Stop using sed on exact whitespace matches for markup. Stop pushing a patch and then the result as separate commits."
+    },
+    {
+      "date": "2026-11-13T19:48:37Z",
+      "repo": "delivery-twin",
+      "sha": "6ba6de84",
+      "message": "Hide lockers, fold color key, add Field Dispatch link",
+      "heckle": "You hid the lockers feature by slapping style display none on the h3 and two buttons in index.html instead of deleting it, so the dead menu code is still shipping and still wired up, like a campaign promise nobody canceled. The same trick runs through step6.sh, which filters the locker brand category out of CATEGORIES in two places, so the data still carries a category the app pretends does not exist. The new Field Dispatch button uses an inline onclick with window.open and a hardcoded vercel address, and the Color key toggle is another inline onclick that flips legendRows by hand. Inline handlers all over a file with addEventListener elsewhere. Pick one style, intern.\n\nFix it: Delete the lockers markup and its handlers if the feature is dead. Remove the locker category filter hack in CATEGORIES and drop the category. Move the Field Dispatch and legendBtn onclick code into addEventListener calls. Put the Field Dispatch address in one config constant."
+    },
+    {
+      "date": "2026-11-13T19:48:37Z",
+      "repo": "delivery-twin",
+      "sha": "e5af08d1",
+      "message": "Add step 8 script",
+      "heckle": "You committed a 93 line shell script named step8.sh into the repo root whose whole job is to cat a heredoc into a file in your home folder and splice it into index.html. That is not version control, that is a ransom note you wrote to yourself. The repo already has step3 through step7 style litter and this adds another, and the script only works on the one phone where the dollar HOME path and awk line match. The real code change shows up in the next commit, so this one is pure noise that someone has to scroll past forever. A government shutdown at least ships a memo.\n\nFix it: Delete step8.sh from the repo root. Edit index.html directly instead of splicing with awk and a heredoc. Add a gitignore entry for step scripts so they cannot land again. Squash the step commits so the history reads like a project."
+    },
+    {
+      "date": "2026-11-13T19:48:37Z",
+      "repo": "delivery-twin",
+      "sha": "238d7eda",
+      "message": "Pickups, dropoffs and delivery lines",
+      "heckle": "Ninety lines wedged into an index.html that is already past line 4900, because splitting a file into modules apparently requires a license you have not earned. You wrote dtStartDelivery and dtDropOff around a localStorage key called dtActiveDelivery, so one cleared browser and the open pickup vanishes while the database row stays orphaned. The floating dtDropBar is pinned with position absolute at top 120px, which on a cramped phone will sit on top of the map controls like a filibuster sits on a budget. The cancel handler also awaits a delete inside a try with an empty catch, so failures vanish quietly. Also, step8.sh got committed and then deleted next commit, so the repo history is a diary of a guy hand patching with heredocs.\n\nFix it: Move the delivery code out of index.html into its own script file. Store the active delivery in the database, not only in localStorage, in dtActiveSave. Log errors in the empty catch inside dtActiveBar. Give dtDropBar a bottom anchored layout so it stops covering the map. Stop committing stepN.sh scripts to the repo root."
+    },
+    {
       "date": "2026-11-13T11:07:52Z",
       "repo": "mail-ionaire",
       "sha": "dc73cbd9",
@@ -1329,76 +1399,6 @@
       "sha": "bcc1dd216bb1b98e843a512ec9328fe8f89573b5",
       "message": "Add specials, gear, actions, social, camera, relay backend and playable slice",
       "heckle": "One commit swallowed gear, actions, social, camera, a whole relay backend and a playable slice, which is not a commit, it is an omnibus spending bill with riders nobody read. The relay in a-canticle-for-pajamastan-backend-v1.js takes a join message with a room and password and forwards events, and I see nothing about origin checks or rate limits in the part I can read. Plus the netsync file is copied into the backend folder, so two copies will drift.\n\nFix it: Split this into one commit per module next time. Share the netsync module instead of copying it into the backend folder. Add message size and rate limits plus an origin check to the relay."
-    },
-    {
-      "date": "2026-11-01T00:10:58Z",
-      "repo": "a-canticle-for-pajamastan",
-      "sha": "14490815c2ec4477d2dc8c18bb46bce24937ccc0",
-      "message": "Fix doorway seal trap in the playable slice",
-      "heckle": "So rooms sealed the player in the doorway because roomAt used a zero margin, and you fixed it by bolting an optional margin of 34 onto roomAt and checking a second inner variable in plRooms. The magic 34 is not tied to HALL or the door width, so the next layout tweak brings the trap right back. Quality work for someone who learned geometry from a cereal box.\n\nFix it: Derive the 34 from HALL and the door size in plRooms. Add a test room where the player stands exactly in a doorway. Rename the inner variable so a human can tell it from r."
-    },
-    {
-      "date": "2026-11-01T00:10:58Z",
-      "repo": "a-canticle-for-pajamastan",
-      "sha": "5b1dc707f55f2432e71d837b371d9805e8fabcaa",
-      "message": "Keep slice enemies and shots inside their rooms",
-      "heckle": "You clamped every enemy to its room with a one line forEach crammed into the update loop of a-canticle-for-pajamastan-v1.html, concatenating two arrays every single frame like a leaf blower in a library. The shots filter calls walkable on every shot per tick too. The real bug was enemies leaving rooms, and your answer was a fence painted over the hole.\n\nFix it: Find why enemies leave rooms in the brain module and fix it there. Build the combined enemy list once, not per frame. Put that clamp in a named function instead of a unreadable one liner."
-    },
-    {
-      "date": "2026-11-01T00:10:58Z",
-      "repo": "a-canticle-for-pajamastan",
-      "sha": "f9b800fe786f3ab47c3d8f1d7e7f12fd47316d54",
-      "message": "Tighten wolf circling and lengthen melee reach",
-      "heckle": "Two numbers changed in two json files, meleeReach 42 to 52 and circleRange 70 to 56, and the commit message is longer than the thinking behind it. Longer reach plus wolves circling closer means you gave the player a bigger stick and the enemy a smaller yard. Bold governance, no impact study.\n\nFix it: Check that circleRange stays larger than meleeReach in a-canticle-for-pajamastan-v1-brain.json or wolves will stand inside the swing for free. Batch tuning edits into one commit per test session. Keep a before and after note in the spec."
-    },
-    {
-      "date": "2026-11-01T00:10:58Z",
-      "repo": "a-canticle-for-pajamastan",
-      "sha": "822be5abfcab8ad3e3c113ac15148211ba23be98",
-      "message": "Ease early slice balance",
-      "heckle": "Seven lines of KINDS stats rewritten inside a-canticle-for-pajamastan-v1.html while the tuning folder sits right there with a combat json you also poked, hitChanceBase from 60 to 70. So the numbers live in two places and you edit both like a bailout with no oversight. Nice engine, intern, shame about the part where the engine is ignored.\n\nFix it: Delete the hardcoded KINDS table in a-canticle-for-pajamastan-v1.html and load it from the tuning files. Leave hitChanceBase in the combat json as the one source. Add a line to the spec saying which file wins."
-    },
-    {
-      "date": "2026-11-01T00:10:58Z",
-      "repo": "a-canticle-for-pajamastan",
-      "sha": "4cfe224965fc0122bfbd5033d850642f84ed8122",
-      "message": "Soften slice boss and part armor",
-      "heckle": "Halving the boss health multiplier from 0.28 to 0.14 in plSpawnBoss and then cutting claw and jaw armor in the bestiary json is what happens when the balance method is flinching. The boss is a pillow now and you did it with two magic numbers and zero playtest notes, like a filibuster that ends in a shrug. Also, plSpawnBoss stays welded inside a single giant html file, so every tweak is a scroll expedition.\n\nFix it: Move the 0.14 into a named key in the bestiary tuning json instead of a literal in plSpawnBoss. Write down what boss fight length you are aiming for. Stop retuning the same fight three times in one afternoon."
-    },
-    {
-      "date": "2026-10-31T19:20:50Z",
-      "repo": "mohavetech-website",
-      "sha": "a2a1a6e3e1f3182ef2b6d0948a0f90581dc8743f",
-      "message": "sync with vercel, drop retired apps",
-      "heckle": "You call it a sync, I call it hand pasting the same app list into index.html and fleet.html like a hostage note, and then renaming a script file just to dodge the cache. The troll.js version stamp changed again, so the cache buster is a manual ritual at this point. fleet.html swallowed 84 added and 80 removed lines for what is really a handful of repo names, which means a whole block got rewritten instead of patched. Dropping retired apps by deleting the lines means the next person has no idea why they vanished. This is a filibuster dressed up as a commit.\n\nFix it: Generate index.html and fleet.html from one list instead of pasting twice. Stop renaming script-vNN.js and use a query string stamp. Keep a retired list so deletions leave a trail."
-    },
-    {
-      "date": "2026-10-31T19:20:50Z",
-      "repo": "mind-globe",
-      "sha": "60d15ba4e6bd5a2cc116db4c14401110fb47f3be",
-      "message": "World presets: Earth continents and Checkerboard",
-      "heckle": "You stuffed a base64 land mask straight into globe-web/index.html, so the file now carries a wall of encoded gibberish that nobody can diff, review, or edit. The new #world-btn sits inside the pointer-events none HUD and only works because you patched it with pointer-events auto, which is the kind of duct tape that fails the first time someone restyles the HUD. The localStorage read is wrapped in an empty catch that swallows everything, and a button with no label in the markup stays blank until script runs. One tiny button and you still managed a mess, like a bailout bill with a rider attached.\n\nFix it: Move the Earth mask into its own data file and fetch it. Give the world button text in the markup. Log the localStorage failure instead of eating it. Make the HUD pass clicks through a wrapper, not a one off override."
-    },
-    {
-      "date": "2026-10-31T19:20:50Z",
-      "repo": "mohavetech-website",
-      "sha": "fdcf2ff53e283c2b52a7d041bacadcff1a123aee",
-      "message": "Host Free Links page on mohave.wtf",
-      "heckle": "You copied a whole 333 line page into freelinks.html, so the free links app now exists twice and the two will drift the first time you touch either one. Then you pointed the iframe in script-v49.js and troll.js at the copy, which kills the live link to the original repo and leaves a stale snapshot as the source of truth. linkrain.js was changed to fetch freelinks.html and parse a JSON literal out of the page by slicing from a string match on var DATA, which breaks if anyone adds a space. That is a campaign promise held together with indexOf. Also you edited a versioned script file in place, so the cache never learns about it.\n\nFix it: Pick one home for the links data and have both pages read a real JSON file. Delete the pasted copy or make the repo deploy the single source. Replace the indexOf parsing in linkrain.js with a plain data file. Bump the script name or stamp when script-v49.js changes."
-    },
-    {
-      "date": "2026-10-31T19:20:50Z",
-      "repo": "field-twin",
-      "sha": "263f49b997bde9ecd4470164bfa31e9234ea562c",
-      "message": "GO navigation",
-      "heckle": "The commit adds a /destination route in fieldtwin-api/server.js that feeds user text and up to 60 logged sites into a model call. The text is capped at 500 characters, fine, but the sites array is passed in with no shape check, so any client can stuff arbitrary strings into the prompt. The auth line lets a request through whenever API_TOKEN is empty, so an unset env var quietly turns the route into a public model proxy. And you committed go-navigation.patch, a 336 line patch file, then deleted it in the same commit, so the history now holds the whole diff twice. Pushing a patch file to apply it from a phone is not a workflow, it is a hostage situation.\n\nFix it: Fail closed in /destination when API_TOKEN is not set. Validate each entry in the sites array and cap string lengths. Stop committing .patch files and use a branch. Rate limit the route."
-    },
-    {
-      "date": "2026-10-31T19:20:50Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "8b16eff46553a9a46517572a9b4e5a8daa21447d",
-      "message": "steward 2026-10-31T161951 (#62)",
-      "heckle": "Another steward PR, another single line of minified JSON that no human can review. The parade is a police car, a banner, and drum line people all given path animations with the same coordinates copy pasted five times, so the diff is one giant line that GitHub refuses to render meaningfully. A parade loop at speed 1400 around a fixed rectangle means everything marches the same box, including the lead car and the banner, which will stack on top of each other. Merging this is a rubber stamp. Reviewing it is impossible by design, which is basically how a rushed spending bill gets through.\n\nFix it: Write contrib files as pretty printed JSON so a diff is readable. Offset parade paths per participant instead of reusing the same loop. Add a validator step that rejects overlapping placements before the merge."
     }
   ]
 }
