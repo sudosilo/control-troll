@@ -1,6 +1,27 @@
 {
   "heckles": [
     {
+      "date": "2026-11-13T01:52:53Z",
+      "repo": "thanks-for-watching",
+      "sha": "83d18356",
+      "message": "Point api at backend",
+      "heckle": "One line changed in vercel.json and it still took you a whole commit to swap a placeholder host that literally read xxxxxxxx for a hardcoded Railway production URL. Somebody shipped a rewrite pointing at xxxxxxxx and called it done, which is a campaign promise with a domain name. Now the backend address is welded into the config with a random looking suffix, so the next redeploy means another commit. The root rewrite also still serves thanks-for-watching-v1.html while the log is full of v2, v3 and v4 work, so the front door shows the oldest version. Cereal box coding at its finest.\n\nFix it: Move the backend host out of vercel.json and into a Vercel environment variable. Point the root rewrite in vercel.json at the newest versioned page. Add a GET /health route on the backend so you can tell when it is down instead of guessing."
+    },
+    {
+      "date": "2026-11-13T01:52:53Z",
+      "repo": "smash-bender",
+      "sha": "0d825985",
+      "message": "Toolbox page: every tool, what it does, whether it is ready, which button uses it",
+      "heckle": "You built a Toolbox page to explain your own tools to yourself, because apparently nobody could remember what the pile does. server/extras.py hardcodes /opt/smash-bender as a fallback BASE and then pokes around site-packages folders with startswith checks to guess whether Demucs and WhisperX are installed, which is a ready check as reliable as a bailout promise. It also adds main.py just to wrap app.py, so now two entry points exist and anyone still running uvicorn app:app silently skips every extra route. And tools.html loads Google fonts from a CDN for a page that lists audio utilities. The unauthenticated publish route is still sitting in app.py, by the way.\n\nFix it: Add auth to the /api/publish route in server/app.py before anything else. Replace the site-packages sniffing in has() in server/extras.py with real import checks. Move the font links in server/static/tools.html to local files. Delete the old entry point or document that main:app is the only one."
+    },
+    {
+      "date": "2026-11-13T01:52:53Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "9a194e5d",
+      "message": "grok 2026-11-12T170310",
+      "heckle": "Another grok turn shoved straight onto the branch with no pull request, no review, and no one watching, like a bill passed at 3am with nobody reading it. contrib/grok/2026-11-12T170310.json draws a Grok Corner Market that is a flat four point rectangle, a second rectangle lifted to 1829, and a hatch that does not even match the building footprint. It sits at negative coordinates again, so it floats in the same corner as every other grok turn. The person is browsing shelves for snacks, which is the most detailed thing in the whole file, and the sig field is trusted by nothing you can see in the diff. Lovely work, intern.\n\nFix it: Make the grok bot open pull requests like the steward bot does instead of committing to the branch. Add a check that rejects turns whose hatch points do not match the building outline. Verify the sig field in a workflow before the file lands."
+    },
+    {
       "date": "2026-11-12T02:17:59Z",
       "repo": "delivery-twin",
       "sha": "4d429900",
@@ -1378,27 +1399,6 @@
       "sha": "97dc8ed0ecec57ea2a00e10fa280fa6ea63a737b",
       "message": "v36: audit fixes",
       "heckle": "Your commit message is a paragraph of eleven fixes, so this is eleven changes with one rollback button. The index.html is a single file that keeps swelling, and the header comment block still lists phones by color like a bad spy novel. You rebuilt the changelog in this same commit, which means history was rewritten by the person with the most reason to flatter it. An error boundary around the whole game loop is also how you hide a crash from yourself: the reset card turns every bug into a feature. The pause button took until version 36, which says plenty.\n\nFix it: Log the caught error in the boundary in index.html before showing the reset card. Split fixes into separate commits so one can be reverted. Stop rewriting CHANGELOG.md after the fact."
-    },
-    {
-      "date": "2026-10-31T05:51:52Z",
-      "repo": "gladhand-dockyard",
-      "sha": "cf63e47e3bb63d021caa5e59ee3bd59998747560",
-      "message": "v35: gauge grid removed, speedometer stays",
-      "heckle": "You did not remove the gauge grid. You added CSS that hides it with display none and an important flag, and then stacked new top offsets on top of the old ones. The markup and the code that feeds #chips are still sitting there rendering to nothing, which is dead code with a fancy coat of paint. The comment says gone for good, and it is not gone, it is invisible, like a budget cut that only exists in the press release. Four media rules now fight over the same top values, and one of them checks max-height 330 pixels like the phone is a thermostat.\n\nFix it: Delete the #chips markup and its update code in index.html. Remove the offsets the hidden grid used to need. Consolidate the top position rules into one block."
-    },
-    {
-      "date": "2026-10-31T05:51:52Z",
-      "repo": "gladhand-dockyard",
-      "sha": "e32e15364561ec53ff63322677f653efe6e40fd8",
-      "message": "v34: no-cache headers so phones load the new build",
-      "heckle": "You added no-cache, no-store headers to every path on the site, including images and scripts that never change, so every phone refetches everything on every visit. That is the cure for stale builds applied with a sledgehammer, and it is only needed because you keep pushing a new version number every twenty minutes. The landscape rules in index.html are a block of sixty pixel hand tuned sizes inside a max-height 330 media query, which will break on the first phone with a different notch. vercel.json is five lines and you still managed a blanket rule.\n\nFix it: Scope the no-cache header in vercel.json to the html file only. Give assets a versioned filename or normal caching. Replace the hand tuned landscape sizes in index.html with relative units."
-    },
-    {
-      "date": "2026-10-30T22:26:10Z",
-      "repo": "smash-bender",
-      "sha": "cf3320879278530a361d3138cc4d027371d313b8",
-      "message": "Import accepts music_start and voice_start",
-      "heckle": "In server/app.py the import endpoint takes two more form fields and runs float(music_start or 0) on them, so a letter in the field throws a 500 instead of a clean 422. You changed the positional argument list for runner.run_experiment by adding two floats to the end, with no keyword names, so any other caller breaks without a sound. This service still has no auth on the job endpoint and wildcard CORS, and you keep adding inputs to it like piling more luggage on a bus with no brakes.\n\nFix it: Declare music_start and voice_start as float form fields with bounds in server/app.py so bad input gets a 422. Pass them to runner.run_experiment by keyword. Lock down CORS to your own origins. Add a shared key check on the import and start routes."
     }
   ]
 }
