@@ -28,8 +28,8 @@
    "summary": "A solar heat model for a parcel locker with a four module default",
    "name": "Parcelsun",
    "latest": {
-    "date": "2026-11-10",
-    "text": "Added a Locker Screen kiosk to Parcelsun. Codes and scans swing a door open on the 3D model, doors can be tapped to open and close, and the tech repair flow opens the matching door. Versions two to five are now set up, with a screen on two and three and a Bluetooth phone pickup on four and five. Added a wrap graphic that stretches a photo across the bank front, or joins several photos side by side."
+    "date": "2026-11-12",
+    "text": "Doors are now fixed slot sizes measured off a real bank, on a column of 29 units, and each column in the Layout card is a list of slots you edit. Slot heights were fitted from close photos of a version 3 bank. The starter module is now two columns, a screen column beside a full column of doors, and oversize modules from Field Twin land on the right end. Save to Field Twin keeps the whole bank slot by slot. Every card under the 3D view is now a drop-down, closed to start, and the page remembers which are open."
    }
   },
   "chassisquiver": {
@@ -86,8 +86,8 @@
    "summary": "The official site of the micronation of Pajamastan",
    "name": "Pajamastan",
    "latest": {
-    "date": "2026-11-07",
-    "text": "Added a Links tab that includes the badge tool."
+    "date": "2026-11-11",
+    "text": "Added a combined creator seal that shows the Pajamastan flag beside a round seal."
    }
   },
   "parkingten": {
@@ -158,8 +158,8 @@
    "summary": "A field log with a map, receipts, mileage, and an Android app that tracks stops",
    "name": "Field Twin",
    "latest": {
-    "date": "2026-11-10",
-    "text": "Added one look across the Field Twin apps, so the map, inventory, and roads share a design. Added a night look that follows sunset and sunrise, and a drawn sign for every kind of place."
+    "date": "2026-11-12",
+    "text": "The locker site section now has an oversize module count, so a bank with two tall doors beside one full height door module is passed to Parcelsun the way it stands. Open in Parcelsun now carries the exact bank saved from Parcelsun, slot by slot."
    }
   },
   "mohavetech-website": {
@@ -416,8 +416,8 @@
    "summary": "A letter shop tycoon built around a simulated knee mill that grows into a factory floor.",
    "name": "Mill-ionaire",
    "latest": {
-    "date": "2026-11-09",
-    "text": "Added filament printers. A plastic 3D printer takes a floor bay and prints letters, numbers and emoji in white, black, red, blue or yellow filament, the color of whatever spool it has loaded. Owning one brings in orders in filament colors that only a printer can make. Thin parts like a 1 print fast and a fat 8 or an emoji takes longer, a printer works the colors already on its spool first, a different color means an operator swaps the spool, and now and then a print turns to spaghetti and gets scraped off the bed. Tapping a printer opens a keypad that prints any part ahead into the bins in the picked spool color, and orders take from the bins first."
+    "date": "2026-11-11",
+    "text": "Added an art pass. Every machine on the floor, in the warehouse, and in the shop now has shop manual style art, along with crew figures, painted bays, and a new street view. The mill, lathe, brake, and CNC are more detailed. Buttons feel pressable, the gauge row is tighter, and high score buttons hold still. Added a combined creator seal."
    }
   },
   "tinewood-keys": {
@@ -1092,8 +1092,8 @@
    "summary": "A phone app that identifies a song and syncs playback across phones",
    "name": "Offset Listener",
    "latest": {
-    "date": "2026-10-30",
-    "text": "Added a Smash Bender relay queue: the app queues a job, a phone takes it and reports back. The queue also carries where each clip starts in its song."
+    "date": "2026-11-11",
+    "text": "Added ear lock. The phone hears its own copy of the song against the room and corrects the gap, and a control loop holds the player on the line. Offsets learned for each video are kept. Listen retries as plain audio when the clip is empty or cannot be identified. Version two is now the main build with a simpler comic book look and a left side menu, and the old build stays at /classic. Naming a song is faster, with a type or voice name box, up next chips from the spot history, guesses checked by ear, and an intro archive shared by every phone."
    }
   },
   "phasewell-scope": {
@@ -1793,8 +1793,8 @@
    "summary": "A shared city where AI agents take turns building, with a viewer and a web API.",
    "name": "Agent Test Bed",
    "latest": {
-    "date": "2026-11-10",
-    "text": "The agent turn for the day was played and merged into the city."
+    "date": "2026-11-13",
+    "text": "The agent turn was played and merged into the city."
    }
   },
   "steward-repo": {
@@ -2103,8 +2103,8 @@
    "summary": "A server that sings one song's words on another song's timing and notes.",
    "name": "Smash Bender",
    "latest": {
-    "date": "2026-11-09",
-    "text": "Added a chop tool that cuts a slice from a sample, reads its notes, and writes Strudel code with a link to open it. Chop timing is exact, the notes are cleaner, and the original slice plays in sync under the notes. The sample log can chop any sample into notes, save a slice to GitHub, and add a sound clip. A publish endpoint sends clips to the Strudel sample repo."
+    "date": "2026-11-12",
+    "text": "Added a Toolbox page that lists every tool, what it does, whether it is ready, and which button uses it."
    }
   },
   "mission-operator-next": {
@@ -2341,8 +2341,8 @@
    "summary": "A browser tool that stacks cars from several drive clips onto one road",
    "category": "Tools",
    "latest": {
-    "date": "2026-11-09",
-    "text": "Added a Music tab to Road Layers. It finds kick, snare, and hi-hat hits in a song, and cutouts pop in on the hits with the song playing in the composite and in recordings. Play and pause are more reliable, dragging to pan no longer pulls you back, and each kind of cutout gets a color coded drum."
+    "date": "2026-11-12",
+    "text": "Composite can now copy a clip to stack a recording with itself, remove clips, and turn sideways footage upright, in the Road tab too. Record reads the phone tilt to know which way is up, saves it with each recording, and turns clips automatically in Composite and Road. The Record button now sits under the camera. Every card folds open and closed and remembers it, and settings have their own card."
    }
   },
   "pajamastan-badge-tool": {
@@ -2521,6 +2521,62 @@
    "latest": {
     "date": "2026-11-10",
     "text": "Created the Spy Hunt server, which keeps track of where each player in a game is. Each phone sends its position and gets back the other players it has seen recently. Players who go quiet for a minute are dropped."
+   }
+  },
+  "delivery-twin": {
+   "apps": [],
+   "urls": [
+    "https://delivery-twin.vercel.app"
+   ],
+   "private": false,
+   "category": "Field and Equipment",
+   "summary": "A phone friendly field log with a map, receipts, and mileage, now with a food spots layer.",
+   "name": "Delivery Twin",
+   "latest": {
+    "date": "2026-11-12",
+    "text": "Renamed the app Delivery Twin and gave it its own data tables. Added an offer logger. Added a food spots layer on the map and a form to add a food spot."
+   }
+  },
+  "mail-ionaire": {
+   "apps": [],
+   "urls": [
+    "https://mail-ionaire.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A mail room tycoon game cloned from Mill-ionaire, with its own save and score board.",
+   "name": "Mail-ionaire",
+   "latest": {
+    "date": "2026-11-12",
+    "text": "Added mail room art. The main screen now shows a wide format printer and cut plotter. The floor shows an inserter, press, paper roll, guillotine, sorter, and folder."
+   }
+  },
+  "thanks-for-watching": {
+   "apps": [],
+   "urls": [
+    "https://thanks-for-watching.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "A shuffle player for uploaded media with profiles, badges, a trim editor, and email code sign in.",
+   "name": "Thanks For Watching",
+   "latest": {
+    "date": "2026-11-12",
+    "text": "Released Thanks For Watching version one with a shuffle bucket player, uploads, profiles, badges, and flags. Version two added a shared accounts hub and email sign in. Added a log in button at the top of the menu and a way to reclaim a handle left on an anonymous account. Version three added a trim editor with automatic dead air removal, manual split and cut, and in browser export. Version four signs in with an emailed code typed into the app instead of a link."
+   }
+  },
+  "2026-11-11-orange-codelens": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-11-orange-codelens.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "A page that explains functions from GitHub repos in plain English.",
+   "name": "Code Lens",
+   "latest": {
+    "date": "2026-11-11",
+    "text": "Created Code Lens. It explains functions from GitHub repos in plain English. Gave the page a comic book style."
    }
   }
  }

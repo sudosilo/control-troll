@@ -1,98 +1,219 @@
 {
  "jobs": [
   {
-   "repo": "city-seek",
-   "releases": [
-    {
-     "tag": "v2026.11.10",
-     "target": "dfc4bb757b9c16ee3d8ff73d0bf9913e55dd1d72",
-     "name": "City Seek 2026-11-10",
-     "body": "Created City Seek, a huge zoomable city that is built fresh each time, with hidden items to find. Version three added a city builder with see through interiors, sandboxes, and towers, plus a tower floor view and an x-ray zoom. Ten of every hidden item are spread across the city, and tray cards count the copies you have found. Added swinging outside doors, flying birds, a Bluebird hunt, tap reactions, word bubbles, and synth sound effects with a sound toggle. Added office props, sports fields, basketball courts, traffic cones, and eighteen new hidden items."
-    }
-   ],
-   "description": "A zoomable generated city where you hunt for hidden items, with towers, birds, and sound.",
-   "homepage": "https://city-seek.vercel.app",
-   "topics": [
-    "game",
-    "hidden-object",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "skyflow-orange",
-   "releases": [
-    {
-     "tag": "v2026.11.10",
-     "target": "fa05045e40f035f9cf641527b34079f0e375f0a2",
-     "name": "Sky Flow 2026-11-10",
-     "body": "Created Sky Flow, a crane game where you stack crates as high as they will stand before the clock runs out. Added timed rounds, scoring, sound, and a leaderboard."
-    }
-   ],
-   "description": "A tower crane game where you stack crates as high as they will stand before the clock runs out.",
-   "homepage": "https://skyflow-orange.vercel.app",
-   "topics": [
-    "game",
-    "crane",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "spyhunt",
-   "releases": [
-    {
-     "tag": "v2026.11.10",
-     "target": "3da475e69f3d7c0bccd22c47f55258f3ffb89634",
-     "name": "Spy Hunt 2026-11-10",
-     "body": "Created Spy Hunt, a phone map game where players join a game by code as a red spy or a blue spy. The map shows the other players in the same game. You can set the cycle length, the number of spies, and your slot number."
-    }
-   ],
-   "description": "A phone map game where red and blue spies hunt each other using a shared game code.",
-   "homepage": "https://spyhunt.vercel.app",
-   "topics": [
-    "game",
-    "map",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "spyhunt-server",
-   "releases": [
-    {
-     "tag": "v2026.11.10",
-     "target": "b7c7a6f229b8215f22d0749bb3927cb7de486381",
-     "name": "Spy Hunt Server 2026-11-10",
-     "body": "Created the Spy Hunt server, which keeps track of where each player in a game is. Each phone sends its position and gets back the other players it has seen recently. Players who go quiet for a minute are dropped."
-    }
-   ],
-   "description": "The small server that shares player positions between phones for the Spy Hunt game.",
-   "homepage": "",
-   "topics": [
-    "backend",
-    "game",
-    "nodejs"
-   ]
-  },
-  {
-   "repo": "mohavetech-website",
+   "repo": "delivery-twin",
    "releases": [
     {
      "tag": "v2026.11.11",
-     "target": "27cadcb491006d1ec542d97000bc05cc2446abaa",
-     "name": "App Index 2026-11-11",
-     "body": "Added a dark mode for the modern look with a menu switch. Stars now run behind the links, and the panels are see through. The retro look got stars too. Deploy dates were synced."
+     "target": "4d4299000279c6d3ff4f143ad351ea1e080a1df8",
+     "name": "Delivery Twin 2026-11-11",
+     "body": "Created Delivery Twin as a copy of Field Twin. The road controls on the map are now hidden."
     },
     {
-     "tag": "v2026.11.10",
-     "target": "a2a184bbd43a569188c79590b83d2a930042943d",
-     "name": "App Index 2026-11-10",
-     "body": "Added a retro look for the hub with a menu switch back to the classic look. The retro look became the default, and then a modern look with moving stars replaced it as the default. Sync now adds new apps to Unsorted and drops deleted ones. Fixed sync so it no longer renames apps whose name starts with their old date."
+     "tag": "v2026.11.12",
+     "target": "27e4b38418bfc5282662e0bd825155438036af69",
+     "name": "Delivery Twin 2026-11-12",
+     "body": "Renamed the app Delivery Twin and gave it its own data tables. Added an offer logger. Added a food spots layer on the map and a form to add a food spot."
     }
    ],
-   "description": "An index page that lists every app with its age, phone tags, and notes.",
-   "homepage": "https://mohavetech-website.vercel.app",
+   "description": "A phone friendly field log with a map, receipts, and mileage, now with a food spots layer.",
+   "homepage": "https://delivery-twin.vercel.app",
    "topics": [
-    "index",
     "tool",
+    "field",
+    "vercel",
+    "map"
+   ]
+  },
+  {
+   "repo": "mail-ionaire",
+   "releases": [
+    {
+     "tag": "v2026.11.11",
+     "target": "17d76e040640bb1caee0d12b55f12c1fc06ee924",
+     "name": "Mail-ionaire 2026-11-11",
+     "body": "Created Mail-ionaire, cloned from Mill-ionaire with its own save and score board. Added a combined creator seal."
+    },
+    {
+     "tag": "v2026.11.12",
+     "target": "a4352f58b4470ae3e1ec03ed1d89d4af8cb81ad6",
+     "name": "Mail-ionaire 2026-11-12",
+     "body": "Added mail room art. The main screen now shows a wide format printer and cut plotter. The floor shows an inserter, press, paper roll, guillotine, sorter, and folder."
+    }
+   ],
+   "description": "A mail room tycoon game cloned from Mill-ionaire, with its own save and score board.",
+   "homepage": "https://mail-ionaire.vercel.app",
+   "topics": [
+    "game",
+    "tycoon",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "thanks-for-watching",
+   "releases": [
+    {
+     "tag": "v2026.11.12",
+     "target": "c1a52b570c1e6454842ba13d5adb1c503de69a51",
+     "name": "Thanks For Watching 2026-11-12",
+     "body": "Released Thanks For Watching version one with a shuffle bucket player, uploads, profiles, badges, and flags. Version two added a shared accounts hub and email sign in. Added a log in button at the top of the menu and a way to reclaim a handle left on an anonymous account. Version three added a trim editor with automatic dead air removal, manual split and cut, and in browser export. Version four signs in with an emailed code typed into the app instead of a link."
+    }
+   ],
+   "description": "A shuffle player for uploaded media with profiles, badges, a trim editor, and email code sign in.",
+   "homepage": "https://thanks-for-watching.vercel.app",
+   "topics": [
+    "tool",
+    "media",
+    "vercel",
+    "supabase"
+   ]
+  },
+  {
+   "repo": "2026-11-11-orange-codelens",
+   "releases": [
+    {
+     "tag": "v2026.11.11",
+     "target": "ad8fb4d155935a0190324c83199708e45040a853",
+     "name": "Code Lens 2026-11-11",
+     "body": "Created Code Lens. It explains functions from GitHub repos in plain English. Gave the page a comic book style."
+    }
+   ],
+   "description": "A page that explains functions from GitHub repos in plain English.",
+   "homepage": "https://2026-11-11-orange-codelens.vercel.app",
+   "topics": [
+    "tool",
+    "developer-tools",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "downfree-foundry",
+   "releases": [
+    {
+     "tag": "v2026.11.12",
+     "target": "37bce1da810cdd2eea9ba8473af081fe3a838f4f",
+     "name": "Road Layers 2026-11-12",
+     "body": "Composite can now copy a clip to stack a recording with itself, remove clips, and turn sideways footage upright, in the Road tab too. Record reads the phone tilt to know which way is up, saves it with each recording, and turns clips automatically in Composite and Road. The Record button now sits under the camera. Every card folds open and closed and remembers it, and settings have their own card."
+    }
+   ],
+   "description": "Road Layers stacks cars from several drive clips onto one road in the browser.",
+   "homepage": "https://downfree-foundry.vercel.app",
+   "topics": [
+    "tool",
+    "vercel",
+    "video"
+   ]
+  },
+  {
+   "repo": "smash-bender",
+   "releases": [
+    {
+     "tag": "v2026.11.12",
+     "target": "0d825985293d7fefd2a06320b37196701a2ebf59",
+     "name": "Smash Bender 2026-11-12",
+     "body": "Added a Toolbox page that lists every tool, what it does, whether it is ready, and which button uses it."
+    }
+   ],
+   "description": "A processing server for song mashups with phone scripts",
+   "homepage": "",
+   "topics": [
+    "audio",
+    "backend",
+    "music",
+    "python"
+   ]
+  },
+  {
+   "repo": "song-offset-listener",
+   "releases": [
+    {
+     "tag": "v2026.11.11",
+     "target": "8d66a3835c067c4f23eae9585aa440e048acd699",
+     "name": "Offset Listener 2026-11-11",
+     "body": "Added ear lock. The phone hears its own copy of the song against the room and corrects the gap, and a control loop holds the player on the line. Offsets learned for each video are kept. Listen retries as plain audio when the clip is empty or cannot be identified. Version two is now the main build with a simpler comic book look and a left side menu, and the old build stays at /classic. Naming a song is faster, with a type or voice name box, up next chips from the spot history, guesses checked by ear, and an intro archive shared by every phone."
+    }
+   ],
+   "description": "A phone app that lines up music across several phones",
+   "homepage": "https://offset-listener.vercel.app",
+   "topics": [
+    "music",
+    "phone",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "mill-ionaire",
+   "releases": [
+    {
+     "tag": "v2026.11.11",
+     "target": "05b53b2a675ca2c6235240687cf71ec0d0fef706",
+     "name": "Mill-ionaire 2026-11-11",
+     "body": "Added an art pass. Every machine on the floor, in the warehouse, and in the shop now has shop manual style art, along with crew figures, painted bays, and a new street view. The mill, lathe, brake, and CNC are more detailed. Buttons feel pressable, the gauge row is tighter, and high score buttons hold still. Added a combined creator seal."
+    }
+   ],
+   "description": "A letter shop tycoon built around a simulated knee mill that grows into a factory.",
+   "homepage": "https://mill-ionaire.vercel.app",
+   "topics": [
+    "game",
+    "simulator",
+    "tycoon",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "pajamastan",
+   "releases": [
+    {
+     "tag": "v2026.11.11",
+     "target": "d448169352e72a3420044657514d3af7e1e30663",
+     "name": "Pajamastan 2026-11-11",
+     "body": "Added a combined creator seal that shows the Pajamastan flag beside a round seal."
+    }
+   ],
+   "description": "The official site of the micronation of Pajamastan.",
+   "homepage": "https://pajamastan.vercel.app",
+   "topics": [
+    "atlas",
+    "micronation",
+    "pajamastan",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "2026-10-18-orange-testbed",
+   "releases": [
+    {
+     "tag": "v2026.11.10-2",
+     "target": "a135572635092b09ce5391967b11a440de81bbf9",
+     "name": "Agent Test Bed 2026-11-10",
+     "body": "The agent, grok, and steward turns for the day were played and merged into the city."
+    },
+    {
+     "tag": "v2026.11.11",
+     "target": "0491d9f6bd76be1323d7bb8187141383ac576996",
+     "name": "Agent Test Bed 2026-11-11",
+     "body": "The agent, grok, steward, and a second agent turn for the day were played and merged into the city."
+    },
+    {
+     "tag": "v2026.11.12",
+     "target": "9a194e5de88f1506e36933c067af8db94f92ef61",
+     "name": "Agent Test Bed 2026-11-12",
+     "body": "The grok turn was played and merged into the city."
+    },
+    {
+     "tag": "v2026.11.13",
+     "target": "d55a1d017a5db8b8b83af1a9170bf128cdda9b95",
+     "name": "Agent Test Bed 2026-11-13",
+     "body": "The agent turn was played and merged into the city."
+    }
+   ],
+   "description": "A shared city that AI agents build one turn at a time",
+   "homepage": "https://2026-10-18-orange-testbed.vercel.app",
+   "topics": [
+    "agents",
+    "game",
+    "simulator",
     "vercel"
    ]
   },
@@ -100,10 +221,16 @@
    "repo": "parcelsun-kq",
    "releases": [
     {
-     "tag": "v2026.11.10",
-     "target": "cc6fb3cacbb2af9d7a90d9fbd92230e9f68cdcf4",
-     "name": "Parcelsun 2026-11-10",
-     "body": "Added a Locker Screen kiosk to Parcelsun. Codes and scans swing a door open on the 3D model, doors can be tapped to open and close, and the tech repair flow opens the matching door. Versions two to five are now set up, with a screen on two and three and a Bluetooth phone pickup on four and five. Added a wrap graphic that stretches a photo across the bank front, or joins several photos side by side."
+     "tag": "v2026.11.11",
+     "target": "c96a62d8f71f61428581b76533e2d39c8bf77a18",
+     "name": "Parcelsun 2026-11-11",
+     "body": "Added shade blockers. A wall, building or tree is a span of bearings with a top angle, or a height and distance, and the locker gets no direct sun while the sun sits behind it. A sky chart shows the blockers against the day sun path, and Blocker shade counts the hours. Added the Field Twin card. Find the locker I am at loads the closest saved locker with its facing, generation, doors, placement and blockers, blanks filled from the latest visit survey. Save to Field Twin writes adjustments back."
+    },
+    {
+     "tag": "v2026.11.12",
+     "target": "070ac1535b90f3fc819e51364c821daeabf2cb1e",
+     "name": "Parcelsun 2026-11-12",
+     "body": "Doors are now fixed slot sizes measured off a real bank, on a column of 29 units, and each column in the Layout card is a list of slots you edit. Slot heights were fitted from close photos of a version 3 bank. The starter module is now two columns, a screen column beside a full column of doors, and oversize modules from Field Twin land on the right end. Save to Field Twin keeps the whole bank slot by slot. Every card under the 3D view is now a drop-down, closed to start, and the page remembers which are open."
     }
    ],
    "description": "A solar heat model for a parcel locker with a four module default.",
@@ -116,32 +243,19 @@
    ]
   },
   {
-   "repo": "strudel-samples",
-   "releases": [
-    {
-     "tag": "v2026.11.10",
-     "target": "a30a19d78a88e8a3092609ede352ff5374f0bdeb",
-     "name": "Strudel Samples 2026-11-10",
-     "body": "Added a word puller that grabs every short clip of one word. The first pull was the word hello, trimmed tight with misses dropped and a hello supercut added. Every sample is now named by its words, show, episode, and clip id, and a catalog lists them all."
-    }
-   ],
-   "description": "Sound clips for Strudel: samples('github:sudosilo/strudel-samples')",
-   "homepage": "",
-   "topics": [
-    "audio",
-    "music",
-    "samples",
-    "strudel"
-   ]
-  },
-  {
    "repo": "field-twin",
    "releases": [
     {
-     "tag": "v2026.11.10",
-     "target": "32fddb425721f34ce9e9edb5c3cfbadc0bd190cb",
-     "name": "Field Twin 2026-11-10",
-     "body": "Added one look across the Field Twin apps, so the map, inventory, and roads share a design. Added a night look that follows sunset and sunrise, and a drawn sign for every kind of place."
+     "tag": "v2026.11.11",
+     "target": "612e7bfcde1b904d2ced33d6403cc493c70f5227",
+     "name": "Field Twin 2026-11-11",
+     "body": "Each locker page now has a Site for Parcelsun section with door count, module count, generation, placement and facing. Aim phone measures which way the front faces with the compass, and Add shade blocker measures a wall or building that shades the locker. Open in Parcelsun opens the heat model with the locker set up and fills blank fields from the latest locker visit survey."
+    },
+    {
+     "tag": "v2026.11.12",
+     "target": "9ff2b76368b2bf213c532276fc67c4de2b4f4365",
+     "name": "Field Twin 2026-11-12",
+     "body": "The locker site section now has an oversize module count, so a bank with two tall doors beside one full height door module is passed to Parcelsun the way it stands. Open in Parcelsun now carries the exact bank saved from Parcelsun, slot by slot."
     }
    ],
    "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
@@ -151,83 +265,6 @@
     "map",
     "tool",
     "vercel"
-   ]
-  },
-  {
-   "repo": "chassisquiver",
-   "releases": [
-    {
-     "tag": "v2026.11.10",
-     "target": "834107785ef1753e00599b16e7db7827cf1d1259",
-     "name": "Field Twin Glaucous 2026-11-10",
-     "body": "Added one look across the Field Twin apps, so the map, inventory, and roads share a design. Added a night look that follows sunset and sunrise, and a drawn sign for every kind of place."
-    }
-   ],
-   "description": "A phone app that logs road quality from vibration and shows it on a map with a vehicle garage.",
-   "homepage": "https://field-twin-glaucous.vercel.app",
-   "topics": [
-    "field",
-    "maps",
-    "roads",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "field-twin-violet-api",
-   "releases": [
-    {
-     "tag": "v2026.11.10",
-     "target": "d3aabee099e1000355b61342201eb5143f711d1a",
-     "name": "Field Twin Violet 2026-11-10",
-     "body": "Added one look across the Field Twin apps, so the map, inventory, and roads share a design. Added a night look that follows sunset and sunrise, and a drawn sign for every kind of place."
-    }
-   ],
-   "description": "A phone inventory app for parts, vendors, reorder levels, orders, and storage locations.",
-   "homepage": "https://field-twin-violet.vercel.app",
-   "topics": [
-    "field",
-    "inventory",
-    "supabase",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "lv-liquor-map",
-   "releases": [
-    {
-     "tag": "v2026.11.10",
-     "target": "8a0f102d5c7d4762c9455413d1d5dce681405ed8",
-     "name": "LV Liquor Intel 2026-11-10",
-     "body": "Version four now ships with store data baked in from an open places dataset. Added a grocery layer and merged in street map data."
-    }
-   ],
-   "description": "A Las Vegas map of liquor stores, casino bars, and bars with filters and CSV export",
-   "homepage": "https://lv-liquor-map.vercel.app",
-   "topics": [
-    "map",
-    "openstreetmap",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "rainbow-run",
-   "releases": [
-    {
-     "tag": "v2026.11.10",
-     "target": "fc5bd3d54c0f259d4012964371eaa5879d9ff2eb",
-     "name": "Rainbow Run 2026-11-10",
-     "body": "Added a play a song feature. The song and its chiptune now drive the Spectral Engine and Screensaver scenes the way the microphone does."
-    }
-   ],
-   "description": "A visualizer pedal where a pixel crow flies across phones lined up side by side",
-   "homepage": "https://rainbow-run-ochre.vercel.app",
-   "topics": [
-    "music",
-    "vercel",
-    "visualizer"
    ]
   }
  ]
