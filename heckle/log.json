@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-13T11:07:52Z",
+      "repo": "mail-ionaire",
+      "sha": "dc73cbd9",
+      "message": "Mail room machine art: inserter, press, paper roll, guillotine, sorter, folder",
+      "heckle": "One commit, six machines, 109 lines added and 111 removed in index.html, which means you basically retyped the file and hoped diff would be gentle. The artChips function now uses Math.random to scatter four specks every time it is called, so the picture twitches on every redraw like a polling error. You changed the chip color from a brown to a pale blue and called it art direction, which is the same energy as repainting a government building and declaring the deficit fixed. Inserter, press, paper roll, guillotine, sorter and folder in one go means when the sorter looks wrong you have no idea which change did it.\n\nFix it: Seed or cache the random specks in artChips in index.html so they stop flickering. Commit one machine at a time. Pull the shared drawing helpers into one block."
+    },
+    {
+      "date": "2026-11-13T11:07:52Z",
+      "repo": "mail-ionaire",
+      "sha": "a4352f58",
+      "message": "Mail room art: wide format print and cut plotter on the main screen, mail machines on the floor",
+      "heckle": "You rewrote the machine drawing block in index.html, ripping out the knee mill motor, fins, quill lever and the whole column drawing, and replaced it with wide format printer art. Twenty nine lines in, twenty three out, in a file that is already a landfill. The old comments describing each part are just gone, so the next person gets minified canvas calls with hardcoded pixel coordinates like 284,30,32,8 and no clue what any of them draw. It is a campaign promise to be art, a pile of magic numbers drawn with fillRect and a hope. And the message says mail machines on the floor, which does not match a diff full of mill parts.\n\nFix it: Name the coordinates in the draw functions in index.html as constants. Keep a one line comment per machine. Make the commit message match the diff."
+    },
+    {
+      "date": "2026-11-13T11:07:52Z",
+      "repo": "delivery-twin",
+      "sha": "a0c23772",
+      "message": "Add step 3 script",
+      "heckle": "Step 3, step3.sh, 210 lines of offer logger stuffed into a heredoc and committed to the repo root. The pattern is now clear: write a shell script, run it on a phone, commit the script, repeat, and call the result a project. Inside, the dtOffersSave function swallows every error with an empty catch, so when localStorage fills up the offer simply disappears and nobody is told. That is a bailout with no audit. A logger that silently loses the data it exists to log is not a logger, it is a rumor.\n\nFix it: Show an error when the save in dtOffersSave fails instead of the empty catch. Remove step3.sh from the repo root. Put the offer logger straight into the app source."
+    },
+    {
+      "date": "2026-11-13T11:07:52Z",
+      "repo": "delivery-twin",
+      "sha": "0eaa5d67",
+      "message": "Rename to Delivery Twin, own tables, offer logger",
+      "heckle": "This is a clone of Field Twin with a find and replace and a prayer. The README now says Delivery Twin is a phone friendly field log for a person who drives to job sites and needs to record stops, receipts and miles, which is not a delivery app, it is the old description wearing a fake mustache. The CHANGELOG kept the old Field Twin history under the new title, including Parcelsun locker notes that have nothing to do with food delivery. Renaming the companion installer title while leaving the whole product copy untouched is the party line version of rebranding. Also a rename, new tables and an offer logger in one commit is three jobs for one message.\n\nFix it: Rewrite the README.md description so it is about deliveries. Cut the old Field Twin entries out of CHANGELOG.md. Split the offer logger into its own commit."
+    },
+    {
+      "date": "2026-11-13T11:07:52Z",
+      "repo": "delivery-twin",
+      "sha": "8c9d41c1",
+      "message": "Add step 4 script",
+      "heckle": "Another step script, step4.sh, 177 lines, dropped in the repo like a casserole nobody asked for. It writes a food spots file to HOME with a heredoc, pulls from the public Overpass endpoint with no sign of rate limiting, and defaults dtFoodOn to on from localStorage. Every phone that opens the map hammers a free community server. Calling this a build process is like calling a bailout a savings plan. Step 4 is also deleted one commit later, so you committed it just to throw it away, which is the intern equivalent of paying a lawyer to read the contract and then burning it.\n\nFix it: Stop committing step scripts. Add a cache and a delay around the Overpass fetch in the food spots code. Squash throwaway commits before pushing."
+    },
+    {
+      "date": "2026-11-13T11:07:52Z",
+      "repo": "delivery-twin",
+      "sha": "7684ed37",
+      "message": "Food spots layer and form",
+      "heckle": "A hundred and seventy four lines pasted into index.html for a food spots layer, and the commit message is five words long. The file is already a giant single page where every feature is another dt prefixed global, so now there are even more loose variables like dtFoodOn, dtFoodLayer, dtFoodTimer and dtFoodBusy, all hanging off window like campaign signs after an election. The same commit also deletes step4.sh, so the history is the intern generating code with scripts and then cleaning up the crime scene. Menu buttons Food spots on map and Add food spot went in with no mention of mobile spacing.\n\nFix it: Wrap the food spots code in index.html in one object or module scope. Put a real description in the commit message. Check the new menu buttons on a narrow phone screen."
+    },
+    {
+      "date": "2026-11-13T11:07:52Z",
+      "repo": "delivery-twin",
+      "sha": "27e4b384",
+      "message": "Add step 5 script",
+      "heckle": "You committed a two hundred line shell script named step5.sh into the repo root. A shell script that rewrites index.html with awk and then writes to a dotfile in HOME. This is not a feature, this is the intern leaving sticky notes on the production server. The awk line deletes everything from the Delivery Twin food spots comment to dayLogN, which is surgery with a butter knife, and the script has no check that the markers even exist. Run it twice and who knows what you cut. And the commit message is Add step 5 script, which tells the next reader exactly nothing.\n\nFix it: Delete step5.sh and commit the real change to index.html instead. Never keep one shot patch scripts in the repo root. Write a message that says what the step does."
+    },
+    {
+      "date": "2026-11-13T11:07:52Z",
+      "repo": "downfree-foundry",
+      "sha": "1f13f31c",
+      "message": "Composite: copy a clip to stack a recording with itself, remove clips, turn sideways footage upright",
+      "heckle": "Copy a clip to stack a recording with itself. Wow. The intern invented a filibuster for video: take one clip, talk over it with itself, and call it compositing. The hint paragraph under 1. Clips in index.html is now a wall of instructions about sliding the copy's Start later so cars land on the earlier road, which is what you write when the UI cannot explain itself. Remove clips and turn upright got jammed in the same commit as the copy feature, so when one breaks you get to bisect your own mess. The Road tab got the same turn control pasted in, so now two tabs carry the same logic twice.\n\nFix it: Move the turn logic in index.html into one shared function. Replace the hint wall with a short label and a tooltip. Split remove and copy into separate commits next time."
+    },
+    {
+      "date": "2026-11-13T11:07:52Z",
+      "repo": "downfree-foundry",
+      "sha": "acb857ea",
+      "message": "Record: read the phone's tilt to know which way is up",
+      "heckle": "You want the phone's tilt to decide which way is up, which is bold for someone who cannot decide which way is up in their own commit messages. The orientLine in index.html says waiting for the camera and will say it forever on any phone that refuses the sensor permission, and on iPhones that permission needs a tap you did not wire to anything I could see. Then you auto turn saved clips in Composite and Road based on a number captured at record time, so one wobbly start and every clip is sideways for life. Ninety two lines added and not a single test, a campaign promise with a gyroscope.\n\nFix it: Ask for motion permission from a real button tap in index.html. Show a clear message when the sensor is denied. Keep the manual turn option as the default fallback."
+    },
+    {
+      "date": "2026-11-13T11:07:52Z",
+      "repo": "downfree-foundry",
+      "sha": "37bce1da",
+      "message": "Record button under the camera; every card folds open and closed and remembers it; settings tucked into their own card",
+      "heckle": "Three features in one commit, because apparently the intern thinks git charges per push. You touched the tab CSS in index.html, deleted the #recBig rule, bolted collapsible cards onto every section and called it a button move. That is a omnibus bill stuffed with unrelated riders, the kind of thing a legislature passes at midnight so nobody reads it. Now every card remembers its fold state, so one bad localStorage value and the whole Record view opens like a government shutdown. Also the tabs got font-size 15px with flex 1 1 auto, which on a narrow phone will wrap them into a ragged mess.\n\nFix it: Split the fold memory into its own commit. Guard the saved fold state in index.html against bad or missing values. Check the tab row at 320 pixels wide before you trust it."
+    },
+    {
       "date": "2026-11-13T01:52:53Z",
       "repo": "thanks-for-watching",
       "sha": "83d18356",
@@ -1329,76 +1399,6 @@
       "sha": "8b16eff46553a9a46517572a9b4e5a8daa21447d",
       "message": "steward 2026-10-31T161951 (#62)",
       "heckle": "Another steward PR, another single line of minified JSON that no human can review. The parade is a police car, a banner, and drum line people all given path animations with the same coordinates copy pasted five times, so the diff is one giant line that GitHub refuses to render meaningfully. A parade loop at speed 1400 around a fixed rectangle means everything marches the same box, including the lead car and the banner, which will stack on top of each other. Merging this is a rubber stamp. Reviewing it is impossible by design, which is basically how a rushed spending bill gets through.\n\nFix it: Write contrib files as pretty printed JSON so a diff is readable. Offset parade paths per participant instead of reusing the same loop. Add a validator step that rejects overlapping placements before the merge."
-    },
-    {
-      "date": "2026-10-31T19:20:50Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "b26b7ec30d30b58c8580ba1fdd56391d5c561d21",
-      "message": "grok 2026-10-31T160255",
-      "heckle": "A grok contrib file pushed straight to main with no PR, no review, and a timestamp as the whole message. The content is one minified line that places a closed paving loop named as a street with a footprint of about four meters and another street of the same absurd size, so the city grows by tiny squares called streets. The market hatch is a 6000 unit box dropped near coordinates that other agents also write to, with nothing checking for collisions. A direct push to main by a bot is a shutdown averted by ignoring the rules.\n\nFix it: Make agent pushes go through a PR like the others. Reject lines shorter than a plausible street. Check new placements against existing ones before commit. Write the file with line breaks."
-    },
-    {
-      "date": "2026-10-31T19:20:50Z",
-      "repo": "mohavetech-website",
-      "sha": "9fe2aba8b011f1f58beb62251687edbabb36b1b4",
-      "message": "Link rain: every free link falls as a raindrop, colored by category",
-      "heckle": "You built linkrain.js by fetching the raw index.html of another repo from GitHub and slicing a JSON array out of it between var DATA and the next newline. Any reformat of that file breaks the page and the only error handling is a message that says links did not load, try again. The color table is hsl by index so categories shift color when someone inserts a new one. The title says light mode only with a color-scheme meta and a pale canvas, so nothing here respects a dark phone, and the stats text on a canvas is tiny on mobile. Raindrops falling forever on a canvas also never pause when the tab is hidden, which drains a phone battery for a toy.\n\nFix it: Read links from a real data file with a stable shape in linkrain.js. Wrap the JSON parse and report the actual error. Pause the animation loop on visibilitychange. Key colors on category name, not array position."
-    },
-    {
-      "date": "2026-10-31T19:20:50Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "0c4e51b529912f827ffa2a2bf2e6244df1140d7f",
-      "message": "agent-orange 2026-10-31T135541 (#61)",
-      "heckle": "Yet another minified single line PR from agent-orange, merged under the owner login with no human glance. The cafe is getting a chalkboard, a framed photo, a neon sign, and a wall phone, each as a separate place_line with a hand typed meta part string. The chalkboard hatch uses color 0 and color2 7 with pattern lines at spacing 200, so the surface is a stripe pattern you named a chalkboard and sits 40 units off the outline, which will z fight. The date in the file name and the PR number show these arrive faster than anyone reads them. Governing by autopilot, like a continuing resolution nobody read.\n\nFix it: Pretty print contrib files so the review means something. Offset surface layers by a real gap. Add a pass that flags overlapping parts in the same building before merge."
-    },
-    {
-      "date": "2026-10-31T05:51:52Z",
-      "repo": "coffee-autosim",
-      "sha": "329a2d61cbb13a9af5d6acec411cddcec06aa41d",
-      "message": "Add rearrangeable floor and a readability pass",
-      "heckle": "One commit adds drag and drop, a layout save, a mobile breakpoint and a full type rescale, all stuffed into index.html with 391 lines added. The original type was 3.5 to 7 pixels, so you shipped a coffee shop sim nobody could read and called the fix a polish pass. Barista pathing now reads station coordinates live, which means a station dropped on top of a counter or off the grid is your new bug and nothing in the diff guards it. Saved layouts sit in localStorage under a v1 key with no migration, so the next layout change bricks every saved floor. A cereal box would have shipped smaller.\n\nFix it: Clamp dropped positions to the floor bounds in the drag handler in index.html. Validate the saved layout before applying it and fall back to the default on any bad field. Split the rearrange code out of index.html before it grows another 400 lines."
-    },
-    {
-      "date": "2026-10-31T05:51:52Z",
-      "repo": "mill-ionaire",
-      "sha": "a0eb512d2d3ca1afd52fccb94aa846a1c781fef9",
-      "message": "Cash out and submit your score to the shared high score board",
-      "heckle": "The README tells players to submit a score that runs into the quadrillions, and that score is checked by a service whose only guard is a max of Number.MAX_SAFE_INTEGER, so anybody with curl owns your board. The new test in mill-ionaire-v2-test.js seeds an earned value of 2500000000000000 and still posts through a mocked board, so it proves the button exists and nothing else. Retiring the business on submit with a single menu tap and no confirmation is how you delete a player's afternoon. You did at least put the score service in its own repo, and it hurts to say that.\n\nFix it: Add a confirm step before the cash out in mill-ionaire-v2.html. Make the test assert the exact payload sent to the board. Handle a failed submit without retiring the business."
-    },
-    {
-      "date": "2026-10-31T05:51:52Z",
-      "repo": "mission-operator-next",
-      "sha": "bb44ff8caa3ebb89f339e0903eadb42d0b489635",
-      "message": "Read API keys from a Redis key store instead of environment variables",
-      "heckle": "You hand rolled a RESP2 client in api/_redis.js on raw sockets because adding one dependency was apparently too much like work. Now every relay depends on a hand written protocol parser that nobody has fuzzed, with a 30 second in-process cache in api/_keys.js that serverless instances will each fill separately. Moving secrets out of environment variables and into a network store reachable by a connection string is a bailout dressed as a security upgrade, since the connection string is now the master key to everything. Where is the TLS? I see a net socket and a prayer.\n\nFix it: Use a maintained client library in api/_redis.js and require TLS on the connection. Add a test that feeds truncated and malformed replies to decode. Rate limit the relays so a stolen deploy URL cannot burn the keys."
-    },
-    {
-      "date": "2026-10-31T05:51:52Z",
-      "repo": "mission-operator-next",
-      "sha": "dfe68e8505298f13b0bd6eccd084d4f5949f3ea9",
-      "message": "Add handoff notes for mission-operator-next and mission-operator-redis",
-      "heckle": "HANDOFF.md is 144 lines of operational secrets committed to git. It lists an account id, a project id, an environment id, a service id, a deployment id, a public TCP proxy host and port, and a personal email address, all in plain text, in a repo you pushed to a hosted remote. The proxy points at a database port exposed to the whole internet, and the note itself admits the connection test failed, so you documented a setup you could not verify. This is the filing system of a man who tapes his passwords to the monitor and then writes a memo about the tape.\n\nFix it: Delete HANDOFF.md and rewrite the history so those ids and the email leave the repo. Rotate the database password and close the public proxy. Keep ids and addresses in a private note outside git."
-    },
-    {
-      "date": "2026-10-31T05:51:52Z",
-      "repo": "mission-operator-next",
-      "sha": "2fc44226f61ea2f877608e16898ea9361a9d58f1",
-      "message": "Harden relays with timeouts, honest missing-key states, and accessibility fixes",
-      "heckle": "This is one commit touching nine relays, the client, the docs and a new config file, which is how you bury a bug where nobody will look. Each relay now carries its own copy of a fetchT helper, so the same timeout code lives in six files and will drift by Friday. The timeouts are hand picked numbers like 6, 9, 12 and 8 seconds with no reasoning, and the ship relay now waits 4.5 seconds and quits at 80 ships, an arbitrary cutoff that quietly drops data. The changelog entry is one paragraph long enough to qualify as a filibuster.\n\nFix it: Move fetchT into one shared module under api/. Split this into separate commits per concern. Shorten the CHANGELOG.md entry to three sentences. Make the ship cutoff in api/ships.js a named constant with a comment."
-    },
-    {
-      "date": "2026-10-31T05:51:52Z",
-      "repo": "2026-10-30-orange-scores",
-      "sha": "afd19a0b0e97c17711ea7a4fbdf8bc86bddafc7e",
-      "message": "Register Mill-ionaire: scores up to the safe integer limit",
-      "heckle": "The anti cheat for this whole score service is a max and a per second rate in api/_games.js, and for the new game you set the max to Number.MAX_SAFE_INTEGER and the rate to a trillion per second. That is a security check that accepts every number a browser can produce, a campaign promise with no enforcement. The run length limit also jumped to 400 days, so a replay attack has over a year to land. The score check in api/score.js trusts a duration the client supplies, so anyone can claim any duration they like.\n\nFix it: Derive the allowed score from a server side start token in api/score.js instead of trusting the client duration. Set a believable max in api/_games.js. Add a test that posts an absurd score and expects a rejection."
-    },
-    {
-      "date": "2026-10-31T05:51:52Z",
-      "repo": "gladhand-dockyard",
-      "sha": "97dc8ed0ecec57ea2a00e10fa280fa6ea63a737b",
-      "message": "v36: audit fixes",
-      "heckle": "Your commit message is a paragraph of eleven fixes, so this is eleven changes with one rollback button. The index.html is a single file that keeps swelling, and the header comment block still lists phones by color like a bad spy novel. You rebuilt the changelog in this same commit, which means history was rewritten by the person with the most reason to flatter it. An error boundary around the whole game loop is also how you hide a crash from yourself: the reset card turns every bug into a feature. The pause button took until version 36, which says plenty.\n\nFix it: Log the caught error in the boundary in index.html before showing the reset card. Split fixes into separate commits so one can be reverted. Stop rewriting CHANGELOG.md after the fact."
     }
   ]
 }
