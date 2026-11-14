@@ -1,269 +1,231 @@
 {
  "jobs": [
   {
-   "repo": "delivery-twin",
+   "repo": "termbeat",
    "releases": [
     {
      "tag": "v2026.11.11",
-     "target": "4d4299000279c6d3ff4f143ad351ea1e080a1df8",
-     "name": "Delivery Twin 2026-11-11",
-     "body": "Created Delivery Twin as a copy of Field Twin. The road controls on the map are now hidden."
-    },
+     "target": "4d47776a1faf6141e1485bb3f0b87397cd996acc",
+     "name": "Termbeat 2026-11-11",
+     "body": "Updated the creator seal in the footer to a combined creator seal. It now shows the Pajamastan flag and links to Pajamastan. The page source also notes where the app was exported from."
+    }
+   ],
+   "description": "Audio reactive terminal that reacts to music or the microphone, with themes and small games.",
+   "homepage": "https://termbeat.vercel.app",
+   "topics": [
+    "music",
+    "terminal",
+    "vercel",
+    "visualizer",
+    "web-audio"
+   ]
+  },
+  {
+   "repo": "city-seek",
+   "releases": [
     {
-     "tag": "v2026.11.12",
-     "target": "27e4b38418bfc5282662e0bd825155438036af69",
-     "name": "Delivery Twin 2026-11-12",
-     "body": "Renamed the app Delivery Twin and gave it its own data tables. Added an offer logger. Added a food spots layer on the map and a form to add a food spot."
+     "tag": "v2026.11.13",
+     "target": "f580716f083f07430f39b23b9a1a3c65c84f9933",
+     "name": "City Seek 2026-11-13",
+     "body": "Added Music mode, chosen from the Mode switch in the menu. The city plays as a beat synced music visualizer: load a song or use the built in test beat, and the scene moves in time with the kicks, bass and hats. Views include a top down flyover where beat objects land on matching ground and cars follow streets, a train window view, a Lanes view that works like a street styled MIDI waterfall, and a Rain view with a color jar catching game. Added an action line with hit bursts for each band, an infographic layer, isometric train buildings with cutaways, and richer street detail. A hunt while it plays option, a stream hunt, and REC video recording with sound are included."
+    }
+   ],
+   "description": "A zoomable generated city where you hunt for hidden items, with towers, birds, and sound.",
+   "homepage": "https://city-seek.vercel.app",
+   "topics": [
+    "game",
+    "hidden-object",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "artifactium",
+   "releases": [
+    {
+     "tag": "v2026.11.13",
+     "target": "535f5d19bb91f9ebffdd55b7fe71d155bd91ad87",
+     "name": "Artifactium 2026-11-13",
+     "body": "Created Artifactium, a found object archive with a flowchart tree explorer. The app was synced to a new backend that keeps records in a database and can store photos. Contributors can now sign in with an email code and pick a handle, and the backend checks who is signed in."
+    }
+   ],
+   "description": "A found object archive with a flowchart tree explorer and contributor sign in.",
+   "homepage": "https://artifactium.vercel.app",
+   "topics": [
+    "archive",
+    "tool",
+    "vercel",
+    "railway"
+   ]
+  },
+  {
+   "repo": "delivery-twin",
+   "releases": [
+    {
+     "tag": "v2026.11.13",
+     "target": "99b4153d1c0c73a6d86c5605b4d3c31c7a481a73",
+     "name": "Delivery Twin 2026-11-13",
+     "body": "Added fog of war spots, then pickups, dropoffs, and delivery lines on the map. Lockers are now hidden, the color key folds away, and there is a link to Field Dispatch. Delivery Twin now has its own inventory app, and an Offers tab replaces Roads."
     }
    ],
    "description": "A phone friendly field log with a map, receipts, and mileage, now with a food spots layer.",
    "homepage": "https://delivery-twin.vercel.app",
    "topics": [
-    "tool",
     "field",
-    "vercel",
-    "map"
-   ]
-  },
-  {
-   "repo": "mail-ionaire",
-   "releases": [
-    {
-     "tag": "v2026.11.11",
-     "target": "17d76e040640bb1caee0d12b55f12c1fc06ee924",
-     "name": "Mail-ionaire 2026-11-11",
-     "body": "Created Mail-ionaire, cloned from Mill-ionaire with its own save and score board. Added a combined creator seal."
-    },
-    {
-     "tag": "v2026.11.12",
-     "target": "a4352f58b4470ae3e1ec03ed1d89d4af8cb81ad6",
-     "name": "Mail-ionaire 2026-11-12",
-     "body": "Added mail room art. The main screen now shows a wide format printer and cut plotter. The floor shows an inserter, press, paper roll, guillotine, sorter, and folder."
-    }
-   ],
-   "description": "A mail room tycoon game cloned from Mill-ionaire, with its own save and score board.",
-   "homepage": "https://mail-ionaire.vercel.app",
-   "topics": [
-    "game",
-    "tycoon",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "thanks-for-watching",
-   "releases": [
-    {
-     "tag": "v2026.11.12",
-     "target": "c1a52b570c1e6454842ba13d5adb1c503de69a51",
-     "name": "Thanks For Watching 2026-11-12",
-     "body": "Released Thanks For Watching version one with a shuffle bucket player, uploads, profiles, badges, and flags. Version two added a shared accounts hub and email sign in. Added a log in button at the top of the menu and a way to reclaim a handle left on an anonymous account. Version three added a trim editor with automatic dead air removal, manual split and cut, and in browser export. Version four signs in with an emailed code typed into the app instead of a link."
-    }
-   ],
-   "description": "A shuffle player for uploaded media with profiles, badges, a trim editor, and email code sign in.",
-   "homepage": "https://thanks-for-watching.vercel.app",
-   "topics": [
-    "tool",
-    "media",
-    "vercel",
-    "supabase"
-   ]
-  },
-  {
-   "repo": "2026-11-11-orange-codelens",
-   "releases": [
-    {
-     "tag": "v2026.11.11",
-     "target": "ad8fb4d155935a0190324c83199708e45040a853",
-     "name": "Code Lens 2026-11-11",
-     "body": "Created Code Lens. It explains functions from GitHub repos in plain English. Gave the page a comic book style."
-    }
-   ],
-   "description": "A page that explains functions from GitHub repos in plain English.",
-   "homepage": "https://2026-11-11-orange-codelens.vercel.app",
-   "topics": [
-    "tool",
-    "developer-tools",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "downfree-foundry",
-   "releases": [
-    {
-     "tag": "v2026.11.12",
-     "target": "37bce1da810cdd2eea9ba8473af081fe3a838f4f",
-     "name": "Road Layers 2026-11-12",
-     "body": "Composite can now copy a clip to stack a recording with itself, remove clips, and turn sideways footage upright, in the Road tab too. Record reads the phone tilt to know which way is up, saves it with each recording, and turns clips automatically in Composite and Road. The Record button now sits under the camera. Every card folds open and closed and remembers it, and settings have their own card."
-    }
-   ],
-   "description": "Road Layers stacks cars from several drive clips onto one road in the browser.",
-   "homepage": "https://downfree-foundry.vercel.app",
-   "topics": [
-    "tool",
-    "vercel",
-    "video"
-   ]
-  },
-  {
-   "repo": "smash-bender",
-   "releases": [
-    {
-     "tag": "v2026.11.12",
-     "target": "0d825985293d7fefd2a06320b37196701a2ebf59",
-     "name": "Smash Bender 2026-11-12",
-     "body": "Added a Toolbox page that lists every tool, what it does, whether it is ready, and which button uses it."
-    }
-   ],
-   "description": "A processing server for song mashups with phone scripts",
-   "homepage": "",
-   "topics": [
-    "audio",
-    "backend",
-    "music",
-    "python"
-   ]
-  },
-  {
-   "repo": "song-offset-listener",
-   "releases": [
-    {
-     "tag": "v2026.11.11",
-     "target": "8d66a3835c067c4f23eae9585aa440e048acd699",
-     "name": "Offset Listener 2026-11-11",
-     "body": "Added ear lock. The phone hears its own copy of the song against the room and corrects the gap, and a control loop holds the player on the line. Offsets learned for each video are kept. Listen retries as plain audio when the clip is empty or cannot be identified. Version two is now the main build with a simpler comic book look and a left side menu, and the old build stays at /classic. Naming a song is faster, with a type or voice name box, up next chips from the spot history, guesses checked by ear, and an intro archive shared by every phone."
-    }
-   ],
-   "description": "A phone app that lines up music across several phones",
-   "homepage": "https://offset-listener.vercel.app",
-   "topics": [
-    "music",
-    "phone",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "mill-ionaire",
-   "releases": [
-    {
-     "tag": "v2026.11.11",
-     "target": "05b53b2a675ca2c6235240687cf71ec0d0fef706",
-     "name": "Mill-ionaire 2026-11-11",
-     "body": "Added an art pass. Every machine on the floor, in the warehouse, and in the shop now has shop manual style art, along with crew figures, painted bays, and a new street view. The mill, lathe, brake, and CNC are more detailed. Buttons feel pressable, the gauge row is tighter, and high score buttons hold still. Added a combined creator seal."
-    }
-   ],
-   "description": "A letter shop tycoon built around a simulated knee mill that grows into a factory.",
-   "homepage": "https://mill-ionaire.vercel.app",
-   "topics": [
-    "game",
-    "simulator",
-    "tycoon",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "pajamastan",
-   "releases": [
-    {
-     "tag": "v2026.11.11",
-     "target": "d448169352e72a3420044657514d3af7e1e30663",
-     "name": "Pajamastan 2026-11-11",
-     "body": "Added a combined creator seal that shows the Pajamastan flag beside a round seal."
-    }
-   ],
-   "description": "The official site of the micronation of Pajamastan.",
-   "homepage": "https://pajamastan.vercel.app",
-   "topics": [
-    "atlas",
-    "micronation",
-    "pajamastan",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "2026-10-18-orange-testbed",
-   "releases": [
-    {
-     "tag": "v2026.11.10-2",
-     "target": "a135572635092b09ce5391967b11a440de81bbf9",
-     "name": "Agent Test Bed 2026-11-10",
-     "body": "The agent, grok, and steward turns for the day were played and merged into the city."
-    },
-    {
-     "tag": "v2026.11.11",
-     "target": "0491d9f6bd76be1323d7bb8187141383ac576996",
-     "name": "Agent Test Bed 2026-11-11",
-     "body": "The agent, grok, steward, and a second agent turn for the day were played and merged into the city."
-    },
-    {
-     "tag": "v2026.11.12",
-     "target": "9a194e5de88f1506e36933c067af8db94f92ef61",
-     "name": "Agent Test Bed 2026-11-12",
-     "body": "The grok turn was played and merged into the city."
-    },
-    {
-     "tag": "v2026.11.13",
-     "target": "d55a1d017a5db8b8b83af1a9170bf128cdda9b95",
-     "name": "Agent Test Bed 2026-11-13",
-     "body": "The agent turn was played and merged into the city."
-    }
-   ],
-   "description": "A shared city that AI agents build one turn at a time",
-   "homepage": "https://2026-10-18-orange-testbed.vercel.app",
-   "topics": [
-    "agents",
-    "game",
-    "simulator",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "parcelsun-kq",
-   "releases": [
-    {
-     "tag": "v2026.11.11",
-     "target": "c96a62d8f71f61428581b76533e2d39c8bf77a18",
-     "name": "Parcelsun 2026-11-11",
-     "body": "Added shade blockers. A wall, building or tree is a span of bearings with a top angle, or a height and distance, and the locker gets no direct sun while the sun sits behind it. A sky chart shows the blockers against the day sun path, and Blocker shade counts the hours. Added the Field Twin card. Find the locker I am at loads the closest saved locker with its facing, generation, doors, placement and blockers, blanks filled from the latest visit survey. Save to Field Twin writes adjustments back."
-    },
-    {
-     "tag": "v2026.11.12",
-     "target": "070ac1535b90f3fc819e51364c821daeabf2cb1e",
-     "name": "Parcelsun 2026-11-12",
-     "body": "Doors are now fixed slot sizes measured off a real bank, on a column of 29 units, and each column in the Layout card is a list of slots you edit. Slot heights were fitted from close photos of a version 3 bank. The starter module is now two columns, a screen column beside a full column of doors, and oversize modules from Field Twin land on the right end. Save to Field Twin keeps the whole bank slot by slot. Every card under the 3D view is now a drop-down, closed to start, and the page remembers which are open."
-    }
-   ],
-   "description": "A solar heat model for a parcel locker with a four module default.",
-   "homepage": "https://parcelsun-kq.vercel.app",
-   "topics": [
-    "heat",
-    "simulator",
-    "solar",
-    "threejs"
-   ]
-  },
-  {
-   "repo": "field-twin",
-   "releases": [
-    {
-     "tag": "v2026.11.11",
-     "target": "612e7bfcde1b904d2ced33d6403cc493c70f5227",
-     "name": "Field Twin 2026-11-11",
-     "body": "Each locker page now has a Site for Parcelsun section with door count, module count, generation, placement and facing. Aim phone measures which way the front faces with the compass, and Add shade blocker measures a wall or building that shades the locker. Open in Parcelsun opens the heat model with the locker set up and fills blank fields from the latest locker visit survey."
-    },
-    {
-     "tag": "v2026.11.12",
-     "target": "9ff2b76368b2bf213c532276fc67c4de2b4f4365",
-     "name": "Field Twin 2026-11-12",
-     "body": "The locker site section now has an oversize module count, so a bank with two tall doors beside one full height door module is passed to Parcelsun the way it stands. Open in Parcelsun now carries the exact bank saved from Parcelsun, slot by slot."
-    }
-   ],
-   "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
-   "homepage": "https://field-twin-teal.vercel.app",
-   "topics": [
-    "field-service",
     "map",
     "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "tractor-tool",
+   "releases": [
+    {
+     "tag": "v2026.11.11",
+     "target": "458b72f659b646940d1e3215c5c6523d8672cd59",
+     "name": "Tractor Toolkit 2026-11-11",
+     "body": "Updated the creator seal in the footer to a combined creator seal. It now shows the Pajamastan flag and links to Pajamastan. The page source also notes where the app was exported from."
+    }
+   ],
+   "description": "A toolkit for tractor work with a blueprint, hourly rate, quote, and game.",
+   "homepage": "https://tractor-tool.vercel.app",
+   "topics": [
+    "game",
+    "quotes",
+    "tool",
+    "tractor",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "flipcount-game",
+   "releases": [
+    {
+     "tag": "v2026.11.11",
+     "target": "3bcfac9a15e30aa6e457b91c853ad030729c69f9",
+     "name": "FLIPCOUNT 2026-11-11",
+     "body": "Updated the creator seal in the footer to a combined creator seal. It now shows the Pajamastan flag and links to Pajamastan. The page source also notes where the app was exported from."
+    }
+   ],
+   "description": "Counting toys with a flip dot display, an abacus, and number scripts from many languages.",
+   "homepage": "https://flipcount-game.vercel.app",
+   "topics": [
+    "game",
+    "numbers",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "delivery-twin-violet",
+   "releases": [
+    {
+     "tag": "v2026.11.13",
+     "target": "892836b73547323d3f6319e86405afc4fe9b9d9f",
+     "name": "Delivery Twin Violet 2026-11-13",
+     "body": "Created Delivery Twin Violet as a copy of Field Twin Violet for the Delivery Twin family. It tracks parts with photos, vendors, reorder levels, an order list, and moves between locations."
+    }
+   ],
+   "description": "A parts inventory app for field crews, copied from Field Twin Violet for the Delivery Twin family.",
+   "homepage": "https://delivery-twin-violet.vercel.app",
+   "topics": [
+    "inventory",
+    "field",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "hoofer-sync",
+   "releases": [
+    {
+     "tag": "v2026.11.13",
+     "target": "a57169db3e9f60a7be78e90b3af030716f4225f1",
+     "name": "Hoofer Sync 2026-11-13",
+     "body": "New look: every dancer is a stick figure made of light on a blacked out stage, with light trails off the hands and feet. Added a Lights button that turns the house lights on for a bright stage. The wardrobe now picks line style and glow colors. The Studio dancer got the same look."
+    }
+   ],
+   "description": "A dance floor with a dancer for each phone in the band room.",
+   "homepage": "https://hoofer-sync.vercel.app",
+   "topics": [
+    "band-sync",
+    "dance",
+    "music",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "infinicanvan",
+   "releases": [
+    {
+     "tag": "v2026.11.11",
+     "target": "1c13e7187fe0081eca5ae1f3c43769818d4f96c2",
+     "name": "Infinicanvan 2026-11-11",
+     "body": "Updated the creator seal in the footer to a combined creator seal. It now shows the Pajamastan flag and links to Pajamastan. The page source also notes where the app was exported from."
+    }
+   ],
+   "description": "An infinite zooming canvas with drawing tools and trees that grow with the weather.",
+   "homepage": "https://infinicanvan.vercel.app",
+   "topics": [
+    "canvas",
+    "game",
+    "toy",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "2026-10-30-orange-scores",
+   "releases": [
+    {
+     "tag": "v2026.11.10",
+     "target": "7d80e66bc7f07099e4f78f0232061344958d873e",
+     "name": "Score Hub 2026-11-10",
+     "body": "Registered Sky Flow on the score hub so its timed round scores show up there."
+    }
+   ],
+   "description": "A shared score service and hub page for the games",
+   "homepage": "https://2026-10-30-orange-scores.vercel.app",
+   "topics": [
+    "backend",
+    "scores",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "torque-converter",
+   "releases": [
+    {
+     "tag": "v2026.11.11",
+     "target": "b3acbe47d852fbb842edffd7e2f657a15bb7d166",
+     "name": "Torque Converter 2026-11-11",
+     "body": "Updated the creator seal in the footer to a combined creator seal. It now shows the Pajamastan flag and links to Pajamastan. The page source also notes where the app was exported from."
+    }
+   ],
+   "description": "Converts torque between newton meters, foot pounds, and inch pounds.",
+   "homepage": "https://torque-converter.vercel.app",
+   "topics": [
+    "converter",
+    "mechanics",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "raineurysm",
+   "releases": [
+    {
+     "tag": "v2026.11.13",
+     "target": "449c71f71126ca838a7148f46c870448e15cc6ca",
+     "name": "raineurysm 2026-11-13",
+     "body": "Created raineurysm, a rain music toy where rain falls into vessels that play notes. Rain lanes, drums, bass, a storm zone, narrow cups, and tilt and pour were added. It joins the Stompbox Lab band room, with lanes that rain on the band beat, a shared scale, and notes sent out to visualizers. Vessels come in several kinds, including cup, jug, metal pan, plate, singing bowl, wood block, and ladle, and lanes can rain in triplets, quads, and call and response. Touch handling was tightened so cups land under the finger and a slim vessel panel opens on a tap."
+    }
+   ],
+   "description": "A rain music toy where falling rain hits vessels that play notes.",
+   "homepage": "https://raineurysm.vercel.app",
+   "topics": [
+    "music",
+    "toy",
+    "visualizer",
     "vercel"
    ]
   }
