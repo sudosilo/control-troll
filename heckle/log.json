@@ -1,6 +1,41 @@
 {
   "heckles": [
     {
+      "date": "2026-11-14T18:12:00Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "9f1850ed",
+      "message": "agent-orange 2026-11-14T175523 (#95)",
+      "heckle": "Another day, another one line JSON file dropped into contrib/agent-orange/2026-11-14T175523.json, and this one is mostly the same declare_port call repeated with port 5486 on the north, south and east edges, like a filibuster that only knows one sentence. Nobody reads these before merging, and the merge button gets mashed like a vending machine. A minified single line blob has no reviewable diff, so the pull request process is theater.\n\nFix it: Pretty print the contrib file so a diff shows something. Make declare_port reject identical values on every edge of a chunk. Add a schema check before the merge button works."
+    },
+    {
+      "date": "2026-11-14T18:12:00Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "b4e145de",
+      "message": "agent-orange 2026-11-14T173216 (#94)",
+      "heckle": "You merged this through a pull request like a bailout nobody audited. contrib/agent-orange/2026-11-14T173216.json is one unreadable line of place_symbol calls with coordinates like 346400,506400,140344, and the sign text is a paragraph of prose stuffed into meta.part, as if a sign were a diary. Makes me question whether the intern knows what a bounds check is.\n\nFix it: Validate coordinates against the world extent before merging. Cap meta text length in the place_symbol handler. Break contrib files into lines so review is possible."
+    },
+    {
+      "date": "2026-11-14T18:12:00Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "28831058",
+      "message": "steward 2026-11-14T171845 (#93)",
+      "heckle": "The steward turn landed with no visible patch in contrib/steward/2026-11-14T171845.json, which is the code review equivalent of a campaign promise: big claims, nothing to inspect. You merged a pull request you could not read and called it a day, like a senator voting on a bill he never opened.\n\nFix it: Refuse to merge when the diff shows no patch. Store steward turns pretty printed so they show in the diff. Add a size sanity check to the workflow."
+    },
+    {
+      "date": "2026-11-14T18:12:00Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "883a9ab8",
+      "message": "grok 2026-11-14T170340",
+      "heckle": "The grok bot shoved contrib/grok/2026-11-14T170340.json straight onto the branch with no pull request and no review, like an executive order signed in the dark. It lays out a street with negative coordinates like -158496,-73762 while the other bots live in six digit positive space, so the map is stitched together from agents who never agreed on an origin. Branch protection is apparently a rumor here.\n\nFix it: Force grok through a pull request like the other bots. Pick one coordinate origin and document it. Turn on branch protection for the default branch."
+    },
+    {
+      "date": "2026-11-14T18:12:00Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "6b238758",
+      "message": "agent-orange 2026-11-14T135804 (#92)",
+      "heckle": "Agent-orange turn 135804 is a single line file, contrib/agent-orange/2026-11-14T135804.json, that builds a shop from a closed wall polygon at 253000,263000 and then a place_hatch call nobody on earth can read in one sitting. The building name sits in meta as free text with no registry behind it, so duplicates will breed like a congressional subcommittee. This is a data dump pretending to be a commit.\n\nFix it: Reference buildings by id, not by free text. Pretty print the json. Add a duplicate building check before merge."
+    },
+    {
       "date": "2026-11-14T01:28:38Z",
       "repo": "city-seek",
       "sha": "f580716f",
@@ -1364,41 +1399,6 @@
       "sha": "c33b77aae912f82d73b1b79e6f71dda947506951",
       "message": "Floating window sizes the map from the phone's own measurement and checks floating state every second; spoken directions removed",
       "heckle": "You killed spoken directions by gutting navSay in index.html into an empty function. Not removed, not behind a setting, just a hollow stub with a comment, like a government agency that exists only on paper. Meanwhile the floating window fix needed new bridge methods, a padding rewrite in MainActivity.kt, and more important flags on the css, so the pip block is now a pile of patches on patches. Every commit this hour is a fix for the previous one.\n\nFix it: Make voice a setting in index.html instead of deleting the body of navSay. Remove the dead speech code paths or restore them behind the toggle. Collapse the stacked body.pip rules into one clean block. Test the floating window on a real device before pushing the next fix."
-    },
-    {
-      "date": "2026-11-01T19:44:13Z",
-      "repo": "field-twin",
-      "sha": "afbc306c35c4464f1a5f6cc211b462ae8e6faf79",
-      "message": "Floating map centers on me after the window finishes shrinking",
-      "heckle": "Look at ftPip in index.html. You schedule ftPipCenter on five timers at 60, 250, 600, 1200 and 2000 milliseconds because you do not know when the window finishes shrinking, so you fire five times and hope one lands. That is not engineering, that is a slot machine. And you wrapped closePanel in an empty try catch, so when it breaks it will break in silence, like a committee that never reports.\n\nFix it: Replace the five timers in window.ftPip with the resize event you already wired up. Drop the empty catch around closePanel and log the error. Make ftPipCenter skip work if the map size has not changed. Delete the old timer approach from the previous commit."
-    },
-    {
-      "date": "2026-11-01T19:44:13Z",
-      "repo": "field-twin",
-      "sha": "d45fd8bc57d3b5e3aaacaafd532a7117eac431b1",
-      "message": "Floating map window in the phone app: button under locate, and leaving the app during a route floats the map with only the next turn showing",
-      "heckle": "A picture in picture mode bolted on in one shot: a new leaflet control in index.html, new bridge methods in FieldTwinBridge.kt, lifecycle hooks in MainActivity.kt and a regex patcher in patch-android.cjs. The css hides everything with important on every line, seven of them, because you cannot trust your own specificity. The enterPip function also sets a result flag inside runOnUiThread and returns it right away, so it will return true before the work even ran. Congrats, you wrote a race condition for a window button.\n\nFix it: Make enterPip in FieldTwinBridge.kt wait for the ui thread result or return void. Cut the important flags in index.html by hiding one wrapper class instead of seven selectors. Move the stray comment about opening links back above openUrl, where it belongs. Add a check in patch-android.cjs that fails the build if the manifest edit did not apply."
-    },
-    {
-      "date": "2026-11-01T19:44:13Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "aff9c28afc85fc38e533758995d29bf625069db2",
-      "message": "steward 2026-11-01T171454 (#64)",
-      "heckle": "Another steward pull request, number 64, that adds one line of minified json and calls it a day of governance. The file contrib/steward/2026-11-01T171454.json is a single unreadable line of crosswalk hatches with the same steward note copy pasted on every call. Nobody can review a diff that is one 4000 character line, so the pull request process is a rubber stamp, like a budget vote nobody read. The merge went straight in.\n\nFix it: Pretty print the contrib json so a diff shows what changed. Dedupe the repeated steward meta text into one field. Add a check that rejects a contrib file placing a crosswalk on top of one that already exists. Stop merging these without a validation run."
-    },
-    {
-      "date": "2026-11-01T19:44:13Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "49f574116c7879f298ec190b5ca29e44d042daa6",
-      "message": "grok 2026-11-01T170306",
-      "heckle": "A grok contrib file pushed straight to main with no pull request, so the review step you built for the other agents does not apply to this one. The coordinates are negative, far from the city the steward is drawing in, so Grok Corner Market lands in some corner of the map nobody asked for. Also one line of minified json again, which is a diff for nobody. The lines for Brittlebush Street run at negative 79248 while the rest of the same file sits near zero, which looks like a typo you will find in production.\n\nFix it: Make agents open a pull request instead of pushing to main in contrib/grok. Validate that coordinates sit inside the city bounds before accepting the file. Reject the file when two street segments in one call are an order of magnitude apart. Format the json so a human can read the diff."
-    },
-    {
-      "date": "2026-11-01T06:16:14Z",
-      "repo": "field-twin",
-      "sha": "4e307768ad6d99012cb8ff29618cd357e4957477",
-      "message": "Route banner sits below the tabs with zoom buttons under it, Google Maps button hands the destination to Google Maps",
-      "heckle": "Your navigation banner is a pile of inline cssText in index.html, a string long enough to need its own zip code, and now you reach into the leaflet-top control with querySelector and stomp its marginTop from inside navBanner. Every time the banner updates it fiddles with a third party element, so the first library upgrade breaks it. In openGoogleMaps, a failed window.open falls back to window.location.href, which throws the user out of the whole app and loses their route. In FieldTwinBridge.kt, openUrl swallows every exception silently, so a failure tells nobody anything.\n\nFix it: Move the navBanner styles into a CSS class in index.html. Replace the querySelector margin hack with a CSS variable. Drop the location.href fallback in openGoogleMaps. Log the caught exception in openUrl in FieldTwinBridge.kt."
     }
   ]
 }
