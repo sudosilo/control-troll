@@ -1,6 +1,41 @@
 {
   "heckles": [
     {
+      "date": "2026-11-14T22:30:31Z",
+      "repo": "mohavetech-website",
+      "sha": "86c7c4bc",
+      "message": "sync dates with vercel",
+      "heckle": "Another sync dates with vercel commit, and the same date typed by hand into three places: fleet.html, mohavetech-vercel-projects-v1.json, and script-v53.js, which still gets renamed every time like you are dodging a subpoena. The 2026-11-14 bump on 2026-10-18-orange-testbed and the new codelens, artifactium and delivery-twin rows had to be pasted into three separate lists that should be one list. Every sync is a coin flip on whether those lists still agree. A message that says nothing about what changed is the commit equivalent of a press release.\n\nFix it: Generate fleet.html rows and baseDates from mohavetech-vercel-projects-v1.json with one script. Stop renaming script-vNN.js and use a ?v= query string instead. Write a commit message that lists which projects were added. Delete the duplicate project list in index.html."
+    },
+    {
+      "date": "2026-11-14T22:30:31Z",
+      "repo": "delivery-twin",
+      "sha": "0ced3cc5",
+      "message": "Add Android build workflow",
+      "heckle": "A 103 line workflow dropped in one commit, untested, in .github/workflows/build-apps.yml. The version is 1.0 plus github.run_number, so the app version climbs every time you push anything, including typos. permissions contents: write means this thing publishes releases from a push trigger, handed out like a stimulus check with no oversight. Third party actions are pinned to floating tags like stable and v2, so a compromised update walks straight into your signing step. Then it ships a debug quality android build to a release page, which is a very optimistic definition of shipping.\n\nFix it: Pin the third party actions in build-apps.yml to commit hashes. Set permissions to read at the top and grant write only on the release job. Move the version into src-tauri config instead of the run number. Run the workflow by dispatch on a branch before wiring it to master pushes."
+    },
+    {
+      "date": "2026-11-14T22:30:31Z",
+      "repo": "delivery-twin",
+      "sha": "6f6d48f3",
+      "message": "Build the Android icon from the Delivery Twin icon",
+      "heckle": "Two lines changed in .github/workflows/build-apps.yml, png to svg, and you needed a whole commit to do it because the first one was already broken. The icon command runs twice, once before android init and once after, which is a filibuster where the same speech gets read into the record again. Nobody here ever tested whether the Tauri icon command takes an svg without choking, and the workflow only finds out in the cloud where every try costs a build. This is guessing with a credit card.\n\nFix it: Run the tauri icon command once locally with app-icon.svg and confirm it works before pushing. Drop the duplicate icon call in build-apps.yml. Keep one source of truth for the icon and delete the png reference."
+    },
+    {
+      "date": "2026-11-14T22:30:31Z",
+      "repo": "delivery-twin",
+      "sha": "1c5e5fe1",
+      "message": "Delivery Twin app icon",
+      "heckle": "A 1024 square svg at src-tauri/app-icon.svg made of a rectangle, a trapezoid that is supposed to be a bag, and a map pin that looks like a bailout nobody asked for. Orange on darker orange with a white stroke, so it will read as a smudge at launcher size. Hand typed path data with no preview and no check that the bag handle survives shrinking, which tells me you eyeballed it once and called it design. The old app-icon.png is still hanging around too, a leftover like a campaign promise.\n\nFix it: Delete src-tauri/app-icon.png now that the svg replaced it. Render app-icon.svg at 48 pixels and look at it before shipping. Give the pin and bag more contrast against the orange background. Drop the heavy white stroke on the inner square in app-icon.svg."
+    },
+    {
+      "date": "2026-11-14T22:30:31Z",
+      "repo": "delivery-twin",
+      "sha": "787cdeff",
+      "message": "Add step 11 script",
+      "heckle": "Step eleven of a script you apparently cannot stop committing. step11.sh sits in the repo root, a three line sed heredoc that cds into ~/delivery-twin like the repo is your home directory, then hides the Companion screen by pasting style=\"display:none\" onto elements that are already marked hidden. Hidden and display none together is a belt, suspenders, and a second belt, and deleting lines from index.html by regex on whole html strings is how you pick up a surprise bug at midnight. Ten patch scripts later you still treat version control like a clipboard. Run it and forget it, intern, that is not a workflow, that is a shutdown with extra steps.\n\nFix it: Delete step11.sh from the root and stop committing patch scripts. Edit index.html directly and remove the Companion block instead of hiding it twice. Drop the redundant hidden attributes on companionBtn and companionText. Add a .gitignore rule for step*.sh."
+    },
+    {
       "date": "2026-11-14T18:12:00Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "9f1850ed",
@@ -1364,41 +1399,6 @@
       "sha": "e073f368d2432782f3791bd6959a9138499218a0",
       "message": "Route display: no box, sits above the bottom bar, three small symbol d",
       "heckle": "You rewrote a comment so it no longer says the name of the maps app, but the function is still called openGoogleMaps and still builds a google URL, so the comment now lies about the code under it. That is a press release that contradicts the bill. In navBanner in index.html you also moved the marginTop reset above the early return, so it stomps a third party leaflet control every single call, even when no route exists. The banner itself is still one giant inline cssText string.\n\nFix it: Rename openGoogleMaps in index.html to match what the comment claims, or put the comment back. Stop touching the leaflet control from inside navBanner and use a css class instead. Move the banner cssText into the stylesheet."
-    },
-    {
-      "date": "2026-11-01T19:44:13Z",
-      "repo": "infinicanvan",
-      "sha": "0eb375a2f5331e2a07bcca1aa6bbb0b6116da4ba",
-      "message": "infinacanvan v5: tap to water, puddles, sky, bark trunk, grass, resource gauges",
-      "heckle": "A brand new repo and the first thing you ship is a single index.html with 2955 lines in it. One file. Markup, styles, game logic, all of it in one heap, like you emptied a junk drawer onto a card table and called it architecture. Nobody can review that, including you in a week. And the message says v5 while the repo has no v1 through v4 history, so your version numbers are decorative, like a campaign slogan.\n\nFix it: Split index.html into separate css and js files so a change to puddles does not mean scrolling past a sky. Delete the version number from the message or keep real history for it. Add a README so the repo says what the game is."
-    },
-    {
-      "date": "2026-11-01T19:44:13Z",
-      "repo": "infinicanvan",
-      "sha": "5e1302ada10f8aa318670ad8b99583ffaa0d5814",
-      "message": "trigger prod build",
-      "heckle": "An empty commit with a lowercase message, which is the intern way of saying the deploy did not work and he is poking it with a stick. Zero files, zero explanation, zero shame. Whatever is wrong with the build, you are not fixing it, you are just rattling the cage like a senator calling for another hearing.\n\nFix it: Find out why the push did not trigger the build on its own and fix the project link instead. Stop committing nothing to the main branch. Put a build note in the README if the trigger is flaky."
-    },
-    {
-      "date": "2026-11-01T19:44:13Z",
-      "repo": "infinicanvan",
-      "sha": "d784b680ee2d996a65d177864c417c8d20794a45",
-      "message": "infinacanvan v4: tap to water, puddles, sky, bark trunk, grass, resource gauges",
-      "heckle": "The entire contribution is a two line gitignore. Two lines. You wrote a v4 message on a commit that changes nothing but which junk to hide, which is the most padded filing since the last bailout. The only useful thing here is keeping env.local and the vercel folder out of git, and even that arrived after you had already been typing for who knows how long. Hope nothing got committed before this landed.\n\nFix it: Check the history for any env file that slipped in before this gitignore, and rotate anything you find. Write commit messages that describe the diff, not the product roadmap. Add node_modules and OS junk to .gitignore while you are in there."
-    },
-    {
-      "date": "2026-11-01T19:44:13Z",
-      "repo": "field-twin",
-      "sha": "8d5d6162f5a948f25a79cec001ac1b13353209cf",
-      "message": "Named lockers with locker pages, GO ranks places by arrivals, picks and logs, places table; floating window keeps the page running",
-      "heckle": "One commit, three unrelated jobs: lockers in index.html, picture in picture keep alive hacks in MainActivity.kt, and a new places table in the supabase sql file. That is not a commit, that is an omnibus bill with a rider on every page. In index.html the locker button logic got jammed into the entry panel string concatenation, a line so long it needs a filibuster to read. The onPause hack calls resume and resumeTimers on the webview on a delay, which is a prayer wrapped in a handler.\n\nFix it: Split this into one commit for lockers, one for the Android window behavior, and one for the sql. Break the panel actions line in index.html into a small function. Replace the 400 millisecond postDelayed in MainActivity.kt with a real lifecycle check. Confirm the sql file really is applied in production, since a file in the repo changes nothing."
-    },
-    {
-      "date": "2026-11-01T19:44:13Z",
-      "repo": "field-twin",
-      "sha": "c33b77aae912f82d73b1b79e6f71dda947506951",
-      "message": "Floating window sizes the map from the phone's own measurement and checks floating state every second; spoken directions removed",
-      "heckle": "You killed spoken directions by gutting navSay in index.html into an empty function. Not removed, not behind a setting, just a hollow stub with a comment, like a government agency that exists only on paper. Meanwhile the floating window fix needed new bridge methods, a padding rewrite in MainActivity.kt, and more important flags on the css, so the pip block is now a pile of patches on patches. Every commit this hour is a fix for the previous one.\n\nFix it: Make voice a setting in index.html instead of deleting the body of navSay. Remove the dead speech code paths or restore them behind the toggle. Collapse the stacked body.pip rules into one clean block. Test the floating window on a real device before pushing the next fix."
     }
   ]
 }
