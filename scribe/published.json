@@ -388,7 +388,19 @@
   "sudosilo/parcelsun-kq@v2026.11.11",
   "sudosilo/parcelsun-kq@v2026.11.12",
   "sudosilo/field-twin@v2026.11.11",
-  "sudosilo/field-twin@v2026.11.12"
+  "sudosilo/field-twin@v2026.11.12",
+  "sudosilo/termbeat@v2026.11.11",
+  "sudosilo/city-seek@v2026.11.13",
+  "sudosilo/artifactium@v2026.11.13",
+  "sudosilo/delivery-twin@v2026.11.13",
+  "sudosilo/tractor-tool@v2026.11.11",
+  "sudosilo/flipcount-game@v2026.11.11",
+  "sudosilo/delivery-twin-violet@v2026.11.13",
+  "sudosilo/hoofer-sync@v2026.11.13",
+  "sudosilo/infinicanvan@v2026.11.11",
+  "sudosilo/2026-10-30-orange-scores@v2026.11.10",
+  "sudosilo/torque-converter@v2026.11.11",
+  "sudosilo/raineurysm@v2026.11.13"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -1416,7 +1428,7 @@
   },
   "sudosilo/hoofer-sync": {
    "d": "A dance floor with a dancer for each phone in the band room.",
-   "h": "",
+   "h": "https://hoofer-sync.vercel.app",
    "t": [
     "band-sync",
     "dance",
@@ -2136,6 +2148,36 @@
     "developer-tools",
     "tool",
     "vercel"
+   ]
+  },
+  "sudosilo/artifactium": {
+   "d": "A found object archive with a flowchart tree explorer and contributor sign in.",
+   "h": "https://artifactium.vercel.app",
+   "t": [
+    "archive",
+    "railway",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/delivery-twin-violet": {
+   "d": "A parts inventory app for field crews, copied from Field Twin Violet for the Delivery Twin family.",
+   "h": "https://delivery-twin-violet.vercel.app",
+   "t": [
+    "field",
+    "inventory",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/raineurysm": {
+   "d": "A rain music toy where falling rain hits vessels that play notes.",
+   "h": "https://raineurysm.vercel.app",
+   "t": [
+    "music",
+    "toy",
+    "vercel",
+    "visualizer"
    ]
   }
  }
