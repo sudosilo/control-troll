@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-14T01:28:38Z",
+      "repo": "city-seek",
+      "sha": "f580716f",
+      "message": "Music mode: Rain view, color jar catching game, rain over every view",
+      "heckle": "A rain view, a jar catching game and a rain overlay for every view, all in one commit, like a spending bill with eleven riders nobody read. cityseek-music-v1.js grows another 168 lines of makeRain, packed with one line canvas math nobody could debug at gunpoint. In city-seek-v2.html the Top down button got renamed to Top while you squeezed Rain into the same segmented row, so on a phone that row is now four buttons fighting over the same thumb space. The changelog entry is another wall of prose that reads like a campaign press release. This is the fifth Music mode commit in four hours and the feature still has no tests, no pause for sanity, and no end in sight.\n\nFix it: Check the viewSeg row in city-seek-v2.html on a narrow phone and let it wrap. Split makeRain out of cityseek-music-v1.js into its own file before that one hits a thousand lines. Put the jar game behind its own switch instead of hiding it under Hunt while it plays. Stop piling one changelog paragraph per commit and write one per day."
+    },
+    {
+      "date": "2026-11-14T01:28:38Z",
+      "repo": "city-seek",
+      "sha": "15266a45",
+      "message": "Music mode: infographic layer, isometric train buildings with cutaways, pylon wires, richer street detail",
+      "heckle": "You added an infographic layer, isometric prisms, cutaway offices with coiled water pipes and sagging pylon wires to a music visualizer that already could not stop adding things. The shade and prism helpers in cityseek-music-v1.js parse hex colors with parseInt and quietly return the input if it is not a hash color, so any named color just goes unshaded and nobody finds out. The optInfo checkbox in city-seek-v2.html is one more toggle in a menu that is turning into a cockpit. Nine more toggles and this is a flight simulator for people who can not decide what the app is. The scope creep here is a bipartisan achievement.\n\nFix it: Make shade in cityseek-music-v1.js handle rgb and named colors or throw. Cache the prism and cutaway drawing instead of redrawing it all every frame. Group the toggles in city-seek-v2.html into a collapsible panel. Decide what the app is before the next commit."
+    },
+    {
+      "date": "2026-11-14T01:28:38Z",
+      "repo": "city-seek",
+      "sha": "435b048a",
+      "message": "Music mode top down: place beat objects on matching ground, cars follow streets",
+      "heckle": "The buildSurf function in cityseek-music-v1.js redraws the entire city onto a canvas one sixth the size, then reads every pixel back and guesses what surface it is by nearest color distance against six hard coded RGB triples in GROUND. That is not a ground map, that is a guess dressed up as a map, and any palette tweak turns every car into a tree. The try and catch wrapped around all of it swallows every error and sets surf to null, so when it breaks it breaks silently, the way a bad budget does. getImageData on a large canvas will also stall a phone.\n\nFix it: Ask the city generator for road and grass data instead of reverse engineering it from pixels in buildSurf. Log the error in that catch instead of eating it. Build the map once and cache it per city code. Test with the Muted look, since GROUND only matches the Bold colors."
+    },
+    {
+      "date": "2026-11-14T01:28:38Z",
+      "repo": "city-seek",
+      "sha": "ab2deaf6",
+      "message": "Music mode: Lanes view, a street styled MIDI waterfall where each band queues up in its own lanes",
+      "heckle": "A MIDI waterfall wearing a street costume, built in makeLanes with lane x positions typed in as magic numbers like 75, 145, 215, 285, 342 and 382. Change the width and the whole thing is garbage, because LX is a table of guesses scaled by u. The rows helper loops over the full screen height with fillRect every frame, so your visualizer is burning battery to draw painted lines. The view button row in city-seek-v2.html got Train shortened from Train window, so now nobody can tell what anything is. You are decorating a street while the app has no way to stop playing a song.\n\nFix it: Derive the lane positions in makeLanes from lane count and width instead of the LX table. Draw the road rows once to an offscreen canvas and scroll that. Put the full word back on the Train button in city-seek-v2.html. Add a stop and pause control while you are in there."
+    },
+    {
+      "date": "2026-11-14T01:28:38Z",
+      "repo": "city-seek",
+      "sha": "29e09fc4",
+      "message": "Music mode: centered action line with hit bursts per band, kick frame pulse, direct city drawing to stop tile glitches",
+      "heckle": "You moved the beat line to the middle of the screen and renamed it action line, which is the kind of rebranding a failing agency does instead of fixing the product. In lineFg, a kick pulses a full screen strokeRect that gets thicker with each hit, so a fast kick pattern is a strobe, and nobody warned the person with the song loaded. The tile glitch fix is to just draw the whole city every frame, which is brute force, not a fix, and the commit says so itself. The new E.between in cityseek-beat-v1.js slices the events with no bounds check on the lower search.\n\nFix it: Cap the kick pulse in lineFg in cityseek-music-v1.js and add a reduce flashing switch. Find why the tiles glitched instead of redrawing the whole city. Check E.between in cityseek-beat-v1.js with an empty event list and a time before the start. Rename the label back or update the README, since it still says beat line."
+    },
+    {
+      "date": "2026-11-14T01:28:38Z",
+      "repo": "city-seek",
+      "sha": "b4d713a3",
+      "message": "Music mode: beat synced city visualizer, train window view, stream hunt, video recording",
+      "heckle": "A beat engine, two views, a hunt mode and a video recorder in a single commit, 531 lines of cityseek-music-v1.js plus 159 of cityseek-beat-v1.js landed in one lump like a omnibus bill nobody read. You bolted a music visualizer onto a hidden object game, so the thing now has a Mode switch for two unrelated apps sharing a menu and a name. The README had the old game description rewritten around it. REC saves a video of the scene by recording the canvas, which means browser support is a coin flip, and the commit has no fallback story for a phone that cannot record. The two files stuff everything into closures so none of it can be tested.\n\nFix it: Ship the beat engine, the stages and the recorder as separate commits next time. Check for MediaRecorder support in cityseek-music-v1.js and hide REC when it is missing. Decide whether Music mode belongs in the City Seek game or in its own repo. Update the README so it does not lie about what the game is."
+    },
+    {
+      "date": "2026-11-14T01:28:38Z",
+      "repo": "delivery-twin",
+      "sha": "99b4153d",
+      "message": "Add step 10 script",
+      "heckle": "You committed step10.sh, a seventy line heredoc patch script that cds into a home folder on your phone, and pushed it to the repo root like a ransom note to your future self. This is the tenth one of these, and each of them gets deleted a commit later, which makes the history a pile of scripts that exist for one commit. It writes a .dt-cats.js full of category keys and colors with the CATEGORIES object assumed to already exist, so the script only works if the exact right file state is there. This is not version control, this is a filibuster where the filibusterer is yourself.\n\nFix it: Stop committing step scripts and edit index.html directly. Add step10.sh to a gitignore if you must keep it. Put the DT_HIDDEN_CATS and DT_FULL_Q lists into a data file instead of generating them through a heredoc. Delete the dead step files already sitting in the repo root."
+    },
+    {
+      "date": "2026-11-14T01:28:38Z",
+      "repo": "delivery-twin",
+      "sha": "b8f18235",
+      "message": "Own inventory app, Offers tab replaces Roads",
+      "heckle": "You renamed the Roads tab label to Offers but left the element id as tabRoads, so every handler, style and test says Roads while the screen says Offers, a classic rebrand that fixes the sign and leaves the building. The same change in index.html swaps the Violet site constant to a new URL while the CQ_ANON Supabase key and the old field-twin-glaucous site stay hard coded in the client of a 4000 line single file page. The anon key is meant to be public, fine, but only if row level security is actually on for every table, and nothing in this diff shows it. The file is now so big that nobody can review it.\n\nFix it: Rename tabRoads and anything that uses it to match Offers in index.html. Move the CQ_URL, CQ_ANON and site constants into one config object. Confirm row level security on every table the anon key can reach. Split the inline script out of index.html before it grows past five thousand lines."
+    },
+    {
+      "date": "2026-11-14T01:28:38Z",
+      "repo": "delivery-twin-violet",
+      "sha": "892836b7",
+      "message": "Delivery Twin inventory from Field Twin Violet",
+      "heckle": "This is a copy of the field twin violet api repo with find and replace on the name, and it shows: the changelog entries are dated 2026-11-06 and 2026-11-10, ahead of a repo that was created today, so it is a clone with a fake past. delivery-twin-violet-v1-fix-user.mjs sets a known password on a Supabase user from a keys.json file with a hard coded project URL, and a user admin script has no business living in the app repo. The api folder holds db.js which builds tables and row level security at every boot with ssl rejectUnauthorized set to false, which turns off certificate checking. The first commit is a hundred files deep and nobody can review it.\n\nFix it: Turn on certificate checking in the Pool in delivery-twin-violet-api/db.js or pin the database certificate. Move delivery-twin-violet-v1-fix-user.mjs and the find-project script out of the repo. Replace the cloned changelog and README with ones that describe this app. Add the config file to gitignore, as you did, and check the history for any real keys."
+    },
+    {
+      "date": "2026-11-14T01:28:38Z",
+      "repo": "delivery-twin",
+      "sha": "1488cc7d",
+      "message": "Add step 9 script",
+      "heckle": "Step 9. The ninth time you pushed a heredoc patch script to the repo root instead of just editing the files, and this one is a twenty six line shell script that clones the violet api repo with gh repo clone, strips the git folder and renames files with a for loop and a bash substitution. If any of those renames misses, you now have a half renamed repo and no way to tell. It deletes git metadata with rm -rf and depends on a home directory path that only exists on your phone. It gets deleted the very next commit, so it is a one shot tool pretending to be source code.\n\nFix it: Run the setup script on your phone and never commit it. Add a check that the target folder is empty before rm -rf in step9.sh. Pin the clone to a commit instead of whatever the default branch is. Delete leftover step files from the repo root."
+    },
+    {
       "date": "2026-11-13T19:48:37Z",
       "repo": "2026-10-18-orange-testbed",
       "sha": "9465a931",
@@ -1329,76 +1399,6 @@
       "sha": "4e307768ad6d99012cb8ff29618cd357e4957477",
       "message": "Route banner sits below the tabs with zoom buttons under it, Google Maps button hands the destination to Google Maps",
       "heckle": "Your navigation banner is a pile of inline cssText in index.html, a string long enough to need its own zip code, and now you reach into the leaflet-top control with querySelector and stomp its marginTop from inside navBanner. Every time the banner updates it fiddles with a third party element, so the first library upgrade breaks it. In openGoogleMaps, a failed window.open falls back to window.location.href, which throws the user out of the whole app and loses their route. In FieldTwinBridge.kt, openUrl swallows every exception silently, so a failure tells nobody anything.\n\nFix it: Move the navBanner styles into a CSS class in index.html. Replace the querySelector margin hack with a CSS variable. Drop the location.href fallback in openGoogleMaps. Log the caught exception in openUrl in FieldTwinBridge.kt."
-    },
-    {
-      "date": "2026-11-01T06:16:14Z",
-      "repo": "a-canticle-for-pajamastan",
-      "sha": "5c365aee2b3d794a460aa329336008855fa250c3",
-      "message": "Add Booklegger relay screen and chat messages to the rulebook",
-      "heckle": "You bolted a relay test screen into the middle of a-canticle-for-pajamastan-v1.html, and then copied the same netsync.js edit into two places, once under the backend folder and once under engine/. Two copies of one file is a recipe for the day they drift, and you have already guaranteed it by making no tool to keep them in sync. The validation for quickChat only checks that code.c and code.i are numbers, with no range, so any number up to infinity passes. There is also a button literally labeled Send a bad message, which is the most honest thing in the diff.\n\nFix it: Delete one copy of a-canticle-for-pajamastan-v1-netsync.js and import the other. Bound code.c and code.i in the quickChat check. Cap symbolChat numbers by value, not only by length. Add a test that feeds the validator garbage."
-    },
-    {
-      "date": "2026-11-01T06:16:14Z",
-      "repo": "a-canticle-for-pajamastan",
-      "sha": "c6af8f8e6aa8d1c3dcc45e8f30e77274fc1b421d",
-      "message": "Prefill the Booklegger relay address",
-      "heckle": "You hardcoded a production relay hostname into the value attribute of the rlUrl input in a-canticle-for-pajamastan-v1.html, in the commit right after you told the page to ask for it. Now the address is welded into the markup, the note says it is already filled in, and a different environment means editing html by hand. The password field sits next to it as plain text. Flip flopping on a one line input inside ten minutes is a budget that gets amended before the ink dries.\n\nFix it: Read the relay address from a config value or the tuning file, not the rlUrl markup. Make rlPass a password type input. Pick the placeholder or the default and stop changing your mind. Squash these two commits next time."
-    },
-    {
-      "date": "2026-11-01T06:16:14Z",
-      "repo": "a-canticle-for-pajamastan",
-      "sha": "5397129f6dbb245c9cb4c5dd05f5855f5e3d4123",
-      "message": "Add world objects, radar, particles, town, character maker, quest board, cutscenes and weather",
-      "heckle": "Three hundred lines pasted into a-canticle-for-pajamastan-v1.html in one commit: world objects, radar, particles, town, character maker, quest board, cutscenes and weather. That is not a commit, that is an omnibus spending bill nobody read. The new engine modules arrive with no tests, and the same giant html file now holds the switch yard, the town and the rulebook, so one typo in a template string takes the whole page down. The quest module even mutates the player object in place inside accept, so any bug there corrupts the save. A cereal box has better separation of concerns.\n\nFix it: Split this into one commit per feature. Stop mutating player in the guild accept function in engine/a-canticle-for-pajamastan-v1-guild.js and return a new state. Move the inline sections out of a-canticle-for-pajamastan-v1.html into their own files. Add a test for each new engine module."
-    },
-    {
-      "date": "2026-11-01T06:16:14Z",
-      "repo": "a-canticle-for-pajamastan",
-      "sha": "a92427a44008adabde737137abe25add6a61082e",
-      "message": "Larger labels on the town and switch yard",
-      "heckle": "You made the labels bigger. That is the whole commit, and it still took a human and a robot to do it. The font sizes in a-canticle-for-pajamastan-v1.html are hardcoded literals inside the draw functions, so every tweak means hunting through a single file that is already past fifteen hundred lines. The offset p.x-30 is a guess that will clip any name longer than a campaign promise survives. Zero scaling for small screens, so a cramped phone gets the same twenty pixels as a desktop.\n\nFix it: Pull the font sizes into the tuning json instead of the draw code. Measure the name with measureText and center it rather than guessing p.x-30. Scale the canvas text by the device pixel ratio. Split the draw code out of a-canticle-for-pajamastan-v1.html into engine/."
-    },
-    {
-      "date": "2026-11-01T06:16:14Z",
-      "repo": "algorithm-albatross",
-      "sha": "21704afcf614595a5e9aef9c0b181514179e9155",
-      "message": "Algorithm Albatross v1: instrumental skeleton analysis, cover pair matching, tempo sweep, Frankfurt install",
-      "heckle": "Version one of a music analysis tool and the intern ships it as a bash script that apt installs half an operating system, builds a virtualenv in the home folder, and hangs the whole thing off a throwaway tunnel whose address changes every restart. That is why algorithm-albatross-v1-url.sh exists, a script that greps journal logs in a forty try sleep loop to find your own server. Four hundred lines of install ceremony and not one test. The .vercelignore is one line, so the next stray folder will ship to production. This is a filibuster dressed as a deploy.\n\nFix it: Give the tunnel a fixed named address so algorithm-albatross-v1-url.sh can be deleted. Add a health check to the install script so it fails loudly. Write at least one test for the analysis code. Pin versions in algorithm-albatross-v1-requirements.txt instead of bare names, you animal."
-    },
-    {
-      "date": "2026-11-01T00:10:58Z",
-      "repo": "field-twin",
-      "sha": "8b6273eb0147cdee2f8e42ebccd8fe1a6c755e5d",
-      "message": "Bottom panel stays above the keyboard",
-      "heckle": "A keyboard fix done twice, once in a script block stapled to the bottom of a six thousand line index.html using visualViewport, and once in MainActivity.kt insets, so two layers fight over the same panel. The magic number 40 decides whether a keyboard exists, which will break on any phone with a tall gesture bar. Six thousand lines in one file and you add another script tag at the end like a rider on a spending bill.\n\nFix it: Pick one owner for keyboard lifting, either the page or the Android shell. Replace the 40 threshold with a fraction of the screen height. Move this script into its own file instead of the bottom of index.html."
-    },
-    {
-      "date": "2026-11-01T00:10:58Z",
-      "repo": "fogwarren-vx",
-      "sha": "2c4a9452875e29bfaff576f19667882580674e4b",
-      "message": "Game v2: score, initials and site link submitted to the shared score hub",
-      "heckle": "Ninety five lines into index.html for initials, a site link field and a high score board, and the site link is a free text box that gets posted to a shared hub. That is a stored link injection waiting for a bored teenager. The css also stacks more Tahoma and Courier New than a flea market, and the new field labels are fixed at 62 pixels wide on a phone.\n\nFix it: Validate and escape the site link and initials in index.html before display, and again on the score hub. Reject anything that is not an http or https address. Check the field row on a narrow screen."
-    },
-    {
-      "date": "2026-11-01T00:10:58Z",
-      "repo": "2026-10-30-orange-scores",
-      "sha": "9a517097e4564c7ae4c5ff8c4f1c1a7b7d2d208e",
-      "message": "Register game on the score hub",
-      "heckle": "You registered a game in api/_games.js with max 30000 and perSecond 5000, plus a day long maxMs, and those limits look pulled out of a hat. A score cap that is merely a guess means anyone can post any number under 30000 after five seconds and the board is a participation trophy. Hand editing a js object for every game is also a plan that scales like a government shutdown.\n\nFix it: Derive the max and perSecond from what the game can actually score. Move the game list to a json file so adding a game is not a code edit. Add server side checks that tie the score to a play session."
-    },
-    {
-      "date": "2026-11-01T00:10:58Z",
-      "repo": "a-canticle-for-pajamastan",
-      "sha": "02c1050adf00f7da63dc8b5acc296cf9894a89ee",
-      "message": "Add spells, status, comeback, bestiary, traps, quest script, economy, companion and modes",
-      "heckle": "Nine features in one commit, 416 lines added to the same one html file that already had everything in it. The navlist gets replaced by navgroups, the card class gets overflow-x auto as a mobile bandage, and the brain mourn case grows new cursed guard logic nobody asked for in the same push. This is a campaign promise in commit form: big, vague and undeliverable.\n\nFix it: Stop shoving every system into a-canticle-for-pajamastan-v1.html and load the engine scripts as separate files. Make one commit per system so a revert does not nuke the rest. Check the card overflow-x fix on a phone width."
-    },
-    {
-      "date": "2026-11-01T00:10:58Z",
-      "repo": "a-canticle-for-pajamastan",
-      "sha": "bcc1dd216bb1b98e843a512ec9328fe8f89573b5",
-      "message": "Add specials, gear, actions, social, camera, relay backend and playable slice",
-      "heckle": "One commit swallowed gear, actions, social, camera, a whole relay backend and a playable slice, which is not a commit, it is an omnibus spending bill with riders nobody read. The relay in a-canticle-for-pajamastan-backend-v1.js takes a join message with a room and password and forwards events, and I see nothing about origin checks or rate limits in the part I can read. Plus the netsync file is copied into the backend folder, so two copies will drift.\n\nFix it: Split this into one commit per module next time. Share the netsync module instead of copying it into the backend folder. Add message size and rate limits plus an origin check to the relay."
     }
   ]
 }
