@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-15",
+      "repo": "field-twin",
+      "sha": "2ecad2b7",
+      "message": "Field Chat on its own twin chat, apart from Cat Command Chat",
+      "heckle": "Last commit you told the help text Field Chat ran on Cat Command Chat's backend. This commit you tell it the opposite and delete the 120 line chat-fix.sh you pushed barely an hour earlier. That is a script committed, run, and deleted in one evening, which is a filibuster with a commit history. The help paragraph in index.html now promises a shared database with Delivery Twin, so whoever reads it is lied to by whichever version they opened. The intern is rewriting the same sentence like a campaign promise that changes by the district.\n\nFix it: Stop committing one shot shell scripts like chat-fix.sh to the repo root. Run them from your phone and leave them out of git. Decide once whether the chat is shared or private and write that in the Field chat help text in index.html. Check that the old Cat Command Chat wording is gone everywhere else in the file."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "delivery-twin",
+      "sha": "746bb2fc",
+      "message": "Driver Chat shares the twin chat with Field Twin",
+      "heckle": "The previous commit gave Driver Chat its own private backend and wrote a paragraph bragging about it. Now you rip that out, rename every delivery_twin_chat_ table to twin_chat_ with a sed command, and glue it back to Field Twin. Two commits, opposite architecture, same afternoon. A coin flip would have shown more commitment. The help text under the Driver Chat question in index.html swaps one claim for the other, and step13.sh, the sed script that did the damage, got deleted in the same commit like evidence at a bailout hearing. Sharing one chat between two apps with separate drivers is also a privacy call you made with a regex.\n\nFix it: Pick shared or private chat and stop flip flopping. Rename the rpc and channel strings by hand in index.html, not with sed. Keep step scripts out of the repo. Reread the Driver Chat comment block for stale wording."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "mobbyhill",
+      "sha": "13393962",
+      "message": "Run clock, flag splits, and score hub high scores",
+      "heckle": "A run clock, flag splits, and score posting all landed in one 101 line commit to a single index.html, which already holds 760 lines of everything. The score format packs flags and time into one integer as flags*100000 + (99999 - tenths), a trick so cute it will break the first time a run lasts over sixteen minutes, because 99999 tenths of a second is the ceiling and the subtraction goes negative. Nobody warned the intern that clever encodings age like milk. The header comment says v2 while the file name, as always, says nothing about versions. This is a government shutdown with a changelog.\n\nFix it: Clamp the tenths in the flagsTime packing in index.html so a long run cannot go negative. Split the score hub posting code out of the one giant html file. Show a sane message when the score post fails. Test the packing with a run past sixteen minutes."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "2026-10-30-orange-scores",
+      "sha": "10b485d5",
+      "message": "Register MobbyHill with flags and time score format",
+      "heckle": "You registered MobbyHill with max 99999999 and perSecond 60000 in api/_games.js. Those limits are so generous that the anti cheat check is a decorative ribbon. A cheater posting a score of 900000 flags worth of nonsense walks straight in, and the hub will dutifully print it as flags and a clock time in show() in hub.js. The decoding there also has no guard for a score whose time part is negative or malformed, so garbage in becomes pretty garbage out. Meanwhile the one line comment you left explains the format, which is the only adult behavior in this commit.\n\nFix it: Tighten max and perSecond for mobbyhill in api/_games.js to numbers a real run could hit. Validate the flags and time parts server side before accepting a score. Make show() in hub.js handle a bad time value without printing nonsense."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "mobbyhill",
+      "sha": "8b33a280",
+      "message": "Trigger first production build",
+      "heckle": "An empty commit whose only job is to poke Vercel because the first push did not build. The intern needed a whole commit to hit a button. It adds nothing, changes nothing, and sits in the history like a bill with no text in it, passed in the middle of the night. If the first push did not build, the project was never wired up properly, and you papered over that instead of looking.\n\nFix it: Connect the mobbyhill project to the repo in Vercel before the first push. Use the redeploy button or a deploy hook rather than an empty commit. Put a real message on any commit you must make."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "mobbyhill",
+      "sha": "be3b0053",
+      "message": "MobbyHill v1: wireframe off road hill climb with driver seat view and phone tilt lean",
+      "heckle": "Seven hundred sixty one lines of game dumped into one index.html in one commit, with a header comment crediting a chat with an AI, the way a contractor signs the plans someone else drew. The title says phone tilt lean, but the viewport meta in the head locks zoom with user-scalable=no and there is no mention anywhere of asking for motion permission, which iPhones demand. So half your players lean and nothing happens. The vercel.json disables all caching on every file, so every visit refetches the whole pile like a senate hearing that never adjourns.\n\nFix it: Add a motion permission request in index.html before reading tilt. Drop the no-store header in vercel.json for static assets. Split the script out of the html. Give the player a visible message when tilt is unavailable."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "220d5c2c",
+      "message": "agent-orange 2026-11-15T024953 (#98)",
+      "heckle": "One line of minified JSON in contrib/agent-orange, merged as a pull request under your own login so the author filters think the intern did it by hand. A whole PR, a whole merge, a whole notification, for one line. It is a bureaucracy built to move a single sheet of paper across a desk and stamp it twice.\n\nFix it: Let the agent commit its turn file straight to the branch or batch several turns per PR. Do not merge PRs with a one line payload as separate events. Add a bot marker to the merge so the author filters can tell the intern from the machine."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "b38f305a",
+      "message": "agent-orange 2026-11-15T021149 (#97)",
+      "heckle": "Another single line contrib/agent-orange file, another pull request, another merge. Pull requests 97 and 98 landed barely half an hour apart with identical shape, which is a conveyor belt of paperwork with nothing on it. The history of this repo now reads like a legislature voting on its own minutes.\n\nFix it: Stop opening one PR per agent turn. Batch turns, or push directly. Make the merge commit carry a tag that names the agent so nobody has to open the diff to see it is automated."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "f7772533",
+      "message": "Viewer: build labels only near the camera so phones stop running out of memory (#96)",
+      "heckle": "Phones were running out of memory, and the fix in index.html is to add dropLabel calls in clearMeshes and only build labels near the camera. Fine, but you only fixed clearMeshes. Every other path that removes a loaded group has to drop its sprites too, or the leak just moves down the hall like a budget line item. The one line clearMeshes function is now a wall of semicolons crammed together, which is how you hide a leak from a reviewer. Earning one grudging nod here for at least finding the cause.\n\nFix it: Check every place that removes a loaded chunk group and make sure it calls dropLabel. Dispose label textures and materials, not only geometry. Break clearMeshes into readable lines. Test on a phone after ten minutes of panning."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "field-twin",
+      "sha": "f2345736",
+      "message": "Add chat fix script",
+      "heckle": "A 120 line chat-fix.sh with a heredoc holding a whole JavaScript chat module, committed to the repo root of field-twin. The script is a way of editing index.html from your phone that left the evidence in git. The next commit deletes it, so the history now has a file that existed for one hour, like a campaign office that opens and closes in the same election cycle. Hardcoded cd ~/field-twin means it only ever worked on one machine, and the .ft-chat.js dropped in the home folder is junk nobody will find again.\n\nFix it: Do not commit chat-fix.sh. Put patch scripts in a folder ignored by git. Write the chat module straight into index.html. Add a gitignore line for step and fix scripts."
+    },
+    {
       "date": "2026-11-14T22:30:31Z",
       "repo": "mohavetech-website",
       "sha": "86c7c4bc",
@@ -1329,76 +1399,6 @@
       "heckle": "Another steward drop, and the intern's robot is out here painting crosswalks like it's a bailout line item: the same 'completes the crosswalk across the street' meta string pasted onto every place_hatch call in contrib/steward/2026-11-02T205246.json, with 8 hatches, 22 lines and 5 symbols crammed into one single line of JSON that nobody can diff, review, or blame. Hand typed coordinates with no check entries on any of the hatches, so nothing proves a crosswalk actually lands on a street. Did you learn geometry from a cereal box?\n\nFix it: Add checks entries to the crosswalk place_hatch calls in contrib/steward/2026-11-02T205246.json. Write the file pretty printed so a diff means something. Stop repeating the same steward meta string on every hatch and put the intent once.",
       "date": "2026-11-02T21:44:58Z",
       "repo": "2026-10-18-orange-testbed"
-    },
-    {
-      "sha": "47b4e6d7",
-      "message": "grok 2026-11-02T170255",
-      "heckle": "This grok file is a campaign promise in JSON form. contrib/grok/2026-11-02T170255.json drops one curb, one sidewalk, a pile of trees and a market with a person doing a little walking loop, all as one unreadable line, and the hatch pts are retyped by hand instead of derived from the curb, so the first time somebody moves one the dots hatch will float off into nowhere. You built a pipeline and still never gave it a validator. Pathetic.\n\nFix it: Derive the hatch pts in contrib/grok/2026-11-02T170255.json from the curb and sidewalk lines instead of retyping them. Pretty print the JSON. Add a schema check so a bad drop fails before it merges.",
-      "date": "2026-11-02T21:44:58Z",
-      "repo": "2026-10-18-orange-testbed"
-    },
-    {
-      "sha": "8ee2910f",
-      "message": "agent-orange 2026-11-02T150520 (#65)",
-      "heckle": "You merged a robot pull request whose entire diff is one file, contrib/agent-orange/2026-11-02T150520.json, containing a single line so fat that GitHub gave up and showed no patch at all. That is a filibuster in file form: nothing can be read, nothing can be reviewed, and you hit the merge button on number 65 anyway like a senator voting on a bill he never opened. Intern behavior.\n\nFix it: Pretty print contrib/agent-orange/2026-11-02T150520.json so the diff renders. Make the agent-orange writer emit one call per line. Do not merge a drop you have not been able to read.",
-      "date": "2026-11-02T21:44:58Z",
-      "repo": "2026-10-18-orange-testbed"
-    },
-    {
-      "date": "2026-11-02T11:19:33Z",
-      "repo": "termbeat",
-      "sha": "603ddd26",
-      "message": "Matrix, Snow, Waterfall modes; MS-DOS and Mac/Lisa skins; era easter eggs",
-      "heckle": "One commit, one index.html, 1943 lines added. Congratulations, you built a terminal toy and then kept stuffing it like a shutdown rider bill nobody read. Nine fake terminal skins, a pile of joke commands, a four project Build button, all crammed into a single file that is now a monolith nobody can diff. You swapped the font link for four separate CDN stylesheet tags, so the page now makes four extra blocking requests to look the same. The viz code assigns vizOutputEl.innerHTML in two places, and the whole thing ships with an easter egg essay baked into a paragraph tag like a campaign promise. Did you learn HTML from the back of a cereal box? A commit message that long should have been five commits.\n\nFix it: Split index.html into separate css and js files so the next change is reviewable. Collapse the four font links into one request or self host the fonts. Build the viz html with textContent or DOM nodes instead of vizOutputEl.innerHTML. Move the easter egg text out of the markup into data. Commit one feature at a time."
-    },
-    {
-      "date": "2026-11-02T11:19:33Z",
-      "repo": "algorithm-albatross",
-      "sha": "e9ef33c1",
-      "message": "Add instrumental fetcher with duplicate checking",
-      "heckle": "You wrote a 220 line downloader that pulls files from a public music site with a browser User-Agent and a faked Referer header, like a guy sneaking into a movie with a fake mustache. The fetch script algorithm_albatross_v1_fetch.py does not check the license on anything it grabs, it just grabs. The similarity function in that file loops 121 shifts over every fingerprint, and duplicate_of runs it against every row in the prints table for every download, so the library gets slower with each track, a bailout that never ends. Also the bare except in fp_of swallows a missing fpcalc and quietly returns an empty list, which then makes every file look unique. Did you even test this, or did you just vibe it?\n\nFix it: Make fp_of fail loudly when fpcalc is missing. Check the license field in take before keeping a file. Cache or index fingerprints in duplicate_of instead of scanning every row. Send an honest User-Agent in the UA dict. Pin requests in algorithm-albatross-v1-requirements.txt."
-    },
-    {
-      "date": "2026-11-02T00:48:42Z",
-      "repo": "j30p4rdy",
-      "sha": "f819ab762f7efc40cc2f1859329a02538c391506",
-      "message": "J30P4RDY v2: buzzer race, rebounds, Double and Final rounds, shot clocks, bigger clue bank",
-      "heckle": "Version two of a quiz game, and you dumped a 1312 line j30p4rdy-v2.html next to the original like a toddler who photocopies homework instead of editing it. The api/j30p4rdy-leaderboard-v2.js file has a v2 in its name too, because apparently git branches were too advanced for you. That POST endpoint takes any name and any score up to 200000 from anyone with no auth, so your leaderboard is a suggestion box run like a bailout with no oversight. Math.random in the member id and a bare catch that swallows bad JSON, truly a filibuster of error handling.\n\nFix it: Delete the v1 copy or the v2 suffix and stop forking your own files. Validate scores server side in api/j30p4rdy-leaderboard-v2.js, with a rate limit per caller. Log the JSON parse failure instead of eating it. Split the inline CSS and script out of j30p4rdy-v2.html so a human can read it."
-    },
-    {
-      "date": "2026-11-02T00:48:42Z",
-      "repo": "mohavetech-website",
-      "sha": "afa13413a84a63b19b1200983e87d223d5a3780a",
-      "message": "sync with vercel",
-      "heckle": "Another sync with vercel, the commit message equivalent of a shrug. You hand pasted app links into index.html and fleet.html and then renamed script-v51.js again, so the same list now lives in three places and rots in all of them. The baseDates block in script-v51.js churned fifteen lines because a date map is maintained by a man with a stopwatch and a dream. Cache busting through troll.js?v= with a pasted timestamp is a campaign promise: sounds official, fixes nothing.\n\nFix it: Generate index.html, fleet.html and baseDates from one json file with a script. Stop renaming script-v51.js and use a query string version. Write a real commit message that says which apps were added or dropped. Remove dead entries instead of editing them out by hand."
-    },
-    {
-      "date": "2026-11-02T00:48:42Z",
-      "repo": "field-twin",
-      "sha": "5a134c8a5a361e7730851185839a04b7e476da30",
-      "message": "Phone app asks for camera permission before any photo button, so photo taps never fail silently",
-      "heckle": "You bolted a click listener on the whole document in capture phase just to ask for camera permission, which is like fixing a leaky faucet by evicting the tenants. The ftCameraReady function has an empty catch that eats every failure, so when the bridge breaks the photo button dies silently, the exact bug this commit claims to fix. Then ftphPick and the global listener both run the same check, so a tap can prompt twice. The hidden file input also changed to a 1px fixed box in index.html, a hack on top of a hack.\n\nFix it: Pick one place for the permission check, either ftphPick or the global listener. Log the caught error in ftCameraReady. Check the permission result in FieldTwinBridge.kt and retry the photo automatically after the grant instead of making the user tap twice. Drop the 1px input hack once that works."
-    },
-    {
-      "date": "2026-11-02T00:48:42Z",
-      "repo": "field-twin",
-      "sha": "8a594ad86202bceff64b344f50ef3b8ef98bda7c",
-      "message": "Any number of photos per entry and per locker, uploaded straight to cloud storage and listed in field_twin_photos",
-      "heckle": "Any number of photos per entry, and you stuffed all of it into index.html, which is already a swamp of thousands of lines, because splitting a file is apparently a skill you skipped. Photos still ride along as base64 strings in entry.morePhotoData, so the local data balloons with every tap while the new field_twin_photos table sits there looking proud. The sql in supabase/field-twin-photos-v1.sql has a v1 in the filename, so I assume v2 will be another copy. The drawPreview grid has inline styles stacked like a government shutdown of CSS.\n\nFix it: Store only the uploaded path in entry data, never the base64, in index.html. Cap photo count and size so one bored thumb cannot fill storage. Move the photo code into its own file. Run the sql as a numbered migration, not a v1 file."
-    },
-    {
-      "date": "2026-11-02T00:48:42Z",
-      "repo": "field-twin",
-      "sha": "37dcc33a634c6cbbcdd114fef5378264fb151730",
-      "message": "Turn line goes back to full width after the floating window closes",
-      "heckle": "A one line fix for a width bug, and it still manages to be sloppy. You reached into the DOM for navBanner by id inside ftPipSize, a function whose job is sizing the map, so now it also owns the banner like a senator who sits on every committee. The cssText wipe on the map above it is the same blunt tool, erasing every inline style in one swing. No test, no check that the banner exists beyond a lazy if, in a file so long it needs its own zip code.\n\nFix it: Move the banner reset into the code that closes the floating window, not into ftPipSize in index.html. Use a css class toggle instead of wiping style.cssText on the map. Add one line in the commit body explaining what broke."
-    },
-    {
-      "date": "2026-11-01T19:44:13Z",
-      "repo": "field-twin",
-      "sha": "e073f368d2432782f3791bd6959a9138499218a0",
-      "message": "Route display: no box, sits above the bottom bar, three small symbol d",
-      "heckle": "You rewrote a comment so it no longer says the name of the maps app, but the function is still called openGoogleMaps and still builds a google URL, so the comment now lies about the code under it. That is a press release that contradicts the bill. In navBanner in index.html you also moved the marginTop reset above the early return, so it stomps a third party leaflet control every single call, even when no route exists. The banner itself is still one giant inline cssText string.\n\nFix it: Rename openGoogleMaps in index.html to match what the comment claims, or put the comment back. Stop touching the leaflet control from inside navBanner and use a css class instead. Move the banner cssText into the stylesheet."
     }
   ]
 }
