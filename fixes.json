@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-11-14T18:47:30.674Z",
+  "builtAt": "2026-11-15T19:26:07.599Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -159,6 +159,68 @@
       ],
       "knownProblem": null,
       "snapshot": "snapshots/tower-builder-one.html"
+    },
+    {
+      "app": "ghost-kitchen-builder",
+      "url": "https://ghost-kitchen-builder.vercel.app",
+      "kind": "test-failing",
+      "since": "2026-11-15",
+      "status": 200,
+      "failing": [
+        {
+          "test": "build form fills and scores",
+          "error": "locator.fill: Timeout 6000ms exceeded.",
+          "testFile": "tests/ghost-kitchen-builder.json"
+        },
+        {
+          "test": "demo concepts load",
+          "error": "locator.waitFor: Timeout 6000ms exceeded.",
+          "testFile": "tests/ghost-kitchen-builder.json"
+        },
+        {
+          "test": "export summary opens",
+          "error": "locator.click: Timeout 6000ms exceeded.",
+          "testFile": "tests/ghost-kitchen-builder.json"
+        }
+      ],
+      "errors": [],
+      "features": [
+        "Build tab walks through concept identity and setup sections for a new restaurant concept.",
+        "Survey tab scores an existing concept, with score and completeness updating live.",
+        "Demo tab loads sample concepts with load this concept.",
+        "Clear form resets, and export summary opens a summary with copy to clipboard."
+      ],
+      "knownProblem": null,
+      "snapshot": "snapshots/ghost-kitchen-builder.html"
+    },
+    {
+      "app": "rtss-sigma",
+      "url": "https://rtss-sigma.vercel.app",
+      "kind": "test-failing",
+      "since": "2026-11-15",
+      "status": 200,
+      "failing": [
+        {
+          "test": "survey form shows",
+          "error": "locator.waitFor: Timeout 6000ms exceeded.",
+          "testFile": "tests/rtss-sigma.json"
+        },
+        {
+          "test": "load demo data fills the form",
+          "error": "locator.click: Timeout 6000ms exceeded.",
+          "testFile": "tests/rtss-sigma.json"
+        }
+      ],
+      "errors": [],
+      "features": [
+        "Survey form covers site identity, venue type, infrastructure, connectivity, POS, kitchen, menu boards, drive-thru, bar, table service, A/V, payments, ATM, emerging tech, topology and notes.",
+        "Counters and add buttons add registers, KDS screens and zones.",
+        "Progress updates as sections fill in.",
+        "Load demo data and clear form work.",
+        "Save keeps the survey and CSV exports it."
+      ],
+      "knownProblem": null,
+      "snapshot": "snapshots/rtss-sigma.html"
     }
   ]
 }
