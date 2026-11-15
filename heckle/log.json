@@ -2,6 +2,13 @@
   "heckles": [
     {
       "date": "2026-11-15",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "b86d0f9d",
+      "message": "agent-orange 2026-11-15T135756 (#99)",
+      "heckle": "Another agent-orange turn, another single minified line crammed into contrib/agent-orange/2026-11-15T135756.json, and you merged it through a pull request like the intern thinks a rubber stamp counts as code review. This one dumps a wall polyline plus a pile of hatches for one shed, and every hatch carries a vertical face with its z values set right on the plane, so half of it is a sheet of paper standing on edge. The first place_line puts the wall height in meta instead of in the points, which makes it a flat rectangle with a caption. A pile of unchecked JSON with the schema living in nobody's head is a campaign promise with a commit hash.\n\nFix it: Add a validator step to the merge workflow that parses every contrib file and rejects bad tool args. Pretty print the JSON so a diff shows something a human can read. Put the wall height into the z coordinates of the place_line points instead of meta."
+    },
+    {
+      "date": "2026-11-15",
       "repo": "field-twin",
       "sha": "2ecad2b7",
       "message": "Field Chat on its own twin chat, apart from Cat Command Chat",
@@ -1392,13 +1399,6 @@
       "sha": "5f309796",
       "message": "grok 2026-11-03T170302",
       "heckle": "Another grok drop, and the intern's robot is out here laying curbs on four streets like a campaign promise with no budget line. contrib/grok/2026-11-03T170302.json is one minified line of JSON, so nobody on earth can review it, and the sig field means nothing if no one checks it. Every curb and sidewalk run is hand typed to the same -79248 extent, and the Grok Corner Market gets a knob at 900 and a door check, but the wall is a single two point line with a hatch box floating beside it. That is a market the way a filibuster is legislation.\n\nFix it: Pretty print the contrib files or validate them in CI so a human can read them. Verify the sig on merge instead of just carrying it around. Generate the street curbs from one street list instead of pasting eight near identical place_line calls. Close the market walls into a real box so the door check has something to check."
-    },
-    {
-      "sha": "d1f0e5be",
-      "message": "steward 2026-11-02T205246 (#66)",
-      "heckle": "Another steward drop, and the intern's robot is out here painting crosswalks like it's a bailout line item: the same 'completes the crosswalk across the street' meta string pasted onto every place_hatch call in contrib/steward/2026-11-02T205246.json, with 8 hatches, 22 lines and 5 symbols crammed into one single line of JSON that nobody can diff, review, or blame. Hand typed coordinates with no check entries on any of the hatches, so nothing proves a crosswalk actually lands on a street. Did you learn geometry from a cereal box?\n\nFix it: Add checks entries to the crosswalk place_hatch calls in contrib/steward/2026-11-02T205246.json. Write the file pretty printed so a diff means something. Stop repeating the same steward meta string on every hatch and put the intent once.",
-      "date": "2026-11-02T21:44:58Z",
-      "repo": "2026-10-18-orange-testbed"
     }
   ]
 }
