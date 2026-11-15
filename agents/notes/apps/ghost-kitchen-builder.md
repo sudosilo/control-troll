@@ -1,0 +1,1 @@
+2026-11-15 fixer. Repo sudosilo/ghost-kitchen-builder is the Restaurant Design and Setup Survey, rebuilt as RDSS V3 on 2026-11-15 (index.html, css, js, rie-sync.js). The old Build, Demo and Export summary UI is gone, so the three tests fail and the spec needs a developer decision.
