@@ -2,6 +2,76 @@
   "heckles": [
     {
       "date": "2026-11-15",
+      "repo": "delivery-twin",
+      "sha": "1ff05d84",
+      "message": "Add step 15 script",
+      "heckle": "Step fifteen, one commit before the one that deletes it, and the only thing in it is a sed command with so many escaped quotes it looks like a ransom note. The two backslash escaped quote layers around window.open in step15.sh are guaranteed to break the first time someone touches them. You pushed a one shot script into the repo root, then ran it, then committed the result and the removal separately like a government that passes a law and repeals it the same week. A cereal box has better version control.\n\nFix it: Stop committing step scripts and edit index.html directly. Remove step15.sh from history if you want a clean log. Use a real editor or a small node script kept outside the repo instead of sed with nested escapes."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "delivery-twin",
+      "sha": "34eabc32",
+      "message": "RTSS and RDSS site survey links",
+      "heckle": "Two links to other apps, hardcoded as window.open calls with inline onclick strings inside index.html, one in the menu and one jammed into the end of the popup string built in the spot function. The popup button always opens the RTSS home page and carries nothing about the spot you clicked, so Survey in RTSS opens a blank survey, which is the filibuster of buttons: lots of motion, no result. The URLs are typed twice and will drift the first time a name changes.\n\nFix it: Pass the spot latitude and longitude to the RTSS link in the popup in index.html. Define the two app URLs once as constants. Replace the inline onclick strings with a proper listener. Check that the new popup button does not wrap badly on a narrow phone."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "delivery-twin",
+      "sha": "db94a008",
+      "message": "Add step 16 script",
+      "heckle": "Step sixteen. Sixteen. You are committing heredoc patch scripts into the repo root like a man mailing himself a letter to avoid remembering where he put his keys. step16.sh is 97 lines that cd into a home folder path that exists on exactly one phone, writes a logpin file into the home directory, and then edits the app from outside the app. Nobody can review a patch that lands as a shell script, and the real change is hidden in a heredoc the diff viewer cannot lint. This is a campaign promise with a build step.\n\nFix it: Delete step16.sh and every earlier stepN.sh from the delivery-twin root. Commit the edits to index.html directly so the diff shows the real change. Add stepN.sh to .gitignore so it stops coming back. Stop hardcoding the home delivery-twin path."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "mobbyhill",
+      "sha": "9a596b64",
+      "message": "Fore and aft lean, stickier suspension, garage upgrades, sand, mud, water and boulders",
+      "heckle": "Sand, mud, water, boulders, a garage, lift kits, a snorkel, and fore and aft lean in one shot, and the version comment in index.html grew into a single run on sentence with eleven features. Your leanBox is positioned at bottom calc of the safe area plus 146 pixels, a magic number that will park on top of the pedals on a short phone. This is a three term incumbent of a diff, 181 lines added and nobody can tell what any of it does. If a snorkel needs its own commit, a rock needs a rule.\n\nFix it: Move the 146 pixel offset for leanBox in index.html into a variable tied to the pedal height. Break the terrain types into their own function. Test on a small phone in landscape and check the lean buttons do not cover the Gas pedal."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "2026-10-30-orange-scores",
+      "sha": "ee1629a3",
+      "message": "Register MobbyHill Fuel, Climb and Climb Fuel modes",
+      "heckle": "Three copy pasted lines in api/_games.js, because why design a registry that takes a mode list when you can just clone the same entry and rename it. The two climb entries use max 999999 with perSecond 200, which is a pure guess about how high a wireframe truck can climb in tenths of a meter, and hub.js gets a meters branch bolted onto the end of the format chain. It works, I hate it, and I hate that I cannot find a bug. Do not let it go to your head.\n\nFix it: Give _games.js a way to register one game with several modes instead of cloned lines. Check the climb max and perSecond numbers against a real best run. Add a test for the meters format in hub.js with a score of zero."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "mobbyhill",
+      "sha": "59dd6a5c",
+      "message": "Mode menu with fuel and hill climb modes, ghost of best run, damage mode with repairs",
+      "heckle": "One commit adds a mode menu, four modes, a ghost replay, a fuel tank, and damage with a repair bill, all jammed into index.html with 155 added lines and 50 deleted. That is not a feature, that is a government omnibus bill where nobody read past page one. Each mode gets its own leaderboard tag, so you created three new score hub entries that had to be registered in a separate repo, and the ghost stores a whole run per mode on a phone with limited storage. Did the intern plan any of this or did the diff just grow?\n\nFix it: Split index.html so modes, ghost and garage are not one inline script. Cap the ghost recording in index.html so it cannot eat phone storage. Test fuel mode with the tank empty on a steep slope. Add one line saying how a player switches modes mid run."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "2026-10-30-orange-scores",
+      "sha": "cccf047f",
+      "message": "Weekly token wallets spent through the server, first used by MobbyHill",
+      "heckle": "Token wallets in api/wallet.js, and the settle function does its grant as a pile of separate Redis round trips: an EXISTS, a SET NX, an INCR, an HGET, an HINCRBY, and another HGET. Two racing calls can still both read the same balance before the increment, which makes your comment about racing sound like a senator reading a bill he did not write. The grant math reads the balance first and then adds, so the cap is a suggestion. And the per address wallet limit means a whole campus sharing one network gets three wallets total, so enjoy the support tickets.\n\nFix it: Move the grant in api/wallet.js into one Lua script or one MULTI so read and write cannot interleave. Check the spend path for the same read then write gap. Raise or rethink NEW_PER_IP for shared networks. Add a test for two simultaneous settle calls."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "mobbyhill",
+      "sha": "4d75f5aa",
+      "message": "Tokens as a second currency: weekly server wallet, perks, parts payable in cash or tokens",
+      "heckle": "A second currency in a wireframe truck toy, because one fake economy was clearly too stable. The index.html header comment is now a novel, with v5 stapled under v4 in a block comment that nobody will ever read. Every wallet call hangs off a pid the phone invents and holds in storage, so a cleared cache is a new person and a new thousand tokens, and your only defense is the three wallets per address limit on the server. A government bailout has tighter controls. At least the spending happens server side, which is the one thing here that did not make me wince.\n\nFix it: Put the version history in CHANGELOG.md instead of the index.html header comment. Show the player a clear message when the wallet call fails, since offline play now silently loses perks. Test a cleared storage run on a real phone and confirm the cash path still buys parts."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "72df2af2",
+      "message": "Agent Test Bed API: GET /api/city canon city snapshot with optional starting slice",
+      "heckle": "A new public api/city.js that replays every contrib file on each cache miss, and you call that a snapshot. The handler runs loadContrib and replay on every request, protected only by a 30 second s-maxage, so one hungry client turns your function into a bailout nobody voted for. CORS is open to everybody and agentProfiles goes out with it. Meanwhile engine.js census now stuffs a hull footprint into every building row, so the existing census output got fatter for no reason a user asked for. The slice check is fine, which is the only reason I am not taking your keyboard.\n\nFix it: Cache the replayed world in api/city.js instead of rebuilding it per request. Move the footprint field out of the census rows in engine.js and keep it inside citySnapshot. Decide whether agentProfiles belongs in a public response at all."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "bb57a1ad",
+      "message": "Deploy main from GitHub again, but only when code changes; agent turn commits and scribe notes stay skipped",
+      "heckle": "You turned deployments off, then on, then half on, and this vercel.json change reads like a filibuster that ends with everyone going home angrier. The deploymentEnabled object now says main true and everything else false, and then the ignoreCommand bolts on a git diff with three hand typed exclude paths that will silently skip a deploy the day you rename contrib. Did a cereal box teach you shell quoting? One stray quote and the whole build gate becomes a campaign promise.\n\nFix it: Test the ignoreCommand in vercel.json against a commit that touches only contrib and one that touches engine.js. Write down in the README why deploys were disabled before, since you just reversed it with no note. Replace the three exclude paths with one folder layout so nothing gets hand listed."
+    },
+    {
+      "date": "2026-11-15",
       "repo": "2026-10-18-orange-testbed",
       "sha": "b86d0f9d",
       "message": "agent-orange 2026-11-15T135756 (#99)",
@@ -1329,76 +1399,6 @@
       "sha": "87f55acd",
       "message": "Field Twin Companion firmware build 3",
       "heckle": "Build 3, same crime as build 4 and build 2 and build 1. Another binary dropped into field-twin-companion/firmware, another unreadable diff, another round of the repo growing like a bailout package. Three of these in under an hour means the workflow fires on every tweak and nobody is asking whether the tweak was worth a megabyte.\n\nFix it: Gate the publish step in field-twin-companion-v1.yml so it only commits on tagged releases. Stop storing the binary in the app repo."
-    },
-    {
-      "date": "2026-11-03T23:29:15Z",
-      "repo": "field-twin",
-      "sha": "5e17c017",
-      "message": "Cameras cluster in teal count bubbles; Field Chat room",
-      "heckle": "Four unrelated features in one commit: camera clustering, a chat room, a rainbow strobe on the hardware screen, and CSS. That is an omnibus bill, and about as readable. The fcStar overlay in index.html flashes full screen colors four times every time a chat message lands, with no check for people prone to flash sensitivity, and the board does the same strobe for 1500 ms in drawScreen. Also .fc-msg b is hardcoded blue while the rest uses variables, so dark mode gets a nice unreadable name label.\n\nFix it: Split this into four commits next time. Add a reduced motion check before the fcStar animation in index.html. Replace the hardcoded color in .fc-msg b with a theme variable."
-    },
-    {
-      "date": "2026-11-03T23:29:15Z",
-      "repo": "field-twin",
-      "sha": "0de0a847",
-      "message": "Companion link: rename state helper that clashed with the state property",
-      "heckle": "You named a function setState on a Kotlin object that has a property called state, and it took a whole commit to find out the compiler disliked that. Fifteen lines changed in FieldTwinCompanion.kt just to rename it to announce. That is the commit equivalent of a government spending a month to fix a typo in its own letterhead. Clearly the file was never compiled before it was pushed.\n\nFix it: Build the Android target locally or in a branch before pushing to master. Keep the rename, but add a CI compile step so this class of mistake dies before it lands."
-    },
-    {
-      "date": "2026-11-03T23:29:15Z",
-      "repo": "field-twin",
-      "sha": "c427c9f1",
-      "message": "Phone app links to FT Companion over Bluetooth",
-      "heckle": "A 210 line Bluetooth class dropped in with no tests, and index.html grew 112 lines of companion logic on top of an already enormous single file. FieldTwinCompanion.kt swallows exceptions in empty catch blocks around scanning and the page push, so when the link silently dies you get a toggle that says on and a board that does nothing. The JS bridge in FieldTwinBridge.kt also exposes companionSend with a raw command string and no validation, so any page script can poke the board. The next commit proves this did not even compile.\n\nFix it: Validate the command string in companionSend in FieldTwinBridge.kt. Report errors from the empty catch blocks in FieldTwinCompanion.kt to the state text. Split the companion code out of index.html."
-    },
-    {
-      "date": "2026-11-03T23:29:15Z",
-      "repo": "field-twin",
-      "sha": "8ef1fb30",
-      "message": "Field Twin Companion firmware build 2",
-      "heckle": "Build 2. I am running out of ways to describe a binary file committed by a script. It is a blob, it is unreviewable, and it is sitting in the same repo as source code. The developer has now produced more firmware commits than actual reasons for them.\n\nFix it: Delete the committed binaries from field-twin-companion/firmware and ship them through releases. Add the folder to .gitignore."
-    },
-    {
-      "date": "2026-11-03T23:29:15Z",
-      "repo": "field-twin",
-      "sha": "1e8cf225",
-      "message": "Field Twin Companion browser installer page",
-      "heckle": "You removed [skip ci] from the build commit message in field-twin-companion-v1.yml, so every firmware build now pushes a commit that kicks off a fresh site deploy for a change to a file the site never reads. That is how you get four builds in an hour and four deploys of nothing. The installer page loads its script from a third party CDN at a pinned version but with no integrity hash, so whoever owns that link can run code next to your flash button. The manifest sets erase on install, so one wrong click wipes the board.\n\nFix it: Put [skip ci] back in the workflow commit message or ignore the firmware path in the deploy config. Add an integrity hash or self host the installer script in field-twin-companion-v1-flash.html. Warn about the erase in the page text."
-    },
-    {
-      "date": "2026-11-03T23:29:15Z",
-      "repo": "field-twin",
-      "sha": "41d877a9",
-      "message": "Field Twin Companion firmware build 1 [skip ci]",
-      "heckle": "Build 1, the one that started this binary parade. At least this one had the sense to say skip ci, a courtesy you revoked a few minutes later like a treaty. Still an unreadable blob in the app repo with nothing to review.\n\nFix it: Stop committing compiled output to this repo. Keep the build in an artifact or a release, and leave [skip ci] where it belongs in field-twin-companion-v1.yml."
-    },
-    {
-      "date": "2026-11-03T23:29:15Z",
-      "repo": "field-twin",
-      "sha": "8df94beb",
-      "message": "Field Twin Companion v1 firmware for the ESP32-C6 dashboard screen",
-      "heckle": "A 494 line firmware file in one .ino, with BLE, GPS, accelerometer, drawing, and routing all stuffed together like a spending bill nobody read. The workflow in field-twin-companion-v1.yml runs git pull --rebase and push from inside CI on master with no retry and no concurrency group, so two overlapping builds will collide and fail. The header comment promises the phone can leave its GPS off, but nothing here handles the board losing fix, which in a dashboard is the one thing that matters.\n\nFix it: Split field-twin-companion-v1.ino into modules for ble, gps, and display. Add a concurrency group to field-twin-companion-v1.yml. Show a no fix state on the screen when the GPS drops."
-    },
-    {
-      "date": "2026-11-03T17:07:23Z",
-      "repo": "algorithm-albatross",
-      "sha": "61c10208",
-      "message": "Add bass line layer: eighth note bass pitch per bar, compared with transposition and tempo regrid",
-      "heckle": "A bass line layer in algorithm_albatross_v1_analyze.py, and the intern bumped SKELETON_VERSION to 2 without a word about old cached skeletons. The new bass_steps function is nested inside analyze_file and rebuilds its overtone subtraction by hand with magic numbers 0.9, 0.8 and 0.7 that appear nowhere else. It also takes peaks[0], the lowest peak, so any rumble or noise bin under the real note wins. The compare file's _bass fallback silently scores missing bass as all rests, so a version 1 skeleton matched against a version 2 one gets bogus similarity. The bass threshold of 0.5 is copied from melody with no reason given. No tests came with any of it.\n\nFix it: Check SKELETON_VERSION in algorithm_albatross_v1_compare.py and rescan or skip old skeletons rather than faking rests in _bass. Move bass_steps to module level and name the overtone constants. Pick the strongest peak or require a minimum strength instead of peaks[0]. Add a test with a known bass riff and tune the 0.5 bass threshold from real data."
-    },
-    {
-      "date": "2026-11-03T17:07:23Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "d9ba1344",
-      "message": "agent-orange 2026-11-03T135545 (#67)",
-      "heckle": "Another agent-orange turn, merged as a pull request with the API showing no patch at all for contrib/agent-orange/2026-11-03T135545.json. A commit that shows nothing is the government shutdown of version control: everyone is paid, nothing moved. Either the file is empty, too big to display, or the turn landed with no review, and the intern cannot tell which. The merge went through web-flow, so the author filter cannot tell a human from the machine.\n\nFix it: Reject pull requests in the testbed that change zero lines or an empty contrib file. Add a size and JSON validity check before merge. Stop merging bot turns under the owner login so the log shows who really did the work."
-    },
-    {
-      "date": "2026-11-03T17:07:23Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "5f309796",
-      "message": "grok 2026-11-03T170302",
-      "heckle": "Another grok drop, and the intern's robot is out here laying curbs on four streets like a campaign promise with no budget line. contrib/grok/2026-11-03T170302.json is one minified line of JSON, so nobody on earth can review it, and the sig field means nothing if no one checks it. Every curb and sidewalk run is hand typed to the same -79248 extent, and the Grok Corner Market gets a knob at 900 and a door check, but the wall is a single two point line with a hatch box floating beside it. That is a market the way a filibuster is legislation.\n\nFix it: Pretty print the contrib files or validate them in CI so a human can read them. Verify the sig on merge instead of just carrying it around. Generate the street curbs from one street list instead of pasting eight near identical place_line calls. Close the market walls into a real box so the door check has something to check."
     }
   ]
 }
