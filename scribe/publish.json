@@ -1,70 +1,13 @@
 {
  "jobs": [
   {
-   "repo": "termbeat",
-   "releases": [
-    {
-     "tag": "v2026.11.11",
-     "target": "4d47776a1faf6141e1485bb3f0b87397cd996acc",
-     "name": "Termbeat 2026-11-11",
-     "body": "Updated the creator seal in the footer to a combined creator seal. It now shows the Pajamastan flag and links to Pajamastan. The page source also notes where the app was exported from."
-    }
-   ],
-   "description": "Audio reactive terminal that reacts to music or the microphone, with themes and small games.",
-   "homepage": "https://termbeat.vercel.app",
-   "topics": [
-    "music",
-    "terminal",
-    "vercel",
-    "visualizer",
-    "web-audio"
-   ]
-  },
-  {
-   "repo": "city-seek",
-   "releases": [
-    {
-     "tag": "v2026.11.13",
-     "target": "f580716f083f07430f39b23b9a1a3c65c84f9933",
-     "name": "City Seek 2026-11-13",
-     "body": "Added Music mode, chosen from the Mode switch in the menu. The city plays as a beat synced music visualizer: load a song or use the built in test beat, and the scene moves in time with the kicks, bass and hats. Views include a top down flyover where beat objects land on matching ground and cars follow streets, a train window view, a Lanes view that works like a street styled MIDI waterfall, and a Rain view with a color jar catching game. Added an action line with hit bursts for each band, an infographic layer, isometric train buildings with cutaways, and richer street detail. A hunt while it plays option, a stream hunt, and REC video recording with sound are included."
-    }
-   ],
-   "description": "A zoomable generated city where you hunt for hidden items, with towers, birds, and sound.",
-   "homepage": "https://city-seek.vercel.app",
-   "topics": [
-    "game",
-    "hidden-object",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "artifactium",
-   "releases": [
-    {
-     "tag": "v2026.11.13",
-     "target": "535f5d19bb91f9ebffdd55b7fe71d155bd91ad87",
-     "name": "Artifactium 2026-11-13",
-     "body": "Created Artifactium, a found object archive with a flowchart tree explorer. The app was synced to a new backend that keeps records in a database and can store photos. Contributors can now sign in with an email code and pick a handle, and the backend checks who is signed in."
-    }
-   ],
-   "description": "A found object archive with a flowchart tree explorer and contributor sign in.",
-   "homepage": "https://artifactium.vercel.app",
-   "topics": [
-    "archive",
-    "tool",
-    "vercel",
-    "railway"
-   ]
-  },
-  {
    "repo": "delivery-twin",
    "releases": [
     {
-     "tag": "v2026.11.13",
-     "target": "99b4153d1c0c73a6d86c5605b4d3c31c7a481a73",
-     "name": "Delivery Twin 2026-11-13",
-     "body": "Added fog of war spots, then pickups, dropoffs, and delivery lines on the map. Lockers are now hidden, the color key folds away, and there is a link to Field Dispatch. Delivery Twin now has its own inventory app, and an Offers tab replaces Roads."
+     "tag": "v2026.11.14",
+     "target": "746bb2fc83f95421de14ae1b39c3e6098e298483",
+     "name": "Delivery Twin 2026-11-14",
+     "body": "Added Driver Chat, which runs on its own backend and now shares the twin chat with Field Twin. Field Twin wording was removed from the app. Dropoff places now have kinds, the companion is hidden, and there is a new Delivery Twin app icon."
     }
    ],
    "description": "A phone friendly field log with a map, receipts, and mileage, now with a food spots layer.",
@@ -77,98 +20,82 @@
    ]
   },
   {
-   "repo": "tractor-tool",
+   "repo": "field-twin",
    "releases": [
     {
-     "tag": "v2026.11.11",
-     "target": "458b72f659b646940d1e3215c5c6523d8672cd59",
-     "name": "Tractor Toolkit 2026-11-11",
-     "body": "Updated the creator seal in the footer to a combined creator seal. It now shows the Pajamastan flag and links to Pajamastan. The page source also notes where the app was exported from."
+     "tag": "v2026.11.14",
+     "target": "2ecad2b75015b6b761669e33c43c983be7d16ecd",
+     "name": "Field Twin 2026-11-14",
+     "body": "Field Chat now runs on its own twin chat, apart from Cat Command Chat."
     }
    ],
-   "description": "A toolkit for tractor work with a blueprint, hourly rate, quote, and game.",
-   "homepage": "https://tractor-tool.vercel.app",
+   "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
+   "homepage": "https://field-twin-teal.vercel.app",
    "topics": [
-    "game",
-    "quotes",
-    "tool",
-    "tractor",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "flipcount-game",
-   "releases": [
-    {
-     "tag": "v2026.11.11",
-     "target": "3bcfac9a15e30aa6e457b91c853ad030729c69f9",
-     "name": "FLIPCOUNT 2026-11-11",
-     "body": "Updated the creator seal in the footer to a combined creator seal. It now shows the Pajamastan flag and links to Pajamastan. The page source also notes where the app was exported from."
-    }
-   ],
-   "description": "Counting toys with a flip dot display, an abacus, and number scripts from many languages.",
-   "homepage": "https://flipcount-game.vercel.app",
-   "topics": [
-    "game",
-    "numbers",
+    "field-service",
+    "map",
     "tool",
     "vercel"
    ]
   },
   {
-   "repo": "delivery-twin-violet",
+   "repo": "raineurysm",
    "releases": [
     {
-     "tag": "v2026.11.13",
-     "target": "892836b73547323d3f6319e86405afc4fe9b9d9f",
-     "name": "Delivery Twin Violet 2026-11-13",
-     "body": "Created Delivery Twin Violet as a copy of Field Twin Violet for the Delivery Twin family. It tracks parts with photos, vendors, reorder levels, an order list, and moves between locations."
+     "tag": "v2026.11.14",
+     "target": "75936e6a4450d509726da1afb959167bfed0cd83",
+     "name": "raineurysm 2026-11-14",
+     "body": "Added a music machine mode beside simple mode, with troughs, funnels, faucets, sprinklers, dripping vessels, a lane pattern editor, a weather song, thunder, recording, and undo. Added a puzzle mode with five color mixing levels where vessels pour one blended flavor of water. Tapping a goal jar now dumps it out, and a new version prompt keeps an open tab from running old code."
     }
    ],
-   "description": "A parts inventory app for field crews, copied from Field Twin Violet for the Delivery Twin family.",
-   "homepage": "https://delivery-twin-violet.vercel.app",
+   "description": "A rain music toy where falling rain hits vessels that play notes.",
+   "homepage": "https://raineurysm.vercel.app",
    "topics": [
-    "inventory",
-    "field",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "hoofer-sync",
-   "releases": [
-    {
-     "tag": "v2026.11.13",
-     "target": "a57169db3e9f60a7be78e90b3af030716f4225f1",
-     "name": "Hoofer Sync 2026-11-13",
-     "body": "New look: every dancer is a stick figure made of light on a blacked out stage, with light trails off the hands and feet. Added a Lights button that turns the house lights on for a bright stage. The wardrobe now picks line style and glow colors. The Studio dancer got the same look."
-    }
-   ],
-   "description": "A dance floor with a dancer for each phone in the band room.",
-   "homepage": "https://hoofer-sync.vercel.app",
-   "topics": [
-    "band-sync",
-    "dance",
     "music",
+    "toy",
+    "vercel",
+    "visualizer"
+   ]
+  },
+  {
+   "repo": "skyflow-orange",
+   "releases": [
+    {
+     "tag": "v2026.11.14",
+     "target": "67bee940d7738044a0057c8a1cf8b328e4f8cc9e",
+     "name": "Sky Flow 2026-11-14",
+     "body": "Sky Flow 2.1 added three trucks in Free build."
+    },
+    {
+     "tag": "v2026.11.13",
+     "target": "7a9f9ddb632fa8c196d398add7d080d19b0fb093",
+     "name": "Sky Flow 2026-11-13",
+     "body": "Sky Flow 2.0 added containers, weld joints, and Turn and Flip in Free build."
+    }
+   ],
+   "description": "A tower crane game where you stack crates as high as they will stand before the clock runs out.",
+   "homepage": "https://skyflow-orange.vercel.app",
+   "topics": [
+    "crane",
+    "game",
     "vercel"
    ]
   },
   {
-   "repo": "infinicanvan",
+   "repo": "mohavetech-website",
    "releases": [
     {
-     "tag": "v2026.11.11",
-     "target": "1c13e7187fe0081eca5ae1f3c43769818d4f96c2",
-     "name": "Infinicanvan 2026-11-11",
-     "body": "Updated the creator seal in the footer to a combined creator seal. It now shows the Pajamastan flag and links to Pajamastan. The page source also notes where the app was exported from."
+     "tag": "v2026.11.14",
+     "target": "86c7c4bc5e91f27733eba330d62c7b7090441a61",
+     "name": "App Index 2026-11-14",
+     "body": "Deploy dates were synced."
     }
    ],
-   "description": "An infinite zooming canvas with drawing tools and trees that grow with the weather.",
-   "homepage": "https://infinicanvan.vercel.app",
+   "description": "An index page that lists every app with its age, phone tags, and notes.",
+   "homepage": "https://mohavetech-website.vercel.app",
    "topics": [
-    "canvas",
-    "game",
-    "toy",
+    "index",
+    "tool",
     "vercel"
    ]
   },
@@ -176,10 +103,10 @@
    "repo": "2026-10-30-orange-scores",
    "releases": [
     {
-     "tag": "v2026.11.10",
-     "target": "7d80e66bc7f07099e4f78f0232061344958d873e",
-     "name": "Score Hub 2026-11-10",
-     "body": "Registered Sky Flow on the score hub so its timed round scores show up there."
+     "tag": "v2026.11.14",
+     "target": "10b485d54163c4a0f33235e06415a8efa2459f8a",
+     "name": "Score Hub 2026-11-14",
+     "body": "Registered MobbyHill on the score hub. Its scores count checkpoints first and the time to reach them second, and the hub now shows those as flags and a clock time."
     }
    ],
    "description": "A shared score service and hub page for the games",
@@ -192,40 +119,46 @@
    ]
   },
   {
-   "repo": "torque-converter",
+   "repo": "2026-10-18-orange-testbed",
    "releases": [
     {
-     "tag": "v2026.11.11",
-     "target": "b3acbe47d852fbb842edffd7e2f657a15bb7d166",
-     "name": "Torque Converter 2026-11-11",
-     "body": "Updated the creator seal in the footer to a combined creator seal. It now shows the Pajamastan flag and links to Pajamastan. The page source also notes where the app was exported from."
+     "tag": "v2026.11.15",
+     "target": "b86d0f9d35b5278b68f580a0d273c5d4ea69f8ba",
+     "name": "Agent Test Bed 2026-11-15",
+     "body": "The agent turn was played and merged into the city."
+    },
+    {
+     "tag": "v2026.11.14",
+     "target": "220d5c2c5dbe70e9ec0671c65cebb0bf8ff1cc3c",
+     "name": "Agent Test Bed 2026-11-14",
+     "body": "The agent, steward, and grok turns for the day were played and merged into the city. The viewer now builds labels only near the camera so phones stop running out of memory."
     }
    ],
-   "description": "Converts torque between newton meters, foot pounds, and inch pounds.",
-   "homepage": "https://torque-converter.vercel.app",
+   "description": "A shared city that AI agents build one turn at a time",
+   "homepage": "https://2026-10-18-orange-testbed.vercel.app",
    "topics": [
-    "converter",
-    "mechanics",
-    "tool",
+    "agents",
+    "game",
+    "simulator",
     "vercel"
    ]
   },
   {
-   "repo": "raineurysm",
+   "repo": "mobbyhill",
    "releases": [
     {
-     "tag": "v2026.11.13",
-     "target": "449c71f71126ca838a7148f46c870448e15cc6ca",
-     "name": "raineurysm 2026-11-13",
-     "body": "Created raineurysm, a rain music toy where rain falls into vessels that play notes. Rain lanes, drums, bass, a storm zone, narrow cups, and tilt and pour were added. It joins the Stompbox Lab band room, with lanes that rain on the band beat, a shared scale, and notes sent out to visualizers. Vessels come in several kinds, including cup, jug, metal pan, plate, singing bowl, wood block, and ladle, and lanes can rain in triplets, quads, and call and response. Touch handling was tightened so cups land under the finger and a slim vessel panel opens on a tap."
+     "tag": "v2026.11.14",
+     "target": "1339396255dbba4fba7e7f27eafd153b9cc0a4df",
+     "name": "MobbyHill 2026-11-14",
+     "body": "Created MobbyHill, a wireframe off road hill climb game with a driver seat view and phone tilt lean. Added a run clock, flag splits, and high scores on the score hub."
     }
    ],
-   "description": "A rain music toy where falling rain hits vessels that play notes.",
-   "homepage": "https://raineurysm.vercel.app",
+   "description": "A wireframe off road hill climb for the phone with tilt steering and score hub scores.",
+   "homepage": "https://mobbyhill.vercel.app",
    "topics": [
-    "music",
-    "toy",
-    "visualizer",
+    "game",
+    "driving",
+    "mobile",
     "vercel"
    ]
   }

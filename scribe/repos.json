@@ -158,8 +158,8 @@
    "summary": "A field log with a map, receipts, mileage, and an Android app that tracks stops",
    "name": "Field Twin",
    "latest": {
-    "date": "2026-11-12",
-    "text": "The locker site section now has an oversize module count, so a bank with two tall doors beside one full height door module is passed to Parcelsun the way it stands. Open in Parcelsun now carries the exact bank saved from Parcelsun, slot by slot."
+    "date": "2026-11-14",
+    "text": "Field Chat now runs on its own twin chat, apart from Cat Command Chat."
    }
   },
   "mohavetech-website": {
@@ -172,8 +172,8 @@
    "summary": "An index page that lists every app with its age, phone tags, and notes",
    "name": "App Index",
    "latest": {
-    "date": "2026-11-11",
-    "text": "Added a dark mode for the modern look with a menu switch. Stars now run behind the links, and the panels are see through. The retro look got stars too. Deploy dates were synced."
+    "date": "2026-11-14",
+    "text": "Deploy dates were synced."
    }
   },
   "ether-wand": {
@@ -1793,7 +1793,7 @@
    "summary": "A shared city where AI agents take turns building, with a viewer and a web API.",
    "name": "Agent Test Bed",
    "latest": {
-    "date": "2026-11-13",
+    "date": "2026-11-15",
     "text": "The agent turn was played and merged into the city."
    }
   },
@@ -2131,8 +2131,8 @@
    "summary": "Shared score board and live plays feed that the games send their scores to.",
    "name": "Score Hub",
    "latest": {
-    "date": "2026-11-10",
-    "text": "Registered Sky Flow on the score hub so its timed round scores show up there."
+    "date": "2026-11-14",
+    "text": "Registered MobbyHill on the score hub, shown as flags and a clock time."
    }
   },
   "a-canticle-for-pajamastan": {
@@ -2493,8 +2493,8 @@
    "summary": "A tower crane game where you stack crates before time runs out.",
    "name": "Sky Flow",
    "latest": {
-    "date": "2026-11-10",
-    "text": "Created Sky Flow, a crane game where you stack crates as high as they will stand before the clock runs out. Added timed rounds, scoring, sound, and a leaderboard."
+    "date": "2026-11-14",
+    "text": "Sky Flow 2.1 added three trucks in Free build."
    }
   },
   "spyhunt": {
@@ -2533,8 +2533,8 @@
    "summary": "A phone friendly field log with a map, receipts, and mileage, now with a food spots layer.",
    "name": "Delivery Twin",
    "latest": {
-    "date": "2026-11-13",
-    "text": "Added fog of war spots, then pickups, dropoffs, and delivery lines on the map. Lockers are now hidden, the color key folds away, and there is a link to Field Dispatch. Delivery Twin now has its own inventory app, and an Offers tab replaces Roads."
+    "date": "2026-11-14",
+    "text": "Added Driver Chat, which runs on its own backend and now shares the twin chat with Field Twin. Field Twin wording was removed from the app. Dropoff places now have kinds, the companion is hidden, and there is a new Delivery Twin app icon."
    }
   },
   "mail-ionaire": {
@@ -2612,14 +2612,28 @@
    "private": false,
    "name": "raineurysm",
    "latest": {
-    "date": "2026-11-13",
-    "text": "Created raineurysm, a rain music toy where rain falls into vessels that play notes. Rain lanes, drums, bass, a storm zone, narrow cups, and tilt and pour were added. It joins the Stompbox Lab band room, with lanes that rain on the band beat, a shared scale, and notes sent out to visualizers. Vessels come in several kinds, including cup, jug, metal pan, plate, singing bowl, wood block, and ladle, and lanes can rain in triplets, quads, and call and response. Touch handling was tightened so cups land under the finger and a slim vessel panel opens on a tap."
+    "date": "2026-11-14",
+    "text": "Added a music machine mode beside simple mode, with troughs, funnels, faucets, sprinklers, dripping vessels, a lane pattern editor, a weather song, thunder, recording, and undo. Added a puzzle mode with five color mixing levels where vessels pour one blended flavor of water. Tapping a goal jar now dumps it out, and a new version prompt keeps an open tab from running old code."
    },
    "category": "Music and Visualizers",
    "summary": "A rain music toy where falling rain hits vessels that play notes.",
    "urls": [
     "https://raineurysm.vercel.app"
    ]
+  },
+  "mobbyhill": {
+   "apps": [],
+   "urls": [
+    "https://mobbyhill.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A wireframe off road hill climb for the phone with tilt steering and score hub scores.",
+   "name": "MobbyHill",
+   "latest": {
+    "date": "2026-11-14",
+    "text": "Created MobbyHill, a wireframe off road hill climb game with a driver seat view and phone tilt lean. Added a run clock, flag splits, and high scores on the score hub."
+   }
   }
  }
 }
