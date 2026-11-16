@@ -86,8 +86,8 @@
    "summary": "The official site of the micronation of Pajamastan",
    "name": "Pajamastan",
    "latest": {
-    "date": "2026-11-11",
-    "text": "Added a combined creator seal that shows the Pajamastan flag beside a round seal."
+    "date": "2026-11-16",
+    "text": "Added the Hire Portal to the Links tab as a Pajamastan portal."
    }
   },
   "parkingten": {
@@ -158,8 +158,8 @@
    "summary": "A field log with a map, receipts, mileage, and an Android app that tracks stops",
    "name": "Field Twin",
    "latest": {
-    "date": "2026-11-14",
-    "text": "Field Chat now runs on its own twin chat, apart from Cat Command Chat."
+    "date": "2026-11-16",
+    "text": "Added Tickets. Scan ticket screen reads work tickets from a photo of the work phone, a check screen fixes misreads and picks the locker, and each open ticket shows on the map as a countdown ring. Best next and the fork card rank stops by SLA slack after drive time, and closes inside SLA earn points. The receipt and ticket readers now share one photo reader that falls back through newer models, and Service check shows the reader key and the last reader error."
    }
   },
   "mohavetech-website": {
@@ -172,8 +172,8 @@
    "summary": "An index page that lists every app with its age, phone tags, and notes",
    "name": "App Index",
    "latest": {
-    "date": "2026-11-14",
-    "text": "Deploy dates were synced."
+    "date": "2026-11-16",
+    "text": "Added a Railway tab that lists every Railway project and service with this billing period cost, an end of period estimate, deploy status, and idle flags. Apps with a Railway backend get a blue railway button that opens it in Railway. Hire Portal got its orange phone star."
    }
   },
   "ether-wand": {
@@ -480,8 +480,8 @@
    "summary": "Survey tool for designing and scoring a restaurant concept",
    "name": "Restaurant Design and Setup Survey",
    "latest": {
-    "date": "2026-10-10",
-    "text": "Replaced the broken cloud connection with a simpler built in sync. The concept name, website, phone, address, point of sale, and ordering fields now link to the shared site profile."
+    "date": "2026-11-15",
+    "text": "Rebuilt as version 3 in the RTSS style, with a light theme, drop down cards, and Build, Survey, Demo and More tabs. A shared apps menu and site links were added. It saves one document per site with a phone copy, and old saves carry over on first open. It now opens inside Field Twin, shares site details with RTSS, and a Field Twin account records who saved."
    }
   },
   "RTSS": {
@@ -496,8 +496,8 @@
    "summary": "Restaurant technology site survey form with cloud sync and CSV export",
    "name": "RTSS",
    "latest": {
-    "date": "2026-10-10",
-    "text": "The live page now syncs to the cloud. Name, brand, address, city, state, internet provider, point of sale, and firewall link to the shared site profile."
+    "date": "2026-11-15",
+    "text": "Rebuilt as version 3 with a light theme and a survey that saves one document per site, with a phone copy for offline work. Old saves carry over on first open. Added a Drive-thru tab with a 3D lane and equipment model, sun and shade by time of day, screen heat estimates, car stack, cable runs and photos. The Topology, Integration and Cabling tabs were rebuilt. An apps menu links RTSS, RDSS and Field Twin for the same site, and Notes has a visit log. RTSS now opens inside Field Twin and shares site details, and a Field Twin account records who saved."
    }
   },
   "rie-api": {
@@ -508,8 +508,8 @@
    "summary": "Backend that stores restaurant site surveys and shared site profiles",
    "name": "RIE API",
    "latest": {
-    "date": "2026-10-10",
-    "text": "Version 2 moved to a Postgres database. The AI proxy and legends logging were removed. Sites keep untouched fields when renamed, and delete and bulk clear were added. A shared site profile can now be read and updated."
+    "date": "2026-11-15",
+    "text": "Calls can carry the Field Twin account key. The server checks it with the account service and records which account created and last saved each site, survey and design. Calls without a key still work. A new /me route says which account a key belongs to."
    }
   },
   "mind-globe": {
@@ -1833,8 +1833,8 @@
    "summary": "A studio game with orders, terminals, agents, developers, and offices",
    "name": "Stackloom",
    "latest": {
-    "date": "2026-10-25",
-    "text": "Added version 2. It brings a Doku product line and a Hackerdoku campaign with a botnet, tools, and ranks."
+    "date": "2026-11-15",
+    "text": "Added the Match line, the candy smashing match three game. Swipe a piece into its neighbor to line up three or more, clear the goal before the moves run out, and chain cascades for combos. Opened by hiring a level designer once a puzzle designer is on staff. Nine skins, five or six pieces, generous or tight moves, and premium art. Sucker Smash joins the studio samples."
    }
   },
   "fatty-fart-pedal": {
@@ -2131,8 +2131,8 @@
    "summary": "Shared score board and live plays feed that the games send their scores to.",
    "name": "Score Hub",
    "latest": {
-    "date": "2026-11-14",
-    "text": "Registered MobbyHill on the score hub, shown as flags and a clock time."
+    "date": "2026-11-15",
+    "text": "Registered three more MobbyHill modes: Fuel, Climb and Climb Fuel. The climb modes post height in tenths of a meter and the hub shows them in meters. Added weekly token wallets that games spend through the server. MobbyHill is the first game with one, at 1000 tokens a week, holding up to 3000."
    }
   },
   "a-canticle-for-pajamastan": {
@@ -2313,8 +2313,8 @@
    "summary": "A practice job application portal that teaches what to share at each step",
    "name": "Hire Portal",
    "latest": {
-    "date": "2026-11-07",
-    "text": "Added a headshot upload for the badge, saved with the profile. Added a company template with a complete profile view that can be downloaded."
+    "date": "2026-11-16",
+    "text": "Fixed the spelling of the company name. The portal is now a Pajamastan portal, with a blue Republic of Pajamastan link at the top that goes back to the Pajamastan site."
    }
   },
   "rainbow-run": {
@@ -2533,8 +2533,8 @@
    "summary": "A phone friendly field log with a map, receipts, and mileage, now with a food spots layer.",
    "name": "Delivery Twin",
    "latest": {
-    "date": "2026-11-14",
-    "text": "Added Driver Chat, which runs on its own backend and now shares the twin chat with Field Twin. Field Twin wording was removed from the app. Dropoff places now have kinds, the companion is hidden, and there is a new Delivery Twin app icon."
+    "date": "2026-11-15",
+    "text": "Added direction chevrons on the delivery lines. Added links that open the RTSS and RDSS site surveys."
    }
   },
   "mail-ionaire": {
@@ -2631,8 +2631,20 @@
    "summary": "A wireframe off road hill climb for the phone with tilt steering and score hub scores.",
    "name": "MobbyHill",
    "latest": {
-    "date": "2026-11-14",
-    "text": "Created MobbyHill, a wireframe off road hill climb game with a driver seat view and phone tilt lean. Added a run clock, flag splits, and high scores on the score hub."
+    "date": "2026-11-15",
+    "text": "Added fore and aft lean, stickier suspension, garage upgrades, and sand, mud, water and boulders on the hill. Added a mode menu with fuel and hill climb modes, a ghost of your best run, and a damage mode with repairs. Tokens are now a second currency. A weekly wallet fills from the server, and parts can be paid in cash or tokens."
+   }
+  },
+  "fashionocalypse": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Games",
+   "summary": "A strategy game about containing ten fashion brands on a spinning globe.",
+   "name": "Fashionocalypse",
+   "latest": {
+    "date": "2026-11-15",
+    "text": "Created Fashionocalypse, a containment game about clothes that never go away. You play the global textile authority and keep ten fashion brands inside their home regions on a spinning globe. Spend Capital on world wide laws or target one brand, and tap support drops to earn more. Win by keeping every brand contained for two years or by reaching 2050 under the contamination limit."
    }
   }
  }
