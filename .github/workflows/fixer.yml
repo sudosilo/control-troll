@@ -51,7 +51,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.SCRIBE_TOKEN }}
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.ANTHROPIC_API_KEY == '' && secrets.CLAUDE_CODE_OAUTH_TOKEN || '' }}
           github_token: ${{ secrets.SCRIBE_TOKEN }}
           prompt: ${{ format('Read agents/fixer.md in the current folder and carry out every step in it. Today is {0}.', steps.now.outputs.t) }}
           claude_args: |
@@ -61,6 +62,7 @@ jobs:
         if: always() && steps.claude.outcome != 'skipped'
         env:
           EXEC: ${{ steps.claude.outputs.execution_file }}
+          AUTH: ${{ secrets.ANTHROPIC_API_KEY != '' && 'api key' || 'subscription token' }}
         run: |
           mkdir -p agents/runs
           if [ -f "$EXEC" ]; then
@@ -69,10 +71,14 @@ jobs:
           d=json.load(open(sys.argv[1]))
           last=[m for m in d if m.get('type')=='result']
           json.dump(last[-1] if last else d[-3:], open('agents/runs/fixer-last.json','w'), indent=1)
+          import os,datetime
+          r=last[-1] if last else {}
+          row={'at':datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),'agent':'fixer','auth':os.environ.get('AUTH'),'cost':round(r.get('total_cost_usd',0) or 0,4),'turns':r.get('num_turns'),'seconds':round((r.get('duration_ms') or 0)/1000),'models':sorted((r.get('modelUsage') or {}).keys())}
+          open('agents/runs/cost-log.jsonl','a').write(json.dumps(row)+'\\n')
           " "$EXEC"
           else
             echo '{"note":"no execution file"}' > agents/runs/fixer-last.json
           fi
-          git add agents/runs/fixer-last.json agents/notes
+          git add agents/runs/fixer-last.json agents/runs/cost-log.jsonl agents/notes
           git commit -m "fixer run result" || true
           git pull --rebase origin main && git push || true
