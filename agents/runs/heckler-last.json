@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 16175,
+ "duration_api_ms": 40733,
  "stop_reason": "end_turn",
- "session_id": "2c33920b-b85b-4d94-b98e-a810881ef004",
- "total_cost_usd": 0.1077813,
+ "session_id": "c6afc93c-6943-4a02-9ddb-1fc6f9561f26",
+ "total_cost_usd": 0.18975560000000002,
  "usage": {
-  "input_tokens": 12,
-  "cache_creation_input_tokens": 19936,
-  "cache_read_input_tokens": 149170,
-  "output_tokens": 1287,
+  "input_tokens": 20,
+  "cache_creation_input_tokens": 30047,
+  "cache_read_input_tokens": 314083,
+  "output_tokens": 3799,
   "output_tokens_details": {
-   "thinking_tokens": 111
+   "thinking_tokens": 501
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 19936,
+   "ephemeral_1h_input_tokens": 30047,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 352,
-    "cache_read_input_tokens": 32509,
-    "cache_creation_input_tokens": 361,
+    "output_tokens": 44,
+    "cache_read_input_tokens": 42599,
+    "cache_creation_input_tokens": 382,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 361
+     "ephemeral_1h_input_tokens": 382
     },
     "type": "message"
    }
@@ -38,35 +38,35 @@
   "fallback_credit": null
  },
  "modelUsage": {
-  "claude-sonnet-5-5": {
-   "inputTokens": 12,
-   "outputTokens": 1287,
-   "cacheReadInputTokens": 149170,
-   "cacheCreationInputTokens": 19936,
-   "webSearchRequests": 0,
-   "costUSD": 0.10755500000000001,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 111,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 19936,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
   "claude-haiku-5-5": {
    "inputTokens": 1208,
-   "outputTokens": 211,
+   "outputTokens": 17,
    "cacheReadInputTokens": 0,
    "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.00022630000000000003,
+   "costUSD": 0.0001293,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 193,
+   "thinkingTokens": 0,
    "cacheCreationEphemeral5mInputTokens": 0,
    "cacheCreationEphemeral1hInputTokens": 0,
    "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 20,
+   "outputTokens": 3799,
+   "cacheReadInputTokens": 314083,
+   "cacheCreationInputTokens": 30047,
+   "webSearchRequests": 0,
+   "costUSD": 0.18962630000000003,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 501,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 30047,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
@@ -101,49 +101,49 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 6,
+ "num_turns": 10,
  "subtype": "success",
  "api_error_status": null,
- "result": "I heckled 0 commits this run and wrote no fleet verdict.\n\nThe only commits since the last check were one Claude-authored commit in field-twin, which the bot filter skips, and heckle-troll's own `[no heckle]` log commit. blue-agent had a push but no commits in the window. The last fleet verdict was 2026-11-13, so the next one isn't due until after 2026-11-20.\n\nI set `lastChecked` in `heckle/state.json` to this run's start time and added a line to `agents/notes/general.md`. I pushed both to main as \"heckle log\".\n\n`agents/notes/general.md` is now 70 lines, well over the 40-line limit in `agents/notes/rules.md`. I didn't condense it this run.",
- "ttft_ms": 1623,
+ "result": "I heckled 4 commits, all in the testbed repo, and wrote no fleet verdict because the last one is only 3 days old.",
+ "ttft_ms": 1296,
  "type": "result",
- "duration_ms": 22017,
- "uuid": "753f13f2-debe-438b-b9ad-ed2ac1cad630",
- "ttft_stream_ms": 1162,
- "time_to_request_ms": 505,
- "first_content_frame_ms": 1162,
+ "duration_ms": 59545,
+ "uuid": "79ff16ed-b817-4204-a87e-9a334c2e9591",
+ "ttft_stream_ms": 884,
+ "time_to_request_ms": 457,
+ "first_content_frame_ms": 884,
  "queued_turn_count": 0,
  "result_index": 0,
  "model_usage_since_last_result": {
-  "claude-sonnet-5-5": {
-   "inputTokens": 12,
-   "outputTokens": 1287,
-   "cacheReadInputTokens": 149170,
-   "cacheCreationInputTokens": 19936,
-   "webSearchRequests": 0,
-   "costUSD": 0.10755500000000001,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 111,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 19936,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
   "claude-haiku-5-5": {
    "inputTokens": 1208,
-   "outputTokens": 211,
+   "outputTokens": 17,
    "cacheReadInputTokens": 0,
    "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.00022630000000000003,
+   "costUSD": 0.0001293,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 193,
+   "thinkingTokens": 0,
    "cacheCreationEphemeral5mInputTokens": 0,
    "cacheCreationEphemeral1hInputTokens": 0,
    "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 20,
+   "outputTokens": 3799,
+   "cacheReadInputTokens": 314083,
+   "cacheCreationInputTokens": 30047,
+   "webSearchRequests": 0,
+   "costUSD": 0.18962630000000003,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 501,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 30047,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
