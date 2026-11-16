@@ -1,6 +1,34 @@
 {
   "heckles": [
     {
+      "date": "2026-11-16",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "6a81f698",
+      "message": "agent-orange 2026-11-16T140929 (#101)",
+      "heckle": "Another merged agent PR for contrib/agent-orange/2026-11-16T140929.json that GitHub will not even show a patch for, so you approved a file you could not read, like signing a spending bill by its title. One line of minified JSON, no way to see what it drew, and the merge button got hit anyway. Fix it: Pretty print the contrib JSON so the diff renders. Stop merging turns you cannot see. Add a check that fails an agent PR with an empty or unreadable diff."
+    },
+    {
+      "date": "2026-11-16",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "7307053f",
+      "message": "grok 2026-11-16T170524",
+      "heckle": "The grok bot shoved a cottage straight onto the branch under your own name, no PR, no review, like a politician voting on a bill he wrote himself at midnight. contrib/grok/2026-11-16T170524.json puts the building at negative coordinates, so it sits off in the corner where the steward turns never go, and every wall is plain lines with a door height check that nobody reads. The mailbox walker is a three point path with speed 900, so a cardboard person shuffles back and forth forever outside a house with a bare line for an interior. Pushing direct to main from a bot with the developer identity means a bad turn can break the viewer with nothing in between. Fix it: Make the grok turns go through pull requests like the other bots. Give grok its own author identity so the log tells you who pushed. Validate the sig and the coordinates before the commit lands."
+    },
+    {
+      "date": "2026-11-16",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "bca542ba",
+      "message": "agent-orange 2026-11-16T182106 (#102)",
+      "heckle": "A merged pull request that is one minified line of JSON with hundreds of coordinate triples marching across the screen like a bailout bill nobody read. The place_line call in contrib/agent-orange/2026-11-16T182106.json draws one closed ring after another, then jumps to the next ring with no break, so you get connector lines that nobody asked for. The file ends with a remove call for id 36515 and then two signs of calendar text, so the same PR draws, erases, and writes a diary. Nobody reviewed this, you just clicked merge, because a reviewer would have needed a magnifying glass and a will to live. Fix it: Have the agent pretty print contrib/agent-orange files so a diff means something. Split each ring into its own place_line call instead of one long chain. Stop mixing remove calls into build turns. Review the PR before the merge button gets your thumb."
+    },
+    {
+      "date": "2026-11-16",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "76a0143c",
+      "message": "Viewer: day and night by the real sun over the Mojave in Pacific time, and Zion weather (#103)",
+      "heckle": "Eighty nine lines added to index.html and every one of them crammed into a single line of canvas soup, like a filibuster nobody can read aloud. updateSky() runs inside the render loop and wakes up every fifteen seconds to rebuild clouds with buildClouds whenever the weather key flips, so you are regenerating geometry from inside a frame callback. The rain is a hand rolled random generator seeded with 11, so every storm is the same storm, which is the only consistent thing you shipped today. Lightning uses Math.random while the clouds use your seeded one, so you cannot even pick a lane. The sky label chip jams a second div into the status chip on a bar that was already cramped on a phone. Fix it: Move the sky code out of the inline script in index.html into its own file. Rebuild clouds off the frame loop in updateSky. Use one random source for weather. Check the bar chips at phone width."
+    },
+    {
       "date": "2026-11-15",
       "repo": "delivery-twin",
       "sha": "1ff05d84",
@@ -1371,34 +1399,6 @@
       "sha": "e02061b4",
       "message": "Under one second color wipe, stop button above wipe, storage",
       "heckle": "Rewrote 230 lines and tossed 97 more in index.html to chase a color wipe, then bolted storage on top in the same commit like a spending bill with a rider nobody read. Stop button above the wipe, storage in the middle, everything tangled in one file. A cereal box has better separation of concerns. Fix it: Split the storage code out of index.html. Put the wipe timing in one named constant. Add error handling around every storage call so a failed save does not die silently."
-    },
-    {
-      "date": "2026-11-04T06:34:11Z",
-      "repo": "67-idea-generator",
-      "sha": "32f495e3",
-      "message": "Add 67 Idea Generator",
-      "heckle": "Two hundred eighty two lines dumped into one index.html on day one, markup, styles and script all piled together like a filibuster that never ends. The intern calls it an idea generator, but the only idea in here is that nobody will ever open this file again. No split, no structure, and a color wipe that is mostly vibes. Fix it: Move the script out of index.html into its own file. Move the styles out too. Add a real empty state so the first screen is not a blank stare."
-    },
-    {
-      "date": "2026-11-03T23:29:15Z",
-      "repo": "field-twin",
-      "sha": "190fec43",
-      "message": "Field Twin Companion firmware build 4",
-      "heckle": "Build 4 of a binary blob, committed by a robot wearing your name, and the diff is zero lines of anything a human can read. You are stuffing compiled firmware into the repo that also serves the web app, so every build bloats git history forever and triggers another deploy. Nobody can review a .bin, which I assume is the point. This is a filibuster in file form.\n\nFix it: Stop committing field-twin-companion/firmware/field-twin-companion-v1.bin on every build. Upload it as a release asset or workflow artifact instead. Point the manifest at that URL."
-    },
-    {
-      "date": "2026-11-03T23:29:15Z",
-      "repo": "field-twin",
-      "sha": "53b1c644",
-      "message": "Avoid airport switch in GO routes around the airport fence",
-      "heckle": "You hardcoded a fence around one airport into index.html like the whole planet is one city, and it took a 50 line patch to the GO panel to do it. The AVOID AIRPORT toggle is inline-styled, copy pasted from the other toggles, and writes avoidAirport to localStorage with an empty catch that swallows every failure. Meanwhile the .ino comment now claims the board finds the GPS speed by itself across three baud rates, which is the kind of promise a campaign makes. Did you test that on a real GPS or just hope?\n\nFix it: Move the airport fence coordinates out of index.html into a data file. Log the failure in the localStorage catch in the goAirport click handler. Test the baud autodetect in field-twin-companion-v1.ino with a real module before bragging about it."
-    },
-    {
-      "date": "2026-11-03T23:29:15Z",
-      "repo": "field-twin",
-      "sha": "87f55acd",
-      "message": "Field Twin Companion firmware build 3",
-      "heckle": "Build 3, same crime as build 4 and build 2 and build 1. Another binary dropped into field-twin-companion/firmware, another unreadable diff, another round of the repo growing like a bailout package. Three of these in under an hour means the workflow fires on every tweak and nobody is asking whether the tweak was worth a megabyte.\n\nFix it: Gate the publish step in field-twin-companion-v1.yml so it only commits on tagged releases. Stop storing the binary in the app repo."
     }
   ]
 }
