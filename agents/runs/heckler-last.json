@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 40733,
+ "duration_api_ms": 65171,
  "stop_reason": "end_turn",
- "session_id": "c6afc93c-6943-4a02-9ddb-1fc6f9561f26",
- "total_cost_usd": 0.18975560000000002,
+ "session_id": "69544c77-6b6b-4792-b789-412037b86c99",
+ "total_cost_usd": 0.2635114,
  "usage": {
   "input_tokens": 20,
-  "cache_creation_input_tokens": 30047,
-  "cache_read_input_tokens": 314083,
-  "output_tokens": 3799,
+  "cache_creation_input_tokens": 40740,
+  "cache_read_input_tokens": 344721,
+  "output_tokens": 6591,
   "output_tokens_details": {
-   "thinking_tokens": 501
+   "thinking_tokens": 663
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 30047,
+   "ephemeral_1h_input_tokens": 40740,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 44,
-    "cache_read_input_tokens": 42599,
-    "cache_creation_input_tokens": 382,
+    "output_tokens": 37,
+    "cache_read_input_tokens": 53227,
+    "cache_creation_input_tokens": 534,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 382
+     "ephemeral_1h_input_tokens": 534
     },
     "type": "message"
    }
@@ -56,16 +56,16 @@
   },
   "claude-sonnet-5-5": {
    "inputTokens": 20,
-   "outputTokens": 3799,
-   "cacheReadInputTokens": 314083,
-   "cacheCreationInputTokens": 30047,
+   "outputTokens": 6591,
+   "cacheReadInputTokens": 344721,
+   "cacheCreationInputTokens": 40740,
    "webSearchRequests": 0,
-   "costUSD": 0.18962630000000003,
+   "costUSD": 0.2633821,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 501,
+   "thinkingTokens": 663,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 30047,
+   "cacheCreationEphemeral1hInputTokens": 40740,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
@@ -104,14 +104,14 @@
  "num_turns": 10,
  "subtype": "success",
  "api_error_status": null,
- "result": "I heckled 4 commits, all in the testbed repo, and wrote no fleet verdict because the last one is only 3 days old.",
- "ttft_ms": 1296,
+ "result": "I heckled 10 commits this run and wrote no fleet verdict, because the last one is only 4 days old.",
+ "ttft_ms": 1337,
  "type": "result",
- "duration_ms": 59545,
- "uuid": "79ff16ed-b817-4204-a87e-9a334c2e9591",
- "ttft_stream_ms": 884,
- "time_to_request_ms": 457,
- "first_content_frame_ms": 884,
+ "duration_ms": 100616,
+ "uuid": "9c37840c-63ae-4605-b04b-72fda135a76c",
+ "ttft_stream_ms": 883,
+ "time_to_request_ms": 400,
+ "first_content_frame_ms": 883,
  "queued_turn_count": 0,
  "result_index": 0,
  "model_usage_since_last_result": {
@@ -133,16 +133,16 @@
   },
   "claude-sonnet-5-5": {
    "inputTokens": 20,
-   "outputTokens": 3799,
-   "cacheReadInputTokens": 314083,
-   "cacheCreationInputTokens": 30047,
+   "outputTokens": 6591,
+   "cacheReadInputTokens": 344721,
+   "cacheCreationInputTokens": 40740,
    "webSearchRequests": 0,
-   "costUSD": 0.18962630000000003,
+   "costUSD": 0.2633821,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 501,
+   "thinkingTokens": 663,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 30047,
+   "cacheCreationEphemeral1hInputTokens": 40740,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
