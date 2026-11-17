@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 112705,
+ "duration_api_ms": 157403,
  "stop_reason": "end_turn",
- "session_id": "b866ad90-67c3-413a-91f2-f661dec7bde6",
- "total_cost_usd": 0.42241850000000003,
+ "session_id": "93c32226-1d8d-4ee2-a1dd-f75903513cdc",
+ "total_cost_usd": 0.5272408,
  "usage": {
-  "input_tokens": 34,
-  "cache_creation_input_tokens": 51042,
-  "cache_read_input_tokens": 650333,
-  "output_tokens": 15302,
+  "input_tokens": 54,
+  "cache_creation_input_tokens": 54652,
+  "cache_read_input_tokens": 1197856,
+  "output_tokens": 18861,
   "output_tokens_details": {
-   "thinking_tokens": 4031
+   "thinking_tokens": 5995
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 51042,
+   "ephemeral_1h_input_tokens": 54652,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 501,
-    "cache_read_input_tokens": 63394,
-    "cache_creation_input_tokens": 582,
+    "output_tokens": 382,
+    "cache_read_input_tokens": 68682,
+    "cache_creation_input_tokens": 767,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 582
+     "ephemeral_1h_input_tokens": 767
     },
     "type": "message"
    }
@@ -55,17 +55,17 @@
    "costBasis": "list"
   },
   "claude-sonnet-5-5": {
-   "inputTokens": 34,
-   "outputTokens": 15302,
-   "cacheReadInputTokens": 650333,
-   "cacheCreationInputTokens": 51042,
+   "inputTokens": 54,
+   "outputTokens": 18861,
+   "cacheReadInputTokens": 1197856,
+   "cacheCreationInputTokens": 54652,
    "webSearchRequests": 0,
-   "costUSD": 0.42228930000000003,
+   "costUSD": 0.5271116,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 4031,
+   "thinkingTokens": 5995,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 51042,
+   "cacheCreationEphemeral1hInputTokens": 54652,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
@@ -101,17 +101,17 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 18,
+ "num_turns": 27,
  "subtype": "success",
  "api_error_status": null,
- "result": "I documented 12 repos this run: fashionocalypse (a new backfill), field-twin, delivery-twin, rie-api, RTSS, ghost-kitchen-builder, mobbyhill, 2026-10-30-orange-scores, mohavetech-website, pajamastan, hire-portal and stackloom-meta. I pushed docs to nine of them. The last three already had current docs from their developer agents, so they only got release jobs and a refreshed `lastSha`.\n\nI did not wait for the scribe-publish workflow, so the releases, descriptions and topics are queued in `publish.json` but not confirmed.\n\nNo real backfills remain. control-troll, heckle-troll and the sudosilo profile repo stay skipped on purpose. Two repos with new commits were left for next time because of the cap of 12: 2026-10-18-orange-testbed (bot turns and an API change) and itchy-troll (only a ledger update and a Scout commit). The itchy-troll `lastSha` was refreshed. I pushed an updated sudosilo profile README and committed the state, publish and notes files to control-troll main.\n\nI could reach every repo. One fix along the way: the hire-portal changelog named a business, so I reworded it. The notes file `general.md` is now 70 lines, over the 40 line limit, and I did not condense it.",
- "ttft_ms": 1566,
+ "result": "I documented 12 repos this run and pushed all of them. No repo was unreachable.\n\nFour were new backfills: 2026-11-16-pipe-weave, 2026-11-15-orange-keydecode, lartte and 2026-11-16-orange-zion. Eight were updates with new commits: mobbyhill, the Agent Test Bed, raineurysm, city-seek, delivery-twin, itchy-troll, the Hush app and the Score Hub. Hush and the Score Hub already had changelog entries from their developer agents, so they only got release jobs and a state refresh.\n\nNone of the repos needed a root vercel.json. I also refreshed the profile in sudosilo/sudosilo, saved the state files and publish jobs to control-troll main as \"scribe state\", and added a note to agents/notes/general.md. I did not condense that notes file, which is now well over 40 lines.\n\nThree repos remain in the backfill queue: control-troll, heckle-troll and sudosilo. They have empty app entries on purpose. Several other repos had pushes after their last recorded one, such as mohavetech-website and field-twin. I did not check them this run, so they come first next time.",
+ "ttft_ms": 1446,
  "type": "result",
- "duration_ms": 188105,
- "uuid": "0923b037-cb4c-42c1-a9f0-c966ad081935",
- "ttft_stream_ms": 1144,
- "time_to_request_ms": 495,
- "first_content_frame_ms": 1144,
+ "duration_ms": 198946,
+ "uuid": "a20df187-01aa-4c84-98ae-986e7f3b26f5",
+ "ttft_stream_ms": 951,
+ "time_to_request_ms": 432,
+ "first_content_frame_ms": 951,
  "queued_turn_count": 0,
  "result_index": 0,
  "model_usage_since_last_result": {
@@ -132,17 +132,17 @@
    "costBasis": "list"
   },
   "claude-sonnet-5-5": {
-   "inputTokens": 34,
-   "outputTokens": 15302,
-   "cacheReadInputTokens": 650333,
-   "cacheCreationInputTokens": 51042,
+   "inputTokens": 54,
+   "outputTokens": 18861,
+   "cacheReadInputTokens": 1197856,
+   "cacheCreationInputTokens": 54652,
    "webSearchRequests": 0,
-   "costUSD": 0.42228930000000003,
+   "costUSD": 0.5271116,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 4031,
+   "thinkingTokens": 5995,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 51042,
+   "cacheCreationEphemeral1hInputTokens": 54652,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
