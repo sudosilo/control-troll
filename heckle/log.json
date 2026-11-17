@@ -3,6 +3,34 @@
     {
       "date": "2026-11-17",
       "repo": "2026-11-16-pipe-weave",
+      "sha": "d5ca494a",
+      "message": "Pinch never draws, small undo steps",
+      "heckle": "Pinch never draws, and your fix is a 160 millisecond stall on every single touch, so every stroke now starts late like a Senate vote on a Friday. The pending, gestureLock and firePending trio in index.html is three flags doing the job of one decent state machine. Undo steps got smaller by dropping the snapshot interval from 80 to 25 commits, and each snapshot still JSON.stringifies every pipe you own, so a long drawing will chug like a bailout bill. The snapshot also fires in activate on every drag start. Did you test this on a phone or just stare at it?\n\nFix it: Store undo as deltas instead of full JSON in snapshot() in index.html. Drop the fixed 160 ms wait and decide tap versus pinch from the second pointer arriving. Collapse pending, gestureLock and dragging into one state variable. Cap undo by memory, not a count of 50."
+    },
+    {
+      "date": "2026-11-17",
+      "repo": "2026-10-30-orange-scores",
+      "sha": "a6cd5767",
+      "message": "Register MobbyHill Search and rescue leaderboards",
+      "heckle": "Eight more copy pasted lines in api/_games.js, because apparently nobody told the intern that data belongs in a loop. Every rescue board is the same object with a different suffix, like a campaign promise reprinted for each district. The show function in hub.js got a rescueTime branch that is a pasted twin of the flagsTime branch two lines below it, same math, different word. Also the max of 99999999 is repeated like a mantra and nothing checks the client claims a plausible score.\n\nFix it: Generate the mobbyhill entries in api/_games.js from a list of modes and landscapes. Merge the rescueTime and flagsTime branches in show() in hub.js into one function taking a label. Share the max and perSecond constants in one place."
+    },
+    {
+      "date": "2026-11-17",
+      "repo": "2026-10-30-orange-scores",
+      "sha": "1add9a8c",
+      "message": "Register MobbyHill landscape leaderboards and new store parts",
+      "heckle": "Twelve hand typed leaderboard entries in api/_games.js, each one a copy of the last with a landscape word swapped in. That is not engineering, that is a filibuster in object literal form. The wallet in api/_wallets.js gets six more part prices that are just numbers pulled out of the air, with no comment on why a lockers part costs 500 and sliders cost 350. And the README Latest change line gets rewritten by hand again, which will drift the moment you forget.\n\nFix it: Build the forest, canyon and dunes entries in api/_games.js in a loop. Put the item prices in api/_wallets.js in a table with a short reason. Generate the README Latest change line from CHANGELOG.md."
+    },
+    {
+      "date": "2026-11-17",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "3353f01b",
+      "message": "agent-orange 2026-11-17T135650 (#105)",
+      "heckle": "Another day, another bot turn merged under your own login so nobody can tell whether a human touched this repo. The file contrib/agent-orange/2026-11-17T135650.json is one giant minified line that nobody can review, and it removes two ids then places signs full of cheerful calendar text. The review process here is a rubber stamp with a government seal on it. A merged pull request with a wall of unreadable JSON is a ceremony, not a check.\n\nFix it: Pretty print the files in contrib/agent-orange so a diff means something. Add a validation step that rejects calls with unknown ids before merge. Mark bot merges with a label so they stop passing as yours."
+    },
+    {
+      "date": "2026-11-17",
+      "repo": "2026-11-16-pipe-weave",
       "sha": "3d9dcd28",
       "message": "Roots, shadows, deep zoom, drive and right angle modes",
       "heckle": "Four modes in one commit, and all of it crammed into a single index.html that grew by 301 lines. Drive mode adds Brake, Gas and Turn buttons to the bottom bar, which was already a cramped pile of rows on a phone, so now your thumbs get to play whack a mole. You also deleted the --grid variable from :root while the grid color still lives in the theme code, which is the kind of cleanup that reads like a filibuster: lots of motion, nothing resolved. Did you test any of this or just hope it would pass like a bailout bill?\n\nFix it: Split the script out of index.html into its own file. Check the .scroll and .panel bar rows on a narrow phone and cap their height. Confirm nothing still reads the removed --grid variable. Commit one mode at a time so a bug can be bisected."
@@ -1371,34 +1399,6 @@
       "sha": "c8625bc1",
       "message": "Movement badge with motion sensing and 25 mph for 2 minutes driving rule",
       "heckle": "A driving lock built on a phone motion sensor and a 25 mph threshold, and the escape hatch is a button labeled I am a passenger. Congratulations, the safety feature is an honor system, like a campaign promise. The new badge colors in index.html also ship pale yellow text on a pale yellow pill, which nobody can read in sunlight, and you are the one who wants this used outside.\n\nFix it: Make the b-maybe badge contrast readable in index.html. Add a timeout so the passenger button resets itself. Test the speed rule with a faked position feed before trusting it on a real road."
-    },
-    {
-      "date": "2026-11-04T23:44:22Z",
-      "repo": "2026-11-04-field-dispatch",
-      "sha": "c1d46494",
-      "message": "Stashed site scans with a daily cap",
-      "heckle": "api/scan.js caches scans forever in Redis, which sounds smart until you notice the daily cap that protects your key is also stored in the same database you connect to with an empty error handler. The scan cell is 500 meters, so two sites on opposite sides of a hill share one answer. And package.json pins redis but nothing else, so the intern is trusting luck for the rest. This reads like a bailout nobody audited.\n\nFix it: Fail closed in api/scan.js when Redis is down, so the cap cannot be skipped. Add an expiry to cached scans. Shrink CELL or say plainly in the UI that results are approximate."
-    },
-    {
-      "date": "2026-11-04T23:44:22Z",
-      "repo": "2026-11-04-field-dispatch",
-      "sha": "15a52b52",
-      "message": "Real cameras, camera repairs, satellite passes, Cameras tab",
-      "heckle": "Cameras, satellites, repairs, and a new tab in one commit, because small commits are for people who can count. api/cameras.js hands the browser raw video URLs from a state feed and index.html pulls two CDN scripts with no integrity hash. The ghost of api/sats.js returns a raw error string to the client on failure, so you are leaking stack text for fun. This is a filibuster in code form, long and going nowhere.\n\nFix it: Return a generic message from the catch in api/sats.js, not String(e). Add integrity attributes to the two new script tags in index.html. Split the camera, satellite, and repair work into separate commits."
-    },
-    {
-      "date": "2026-11-04T23:44:22Z",
-      "repo": "mohavetech-website",
-      "sha": "cc0cddd4",
-      "message": "sync with vercel, drop infinite-centerpoint",
-      "heckle": "Another hand pasted sync of the app index, and again fleet.html, index.html, and script-v52.js each carry their own copy of the same list, so one typo and three files disagree. The script file is renamed by version number every time, which is a ritual, not a build system. You deleted a whole app from the list in a commit message that reads like a text to a friend.\n\nFix it: Generate the list for index.html and fleet.html from one json file. Stop renaming script-v52.js and use a cache query string like you already do for troll.js. Say in the message why the app was dropped."
-    },
-    {
-      "date": "2026-11-04T23:44:22Z",
-      "repo": "2026-11-04-orange-hush",
-      "sha": "eddda421",
-      "message": "Add digest: release held notifications together on a preset interval",
-      "heckle": "The digest feature asks for POST_NOTIFICATIONS and schedules alarms in Digest.java, but a held notification list that lives in memory dies the moment Android kills the service, so the digest releases nothing and nobody knows. Also the DigestReceiver just calls Digest.post with no check that anything is waiting, so you can get an empty ping every hour. A busier nothing than a congressional recess.\n\nFix it: Persist held notifications in Digest.java instead of keeping them in memory. Skip the post in DigestReceiver when the list is empty. Re-register alarms after reboot, because right now a restart kills the schedule."
     }
   ]
 }
