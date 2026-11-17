@@ -1,0 +1,1 @@
+2026-11-17 fixer. RTSS V3 (repo RTSS, app rtss-sigma) builds its UI from js/main.js: tabs are button[data-tab], the demo button is #demoBtn on the More tab, and the old #mainForm lives only in legacy resto-survey.html.
