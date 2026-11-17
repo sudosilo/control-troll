@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-17",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "3d9dcd28",
+      "message": "Roots, shadows, deep zoom, drive and right angle modes",
+      "heckle": "Four modes in one commit, and all of it crammed into a single index.html that grew by 301 lines. Drive mode adds Brake, Gas and Turn buttons to the bottom bar, which was already a cramped pile of rows on a phone, so now your thumbs get to play whack a mole. You also deleted the --grid variable from :root while the grid color still lives in the theme code, which is the kind of cleanup that reads like a filibuster: lots of motion, nothing resolved. Did you test any of this or just hope it would pass like a bailout bill?\n\nFix it: Split the script out of index.html into its own file. Check the .scroll and .panel bar rows on a narrow phone and cap their height. Confirm nothing still reads the removed --grid variable. Commit one mode at a time so a bug can be bisected."
+    },
+    {
+      "date": "2026-11-17",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "e0f517d7",
+      "message": "Flip end, color modes, cars, critters and water flow",
+      "heckle": "Flip end, four color themes, and a Flow button that cycles cars, critters and water, all in one commit like you were clearing a legislative backlog before recess. The bar in index.html now holds Grow, Weave, New pipe, Flip end, Color, Flow, Split 2, Split 3 and End pipe, which is a button wall nobody asked for. The THEMES line is one giant unreadable run of objects, and the new joinInfo on pipes only gets set when a joined pipe exists, so I assume the null path was tested by vibes. Pencil and Sepia as defaults, bold, a real campaign promise of excitement.\n\nFix it: Put THEMES on multiple lines in index.html. Guard every reader of p.joinInfo against null. Group the bar buttons into a menu. Test Flip end on a freshly started pipe with no segments."
+    },
+    {
+      "date": "2026-11-17",
+      "repo": "2026-11-15-orange-keydecode",
+      "sha": "d231fc07",
+      "message": "Trigger production build",
+      "heckle": "An empty commit, zero files changed, to kick Vercel because apparently pushing the app once is too much to ask of you. Your first push of the app needed a second push of nothing to deploy, so the pipeline needs a pep talk to wake up. The previous commit db702f10 dropped the whole Key decoder into index.html and still could not deploy on its own. Congratulations, you made a commit that does nothing, which is the most honest thing in this repo since a campaign promise.\n\nFix it: Link the repo to the Vercel project before the first push so no empty commit is needed. Add a vercel.json if the project needs settings. Stop committing empty triggers and use the deploy hook instead."
+    },
+    {
+      "date": "2026-11-17",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "6bd76044",
+      "message": "Grow mode with random and under over weave",
+      "heckle": "Grow mode and a weave picker, both stuffed into the same single file as the rest of the app, because folders are apparently for people with a work ethic. MAXHEADS=30 is hardcoded at the top of the script with no explanation, so on a phone a big grow run will hit a wall nobody can see. The new Weave: Ask me button sits in a bar that was already overflowing, and the status line is the only thing telling players what happened. This is a government shutdown wearing a canvas element.\n\nFix it: Explain MAXHEADS and show a message when the cap is reached. Put Grow and Weave in a panel instead of the main bar row. Move the JS out of index.html. Make aliveCount cheap by tracking a counter instead of looping every call."
+    },
+    {
+      "date": "2026-11-17",
+      "repo": "lartte",
+      "sha": "70a5fe4e",
+      "message": "Coffee shop shift with customers and VIPs, time attack, tilt and shake controls, sound",
+      "heckle": "402 added lines in one swing, and every one of them landed in lartte-v1.html, a file named v1 that now carries a coffee shop game, VIP customers, a time attack, tilt controls and sound. The new #ticket overlay sits absolutely positioned at top:6px over the canvas, so on a short phone the order ticket will sit right on the art you are supposed to be looking at. Tilt and shake in a browser need a permission prompt on iOS, and I see no sign you thought about it. Feature creep this bad belongs in a congressional rider.\n\nFix it: Move the #ticket out of the canvas area so it cannot cover the drink. Request the motion permission from a tap handler on iOS. Split the script out of lartte-v1.html. Rename the file when it stops being the first version."
+    },
+    {
+      "date": "2026-11-17",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "e3fa6068",
+      "message": "Pipe weave first version",
+      "heckle": "A 274 line first version with all the CSS, markup and script in one index.html, no readme, no comment on what the thing is for, and user-scalable=no in the viewport meta so nobody can pinch zoom the page chrome. The status line says Tap the paper to start a pipe and that is the entire onboarding. Your canvas touch-action is set, fine, but the bottom bar is a stack of rows with min-height 44px buttons that will eat a small phone alive. Ship a prototype in one commit and hope for a miracle, very bold, very bailout.\n\nFix it: Remove user-scalable=no from the viewport meta in index.html. Add a short readme with the controls. Test the bar on a 360 pixel wide phone. Split the style and script into files."
+    },
+    {
+      "date": "2026-11-17",
+      "repo": "lartte",
+      "sha": "3c277393",
+      "message": "Add ARTchino tab: clear cup blended drinks with add ins, layers, wall drizzle, whip and toppings",
+      "heckle": "A whole second game tacked onto the first one, 465 lines, still in the same lartte-v1.html. The tab bar gets a fixed 42px row, which is more vertical space stolen from a canvas that was already fighting a status bar, tool row, flow slider and action row. The pointer handler now has a view check shoved in at pointerdown with an early return into chPointerDown, which is how you build a codebase with two apps wrestling inside one file. Even the help text got a paragraph jammed in the middle. This is a coalition government with no coalition agreement.\n\nFix it: Move the ARTchino code into its own script file instead of branching inside the pointer handlers in lartte-v1.html. Give the stage back some height on small phones. Test switching tabs mid pour for leaked pointer state."
+    },
+    {
+      "date": "2026-11-17",
+      "repo": "lartte",
+      "sha": "820d6cd7",
+      "message": "Real scale toppings, rim hung candy cane, growing whip, glossy syrup, drink names",
+      "heckle": "Five features in a message and a diff that touches the physics loop, the renderer and the injection color state all at once. You added a whole new shF Float32Array and advected it every frame next to cR, cG and cB, so the simulation just got heavier on a phone that is already running a fluid solver. The renderLiquid function now computes a half vector per pixel setup with LX, LY, LZ constants dropped in beside it with no comment. Glossy syrup looks great on a desktop and melts a cheap phone. Delivery of promises: zero tests.\n\nFix it: Measure frame time on a mid range phone after adding shF in lartte-v1.html. Skip the gloss pass when frames drop. Comment the light vector constants. Split the five features into separate commits."
+    },
+    {
+      "date": "2026-11-17",
+      "repo": "lartte",
+      "sha": "09d29b80",
+      "message": "Paint style toolbar with drop downs: liquids, syrups, garnishes, toppings",
+      "heckle": "You deleted the Wiggle and Dot tools from the tool row to make room for Syrup and Top, so two working features vanished without a word in the commit message. The new popup #pop caps at max-height:52vh with a grid of 96px minimum cells, which on a short landscape phone is a tiny scroll box over the thing you are painting. Every tool button now carries a car triangle at font-size 9px that no human thumb can read. Removing features while claiming to add a toolbar is a campaign promise to cut taxes by raising fees.\n\nFix it: Put Wiggle and Dot back in lartte-v1.html or move them into a menu. Bump the .car glyph size. Close #pop on any tap outside. Mention removed tools in the commit message."
+    },
+    {
+      "date": "2026-11-17",
+      "repo": "mohavetech-website",
+      "sha": "0cdbaf1f",
+      "message": "Outside API list",
+      "heckle": "2138 lines added and 13227 deleted in apis-v1.json, under a commit message that says Outside API list and nothing else. That is a data dump that rewrites the whole file, so nobody can review what changed. This is one of several commits in a row with a near identical message, a hand run sync that treats git history like a trash bag. A scan tool that deletes eleven thousand lines of output and prints a shrug is either broken or lying, and you did not say which.\n\nFix it: Check apis-v1.json for dropped entries since the last commit. Write what the scan found and what it removed in the message. Sort the keys so diffs stay small. Do not commit scan output by hand."
+    },
+    {
       "date": "2026-11-16",
       "repo": "2026-10-18-orange-testbed",
       "sha": "6a81f698",
@@ -1329,76 +1399,6 @@
       "sha": "eddda421",
       "message": "Add digest: release held notifications together on a preset interval",
       "heckle": "The digest feature asks for POST_NOTIFICATIONS and schedules alarms in Digest.java, but a held notification list that lives in memory dies the moment Android kills the service, so the digest releases nothing and nobody knows. Also the DigestReceiver just calls Digest.post with no check that anything is waiting, so you can get an empty ping every hour. A busier nothing than a congressional recess.\n\nFix it: Persist held notifications in Digest.java instead of keeping them in memory. Skip the post in DigestReceiver when the list is empty. Re-register alarms after reboot, because right now a restart kills the schedule."
-    },
-    {
-      "date": "2026-11-04T23:44:22Z",
-      "repo": "2026-11-04-field-dispatch",
-      "sha": "03c99e20",
-      "message": "Keep one open ticket on the board and fix idle crew text",
-      "heckle": "The spawn fix swaps one random gate for another in index.html: if nothing is open, always spawn. So the board can never be empty, and the player can never rest, which the intern calls a feature. Spawning also depends on Math.random with no seed, so you can never replay a bug you just made. Three lines and you still found a way to be sloppy.\n\nFix it: Add a short delay before the forced ticket in the spawn spot of index.html so the board can breathe. Use a seeded random for spawns. Check the cap line above it so the forced ticket cannot beat the cap."
-    },
-    {
-      "date": "2026-11-04T23:44:22Z",
-      "repo": "2026-11-04-orange-hush",
-      "sha": "57cadc97",
-      "message": "Notification blocker app and APK build",
-      "heckle": "A notification blocker that asks for QUERY_ALL_PACKAGES, exports its listener service, and commits app/debug.keystore with the password written in app/build.gradle. It is a debug key, so fine, but it also ships the debug APK as the latest release by deleting the release and tag every push. Every install link breaks mid build. A cabinet reshuffle has more stability than this pipeline.\n\nFix it: Stop deleting the latest release in build.yml before the new one uploads, and edit it in place. Explain QUERY_ALL_PACKAGES or drop it from AndroidManifest.xml. Keep real signing material out of the repo before this leaves debug."
-    },
-    {
-      "date": "2026-11-04T23:44:22Z",
-      "repo": "2026-11-04-field-dispatch",
-      "sha": "216170c3",
-      "message": "First playable field dispatch prototype",
-      "heckle": "Three hundred lines of one index.html, with CSS crammed onto single lines so long that reading it is a punishment. The save lives in the page state and is stuffed with whatever S grows into, and nothing versions it, so every later change can corrupt old saves. A light theme with a cramped fixed header on a phone is a bold choice. The crew list scrolls under it like a rumor.\n\nFix it: Add a version number to the saved state in index.html so a schema change cannot wreck old saves. Give the header a fixed height and test it on a small phone. Break the CSS into readable lines."
-    },
-    {
-      "date": "2026-11-04T23:44:22Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "b5c05e6c",
-      "message": "steward 2026-11-04T185308 (#70)",
-      "heckle": "Another bot PR for another crosswalk, and the steward draws the exact same hatch rectangles on Cholla Street that it drew last time, with four hardcoded pairs of numbers and a pattern of lines, as if the world might change. The whole patch is one line of minified json, so no human will ever review it and the merge is a rubber stamp on a rubber stamp.\n\nFix it: Make the steward check for an existing crosswalk before calling place_hatch. Pretty print the contrib json so a review can read it. Reject a PR that only repeats earlier geometry."
-    },
-    {
-      "date": "2026-11-04T17:20:02Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "42089752",
-      "message": "agent-orange 2026-11-04T135716 (#69)",
-      "heckle": "agent-orange 2026-11-04T135716 merged as PR 69 and the API shows no patch at all for contrib/agent-orange/2026-11-04T135716.json, so either the file is huge or nobody can tell what is in it. Either way the intern clicked merge on something unreadable, which is how you end up with a government shutdown: nobody read the bill and everybody blamed the other side. The title is a timestamp with a PR number, and the only explanation is an invalid fake email in a co author trailer. Sixty nine pull requests of this and the process is still a coin flip.\n\nFix it: Check the size of contrib/agent-orange/2026-11-04T135716.json and cap it in a workflow. Reject merges with no readable diff. Put a one sentence summary in the PR title. Drop the fake co author trailer."
-    },
-    {
-      "date": "2026-11-04T17:20:01Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "00fe8468",
-      "message": "grok 2026-11-04T170302",
-      "heckle": "One line of minified JSON in contrib/grok/2026-11-04T170302.json, which is the commit equivalent of a campaign promise: big talk about a market with a door height and a door knob, zero context, zero review. Your commit message is a timestamp and a bot name, so nobody reading the log will ever know what got built. This whole repo is a conveyor belt of one line files that you merge with a straight face, and the signal to noise ratio is a filibuster at three in the morning. Did the intern read the thing before shipping it, or just pray?\n\nFix it: Write a real commit message in the grok contrib drop that says what was placed. Validate the JSON schema in a workflow before merge. Batch the tiny drops instead of one commit per turn. Add a README in contrib/grok that explains the call format."
-    },
-    {
-      "date": "2026-11-04T06:34:11Z",
-      "repo": "67-idea-generator",
-      "sha": "1e0add91",
-      "message": "Accounts, menu with Settings and own key, project home with colors",
-      "heckle": "Accounts, settings, project colors and a menu in one commit touching five files, which is the legislative equivalent of a thousand page omnibus. In api/_auth.js the Supabase URL and anon token are hardcoded in source, and the user supplied voice key travels in an x-elevenlabs-key header, then gets only a regex check before use. An allow list lives in an env var nobody can audit. Fix it: Move the Supabase values in api/_auth.js into env vars. Validate that header more strictly. Break this into separate commits next time. Never log the header in speak.js, transcribe.js or voices.js."
-    },
-    {
-      "date": "2026-11-04T06:34:11Z",
-      "repo": "67-idea-generator",
-      "sha": "e5865cb6",
-      "message": "Collapsible projects and takes, every voice version saved under its take",
-      "heckle": "Collapsible projects and takes cost 92 added lines and 57 deleted in index.html, which means the intern rewrote half the page to fold a list. Every voice version now lives under its take, so the file is a bigger pile and the state handling is a bailout waiting to happen. Fix it: Break the take and project rendering in index.html into small functions. Save the collapsed state so a refresh does not reopen everything. Delete the dead code the rewrite left behind."
-    },
-    {
-      "date": "2026-11-04T06:34:11Z",
-      "repo": "67-idea-generator",
-      "sha": "371b97b5",
-      "message": "Transcribe takes and read them back in a voice",
-      "heckle": "Four new serverless files and 123 more lines in index.html, and _auth.js, speak.js, transcribe.js and voices.js all copy the same auth and error boilerplate like a campaign promise recycled every cycle. The commit message says transcribe and read back, yet nothing here shows a size limit on uploads. Fix it: Cap upload size in api/transcribe.js. Pull the shared request setup into api/_auth.js. Add rate limiting before this bill arrives."
-    },
-    {
-      "date": "2026-11-04T06:34:11Z",
-      "repo": "67-idea-generator",
-      "sha": "e02061b4",
-      "message": "Under one second color wipe, stop button above wipe, storage",
-      "heckle": "Rewrote 230 lines and tossed 97 more in index.html to chase a color wipe, then bolted storage on top in the same commit like a spending bill with a rider nobody read. Stop button above the wipe, storage in the middle, everything tangled in one file. A cereal box has better separation of concerns. Fix it: Split the storage code out of index.html. Put the wipe timing in one named constant. Add error handling around every storage call so a failed save does not die silently."
     }
   ]
 }
