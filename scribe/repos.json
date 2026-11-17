@@ -1793,7 +1793,7 @@
    "summary": "A shared city where AI agents take turns building, with a viewer and a web API.",
    "name": "Agent Test Bed",
    "latest": {
-    "date": "2026-11-15",
+    "date": "2026-11-17",
     "text": "The agent turn was played and merged into the city."
    }
   },
@@ -1875,8 +1875,8 @@
    "summary": "An agent that ships one app a day to a game publishing site and keeps a ledger",
    "name": "Itchy Troll",
    "latest": {
-    "date": "2026-10-30",
-    "text": "Added a browser userscript that fills in a game's page on the publishing site from a saved page file, including description, tagline, genre, and tags. It picks the genre from the site's own dropdown, treats a genre that is already set as done, uploads cover and gameplay screenshots, and can create new pages. Added EDMIA cover and gameplay screenshots and queued Gladhand Dockyard next. Page text is now pasted by hand, so the page workflow was removed."
+    "date": "2026-11-17",
+    "text": "Updated the MobbyHill pick note."
    }
   },
   "text-based-game": {
@@ -2131,8 +2131,8 @@
    "summary": "Shared score board and live plays feed that the games send their scores to.",
    "name": "Score Hub",
    "latest": {
-    "date": "2026-11-15",
-    "text": "Registered three more MobbyHill modes: Fuel, Climb and Climb Fuel. The climb modes post height in tenths of a meter and the hub shows them in meters. Added weekly token wallets that games spend through the server. MobbyHill is the first game with one, at 1000 tokens a week, holding up to 3000."
+    "date": "2026-11-17",
+    "text": "Registered twelve more MobbyHill leaderboards, one for each game in the Forest, Canyon and Dunes landscapes. Added six new MobbyHill store parts to its token wallet. Registered eight MobbyHill Search and rescue leaderboards, with and without fuel on each of the four landscapes. The hub shows them as hikers rescued and a clock time. Registered eight MobbyHill Off road recovery leaderboards, shown as jobs cleared and a clock time, and added the heavy rope and fast winch to its token wallet."
    }
   },
   "a-canticle-for-pajamastan": {
@@ -2257,8 +2257,8 @@
    "summary": "An Android notification blocker that holds alerts and releases them together on a schedule",
    "name": "Hush",
    "latest": {
-    "date": "2026-11-04",
-    "text": "Created Hush, an Android app that blocks notifications. Added a digest that holds blocked notifications and releases them together on a preset schedule, from every hour to once a day at 8 AM. The app is built into an installable APK automatically on every push."
+    "date": "2026-11-16",
+    "text": "Added Clock lock. Hush holds the phone clock on a chosen time zone, Las Vegas by default. When anything turns automatic time zone back on, Hush turns it off again right away, and if the clock still lands on the wrong zone Hush posts an alert that opens the date and time screen. Flipping that setting off for you needs a one time permission granted over wireless debugging."
    }
   },
   "2026-11-05-drive-thru-dental": {
@@ -2477,8 +2477,8 @@
    "summary": "A zoomable generated city where you hunt for hidden items.",
    "name": "City Seek",
    "latest": {
-    "date": "2026-11-13",
-    "text": "Added Music mode, chosen from the Mode switch in the menu. The city plays as a beat synced music visualizer: load a song or use the built in test beat, and the scene moves in time with the kicks, bass and hats. Views include a top down flyover where beat objects land on matching ground and cars follow streets, a train window view, a Lanes view that works like a street styled MIDI waterfall, and a Rain view with a color jar catching game. Added an action line with hit bursts for each band, an infographic layer, isometric train buildings with cutaways, and richer street detail. A hunt while it plays option, a stream hunt, and REC video recording with sound are included."
+    "date": "2026-11-16",
+    "text": "Added a polish pass. Buttons now press down, keyboard focus is clearer, and the menu has a dotted look. Menu sections show a plus or minus, cards and toasts ease in, and sliders were restyled. Phone screen edges are respected, and the item tray snaps as you scroll."
    }
   },
   "skyflow-orange": {
@@ -2533,8 +2533,8 @@
    "summary": "A phone friendly field log with a map, receipts, and mileage, now with a food spots layer.",
    "name": "Delivery Twin",
    "latest": {
-    "date": "2026-11-15",
-    "text": "Added direction chevrons on the delivery lines. Added links that open the RTSS and RDSS site surveys."
+    "date": "2026-11-16",
+    "text": "You can now log from a spot. Dropoff pins can be dragged, and spots have links to rewards."
    }
   },
   "mail-ionaire": {
@@ -2612,8 +2612,8 @@
    "private": false,
    "name": "raineurysm",
    "latest": {
-    "date": "2026-11-14",
-    "text": "Added a music machine mode beside simple mode, with troughs, funnels, faucets, sprinklers, dripping vessels, a lane pattern editor, a weather song, thunder, recording, and undo. Added a puzzle mode with five color mixing levels where vessels pour one blended flavor of water. Tapping a goal jar now dumps it out, and a new version prompt keeps an open tab from running old code."
+    "date": "2026-11-16",
+    "text": "Made everything prettier. Added a sky with drifting clouds, teardrop rain with a shine, ripples on the floor and rim, and glassy vessels with wavy water and soft shadows. Lanes and the beat line now glow, and panels and buttons are frosted."
    },
    "category": "Music and Visualizers",
    "summary": "A rain music toy where falling rain hits vessels that play notes.",
@@ -2631,8 +2631,8 @@
    "summary": "A wireframe off road hill climb for the phone with tilt steering and score hub scores.",
    "name": "MobbyHill",
    "latest": {
-    "date": "2026-11-15",
-    "text": "Added fore and aft lean, stickier suspension, garage upgrades, and sand, mud, water and boulders on the hill. Added a mode menu with fuel and hill climb modes, a ghost of your best run, and a damage mode with repairs. Tokens are now a second currency. A weekly wallet fills from the server, and parts can be paid in cash or tokens."
+    "date": "2026-11-17",
+    "text": "Buzzards now fly from flag to flag. There are four landscapes, the games were renamed, and the store is now a menu with icons and terrain parts. Added three vehicles and a Search and rescue challenge with a trailer and teammates. Added an Off road recovery mission with a purple SUV, a pickup with a wrecker boom, and a flatbed."
    }
   },
   "fashionocalypse": {
@@ -2645,6 +2645,62 @@
    "latest": {
     "date": "2026-11-15",
     "text": "Created Fashionocalypse, a containment game about clothes that never go away. You play the global textile authority and keep ten fashion brands inside their home regions on a spinning globe. Spend Capital on world wide laws or target one brand, and tap support drops to earn more. Win by keeping every brand contained for two years or by reaching 2050 under the contamination limit."
+   }
+  },
+  "2026-11-16-pipe-weave": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-16-pipe-weave.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A pipe drawing toy where pipes turn, split, and weave over and under each other.",
+   "name": "Pipe Weave",
+   "latest": {
+    "date": "2026-11-16",
+    "text": "Created Pipe Weave, a pipe drawing toy. You start a pipe with a tap, steer it left, right, or straight, and let it weave over or under other pipes. Added a grow mode with random and over under weave, then a flip end control, color modes, cars, critters, and water flow. Added roots, shadows, deep zoom, drive mode, and right angle mode. Pinching to zoom no longer draws, and undo now takes smaller steps."
+   }
+  },
+  "2026-11-15-orange-keydecode": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-15-orange-keydecode.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "An educational tool that measures a key from a photo and a coin for scale.",
+   "name": "Key Decoder",
+   "latest": {
+    "date": "2026-11-16",
+    "text": "Created Key Decoder, an educational tool that measures a key from a photo. A coin in the photo sets the scale. You tap points to measure the blade and cuts, pick the key type, and rank likely key formats. Results can be downloaded as JSON or a life size SVG profile, and saved to a library. It includes notes on identifying key fobs."
+   }
+  },
+  "lartte": {
+   "apps": [],
+   "urls": [
+    "https://lartte.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A latte art simulator with pours, garnishes, blended drinks, and a coffee shop shift game.",
+   "name": "lARTte",
+   "latest": {
+    "date": "2026-11-16",
+    "text": "Created lARTte, a latte art simulator. Added a demo mode that pours each design by itself, saving finished pours to the phone, an art generator, a gallery mode, symmetry, and cup spin. Added a garnish shaker with cinnamon, nutmeg, cocoa, sea salt, sugar, matcha, and sprinkles, and a paint style toolbar with drop downs for liquids, syrups, garnishes, and toppings. Toppings are now real scale, with a candy cane hung on the rim, growing whipped cream, glossy syrup, and drink names. Added the ARTchino tab for clear cup blended drinks with add ins, layers, wall drizzle, whip, and toppings. Added a coffee shop shift with customers, a time attack, tilt and shake controls, and sound."
+   }
+  },
+  "2026-11-16-orange-zion": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-16-orange-zion.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A story and map toy that loads the Agent Test Bed city and lets you move, name, and judge its places.",
+   "name": "Zion Wakes",
+   "latest": {
+    "date": "2026-11-16",
+    "text": "Created Zion Wakes, a story and map toy that loads the Agent Test Bed city. You pan and zoom the map and read a short story beat. You can pick a place to move it, name it, approve it, or reject it, and start over with New start. Two follow up builds were triggered to get the first deploy live."
    }
   }
  }

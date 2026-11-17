@@ -1,121 +1,80 @@
 {
  "jobs": [
   {
-   "repo": "fashionocalypse",
+   "repo": "2026-11-16-pipe-weave",
    "releases": [
-    {
-     "tag": "v2026.11.15",
-     "target": "ae0545aca3d470aab1bf81e3422ac9a66f740f03",
-     "name": "Fashionocalypse 2026-11-15",
-     "body": "Created Fashionocalypse, a containment game about clothes that never go away. You play the global textile authority and keep ten fashion brands inside their home regions on a spinning globe. Spend Capital on world wide laws or target one brand, and tap support drops to earn more. Win by keeping every brand contained for two years or by reaching 2050 under the contamination limit."
-    }
-   ],
-   "description": "A containment game where you keep ten fashion brands inside their home regions on a globe.",
-   "homepage": "",
-   "topics": [
-    "game",
-    "strategy",
-    "simulator",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "field-twin",
-   "releases": [
-    {
-     "tag": "v2026.11.15",
-     "target": "94b6b999362c8487ba8dcd5bbaba256520eaf6ef",
-     "name": "Field Twin 2026-11-15",
-     "body": "Added a Sites tab that puts the RTSS and RDSS survey sites on the map, with the surveys, visit log, stops, notes and photos for each place. RTSS and RDSS now open inside Field Twin and share site details. A Field Twin account works in both survey tools, and the survey server records who saved. A color key now drops down, there is a new Dash cam tab, and an RTSS and RDSS switch sits above the surveys."
-    },
     {
      "tag": "v2026.11.16",
-     "target": "c6c98a94d964f85fc666b5e2d9534f21eae1d989",
-     "name": "Field Twin 2026-11-16",
-     "body": "Added Tickets. Scan ticket screen reads work tickets from a photo of the work phone, a check screen fixes misreads and picks the locker, and each open ticket shows on the map as a countdown ring. Best next and the fork card rank stops by SLA slack after drive time, and closes inside SLA earn points. The receipt and ticket readers now share one photo reader that falls back through newer models, and Service check shows the reader key and the last reader error."
+     "target": "d5ca494a7f7fa167bfe3e9e585e42572ab5d73fa",
+     "name": "Pipe Weave 2026-11-16",
+     "body": "Created Pipe Weave, a pipe drawing toy. You start a pipe with a tap, steer it left, right, or straight, and let it weave over or under other pipes. Added a grow mode with random and over under weave, then a flip end control, color modes, cars, critters, and water flow. Added roots, shadows, deep zoom, drive mode, and right angle mode. Pinching to zoom no longer draws, and undo now takes smaller steps."
     }
    ],
-   "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
-   "homepage": "https://field-twin-teal.vercel.app",
+   "description": "A pipe drawing toy where pipes turn, split, and weave over and under each other.",
+   "homepage": "https://2026-11-16-pipe-weave.vercel.app",
    "topics": [
-    "field-service",
+    "game",
+    "toy",
+    "canvas",
+    "drawing",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "2026-11-15-orange-keydecode",
+   "releases": [
+    {
+     "tag": "v2026.11.16",
+     "target": "d231fc07c97cd4accbc51cbe7ff549957f1f00ff",
+     "name": "Key Decoder 2026-11-16",
+     "body": "Created Key Decoder, an educational tool that measures a key from a photo. A coin in the photo sets the scale. You tap points to measure the blade and cuts, pick the key type, and rank likely key formats. Results can be downloaded as JSON or a life size SVG profile, and saved to a library. It includes notes on identifying key fobs."
+    }
+   ],
+   "description": "An educational tool that measures a key from a photo and a coin for scale.",
+   "homepage": "https://2026-11-15-orange-keydecode.vercel.app",
+   "topics": [
+    "tool",
+    "education",
+    "measurement",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "lartte",
+   "releases": [
+    {
+     "tag": "v2026.11.16",
+     "target": "70a5fe4ed8a295508372a0724bd81b5786ba7e45",
+     "name": "lARTte 2026-11-16",
+     "body": "Created lARTte, a latte art simulator. Added a demo mode that pours each design by itself, saving finished pours to the phone, an art generator, a gallery mode, symmetry, and cup spin. Added a garnish shaker with cinnamon, nutmeg, cocoa, sea salt, sugar, matcha, and sprinkles, and a paint style toolbar with drop downs for liquids, syrups, garnishes, and toppings. Toppings are now real scale, with a candy cane hung on the rim, growing whipped cream, glossy syrup, and drink names. Added the ARTchino tab for clear cup blended drinks with add ins, layers, wall drizzle, whip, and toppings. Added a coffee shop shift with customers, a time attack, tilt and shake controls, and sound."
+    }
+   ],
+   "description": "A latte art simulator with pours, garnishes, blended drinks, and a coffee shop shift game.",
+   "homepage": "https://lartte.vercel.app",
+   "topics": [
+    "game",
+    "simulator",
+    "coffee",
+    "art",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "2026-11-16-orange-zion",
+   "releases": [
+    {
+     "tag": "v2026.11.16",
+     "target": "c292f446069e741351469c8dddc9d758484ea0dd",
+     "name": "Zion Wakes 2026-11-16",
+     "body": "Created Zion Wakes, a story and map toy that loads the Agent Test Bed city. You pan and zoom the map and read a short story beat. You can pick a place to move it, name it, approve it, or reject it, and start over with New start. Two follow up builds were triggered to get the first deploy live."
+    }
+   ],
+   "description": "A story and map toy built on the Agent Test Bed city.",
+   "homepage": "https://2026-11-16-orange-zion.vercel.app",
+   "topics": [
+    "game",
+    "story",
     "map",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "delivery-twin",
-   "releases": [
-    {
-     "tag": "v2026.11.15",
-     "target": "db94a008d58bca2fcb2a5d9840af07158ac8b1af",
-     "name": "Delivery Twin 2026-11-15",
-     "body": "Added direction chevrons on the delivery lines. Added links that open the RTSS and RDSS site surveys."
-    }
-   ],
-   "description": "A phone friendly field log with a map, receipts, and mileage, now with a food spots layer.",
-   "homepage": "https://delivery-twin.vercel.app",
-   "topics": [
-    "field",
-    "map",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "rie-api",
-   "releases": [
-    {
-     "tag": "v2026.11.15",
-     "target": "796f325eacb71a44d3aca9b130fde43d461724cc",
-     "name": "RIE API 2026-11-15",
-     "body": "Calls can carry the Field Twin account key. The server checks it with the account service and records which account created and last saved each site, survey and design. Calls without a key still work. A new /me route says which account a key belongs to."
-    }
-   ],
-   "description": "Backend that stores restaurant site surveys and shared site profiles.",
-   "homepage": "",
-   "topics": [
-    "api",
-    "backend",
-    "railway"
-   ]
-  },
-  {
-   "repo": "RTSS",
-   "releases": [
-    {
-     "tag": "v2026.11.15",
-     "target": "a2ec53cd0afcf579d3503ba9ec0096a60b434f13",
-     "name": "RTSS 2026-11-15",
-     "body": "Rebuilt as version 3 with a light theme and a survey that saves one document per site, with a phone copy for offline work. Old saves carry over on first open. Added a Drive-thru tab with a 3D lane and equipment model, sun and shade by time of day, screen heat estimates, car stack, cable runs and photos. The Topology, Integration and Cabling tabs were rebuilt. An apps menu links RTSS, RDSS and Field Twin for the same site, and Notes has a visit log. RTSS now opens inside Field Twin and shares site details, and a Field Twin account records who saved."
-    }
-   ],
-   "description": "Restaurant technology site survey form with cloud sync and CSV export.",
-   "homepage": "https://rtss-sigma.vercel.app",
-   "topics": [
-    "restaurant-tech",
-    "survey",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "ghost-kitchen-builder",
-   "releases": [
-    {
-     "tag": "v2026.11.15",
-     "target": "e14b21230c6c7bea1b97cc08f5c8641e0e44e1dc",
-     "name": "Restaurant Design and Setup Survey 2026-11-15",
-     "body": "Rebuilt as version 3 in the RTSS style, with a light theme, drop down cards, and Build, Survey, Demo and More tabs. A shared apps menu and site links were added. It saves one document per site with a phone copy, and old saves carry over on first open. It now opens inside Field Twin, shares site details with RTSS, and a Field Twin account records who saved."
-    }
-   ],
-   "description": "Survey tool for designing and scoring a restaurant concept, with sample concepts and a summary export.",
-   "homepage": "https://ghost-kitchen-builder.vercel.app",
-   "topics": [
-    "restaurant-tech",
-    "survey",
-    "tool",
     "vercel"
    ]
   },
@@ -123,10 +82,16 @@
    "repo": "mobbyhill",
    "releases": [
     {
-     "tag": "v2026.11.15",
-     "target": "4d75f5aaf73caa7161e4f265dd79ee4fcc5ce399",
-     "name": "MobbyHill 2026-11-15",
-     "body": "Added fore and aft lean, stickier suspension, garage upgrades, and sand, mud, water and boulders on the hill. Added a mode menu with fuel and hill climb modes, a ghost of your best run, and a damage mode with repairs. Tokens are now a second currency. A weekly wallet fills from the server, and parts can be paid in cash or tokens."
+     "tag": "v2026.11.17",
+     "target": "6f885c70f11d8486459d563493fe48c1349ee3d9",
+     "name": "MobbyHill 2026-11-17",
+     "body": "Buzzards now fly from flag to flag. There are four landscapes, the games were renamed, and the store is now a menu with icons and terrain parts. Added three vehicles and a Search and rescue challenge with a trailer and teammates. Added an Off road recovery mission with a purple SUV, a pickup with a wrecker boom, and a flatbed."
+    },
+    {
+     "tag": "v2026.11.16",
+     "target": "3b71f306fe10bc8a48ec95ed612eae5344345d07",
+     "name": "MobbyHill 2026-11-16",
+     "body": "Added scenery on the hill, dust and tracks behind the wheels, coins, and stunt cash."
     }
    ],
    "description": "A wireframe off road hill climb for the phone with tilt steering and score hub scores.",
@@ -139,13 +104,143 @@
    ]
   },
   {
+   "repo": "2026-10-18-orange-testbed",
+   "releases": [
+    {
+     "tag": "v2026.11.17",
+     "target": "3353f01bd7b49b9fd2af8622b2f8066ed82697e6",
+     "name": "Agent Test Bed 2026-11-17",
+     "body": "The agent turn was played and merged into the city."
+    },
+    {
+     "tag": "v2026.11.16",
+     "target": "a6c8072bce7f33ca89aa7a9221f4d1b0b901eafb",
+     "name": "Agent Test Bed 2026-11-16",
+     "body": "The agent, grok, second agent, and steward turns for the day were played and merged into the city. The viewer now shows day and night by the real sun over the Mojave in Pacific time, and adds Zion weather."
+    },
+    {
+     "tag": "v2026.11.15-2",
+     "target": "bb57a1ad57e344e3aa14b4c6a6948cc32bf13fdd",
+     "name": "Agent Test Bed 2026-11-15",
+     "body": "The agent, steward, and grok turns for the day were played and merged into the city. Added a city snapshot API that returns the whole city, with an optional starting slice. The site now deploys from GitHub again, but only when code changes."
+    }
+   ],
+   "description": "A shared city that AI agents build one turn at a time",
+   "homepage": "https://2026-10-18-orange-testbed.vercel.app",
+   "topics": [
+    "agents",
+    "game",
+    "simulator",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "raineurysm",
+   "releases": [
+    {
+     "tag": "v2026.11.16",
+     "target": "166954fd6211efe9633e211178f06729415b7300",
+     "name": "raineurysm 2026-11-16",
+     "body": "Made everything prettier. Added a sky with drifting clouds, teardrop rain with a shine, ripples on the floor and rim, and glassy vessels with wavy water and soft shadows. Lanes and the beat line now glow, and panels and buttons are frosted."
+    }
+   ],
+   "description": "A rain music toy where falling rain hits vessels that play notes.",
+   "homepage": "https://raineurysm.vercel.app",
+   "topics": [
+    "music",
+    "toy",
+    "vercel",
+    "visualizer"
+   ]
+  },
+  {
+   "repo": "city-seek",
+   "releases": [
+    {
+     "tag": "v2026.11.16",
+     "target": "b5dae3c1c0b45cd7ec48858034e4fddbfb219ac4",
+     "name": "City Seek 2026-11-16",
+     "body": "Added a polish pass. Buttons now press down, keyboard focus is clearer, and the menu has a dotted look. Menu sections show a plus or minus, cards and toasts ease in, and sliders were restyled. Phone screen edges are respected, and the item tray snaps as you scroll."
+    }
+   ],
+   "description": "A zoomable generated city where you hunt for hidden items, with towers, birds, and sound.",
+   "homepage": "https://city-seek.vercel.app",
+   "topics": [
+    "game",
+    "hidden-object",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "delivery-twin",
+   "releases": [
+    {
+     "tag": "v2026.11.16",
+     "target": "eb7f7c3e1dcc88197844f862947206297438a479",
+     "name": "Delivery Twin 2026-11-16",
+     "body": "You can now log from a spot. Dropoff pins can be dragged, and spots have links to rewards."
+    }
+   ],
+   "description": "A phone friendly field log with a map, receipts, and mileage, now with a food spots layer.",
+   "homepage": "https://delivery-twin.vercel.app",
+   "topics": [
+    "field",
+    "map",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "itchy-troll",
+   "releases": [
+    {
+     "tag": "v2026.11.17",
+     "target": "94e94a04091931714a718e45a7c0e2b1334b4960",
+     "name": "Itchy Troll 2026-11-17",
+     "body": "Updated the MobbyHill pick note."
+    },
+    {
+     "tag": "v2026.11.16",
+     "target": "f04128a6793461e360ade1aa6ab75de7142c4343",
+     "name": "Itchy Troll 2026-11-16",
+     "body": "Queued MobbyHill as the owner pick. The scout looked over the repos for new candidates."
+    }
+   ],
+   "description": "An agent that publishes finished apps to a game publishing site",
+   "homepage": "https://itchy-troll.vercel.app",
+   "topics": [
+    "automation",
+    "publishing",
+    "tool",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "2026-11-04-orange-hush",
+   "releases": [
+    {
+     "tag": "v2026.11.16",
+     "target": "9162966a1fb87493b06665bbc5d1b7226b1768c9",
+     "name": "Hush 2026-11-16",
+     "body": "Added Clock lock. Hush holds the phone clock on a chosen time zone, Las Vegas by default. When anything turns automatic time zone back on, Hush turns it off again right away, and if the clock still lands on the wrong zone Hush posts an alert that opens the date and time screen. Flipping that setting off for you needs a one time permission granted over wireless debugging."
+    }
+   ],
+   "description": "An Android app that blocks notifications and releases them in a digest",
+   "homepage": "",
+   "topics": [
+    "android",
+    "notifications",
+    "tool"
+   ]
+  },
+  {
    "repo": "2026-10-30-orange-scores",
    "releases": [
     {
-     "tag": "v2026.11.15",
-     "target": "cccf047f518333d7108e42c89ffbfc808bec7dfa",
-     "name": "Score Hub 2026-11-15",
-     "body": "Registered three more MobbyHill modes: Fuel, Climb and Climb Fuel. The climb modes post height in tenths of a meter and the hub shows them in meters. Added weekly token wallets that games spend through the server. MobbyHill is the first game with one, at 1000 tokens a week, holding up to 3000."
+     "tag": "v2026.11.17",
+     "target": "8a27003887eddab3f58d19e9fe17e465670e7e32",
+     "name": "Score Hub 2026-11-17",
+     "body": "Registered twelve more MobbyHill leaderboards, one for each game in the Forest, Canyon and Dunes landscapes. Added six new MobbyHill store parts to its token wallet. Registered eight MobbyHill Search and rescue leaderboards, with and without fuel on each of the four landscapes. The hub shows them as hikers rescued and a clock time. Registered eight MobbyHill Off road recovery leaderboards, shown as jobs cleared and a clock time, and added the heavy rope and fast winch to its token wallet."
     }
    ],
    "description": "A shared score service and hub page for the games",
@@ -154,80 +249,6 @@
     "backend",
     "scores",
     "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "mohavetech-website",
-   "releases": [
-    {
-     "tag": "v2026.11.16",
-     "target": "bafbee497d708047665d4e9f02158d1266c85afc",
-     "name": "App Index 2026-11-16",
-     "body": "Added a Railway tab that lists every Railway project and service with this billing period cost, an end of period estimate, deploy status, and idle flags. Apps with a Railway backend get a blue railway button that opens it in Railway. Hire Portal got its orange phone star."
-    }
-   ],
-   "description": "An index page that lists every app with its age, phone tags, and notes.",
-   "homepage": "https://mohavetech-website.vercel.app",
-   "topics": [
-    "index",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "pajamastan",
-   "releases": [
-    {
-     "tag": "v2026.11.16",
-     "target": "009f9436be4cb5b10db6434049873130e25555ab",
-     "name": "Pajamastan 2026-11-16",
-     "body": "Added the Hire Portal to the Links tab as a Pajamastan portal."
-    }
-   ],
-   "description": "The official site of the micronation of Pajamastan.",
-   "homepage": "https://pajamastan.vercel.app",
-   "topics": [
-    "atlas",
-    "micronation",
-    "pajamastan",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "hire-portal",
-   "releases": [
-    {
-     "tag": "v2026.11.16",
-     "target": "4f68e70b2f8630563e40be911485997d0e4e8505",
-     "name": "Hire Portal 2026-11-16",
-     "body": "Fixed the spelling of the company name. The portal is now a Pajamastan portal, with a blue Republic of Pajamastan link at the top that goes back to the Pajamastan site."
-    }
-   ],
-   "description": "A practice job application that teaches applicants what to share and what to withhold",
-   "homepage": "https://hire-portal-six.vercel.app",
-   "topics": [
-    "demo",
-    "education",
-    "tool"
-   ]
-  },
-  {
-   "repo": "stackloom-meta",
-   "releases": [
-    {
-     "tag": "v2026.11.15",
-     "target": "b3d93677e9620668fb84c583adf02ad695870d2a",
-     "name": "Stackloom 2026-11-15",
-     "body": "Added the Match line, the candy smashing match three game. Swipe a piece into its neighbor to line up three or more, clear the goal before the moves run out, and chain cascades for combos. Opened by hiring a level designer once a puzzle designer is on staff. Nine skins, five or six pieces, generous or tight moves, and premium art. Sucker Smash joins the studio samples."
-    }
-   ],
-   "description": "A studio game with orders, terminals, agents, developers, and offices.",
-   "homepage": "https://stackloom-meta.vercel.app",
-   "topics": [
-    "game",
-    "management",
-    "simulator",
     "vercel"
    ]
   }
