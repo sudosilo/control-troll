@@ -6,7 +6,7 @@
    "name": "survey form shows",
    "steps": [
     {
-     "seeSel": "#mainForm"
+     "seeSel": ".progress"
     }
    ]
   },
@@ -15,13 +15,16 @@
    "name": "load demo data fills the form",
    "steps": [
     {
-     "click": "LOAD DEMO DATA"
+     "click": "[data-tab=\"more\"]"
+    },
+    {
+     "click": "#demoBtn"
     },
     {
      "wait": 400
     },
     {
-     "seeSel": "#mainForm"
+     "seeSel": ".progress"
     }
    ]
   }
