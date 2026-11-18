@@ -28,6 +28,16 @@
 
   /* ===== LAUNCH ===== */
   .modeList { display:flex; flex-direction:column; gap:10px; margin-top:18px; }
+  .genreBox { margin-top:16px; }
+  .genreChips .chip { font-size:13px; font-weight:700; text-transform:capitalize; }
+  .gtag { display:inline-block; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px;
+    padding:1px 6px; margin-left:6px; background:var(--soft); color:var(--ink); vertical-align:middle; }
+  .genreHead { font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; color:#666; margin:16px 0 2px; }
+  .genreTotals { display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; }
+  .gTotal { border:2px solid var(--rule); background:var(--paper); padding:8px 10px; font-size:12.5px; }
+  .gTotal b { text-transform:capitalize; }
+  .gTotal .gc { color:var(--good); font-weight:800; margin-left:6px; }
+  .genreSelect { border:2px solid var(--ink); background:var(--bg); color:var(--ink); font-size:13px; padding:5px 6px; font-family:inherit; text-transform:capitalize; }
   #profileBox { margin-top:16px; border:2px solid var(--rule); background:var(--paper); padding:13px; }
   .profileRow { display:flex; gap:7px; }
   .profileRow .field { flex:1; }
@@ -153,6 +163,11 @@
     <div id="profileSaved" class="profileSaved"></div>
   </div>
 
+  <div class="genreBox">
+    <div class="label">Genre</div>
+    <div class="chips genreChips" id="genreChips"></div>
+  </div>
+
   <div class="modeList">
     <div class="mode" data-mode="stumble"><div class="name">Stumble</div><div class="desc">Type a subject and discover smaller lessons on it.</div></div>
     <div class="mode" data-mode="course"><div class="name">Course</div><div class="desc">Work a channel or course playlist in order, lecture by lecture.</div></div>
@@ -170,6 +185,7 @@
     <div id="courseList"></div>
     <p class="note" id="courseEmpty" style="display:none">No sources yet. Open Sources and add a channel or a course playlist first.</p>
   </div>
+  <div id="mtg-seal-mount"></div>
 </div>
 
 <!-- PLAYER -->
@@ -207,6 +223,9 @@
       <div class="statusChip" data-status="blocked">Hit a wall</div>
     </div>
 
+    <div class="label">Genre</div>
+    <div class="chips genreChips" id="endGenreChips"></div>
+
     <div class="label">Bucket</div>
     <div class="chips" id="bucketChips"></div>
     <div id="newBucketRow">
@@ -239,6 +258,8 @@
     <input id="srcInput" class="field" type="text" placeholder="youtube.com/@mitocw  or a playlist link">
     <button class="btn accent" id="srcAddBtn">Add</button>
   </div>
+  <div class="label">Genre for the next source you add</div>
+  <div class="chips genreChips" id="srcGenreChips"></div>
   <div id="addResult"></div>
   <div id="srcList"></div>
   <div class="backRow"><button class="btn" id="sourcesBack">Back to menu</button></div>
@@ -249,6 +270,9 @@
   <h1 class="big">Transcript</h1>
   <p class="lead">Every bucket, what you did in it, and the credits it earned.</p>
   <div class="legend" id="legend">built is worth 3, followed 2, watched 1, a wall 1. Ten points is one credit.</div>
+  <div class="label">Show genre</div>
+  <div class="chips genreChips" id="tGenreChips"></div>
+  <div class="genreTotals" id="genreTotals"></div>
   <div id="ledger"></div>
   <div class="backRow"><button class="btn" id="transcriptBack">Back to menu</button></div>
 </div>
@@ -263,23 +287,47 @@ const API_BASE = 'https://ebutuoy-campus-production.up.railway.app';
 
 const CREDIT_POINTS = 10;
 const REFILL_AT = 2;
-const SUBJECTS = [
-  'soldering basics', 'tig welding for beginners', 'two stroke engine repair',
-  'ham radio antenna build', 'meshtastic node setup', 'raspberry pi projects',
-  'linux command line basics', 'python for beginners', 'electronics breadboard',
-  'morse code learning', 'cryptography ciphers explained', 'off grid solar wiring',
-  'concrete forms diy', 'small engine carburetor', 'knife sharpening',
-  'sourdough starter', 'beekeeping basics', 'desert survival skills',
-  'chicken coop build', 'telescope astronomy beginners', 'chess openings',
-  'cartography map making', 'leather working basics', 'guitar scales practice'
+// Education genres. Each one carries its own starter subjects for Stumble.
+const GENRES = [
+  { id:'history',   label:'History',   subjects:[
+    'ancient rome history', 'world war two history', 'cold war history', 'industrial revolution history',
+    'history of the american west', 'history of aviation', 'ancient egypt history', 'medieval castles history' ]},
+  { id:'disasters', label:'Disasters', subjects:[
+    'chernobyl disaster explained', 'dust bowl history', '1906 san francisco earthquake', 'titanic sinking explained',
+    'mount st helens eruption', 'johnstown flood history', 'hindenburg disaster', 'aviation accident investigation' ]},
+  { id:'safety',    label:'Safety',    subjects:[
+    'osha safety training', 'lockout tagout training', 'electrical safety basics', 'first aid basics',
+    'cpr training', 'fire extinguisher use', 'heat illness prevention', 'ladder safety',
+    'trench safety', 'chainsaw safety', 'wilderness first aid', 'earthquake preparedness' ]},
+  { id:'trades',    label:'Trades',    subjects:[
+    'tig welding for beginners', 'soldering basics', 'small engine carburetor', 'two stroke engine repair',
+    'concrete forms diy', 'off grid solar wiring', 'knife sharpening', 'leather working basics' ]},
+  { id:'science',   label:'Science',   subjects:[
+    'telescope astronomy beginners', 'rock identification geology', 'physics explained simply',
+    'chemistry basics', 'weather forecasting basics', 'desert ecology' ]},
+  { id:'tech',      label:'Tech',      subjects:[
+    'linux command line basics', 'python for beginners', 'raspberry pi projects', 'meshtastic node setup',
+    'ham radio antenna build', 'electronics breadboard', 'cryptography ciphers explained', 'morse code learning' ]},
+  { id:'skills',    label:'Life skills', subjects:[
+    'sourdough starter', 'beekeeping basics', 'chicken coop build', 'desert survival skills',
+    'cartography map making', 'chess openings', 'guitar scales practice' ]},
+  { id:'general',   label:'General',   subjects:[] }
 ];
+const GENRE_IDS = GENRES.map(g=>g.id);
+function genreLabel(id){ const g = GENRES.find(x=>x.id===id); return g ? g.label : 'General'; }
+function genreOfSubject(subject){
+  const t = String(subject||'').trim().toLowerCase();
+  const g = GENRES.find(x=>x.subjects.includes(t));
+  return g ? g.id : null;
+}
+function allSubjects(){ return GENRES.reduce((a,g)=>a.concat(g.subjects), []); }
 
-const session = { mode:null, q:null, sourceId:null, ctx:'' };
+const session = { mode:null, q:null, sourceId:null, ctx:'', genre:'general' };
 let queue = [], localSeen = new Set();
 let courseVideos = [], courseIndex = 0, courseTotal = 0, coursePageToken = null;
 let nowPlaying = null, bankedThisSession = 0;
 let player = null, ytReady = false, autoplayUnlocked = false, cardOpen = false;
-let chosenStatus = 'watched', chosenBucket = '';
+let chosenStatus = 'watched', chosenBucket = '', chosenGenre = 'general';
 
 // ----- player --------------------------------------------------------------
 function onYouTubeIframeAPIReady() {
@@ -316,9 +364,39 @@ document.getElementById('subjectInput').addEventListener('input', refreshStumble
 function refreshStumbleBtn(){
   document.getElementById('stumbleStart').disabled = document.getElementById('subjectInput').value.trim().length === 0;
 }
+// ----- genre state ----------------------------------------------------------
+const GENRE_KEY = 'campus_genre';
+function safeGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function safeSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+let currentGenre = safeGet(GENRE_KEY) || 'all';
+if (currentGenre !== 'all' && !GENRE_IDS.includes(currentGenre)) currentGenre = 'all';
+
+// Draws a row of genre chips into a container. includeAll adds an All chip.
+function renderGenreChips(containerId, selected, includeAll, onPick){
+  const wrap = document.getElementById(containerId); wrap.innerHTML='';
+  const items = (includeAll ? [{id:'all', label:'All'}] : []).concat(GENRES);
+  items.forEach(g=>{
+    const c=document.createElement('div'); c.className='chip' + (g.id===selected ? ' on' : ''); c.textContent=g.label;
+    c.addEventListener('click', ()=>{
+      wrap.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));
+      c.classList.add('on');
+      onPick(g.id);
+    });
+    wrap.appendChild(c);
+  });
+}
+function pickLaunchGenre(id){
+  currentGenre = id; safeSet(GENRE_KEY, id);
+  buildChips();
+  if (session.mode === 'course') loadCourseList();
+}
+renderGenreChips('genreChips', currentGenre, true, pickLaunchGenre);
+
 function buildChips(){
   const wrap = document.getElementById('chips'); wrap.innerHTML='';
-  shuffle([...SUBJECTS]).slice(0,8).forEach(s=>{
+  const g = GENRES.find(x=>x.id===currentGenre);
+  const pool = (g && g.subjects.length) ? g.subjects : allSubjects();
+  shuffle([...pool]).slice(0,8).forEach(s=>{
     const c=document.createElement('div'); c.className='chip'; c.textContent=s;
     c.addEventListener('click', ()=>{ document.getElementById('subjectInput').value=s; refreshStumbleBtn(); });
     wrap.appendChild(c);
@@ -329,7 +407,7 @@ document.getElementById('stumbleStart').addEventListener('click', startStumble);
 
 // ----- profile -------------------------------------------------------------
 const PROFILE_KEY = 'campus_profile';
-function getProfile(){ return (localStorage.getItem(PROFILE_KEY) || 'default'); }
+function getProfile(){ return (safeGet(PROFILE_KEY) || 'default'); }
 function initProfile(){
   const p = getProfile();
   const input = document.getElementById('profileInput');
@@ -340,7 +418,7 @@ function initProfile(){
 }
 document.getElementById('profileSave').addEventListener('click', ()=>{
   const v = document.getElementById('profileInput').value.trim().toLowerCase();
-  localStorage.setItem(PROFILE_KEY, v || 'default');
+  safeSet(PROFILE_KEY, v || 'default');
   document.getElementById('profileSaved').textContent = v
     ? 'Saved. Logging as ' + v + ' on this device.'
     : 'Cleared. Logging under "default".';
@@ -353,15 +431,29 @@ async function loadCourseList(){
   const empty = document.getElementById('courseEmpty');
   list.innerHTML = '<p class="note">loading your sources</p>'; empty.style.display='none';
   try{
-    const r = await fetch(API_BASE + '/sources');
+    const q = currentGenre === 'all' ? '' : ('?genre=' + encodeURIComponent(currentGenre));
+    const r = await fetch(API_BASE + '/sources' + q);
     const d = await r.json();
     list.innerHTML = '';
-    if (!d.sources || d.sources.length === 0){ empty.style.display='block'; return; }
-    d.sources.forEach(s=>{
-      const row = document.createElement('div'); row.className='pickRow';
-      row.innerHTML = '<div class="t">'+escapeHtml(s.title || s.ref)+'</div><div class="k">'+s.kind+'</div>';
-      row.addEventListener('click', ()=>startCourse(s.id, s.title || s.ref));
-      list.appendChild(row);
+    if (!d.sources || d.sources.length === 0){
+      empty.textContent = currentGenre === 'all'
+        ? 'No sources yet. Open Sources and add a channel or a course playlist first.'
+        : 'No ' + genreLabel(currentGenre) + ' sources yet. Open Sources, pick ' + genreLabel(currentGenre) + ', and add one.';
+      empty.style.display='block'; return;
+    }
+    // Group under genre headings, in the same order as the genre chips.
+    GENRES.forEach(g=>{
+      const group = d.sources.filter(s=>(s.genre||'general')===g.id);
+      if (!group.length) return;
+      if (currentGenre === 'all'){
+        const h=document.createElement('div'); h.className='genreHead'; h.textContent=g.label; list.appendChild(h);
+      }
+      group.forEach(s=>{
+        const row = document.createElement('div'); row.className='pickRow';
+        row.innerHTML = '<div class="t">'+escapeHtml(s.title || s.ref)+'</div><div class="k">'+s.kind+'</div>';
+        row.addEventListener('click', ()=>startCourse(s.id, s.title || s.ref, s.genre || 'general'));
+        list.appendChild(row);
+      });
     });
   }catch(e){ list.innerHTML='<p class="note">could not load sources</p>'; }
 }
@@ -371,16 +463,18 @@ async function startStumble(){
   session.mode='stumble';
   session.q = document.getElementById('subjectInput').value.trim();
   session.ctx = session.q;
+  session.genre = genreOfSubject(session.q) || (currentGenre === 'all' ? 'general' : currentGenre);
   resetSession();
   enterPlayer();
   await waitForYt(); unlock();
   await refillQueue(true);
   nextVideo();
 }
-async function startCourse(sourceId, title){
+async function startCourse(sourceId, title, genre){
   session.mode='course';
   session.sourceId = sourceId;
   session.ctx = title;
+  session.genre = GENRE_IDS.includes(genre) ? genre : 'general';
   resetSession();
   enterPlayer();
   await waitForYt(); unlock();
@@ -493,7 +587,8 @@ document.getElementById('messageBackBtn').addEventListener('click', backToMenu);
 async function openEndCard(){
   if (cardOpen) return;
   cardOpen = true;
-  chosenStatus = 'watched'; chosenBucket = '';
+  chosenStatus = 'watched'; chosenBucket = ''; chosenGenre = session.genre || 'general';
+  renderGenreChips('endGenreChips', chosenGenre, false, id=>{ chosenGenre = id; });
   document.querySelectorAll('#statusRow .statusChip').forEach(c=>c.classList.toggle('on', c.dataset.status==='watched'));
   document.getElementById('noteInput').value = '';
   document.getElementById('linkInput').value = '';
@@ -543,6 +638,7 @@ document.getElementById('bankBtn').addEventListener('click', ()=>{
       note: document.getElementById('noteInput').value,
       project_link: document.getElementById('linkInput').value,
       source_kind: session.mode,
+      genre: chosenGenre,
       profile: getProfile()
     }) }).catch(()=>{});
   bankedThisSession++; updateBanked();
@@ -551,7 +647,20 @@ document.getElementById('bankBtn').addEventListener('click', ()=>{
 document.getElementById('endSkip').addEventListener('click', ()=>{ closeEndCard(); nextVideo(); });
 
 // ----- sources screen ------------------------------------------------------
-function openSources(){ show('sources'); document.getElementById('addResult').textContent=''; renderSources(); }
+let srcGenre = 'general';
+function openSources(){
+  show('sources'); document.getElementById('addResult').textContent='';
+  srcGenre = currentGenre === 'all' ? 'general' : currentGenre;
+  renderGenreChips('srcGenreChips', srcGenre, false, id=>{ srcGenre = id; });
+  renderSources();
+}
+function genreSelect(current, onChange){
+  const sel=document.createElement('select'); sel.className='genreSelect';
+  GENRES.forEach(g=>{ const o=document.createElement('option'); o.value=g.id; o.textContent=g.label; if(g.id===current) o.selected=true; sel.appendChild(o); });
+  sel.addEventListener('click', e=>e.stopPropagation());
+  sel.addEventListener('change', ()=>onChange(sel.value));
+  return sel;
+}
 async function renderSources(){
   const list = document.getElementById('srcList');
   list.innerHTML = '<p class="empty">loading</p>';
@@ -562,6 +671,11 @@ async function renderSources(){
     d.sources.forEach(s=>{
       const row=document.createElement('div'); row.className='srcRow';
       row.innerHTML = '<div><div class="t">'+escapeHtml(s.title||s.ref)+'</div><div class="k">'+s.kind+'</div></div>';
+      const sel = genreSelect(s.genre || 'general', async g=>{
+        await fetch(API_BASE + '/sources/genre', { method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ id: s.id, genre: g }) }).catch(()=>{});
+      });
+      row.appendChild(sel);
       const rm=document.createElement('button'); rm.className='rm'; rm.textContent='Remove';
       rm.addEventListener('click', async ()=>{
         await fetch(API_BASE + '/sources/remove', { method:'POST', headers:{'Content-Type':'application/json'},
@@ -579,9 +693,9 @@ document.getElementById('srcAddBtn').addEventListener('click', async ()=>{
   out.style.color='#555'; out.textContent='adding';
   try{
     const r = await fetch(API_BASE + '/sources', { method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ url }) });
+      body: JSON.stringify({ url, genre: srcGenre }) });
     const d = await r.json();
-    if (d.ok){ out.style.color='var(--good)'; out.textContent='added: ' + d.title + ' (' + d.kind + ')';
+    if (d.ok){ out.style.color='var(--good)'; out.textContent='added: ' + d.title + ' (' + d.kind + ', ' + genreLabel(d.genre) + ')';
       document.getElementById('srcInput').value=''; renderSources(); }
     else { out.style.color='var(--blocked)'; out.textContent = d.error || 'could not add that one'; }
   }catch(e){ out.style.color='var(--blocked)'; out.textContent='could not reach the backend'; }
@@ -589,13 +703,32 @@ document.getElementById('srcAddBtn').addEventListener('click', async ()=>{
 document.getElementById('sourcesBack').addEventListener('click', backToMenu);
 
 // ----- transcript screen ---------------------------------------------------
-async function openTranscript(){
+let tGenre = 'all';
+function openTranscript(){
   show('transcript');
+  tGenre = currentGenre;
+  renderGenreChips('tGenreChips', tGenre, true, id=>{ tGenre = id; loadTranscript(); });
+  loadTranscript();
+}
+async function loadTranscript(){
   const ledger = document.getElementById('ledger');
-  ledger.innerHTML = '<p class="empty">loading</p>';
+  const totals = document.getElementById('genreTotals');
+  ledger.innerHTML = '<p class="empty">loading</p>'; totals.innerHTML='';
   try{
-    const r = await fetch(API_BASE + '/transcript?profile=' + encodeURIComponent(getProfile())); const d = await r.json();
-    if (!d.buckets || d.buckets.length===0){ ledger.innerHTML='<p class="empty">Nothing logged yet. Watch a lesson and log it.</p>'; return; }
+    let url = API_BASE + '/transcript?profile=' + encodeURIComponent(getProfile());
+    if (tGenre !== 'all') url += '&genre=' + encodeURIComponent(tGenre);
+    const r = await fetch(url); const d = await r.json();
+    (d.genres || []).forEach(g=>{
+      const t=document.createElement('div'); t.className='gTotal';
+      t.innerHTML = '<b>'+escapeHtml(genreLabel(g.genre))+'</b>  '+g.videos+' videos<span class="gc">'+g.credits+' cr</span>';
+      totals.appendChild(t);
+    });
+    if (!d.buckets || d.buckets.length===0){
+      ledger.innerHTML = tGenre === 'all'
+        ? '<p class="empty">Nothing logged yet. Watch a lesson and log it.</p>'
+        : '<p class="empty">Nothing logged in ' + escapeHtml(genreLabel(tGenre)) + ' yet.</p>';
+      return;
+    }
     ledger.innerHTML='';
     d.buckets.forEach(b=>ledger.appendChild(ledgerRow(b)));
   }catch(e){ ledger.innerHTML='<p class="empty">Could not reach the backend.</p>'; }
@@ -603,29 +736,31 @@ async function openTranscript(){
 function ledgerRow(b){
   const row=document.createElement('div'); row.className='ledgerRow';
   row.innerHTML =
-    '<div class="top"><span class="bk">'+escapeHtml(b.bucket)+'</span>'+
+    '<div class="top"><span class="bk">'+escapeHtml(b.bucket)+'<span class="gtag">'+escapeHtml(genreLabel(b.genre))+'</span></span>'+
     '<span class="cr">'+b.credits+' credit'+(b.credits===1?'':'s')+'</span></div>'+
     '<div class="brk">'+b.videos+' videos  \u00b7  built '+b.built+'  \u00b7  followed '+b.followed+'  \u00b7  watched '+b.watched+(b.blocked?('  \u00b7  walls '+b.blocked):'')+'</div>'+
     '<div class="progress"><div class="fill" style="width:'+(b.toward_next/CREDIT_POINTS*100)+'%"></div></div>'+
     '<div class="entryList"></div>';
-  row.addEventListener('click', ()=>toggleEntries(row, b.bucket));
+  row.addEventListener('click', ()=>toggleEntries(row, b.bucket, b.genre));
   return row;
 }
-async function toggleEntries(row, bucket){
+async function toggleEntries(row, bucket, genre){
   const list = row.querySelector('.entryList');
   if (list.classList.contains('show')){ list.classList.remove('show'); return; }
   list.classList.add('show');
   if (list.dataset.loaded) return;
   list.innerHTML = '<span class="empty">loading</span>';
   try{
-    const r = await fetch(API_BASE + '/entries?profile=' + encodeURIComponent(getProfile()) + '&bucket=' + encodeURIComponent(bucket)); const d = await r.json();
+    let url = API_BASE + '/entries?profile=' + encodeURIComponent(getProfile()) + '&bucket=' + encodeURIComponent(bucket);
+    if (genre) url += '&genre=' + encodeURIComponent(genre);
+    const r = await fetch(url); const d = await r.json();
     list.innerHTML='';
     (d.entries||[]).forEach(e=>{
       const item=document.createElement('div'); item.className='entryItem';
       let html = '<div class="et">'+escapeHtml(e.title||e.video_id)+'<span class="es '+e.status+'">'+e.status+'</span></div>';
       if (e.note) html += '<div class="en">'+escapeHtml(e.note)+'</div>';
       html += '<a href="https://www.youtube.com/watch?v='+e.video_id+'" target="_blank">watch again</a>';
-      if (e.project_link) html += '  <a href="'+escapeAttr(e.project_link)+'" target="_blank">project</a>';
+      if (e.project_link) html += '  <a href="'+escapeAttr(safeLink(e.project_link))+'" target="_blank" rel="noopener">project</a>';
       item.innerHTML = html; list.appendChild(item);
     });
     list.dataset.loaded='1';
@@ -639,7 +774,8 @@ function backToMenu(){
   closeEndCard(); hideMessage();
   document.getElementById('blocked').classList.remove('show');
   show('launch');
-  session.mode=null; session.q=null; session.sourceId=null; session.ctx='';
+  session.mode=null; session.q=null; session.sourceId=null; session.ctx=''; session.genre='general';
+  buildChips();
   document.querySelectorAll('.mode').forEach(c=>c.classList.remove('selected'));
   document.getElementById('stumblePanel').classList.remove('show');
   document.getElementById('coursePanel').classList.remove('show');
@@ -650,6 +786,149 @@ function hideMessage(){ document.getElementById('message').classList.remove('sho
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 function escapeAttr(s){ return escapeHtml(s); }
+// Only web links open from a transcript. Anything else gets an https prefix.
+function safeLink(s){ const t=String(s||'').trim(); return /^https?:\/\//i.test(t) ? t : 'https://' + t.replace(/^[a-z]+:/i,''); }
 </script>
+
+<!-- =====================================================================
+     MOHAVE TECHNOLOGY GROUP // CREATOR SEAL
+     Self contained. Mounts at the bottom of the launch screen.
+     ===================================================================== -->
+<script>
+(function () {
+
+  var CONFIG = {
+    org:      "Mohave Technology Group",
+    monogram: "MTG",
+    mission:  "Practical software and hardware, built in the field.",
+    github:   "https://github.com/sudosilo",
+    linkedin: "https://www.linkedin.com/in/dicktemple"
+  };
+
+  /* LAYER 1: identity pressed into the source and head */
+  var head = document.head || document.getElementsByTagName("head")[0];
+
+  head.appendChild(document.createComment(
+    " Made by " + CONFIG.org + " // " + CONFIG.github + " // " + CONFIG.linkedin + " "
+  ));
+
+  var metaAuthor = document.createElement("meta");
+  metaAuthor.setAttribute("name", "author");
+  metaAuthor.setAttribute("content", CONFIG.org);
+  head.appendChild(metaAuthor);
+
+  [CONFIG.github, CONFIG.linkedin].forEach(function (url) {
+    var l = document.createElement("link");
+    l.setAttribute("rel", "me");
+    l.setAttribute("href", url);
+    head.appendChild(l);
+  });
+
+  var ld = document.createElement("script");
+  ld.type = "application/ld+json";
+  ld.textContent = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": CONFIG.org,
+    "sameAs": [CONFIG.github, CONFIG.linkedin]
+  });
+  head.appendChild(ld);
+
+  /* LAYER 2: the visible seal */
+  var css = ''
+    + '.mtg-seal{box-sizing:border-box;width:100%;background:#efe9da;'
+    + 'border-top:1px solid #cabfa3;color:#2b2620;margin-top:18px;'
+    + 'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;'
+    + 'padding:18px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;}'
+    + '.mtg-seal-row{display:flex;align-items:center;gap:14px;}'
+    + '.mtg-seal-btn{background:none;border:0;padding:0;margin:0;cursor:pointer;'
+    + 'display:flex;align-items:center;gap:14px;color:inherit;font:inherit;}'
+    + '.mtg-seal-svg{display:block;transition:transform .18s ease;}'
+    + '.mtg-seal.open .mtg-seal-svg{transform:scale(.94);}'
+    + '.mtg-seal-label{text-align:left;line-height:1.3;}'
+    + '.mtg-seal-org{font-family:Georgia,"Times New Roman",serif;font-size:14px;'
+    + 'letter-spacing:.3px;color:#2b2620;}'
+    + '.mtg-seal-ask{font-size:12px;color:#7a2e28;text-decoration:underline;}'
+    + '.mtg-seal-panel{overflow:hidden;max-height:0;opacity:0;'
+    + 'transition:max-height .25s ease,opacity .25s ease;width:100%;max-width:360px;}'
+    + '.mtg-seal.open .mtg-seal-panel{max-height:200px;opacity:1;}'
+    + '.mtg-seal-mission{font-style:italic;color:#4a443b;font-size:13px;'
+    + 'text-align:center;margin:0 0 12px;line-height:1.5;}'
+    + '.mtg-seal-links{display:flex;justify-content:center;gap:10px;}'
+    + '.mtg-seal-links a{flex:1;text-align:center;text-decoration:none;'
+    + 'font-size:13px;color:#2b2620;background:#faf7ef;border:1px solid #cabfa3;'
+    + 'border-radius:6px;padding:8px 10px;transition:background .15s ease;}'
+    + '.mtg-seal-links a:hover{background:#fff;}'
+    + '.mtg-seal-btn:focus-visible{outline:2px solid #7a2e28;outline-offset:3px;border-radius:4px;}'
+    + '.mtg-seal-links a:focus-visible{outline:2px solid #7a2e28;outline-offset:2px;}'
+    + '@media (prefers-reduced-motion: reduce){'
+    + '.mtg-seal-svg,.mtg-seal-panel{transition:none;}}';
+
+  var style = document.createElement("style");
+  style.textContent = css;
+  head.appendChild(style);
+
+  function buildSeal() {
+    var org = CONFIG.org.toUpperCase();
+    return ''
+      + '<svg class="mtg-seal-svg" viewBox="0 0 120 120" width="58" height="58" '
+      +   'role="img" aria-label="' + CONFIG.org + ' seal">'
+      +   '<defs>'
+      +     '<path id="mtgTop" d="M 23,60 A 37,37 0 0 1 97,60" fill="none"/>'
+      +   '</defs>'
+      +   '<circle cx="60" cy="60" r="55" fill="none" stroke="#7a2e28" stroke-width="2.5"/>'
+      +   '<circle cx="60" cy="60" r="48" fill="none" stroke="#7a2e28" stroke-width="1"/>'
+      +   '<text font-family="Georgia,serif" font-size="8" fill="#7a2e28">'
+      +     '<textPath href="#mtgTop" startOffset="50%" text-anchor="middle" '
+      +     'textLength="106" lengthAdjust="spacingAndGlyphs">'
+      +     org + '</textPath>'
+      +   '</text>'
+      +   '<text x="60" y="60" text-anchor="middle" dominant-baseline="central" '
+      +     'font-family="Georgia,serif" font-weight="700" font-size="27" '
+      +     'fill="#7a2e28">' + CONFIG.monogram + '</text>'
+      +   '<g fill="#7a2e28">'
+      +     '<rect x="58" y="83.5" width="4" height="4"/>'
+      +     '<rect x="63" y="88.5" width="4" height="4"/>'
+      +     '<rect x="53" y="93.5" width="4" height="4"/>'
+      +     '<rect x="58" y="93.5" width="4" height="4"/>'
+      +     '<rect x="63" y="93.5" width="4" height="4"/>'
+      +   '</g>'
+      + '</svg>';
+  }
+
+  var seal = document.createElement("footer");
+  seal.className = "mtg-seal";
+  seal.innerHTML = ''
+    + '<div class="mtg-seal-row">'
+    +   '<button class="mtg-seal-btn" type="button" aria-expanded="false">'
+    +     buildSeal()
+    +     '<span class="mtg-seal-label">'
+    +       '<span class="mtg-seal-org">' + CONFIG.org + '</span><br>'
+    +       '<span class="mtg-seal-ask">Who made this?</span>'
+    +     '</span>'
+    +   '</button>'
+    + '</div>'
+    + '<div class="mtg-seal-panel">'
+    +   '<p class="mtg-seal-mission">' + CONFIG.mission + '</p>'
+    +   '<div class="mtg-seal-links">'
+    +     '<a href="' + CONFIG.github + '" target="_blank" rel="noopener me">GitHub</a>'
+    +     '<a href="' + CONFIG.linkedin + '" target="_blank" rel="noopener me">LinkedIn</a>'
+    +   '</div>'
+    + '</div>';
+
+  var btn = seal.querySelector(".mtg-seal-btn");
+  btn.addEventListener("click", function () {
+    var nowOpen = seal.classList.toggle("open");
+    btn.setAttribute("aria-expanded", nowOpen ? "true" : "false");
+  });
+
+  // Mount at the bottom of the launch screen if present, otherwise the body.
+  var mount = document.getElementById("mtg-seal-mount") || document.body;
+  mount.appendChild(seal);
+
+})();
+</script>
+<!-- ===================== END CREATOR SEAL ===================== -->
+
 </body>
 </html>

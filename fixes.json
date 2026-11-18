@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-11-17T21:49:29.611Z",
+  "builtAt": "2026-11-18T21:30:02.674Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -74,6 +74,24 @@
       ],
       "knownProblem": null,
       "snapshot": "snapshots/mission-operator.html"
+    },
+    {
+      "app": "swh-sumbler",
+      "url": "https://swh-sumbler.vercel.app",
+      "kind": "down",
+      "since": "2026-11-18",
+      "status": 404,
+      "failing": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "features": [
+        "Stumble walks the Software Heritage archive through its API and shows a random source file.",
+        "Save keeps a hit, copy copies the code, and delete removes a saved hit.",
+        "Saved hits list with a count and export as json."
+      ],
+      "knownProblem": null,
+      "snapshot": "snapshots/swh-sumbler.html"
     },
     {
       "app": "mary-jane-man",
