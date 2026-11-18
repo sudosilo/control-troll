@@ -439,7 +439,21 @@
   "sudosilo/itchy-troll@v2026.11.17",
   "sudosilo/itchy-troll@v2026.11.16",
   "sudosilo/2026-11-04-orange-hush@v2026.11.16",
-  "sudosilo/2026-10-30-orange-scores@v2026.11.17"
+  "sudosilo/2026-10-30-orange-scores@v2026.11.17",
+  "sudosilo/bloxx@v2026.11.17",
+  "sudosilo/repo-cloner@v2026.11.17",
+  "sudosilo/2026-11-17-orange-campus@v2026.11.17",
+  "sudosilo/2026-11-17-orange-campusapi@v2026.11.17",
+  "sudosilo/2026-11-16-pipe-weave@v2026.11.17",
+  "sudosilo/mobbyhill@v2026.11.18",
+  "sudosilo/mobbyhill@v2026.11.17-2",
+  "sudosilo/raineurysm@v2026.11.17",
+  "sudosilo/pajamastan@v2026.11.17",
+  "sudosilo/mohavetech-website@v2026.11.16-2",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.17-2",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.18",
+  "sudosilo/2026-10-30-orange-scores@v2026.11.17-2",
+  "sudosilo/2026-10-30-orange-scores@v2026.11.18"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -2279,6 +2293,45 @@
     "map",
     "story",
     "vercel"
+   ]
+  },
+  "sudosilo/bloxx": {
+   "d": "A modular stage block configurator for building lit stage rigs, joined to the Stompbox band room.",
+   "h": "",
+   "t": [
+    "music",
+    "threejs",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/repo-cloner": {
+   "d": "A research tool that hunts open source games with sellable licenses and grades them as reskin bases.",
+   "h": "https://repo-cloner-khaki.vercel.app",
+   "t": [
+    "games",
+    "research",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-11-17-orange-campus": {
+   "d": "A phone friendly learning tool that plays videos and logs what you build in a credit transcript.",
+   "h": "https://campus-ebutuoy.vercel.app",
+   "t": [
+    "education",
+    "tool",
+    "vercel",
+    "video"
+   ]
+  },
+  "sudosilo/2026-11-17-orange-campusapi": {
+   "d": "The backend for Campus that stores sources, logged work, and the transcript.",
+   "h": "",
+   "t": [
+    "backend",
+    "education",
+    "railway"
    ]
   }
  }
