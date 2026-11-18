@@ -2,6 +2,41 @@
   "heckles": [
     {
       "date": "2026-11-18",
+      "repo": "2026-11-17-orange-campusapi",
+      "sha": "f0957697",
+      "message": "campus: education genres (history, disasters, safety and more), profiles, course embed fallback, creator seal",
+      "heckle": "You cloned your own YouTube backend, renamed the header comment, and shipped 682 lines of index.js like a filibuster that finally ran out of speakers. Every route in there, /sources/remove, /sources/genre, /entry, /clip, is wide open behind app.use(cors()) with no auth at all, so any stranger can delete your course list from a browser console. The database is sql.js rewriting the entire file with fs.writeFileSync on every change, which is a bailout plan for a problem you invented. The .gitignore lists *.db twice, which tells me nobody read it, least of all the intern who wrote it. And package.json still says name backend with an empty description and a test script that just errors out.\n\nFix it: Put a shared secret check in front of the write routes in index.js. Lock cors() down to the campus origin. Debounce the writeFileSync save in index.js or move to a real database. Delete the duplicate *.db line in .gitignore. Give package.json a real name and description."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "2026-11-17-orange-campus",
+      "sha": "3a27dca0",
+      "message": "campus: education genres (history, disasters, safety and more), profiles, course embed fallback, creator seal",
+      "heckle": "A single index.html with 934 added lines, all the CSS, all the markup and all the script crammed into one file like a omnibus spending bill nobody read. The viewport meta has user-scalable=no, so anyone with bad eyes gets zero zoom, nice work. The body is overflow hidden with every screen absolutely positioned and scrolling on its own, which is a coin flip on small phones. API_BASE is hardcoded to a Railway URL in the client, and the page loads the YouTube iframe_api from a CDN with no failure path I can see. Profiles live in a getProfile() call and get shoved into query strings, so identity is whatever the intern types. The commit message promises a creator seal and I can barely find it in this wall of text.\n\nFix it: Remove user-scalable=no from the viewport meta in index.html. Split the inline style and script into separate files. Move API_BASE into one config spot. Add an error state for when the iframe_api fails to load. Stop sending the profile name as a bare query string to /transcript."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "2026-11-17-orange-campus",
+      "sha": "dbac570d",
+      "message": "trigger production build from GitHub",
+      "heckle": "An empty commit to poke Vercel, because apparently the intern's deploy pipeline needs a nudge like a stalled bill needs a lobbyist. No files, no change, no explanation beyond the message, and I get to read it anyway. If your first push needs a manual kick every single time, the problem is the Vercel project link, not the git log.\n\nFix it: Check the Vercel project Git connection for this repo. Stop spamming empty commits into the history of 2026-11-17-orange-campus."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "2026-10-30-orange-scores",
+      "sha": "3c5210a8",
+      "message": "Register Raineurysm Puzzle on the score hub",
+      "heckle": "One line added to api/_games.js and you wrapped it in two changelog edits and a README rewrite, like holding a press conference to announce a parking ticket. The entry for raineurysm-puzzle sets max 60000 and perSecond 300, numbers pulled out of thin air with no comment explaining them, while every other game gets a note about its format. The maxMs of 30 days is a hand pasted line copied from mill-ionaire with the arithmetic changed. The registry is a hand pasted list that grows one copy paste at a time, and it will rot exactly like every other hand pasted list you own.\n\nFix it: Add a comment in api/_games.js saying where 60000 and 300 came from. Replace the copy pasted entries with a shared defaults object. Trim the CHANGELOG.md entry so it does not repeat the README."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "0b908660",
+      "message": "Neighborhood preset: curvy main streets with straight side streets",
+      "heckle": "A preset called Neighborhood landed in index.html, and the way you got there was editing a hint paragraph by one word, adding the word straight to a wall of text nobody reads. That hint paragraph is a single giant line of prose jammed in a p tag like a campaign promise with no budget behind it. The select now has Nautilus, Willow, Crystal, Neighborhood, Your pattern and Custom, a menu that reads like the intern named things as they came to mind. The preset logic itself is stuffed into the same one file as everything else in this toy, so every tweak makes the diff harder to read than the last.\n\nFix it: Break the steps hint paragraph in index.html into short separate lines. Move the preset definitions out of index.html into their own small file. Put the preset options in a sensible order in the select."
+    },
+    {
+      "date": "2026-11-18",
       "repo": "blue-agent",
       "sha": "9cb020b9",
       "message": "Detailer key v1: per-agent Anthropic key for the detailer, Railway login and DNS fix built in",
@@ -1364,41 +1399,6 @@
       "sha": "85057a72",
       "message": "sync dates with vercel",
       "heckle": "One date change for rainbow-run and you touched three files: fleet.html, mohavetech-vercel-projects-v1.json, and script-v53.js, each holding its own copy of the same date. That is three sources of truth, which means zero sources of truth. Also script-v53.js gets renamed every sync, so version numbers climb like a national debt and cache busting is the only thing you are good at. The message is the same sync dates with vercel again, informative as a shrug.\n\nFix it: Keep baseDates in one JSON file and have fleet.html and script-v53.js read it. Stop renaming script-v53.js on every sync and use a query string. Write commit messages that name the app and the date."
-    },
-    {
-      "date": "2026-11-05T23:41:17Z",
-      "repo": "2026-11-05-drive-thru-dental",
-      "sha": "6bac4040",
-      "message": "Drive-thru dental simulator first build",
-      "heckle": "Drive-thru dental simulator, first build, 238 lines in one index.html, because splitting a file is apparently a crime in your jurisdiction. The .ticker runs a 40 second marquee on a red bar that nobody asked for, and the bubble, tray and HUD are all stuffed in a 720px column that gets cramped fast on a small phone. canvas is width:100% with auto height and no fixed logic size shown, so the picture will blur and stretch when the screen turns. A first build with no description, no readme, and a joke concept carried by a scrolling banner.\n\nFix it: Pull the CSS and script out of index.html into their own files. Set an explicit canvas width and height and scale it with devicePixelRatio. Add a readme for the repo. Trim the ticker or make it pausable."
-    },
-    {
-      "date": "2026-11-05T23:41:17Z",
-      "repo": "rainbow-run",
-      "sha": "0b867b68",
-      "message": "Spectral Engine group in the menu, room loop passed to wall scenes",
-      "heckle": "You added a Spectral Engine menu group by pasting twelve buttons onto one line of index.html, and the menu already had a long row of them. On a phone that row wraps into a wall of tiny chips, like a filibuster that nobody can stop. The button list is hand duplicated against the scene list elsewhere, so adding one scene means editing two places and forgetting one. And 31-EDO Ring as a label means nothing to anyone but you.\n\nFix it: Generate the buttons in index.html from a single scenes array instead of pasting them. Break the twelve buttons onto separate lines and make the row scroll or grid on narrow screens. Give 31-EDO Ring a label a normal person can read."
-    },
-    {
-      "date": "2026-11-05T23:41:17Z",
-      "repo": "rainbow-run",
-      "sha": "96e08a69",
-      "message": "Spectral Engine visualizers on the wall, sliced catch-up in the wall host",
-      "heckle": "Seven hundred eleven lines of se/spectral.js dropped in whole, with the commit cheerfully saying the drawing code is unchanged, so no one reviews it and everyone suffers. It opens with const audioCtx=undefined; which is a fake audio context shoved in to quiet the old code, the coding equivalent of a campaign promise. The catch in wall.html used to be an empty swallow and now stuffs the error in window.__err where no one will ever look. The mw/ scripts were copied the same way, so this is a third copy of the same idea.\n\nFix it: Remove the const audioCtx=undefined; stub in se/spectral.js and delete the code that used it. Surface window.__err in wall.html on screen or in the console. Share code between mw/ and se/ rather than cloning it."
-    },
-    {
-      "date": "2026-11-05T06:55:45Z",
-      "repo": "rainbow-run",
-      "sha": "af8f3224",
-      "message": "Screensavers group in the menu, link rain removed, beat passed to wall scenes",
-      "heckle": "You jammed another button group into the index.html menu, which was already a wall of tiny buttons on a phone screen, and then yanked Link rain out with a swap that rewrites a whole line instead of touching one button. Passing the beat to wall scenes is a nice idea until you notice nobody can tell what it does from the commit. Six lines changed in the menu and I still can't find a reason it needed its own commit. Did your last intern also commit in tiny dribbles like a leaky faucet?\n\nFix it: Squash these menu tweaks into one commit instead of dribbling them out. Put a one line comment in index.html saying what beat is and who consumes it. Test the group row at narrow widths so the buttons stop wrapping into mush."
-    },
-    {
-      "date": "2026-11-05T06:55:45Z",
-      "repo": "rainbow-run",
-      "sha": "80edee2e",
-      "message": "Coffeekit screensavers on the wall, downhill scrolls the right way",
-      "heckle": "Two hundred twenty three lines of ck/coffeekit.js dropped in one lump, wrapped in a giant closure with mode picked off a data attribute, and not one test to show the seven modes even run. Your comment says they run one step per sixtieth of a second, same on every phone, which is adorable, because a phone that drops frames will drift like a filibuster that never ends. The downhill.js fix swaps a scroll direction in a single dense line that nobody can read. And wall.html now sniffs a g query param like a fishing trip. A cereal box has better structure.\n\nFix it: Drive the animation off a shared clock in ck/coffeekit.js instead of assuming sixty steps per second everywhere. Break the downhill.js scroll line into readable statements. Whitelist the g value in wall.html instead of trusting the query string."
     }
   ]
 }
