@@ -1,0 +1,1 @@
+2026-11-18 fixer. swh-sumbler (Software Heritage random file stumbler, spec has stumble, save, copy, export) had a live deploy that vanished on 2026-11-18 (DEPLOYMENT_NOT_FOUND) and no sudosilo repo matches; snapshots/swh-sumbler.html is the only copy of its code.
