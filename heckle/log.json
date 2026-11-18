@@ -2,6 +2,27 @@
   "heckles": [
     {
       "date": "2026-11-18",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "0c6c2cc9",
+      "message": "agent-orange 2026-11-18T202050 (#111)",
+      "heckle": "Another day, another robot dumps a one line JSON file into contrib/agent-orange and you merge it like a senator signing a bill he never read. This one claims a chunk, declares the same port value of 5486 on all four edges like a copy paste campaign promise, then defines an agricultural lot with a single minified line nobody on earth can review. A pull request with no reviewer, no tests and no description is a rubber stamp with extra steps, and you are the stamp.\n\nFix it: Pretty print the contrib/agent-orange JSON so a diff means something. Add a validator step that rejects duplicate port values on every edge of a chunk. Make the merge check the file against the chunk it claims before it lands."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "c00e5a3c",
+      "message": "grok 2026-11-18T170239",
+      "heckle": "The grok bot pushed straight to the branch under your name again, no pull request, no gate, no adult supervision, like a executive order nobody voted on. Its contrib/grok file builds a cottage out of place_line calls with negative coordinates, a wall height of 3658 repeated per segment, and door checks buried in the meta of one wall. All of it is crammed on a single line, so the intern who approved this setup could not find a bug in it with a flashlight.\n\nFix it: Make grok open pull requests like the other bots instead of pushing to the branch. Put the wall height once per building rather than on every line segment. Move the door checks out of wall meta into their own call. Format contrib/grok files so a human can read them."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "688b4e89",
+      "message": "agent-orange 2026-11-18T135537 (#110)",
+      "heckle": "This merge removes two ids, 36638 and 36637, then plants a sign symbol whose text is a whole calendar essay about orbits, hectodays and farm season. Stuffing paragraphs of lore into meta.text on a sign is how you build a bloated map that loads like a government website. The remove calls fire by raw numeric id with nothing proving those ids still belong to the thing the bot meant, which is a bailout with no audit.\n\nFix it: Verify remove ids against the object type and owner before they delete anything in contrib/agent-orange. Cap the length of meta.text on place_symbol calls. Store the calendar text once in data and let the sign point at it."
+    },
+    {
+      "date": "2026-11-18",
       "repo": "2026-11-17-orange-campusapi",
       "sha": "f0957697",
       "message": "campus: education genres (history, disasters, safety and more), profiles, course embed fallback, creator seal",
@@ -1378,27 +1399,6 @@
       "sha": "66b31da1",
       "message": "Locker kiosk attract screen",
       "heckle": "A 270 line index.html with all CSS inline, a fixed 4 by 3 aspect-ratio screen, and a grid of 1.25fr and 1fr columns. On a phone that is a postage stamp with a headline crammed into it. The .headline gets a clamp-style font and the kraft box illustrations are hand drawn rectangles, which is cute until nobody can edit them. You called it the attract screen, but the cursor:pointer on the whole .screen means any stray tap starts the thing.\n\nFix it: Add a media query for narrow widths in index.html so the two columns stack. Pull the inline CSS into its own stylesheet. Limit cursor:pointer to the actual start target instead of the whole .screen."
-    },
-    {
-      "date": "2026-11-05T23:41:17Z",
-      "repo": "rainbow-run",
-      "sha": "197901c9",
-      "message": "Coffeekit screensavers follow sound playing on the phone",
-      "heckle": "heard() in ck/coffeekit.js loops over 1024 samples as a hardcoded number, so the day the analyser size changes it reads undefined and feeds NaN into every shape on screen. The for loops have no braces and are glued together with semicolons on one line, which is how you lose a Tuesday. bassHistory runs a reduce over the array every frame, and band() quietly depends on a window.__audio global that nothing in this diff defines. This is a hostile takeover of the beat code by a stranger.\n\nFix it: Use td.length and fd.length instead of 1024 in heard() in ck/coffeekit.js. Keep a running sum for bassHistory instead of reducing every frame. Guard against a missing window.__audio. Put braces on those loops."
-    },
-    {
-      "date": "2026-11-05T23:41:17Z",
-      "repo": "mohavetech-website",
-      "sha": "e325b1a3",
-      "message": "sync dates with vercel",
-      "heckle": "Adding one app means hand pasting a block into mohavetech-vercel-projects-v1.json, three aliases and all, and the commit message is the same sync dates with vercel you have typed a dozen times today. You wrote a one step sync script an hour ago and then still ship a nine line JSON paste like a monk copying scrolls. The message does not even say which app got added, so the history reads like a government press release: lots of words, no information.\n\nFix it: Run your own sync script and stop hand editing mohavetech-vercel-projects-v1.json. Generate the alias list from the project name instead of typing three of them. Write a commit message that names the app that was added."
-    },
-    {
-      "date": "2026-11-05T23:41:17Z",
-      "repo": "mohavetech-website",
-      "sha": "85057a72",
-      "message": "sync dates with vercel",
-      "heckle": "One date change for rainbow-run and you touched three files: fleet.html, mohavetech-vercel-projects-v1.json, and script-v53.js, each holding its own copy of the same date. That is three sources of truth, which means zero sources of truth. Also script-v53.js gets renamed every sync, so version numbers climb like a national debt and cache busting is the only thing you are good at. The message is the same sync dates with vercel again, informative as a shrug.\n\nFix it: Keep baseDates in one JSON file and have fleet.html and script-v53.js read it. Stop renaming script-v53.js on every sync and use a query string. Write commit messages that name the app and the date."
     }
   ]
 }
