@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-18",
+      "repo": "blue-agent",
+      "sha": "9cb020b9",
+      "message": "Detailer key v1: per-agent Anthropic key for the detailer, Railway login and DNS fix built in",
+      "heckle": "You committed blue-agent-detailer-key-v1.sh, a shell script that makes you paste a secret key into a phone terminal, which is how a toddler would run key rotation if toddlers had root. The only validation is a case statement checking the prefix, so any typo with the right first letters sails through to production like a bailout with no strings. Then you print the last four characters of the key to the console for fun. The repo is a junk drawer of one shot scripts with versions baked into filenames. The set -e plus the pull and the deploy in one blob means a half failed run leaves the service in a mystery state.\n\nFix it: Stop shipping one shot scripts in the repo root and keep one parameterized setup script. Check the key length and charset in blue-agent-detailer-key-v1.sh, not just the prefix. Quit echoing any part of the key. Add a trap so a failed deploy says what state the service is in. Delete the filename version suffix and let git do its job."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "eace1938",
+      "message": "Hidden growth dots during play, scaled cars and critters, 30 plus presets, new steps, rule switching, surprise me",
+      "heckle": "One commit that hides dots, scales cars and critters, adds thirty presets, new steps, rule switching and a Surprise me button. That is not a commit, that is an omnibus spending bill with a rider for every senator. All of it landed as 124 added lines in one index.html that was already a single file wall of canvas code, so good luck finding anything when the pinch bug returns. The bEdit toggle sits next to Save image, Clear and Zoom in a row that was cramped on a phone before you added a fourth button. And a button labeled Edit dots: On that is hidden during play is a label that lies half the time.\n\nFix it: Split this into five commits, one per feature. Move the preset tables out of index.html into their own file. Check the toolbar row around bEdit and bSurprise at phone width and let it wrap. Make the bEdit label match what is actually visible during play. Give Surprise me a seed so a bad result can be reproduced."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "c7399561",
+      "message": "Clean single shape sides in isometric, open space under bridges",
+      "heckle": "A fix titled clean single shape sides, which is a polite way of saying the last commit drew the sides wrong and nobody noticed until you looked at it. In drawIsoBody you stuffed bo, BL and BR into the same comma chain of var declarations until the line reads like a ransom note, and the function now hauls around GL, GR, BL and BR with names a single letter apart. One typo swapping L and R and your bridges render inside out, and nothing here would tell you. Sixteen lines added and fifteen removed with no test, no screenshot, no nothing, just vibes and a prayer.\n\nFix it: Break the var chain in drawIsoBody in index.html into named objects so left and right cannot be swapped quietly. Rename GL, GR, BL and BR to something a human can read. Add a tiny render check for the bridge case. Stop patching the isometric view one tweak per commit and batch your fixes."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "8acf7eb5",
+      "message": "Tabbed interface, isometric view, bridges and tunnels at crossings",
+      "heckle": "You bolted a tabbed interface, a whole isometric renderer, bridges and tunnels onto a pipe toy in one commit, 152 lines added to a single index.html, like a campaign promise to fix healthcare, infrastructure and the weather before lunch. The #bar rule got rewritten with padding stacked on safe area math, so every tab you added eats vertical space from the canvas on a phone, which already had overflow hidden and no way to scroll when the bar gets tall. Bridges and tunnels at crossings means every crossing now needs depth logic, and the intern did it inside the draw path with no separate module, so every frame pays for it.\n\nFix it: Pull the isometric code out of index.html into its own script file. Cap the height of #bar and let the tab content scroll inside it. Cache the crossing detection instead of recomputing it each frame. Test the tabs on a small phone in landscape before you push again."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "2026-10-30-orange-scores",
+      "sha": "5963394b",
+      "message": "MobbyHill vehicle unlocks in the token wallet",
+      "heckle": "Two lines in a changelog, one more line in a README, and a price table crammed into api/_wallets.js as a single run on line of part names that now scrolls off the screen like a filibuster. Every new item you add means editing the same unreadable line, and one missed comma takes the whole wallet down for every game on the hub. The prices live in this file and again in the game itself, so the day you change one and forget the other, players see 1500 and get charged something else. You also hand wrote a version tag with a letter suffix, d, which tells me the previous three were not enough to teach you anything.\n\nFix it: Put one item per line in api/_wallets.js so a diff shows what changed. Make the game read prices from the hub instead of keeping a second copy. Add a check that every price in the game exists in the wallet file. Generate the changelog tag instead of typing it."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "mobbyhill",
+      "sha": "e004674d",
+      "message": "Token unlocks for the side by side, SUV and pickup",
+      "heckle": "You locked three vehicles behind tokens by pasting a VEHPRICE object into index.html, which is the client, which the player owns. The unlock state lives in localStorage next to the options, so anyone with a console can hand themselves a pickup for free, and the price list in the page is a suggestion, not a rule. Your own comment admits the spending goes through the score hub wallet, so the server holds the truth and the page holds a polite fiction. Then you added an unlock dialog with a Not now button to a start menu that was already four sections tall on a phone. Congress passes cleaner paywalls.\n\nFix it: Check ownership on the server wallet before a locked vehicle is allowed to start a scored run in index.html. Never trust the unlock flag read back from localStorage. Check the unl panel and the vehicle row at phone width and make sure Unlock is reachable without scrolling. Move VEHPRICE out of the page so the hub is the only source of prices."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "pajamastan",
+      "sha": "e0b88eee",
+      "message": "Creator seal with donate pill",
+      "heckle": "A donate pill pasted straight into pajamastan index.html, 30 lines of seal markup and css hand copied from the creator-seal file, because apparently importing a file is for people with real jobs. This is the second time in a few hours the same block gets pasted into two places, so the next edit means fixing it twice and forgetting one, like a government agency with two offices that never speak. The payment link is hard coded in the page config with a comment that says BLUE PHONE, which is not documentation, that is a note to self scribbled on a napkin. Also the css lives inside a string of plus signs, which is a crime against stylesheets.\n\nFix it: Load the creator seal from one shared file instead of pasting it into index.html. Move the donate link into one config spot with a real comment. Write the seal css in a style block, not a concatenated string. Check the focus states on the new pill for contrast. Delete the duplicate copy once the shared one works."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "pajamastan",
+      "sha": "1ed7caf2",
+      "message": "Add Support the Micronation of Pajamastan donate pill to creator seal",
+      "heckle": "The first half of the donate pill pair, 30 lines added to creator-seal/creator-seal.html, and then you copied the whole thing by hand into the main page ten minutes later, which tells me the creator-seal folder is a source of truth in the way a campaign promise is a source of truth. The css is built from a pile of quoted strings joined with plus signs, so one missing quote and the entire seal vanishes with no error anyone will read. A payment link sits in the file as a bare string with no check that it still works, so a dead link means a donor staring at an error page with money in hand.\n\nFix it: Make creator-seal/creator-seal.html the only copy and include it from the page. Put the seal css in a real style block. Add a note beside the donate setting saying where the link comes from and who owns it. Test the pill on a narrow phone so it does not push the other seal buttons off screen."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "36af8eb3",
+      "message": "Merge and link steps, lattice, diamond chain and fan presets, stronger grow up and down",
+      "heckle": "Merge steps, link steps, three new presets and stronger growth in a single commit, because the intern believes a commit message is a grocery list. You stuffed three more entries into the same option select in index.html next to Coral, Spiral vine and Bubbles, so that dropdown is now a phone scroll marathon with nothing grouped. Changing growth strength in the same commit as the new presets means when the pipes start exploding off screen, nobody can tell which half did it. Forty one lines added and fourteen changed, no explanation, like a stimulus bill nobody read before signing.\n\nFix it: Group the preset select in index.html into sections so it stops being one long list. Split growth tuning into its own commit. Clamp the grow up and grow down strength so a bad value cannot fill the screen. Give each new preset a name that says what it makes."
+    },
+    {
+      "date": "2026-11-18",
+      "repo": "mobbyhill",
+      "sha": "a60c4f73",
+      "message": "Weather: rain, fog, dust storm and snow",
+      "heckle": "Four weather systems in one commit, 66 lines added to a single index.html game file that is already a 12 version wall of comments at the top, where the changelog lives inside an html comment like the intern is leaving notes for an archaeologist. The new Weather button sits in a menu that already had a Fuel, Ghost and Damage row and a Store row, so on a small phone you now scroll to start a game. The WXS table crams sky colors, notes and rules into long one line objects, and saveOpts now writes wx from WXPICK, a variable the diff never shows you defining first.\n\nFix it: Move the version history out of the html comment in index.html into CHANGELOG.md. Check that WXPICK is declared before saveOpts runs on first load. Lay out the menu rows so Weather does not push Start off a small screen. Put the WXS table one weather per line."
+    },
+    {
       "date": "2026-11-17",
       "repo": "2026-11-16-pipe-weave",
       "sha": "d5ca494a",
@@ -1329,76 +1399,6 @@
       "sha": "80edee2e",
       "message": "Coffeekit screensavers on the wall, downhill scrolls the right way",
       "heckle": "Two hundred twenty three lines of ck/coffeekit.js dropped in one lump, wrapped in a giant closure with mode picked off a data attribute, and not one test to show the seven modes even run. Your comment says they run one step per sixtieth of a second, same on every phone, which is adorable, because a phone that drops frames will drift like a filibuster that never ends. The downhill.js fix swaps a scroll direction in a single dense line that nobody can read. And wall.html now sniffs a g query param like a fishing trip. A cereal box has better structure.\n\nFix it: Drive the animation off a shared clock in ck/coffeekit.js instead of assuming sixty steps per second everywhere. Break the downhill.js scroll line into readable statements. Whitelist the g value in wall.html instead of trusting the query string."
-    },
-    {
-      "date": "2026-11-05T06:55:45Z",
-      "repo": "rainbow-run",
-      "sha": "ce1524ca",
-      "message": "Copy the visualizer scripts",
-      "heckle": "You copied a pile of scripts into mw/ and called it a commit. Ants, battle, birds, each one fifty to seventy five lines of minified-looking soup with variables like h32, ch, tun and S, in a single file with zero explanation. This is a bailout of someone else's code that you pasted in with no tests and no tidy shared helpers, so every scene redeclares the same destructured VZ helpers on line two. Copy paste cloning at its finest. I've seen campaign promises with more structure than this folder.\n\nFix it: Pull the repeated per scene boilerplate in mw/ into viz-common.js. Give the single letter variables real names. Add a note in the repo saying where these scripts came from and how to resync them so they don't rot."
-    },
-    {
-      "date": "2026-11-05T06:55:45Z",
-      "repo": "rainbow-run",
-      "sha": "8bb5d725",
-      "message": "Wall host for the visualizers, 26 new scenes grouped in the menu",
-      "heckle": "Twenty six scenes and a brand new wall.html in one commit. That is a government omnibus bill, and about as reviewable. The wall host loads a sibling page in a fixed iframe with pointer-events off, and index.html now stacks z-indexes by hand, canvas 1 and panel 2, a fragile pile that breaks the minute you add a third layer. The scene buttons are crammed into rows of ten pixel padded buttons that will be a nightmare on a small phone. Did you let a toddler on the keyboard?\n\nFix it: Split the wall host and the scene list into separate commits next time. Replace the hardcoded z-index numbers in index.html with named CSS variables. Generate the scene buttons from a list instead of hand typing twenty six of them. Check the menu at 320 pixels wide."
-    },
-    {
-      "date": "2026-11-05T06:55:45Z",
-      "repo": "rainbow-run",
-      "sha": "a902de42",
-      "message": "Rain runs top to bottom down a row, with wind, clouds, sun, birds, plane, balloon, sailboat and a jumping fish",
-      "heckle": "Your commit message reads like a grocery list because the commit is a grocery list: wind, clouds, sun, birds, plane, balloon, sailboat and a fish, all dumped into index.html in one hundred twelve added lines. This is one app file turning into a landfill. The subtitle now says for rain a row stacks top to bottom, which means your own UI has to apologize for a scene behaving differently than every other scene. That's a feature held together with duct tape and a campaign slogan.\n\nFix it: Move the rain scene out of index.html into its own file under mw/. Make the stacking direction a scene property instead of a special case in the subtitle text. Break the sun, birds and fish into separate commits so one broken piece can be reverted alone."
-    },
-    {
-      "date": "2026-11-05T06:55:45Z",
-      "repo": "rainbow-run",
-      "sha": "318df5c7",
-      "message": "Fit zoom and nudge per phone, Quad and Nine wall layouts, stars scene",
-      "heckle": "One hundred forty lines added to index.html for per phone zoom, nudge, two layout modes and a stars scene, all in the same commit. You changed the intro sentence for the third time in three commits, which tells me you don't know what this app is. The new rowSize hidden rule bolted onto the authRow selector is the sort of sloppy CSS you only write at two in the morning. Quad and Nine are hardcoded layouts, so a six phone room gets nothing. Government shutdown energy.\n\nFix it: Make the wall layout a rows and columns pair in index.html instead of hardcoding Quad and Nine. Pick one sentence for the panel subtitle and stop rewriting it each commit. Put the stars scene in its own commit."
-    },
-    {
-      "date": "2026-11-05T06:55:45Z",
-      "repo": "rainbow-run",
-      "sha": "968f71de",
-      "message": "Rain scene in the single line style",
-      "heckle": "A rain scene that took sixty nine added lines inside index.html, and the first thing you touched was the subtitle text again, rewriting it to list the crow, the traffic or the rain. Next scene you will rewrite it again and the one after that, because you hardcoded a list of scene names into a sentence instead of generating it. The rain button is hand pasted into the scenes row like it's 1998. You have a scene list and you keep treating it like a post it note.\n\nFix it: Generate the scene buttons and the subtitle in index.html from one scenes array. Move the rain drawing code out of the page into its own module. Add a test or at least a note showing how rain syncs across phones."
-    },
-    {
-      "date": "2026-11-05T06:55:45Z",
-      "repo": "rainbow-run",
-      "sha": "c8d568a3",
-      "message": "Panel fades to a menu button, and a top down highway scene synced across the room",
-      "heckle": "Two unrelated features in one commit, a fading panel and a top down highway scene, because separating concerns is apparently a foreign language to you. The panel fade is a CSS opacity transition on #panel plus a new #menu hamburger pinned at forty eight by forty four pixels, but a faded panel with opacity zero can still sit on top and eat taps if it isn't also hidden. Whether anyone can find a menu button that appears after a timer, I can't tell. That is a bailout waiting to happen.\n\nFix it: Set pointer-events none or hidden on #panel once the fade ends in index.html. Split the highway scene from the menu change. Make the fade timer cancel on any touch so the panel doesn't vanish while someone is mid tap."
-    },
-    {
-      "date": "2026-11-05T06:55:45Z",
-      "repo": "rainbow-run",
-      "sha": "3ded2071",
-      "message": "Row size can be set by hand, and the row holds through a reconnect",
-      "heckle": "You swapped the Spot 1 of 1 label for a bare Spot 1 and bolted on a Row of 1 control with fewer and plus buttons, so now the UI has two counters that can disagree with the server. The comment says a manual row size wins while live, which is the exact kind of precedence rule that gets stuck forever after a reconnect. Your Auto button got shoved onto the second row like a stray sock. Seventeen lines and I count at least three new ways for the display to lie.\n\nFix it: Reset the manual row size flag in index.html when the room code changes. Show the server count next to the hand set count so they can't silently disagree. Move the Auto button back next to the thing it controls."
-    },
-    {
-      "date": "2026-11-05T06:55:45Z",
-      "repo": "rainbow-run",
-      "sha": "1b336050",
-      "message": "Remove seeded readme",
-      "heckle": "You deleted the only two lines of README.md, which were the project name and one description, and left the repo with no explanation at all. A seeded readme is not the problem. Having zero documentation for a phone wall app that needs a room code, a spot order and a server is the problem. You are fixing the wrong thing. This is the kind of cleanup that makes a repo worse, like cutting the budget for the one office that reads the paperwork.\n\nFix it: Write a real README.md with how to start a room, how to line up phones and what the stompbox API is. List the scene names and where the scripts under mw/ came from. Never delete a readme without replacing it."
-    },
-    {
-      "date": "2026-11-04T23:44:22Z",
-      "repo": "2026-11-04-field-dispatch",
-      "sha": "e9d80cde",
-      "message": "Crews follow real road routes between start and end points",
-      "heckle": "The new api/route.js opens a Redis client at module level, swallows every connection error with an empty handler, and takes lat and lng from the query string with no rate limit, so anyone on earth can make your server hammer a free public routing service and fill your database with junk keys. The leg logic in index.html starts as a straight line and then snaps to the road once it arrives, so crews teleport sideways mid trip. A government shutdown has better continuity than that.\n\nFix it: Put a rate limit and a bounding box check on api/route.js. Log the Redis error instead of eating it. Fetch the route before the leg starts in the startLeg spot of index.html so crews never jump."
-    },
-    {
-      "date": "2026-11-04T23:44:22Z",
-      "repo": "2026-11-04-field-dispatch",
-      "sha": "c8625bc1",
-      "message": "Movement badge with motion sensing and 25 mph for 2 minutes driving rule",
-      "heckle": "A driving lock built on a phone motion sensor and a 25 mph threshold, and the escape hatch is a button labeled I am a passenger. Congratulations, the safety feature is an honor system, like a campaign promise. The new badge colors in index.html also ship pale yellow text on a pale yellow pill, which nobody can read in sunlight, and you are the one who wants this used outside.\n\nFix it: Make the b-maybe badge contrast readable in index.html. Add a timeout so the passenger button resets itself. Test the speed rule with a faked position feed before trusting it on a real road."
     }
   ]
 }
