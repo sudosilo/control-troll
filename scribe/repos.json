@@ -86,8 +86,8 @@
    "summary": "The official site of the micronation of Pajamastan",
    "name": "Pajamastan",
    "latest": {
-    "date": "2026-11-16",
-    "text": "Added the Hire Portal to the Links tab as a Pajamastan portal."
+    "date": "2026-11-17",
+    "text": "Added a donate pill to the creator seal that invites people to support the micronation."
    }
   },
   "parkingten": {
@@ -173,7 +173,7 @@
    "name": "App Index",
    "latest": {
     "date": "2026-11-16",
-    "text": "Added a Railway tab that lists every Railway project and service with this billing period cost, an end of period estimate, deploy status, and idle flags. Apps with a Railway backend get a blue railway button that opens it in Railway. Hire Portal got its orange phone star."
+    "text": "Apps now show buttons for the outside services they use, including Supabase, Cloudflare, Anthropic, ElevenLabs, YouTube, MusicBrainz, and AudD. An API plug button opens an overlay of every outside API an app calls, and chain buttons link apps that call each other. The itch button is now a boxed purple controller icon, the Railway button is boxed like the GitHub button, and the colored phone stars were dropped from app rows."
    }
   },
   "ether-wand": {
@@ -1793,7 +1793,7 @@
    "summary": "A shared city where AI agents take turns building, with a viewer and a web API.",
    "name": "Agent Test Bed",
    "latest": {
-    "date": "2026-11-17",
+    "date": "2026-11-18",
     "text": "The agent turn was played and merged into the city."
    }
   },
@@ -2131,8 +2131,8 @@
    "summary": "Shared score board and live plays feed that the games send their scores to.",
    "name": "Score Hub",
    "latest": {
-    "date": "2026-11-17",
-    "text": "Registered twelve more MobbyHill leaderboards, one for each game in the Forest, Canyon and Dunes landscapes. Added six new MobbyHill store parts to its token wallet. Registered eight MobbyHill Search and rescue leaderboards, with and without fuel on each of the four landscapes. The hub shows them as hikers rescued and a clock time. Registered eight MobbyHill Off road recovery leaderboards, shown as jobs cleared and a clock time, and added the heavy rope and fast winch to its token wallet."
+    "date": "2026-11-18",
+    "text": "MobbyHill sign in now runs on Supabase Auth. Players sign in with their own email and a six digit code, or with any outside provider turned on in Supabase. Wallets, unlocks and payments belong to the Supabase Auth user. Removed the name and password accounts."
    }
   },
   "a-canticle-for-pajamastan": {
@@ -2612,8 +2612,8 @@
    "private": false,
    "name": "raineurysm",
    "latest": {
-    "date": "2026-11-16",
-    "text": "Made everything prettier. Added a sky with drifting clouds, teardrop rain with a shine, ripples on the floor and rim, and glassy vessels with wavy water and soft shadows. Lanes and the beat line now glow, and panels and buttons are frosted."
+    "date": "2026-11-17",
+    "text": "Added seven more puzzle levels, for twelve in all. A puzzle run now scores points for speed and few parts, can be sent to the shared score board, and has a high score board in the puzzle menu. Added a start screen with three modes, a hint on the first puzzle, a full screen button, and a rain detail setting that lowers itself on slow phones. Fixed layouts on wider screens."
    },
    "category": "Music and Visualizers",
    "summary": "A rain music toy where falling rain hits vessels that play notes.",
@@ -2631,8 +2631,8 @@
    "summary": "A wireframe off road hill climb for the phone with tilt steering and score hub scores.",
    "name": "MobbyHill",
    "latest": {
-    "date": "2026-11-17",
-    "text": "Buzzards now fly from flag to flag. There are four landscapes, the games were renamed, and the store is now a menu with icons and terrain parts. Added three vehicles and a Search and rescue challenge with a trailer and teammates. Added an Off road recovery mission with a purple SUV, a pickup with a wrecker boom, and a flatbed."
+    "date": "2026-11-18",
+    "text": "Sign in now works with your own email or an outside sign in provider."
    }
   },
   "fashionocalypse": {
@@ -2657,8 +2657,8 @@
    "summary": "A pipe drawing toy where pipes turn, split, and weave over and under each other.",
    "name": "Pipe Weave",
    "latest": {
-    "date": "2026-11-16",
-    "text": "Created Pipe Weave, a pipe drawing toy. You start a pipe with a tap, steer it left, right, or straight, and let it weave over or under other pipes. Added a grow mode with random and over under weave, then a flip end control, color modes, cars, critters, and water flow. Added roots, shadows, deep zoom, drive mode, and right angle mode. Pinching to zoom no longer draws, and undo now takes smaller steps."
+    "date": "2026-11-17",
+    "text": "Joining a pipe now opens the wall of the pipe it joins, and the next pipe after a join waits for you. Added split, bubble, and spiral steps, merge and link steps, record and play, skins, line colors, grow rules, and a steer mode with tilt. Added lattice, diamond chain, fan, and Neighborhood presets, with more than thirty presets in all. Added a tabbed interface, an isometric view, and bridges and tunnels at crossings. Growth dots hide during play, cars and critters scale to fit, and a surprise me button picks a rule."
    }
   },
   "2026-11-15-orange-keydecode": {
@@ -2701,6 +2701,60 @@
    "latest": {
     "date": "2026-11-16",
     "text": "Created Zion Wakes, a story and map toy that loads the Agent Test Bed city. You pan and zoom the map and read a short story beat. You can pick a place to move it, name it, approve it, or reject it, and start over with New start. Two follow up builds were triggered to get the first deploy live."
+   }
+  },
+  "bloxx": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Music and Visualizers",
+   "summary": "A modular stage block configurator joined to the Stompbox band room",
+   "name": "Bloxx",
+   "latest": {
+    "date": "2026-11-17",
+    "text": "Created Bloxx, a modular stage block configurator joined to the Stompbox band room. You can build stages from blocks, pick presets, light patterns, and motion, and view the stage from several angles."
+   }
+  },
+  "repo-cloner": {
+   "apps": [],
+   "urls": [
+    "https://repo-cloner-khaki.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "A tool that hunts open source games with sellable licenses and grades them as reskin bases",
+   "name": "Repo Cloner",
+   "latest": {
+    "date": "2026-11-17",
+    "text": "Created Repo Cloner. It hunts GitHub for open source games with sellable licenses, checks asset licenses and the file tree, and grades each repo as a reskin base. Added an Open on GitHub button to the detail sheet. Locked the tool behind the shared sign in, so each person saves their own Claude key and GitHub token and the owner's key is never spent. Added the Scans tab with a first scan that flags famous game names, ripped art, and share alike art."
+   }
+  },
+  "2026-11-17-orange-campus": {
+   "apps": [
+    "campus-ebutuoy"
+   ],
+   "urls": [
+    "https://campus-ebutuoy.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "A video learning tool where building counts more than watching",
+   "name": "Campus",
+   "latest": {
+    "date": "2026-11-17",
+    "text": "Created Campus, a video learning tool where building counts more than watching. Added stumble mode, course mode, sources, a transcript with credits, education genres, profiles, and a fallback when a course will not embed."
+   }
+  },
+  "2026-11-17-orange-campusapi": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Backends and Infrastructure",
+   "summary": "The backend for Campus that stores sources, logged work, and the transcript",
+   "name": "Campus API",
+   "latest": {
+    "date": "2026-11-17",
+    "text": "Created Campus API, the backend for Campus. Added curated sources, course loading in order, the end of video log, and the transcript with credits. The database can now live on a persistent volume."
    }
   }
  }

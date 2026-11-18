@@ -1,80 +1,97 @@
 {
  "jobs": [
   {
+   "repo": "bloxx",
+   "releases": [
+    {
+     "tag": "v2026.11.17",
+     "target": "d4dae27f082738d0b0dbd8ec79b510b31d87f84d",
+     "name": "Bloxx 2026-11-17",
+     "body": "Created Bloxx, a modular stage block configurator joined to the Stompbox band room. You can build stages from blocks, pick presets, light patterns, and motion, and view the stage from several angles."
+    }
+   ],
+   "description": "A modular stage block configurator for building lit stage rigs, joined to the Stompbox band room.",
+   "homepage": "",
+   "topics": [
+    "tool",
+    "music",
+    "threejs",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "repo-cloner",
+   "releases": [
+    {
+     "tag": "v2026.11.17",
+     "target": "72eb2bf77cb2e0ce51868b28f9788cd4df4ff241",
+     "name": "Repo Cloner 2026-11-17",
+     "body": "Created Repo Cloner. It hunts GitHub for open source games with sellable licenses, checks asset licenses and the file tree, and grades each repo as a reskin base. Added an Open on GitHub button to the detail sheet. Locked the tool behind the shared sign in, so each person saves their own Claude key and GitHub token and the owner's key is never spent. Added the Scans tab with a first scan that flags famous game names, ripped art, and share alike art."
+    }
+   ],
+   "description": "A research tool that hunts open source games with sellable licenses and grades them as reskin bases.",
+   "homepage": "https://repo-cloner-khaki.vercel.app",
+   "topics": [
+    "tool",
+    "research",
+    "games",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "2026-11-17-orange-campus",
+   "releases": [
+    {
+     "tag": "v2026.11.17",
+     "target": "dbac570d3c3f4bff8769937f69d7c9c242eb0c26",
+     "name": "Campus 2026-11-17",
+     "body": "Created Campus, a video learning tool where building counts more than watching. Added stumble mode, course mode, sources, a transcript with credits, education genres, profiles, and a fallback when a course will not embed."
+    }
+   ],
+   "description": "A phone friendly learning tool that plays videos and logs what you build in a credit transcript.",
+   "homepage": "https://campus-ebutuoy.vercel.app",
+   "topics": [
+    "tool",
+    "education",
+    "video",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "2026-11-17-orange-campusapi",
+   "releases": [
+    {
+     "tag": "v2026.11.17",
+     "target": "f0957697dbf73c6ae264ccf7fa928178a8ef37b8",
+     "name": "Campus API 2026-11-17",
+     "body": "Created Campus API, the backend for Campus. Added curated sources, course loading in order, the end of video log, and the transcript with credits. The database can now live on a persistent volume."
+    }
+   ],
+   "description": "The backend for Campus that stores sources, logged work, and the transcript.",
+   "homepage": "",
+   "topics": [
+    "backend",
+    "education",
+    "railway"
+   ]
+  },
+  {
    "repo": "2026-11-16-pipe-weave",
    "releases": [
     {
-     "tag": "v2026.11.16",
-     "target": "d5ca494a7f7fa167bfe3e9e585e42572ab5d73fa",
-     "name": "Pipe Weave 2026-11-16",
-     "body": "Created Pipe Weave, a pipe drawing toy. You start a pipe with a tap, steer it left, right, or straight, and let it weave over or under other pipes. Added a grow mode with random and over under weave, then a flip end control, color modes, cars, critters, and water flow. Added roots, shadows, deep zoom, drive mode, and right angle mode. Pinching to zoom no longer draws, and undo now takes smaller steps."
+     "tag": "v2026.11.17",
+     "target": "0b908660925466e5a18640695533fe69838aac1e",
+     "name": "Pipe Weave 2026-11-17",
+     "body": "Joining a pipe now opens the wall of the pipe it joins, and the next pipe after a join waits for you. Added split, bubble, and spiral steps, merge and link steps, record and play, skins, line colors, grow rules, and a steer mode with tilt. Added lattice, diamond chain, fan, and Neighborhood presets, with more than thirty presets in all. Added a tabbed interface, an isometric view, and bridges and tunnels at crossings. Growth dots hide during play, cars and critters scale to fit, and a surprise me button picks a rule."
     }
    ],
    "description": "A pipe drawing toy where pipes turn, split, and weave over and under each other.",
    "homepage": "https://2026-11-16-pipe-weave.vercel.app",
    "topics": [
-    "game",
-    "toy",
     "canvas",
     "drawing",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "2026-11-15-orange-keydecode",
-   "releases": [
-    {
-     "tag": "v2026.11.16",
-     "target": "d231fc07c97cd4accbc51cbe7ff549957f1f00ff",
-     "name": "Key Decoder 2026-11-16",
-     "body": "Created Key Decoder, an educational tool that measures a key from a photo. A coin in the photo sets the scale. You tap points to measure the blade and cuts, pick the key type, and rank likely key formats. Results can be downloaded as JSON or a life size SVG profile, and saved to a library. It includes notes on identifying key fobs."
-    }
-   ],
-   "description": "An educational tool that measures a key from a photo and a coin for scale.",
-   "homepage": "https://2026-11-15-orange-keydecode.vercel.app",
-   "topics": [
-    "tool",
-    "education",
-    "measurement",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "lartte",
-   "releases": [
-    {
-     "tag": "v2026.11.16",
-     "target": "70a5fe4ed8a295508372a0724bd81b5786ba7e45",
-     "name": "lARTte 2026-11-16",
-     "body": "Created lARTte, a latte art simulator. Added a demo mode that pours each design by itself, saving finished pours to the phone, an art generator, a gallery mode, symmetry, and cup spin. Added a garnish shaker with cinnamon, nutmeg, cocoa, sea salt, sugar, matcha, and sprinkles, and a paint style toolbar with drop downs for liquids, syrups, garnishes, and toppings. Toppings are now real scale, with a candy cane hung on the rim, growing whipped cream, glossy syrup, and drink names. Added the ARTchino tab for clear cup blended drinks with add ins, layers, wall drizzle, whip, and toppings. Added a coffee shop shift with customers, a time attack, tilt and shake controls, and sound."
-    }
-   ],
-   "description": "A latte art simulator with pours, garnishes, blended drinks, and a coffee shop shift game.",
-   "homepage": "https://lartte.vercel.app",
-   "topics": [
     "game",
-    "simulator",
-    "coffee",
-    "art",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "2026-11-16-orange-zion",
-   "releases": [
-    {
-     "tag": "v2026.11.16",
-     "target": "c292f446069e741351469c8dddc9d758484ea0dd",
-     "name": "Zion Wakes 2026-11-16",
-     "body": "Created Zion Wakes, a story and map toy that loads the Agent Test Bed city. You pan and zoom the map and read a short story beat. You can pick a place to move it, name it, approve it, or reject it, and start over with New start. Two follow up builds were triggered to get the first deploy live."
-    }
-   ],
-   "description": "A story and map toy built on the Agent Test Bed city.",
-   "homepage": "https://2026-11-16-orange-zion.vercel.app",
-   "topics": [
-    "game",
-    "story",
-    "map",
+    "toy",
     "vercel"
    ]
   },
@@ -82,16 +99,16 @@
    "repo": "mobbyhill",
    "releases": [
     {
-     "tag": "v2026.11.17",
-     "target": "6f885c70f11d8486459d563493fe48c1349ee3d9",
-     "name": "MobbyHill 2026-11-17",
-     "body": "Buzzards now fly from flag to flag. There are four landscapes, the games were renamed, and the store is now a menu with icons and terrain parts. Added three vehicles and a Search and rescue challenge with a trailer and teammates. Added an Off road recovery mission with a purple SUV, a pickup with a wrecker boom, and a flatbed."
+     "tag": "v2026.11.18",
+     "target": "14b85aa7625f22b46571ce3158db7b9226d5c602",
+     "name": "MobbyHill 2026-11-18",
+     "body": "Sign in now works with your own email or an outside sign in provider."
     },
     {
-     "tag": "v2026.11.16",
-     "target": "3b71f306fe10bc8a48ec95ed612eae5344345d07",
-     "name": "MobbyHill 2026-11-16",
-     "body": "Added scenery on the hill, dust and tracks behind the wheels, coins, and stunt cash."
+     "tag": "v2026.11.17-2",
+     "target": "fa46303cde4b4e70dc18b316c3acc4b8571efd23",
+     "name": "MobbyHill 2026-11-17",
+     "body": "Added tow sounds, including clanks, rope twang and snap, wheel lift hiss, and winch whine. Added weather with rain, fog, dust storm, and snow. Added token unlocks for the side by side, SUV, and pickup. Added player accounts with token packs and unlocks that belong to the account."
     }
    ],
    "description": "A wireframe off road hill climb for the phone with tilt steering and score hub scores.",
@@ -104,44 +121,13 @@
    ]
   },
   {
-   "repo": "2026-10-18-orange-testbed",
-   "releases": [
-    {
-     "tag": "v2026.11.17",
-     "target": "3353f01bd7b49b9fd2af8622b2f8066ed82697e6",
-     "name": "Agent Test Bed 2026-11-17",
-     "body": "The agent turn was played and merged into the city."
-    },
-    {
-     "tag": "v2026.11.16",
-     "target": "a6c8072bce7f33ca89aa7a9221f4d1b0b901eafb",
-     "name": "Agent Test Bed 2026-11-16",
-     "body": "The agent, grok, second agent, and steward turns for the day were played and merged into the city. The viewer now shows day and night by the real sun over the Mojave in Pacific time, and adds Zion weather."
-    },
-    {
-     "tag": "v2026.11.15-2",
-     "target": "bb57a1ad57e344e3aa14b4c6a6948cc32bf13fdd",
-     "name": "Agent Test Bed 2026-11-15",
-     "body": "The agent, steward, and grok turns for the day were played and merged into the city. Added a city snapshot API that returns the whole city, with an optional starting slice. The site now deploys from GitHub again, but only when code changes."
-    }
-   ],
-   "description": "A shared city that AI agents build one turn at a time",
-   "homepage": "https://2026-10-18-orange-testbed.vercel.app",
-   "topics": [
-    "agents",
-    "game",
-    "simulator",
-    "vercel"
-   ]
-  },
-  {
    "repo": "raineurysm",
    "releases": [
     {
-     "tag": "v2026.11.16",
-     "target": "166954fd6211efe9633e211178f06729415b7300",
-     "name": "raineurysm 2026-11-16",
-     "body": "Made everything prettier. Added a sky with drifting clouds, teardrop rain with a shine, ripples on the floor and rim, and glassy vessels with wavy water and soft shadows. Lanes and the beat line now glow, and panels and buttons are frosted."
+     "tag": "v2026.11.17",
+     "target": "025557fa1534eb854cdcb032f6819d6d59861e09",
+     "name": "raineurysm 2026-11-17",
+     "body": "Added seven more puzzle levels, for twelve in all. A puzzle run now scores points for speed and few parts, can be sent to the shared score board, and has a high score board in the puzzle menu. Added a start screen with three modes, a hint on the first puzzle, a full screen button, and a rain detail setting that lowers itself on slow phones. Fixed layouts on wider screens."
     }
    ],
    "description": "A rain music toy where falling rain hits vessels that play notes.",
@@ -154,93 +140,81 @@
    ]
   },
   {
-   "repo": "city-seek",
-   "releases": [
-    {
-     "tag": "v2026.11.16",
-     "target": "b5dae3c1c0b45cd7ec48858034e4fddbfb219ac4",
-     "name": "City Seek 2026-11-16",
-     "body": "Added a polish pass. Buttons now press down, keyboard focus is clearer, and the menu has a dotted look. Menu sections show a plus or minus, cards and toasts ease in, and sliders were restyled. Phone screen edges are respected, and the item tray snaps as you scroll."
-    }
-   ],
-   "description": "A zoomable generated city where you hunt for hidden items, with towers, birds, and sound.",
-   "homepage": "https://city-seek.vercel.app",
-   "topics": [
-    "game",
-    "hidden-object",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "delivery-twin",
-   "releases": [
-    {
-     "tag": "v2026.11.16",
-     "target": "eb7f7c3e1dcc88197844f862947206297438a479",
-     "name": "Delivery Twin 2026-11-16",
-     "body": "You can now log from a spot. Dropoff pins can be dragged, and spots have links to rewards."
-    }
-   ],
-   "description": "A phone friendly field log with a map, receipts, and mileage, now with a food spots layer.",
-   "homepage": "https://delivery-twin.vercel.app",
-   "topics": [
-    "field",
-    "map",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "itchy-troll",
+   "repo": "pajamastan",
    "releases": [
     {
      "tag": "v2026.11.17",
-     "target": "94e94a04091931714a718e45a7c0e2b1334b4960",
-     "name": "Itchy Troll 2026-11-17",
-     "body": "Updated the MobbyHill pick note."
-    },
-    {
-     "tag": "v2026.11.16",
-     "target": "f04128a6793461e360ade1aa6ab75de7142c4343",
-     "name": "Itchy Troll 2026-11-16",
-     "body": "Queued MobbyHill as the owner pick. The scout looked over the repos for new candidates."
+     "target": "e0b88eee7c7ed07c51826f3762a590ea83b015a7",
+     "name": "Pajamastan 2026-11-17",
+     "body": "Added a donate pill to the creator seal that invites people to support the micronation."
     }
    ],
-   "description": "An agent that publishes finished apps to a game publishing site",
-   "homepage": "https://itchy-troll.vercel.app",
+   "description": "The official site of the micronation of Pajamastan.",
+   "homepage": "https://pajamastan.vercel.app",
    "topics": [
-    "automation",
-    "publishing",
+    "atlas",
+    "micronation",
+    "pajamastan",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "mohavetech-website",
+   "releases": [
+    {
+     "tag": "v2026.11.16-2",
+     "target": "0cdbaf1f1b3cfcf89e34ca9e0d233dd5b270032f",
+     "name": "App Index 2026-11-16",
+     "body": "Apps now show buttons for the outside services they use, including Supabase, Cloudflare, Anthropic, ElevenLabs, YouTube, MusicBrainz, and AudD. An API plug button opens an overlay of every outside API an app calls, and chain buttons link apps that call each other. The itch button is now a boxed purple controller icon, the Railway button is boxed like the GitHub button, and the colored phone stars were dropped from app rows."
+    }
+   ],
+   "description": "An index page that lists every app with its age, phone tags, and notes.",
+   "homepage": "https://mohavetech-website.vercel.app",
+   "topics": [
+    "index",
     "tool",
     "vercel"
    ]
   },
   {
-   "repo": "2026-11-04-orange-hush",
+   "repo": "2026-10-18-orange-testbed",
    "releases": [
     {
-     "tag": "v2026.11.16",
-     "target": "9162966a1fb87493b06665bbc5d1b7226b1768c9",
-     "name": "Hush 2026-11-16",
-     "body": "Added Clock lock. Hush holds the phone clock on a chosen time zone, Las Vegas by default. When anything turns automatic time zone back on, Hush turns it off again right away, and if the clock still lands on the wrong zone Hush posts an alert that opens the date and time screen. Flipping that setting off for you needs a one time permission granted over wireless debugging."
+     "tag": "v2026.11.17-2",
+     "target": "07cc031b485cfc45935de463265be5289df319f9",
+     "name": "Agent Test Bed 2026-11-17",
+     "body": "The agent, grok, and steward turns were played and merged into the city. The city was named Zion, City of the Mountain, with founding traditions and lore. The viewer now reads like a city guide with City, Builders, City Hall, Activity, and View tabs, a resizable panel, and Pacific times. You can walk the streets and drive any car or truck. The valley now has generated ground with mountains and a winding pass, and farmland follows the seasons."
+    },
+    {
+     "tag": "v2026.11.18",
+     "target": "688b4e892f2461155502a16e1813530177a0c7c0",
+     "name": "Agent Test Bed 2026-11-18",
+     "body": "The agent turn was played and merged into the city."
     }
    ],
-   "description": "An Android app that blocks notifications and releases them in a digest",
-   "homepage": "",
+   "description": "A shared city that AI agents build one turn at a time",
+   "homepage": "https://2026-10-18-orange-testbed.vercel.app",
    "topics": [
-    "android",
-    "notifications",
-    "tool"
+    "agents",
+    "game",
+    "simulator",
+    "vercel"
    ]
   },
   {
    "repo": "2026-10-30-orange-scores",
    "releases": [
     {
-     "tag": "v2026.11.17",
-     "target": "8a27003887eddab3f58d19e9fe17e465670e7e32",
+     "tag": "v2026.11.17-2",
+     "target": "3c5210a803d91f141f4536f32658f3925bc1b797",
      "name": "Score Hub 2026-11-17",
-     "body": "Registered twelve more MobbyHill leaderboards, one for each game in the Forest, Canyon and Dunes landscapes. Added six new MobbyHill store parts to its token wallet. Registered eight MobbyHill Search and rescue leaderboards, with and without fuel on each of the four landscapes. The hub shows them as hikers rescued and a clock time. Registered eight MobbyHill Off road recovery leaderboards, shown as jobs cleared and a clock time, and added the heavy rope and fast winch to its token wallet."
+     "body": "Added MobbyHill vehicle unlocks to its token wallet: side by side 1500, SUV 1500, pickup 2500. Added MobbyHill player accounts on Supabase with weekly tokens, 1000 token packs for $1 through Stripe Checkout, and unlocks kept on the account. Registered Raineurysm Puzzle on the score hub."
+    },
+    {
+     "tag": "v2026.11.18",
+     "target": "f15dbb8e583dc5c26f769280ece14b074ffb1202",
+     "name": "Score Hub 2026-11-18",
+     "body": "MobbyHill sign in now runs on Supabase Auth. Players sign in with their own email and a six digit code, or with any outside provider turned on in Supabase. Wallets, unlocks and payments belong to the Supabase Auth user. Removed the name and password accounts."
     }
    ],
    "description": "A shared score service and hub page for the games",
