@@ -2,6 +2,76 @@
   "heckles": [
     {
       "date": "2026-11-19",
+      "repo": "tile-topia",
+      "sha": "f365f95d",
+      "message": "Skin locked per map, heart and strip landmarks, city towers scale with district size",
+      "heckle": "A hundred and forty six lines added to one index.html, because apparently the intern thinks a file is a landfill. You deleted the Skin button from the top bar and then bolted a new #scount button rule on, so the layout shuffles like a cabinet after a filibuster. Skins locked per map means the player loses a choice, and the commit message promises heart and strip landmarks like a campaign pledge with no budget. City towers scaling with district size is more math buried in the same giant script with no tests.\n\nFix it: Split the skin CSS and the map logic out of index.html into separate files. Check that the #scount button rule does not squeeze the top bar on a narrow phone. Tell the player why the skin is locked instead of silently removing the Skin button. Write one test for tower scaling."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "tile-topia",
+      "sha": "b22409ca",
+      "message": "West and Bunker skins, Meadow fields with scoring and Biggest Meadow record",
+      "heckle": "Three hundred and thirty five lines in one commit. West skin, Bunker skin, Meadow scoring, and a record, all dumped in index.html like a bailout bill with forty riders nobody read. The body.ww block is a wall of one line CSS with hardcoded browns and a Georgia font stack, copied from the War skin with the colors swapped, which is what an intern does when the deadline is in five minutes. The Meadow scoring and the record sit in the same inline script as everything else, so one typo takes the whole game down.\n\nFix it: Move the skin palettes into CSS variables instead of cloning whole body.ww and body.w blocks. Pull Meadow scoring out of the giant inline script. Guard the Biggest Meadow record against bad localStorage data. Ship one feature per commit."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "tile-topia",
+      "sha": "198c20df",
+      "message": "War skin: army map with trenches, bases, HQs and marching soldiers",
+      "heckle": "A War skin with trenches, bases, HQs and marching soldiers, all in the same index.html that is already groaning. The new body.w block is a pile of hardcoded olive and khaki hex colors with a Courier New font, copy pasted from the other skins with the paint changed. Marching soldiers means a new animation loop, and I see no sign anyone checked what it does to a phone battery. Your skin system is now a heap of body letters like w, c and ww, which reads like a ransom note.\n\nFix it: Give the skin classes real names instead of w, c and ww in index.html. Share one skin template and override only the colors. Cap the soldier animation frame rate and pause it when the tab is hidden. Stop growing a single file past the point of sanity."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "8e504911",
+      "message": "steward 2026-11-19T193753 (#113)",
+      "heckle": "Another steward pull request, another one line minified JSON blob in contrib/steward, merged with a button click like a rubber stamp. The payload is a place_hatch call for a crosswalk on a street, with six digit coordinates and a hatch spacing of 610. Nobody can review a single minified line, and the merge is the only quality gate, which is government efficiency at its finest. The bot cannot even keep its timestamp name consistent without human cleanup.\n\nFix it: Pretty print the contrib/steward JSON so a diff means something. Add a schema check that rejects a bad place_hatch call before merge. Stop merging these by hand and let a workflow validate and merge them."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "repofind",
+      "sha": "f379fae8",
+      "message": "Add Teardown tab, merge Pipeline Builder in as Builder tab",
+      "heckle": "Seven hundred and forty nine lines into index.html for a Teardown tab with sixty one hand typed products, and a Pipeline Builder smashed in as a tab, like merging two failing departments and calling it reform. The second style block is a late patch tacked on after the first one, with fresh pb and td classes beside the comic skin rules. The changelog line is one giant paragraph that nobody will read. Every layer is marked known or inferred, which is a polite way of admitting you are guessing.\n\nFix it: Move the sixty one product records out of index.html into a data file. Fold the second style block into the main stylesheet. Cut the CHANGELOG.md entry down to two sentences. Check the new tabs on a small phone."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "f7f4c435",
+      "message": "grok 2026-11-19T172357",
+      "heckle": "The grok bot pushed straight to the branch again with no pull request, no review and no gate, like a senator voting on a bill he never read. The file contrib/grok/2026-11-19T172357.json is one minified line of place_line calls with negative coordinates for a Mesquite House wall, plus door checks stuffed into meta arrays. Nothing proves the walls close or the door checks pass. A direct push under the developer login means the history cannot tell the bot from the intern.\n\nFix it: Make the grok bot open a pull request like the other bots. Validate the door height and door width checks in the JSON before it lands. Format the file so a human can read it. Give the bot its own commit author."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "fbb7dbd6",
+      "message": "Per pipe and shifting line colors",
+      "heckle": "Per pipe and shifting colors, in a single index.html, with a new inkMode global and a pipeInk function that returns a raw hsl string rebuilt on every call. The strokeEdgeShift function breaks an edge into six point chunks inside a loop, so the draw path does string building per segment like it is paying by the allocation. Three modes named all, pipe and shift live in loose var globals with matching display names in another object, so adding a fourth means editing three places. Nice little rainbow, intern, shame about the plumbing.\n\nFix it: Cache the hsl strings in pipeInk in index.html instead of rebuilding them per segment. Put the ink modes in one table. Check that p.ink and p.hue exist for old saved pipes. Test shifting mode on a long pipe for frame drops."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "a8316010",
+      "message": "Full screen button",
+      "heckle": "A Full screen button, wired by hand with a fixed position hack, in a file that already has too many buttons. The new #fsBtn sits absolute at the bottom right with a z-index of 5 and fades to 0.55 opacity in full screen, so it hovers over the canvas right where a thumb will draw. The body.fs rule hides the bar and status pill, so once you are in there the only way out is the ghost button. There is no sign of a real fullscreen API fallback for phones that refuse it.\n\nFix it: Check that requestFullscreen actually exists in index.html and fall back gracefully on iPhones. Move #fsBtn away from the drawing area. Give the player an obvious exit that is not a faded button."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "2026-11-19-blue-just-five-more",
+      "sha": "71d50c6a",
+      "message": "High scores: post each shift to the Score Hub, per task boards in the review and the menu",
+      "heckle": "Fifty five lines added to just-five-more-v1.html so the game can post scores to a public hub, and I see the board styles stacked right on top of the math styles like laundry on a chair. A three letter name input with text-transform uppercase is the only identity check, so anyone can post anything. The fixed height 150px board will clip on a small phone, and the grid of two buttons with 12px text is cramped. Posting every shift to a hub with no proof the score is real is a rigged election with extra steps.\n\nFix it: Validate the score on the server in the hub instead of trusting the client in just-five-more-v1.html. Let the board height flex on small screens. Handle a failed post with a visible retry. Debounce the post button so one shift cannot spam the hub."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "tile-topia",
+      "sha": "97c058d6",
+      "message": "Connector tiles for every edge combination and auto hole filling",
+      "heckle": "An IIFE that brute forces every four edge combination out of the letters C, R, F and W with four nested loops, then pushes filler tiles into DEFS at load time. It is clever in the way a lit match in a barn is clever. The weights are a magic .12 and the lake flag is a one line ternary nobody can read. Every page load now burns cycles building tiles that could be a static list. The nested loops use a, b, c and e as variable names, because apparently d was taken and imagination was not.\n\nFix it: Name the loop variables and the .12 weight in index.html. Build the connector list once and check it in instead of generating it on load. Add a test that no edge pattern is missing. Explain the lake rule in a comment."
+    },
+    {
+      "date": "2026-11-19",
       "repo": "2026-11-16-pipe-weave",
       "sha": "46519f3c",
       "message": "Highways, roundabouts, intersections, fabric weaves, stair presets and skin, picture stamps, radiant pop and under the sea themes, fish, fill canvas",
@@ -1329,76 +1399,6 @@
       "sha": "afeaa505",
       "message": "Add gradient editor for band, background, and overlay text, plus text angle",
       "heckle": "Another hundred sixty five lines crammed into the same single index.html, this time a gradient editor for three different things. The CSS variable --badge-accent got renamed to --band-fill, which is the kind of rename that leaves orphan references behind. The original band color is still hardcoded as 1f4e9c in the fallback, so the old blue is lurking in two places. This is a single file hoarder in the final stage.\n\nFix it: Grep index.html for any leftover --badge-accent use. Replace the hardcoded 1f4e9c fallbacks with one variable. Split gradient code into its own script file."
-    },
-    {
-      "date": "2026-11-07T19:27:54Z",
-      "repo": "pajamastan-badge-tool",
-      "sha": "0976142b",
-      "message": "Add watermark image, background removal, and text overlay",
-      "heckle": "Watermark, background removal and text overlay in one commit, one file, one hundred eighty eight added lines, shipped like a rider slipped into a must pass bill. The new .wm and .ov rules in index.html stack z-index values one through four with no comment, and background removal is a checkbox with no sign of what it does to a slow phone with a big photo. The overlay text is rotated minus twenty four degrees, a number that seems to have come from a dartboard.\n\nFix it: Show a spinner while the background removal in index.html runs. Name the z-index layers with variables. Make the overlay angle a setting instead of a magic number. Downscale big photos before processing."
-    },
-    {
-      "date": "2026-11-07T19:27:54Z",
-      "repo": "pajamastan-badge-tool",
-      "sha": "5af2c231",
-      "message": "Add orientation tabs, saved templates, and per template people",
-      "heckle": "Orientation tabs, saved templates and per template people in one go, and the saved data lives in the browser with no export, so clearing site data deletes the whole roster of badges like a debt ceiling default. The @page style for print size is now in its own style tag with a fixed 3.375in by 2.125in, so portrait mode prints cropped unless some script swaps it, and I can only see that the style tag has an id, not that anything is guaranteed to change it. The chips row scrolls sideways on a phone with no hint it scrolls.\n\nFix it: Confirm the pageStyle element in index.html is rewritten when orientation flips. Add a fade or arrow to the .chips row. Add an export and import button for saved templates."
-    },
-    {
-      "date": "2026-11-07T13:11:42Z",
-      "repo": "downfree-foundry",
-      "sha": "20bbade0",
-      "message": "Restart the decoder on crashes and label which stage failed",
-      "heckle": "A throwaway ffmpeg run on a file literally named not-found, wrapped in an empty catch, to coax the decoder into not crashing. That is not engineering, intern, that is a rain dance with a stack trace. ffRun() in index.html now retries three times and rebuilds the whole decoder each time, so a genuinely bad clip burns three full wasm reloads before it tells you anything, like a filibuster that ends in the same vote. Then resetDecoder() nulls every clip's mounted flag and the magic number 12 for ffRuns has no explanation beyond a vibe. The comment admits the decoder gets unstable after many runs, so you are papering over a leak with a restart button.\n\nFix it: Find why the decoder crashes in loadDecoder() instead of warming it with a fake file. Name the 12 in ffRuns as a constant with a reason. Cap retries in ffRun() to errors that are actually transient. Replace the empty catch around the throwaway exec with at least a log line."
-    },
-    {
-      "date": "2026-11-07T13:11:42Z",
-      "repo": "downfree-foundry",
-      "sha": "bd8f6e78",
-      "message": "Pull frames with an in-page video decoder instead of the browser player",
-      "heckle": "You committed a minified ffmpeg.js, a worker bundle, ffmpeg-core.js and a wasm binary straight into the repo under ff/, like a bailout nobody read. Every one of those is unreadable, unreviewable, and it bloats the repo for good. The bundle even carries a path from somebody's laptop baked in. Meanwhile index.html now runs seek scans through grabFrame() for every step in the alignment loop, which on a phone means decoding thousands of frames to line up clips. The earlier black preview fix is now dead weight you left lying around, because the browser player is still used for durations.\n\nFix it: Load ffmpeg from a package or a pinned CDN instead of committing ff/ffmpeg-core.wasm. Add the ff folder to a build step, not git. Check that the alignment scan in the auto line up function does not decode a frame per step on mobile. Delete the leftover video element code in loadClip() if it is no longer the frame source."
-    },
-    {
-      "date": "2026-11-07T13:11:42Z",
-      "repo": "downfree-foundry",
-      "sha": "61929891",
-      "message": "Show clip videos in their cards so Firefox decodes frames",
-      "heckle": "Last time you hid a 2 pixel video in a corner at opacity 0.01 to fool the browser. Now you pulled that hack out and shoved full size videos into the clip cards because Firefox only decodes what it can see, which is the web equivalent of a campaign promise made only while the cameras are rolling. A sixty viewport height video per clip means a long page of players on a phone, cramped and heavy. drawThumb() in index.html is now a function that just calls seekTo and does nothing else, and the canvas.thumb CSS is gone, so the thumbnails you used to have are dead code in spirit. The status message telling the user to tell Claude is a bug report disguised as UI.\n\nFix it: Cap video.thumbvid height lower than 60vh so mobile cards are not walls of video. Delete drawThumb() or give it a job. Replace the Tell Claude status text in drawVideo() with a real error message. Pick one approach for visible decoding and stop flip flopping."
-    },
-    {
-      "date": "2026-11-07T06:06:18Z",
-      "repo": "downfree-foundry",
-      "sha": "0f9b154b",
-      "message": "Fix black previews, add auto line up and flip view",
-      "heckle": "Black previews. You shipped a video tool whose previews were black, then patched it by hiding a 2 pixel video holder at opacity 0.01 in a corner of the page in index.html, which is the kind of hack a shutdown negotiator would call a framework. waitFrame() leans on requestVideoFrameCallback with a bare setTimeout fallback, so on a slow phone you grab whatever frame happens to be there and call it a day. Then 181 lines landed in a single index.html with inline style attributes sprayed on the new hint paragraph and button row. Did you learn layout from a cereal box, intern?\n\nFix it: Move the inline style attributes in the Line up card into the style block. Make waitFrame() report a timeout instead of silently continuing. Add a visible message when Auto line up fails to find a match. Split the script out of index.html before it hits a thousand lines."
-    },
-    {
-      "date": "2026-11-07T06:06:18Z",
-      "repo": "downfree-foundry",
-      "sha": "c0c910b6",
-      "message": "Trigger production build",
-      "heckle": "Trigger production build. An empty commit with a message that reads like a prayer. Your deploy pipeline needs a manual poke and you answered with noise in the history, like a bailout nobody voted on. No diff, no change, nothing to review, and somehow still a waste of my morning.\n\nFix it: Find out why the push before it did not build and fix the Vercel project settings. Stop using empty commits as a deploy button. Use the Vercel redeploy button if you must."
-    },
-    {
-      "date": "2026-11-07T06:06:18Z",
-      "repo": "downfree-foundry",
-      "sha": "22ac9724",
-      "message": "Road layer masking test",
-      "heckle": "Road layer masking test. A fresh 496 line index.html titled Road Layers, with every style, script, and control crammed in one file, plus a vehicles-seg.onnx model committed straight into the repo with no size note and no mention of where it came from. A test commit that ships a binary model like a campaign promise, big and unexplained. The accent orange button on a cream background with 13 pixel hint text is going to be a squint on a phone, genius.\n\nFix it: Document where vehicles-seg.onnx came from and its size in a README. Consider loading the model from a CDN or release asset instead of the repo. Raise the .hint font size above 13px in index.html. Rename the commit so it says what changed."
-    },
-    {
-      "date": "2026-11-06T23:14:48Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "16d1bd9d",
-      "message": "grok 2026-11-06T170305",
-      "heckle": "This one skipped even the pull request and landed straight on the branch, a single line in contrib/grok/2026-11-06T170305.json. Grok is drawing Mesquite Cottage with negative coordinates like -62000 while the steward bot above it uses six digit positive ones, so two bots disagree about where the map even starts. Unreviewed, unpacked, and committed directly like a midnight executive order. Does the intern know what a branch protection rule is?\n\nFix it: Route grok commits through pull requests like the other bots. Agree on one coordinate origin across contrib/grok and contrib/steward. Put each call on its own line in the JSON so a human can read it."
-    },
-    {
-      "date": "2026-11-06T23:14:48Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "643d1cd9",
-      "message": "steward 2026-11-06T182944 (#74)",
-      "heckle": "Pull request 74 is one minified JSON line in contrib/steward/2026-11-06T182944.json, merged through the button under your own login without anyone reading it. The steward bot is placing crosswalk hatches on Chuckwalla Avenue and Agave Street with coordinates like 476688,243230, so a human would need a calculator and a prayer to review it. This is a rubber stamp factory, like a rider stapled onto a spending bill. A line that long is unreadable in any diff view.\n\nFix it: Pretty print the JSON in contrib/steward so diffs mean something. Have the steward bot validate its calls before the pull request opens. Stop merging these without a check that the file parses and the coordinates fall inside the map."
     }
   ]
 }
