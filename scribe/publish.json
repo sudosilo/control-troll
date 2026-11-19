@@ -1,88 +1,228 @@
 {
  "jobs": [
   {
-   "repo": "bloxx",
+   "repo": "tile-topia",
    "releases": [
     {
-     "tag": "v2026.11.17",
-     "target": "d4dae27f082738d0b0dbd8ec79b510b31d87f84d",
-     "name": "Bloxx 2026-11-17",
-     "body": "Created Bloxx, a modular stage block configurator joined to the Stompbox band room. You can build stages from blocks, pick presets, light patterns, and motion, and view the stage from several angles."
+     "tag": "v2026.11.18",
+     "target": "c35a8ab54d5e16f799ace6f240fe7310e2961210",
+     "name": "Tile-topia 2026-11-18",
+     "body": "Created Tile-topia, a tile placing game where you build a map one tile at a time and score finished features. Added Longest Road, Biggest Castle, and Longest River records. Added a Cyber skin with animated lanes and placement effects, a Graphite on paper skin, and an isometric view toggle. Added completion chimes, a record celebration, player outlines, and bot opponents. Redrew the City skin as detailed illustrations with lit 3D buildings and added the full River tile set."
+    },
+    {
+     "tag": "v2026.11.19",
+     "target": "97c058d68f9188792e15cae4288c28b936d36417",
+     "name": "Tile-topia 2026-11-19",
+     "body": "Added an Auto build mode that places tiles in spots that avoid gaps. It builds only inside the view and leaves fog beyond it. Added connector tiles for every edge combination, and holes now fill automatically."
     }
    ],
-   "description": "A modular stage block configurator for building lit stage rigs, joined to the Stompbox band room.",
-   "homepage": "",
+   "description": "A tile placing game where you build a map and score finished lanes, districts, and cores.",
+   "homepage": "https://tile-topia.vercel.app",
    "topics": [
-    "tool",
+    "game",
+    "tiles",
+    "puzzle",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "cipher-wars-v3",
+   "releases": [
+    {
+     "tag": "v2026.11.18",
+     "target": "c6a304dba85ab7e02c7917b0e02c1191981f1e0a",
+     "name": "Cipher Wars 2026-11-18",
+     "body": "Created Cipher Wars version 3. It adds a warm up round before the campaigns begin. Players read a briefing, make a choice, and earn intel points toward a final rank, with a codex and a list of key figures to look things up."
+    }
+   ],
+   "description": "A story game about a secret war of codes where you play the codemaker or the codebreaker.",
+   "homepage": "https://cipher-wars-v3.vercel.app",
+   "topics": [
+    "game",
+    "cryptography",
+    "story",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "circuit-musicfx",
+   "releases": [
+    {
+     "tag": "v2026.06.26",
+     "target": "12eac68903f38036aee936ca719de82a56f43da3",
+     "name": "Circuit Visualizer 2026-06-26",
+     "body": "Created Circuit Visualizer, a music visualizer that draws a circuit board and lights it on beats. Added reactive hits, per band circuits, and flashing. Added a bead train tempo display, a hamburger menu, and a drop legend. Five circuits now cross fade with the tempo and hold longer."
+    },
+    {
+     "tag": "v2026.06.28",
+     "target": "6e0ee07fee049dca1f8897ee40cb1f35dfc6cb1f",
+     "name": "Circuit Visualizer 2026-06-28",
+     "body": "Circuits cross fade with the tempo and hold longer. Added RF antennas, an LED spectrum bank, and denser components."
+    },
+    {
+     "tag": "v2026.09.11",
+     "target": "24497f0225816be010d16c0025d933c0d3819b83",
+     "name": "Circuit Visualizer 2026-09-11",
+     "body": "Added ASCII bars and matrix rain modes. Leads now have vias, the core halo is tighter, and the LED strip is chained. Submenus collapse and there is a terminal theme system."
+    },
+    {
+     "tag": "v2026.11.18",
+     "target": "61cbc06905b8b84af30b8e8de62cd532988c3fe3",
+     "name": "Circuit Visualizer 2026-11-18",
+     "body": "Added Bitfield mode, brought over from the Bitfield Synth app."
+    }
+   ],
+   "description": "A music visualizer that draws a circuit board that lights up to the beat.",
+   "homepage": "https://circuit-musicfx.vercel.app",
+   "topics": [
     "music",
-    "threejs",
+    "visualizer",
+    "canvas",
     "vercel"
    ]
   },
   {
-   "repo": "repo-cloner",
+   "repo": "beewars",
    "releases": [
     {
-     "tag": "v2026.11.17",
-     "target": "72eb2bf77cb2e0ce51868b28f9788cd4df4ff241",
-     "name": "Repo Cloner 2026-11-17",
-     "body": "Created Repo Cloner. It hunts GitHub for open source games with sellable licenses, checks asset licenses and the file tree, and grades each repo as a reskin base. Added an Open on GitHub button to the detail sheet. Locked the tool behind the shared sign in, so each person saves their own Claude key and GitHub token and the owner's key is never spent. Added the Scans tab with a first scan that flags famous game names, ripped art, and share alike art."
+     "tag": "v2026.11.18",
+     "target": "890f126fb6d9795abb624db5be77be6cd41ae169",
+     "name": "Bee Wars 2026-11-18",
+     "body": "Created Bee Wars, a territory control game with two bee colonies in one meadow. You win by growing to 21 bees or by killing the rival queen. Send workers, soldiers, and scouts around the map, paint walls, and pick what each new bee will be."
     }
    ],
-   "description": "A research tool that hunts open source games with sellable licenses and grades them as reskin bases.",
-   "homepage": "https://repo-cloner-khaki.vercel.app",
+   "description": "A territory control game where two bee colonies compete for pollen and land.",
+   "homepage": "https://beewars.vercel.app",
    "topics": [
-    "tool",
-    "research",
-    "games",
+    "game",
+    "strategy",
+    "simulation",
     "vercel"
    ]
   },
   {
-   "repo": "2026-11-17-orange-campus",
+   "repo": "defcon-trail",
    "releases": [
     {
-     "tag": "v2026.11.17",
-     "target": "dbac570d3c3f4bff8769937f69d7c9c242eb0c26",
-     "name": "Campus 2026-11-17",
-     "body": "Created Campus, a video learning tool where building counts more than watching. Added stumble mode, course mode, sources, a transcript with credits, education genres, profiles, and a fallback when a course will not embed."
+     "tag": "v2026.11.18",
+     "target": "d5a4df6d00060d2caec641e537b226dffc82656d",
+     "name": "DEF CON Trail 2026-11-18",
+     "body": "Created DEF CON Trail version 1, a trail style travel game about getting a crew to a hacker conference in Las Vegas. Crew members now carry local groups by area code, and groups meet at night. Shops sell a first timer kit. A hand drawn Las Vegas skyline pans to each landmark. Added pool parties, badge shorts, soldering burns, lockpick fingertips, blisters, brutal heat, monsoon floats, and deodorant, plus a go up to go down elevator rule after tower parties."
     }
    ],
-   "description": "A phone friendly learning tool that plays videos and logs what you build in a credit transcript.",
-   "homepage": "https://campus-ebutuoy.vercel.app",
+   "description": "A trail style travel game about getting a crew to a hacker conference in Las Vegas.",
+   "homepage": "https://defcon-trail.vercel.app",
    "topics": [
-    "tool",
-    "education",
-    "video",
+    "game",
+    "simulation",
+    "retro",
     "vercel"
    ]
   },
   {
-   "repo": "2026-11-17-orange-campusapi",
+   "repo": "tilespinneratlas",
    "releases": [
     {
-     "tag": "v2026.11.17",
-     "target": "f0957697dbf73c6ae264ccf7fa928178a8ef37b8",
-     "name": "Campus API 2026-11-17",
-     "body": "Created Campus API, the backend for Campus. Added curated sources, course loading in order, the end of video log, and the transcript with credits. The database can now live on a persistent volume."
+     "tag": "v2026.11.18",
+     "target": "b0d960175b995faa99f4cf3642ff070dcae36fd0",
+     "name": "Atlas of Tiles 2026-11-18",
+     "body": "Added Pipes challenge levels, Pipe Rush, and Visualizer modes, and the tradition styles became skins. Pipes gained rocks, bridges, pinned tiles, triangle and octagon grids, and intro cards. Added a Vault challenge where you reveal five digits and crack the code, with difficulty levels. Rush, Pipes, and Vault scores post to the score hub. Added pipe styles, Big boards in three sizes, synth sounds with a mute button, and a Circuit style with AC and DC boards. Added Cyber, Color Pop, and Escher Remix skins."
     }
    ],
-   "description": "The backend for Campus that stores sources, logged work, and the transcript.",
+   "description": "Tile rotating puzzle where closed loops score, with regional tile styles.",
+   "homepage": "https://tile-spinner.vercel.app",
+   "topics": [
+    "game",
+    "puzzle",
+    "tiles",
+    "vercel"
+   ]
+  },
+  {
+   "repo": "bitfield-synth",
+   "releases": [
+    {
+     "tag": "v2026.11.18",
+     "target": "c004309303f31222845cd3717a088e54753f2f64",
+     "name": "Bitfield Synth 2026-11-18",
+     "body": "A mobile control dock now replaces the hamburger drawer."
+    }
+   ],
+   "description": "Pixel field visualizer driven by math expressions, audio, and images.",
+   "homepage": "https://bitfield-synth.vercel.app",
+   "topics": [
+    "canvas",
+    "music",
+    "vercel",
+    "visualizer",
+    "web-audio"
+   ]
+  },
+  {
+   "repo": "hackercons-roulette-api",
+   "releases": [
+    {
+     "tag": "v2026.11.18",
+     "target": "57350844ab65b01f07d79ebdcd2d6d234895e206",
+     "name": "Hackercons Roulette API 2026-11-18",
+     "body": "Newest talks now come first. Added a fresh talk pool and a fresh filter."
+    }
+   ],
+   "description": "Catalog service that serves random playable conference clips to the player.",
    "homepage": "",
    "topics": [
     "backend",
-    "education",
-    "railway"
+    "node",
+    "railway",
+    "video"
+   ]
+  },
+  {
+   "repo": "hackercons-roulette",
+   "releases": [
+    {
+     "tag": "v2026.11.18",
+     "target": "f185444577082779af78550d531a8dd023abd38d",
+     "name": "Hackercons Roulette 2026-11-18",
+     "body": "Redesigned the player in a comic book look. Added a fresh only filter and sound effect bursts."
+    }
+   ],
+   "description": "Plays random short clips from hacker conference talks with a guessing mode.",
+   "homepage": "https://hackercons-roulette.vercel.app",
+   "topics": [
+    "conferences",
+    "game",
+    "vercel",
+    "video"
+   ]
+  },
+  {
+   "repo": "welcome-to-the-madness",
+   "releases": [
+    {
+     "tag": "v2026.11.18",
+     "target": "8111136be1485a7f6988d5da28c81793fe95dc42",
+     "name": "Welcome to the Madness 2026-11-18",
+     "body": "The shift over screen now shows a top five shifts board."
+    }
+   ],
+   "description": "A kitchen rush game where you pull orders before they burn.",
+   "homepage": "https://welcome-to-the-madness.vercel.app",
+   "topics": [
+    "arcade",
+    "cooking",
+    "game",
+    "vercel"
    ]
   },
   {
    "repo": "2026-11-16-pipe-weave",
    "releases": [
     {
-     "tag": "v2026.11.17",
-     "target": "0b908660925466e5a18640695533fe69838aac1e",
-     "name": "Pipe Weave 2026-11-17",
-     "body": "Joining a pipe now opens the wall of the pipe it joins, and the next pipe after a join waits for you. Added split, bubble, and spiral steps, merge and link steps, record and play, skins, line colors, grow rules, and a steer mode with tilt. Added lattice, diamond chain, fan, and Neighborhood presets, with more than thirty presets in all. Added a tabbed interface, an isometric view, and bridges and tunnels at crossings. Growth dots hide during play, cars and critters scale to fit, and a surprise me button picks a rule."
+     "tag": "v2026.11.18",
+     "target": "46519f3cb81c98e674dd810aa7100e2e51946426",
+     "name": "Pipe Weave 2026-11-18",
+     "body": "Added highways, roundabouts, intersections, fabric weaves, stair presets, a stair skin, and picture stamps. Added a Cityscape preset and a Join weave mode."
     }
    ],
    "description": "A pipe drawing toy where pipes turn, split, and weave over and under each other.",
@@ -96,132 +236,25 @@
    ]
   },
   {
-   "repo": "mobbyhill",
-   "releases": [
-    {
-     "tag": "v2026.11.18",
-     "target": "14b85aa7625f22b46571ce3158db7b9226d5c602",
-     "name": "MobbyHill 2026-11-18",
-     "body": "Sign in now works with your own email or an outside sign in provider."
-    },
-    {
-     "tag": "v2026.11.17-2",
-     "target": "fa46303cde4b4e70dc18b316c3acc4b8571efd23",
-     "name": "MobbyHill 2026-11-17",
-     "body": "Added tow sounds, including clanks, rope twang and snap, wheel lift hiss, and winch whine. Added weather with rain, fog, dust storm, and snow. Added token unlocks for the side by side, SUV, and pickup. Added player accounts with token packs and unlocks that belong to the account."
-    }
-   ],
-   "description": "A wireframe off road hill climb for the phone with tilt steering and score hub scores.",
-   "homepage": "https://mobbyhill.vercel.app",
-   "topics": [
-    "driving",
-    "game",
-    "mobile",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "raineurysm",
-   "releases": [
-    {
-     "tag": "v2026.11.17",
-     "target": "025557fa1534eb854cdcb032f6819d6d59861e09",
-     "name": "raineurysm 2026-11-17",
-     "body": "Added seven more puzzle levels, for twelve in all. A puzzle run now scores points for speed and few parts, can be sent to the shared score board, and has a high score board in the puzzle menu. Added a start screen with three modes, a hint on the first puzzle, a full screen button, and a rain detail setting that lowers itself on slow phones. Fixed layouts on wider screens."
-    }
-   ],
-   "description": "A rain music toy where falling rain hits vessels that play notes.",
-   "homepage": "https://raineurysm.vercel.app",
-   "topics": [
-    "music",
-    "toy",
-    "vercel",
-    "visualizer"
-   ]
-  },
-  {
-   "repo": "pajamastan",
-   "releases": [
-    {
-     "tag": "v2026.11.17",
-     "target": "e0b88eee7c7ed07c51826f3762a590ea83b015a7",
-     "name": "Pajamastan 2026-11-17",
-     "body": "Added a donate pill to the creator seal that invites people to support the micronation."
-    }
-   ],
-   "description": "The official site of the micronation of Pajamastan.",
-   "homepage": "https://pajamastan.vercel.app",
-   "topics": [
-    "atlas",
-    "micronation",
-    "pajamastan",
-    "vercel"
-   ]
-  },
-  {
    "repo": "mohavetech-website",
    "releases": [
     {
-     "tag": "v2026.11.16-2",
-     "target": "0cdbaf1f1b3cfcf89e34ca9e0d233dd5b270032f",
-     "name": "App Index 2026-11-16",
-     "body": "Apps now show buttons for the outside services they use, including Supabase, Cloudflare, Anthropic, ElevenLabs, YouTube, MusicBrainz, and AudD. An API plug button opens an overlay of every outside API an app calls, and chain buttons link apps that call each other. The itch button is now a boxed purple controller icon, the Railway button is boxed like the GitHub button, and the colored phone stars were dropped from app rows."
+     "tag": "v2026.11.18",
+     "target": "7a2a23d4ce4e6b5172eea3ea2933982f4c7630aa",
+     "name": "App Index 2026-11-18",
+     "body": "Apps that were unsorted now sit in categories. A new category was tried and then removed, and apps went back to their old spots. The menu now floats over the page in the retro and future looks, and the future look has stars behind the links and plain striped section titles. Sync now resets to GitHub first and only deploys after a good push."
+    },
+    {
+     "tag": "v2026.11.19",
+     "target": "c8f859a69f3f5459177c7d7f7dab972a555cdcf3",
+     "name": "App Index 2026-11-19",
+     "body": "Added a sticky notes view where a mannequin wears a fitted gown made of one note per app. Added wall, car, semi trailer, 747, and wind scenes for the notes. Sync now refreshes the Vercel login first and still deploys if the app list read fails."
     }
    ],
    "description": "An index page that lists every app with its age, phone tags, and notes.",
    "homepage": "https://mohavetech-website.vercel.app",
    "topics": [
     "index",
-    "tool",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "2026-10-18-orange-testbed",
-   "releases": [
-    {
-     "tag": "v2026.11.17-2",
-     "target": "07cc031b485cfc45935de463265be5289df319f9",
-     "name": "Agent Test Bed 2026-11-17",
-     "body": "The agent, grok, and steward turns were played and merged into the city. The city was named Zion, City of the Mountain, with founding traditions and lore. The viewer now reads like a city guide with City, Builders, City Hall, Activity, and View tabs, a resizable panel, and Pacific times. You can walk the streets and drive any car or truck. The valley now has generated ground with mountains and a winding pass, and farmland follows the seasons."
-    },
-    {
-     "tag": "v2026.11.18",
-     "target": "688b4e892f2461155502a16e1813530177a0c7c0",
-     "name": "Agent Test Bed 2026-11-18",
-     "body": "The agent turn was played and merged into the city."
-    }
-   ],
-   "description": "A shared city that AI agents build one turn at a time",
-   "homepage": "https://2026-10-18-orange-testbed.vercel.app",
-   "topics": [
-    "agents",
-    "game",
-    "simulator",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "2026-10-30-orange-scores",
-   "releases": [
-    {
-     "tag": "v2026.11.17-2",
-     "target": "3c5210a803d91f141f4536f32658f3925bc1b797",
-     "name": "Score Hub 2026-11-17",
-     "body": "Added MobbyHill vehicle unlocks to its token wallet: side by side 1500, SUV 1500, pickup 2500. Added MobbyHill player accounts on Supabase with weekly tokens, 1000 token packs for $1 through Stripe Checkout, and unlocks kept on the account. Registered Raineurysm Puzzle on the score hub."
-    },
-    {
-     "tag": "v2026.11.18",
-     "target": "f15dbb8e583dc5c26f769280ece14b074ffb1202",
-     "name": "Score Hub 2026-11-18",
-     "body": "MobbyHill sign in now runs on Supabase Auth. Players sign in with their own email and a six digit code, or with any outside provider turned on in Supabase. Wallets, unlocks and payments belong to the Supabase Auth user. Removed the name and password accounts."
-    }
-   ],
-   "description": "A shared score service and hub page for the games",
-   "homepage": "https://2026-10-30-orange-scores.vercel.app",
-   "topics": [
-    "backend",
-    "scores",
     "tool",
     "vercel"
    ]

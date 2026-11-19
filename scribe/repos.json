@@ -169,11 +169,11 @@
    ],
    "private": false,
    "category": "Tools",
-   "summary": "An index page that lists every app with its age, phone tags, and notes",
+   "summary": "x",
    "name": "App Index",
    "latest": {
-    "date": "2026-11-16",
-    "text": "Apps now show buttons for the outside services they use, including Supabase, Cloudflare, Anthropic, ElevenLabs, YouTube, MusicBrainz, and AudD. An API plug button opens an overlay of every outside API an app calls, and chain buttons link apps that call each other. The itch button is now a boxed purple controller icon, the Railway button is boxed like the GitHub button, and the colored phone stars were dropped from app rows."
+    "date": "2026-11-19",
+    "text": "Added a sticky notes view where a mannequin wears a fitted gown made of one note per app. Added wall, car, semi trailer, 747, and wind scenes for the notes. Sync now refreshes the Vercel login first and still deploys if the app list read fails."
    }
   },
   "ether-wand": {
@@ -877,11 +877,11 @@
    "urls": [],
    "private": false,
    "category": "Backends and Infrastructure",
-   "summary": "Catalog service that serves random playable conference clips to the player.",
+   "summary": "x",
    "name": "Hackercons Roulette API",
    "latest": {
-    "date": "2026-10-04",
-    "text": "Created the clip catalog backend. A fix the same day made the random pick truly random."
+    "date": "2026-11-18",
+    "text": "Newest talks now come first. Added a fresh talk pool and a fresh filter."
    }
   },
   "hackercons-roulette": {
@@ -893,11 +893,11 @@
    ],
    "private": false,
    "category": "Music and Visualizers",
-   "summary": "Player that serves random short clips from hacker conference talks.",
+   "summary": "x",
    "name": "Hackercons Roulette",
    "latest": {
-    "date": "2026-10-04",
-    "text": "Created the clip player, version two, with stumble and guess modes."
+    "date": "2026-11-18",
+    "text": "Redesigned the player in a comic book look. Added a fresh only filter and sound effect bursts."
    }
   },
   "pancake-orange": {
@@ -1173,11 +1173,11 @@
    ],
    "private": false,
    "category": "Games",
-   "summary": "Tile rotating puzzle where closed loops score, with regional tile styles.",
+   "summary": "x",
    "name": "Atlas of Tiles",
    "latest": {
-    "date": "2026-09-11",
-    "text": "First release. Atlas of Tiles lets players rotate tiles to close loops, with several regional tile styles."
+    "date": "2026-11-18",
+    "text": "Added Pipes challenge levels, Pipe Rush, and Visualizer modes, and the tradition styles became skins. Pipes gained rocks, bridges, pinned tiles, triangle and octagon grids, and intro cards. Added a Vault challenge where you reveal five digits and crack the code, with difficulty levels. Rush, Pipes, and Vault scores post to the score hub. Added pipe styles, Big boards in three sizes, synth sounds with a mute button, and a Circuit style with AC and DC boards. Added Cyber, Color Pop, and Escher Remix skins."
    }
   },
   "threat-atlas-v3": {
@@ -1297,11 +1297,11 @@
    ],
    "private": false,
    "category": "Music and Visualizers",
-   "summary": "Pixel field visualizer driven by math expressions, audio, and images.",
+   "summary": "x",
    "name": "Bitfield Synth",
    "latest": {
-    "date": "2026-09-08",
-    "text": "Version 8 adds a hamburger drawer and a full bleed canvas. Version 9 follows with further refinements."
+    "date": "2026-11-18",
+    "text": "A mobile control dock now replaces the hamburger drawer."
    }
   },
   "shitty-ass-trading-app": {
@@ -2022,11 +2022,11 @@
    ],
    "private": false,
    "category": "Games",
-   "summary": "A kitchen rush game where you pull orders before they burn",
+   "summary": "x",
    "name": "Welcome to the Madness",
    "latest": {
-    "date": "2026-10-25",
-    "text": "First release. Added the kitchen rush game, then leveled it up with canvas graphics, a doneness ring, perfect pulls, combos, rush levels, sound, and a pause button."
+    "date": "2026-11-18",
+    "text": "The shift over screen now shows a top five shifts board."
    }
   },
   "charley-douglass": {
@@ -2654,11 +2654,11 @@
    ],
    "private": false,
    "category": "Games",
-   "summary": "A pipe drawing toy where pipes turn, split, and weave over and under each other.",
+   "summary": "x",
    "name": "Pipe Weave",
    "latest": {
-    "date": "2026-11-17",
-    "text": "Joining a pipe now opens the wall of the pipe it joins, and the next pipe after a join waits for you. Added split, bubble, and spiral steps, merge and link steps, record and play, skins, line colors, grow rules, and a steer mode with tilt. Added lattice, diamond chain, fan, and Neighborhood presets, with more than thirty presets in all. Added a tabbed interface, an isometric view, and bridges and tunnels at crossings. Growth dots hide during play, cars and critters scale to fit, and a surprise me button picks a rule."
+    "date": "2026-11-18",
+    "text": "Added highways, roundabouts, intersections, fabric weaves, stair presets, a stair skin, and picture stamps. Added a Cityscape preset and a Join weave mode."
    }
   },
   "2026-11-15-orange-keydecode": {
@@ -2756,6 +2756,76 @@
     "date": "2026-11-17",
     "text": "Created Campus API, the backend for Campus. Added curated sources, course loading in order, the end of video log, and the transcript with credits. The database can now live on a persistent volume."
    }
+  },
+  "tile-topia": {
+   "name": "Tile-topia",
+   "category": "Games",
+   "summary": "A tile placing map building game with skins, bots, and an auto build mode.",
+   "latest": {
+    "date": "2026-11-19",
+    "text": "Added an Auto build mode that places tiles in spots that avoid gaps. It builds only inside the view and leaves fog beyond it. Added connector tiles for every edge combination, and holes now fill automatically."
+   },
+   "apps": [],
+   "private": false,
+   "urls": [
+    "https://tile-topia.vercel.app"
+   ]
+  },
+  "cipher-wars-v3": {
+   "name": "Cipher Wars",
+   "category": "Games",
+   "summary": "A story game about a secret cryptographic war, played from either side.",
+   "latest": {
+    "date": "2026-11-18",
+    "text": "Created Cipher Wars version 3. It adds a warm up round before the campaigns begin. Players read a briefing, make a choice, and earn intel points toward a final rank, with a codex and a list of key figures to look things up."
+   },
+   "apps": [],
+   "private": false,
+   "urls": [
+    "https://cipher-wars-v3.vercel.app"
+   ]
+  },
+  "circuit-musicfx": {
+   "name": "Circuit Visualizer",
+   "category": "Music and Visualizers",
+   "summary": "A music visualizer that draws a circuit board lighting up to the beat, with other modes.",
+   "latest": {
+    "date": "2026-11-18",
+    "text": "Added Bitfield mode, brought over from the Bitfield Synth app."
+   },
+   "apps": [],
+   "private": false,
+   "urls": [
+    "https://circuit-musicfx.vercel.app"
+   ]
+  },
+  "beewars": {
+   "name": "Bee Wars",
+   "category": "Games",
+   "summary": "A territory control game where two bee colonies fight over a meadow.",
+   "latest": {
+    "date": "2026-11-18",
+    "text": "Created Bee Wars, a territory control game with two bee colonies in one meadow. You win by growing to 21 bees or by killing the rival queen. Send workers, soldiers, and scouts around the map, paint walls, and pick what each new bee will be."
+   },
+   "apps": [],
+   "private": false,
+   "urls": [
+    "https://beewars.vercel.app"
+   ]
+  },
+  "defcon-trail": {
+   "name": "DEF CON Trail",
+   "category": "Games",
+   "summary": "A road trip survival game about getting a crew to a hacker conference in Las Vegas.",
+   "latest": {
+    "date": "2026-11-18",
+    "text": "Created DEF CON Trail version 1, a trail style travel game about getting a crew to a hacker conference in Las Vegas. Crew members now carry local groups by area code, and groups meet at night. Shops sell a first timer kit. A hand drawn Las Vegas skyline pans to each landmark. Added pool parties, badge shorts, soldering burns, lockpick fingertips, blisters, brutal heat, monsoon floats, and deodorant, plus a go up to go down elevator rule after tower parties."
+   },
+   "apps": [],
+   "private": false,
+   "urls": [
+    "https://defcon-trail.vercel.app"
+   ]
   }
  }
 }
