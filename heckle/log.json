@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-19",
+      "repo": "tile-topia",
+      "sha": "b30c3daa",
+      "message": "City skin with 3D towers in iso, full River tile set, skin-aware names",
+      "heckle": "Two hundred lines landing in a single index.html, and the new City skin is a pile of body.c selectors bolted onto a file that already had body.g, body.k and whatever else you stapled on last week. Skins as copy pasted CSS blocks is a zoning board approving every shack that shows up with a form. Light grey and blue also means the dark themes that rescued your eyes are now optional, which is how you get a game that looks like a tax portal. Iso towers drawn inline in the same file means one typo and the whole map goes down, and you ship with no tests like a campaign promise ships with no plan.\n\nFix it: Move each skin into a data object instead of a new body class in index.html. Split the drawing code out of the page into its own script file. Check the City skin on a phone width, because the bottom bar is cramped. Add one smoke test that loads every skin."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "tilespinneratlas",
+      "sha": "b0d96017",
+      "message": "Circuit style with AC and DC boards, schematic parts and legend; Cyber, Color Pop and Escher Remix skins with new tile patterns",
+      "heckle": "Four new skins and a circuit style in one commit, all dumped into the same index.html like a spending bill with nine riders nobody read. The .cp-body, .cp-line and .cp-hot classes are hardcoded hex colors, #24382c and #ff7a00 sprayed everywhere instead of the CSS variables you already defined, so the skins you just added cannot even be themed. The .ps-power .valve-arrow selector got patched with a comma instead of a real rule, which is duct tape on a bailout. Pretty sure the intern thinks a commit is a place to hide things.\n\nFix it: Replace the hardcoded hex values in the .cp-* rules in index.html with the existing CSS variables. Split the circuit, cyber and Escher skins into separate commits next time. Pull the SVG part builders out of the one giant file. Test the legend on a narrow phone screen."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "tilespinneratlas",
+      "sha": "5f5f17cb",
+      "message": "Synth sounds with mute button, one way check valves, vault difficulty levels; shuffled vault chips; no stale clear cards after leaving Pipes",
+      "heckle": "This commit is five features and a bug fix wearing a trench coat. Synth sounds, a mute button, check valves, vault difficulty and a stale card fix all landed together in index.html, so if any one breaks you get to bisect a sandwich. The new .sound-btn has a 36 pixel hit area jammed next to the hamburger in .top-left with a 4 pixel gap, which on a phone is a fat finger lottery. Audio that starts with no mute memory is also how you get yelled at on a bus. The stale clear card fix tells me you knew the state handling was shaky and shipped anyway.\n\nFix it: Store the mute choice in localStorage so it survives a reload. Widen the gap between .menu-btn and .sound-btn in index.html. One feature per commit from here on. Add a guard that resets card state whenever the mode changes, not only when leaving Pipes."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "2026-10-30-orange-scores",
+      "sha": "96614bf8",
+      "message": "Tile Spinner Vault accepts difficulty-scaled scores up to 3000",
+      "heckle": "You raised the vault max from 1000 to 3000 and doubled perSecond to 200 in api/_games.js, which is a cheat code with a changelog. Anyone who can hit the score endpoint can now post a 3000 in two seconds and sit atop the board like a lobbyist at a committee hearing. The perSecond limit is the only thing guarding the leaderboard, and you loosened it because your own client got rejected. That is fixing the referee instead of the game. Also this is the third changelog line for a single afternoon, in a file full of v2026.11.18b and c, which reads like a filibuster in version numbers.\n\nFix it: Validate the difficulty multiplier on the server in api/_games.js instead of just raising max. Tie perSecond to the difficulty so Easy cannot post an Expert score. Merge the same day changelog entries in CHANGELOG.md into one."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "tilespinneratlas",
+      "sha": "76b39c4e",
+      "message": "Pipe styles (classic, water mains, streets, power lines) and Big boards in three sizes; hide vault panel outside Play",
+      "heckle": "Pipe styles and three Big board sizes in one shot, and the CSS grew pole, house, house-lit and pseg classes with colors sprinkled in as raw hex like #7a5a3a and #ffd23a. The .ps-streets, .ps-power and .ps-water pipe-base overrides are three copies of the same rule with different paint, the kind of cloning that gets a department defunded. The statA line now checks P.big in a ternary inside the render function, so every mode keeps getting one more special case welded onto the same if chain. That chain is a tax code at this point.\n\nFix it: Collapse the three .ps-* pipe-base rules in index.html into one rule driven by CSS variables. Replace the mode if chain in the stats render with a lookup table. Keep the new hex colors in one palette block. Check the Big boards on a small phone."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "tilespinneratlas",
+      "sha": "646cc1a7",
+      "message": "Vault: blank ring on every junction, five hide digits, the rest are decoys",
+      "heckle": "A blank ring on every junction and most of them decoys. Congratulations, you built a game where the main mechanic is clicking on nothing. The hint text now literally says most rings are empty decoys, which is you admitting the design needs an apology on screen. The vault-ring rule gained a transition on fill, stroke and opacity all at once, on every ring on a big board, which is a nice way to make a cheap phone cry. And the dashed .vault-spot.empty rings at 0.45 opacity will be nearly invisible outside, so players will be tapping fog.\n\nFix it: Drop the transition on stroke and opacity in .vault-ring in index.html for large boards. Raise the contrast of .vault-spot.empty so decoys are readable in sunlight. Rewrite the hint text so it explains the goal instead of confessing the design."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "tilespinneratlas",
+      "sha": "7a93320c",
+      "message": "Post Rush, Pipes and Vault scores to the score hub; tap outside a card to close it",
+      "heckle": "You wired score posting into the game card with a three letter tag input, which means the entire leaderboard identity system is a text box and a prayer. No auth, no rate limit on the client, and a shared hub that now trusts whatever the page sends it. The .post-tag field is 76 pixels wide with letter spacing of 0.2em, which on a phone will clip a three letter tag like a cheap suit. Tap outside a card to close it also means a stray thumb during a score entry throws the whole run away. Nice touch for the intern who loves lost data.\n\nFix it: Do not close the card in the index.html tap handler while the .post-tag input has focus or text. Add a client side cooldown on the score post. Widen .post-tag so the letters are not clipped. Make the server in the score hub reject empty tags."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "2026-10-30-orange-scores",
+      "sha": "c7be0935",
+      "message": "Register Tile Spinner rush, pipes and vault boards",
+      "heckle": "Three new boards stuffed into api/_games.js, and look at the numbers you made up. Rush max 500 at one per second, vault max 1000 at 100 per second, pipes max 100000 over 400 days. Those limits are guesses with decimal places missing, like a budget projection written on a napkin. The vault one was wrong within the hour, since the very next commit had to raise it, so you shipped a config you never tested against your own game. The changelog entry labelled v2026.11.18b also skips a plain v2026.11.18 on the same day, a version scheme invented while falling down stairs.\n\nFix it: Play each board once and set max and perSecond from real runs in api/_games.js. Write the vault limit with its difficulty multiplier from the start. Fix the version label in CHANGELOG.md so it is not a b with no a."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "tilespinneratlas",
+      "sha": "b81c6d3d",
+      "message": "Vault digits sit on the real yellow match dots; pips track real match progress; near-match hint glow",
+      "heckle": "So the vault digits were NOT sitting on the real match dots until now. That means the previous vault commit shipped a puzzle whose answers were in the wrong place, and you are patching a bug the same afternoon like an agency issuing a correction to its own press release. The new vertexProgress function has a hex branch, a square branch and a pile of special cases in the same index.html, and it calls tileMap.get with a template string key for every vertex on every render, which is a garbage collector protest waiting to happen. Fifty one lines deleted and ninety added to move dots, and not one test.\n\nFix it: Cache the tileMap key strings in vertexProgress in index.html instead of rebuilding them every render. Put the hex and square branches into separate small functions. Add a test that the vault digits land on lit match vertices for every grid type."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "tile-topia",
+      "sha": "280dbfdf",
+      "message": "Completion chimes, record celebration, player outlines, bot opponents",
+      "heckle": "Bot opponents, chimes, outlines and a record celebration in one commit to index.html, and the bot logic landed in a file that also holds the rules text as raw HTML. You even jammed two paragraphs on one line with a stray closing p tag like a rider on a defense bill. The how to play text now says bots take their turns on their own, with zero word on how smart they are, because the answer is probably a random number generator wearing a tie. A chime per tile rising in pitch means a ten tile castle sounds like an ice cream truck having a stroke, and there is no mention of a volume control or mute anywhere.\n\nFix it: Add a mute toggle for the chimes in index.html. Split the two rules paragraphs onto separate lines. Add a bot turn delay setting so players can follow what it did. Move the bot code out of the page file."
+    },
+    {
       "date": "2026-11-18",
       "repo": "2026-10-18-orange-testbed",
       "sha": "0c6c2cc9",
@@ -1329,76 +1399,6 @@
       "sha": "d5b4264e",
       "message": "Field Twin Companion firmware build 6",
       "heckle": "Another day, another mystery binary shoved into field-twin-companion/firmware/field-twin-companion-v1.bin. Build 6 landed between two Claude commits that actually explain themselves, so the intern's own commits look even dumber next to them. The message is a number, and a number is not a changelog. This is a filibuster of information: lots of bytes, zero content. Rewriting the same file three times in one stretch bloats the repo for no reason.\n\nFix it: Name the build in the file or a manifest instead of overwriting field-twin-companion-v1.bin. Stop checking firmware into the main history. Say what build 6 changed in the commit message."
-    },
-    {
-      "date": "2026-11-06T23:14:44Z",
-      "repo": "field-twin",
-      "sha": "3eff40b6",
-      "message": "Field Twin Companion firmware build 7",
-      "heckle": "Build 7 of the firmware, and the whole commit is a binary blob at field-twin-companion/firmware/field-twin-companion-v1.bin. Nobody can review it, diff it, or tell what changed, which makes this a bailout with no audit. Builds 5, 6 and 7 all overwrite the same file named v1, so the version in the filename is a campaign promise that means nothing. Git history is now a landfill of compiled lumps, and the commit message does not even say what build 7 fixes. Did you learn versioning from a cereal box?\n\nFix it: Stop committing the .bin to git and attach it to a GitHub release instead. Put the build number inside the filename or a version.json next to field-twin-companion-v1.bin. Write what changed in the commit message, because build 7 tells me nothing."
-    },
-    {
-      "date": "2026-11-06T16:48:19Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "9232678e",
-      "message": "agent-orange 2026-11-06T135747 (#73)",
-      "heckle": "You merged pull request number 73 for a bot called agent-orange, and the entire payload is one added line in contrib/agent-orange/2026-11-06T135747.json. One line. The diff gives GitHub nothing to show, so reviewing it was impossible and you clicked merge anyway, like a senator signing a bill he never read. A pile of timestamped single line JSON files is a filing cabinet run by a raccoon, and every turn adds another drawer to the mess while the web-flow merge hides that the bot did it under your own login. Nothing here proves the turn did anything useful.\n\nFix it: Pretty print the JSON in contrib/agent-orange so a diff shows what changed. Reject merges that change nothing meaningful instead of rubber stamping them. Roll old turn files into one log file so the contrib folder stops growing forever. Make the bot commit under its own name so the filters work."
-    },
-    {
-      "date": "2026-11-06T06:56:32Z",
-      "repo": "kat-chat",
-      "sha": "f9aa8d86",
-      "message": "Database layout snapshot",
-      "heckle": "You committed a one line, minified, 4 KB wall of JSON called supabase/schema-snapshot.json, and the first table in it is chassisquiver_runs. That is another app's table sitting in the chat app's database like a stranger asleep on your couch. A snapshot with no script reference, no readme and no newline is just a ransom note nobody can read, and it will be stale by the next migration. Real engineers keep migrations in version control, intern.\n\nFix it: Delete supabase/schema-snapshot.json and keep real migration files instead. Pretty print anything you must keep so a diff means something. Split the chassisquiver tables out of the chat database. Add a line to the readme saying what generates the file."
-    },
-    {
-      "date": "2026-11-06T06:56:32Z",
-      "repo": "mohavetech-website",
-      "sha": "f092e2cd",
-      "message": "Cache-bust script tags so the Monthly Reviews section loads",
-      "heckle": "A cache buster glued on by hand, ?v=1793930958, pasted into index.html and monthlies.html like the section was going to load itself. Yet script-v53.js is still versioned by renaming the file, so you now run two cache strategies at once, which is a bipartisan compromise nobody asked for. That number is a timestamp you will forget to bump the minute you edit again, and the page will serve stale code until you remember. Also, the previous commit shipped a section that did not load, so you pushed it blind.\n\nFix it: Pick one cache strategy, either renamed files or query strings. Make the sync script stamp the version in index.html and monthlies.html so you stop hand pasting. Open the page after pushing next time."
-    },
-    {
-      "date": "2026-11-06T06:56:32Z",
-      "repo": "mohavetech-website",
-      "sha": "a7fc1620",
-      "message": "Add monthly reviews under Statistics with October 2026 deck",
-      "heckle": "Nearly 250 lines of new code and the highlight is a showMonthly function in script-v53.js that builds buttons with inline onclick strings and a giant style attribute, in a file already named like it is on its fifty third apology. The deck lives in an iframe with a fixed 80vh height, which will be a cramped mess on a phone. Every statistic in monthlies-data.js is typed in by hand, so the numbers are a campaign promise, not a report. The tab buttons are neon green on black while monthlies.html is cream and white, so the page fights itself like a divided congress.\n\nFix it: Move the button styling in script-v53.js into a CSS class. Generate the stats in monthlies-data.js from the real data instead of typing them. Drop the iframe or give monthlies.html a matching theme. Check the layout on a phone."
-    },
-    {
-      "date": "2026-11-06T06:56:32Z",
-      "repo": "mohavetech-website",
-      "sha": "533eb484",
-      "message": "Sync script finds the current script file instead of a fixed version",
-      "heckle": "The sync script used to hardcode script-v53.js, so you fixed it with a readdirSync, a regex, a sort and a slice(8) magic number that only works because the prefix happens to be eight characters. Rename the file pattern once and it silently grabs the wrong thing, which is the kind of austerity budget that blows up later. The fix also papers over the real problem, that you rename a whole script every sync like a witness protection program. Version in a query string, you animal.\n\nFix it: Stop renaming script-vNN.js and use one stable file name in mohavetech-sync-v1.js. Replace the slice(8) with a match group in the regex. Throw a clear error when no script file is found instead of reading undefined."
-    },
-    {
-      "date": "2026-11-05T23:41:17Z",
-      "repo": "2026-11-05-locker-screen",
-      "sha": "1a32f1b1",
-      "message": "Add hardware keypad, sensor and door repair flow, and all part tests",
-      "heckle": "Congratulations, you wrote 339 lines of app.js that opens with two blank lines and a kraft() function that is one single template string long enough to need its own zip code. Nobody can read that, including you in an hour. The commit says all part tests, yet I see no test file in this diff, so that is a campaign promise with a bow on it. The 201 line i18n.js crams whole translation sets onto single lines like the intern is billed per newline, and one typo in there will break the build with no hint where. The whole thing is a government shutdown of readability.\n\nFix it: Break the kraft() template in app.js into small named pieces. Put one translation key per line in i18n.js. Add the actual part tests the message brags about, or fix the message. Delete the blank lines at the top of app.js."
-    },
-    {
-      "date": "2026-11-05T23:41:17Z",
-      "repo": "2026-11-05-locker-screen",
-      "sha": "e0790668",
-      "message": "Add tracking keyboard and technician troubleshooting screens",
-      "heckle": "Two hundred fifty four new lines in index.html and you still shoved the whole kiosk into one file like it is a storage unit nobody audits. You deleted the .track style but I see no proof the tracking screen still lays out right, so enjoy the surprise. Slapping [hidden]{display:none!important} on the page is the duct tape of a filibuster: it kills every fight over display rules by force and the next person pays for it. Technician troubleshooting screens in the same blob as the customer keypad, because separation of concerns is apparently for adults.\n\nFix it: Move the technician screens out of index.html into their own file. Drop the !important on [hidden] and fix the specificity that made you need it. Check the tracking input still sizes right now that .track is gone."
-    },
-    {
-      "date": "2026-11-05T23:41:17Z",
-      "repo": "2026-11-05-locker-screen",
-      "sha": "3d39fa1c",
-      "message": "Add scan, code entry, language and help screens",
-      "heckle": "You wrote index.html four minutes ago and now you rewrote 358 lines and deleted 224 of the same file. That is a bailout of your own work, taxpayer. You also took a readable stylesheet with one variable per line and mashed it into squashed rows, then added a .hc high contrast block that only changes border widths on four selectors, so half the screen ignores the mode. Scan, code, language and help screens all land in one commit like a spending bill with no readers.\n\nFix it: Stop rewriting the file you just committed and plan the layout first. Restore one variable per line in :root in index.html. Make the .hc block cover buttons, text and tabs, not just borders. Split the help, language and scan screens into separate commits."
-    },
-    {
-      "date": "2026-11-05T23:41:17Z",
-      "repo": "2026-11-05-locker-screen",
-      "sha": "66b31da1",
-      "message": "Locker kiosk attract screen",
-      "heckle": "A 270 line index.html with all CSS inline, a fixed 4 by 3 aspect-ratio screen, and a grid of 1.25fr and 1fr columns. On a phone that is a postage stamp with a headline crammed into it. The .headline gets a clamp-style font and the kraft box illustrations are hand drawn rectangles, which is cute until nobody can edit them. You called it the attract screen, but the cursor:pointer on the whole .screen means any stray tap starts the thing.\n\nFix it: Add a media query for narrow widths in index.html so the two columns stack. Pull the inline CSS into its own stylesheet. Limit cursor:pointer to the actual start target instead of the whole .screen."
     }
   ]
 }
