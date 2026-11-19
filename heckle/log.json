@@ -2,6 +2,20 @@
   "heckles": [
     {
       "date": "2026-11-19",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "46519f3c",
+      "message": "Highways, roundabouts, intersections, fabric weaves, stair presets and skin, picture stamps, radiant pop and under the sea themes, fish, fill canvas",
+      "heckle": "One commit, 171 lines added to a single index.html, and it ships fourteen picture stamps, eleven new pattern styles, two fill buttons and a new rules hint paragraph like a bailout bill with every rider the committee could staple on. The stampSel dropdown hardcodes fourteen options in markup while the drawing for each lives somewhere else, so adding a fifteenth means editing two places, which is how an intern builds a filibuster. The pattern select is now a wall of twenty something options on a phone screen. The commit message is a grocery list, because you could not decide what the commit was about, and neither could I. Did you learn version control from the back of a cereal box?\n\nFix it: Split this into one commit per feature so the history is readable. Build the stamp options from a single stamps object in index.html instead of hand typing the select. Group the pattern select with optgroups so mobile users can find anything. Move the rules hint text out of the markup into data."
+    },
+    {
+      "date": "2026-11-19",
+      "repo": "tile-topia",
+      "sha": "c35a8ab5",
+      "message": "City skin redrawn as detailed illustrations with cached tile art and lit 3D buildings",
+      "heckle": "You redrew the whole City skin and managed to touch 220 lines of a single index.html, rewriting every body.c selector like a campaign promise nobody asked for. Swapping blue and yellow for beige and teal is a paint job on a file that still holds every skin as hand pasted CSS blocks, so the next skin means another stack of body.x lines. The message claims cached tile art and lit 3D buildings, yet the diff is mostly color values, so either the message lies or the real work is buried where nobody can review it. Hex codes repeated forty times with no variables is how you get a government shutdown in stylesheet form. I have seen interns with more discipline and less caffeine.\n\nFix it: Define the skin colors as CSS custom properties in index.html and reference them from the body.c rules. Split the cache and building drawing into its own commit. Move SKINS and the skin CSS out of the single file. Write a commit message that matches the diff."
+    },
+    {
+      "date": "2026-11-19",
       "repo": "tile-topia",
       "sha": "b30c3daa",
       "message": "City skin with 3D towers in iso, full River tile set, skin-aware names",
@@ -1385,20 +1399,6 @@
       "sha": "643d1cd9",
       "message": "steward 2026-11-06T182944 (#74)",
       "heckle": "Pull request 74 is one minified JSON line in contrib/steward/2026-11-06T182944.json, merged through the button under your own login without anyone reading it. The steward bot is placing crosswalk hatches on Chuckwalla Avenue and Agave Street with coordinates like 476688,243230, so a human would need a calculator and a prayer to review it. This is a rubber stamp factory, like a rider stapled onto a spending bill. A line that long is unreadable in any diff view.\n\nFix it: Pretty print the JSON in contrib/steward so diffs mean something. Have the steward bot validate its calls before the pull request opens. Stop merging these without a check that the file parses and the coordinates fall inside the map."
-    },
-    {
-      "date": "2026-11-06T23:14:46Z",
-      "repo": "field-twin",
-      "sha": "a93f8e9a",
-      "message": "Field Twin Companion firmware build 5",
-      "heckle": "Build 5 is the same crime as 6 and 7, a binary swap in field-twin-companion/firmware/field-twin-companion-v1.bin with a message that is just a number. If the board bricks after a flash, nobody can bisect this, because every build lives under the same name like a government shutdown that keeps getting renamed. You are hand compiling and hand committing like the pipeline is a rumor.\n\nFix it: Add a script that builds and releases the firmware so you stop hand pushing blobs. Keep one file per build or a manifest with build numbers in field-twin-companion/firmware. Put the actual change in the commit message."
-    },
-    {
-      "date": "2026-11-06T23:14:45Z",
-      "repo": "field-twin",
-      "sha": "d5b4264e",
-      "message": "Field Twin Companion firmware build 6",
-      "heckle": "Another day, another mystery binary shoved into field-twin-companion/firmware/field-twin-companion-v1.bin. Build 6 landed between two Claude commits that actually explain themselves, so the intern's own commits look even dumber next to them. The message is a number, and a number is not a changelog. This is a filibuster of information: lots of bytes, zero content. Rewriting the same file three times in one stretch bloats the repo for no reason.\n\nFix it: Name the build in the file or a manifest instead of overwriting field-twin-companion-v1.bin. Stop checking firmware into the main history. Say what build 6 changed in the commit message."
     }
   ]
 }
