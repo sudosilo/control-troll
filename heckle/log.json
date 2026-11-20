@@ -1,6 +1,34 @@
 {
   "heckles": [
     {
+      "date": "2026-11-20",
+      "repo": "2026-10-30-orange-scores",
+      "sha": "bf680305",
+      "message": "Raise the Raineurysm Puzzle score ceiling for twenty four levels",
+      "heckle": "You bumped the score max for raineurysm-puzzle in api/_games.js from 60000 to 150000 by guessing, because there is no math or comment anywhere that says why 150000 and not 149000 or a million. The ceiling is the only thing standing between this hub and a cheater posting a fake high score, and you moved it like a senator adding a rider at midnight. Then the changelog got a new v2026.11.19r entry stacked above entries dated the 17th and the 18th, so your dates go 19, 17, 18 like a calendar run by a filibuster. The README Latest change line now credits the wrong entry too.\n\nFix it: Write down how 150000 was derived, ideally from the level count times a per level maximum. Keep perSecond at 300 in line with the new ceiling or justify why it stays. Sort CHANGELOG.md so the newest entry is really first. Check that the README Latest change line matches the real newest entry."
+    },
+    {
+      "date": "2026-11-20",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "d1b8fb4b",
+      "message": "Isometric lock shape mode",
+      "heckle": "Isometric lock mode, and the first thing you did was declare var isoLock=false in the middle of the file between helper functions like a campaign promise tossed into a budget bill. isoAxes returns two hardcoded arrays of radians typed by hand, and isoNext is a loop that matches angles with a 1e-6 epsilon, which is a fancy way of praying. The aim branch in the steering code grew an if else ladder with magic numbers, 0.2 and 0.15 and 0.5, that nobody including you can explain. Also isoNext sits there unused as far as this diff shows. Dead code on day one, impressive for something that cannot even spell its own toggle.\n\nFix it: Delete isoNext if nothing calls it. Name the magic numbers 0.2, 0.15 and 0.5 as constants. Move isoLock up with the other state variables. Check that isoSnap behaves when iso is off. Add a comment explaining why the axes differ per mode."
+    },
+    {
+      "date": "2026-11-20",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "648a4fea",
+      "message": "Memory mode: replay rounds that learn from collisions",
+      "heckle": "A memory mode dropped into the same single index.html, because splitting files is apparently a government program you refuse to fund. You added a Memory button, then smeared a pile of globals across the file: memOn, memRun, memStart, memSeed, memRng, memRound, memT, scars, memRngs, memCur, memFix. That is eleven loose variables, a bailout package for a state you never planned. Worse, newPipe now mutates memCur inside the constructor, and commit quietly stops calling snapshot whenever memOn is true, so undo goes dark without a word. The intern built a feature that learns from collisions and cannot learn from its own naming.\n\nFix it: Wrap the memory globals in one object so they stop polluting the file. Move the memCur side effect out of newPipe. Make the undo behavior in commit explicit when memOn is true. Add a way to switch Memory off cleanly. Give hashStr a comment or a test."
+    },
+    {
+      "date": "2026-11-20",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "a20b1319",
+      "message": "Cloth weave: over only single lines, under and stay under for bundles",
+      "heckle": "Four presets, basket, crochet, lace and doily, got their weave flipped from alternate to a brand new cloth string, and the commit message reads like a ransom note written by someone who lost the dictionary. The whole change lives in one giant index.html where the preset table is a wall of comma soup that no human could diff without a stiff drink. You added cloth to WEAVE_NAMES, which is the only thing you bothered to wire visibly, so I am betting the actual over and under logic is hiding somewhere you forgot to touch. Nineteen lines, and a handful of them are the same string typed four times. Truly the filibuster of find and replace.\n\nFix it: Pull the weave strings in the preset table into one constant instead of retyping cloth four times. Explain in the commit message what cloth actually does. Test that cloth falls back safely anywhere the code still only knows alternate. Split index.html before it eats the repo."
+    },
+    {
       "date": "2026-11-19",
       "repo": "tile-topia",
       "sha": "f365f95d",
@@ -1371,34 +1399,6 @@
       "sha": "b3807ebd",
       "message": "steward 2026-11-07T165947 (#76)",
       "heckle": "Another steward turn, another one line wall of minified JSON, and you merged it under your own login like a rubber stamp at the DMV. contrib/steward/2026-11-07T165947.json is six crosswalk hatches that all repeat the same meta string, completes the crosswalk across the street, word for word. Nobody read this. Nobody can read this. The only review it got was a green merge button.\n\nFix it: Have the steward agent write one crosswalk per street and dedupe the meta text in contrib/steward. Add a size or schema check before the merge. Stop approving diffs you cannot scroll."
-    },
-    {
-      "date": "2026-11-07T19:27:54Z",
-      "repo": "pajamastan",
-      "sha": "4bb967b5",
-      "message": "pajamastan: add Links tab with badge tool",
-      "heckle": "You built an entire navigation group called Links to hold one link. That is a filibuster with a sidebar. In index.html the nav array now has a Links section with a single Links page, and that page has a single card with a single button. The .links-btn rule got wedged in above .footer-note in the middle of the stylesheet like someone dropped it from a moving car, and it is a one off instead of reusing whatever button style the other cards already use.\n\nFix it: Put the Badge Tool card under an existing nav group in the pages array in index.html. Reuse the existing button class instead of .links-btn. Add the link to the footer if you want a Links section later."
-    },
-    {
-      "date": "2026-11-07T19:27:54Z",
-      "repo": "stinkin-badges",
-      "sha": "20ce47c8",
-      "message": "Badge backend: mockup reader and Supabase schema",
-      "heckle": "A whole server.js in one commit, with the rate limiter being a plain in memory Map in a process that Railway will restart whenever it feels like it, so your twenty per hour cap resets on every deploy. The migration in supabase/migrations/20261107160000_badges.sql uses bare create policy lines, while setup/tables.json does drop policy if exists first, so running the migration twice blows up and the two copies of the same schema already disagree. Two sources of truth for one database, nice work.\n\nFix it: Add drop policy if exists before each create policy in supabase/migrations/20261107160000_badges.sql. Delete the duplicate schema from setup/tables.json or generate it from the migration. Move the hits Map in server.js to the database or accept it is cosmetic."
-    },
-    {
-      "date": "2026-11-07T19:27:54Z",
-      "repo": "pajamastan-badge-tool",
-      "sha": "ff5fb9c9",
-      "message": "Redesign interface: pinned preview, compact tabbed controls",
-      "heckle": "You redesigned a phone tool and set the base font to twelve pixels in index.html, so your thumbs now need tweezers. The muted color went to a pale gray on an off white background, which reads like fine print on a bailout. The old blue accent became near black, so every active tab and button is now the same funeral shade. Two hundred eighty five lines added and a hundred fifty three removed in one file, in one go, in one sitting.\n\nFix it: Raise the body font in index.html to at least 14px and keep inputs at 16px so iOS stops zooming. Darken --muted until it passes contrast on --bg. Give the active tab a real color. Split the script out of index.html before it grows again."
-    },
-    {
-      "date": "2026-11-07T19:27:54Z",
-      "repo": "pajamastan-badge-tool",
-      "sha": "afeaa505",
-      "message": "Add gradient editor for band, background, and overlay text, plus text angle",
-      "heckle": "Another hundred sixty five lines crammed into the same single index.html, this time a gradient editor for three different things. The CSS variable --badge-accent got renamed to --band-fill, which is the kind of rename that leaves orphan references behind. The original band color is still hardcoded as 1f4e9c in the fallback, so the old blue is lurking in two places. This is a single file hoarder in the final stage.\n\nFix it: Grep index.html for any leftover --badge-accent use. Replace the hardcoded 1f4e9c fallbacks with one variable. Split gradient code into its own script file."
     }
   ]
 }
