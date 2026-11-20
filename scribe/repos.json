@@ -173,7 +173,7 @@
    "name": "App Index",
    "latest": {
     "date": "2026-11-19",
-    "text": "Added a sticky notes view where a mannequin wears a fitted gown made of one note per app. Added wall, car, semi trailer, 747, and wind scenes for the notes. Sync now refreshes the Vercel login first and still deploys if the app list read fails."
+    "text": "Sticky notes can now be dragged anywhere, then arranged newest first, A to Z, or shuffled, and the layouts are saved. The five newest apps now sort to the top. The app list is now kept in sync with Vercel by GitHub every three hours."
    }
   },
   "ether-wand": {
@@ -748,8 +748,8 @@
    "summary": "Search and watch tool for code repos, archives, and sites",
    "name": "Repo Find",
    "latest": {
-    "date": "2026-11-04",
-    "text": "Added the Resolve tab. Look up software by purpose across GitHub and Software Heritage, label results with a bucket, kinds of data and a plain description, load any account's public repos, and export. Added the Rabbit tab, where black windows fill with code from a random repo found by the stumble terms, hold for ten seconds, then refill. Every pull is logged, exportable, and included in backup."
+    "date": "2026-11-19",
+    "text": "Added the Teardown tab. Roll or pick one of 61 well known products and see how it is built layer by layer, each layer marked known or inferred, with a rebuild using builder tools and the open alternatives that exist, linked into the catalog. Filters hide big tech alternatives or skip big tech products. Merged Pipeline Builder in as the Builder tab, with build, randomize, diagram and templates modes, Supabase and more tools added, and the current stack saved in backup."
    }
   },
   "nanoverse": {
@@ -1192,8 +1192,8 @@
    "summary": "Interactive globe of security threats with layers, filters, and country intel.",
    "name": "Threat Atlas",
    "latest": {
-    "date": "2026-09-11",
-    "text": "First release. Threat Atlas shows a rotating globe with layered threat data and country intel."
+    "date": "2026-11-19",
+    "text": "Data refresh. Added incidents from 2025 and 2026 including Bybit, Poland grid, Stryker, Iranian PLC attacks and ShinyHunters campaigns. Added new countries, conferences, firms, bases, satellites and state entries. Year slider now reaches 2026 and filters the other layers."
    }
   },
   "dronesim": {
@@ -1833,8 +1833,8 @@
    "summary": "A studio game with orders, terminals, agents, developers, and offices",
    "name": "Stackloom",
    "latest": {
-    "date": "2026-11-15",
-    "text": "Added the Match line, the candy smashing match three game. Swipe a piece into its neighbor to line up three or more, clear the goal before the moves run out, and chain cascades for combos. Opened by hiring a level designer once a puzzle designer is on staff. Nine skins, five or six pieces, generous or tight moves, and premium art. Sucker Smash joins the studio samples."
+    "date": "2026-11-19",
+    "text": "Added the Shooter line, built from Dragon Drop. Drag to fly and fire, dodge straight shots from ground targets, and tap Bomb to clear the screen. Runs at a fixed speed on fast phone screens. Opened by hiring an arcade veteran once a physics programmer is on staff. Eight skins: the original pixel dragon, a rocket, a plane, a bee, a witch, a pizza fighting pineapples and anchovies, a seagull raiding a beach, and a laser cat, plus calm or frantic pace, three bombs or none, and premium glow. Dragon Drop joins the studio samples."
    }
   },
   "fatty-fart-pedal": {
@@ -2131,8 +2131,8 @@
    "summary": "Shared score board and live plays feed that the games send their scores to.",
    "name": "Score Hub",
    "latest": {
-    "date": "2026-11-18",
-    "text": "MobbyHill sign in now runs on Supabase Auth. Players sign in with their own email and a six digit code, or with any outside provider turned on in Supabase. Wallets, unlocks and payments belong to the Supabase Auth user. Removed the name and password accounts."
+    "date": "2026-11-19",
+    "text": "Raineurysm Puzzle grew to twenty four levels, so its top believable run score went up to match."
    }
   },
   "a-canticle-for-pajamastan": {
@@ -2257,8 +2257,8 @@
    "summary": "An Android notification blocker that holds alerts and releases them together on a schedule",
    "name": "Hush",
    "latest": {
-    "date": "2026-11-16",
-    "text": "Added Clock lock. Hush holds the phone clock on a chosen time zone, Las Vegas by default. When anything turns automatic time zone back on, Hush turns it off again right away, and if the clock still lands on the wrong zone Hush posts an alert that opens the date and time screen. Flipping that setting off for you needs a one time permission granted over wireless debugging."
+    "date": "2026-11-20",
+    "text": "Clock lock no longer posts any pop-up. When the clock moves off the chosen zone, the clock fixer puts it back silently. The fixer now waits after flipping automatic time zone off so it never flips it back on by a second tap."
    }
   },
   "2026-11-05-drive-thru-dental": {
@@ -2612,8 +2612,8 @@
    "private": false,
    "name": "raineurysm",
    "latest": {
-    "date": "2026-11-17",
-    "text": "Added seven more puzzle levels, for twelve in all. A puzzle run now scores points for speed and few parts, can be sent to the shared score board, and has a high score board in the puzzle menu. Added a start screen with three modes, a hint on the first puzzle, a full screen button, and a rain detail setting that lowers itself on slow phones. Fixed layouts on wider screens."
+    "date": "2026-11-19",
+    "text": "Added twelve more puzzle levels, for twenty four in all, with fixed pieces, lower faucets, and a cup splitter level. Added velocity settings for how much drop size and speed change loudness, plus octave jump speed and an on or off switch. Added fall speed for lanes and a storm that stays on the beat. Settings are kept on the phone."
    },
    "category": "Music and Visualizers",
    "summary": "A rain music toy where falling rain hits vessels that play notes.",
@@ -2657,8 +2657,8 @@
    "summary": "x",
    "name": "Pipe Weave",
    "latest": {
-    "date": "2026-11-18",
-    "text": "Added highways, roundabouts, intersections, fabric weaves, stair presets, a stair skin, and picture stamps. Added a Cityscape preset and a Join weave mode."
+    "date": "2026-11-19",
+    "text": "Added a full screen button. Pipes can now have their own colors and lines can shift color as they grow. Added an isometric lock shape mode. Added a memory mode that replays rounds and learns from collisions. Cloth weave now goes over only single lines and under or stays under for bundles."
    }
   },
   "2026-11-15-orange-keydecode": {
@@ -2711,8 +2711,8 @@
    "summary": "A modular stage block configurator joined to the Stompbox band room",
    "name": "Bloxx",
    "latest": {
-    "date": "2026-11-17",
-    "text": "Created Bloxx, a modular stage block configurator joined to the Stompbox band room. You can build stages from blocks, pick presets, light patterns, and motion, and view the stage from several angles."
+    "date": "2026-11-19",
+    "text": "Added motorized twist lock pins between blocks with lock confirmation. Added cable pass doors, open slots, handrails, clear doors, an inside light, a flat hinge stop, and a kickstand table door. Added a garage bench of door panels that replenish, a bare tower, and a send to sandbox button in design mode. Added named layouts you can save, load, and delete, a parts catalog with animated previews, and info buttons with descriptions. Added video, diffuser, and spotlight doors, a flip, an inside mirror ball, spotlight and strobe, and tools and inside gear on the design bench."
    }
   },
   "repo-cloner": {
@@ -2763,7 +2763,7 @@
    "summary": "A tile placing map building game with skins, bots, and an auto build mode.",
    "latest": {
     "date": "2026-11-19",
-    "text": "Added an Auto build mode that places tiles in spots that avoid gaps. It builds only inside the view and leaves fog beyond it. Added connector tiles for every edge combination, and holes now fill automatically."
+    "text": "Added a War skin with an army map, trenches, bases, HQs, and marching soldiers. Added West and Bunker skins. Added Meadow fields that score points, with a Biggest Meadow record. Each map now keeps its skin, with heart and strip landmarks, and city towers grow with district size."
    },
    "apps": [],
    "private": false,
@@ -2826,6 +2826,32 @@
    "urls": [
     "https://defcon-trail.vercel.app"
    ]
+  },
+  "2026-11-19-orange-packets": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Games",
+   "summary": "A tapping and idle game about inventing and selling condiment packets",
+   "name": "Packet Baron",
+   "latest": {
+    "date": "2026-11-19",
+    "text": "Created Packet Baron, a tapping and idle game about building a condiment packet empire. Squeeze out packets, buy production lines, and research new packets from ketchup up to a packet of packets. Hit packets pay royalties, and the Packet Gallery opens after three inventions. Upgrades and a goal of one million dollars in lifetime earnings round it out."
+   }
+  },
+  "2026-11-19-blue-just-five-more": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-19-blue-just-five-more.vercel.app"
+   ],
+   "private": false,
+   "category": "Games",
+   "summary": "A work game with seven tasks, excuse memos, and a performance review",
+   "name": "Just Five More",
+   "latest": {
+    "date": "2026-11-19",
+    "text": "Created Just Five More, a work game where every task ends with a request to do five more. Added seven tasks, excuse memos, fake verification, a secret ledger, and a performance review with a report card grade that never rewards overachieving, plus manager comments. Each shift now posts to the Score Hub, with a board for every task in the review and the menu."
+   }
   }
  }
 }

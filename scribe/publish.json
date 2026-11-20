@@ -1,263 +1,243 @@
 {
- "jobs": [
-  {
-   "repo": "tile-topia",
-   "releases": [
+  "jobs": [
     {
-     "tag": "v2026.11.18",
-     "target": "c35a8ab54d5e16f799ace6f240fe7310e2961210",
-     "name": "Tile-topia 2026-11-18",
-     "body": "Created Tile-topia, a tile placing game where you build a map one tile at a time and score finished features. Added Longest Road, Biggest Castle, and Longest River records. Added a Cyber skin with animated lanes and placement effects, a Graphite on paper skin, and an isometric view toggle. Added completion chimes, a record celebration, player outlines, and bot opponents. Redrew the City skin as detailed illustrations with lit 3D buildings and added the full River tile set."
+      "repo": "2026-11-04-orange-hush",
+      "releases": [
+        {
+          "tag": "v2026.11.19",
+          "target": "17ee29804c72095b6e42f933837665619c0b96b2",
+          "name": "Hush 2026-11-19",
+          "body": "Added the clock fixer. When the phone moves the clock off the chosen zone, Hush opens the date and time screen by itself, turns automatic time zone off, picks the chosen zone, and goes back home. If the phone is locked it waits until the next unlock. It runs once it is switched on under the phone's accessibility settings. Rebuilt the Hush screen so every state reads at a glance. A banner at the top says whether Hush is blocking and how many apps. Every setting shows a fixed size ON or OFF badge instead of a switch. Every app row shows BLOCKED in red or ALLOWED in green, and blocked rows are tinted red. The clock line shows in green when the clock is correct and in red when it is wrong. Nothing on the screen changes size or moves when a state changes."
+        },
+        {
+          "tag": "v2026.11.20",
+          "target": "7b58e493c25920653972d2075c0f8cde2ed7b3a1",
+          "name": "Hush 2026-11-20",
+          "body": "Clock lock no longer posts any pop-up. When the clock moves off the chosen zone, the clock fixer puts it back silently. The fixer now waits after flipping automatic time zone off so it never flips it back on by a second tap."
+        }
+      ],
+      "description": "An Android app that blocks notifications and releases them in a digest",
+      "homepage": "",
+      "topics": [
+        "android",
+        "notifications",
+        "tool"
+      ]
     },
     {
-     "tag": "v2026.11.19",
-     "target": "97c058d68f9188792e15cae4288c28b936d36417",
-     "name": "Tile-topia 2026-11-19",
-     "body": "Added an Auto build mode that places tiles in spots that avoid gaps. It builds only inside the view and leaves fog beyond it. Added connector tiles for every edge combination, and holes now fill automatically."
-    }
-   ],
-   "description": "A tile placing game where you build a map and score finished lanes, districts, and cores.",
-   "homepage": "https://tile-topia.vercel.app",
-   "topics": [
-    "game",
-    "tiles",
-    "puzzle",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "cipher-wars-v3",
-   "releases": [
-    {
-     "tag": "v2026.11.18",
-     "target": "c6a304dba85ab7e02c7917b0e02c1191981f1e0a",
-     "name": "Cipher Wars 2026-11-18",
-     "body": "Created Cipher Wars version 3. It adds a warm up round before the campaigns begin. Players read a briefing, make a choice, and earn intel points toward a final rank, with a codex and a list of key figures to look things up."
-    }
-   ],
-   "description": "A story game about a secret war of codes where you play the codemaker or the codebreaker.",
-   "homepage": "https://cipher-wars-v3.vercel.app",
-   "topics": [
-    "game",
-    "cryptography",
-    "story",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "circuit-musicfx",
-   "releases": [
-    {
-     "tag": "v2026.06.26",
-     "target": "12eac68903f38036aee936ca719de82a56f43da3",
-     "name": "Circuit Visualizer 2026-06-26",
-     "body": "Created Circuit Visualizer, a music visualizer that draws a circuit board and lights it on beats. Added reactive hits, per band circuits, and flashing. Added a bead train tempo display, a hamburger menu, and a drop legend. Five circuits now cross fade with the tempo and hold longer."
+      "repo": "mohavetech-website",
+      "releases": [
+        {
+          "tag": "v2026.11.19-2",
+          "target": "2c41cdf8c7dd8ceae7424b96da10fae1727b51e4",
+          "name": "App Index 2026-11-19",
+          "body": "Sticky notes can now be dragged anywhere, then arranged newest first, A to Z, or shuffled, and the layouts are saved. The five newest apps now sort to the top. The app list is now kept in sync with Vercel by GitHub every three hours."
+        }
+      ],
+      "description": "An index page that lists every app with its age, phone tags, and notes.",
+      "homepage": "https://mohavetech-website.vercel.app",
+      "topics": [
+        "index",
+        "tool",
+        "vercel"
+      ]
     },
     {
-     "tag": "v2026.06.28",
-     "target": "6e0ee07fee049dca1f8897ee40cb1f35dfc6cb1f",
-     "name": "Circuit Visualizer 2026-06-28",
-     "body": "Circuits cross fade with the tempo and hold longer. Added RF antennas, an LED spectrum bank, and denser components."
+      "repo": "threat-atlas-v3",
+      "releases": [
+        {
+          "tag": "v2026.11.19",
+          "target": "cfc3120904d7f890420353652046aa9de1cb445b",
+          "name": "Threat Atlas 2026-11-19",
+          "body": "Data refresh. Added incidents from 2025 and 2026 including Bybit, Poland grid, Stryker, Iranian PLC attacks and ShinyHunters campaigns. Added new countries, conferences, firms, bases, satellites and state entries. Year slider now reaches 2026 and filters the other layers."
+        }
+      ],
+      "description": "Interactive globe of security threats with layers, filters, and country intel.",
+      "homepage": "https://threat-atlas-two.vercel.app",
+      "topics": [
+        "globe",
+        "map",
+        "research",
+        "security",
+        "vercel"
+      ]
     },
     {
-     "tag": "v2026.09.11",
-     "target": "24497f0225816be010d16c0025d933c0d3819b83",
-     "name": "Circuit Visualizer 2026-09-11",
-     "body": "Added ASCII bars and matrix rain modes. Leads now have vias, the core halo is tighter, and the LED strip is chained. Submenus collapse and there is a terminal theme system."
+      "repo": "2026-11-16-pipe-weave",
+      "releases": [
+        {
+          "tag": "v2026.11.19",
+          "target": "a20b13192cd085c2589c98fdc278879dddf26f32",
+          "name": "Pipe Weave 2026-11-19",
+          "body": "Added a full screen button. Pipes can now have their own colors and lines can shift color as they grow. Added an isometric lock shape mode. Added a memory mode that replays rounds and learns from collisions. Cloth weave now goes over only single lines and under or stays under for bundles."
+        }
+      ],
+      "description": "A pipe drawing toy where pipes turn, split, and weave over and under each other.",
+      "homepage": "https://2026-11-16-pipe-weave.vercel.app",
+      "topics": [
+        "canvas",
+        "drawing",
+        "game",
+        "toy",
+        "vercel"
+      ]
     },
     {
-     "tag": "v2026.11.18",
-     "target": "61cbc06905b8b84af30b8e8de62cd532988c3fe3",
-     "name": "Circuit Visualizer 2026-11-18",
-     "body": "Added Bitfield mode, brought over from the Bitfield Synth app."
-    }
-   ],
-   "description": "A music visualizer that draws a circuit board that lights up to the beat.",
-   "homepage": "https://circuit-musicfx.vercel.app",
-   "topics": [
-    "music",
-    "visualizer",
-    "canvas",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "beewars",
-   "releases": [
-    {
-     "tag": "v2026.11.18",
-     "target": "890f126fb6d9795abb624db5be77be6cd41ae169",
-     "name": "Bee Wars 2026-11-18",
-     "body": "Created Bee Wars, a territory control game with two bee colonies in one meadow. You win by growing to 21 bees or by killing the rival queen. Send workers, soldiers, and scouts around the map, paint walls, and pick what each new bee will be."
-    }
-   ],
-   "description": "A territory control game where two bee colonies compete for pollen and land.",
-   "homepage": "https://beewars.vercel.app",
-   "topics": [
-    "game",
-    "strategy",
-    "simulation",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "defcon-trail",
-   "releases": [
-    {
-     "tag": "v2026.11.18",
-     "target": "d5a4df6d00060d2caec641e537b226dffc82656d",
-     "name": "DEF CON Trail 2026-11-18",
-     "body": "Created DEF CON Trail version 1, a trail style travel game about getting a crew to a hacker conference in Las Vegas. Crew members now carry local groups by area code, and groups meet at night. Shops sell a first timer kit. A hand drawn Las Vegas skyline pans to each landmark. Added pool parties, badge shorts, soldering burns, lockpick fingertips, blisters, brutal heat, monsoon floats, and deodorant, plus a go up to go down elevator rule after tower parties."
-    }
-   ],
-   "description": "A trail style travel game about getting a crew to a hacker conference in Las Vegas.",
-   "homepage": "https://defcon-trail.vercel.app",
-   "topics": [
-    "game",
-    "simulation",
-    "retro",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "tilespinneratlas",
-   "releases": [
-    {
-     "tag": "v2026.11.18",
-     "target": "b0d960175b995faa99f4cf3642ff070dcae36fd0",
-     "name": "Atlas of Tiles 2026-11-18",
-     "body": "Added Pipes challenge levels, Pipe Rush, and Visualizer modes, and the tradition styles became skins. Pipes gained rocks, bridges, pinned tiles, triangle and octagon grids, and intro cards. Added a Vault challenge where you reveal five digits and crack the code, with difficulty levels. Rush, Pipes, and Vault scores post to the score hub. Added pipe styles, Big boards in three sizes, synth sounds with a mute button, and a Circuit style with AC and DC boards. Added Cyber, Color Pop, and Escher Remix skins."
-    }
-   ],
-   "description": "Tile rotating puzzle where closed loops score, with regional tile styles.",
-   "homepage": "https://tile-spinner.vercel.app",
-   "topics": [
-    "game",
-    "puzzle",
-    "tiles",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "bitfield-synth",
-   "releases": [
-    {
-     "tag": "v2026.11.18",
-     "target": "c004309303f31222845cd3717a088e54753f2f64",
-     "name": "Bitfield Synth 2026-11-18",
-     "body": "A mobile control dock now replaces the hamburger drawer."
-    }
-   ],
-   "description": "Pixel field visualizer driven by math expressions, audio, and images.",
-   "homepage": "https://bitfield-synth.vercel.app",
-   "topics": [
-    "canvas",
-    "music",
-    "vercel",
-    "visualizer",
-    "web-audio"
-   ]
-  },
-  {
-   "repo": "hackercons-roulette-api",
-   "releases": [
-    {
-     "tag": "v2026.11.18",
-     "target": "57350844ab65b01f07d79ebdcd2d6d234895e206",
-     "name": "Hackercons Roulette API 2026-11-18",
-     "body": "Newest talks now come first. Added a fresh talk pool and a fresh filter."
-    }
-   ],
-   "description": "Catalog service that serves random playable conference clips to the player.",
-   "homepage": "",
-   "topics": [
-    "backend",
-    "node",
-    "railway",
-    "video"
-   ]
-  },
-  {
-   "repo": "hackercons-roulette",
-   "releases": [
-    {
-     "tag": "v2026.11.18",
-     "target": "f185444577082779af78550d531a8dd023abd38d",
-     "name": "Hackercons Roulette 2026-11-18",
-     "body": "Redesigned the player in a comic book look. Added a fresh only filter and sound effect bursts."
-    }
-   ],
-   "description": "Plays random short clips from hacker conference talks with a guessing mode.",
-   "homepage": "https://hackercons-roulette.vercel.app",
-   "topics": [
-    "conferences",
-    "game",
-    "vercel",
-    "video"
-   ]
-  },
-  {
-   "repo": "welcome-to-the-madness",
-   "releases": [
-    {
-     "tag": "v2026.11.18",
-     "target": "8111136be1485a7f6988d5da28c81793fe95dc42",
-     "name": "Welcome to the Madness 2026-11-18",
-     "body": "The shift over screen now shows a top five shifts board."
-    }
-   ],
-   "description": "A kitchen rush game where you pull orders before they burn.",
-   "homepage": "https://welcome-to-the-madness.vercel.app",
-   "topics": [
-    "arcade",
-    "cooking",
-    "game",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "2026-11-16-pipe-weave",
-   "releases": [
-    {
-     "tag": "v2026.11.18",
-     "target": "46519f3cb81c98e674dd810aa7100e2e51946426",
-     "name": "Pipe Weave 2026-11-18",
-     "body": "Added highways, roundabouts, intersections, fabric weaves, stair presets, a stair skin, and picture stamps. Added a Cityscape preset and a Join weave mode."
-    }
-   ],
-   "description": "A pipe drawing toy where pipes turn, split, and weave over and under each other.",
-   "homepage": "https://2026-11-16-pipe-weave.vercel.app",
-   "topics": [
-    "canvas",
-    "drawing",
-    "game",
-    "toy",
-    "vercel"
-   ]
-  },
-  {
-   "repo": "mohavetech-website",
-   "releases": [
-    {
-     "tag": "v2026.11.18",
-     "target": "7a2a23d4ce4e6b5172eea3ea2933982f4c7630aa",
-     "name": "App Index 2026-11-18",
-     "body": "Apps that were unsorted now sit in categories. A new category was tried and then removed, and apps went back to their old spots. The menu now floats over the page in the retro and future looks, and the future look has stars behind the links and plain striped section titles. Sync now resets to GitHub first and only deploys after a good push."
+      "repo": "stackloom-meta",
+      "releases": [
+        {
+          "tag": "v2026.11.19",
+          "target": "cdf6fed49a6309583329b0e0c8703a4f1076a617",
+          "name": "Stackloom 2026-11-19",
+          "body": "Added the Jam line, the pull out puzzle from the parking lot and unscrew ads. Every piece can only go the way it points. Tap one to send it off the board, bonk into a blocker and lose a life, and clear the lot to level up. Opened by hiring a hypercasual producer once a level designer is on staff. Ten skins covering cars, arrows, screws, kayaks, trains, knives, fish, pizza, burritos, and carrots, small or big lots, five or three lives, and premium art. Lot Jam joins the studio samples. Added the Mob line and the Farm line from the social network era. The Mob line is the energy and jobs game: spend energy on jobs, stamina on fights, buy gear, invite friends to grow the crew, and climb the ranks, with a Buy points button that does nothing. Seven skins covering mobsters, vampires, zombies, pirates, ninjas, lunch ladies, and cowboys. The Farm line is the crop timer game: pick a seed, plant, wait, harvest, beg friends for water, and level up to unlock better seeds, with optional rotting. Seven skins covering crops, moon farming, fish, baked goods, robot parts, desert critters, and money. Opened by hiring a growth hacker after the level designer, then a retention designer after the growth hacker. Made Guys and Crop Town join the studio samples. Added the Shooter line, built from Dragon Drop. Drag to fly and fire, dodge straight shots from ground targets, and tap Bomb to clear the screen. Runs at a fixed speed on fast phone screens. Opened by hiring an arcade veteran once a physics programmer is on staff. Eight skins: the original pixel dragon, a rocket, a plane, a bee, a witch, a pizza fighting pineapples and anchovies, a seagull raiding a beach, and a laser cat, plus calm or frantic pace, three bombs or none, and premium glow. Dragon Drop joins the studio samples."
+        }
+      ],
+      "description": "A studio game with orders, terminals, agents, developers, and offices.",
+      "homepage": "https://stackloom-meta.vercel.app",
+      "topics": [
+        "game",
+        "management",
+        "simulator",
+        "vercel"
+      ]
     },
     {
-     "tag": "v2026.11.19",
-     "target": "c8f859a69f3f5459177c7d7f7dab972a555cdcf3",
-     "name": "App Index 2026-11-19",
-     "body": "Added a sticky notes view where a mannequin wears a fitted gown made of one note per app. Added wall, car, semi trailer, 747, and wind scenes for the notes. Sync now refreshes the Vercel login first and still deploys if the app list read fails."
+      "repo": "raineurysm",
+      "releases": [
+        {
+          "tag": "v2026.11.19",
+          "target": "58e25d3c5510e8f7aabf8a793d3d38a21d75566f",
+          "name": "raineurysm 2026-11-19",
+          "body": "Added twelve more puzzle levels, for twenty four in all, with fixed pieces, lower faucets, and a cup splitter level. Added velocity settings for how much drop size and speed change loudness, plus octave jump speed and an on or off switch. Added fall speed for lanes and a storm that stays on the beat. Settings are kept on the phone."
+        }
+      ],
+      "description": "A rain music toy where falling rain hits vessels that play notes.",
+      "homepage": "https://raineurysm.vercel.app",
+      "topics": [
+        "music",
+        "toy",
+        "vercel",
+        "visualizer"
+      ]
+    },
+    {
+      "repo": "2026-10-30-orange-scores",
+      "releases": [
+        {
+          "tag": "v2026.11.18-2",
+          "target": "96614bf8d892c52577f407dee2c850caeef10257",
+          "name": "Score Hub 2026-11-18",
+          "body": "Registered Tile Spinner on the score hub with three boards: Rush counts boards cleared before time runs out, Pipes counts total stars earned across challenge levels, and Vault scores how fast and in how few tries a code is cracked. Tile Spinner Vault scores now scale with vault difficulty, up to three times for Expert, so the board accepts scores up to 3000."
+        },
+        {
+          "tag": "v2026.11.19",
+          "target": "bf6803055226056f09569efc55c944c0e9374207",
+          "name": "Score Hub 2026-11-19",
+          "body": "Registered Just Five More on the score hub with seven boards, one for each task: math, petals, paint, scratch tickets, bubble wrap, leaves and cables. A score is how many items the player did in one shift after being told to do five. Raineurysm Puzzle grew to twenty four levels, so its top believable run score went up to match."
+        }
+      ],
+      "description": "A shared score service and hub page for the games",
+      "homepage": "https://2026-10-30-orange-scores.vercel.app",
+      "topics": [
+        "backend",
+        "scores",
+        "tool",
+        "vercel"
+      ]
+    },
+    {
+      "repo": "bloxx",
+      "releases": [
+        {
+          "tag": "v2026.11.19",
+          "target": "ab5438a69a21369594cf0c176cffee999165ffd4",
+          "name": "Bloxx 2026-11-19",
+          "body": "Added motorized twist lock pins between blocks with lock confirmation. Added cable pass doors, open slots, handrails, clear doors, an inside light, a flat hinge stop, and a kickstand table door. Added a garage bench of door panels that replenish, a bare tower, and a send to sandbox button in design mode. Added named layouts you can save, load, and delete, a parts catalog with animated previews, and info buttons with descriptions. Added video, diffuser, and spotlight doors, a flip, an inside mirror ball, spotlight and strobe, and tools and inside gear on the design bench."
+        }
+      ],
+      "description": "A modular stage block configurator for building lit stage rigs, joined to the Stompbox band room.",
+      "homepage": "",
+      "topics": [
+        "music",
+        "threejs",
+        "tool",
+        "vercel"
+      ]
+    },
+    {
+      "repo": "tile-topia",
+      "releases": [
+        {
+          "tag": "v2026.11.19-2",
+          "target": "f365f95d4f1314cba4b564affc9f0efec92a433a",
+          "name": "Tile-topia 2026-11-19",
+          "body": "Added a War skin with an army map, trenches, bases, HQs, and marching soldiers. Added West and Bunker skins. Added Meadow fields that score points, with a Biggest Meadow record. Each map now keeps its skin, with heart and strip landmarks, and city towers grow with district size."
+        }
+      ],
+      "description": "A tile placing game where you build a map and score finished lanes, districts, and cores.",
+      "homepage": "https://tile-topia.vercel.app",
+      "topics": [
+        "game",
+        "puzzle",
+        "tiles",
+        "vercel"
+      ]
+    },
+    {
+      "repo": "repofind",
+      "releases": [
+        {
+          "tag": "v2026.11.19",
+          "target": "f379fae8cb177c2bf5b92cbe69d0b3701df14799",
+          "name": "Repo Find 2026-11-19",
+          "body": "Added the Teardown tab. Roll or pick one of 61 well known products and see how it is built layer by layer, each layer marked known or inferred, with a rebuild using builder tools and the open alternatives that exist, linked into the catalog. Filters hide big tech alternatives or skip big tech products. Merged Pipeline Builder in as the Builder tab, with build, randomize, diagram and templates modes, Supabase and more tools added, and the current stack saved in backup."
+        }
+      ],
+      "description": "Search and watch tool for code repos, archives, and sites.",
+      "homepage": "https://repofind-delta.vercel.app",
+      "topics": [
+        "search",
+        "tool",
+        "vercel"
+      ]
+    },
+    {
+      "repo": "2026-11-19-orange-packets",
+      "releases": [
+        {
+          "tag": "v2026.11.19",
+          "target": "ed0c9593e3d6a38689c741de90db0bb44140455c",
+          "name": "Packet Baron 2026-11-19",
+          "body": "Created Packet Baron, a tapping and idle game about building a condiment packet empire. Squeeze out packets, buy production lines, and research new packets from ketchup up to a packet of packets. Hit packets pay royalties, and the Packet Gallery opens after three inventions. Upgrades and a goal of one million dollars in lifetime earnings round it out."
+        }
+      ],
+      "description": "A tapping and idle game about building a condiment packet empire.",
+      "homepage": "",
+      "topics": [
+        "game",
+        "idle",
+        "clicker",
+        "vercel"
+      ]
+    },
+    {
+      "repo": "2026-11-19-blue-just-five-more",
+      "releases": [
+        {
+          "tag": "v2026.11.19",
+          "target": "71d50c6a06e766b47def30555ab6f1920d7f6d45",
+          "name": "Just Five More 2026-11-19",
+          "body": "Created Just Five More, a work game where every task ends with a request to do five more. Added seven tasks, excuse memos, fake verification, a secret ledger, and a performance review with a report card grade that never rewards overachieving, plus manager comments. Each shift now posts to the Score Hub, with a board for every task in the review and the menu."
+        }
+      ],
+      "description": "A work game where every task ends with a request to do five more.",
+      "homepage": "https://2026-11-19-blue-just-five-more.vercel.app",
+      "topics": [
+        "game",
+        "tasks",
+        "humor",
+        "vercel"
+      ]
     }
-   ],
-   "description": "An index page that lists every app with its age, phone tags, and notes.",
-   "homepage": "https://mohavetech-website.vercel.app",
-   "topics": [
-    "index",
-    "tool",
-    "vercel"
-   ]
-  }
- ]
+  ]
 }
