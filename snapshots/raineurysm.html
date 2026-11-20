@@ -258,6 +258,8 @@
       <input type="range" id="speed" min="0" max="100" value="55">
       <label>Storm drop size spread</label>
       <input type="range" id="size" min="0" max="100" value="50">
+      <label>Fall speed, lanes and storm (lanes stay on the beat)</label>
+      <input type="range" id="fall" min="40" max="200" value="100">
       <label>Storm wind</label>
       <input type="range" id="wind" min="-100" max="100" value="0">
       <button class="btn" id="lanesBtn">Hide lanes</button>
@@ -285,6 +287,11 @@
       <input type="range" id="vol" min="0" max="100" value="70">
       <label>Drum volume</label>
       <input type="range" id="dvol" min="0" max="100" value="80">
+      <label>Velocity: how much drop size and speed change loudness</label>
+      <input type="range" id="vsens" min="0" max="150" value="100">
+      <label>Octave jump speed: drops faster than this ring an octave up</label>
+      <input type="range" id="octspeed" min="300" max="1400" value="720">
+      <button class="btn" id="octBtn">Fast drops jump an octave: on</button>
       <label>Echo</label>
       <input type="range" id="echo" min="0" max="100" value="30">
       <button class="btn" id="mute">Mute</button>
@@ -317,7 +324,7 @@
       <br><br>
       Vessels: pick what you place in the Vessels section of this menu, or tap a vessel and change it in its panel. The cup plays the drop's own tone, the jug bloops, the pan rings like metal, the plate pings high, the bowl sings long, the wood block knocks, and the ladle tinks. Drum drops play their drum in any vessel.
       <br><br>
-      Melody cups are tuned by where they sit, low on the left and high on the right, and the arrows in the cup panel shift a cup up or down the scale. Fast drops ring an octave up, slow drops hum, big drops hit harder.
+      Melody cups are tuned by where they sit, low on the left and high on the right, and the arrows in the cup panel shift a cup up or down the scale. Fast drops ring an octave up, slow drops hum, big drops hit harder. The Sound section sets how much size and speed change loudness, how fast a drop has to be to jump an octave, or turns the jump off. The Rain section has a fall speed slider, and the lanes stay on the beat at any speed.
       <br><br>
       Tap a cup to select it. Drag it to move it. In the cup panel, shrink the width until it only fits under one lane, and tilt it. Cups hold water. A tilted cup pours from its low lip, and a full cup spills over, so you can stack cups and let one drip into another for a second note.
       <br><br>
@@ -414,7 +421,10 @@
   const SOLO = { state: { playing: true, tempo: 96, epoch: localNow() + 300, barOffset: 0, pending: null } };
   const ROOM = { state: null, grooves: null, phones: 0, others: 0 };
 
-  const S = { bpm:96, density:160, speed:55, size:50, wind:0, paused:false, lanes:true, vol:.7, dvol:.8, echo:.3, muted:false, scale:'penta', root:0, newW:36 };
+  const S = { bpm:96, density:160, speed:55, size:50, wind:0, paused:false, lanes:true, vol:.7, dvol:.8, echo:.3, muted:false, scale:'penta', root:0, newW:36, fall:1, vsens:1, octJump:true, octSpeed:720 };
+  // velocity: how much a drop's size and speed change its loudness, 0 means every hit is the same
+  const vel = (natural, mid) => mid + (natural - mid) * S.vsens;
+  const isFast = drop => S.octJump && drop.vy > S.octSpeed;
   const SCALES = {
     penta:[0,2,4,7,9], mpenta:[0,3,5,7,10], major:[0,2,4,5,7,9,11], minor:[0,2,3,5,7,8,10],
     dorian:[0,2,3,5,7,9,10], blues:[0,3,5,6,7,10], whole:[0,2,4,6,8,10], chrom:[0,1,2,3,4,5,6,7,8,9,10,11]
@@ -518,7 +528,7 @@
   function playDrum(kind, drop){
     const t = AC.currentTime;
     const p = panner(drop.x); const out = p || drumBus; if (p) p.connect(drumBus);
-    const hard = Math.min(1.3, .75 + drop.vy / 1400);
+    const hard = vel(Math.min(1.3, .75 + drop.vy / 1400), 1);
     switch (kind){
       case 'kick': tone(t, 160, 42, .45, 'sine', .9 * hard, out, .12); noise(t, .02, 'lowpass', 1200, .7, .25, out); break;
       case 'snare': noise(t, .2, 'bandpass', 1900, .8, .55 * hard, out); tone(t, 200, 160, .12, 'triangle', .35, out); break;
@@ -533,10 +543,10 @@
   function playMel(midi, drop){
     const t = AC.currentTime;
     const isBass = drop.kind === 'bass';
-    const fast = !isBass && drop.vy > 720, slow = drop.vy < 330;
+    const fast = !isBass && isFast(drop), slow = drop.vy < 330;
     const m = isBass ? midi - 24 : midi + (fast ? 12 : 0);
     const f = midiHz(m);
-    const amp = isBass ? .3 : Math.min(.34, .07 + drop.r * .06);
+    const amp = isBass ? .3 * vel(.75 + drop.r * .07, 1) : vel(Math.min(.34, .07 + drop.r * .06), .19);
     const dur = isBass ? .55 : fast ? .35 : slow ? 1.5 : .8;
     const o = AC.createOscillator(); o.type = drop.wave;
     o.frequency.setValueAtTime(f * (fast ? 1.012 : 1), t); o.frequency.exponentialRampToValueAtTime(f, t + .04);
@@ -569,10 +579,10 @@
   function playVessel(type, midi, drop){
     const t = AC.currentTime;
     const p = panner(drop.x); const out = p || dry; if (p) p.connect(dry);
-    const fast = drop.vy > 720;
+    const fast = isFast(drop);
     const m = midi + VOFF[type] + (fast ? 12 : 0);
     const f = midiHz(m);
-    const k = Math.min(1.5, .55 + drop.r * .18);
+    const k = vel(Math.min(1.5, .55 + drop.r * .18), 1);
     switch (type){
       case 'jug': {
         const o = AC.createOscillator(); o.type = 'sine';
@@ -613,7 +623,7 @@
       n = noteFor(cup.x, cup.off);
       const plain = cup.type === 'cup' || drop.kind === 'bass';
       if (sound){ if (plain) playMel(n, drop); else playVessel(cup.type, n, drop); }
-      if (drop.kind === 'bass') n -= 24; else { if (!plain) n += VOFF[cup.type]; if (drop.vy > 720) n += 12; }
+      if (drop.kind === 'bass') n -= 24; else { if (!plain) n += VOFF[cup.type]; if (isFast(drop)) n += 12; }
     } else { if (sound) playDrum(drop.kind, drop); n = DN[drop.kind]; }
     shareNote(n, drop, cup.type);
   }
@@ -692,7 +702,7 @@
   // lane scheduler: every lane drop is timed to cross the beat line on its sixteenth
   let queue = [], nextStep = null, lastSpawned = [], lastSource = null;
   const beatY = () => Math.round(H * .78);
-  const travelMs = l => (beatY() + 20) / l.vy * 1000;
+  const travelMs = l => (beatY() + 20) / (l.vy * S.fall) * 1000;
   function softReset(){ queue = []; nextStep = null; }
   function hardReset(){ softReset(); lastSpawned = []; }
   function timeline(){ return inRoom() ? { s: ROOM.state, now: clock.now(), room: true } : { s: SOLO.state, now: localNow(), room: false }; }
@@ -734,8 +744,8 @@
       }
       if (lastSpawned[it.i] !== undefined && it.n <= lastSpawned[it.i]) continue;
       lastSpawned[it.i] = it.n;
-      const l = LANES[it.i], y = -20 + l.vy * (T.now - it.t) / 1000;
-      if (y < beatY()) drops.push(makeDrop(l, laneX(it.i) + (Math.random() - .5) * 1.5, y, l.vy));
+      const l = LANES[it.i], y = -20 + l.vy * S.fall * (T.now - it.t) / 1000;
+      if (y < beatY()) drops.push(makeDrop(l, laneX(it.i) + (Math.random() - .5) * 1.5, y, l.vy * S.fall));
     }
   }
   function makeDrop(src, x, y, vy){
@@ -764,13 +774,13 @@
     if (Math.random() < .22){
       const keys = Object.keys(DRUM);
       const k = keys[Math.floor(Math.random() * keys.length)], d = DRUM[k];
-      const dr = makeDrop(Object.assign({k}, d), x, -20, d.vy * (.8 + Math.random() * .4));
+      const dr = makeDrop(Object.assign({k}, d), x, -20, d.vy * S.fall * (.8 + Math.random() * .4));
       dr.storm = true; return dr;
     }
     const vy = 380 + (Math.random() * 2 - 1) * 300 * sp + (Math.random() < .12 * sp ? 420 * sp : 0);
     const r = Math.max(.6, 1.6 + (Math.random() * 2 - 1) * 1.4 * sz + (Math.random() < .08 * sz ? 2.2 : 0));
     const col = MEL[Math.floor(Math.random() * MEL.length)];
-    const dr = makeDrop({k:'mel', c:col.c, wave:col.wave, r}, x, -30 - Math.random() * 40, Math.max(140, vy));
+    const dr = makeDrop({k:'mel', c:col.c, wave:col.wave, r}, x, -30 - Math.random() * 40, Math.max(140, vy) * S.fall);
     dr.storm = true; return dr;
   }
   function spawnStorm(){ drops.push(stormDrop()); }
@@ -1104,6 +1114,27 @@
   bind('vol', v => { S.vol = v / 100; if (master && !S.muted) master.gain.value = S.vol; });
   bind('dvol', v => { S.dvol = v / 100; if (drumBus) drumBus.gain.value = S.dvol; });
   bind('echo', v => { S.echo = v / 100; if (wet) wet.gain.value = S.echo; });
+  // velocity and fall speed settings, kept on this phone
+  const VEL_KEY = APP + '-velocity';
+  function saveVel(){ keep(VEL_KEY, JSON.stringify({ fall: S.fall, vsens: S.vsens, octJump: S.octJump, octSpeed: S.octSpeed })); }
+  bind('fall', v => { S.fall = v / 100; softReset(); saveVel(); });
+  bind('vsens', v => { S.vsens = v / 100; saveVel(); });
+  bind('octspeed', v => { S.octSpeed = +v; saveVel(); });
+  const octBtn = document.getElementById('octBtn');
+  octBtn.onclick = () => { S.octJump = !S.octJump; octBtn.textContent = 'Fast drops jump an octave: ' + (S.octJump ? 'on' : 'off'); saveVel(); };
+  try{
+    const v = JSON.parse(keep(VEL_KEY) || 'null');
+    if (v){
+      if (v.fall >= .4 && v.fall <= 2) S.fall = v.fall;
+      if (v.vsens >= 0 && v.vsens <= 1.5) S.vsens = v.vsens;
+      if (v.octSpeed >= 300 && v.octSpeed <= 1400) S.octSpeed = v.octSpeed;
+      S.octJump = v.octJump !== false;
+      document.getElementById('fall').value = Math.round(S.fall * 100);
+      document.getElementById('vsens').value = Math.round(S.vsens * 100);
+      document.getElementById('octspeed').value = S.octSpeed;
+      octBtn.textContent = 'Fast drops jump an octave: ' + (S.octJump ? 'on' : 'off');
+    }
+  }catch(e){}
   const toggle = (id, key, on, off, after) => {
     const b = document.getElementById(id);
     b.onclick = () => { S[key] = !S[key]; b.textContent = S[key] ? on : off; if (after) after(); };
@@ -1924,7 +1955,91 @@
         { type: 'faucet', x: .37, y: .2, di: DI.sky, flow: 30 },
         { type: 'faucet', x: .63, y: .2, di: DI.green, flow: 30 },
         { type: 'faucet', x: .9, y: .2, di: DI.gold, flow: 30 },
-        { type: 'jar', x: .5, y: .86, mix: [DI.violet, DI.sky, DI.green, DI.gold], need: 20 } ] }
+        { type: 'jar', x: .5, y: .86, mix: [DI.violet, DI.sky, DI.green, DI.gold], need: 20 } ] },
+    { name: 'Downpour', goal: 'pure blue from the open faucet', hint: 'The blue faucet runs wide open as a steady stream. Gold drips right over the jar, so keep it out.',
+      items: [
+        { type: 'faucet', x: .2, y: .2, di: DI.blue, flow: 85 },
+        { type: 'faucet', x: .7, y: .2, di: DI.gold, flow: 30 },
+        { type: 'jar', x: .7, y: .86, mix: [DI.blue], need: 30 } ] },
+    { name: 'Wrong way', goal: 'purple, blue plus red', hint: 'A fixed trough already sends the red the wrong way. Catch it where it lands and bring it back.',
+      items: [
+        { type: 'faucet', x: .15, y: .2, di: DI.blue, flow: 30 },
+        { type: 'faucet', x: .6, y: .2, di: DI.red, flow: 30 },
+        { type: 'trough', x: .72, y: .34, w: .3, a: .28 },
+        { type: 'jar', x: .35, y: .86, mix: [DI.blue, DI.red], need: 16 } ] },
+    { name: 'Sky and violet', goal: 'sky plus violet', hint: 'Two soft colors from opposite corners.',
+      items: [
+        { type: 'faucet', x: .08, y: .2, di: DI.sky, flow: 30 },
+        { type: 'faucet', x: .92, y: .2, di: DI.violet, flow: 30 },
+        { type: 'faucet', x: .5, y: .2, di: DI.hat, flow: 45 },
+        { type: 'pan', x: .5, y: .5 },
+        { type: 'jar', x: .5, y: .86, mix: [DI.sky, DI.violet], need: 16 } ] },
+    { name: 'Four to one', goal: 'four parts green to one part gold', hint: 'Green runs four times as fast as gold. Catch every drop of both.',
+      items: [
+        { type: 'faucet', x: .2, y: .2, di: DI.green, flow: 60 },
+        { type: 'faucet', x: .8, y: .2, di: DI.gold, flow: 30 },
+        { type: 'faucet', x: .5, y: .2, di: DI.kick, flow: 30 },
+        { type: 'bowl', x: .5, y: .45 },
+        { type: 'jar', x: .5, y: .86, mix: [DI.green, DI.green, DI.green, DI.green, DI.gold], need: 20 } ] },
+    { name: 'Twin sprinklers', goal: 'purple, blue plus red', hint: 'Both colors come from sprinklers. Gather the spray.',
+      items: [
+        { type: 'sprinkler', x: .15, y: .55, di: DI.blue, flow: 40 },
+        { type: 'sprinkler', x: .85, y: .55, di: DI.red, flow: 40 },
+        { type: 'jar', x: .5, y: .86, mix: [DI.blue, DI.red], need: 16 } ] },
+    { name: 'Rhythm section', goal: 'orange, red plus gold', hint: 'The drums are bolted in place. Thread the colors through the kit.',
+      items: [
+        { type: 'faucet', x: .1, y: .2, di: DI.red, flow: 30 },
+        { type: 'faucet', x: .9, y: .2, di: DI.gold, flow: 30 },
+        { type: 'faucet', x: .3, y: .2, di: DI.kick, flow: 30 },
+        { type: 'faucet', x: .5, y: .2, di: DI.snare, flow: 15 },
+        { type: 'faucet', x: .7, y: .2, di: DI.hat, flow: 45 },
+        { type: 'bowl', x: .3, y: .45 },
+        { type: 'wood', x: .5, y: .55 },
+        { type: 'pan', x: .7, y: .45 },
+        { type: 'jar', x: .5, y: .86, mix: [DI.red, DI.gold], need: 16 } ] },
+    { name: 'Lavender', goal: 'sky, violet and red together', hint: 'Three faucets, one jar, equal parts.',
+      items: [
+        { type: 'faucet', x: .12, y: .2, di: DI.sky, flow: 30 },
+        { type: 'faucet', x: .5, y: .2, di: DI.violet, flow: 30 },
+        { type: 'faucet', x: .88, y: .2, di: DI.red, flow: 30 },
+        { type: 'jar', x: .22, y: .86, mix: [DI.sky, DI.violet, DI.red], need: 18 } ] },
+    { name: 'Mirror', goal: 'two purple jars', hint: 'Blue on the right, red on the left, and both swing. Each jar needs both.',
+      items: [
+        { type: 'faucet', x: .3, y: .2, di: DI.red, flow: 45, swing: true },
+        { type: 'faucet', x: .7, y: .2, di: DI.blue, flow: 45, swing: true },
+        { type: 'jar', x: .15, y: .86, mix: [DI.blue, DI.red], need: 12 },
+        { type: 'jar', x: .85, y: .86, mix: [DI.blue, DI.red], need: 12 } ] },
+    { name: 'Teal in the middle', goal: 'green left, teal middle, green right', hint: 'One swinging green feeds three jars. The middle one also needs the blue.',
+      items: [
+        { type: 'faucet', x: .5, y: .2, di: DI.green, flow: 60, swing: true },
+        { type: 'faucet', x: .5, y: .5, di: DI.blue, flow: 30 },
+        { type: 'jar', x: .12, y: .86, mix: [DI.green], need: 10 },
+        { type: 'jar', x: .5, y: .86, mix: [DI.green, DI.blue], need: 12 },
+        { type: 'jar', x: .88, y: .86, mix: [DI.green], need: 10 } ] },
+    { name: 'Splitter', goal: 'purple on the left, orange on the right', hint: 'Nothing swings this time. A full cup spills out both sides, so it can split the red in two.',
+      items: [
+        { type: 'faucet', x: .15, y: .2, di: DI.blue, flow: 30 },
+        { type: 'faucet', x: .5, y: .2, di: DI.red, flow: 45 },
+        { type: 'faucet', x: .85, y: .2, di: DI.gold, flow: 30 },
+        { type: 'jar', x: .2, y: .86, mix: [DI.blue, DI.red], need: 12 },
+        { type: 'jar', x: .8, y: .86, mix: [DI.red, DI.gold], need: 12 } ] },
+    { name: 'Crossing streams', goal: 'purple on the right, olive on the left', hint: 'Blue starts left but belongs right, gold starts right but belongs left. Run them over the lower faucets at two different heights.',
+      items: [
+        { type: 'faucet', x: .1, y: .2, di: DI.blue, flow: 30 },
+        { type: 'faucet', x: .37, y: .47, di: DI.green, flow: 30 },
+        { type: 'faucet', x: .63, y: .47, di: DI.red, flow: 30 },
+        { type: 'faucet', x: .85, y: .3, di: DI.gold, flow: 30 },
+        { type: 'jar', x: .2, y: .86, mix: [DI.green, DI.gold], need: 12 },
+        { type: 'jar', x: .8, y: .86, mix: [DI.blue, DI.red], need: 12 } ] },
+    { name: 'Encore', goal: 'every color in one jar', hint: 'All six colors pour at once. Bring them all home for the last song.',
+      items: [
+        { type: 'faucet', x: .08, y: .2, di: DI.blue, flow: 30 },
+        { type: 'faucet', x: .25, y: .2, di: DI.sky, flow: 30 },
+        { type: 'faucet', x: .42, y: .2, di: DI.red, flow: 30 },
+        { type: 'faucet', x: .58, y: .2, di: DI.green, flow: 30 },
+        { type: 'faucet', x: .75, y: .2, di: DI.gold, flow: 30 },
+        { type: 'faucet', x: .92, y: .2, di: DI.violet, flow: 30 },
+        { type: 'jar', x: .5, y: .86, mix: [DI.blue, DI.sky, DI.red, DI.green, DI.gold, DI.violet], need: 24 } ] }
   ];
   let level = 0, levelWon = false, levelStartMs = 0;
   // ---------- puzzle run score, kept on this phone until it is submitted ----------
@@ -1997,7 +2112,8 @@
     select(null);
     cups = worlds.puzzle; cups.length = 0;
     L.items.forEach(it => {
-      const c = addCup(it.x * W, it.y * H, VT[it.type].w, it.type);
+      const c = addCup(it.x * W, it.y * H, it.w ? it.w * W : VT[it.type].w, it.type);
+      if (it.a) c.a = it.a;
       c.locked = true;
       if (it.di !== undefined) c.di = it.di;
       if (it.flow !== undefined) c.flow = it.flow;
@@ -2094,7 +2210,7 @@
     cups.forEach(c => { c.x = Math.min(Math.max(c.x, 4), W - 4); c.y = Math.min(Math.max(c.y, 84), H - 20); });
   }
   // update check: when a newer version is pushed, offer to load it instead of running stale code
-  const BUILD = 'raineurysm-v16.html';
+  const BUILD = 'raineurysm-v18.html';
   function checkVersion(){
     if (!window.fetch || location.protocol.indexOf('http') !== 0) return;
     fetch('/raineurysm-version.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(v => {
