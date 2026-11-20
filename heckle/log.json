@@ -2,6 +2,41 @@
   "heckles": [
     {
       "date": "2026-11-20",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "7ad4eee4",
+      "message": "agent-orange 2026-11-20T135843 (#114)",
+      "heckle": "Agent-orange removed two ids, then posted calendar signs full of paragraph length flavor text jammed into a meta text field, in contrib/agent-orange/2026-11-20T135843.json. Removing objects by bare numeric id like 37189 with no check that they exist is a coin flip with the whole city as the stake. The sign text carries a day count, hectoday and decaday math, and weather prose, all hardcoded into data that will be stale by tomorrow. Then a vending shed gets walls, a brick hatch, and a gradient on one unbroken line. Nobody reviewed it, and a PR merge here means nothing.\n\nFix it: Check that removed ids exist before the remove calls run. Generate calendar sign text at render time from the date instead of storing it. Break the file into one call per line. Make the merge require a real validation pass."
+    },
+    {
+      "date": "2026-11-20",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "55481934",
+      "message": "grok 2026-11-20T170740",
+      "heckle": "The grok bot pushed contrib/grok/2026-11-20T170740.json straight to the branch with no pull request, no review, and no checks, like a senator slipping a rider into a spending bill at midnight. It defines a residential lot at negative coordinates and builds a cottage from walls that leave door gaps by hand typed numbers, one minified line again. Direct pushes mean a broken turn goes live the second it lands. You gate the other bots behind PRs and let this one skate, which is inconsistent and lazy.\n\nFix it: Make grok open pull requests like the other bots instead of pushing to the branch. Turn on branch protection for the testbed. Reformat the contrib file so each call sits on its own line. Add a schema check for the lot and wall calls."
+    },
+    {
+      "date": "2026-11-20",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "3f3d425d",
+      "message": "steward 2026-11-20T191539 (#115)",
+      "heckle": "Another steward turn, another one line minified JSON blob in contrib/steward/2026-11-20T191539.json that no human could review if they tried. It is thousands of characters of place_symbol and place_line calls with hardcoded six digit coordinates, wood poles, conductors, and telephone cable sagging by hand typed z values. Merging it through a pull request is a bit of theater, since nobody reads it, and the review is a rubber stamp like a committee hearing nobody attends. If a pole is misplaced by a few meters, you will never find it in a single unbroken line.\n\nFix it: Pretty print the contrib JSON or one call per line so diffs are reviewable. Add a validation check that rejects out of range coordinates before the merge. Stop approving these by reflex. Have the steward write a short summary file next to each turn."
+    },
+    {
+      "date": "2026-11-20",
+      "repo": "2026-11-19-orange-drivethru",
+      "sha": "16c99e78",
+      "message": "Trigger production build",
+      "heckle": "An empty commit. Zero files changed, and the intern still found a way to waste my morning. Trigger production build is not a message, it is a cry for help from someone who does not know how a Vercel deploy works. The previous commit landed and the deploy did not fire, so instead of finding out why, you pushed nothing and prayed. That is a bailout with no accountability: money spent, nothing fixed, no explanation given. Do not let me see another one of these.\n\nFix it: Check the Vercel project's git link for this repo instead of pushing empty commits. If a redeploy is truly needed, use the dashboard redeploy button or the CLI. Squash this noise out of the history next time. Put the real reason for the missed build in the commit message."
+    },
+    {
+      "date": "2026-11-20",
+      "repo": "2026-11-19-orange-drivethru",
+      "sha": "b3eb3f97",
+      "message": "Lane Listener drive-thru order listener",
+      "heckle": "Five hundred fifteen lines of index.html dumped in one commit, and the intern called it a drive-thru listener like it was a product launch. Every rule lives inline: the tokenize and parse functions, the price math, the learned aliases in localStorage, and the whole stylesheet crammed into one file with no tests. The render code is a swamp of innerHTML string concatenation, so one missed esc call turns a customer's spoken order into script injection. The speech setup grabs webkitSpeechRecognition and just hopes the browser has it, with no visible fallback story. This is a filibuster in file form: loud, long, and nothing gets decided.\n\nFix it: Split the script out of index.html into its own file so it can be tested. Replace the innerHTML concatenation in the render functions with textContent or createElement. Add a visible fallback when SpeechRecognition is missing. Give the one letter classes real names. Write a test for tokenize and parse before this ships."
+    },
+    {
+      "date": "2026-11-20",
       "repo": "2026-10-30-orange-scores",
       "sha": "bf680305",
       "message": "Raise the Raineurysm Puzzle score ceiling for twenty four levels",
@@ -1364,41 +1399,6 @@
       "sha": "3ac33757",
       "message": "Mojave Technology Group template with complete profile view and download",
       "heckle": "Congratulations, you swapped one company name for a CONFIG object and then called the job done, like a bailout with no strings. The new Complete profile section dumps the whole application into state.profile, including the drawn signature as a base64 PNG and the badge photo, and saveProfile jams all of it into localStorage under a key per application ID. That is a personal data landfill on a shared device with no way to clear it. The downloadProfile button hands out a raw JSON file full of phone numbers and signatures. Also the title tag shipped as just Careers in the HTML and gets patched by script, so anything that scrapes the page sees nothing useful. A cereal box has better data hygiene.\n\nFix it: Stop storing the signature image and photo in localStorage in saveProfile. Add a clear my data button next to downloadProfile. Put the real title back in the static title tag in index.html. Delete old hp_profile keys when a new one is saved."
-    },
-    {
-      "date": "2026-11-08T00:42:58Z",
-      "repo": "hire-portal",
-      "sha": "271f0f31",
-      "message": "Add badge headshot upload saved with the profile",
-      "heckle": "You added a badge photo upload that crops, shrinks, and shoves a base64 headshot into localStorage through saveProfile, and the intern called that a feature. Every application ID gets its own hp_profile key that nothing ever cleans up, so the storage fills like a national debt. The photo change handler quietly assumes state.profile exists, so picking a photo before submitting blows up with an error nobody sees. The role name Systems Support Technician is hard coded into the badge markup in index.html, copy pasted from the old header, which makes this a template pretending to be an app. Your crop math nudges the square up by eight percent of the side, and I would love to hear the excuse for that magic number.\n\nFix it: Guard the photo change handler against a missing state.profile. Remove stale hp_profile keys in saveProfile. Replace the hard coded role text in the badge markup. Explain the 0.08 offset in the crop or drop it."
-    },
-    {
-      "date": "2026-11-07T19:27:54Z",
-      "repo": "stinkin-badges",
-      "sha": "fbf152f5",
-      "message": "Use the email link login and allow the badge tool as a return address",
-      "heckle": "You spent an hour building a login code email, then ripped it out and went back to links, like a senate rewriting the same bill after every recess. setup/email.json is deleted, and setup/supabase.sh now scrapes uri_allow_list out of JSON with grep and sed, then splices it into a hand built JSON string with no escaping. One stray quote in that list and the PATCH eats your auth config. The script also still opens with a Termux shebang, so it runs on exactly one phone, yours.\n\nFix it: Parse the config in setup/supabase.sh with jq or node instead of grep and sed. Build the PATCH body with a real JSON encoder. Check the GET status code before trusting CUR."
-    },
-    {
-      "date": "2026-11-07T19:27:54Z",
-      "repo": "stinkin-badges",
-      "sha": "2b2eafd6",
-      "message": "Setup script for a shared Supabase project",
-      "heckle": "This commit adds setup/email.json and a custom login code email, and also deletes supabase/config.toml and supabase/templates/code.html that you committed an hour earlier. So the repo now holds two different ways to configure the same email template, and you killed one of them like a campaign promise the week after the election. setup/supabase.sh never checks that jq-less curl actually returned the tables, and it dumps the anon key into a file in your home folder with no mention of where it goes next.\n\nFix it: Pick one config path and delete the other for good. Add a README line in setup/ saying what to do with the env file. Make setup/supabase.sh stop on the first failing curl with set -e."
-    },
-    {
-      "date": "2026-11-07T19:27:54Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "d8c88f40",
-      "message": "grok 2026-11-07T170424",
-      "heckle": "One minified line of JSON from the bot, pushed straight to the branch without a pull request, because review is for people with standards. contrib/grok/2026-11-07T170424.json draws a market with three wall segments, then a brick hatch that covers a bigger box than the walls, then a dog walker parked thirty thousand units away from anything. The declare_penetration at the end sits inside the wall run with no checks on it. This is a government shutdown with a signature field.\n\nFix it: Make the grok bot open a pull request like the others. Validate hatch bounds against the wall pts before writing contrib/grok. Pretty print the JSON so a human can diff it."
-    },
-    {
-      "date": "2026-11-07T19:27:54Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "b3807ebd",
-      "message": "steward 2026-11-07T165947 (#76)",
-      "heckle": "Another steward turn, another one line wall of minified JSON, and you merged it under your own login like a rubber stamp at the DMV. contrib/steward/2026-11-07T165947.json is six crosswalk hatches that all repeat the same meta string, completes the crosswalk across the street, word for word. Nobody read this. Nobody can read this. The only review it got was a green merge button.\n\nFix it: Have the steward agent write one crosswalk per street and dedupe the meta text in contrib/steward. Add a size or schema check before the merge. Stop approving diffs you cannot scroll."
     }
   ]
 }
