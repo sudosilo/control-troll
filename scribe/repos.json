@@ -1793,7 +1793,7 @@
    "summary": "A shared city where AI agents take turns building, with a viewer and a web API.",
    "name": "Agent Test Bed",
    "latest": {
-    "date": "2026-11-18",
+    "date": "2026-11-21",
     "text": "The agent turn was played and merged into the city."
    }
   },
@@ -1833,8 +1833,8 @@
    "summary": "A studio game with orders, terminals, agents, developers, and offices",
    "name": "Stackloom",
    "latest": {
-    "date": "2026-11-19",
-    "text": "Added the Shooter line, built from Dragon Drop. Drag to fly and fire, dodge straight shots from ground targets, and tap Bomb to clear the screen. Runs at a fixed speed on fast phone screens. Opened by hiring an arcade veteran once a physics programmer is on staff. Eight skins: the original pixel dragon, a rocket, a plane, a bee, a witch, a pizza fighting pineapples and anchovies, a seagull raiding a beach, and a laser cat, plus calm or frantic pace, three bombs or none, and premium glow. Dragon Drop joins the studio samples."
+    "date": "2026-11-20",
+    "text": "Added cashing out and high scores. The Office tab now has Retire, which scores your cash plus a year of royalties, and Sell the studio, which scores what a buyer pays for the building, rooms, staff, and backlist, scaled by reputation. Both take a second tap to confirm and end the run. The end screen, also shown when the studio folds, takes a three letter tag and an optional link and submits the score to the shared Score Hub board as full-meta-packet, shows the top of the board, and keeps your best runs on the phone. A button on the Office tab shows the board any time."
    }
   },
   "fatty-fart-pedal": {
@@ -1875,8 +1875,8 @@
    "summary": "An agent that ships one app a day to a game publishing site and keeps a ledger",
    "name": "Itchy Troll",
    "latest": {
-    "date": "2026-11-17",
-    "text": "Updated the MobbyHill pick note."
+    "date": "2026-11-20",
+    "text": "The scout looked over the repos for new candidates."
    }
   },
   "text-based-game": {
@@ -1973,8 +1973,8 @@
    "summary": "The runner and dashboard that schedule AI agents to play the test bed.",
    "name": "Blue Agent",
    "latest": {
-    "date": "2026-10-29",
-    "text": "The detailer now plays once a day at a set time and retries hourly when out of credit. The deploy script fixes the phone DNS for the backend service."
+    "date": "2026-11-17",
+    "text": "The detailer now uses its own Anthropic key for each agent. The deploy script now builds in the Railway login and the DNS fix."
    }
   },
   "blue-agent-sandbox": {
@@ -2258,7 +2258,7 @@
    "name": "Hush",
    "latest": {
     "date": "2026-11-20",
-    "text": "Clock lock no longer posts any pop-up. When the clock moves off the chosen zone, the clock fixer puts it back silently. The fixer now waits after flipping automatic time zone off so it never flips it back on by a second tap."
+    "text": "Tapping the Clock fixer badge while the fixer is off now opens the Hush app info page first, where Samsung's restricted setting gets unlocked, and the next tap opens the accessibility screen to switch the fixer on."
    }
   },
   "2026-11-05-drive-thru-dental": {
@@ -2835,8 +2835,8 @@
    "summary": "A tapping and idle game about inventing and selling condiment packets",
    "name": "Packet Baron",
    "latest": {
-    "date": "2026-11-19",
-    "text": "Created Packet Baron, a tapping and idle game about building a condiment packet empire. Squeeze out packets, buy production lines, and research new packets from ketchup up to a packet of packets. Hit packets pay royalties, and the Packet Gallery opens after three inventions. Upgrades and a goal of one million dollars in lifetime earnings round it out."
+    "date": "2026-11-20",
+    "text": "Added world news events that can block play, with a popup and a decoy button. Added glitter special editions, sweeteners, blended drinks, egg packets, and many new packet kinds. Packets are now drawn as crimped packets with illustrations, and the Tower view shows each packet line as a floor. Added made versus sold graphs, profit rates for each packet with sort buttons, and endless play with big number formats. Added the 50/50 Machine, which rolls random half and half combo packets."
    }
   },
   "2026-11-19-blue-just-five-more": {
@@ -2851,6 +2851,20 @@
    "latest": {
     "date": "2026-11-19",
     "text": "Created Just Five More, a work game where every task ends with a request to do five more. Added seven tasks, excuse memos, fake verification, a secret ledger, and a performance review with a report card grade that never rewards overachieving, plus manager comments. Each shift now posts to the Score Hub, with a board for every task in the review and the menu."
+   }
+  },
+  "2026-11-19-orange-drivethru": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-19-orange-drivethru.vercel.app"
+   ],
+   "private": false,
+   "category": "Restaurant Tech",
+   "summary": "A drive-thru order listener that turns typed or spoken orders into a ticket",
+   "name": "Lane Listener",
+   "latest": {
+    "date": "2026-11-20",
+    "text": "Created Lane Listener, a drive-thru order listener. You type or speak an order to the lane and it reads the order back as a ticket. Added tap mode for picking quantity, size, and options by hand, and a Teach tab for showing it phrases it did not understand."
    }
   }
  }

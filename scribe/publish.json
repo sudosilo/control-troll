@@ -1,84 +1,40 @@
 {
   "jobs": [
     {
-      "repo": "2026-11-04-orange-hush",
+      "repo": "2026-11-19-orange-drivethru",
       "releases": [
-        {
-          "tag": "v2026.11.19",
-          "target": "17ee29804c72095b6e42f933837665619c0b96b2",
-          "name": "Hush 2026-11-19",
-          "body": "Added the clock fixer. When the phone moves the clock off the chosen zone, Hush opens the date and time screen by itself, turns automatic time zone off, picks the chosen zone, and goes back home. If the phone is locked it waits until the next unlock. It runs once it is switched on under the phone's accessibility settings. Rebuilt the Hush screen so every state reads at a glance. A banner at the top says whether Hush is blocking and how many apps. Every setting shows a fixed size ON or OFF badge instead of a switch. Every app row shows BLOCKED in red or ALLOWED in green, and blocked rows are tinted red. The clock line shows in green when the clock is correct and in red when it is wrong. Nothing on the screen changes size or moves when a state changes."
-        },
         {
           "tag": "v2026.11.20",
-          "target": "7b58e493c25920653972d2075c0f8cde2ed7b3a1",
-          "name": "Hush 2026-11-20",
-          "body": "Clock lock no longer posts any pop-up. When the clock moves off the chosen zone, the clock fixer puts it back silently. The fixer now waits after flipping automatic time zone off so it never flips it back on by a second tap."
+          "target": "16c99e780d2ce4cb841c1bf6550a4162097f256d",
+          "name": "Lane Listener 2026-11-20",
+          "body": "Created Lane Listener, a drive-thru order listener. You type or speak an order to the lane and it reads the order back as a ticket. Added tap mode for picking quantity, size, and options by hand, and a Teach tab for showing it phrases it did not understand."
         }
       ],
-      "description": "An Android app that blocks notifications and releases them in a digest",
+      "description": "A drive-thru order listener that turns typed or spoken orders into a ticket.",
+      "homepage": "https://2026-11-19-orange-drivethru.vercel.app",
+      "topics": [
+        "restaurant-tech",
+        "tool",
+        "drive-thru",
+        "vercel"
+      ]
+    },
+    {
+      "repo": "2026-11-19-orange-packets",
+      "releases": [
+        {
+          "tag": "v2026.11.20",
+          "target": "263659ff698e46be6281db2c5bf6759c222416c9",
+          "name": "Packet Baron 2026-11-20",
+          "body": "Added world news events that can block play, with a popup and a decoy button. Added glitter special editions, sweeteners, blended drinks, egg packets, and many new packet kinds. Packets are now drawn as crimped packets with illustrations, and the Tower view shows each packet line as a floor. Added made versus sold graphs, profit rates for each packet with sort buttons, and endless play with big number formats. Added the 50/50 Machine, which rolls random half and half combo packets."
+        }
+      ],
+      "description": "A tapping and idle game about building a condiment packet empire.",
       "homepage": "",
       "topics": [
-        "android",
-        "notifications",
-        "tool"
-      ]
-    },
-    {
-      "repo": "mohavetech-website",
-      "releases": [
-        {
-          "tag": "v2026.11.19-2",
-          "target": "2c41cdf8c7dd8ceae7424b96da10fae1727b51e4",
-          "name": "App Index 2026-11-19",
-          "body": "Sticky notes can now be dragged anywhere, then arranged newest first, A to Z, or shuffled, and the layouts are saved. The five newest apps now sort to the top. The app list is now kept in sync with Vercel by GitHub every three hours."
-        }
-      ],
-      "description": "An index page that lists every app with its age, phone tags, and notes.",
-      "homepage": "https://mohavetech-website.vercel.app",
-      "topics": [
-        "index",
-        "tool",
-        "vercel"
-      ]
-    },
-    {
-      "repo": "threat-atlas-v3",
-      "releases": [
-        {
-          "tag": "v2026.11.19",
-          "target": "cfc3120904d7f890420353652046aa9de1cb445b",
-          "name": "Threat Atlas 2026-11-19",
-          "body": "Data refresh. Added incidents from 2025 and 2026 including Bybit, Poland grid, Stryker, Iranian PLC attacks and ShinyHunters campaigns. Added new countries, conferences, firms, bases, satellites and state entries. Year slider now reaches 2026 and filters the other layers."
-        }
-      ],
-      "description": "Interactive globe of security threats with layers, filters, and country intel.",
-      "homepage": "https://threat-atlas-two.vercel.app",
-      "topics": [
-        "globe",
-        "map",
-        "research",
-        "security",
-        "vercel"
-      ]
-    },
-    {
-      "repo": "2026-11-16-pipe-weave",
-      "releases": [
-        {
-          "tag": "v2026.11.19",
-          "target": "a20b13192cd085c2589c98fdc278879dddf26f32",
-          "name": "Pipe Weave 2026-11-19",
-          "body": "Added a full screen button. Pipes can now have their own colors and lines can shift color as they grow. Added an isometric lock shape mode. Added a memory mode that replays rounds and learns from collisions. Cloth weave now goes over only single lines and under or stays under for bundles."
-        }
-      ],
-      "description": "A pipe drawing toy where pipes turn, split, and weave over and under each other.",
-      "homepage": "https://2026-11-16-pipe-weave.vercel.app",
-      "topics": [
-        "canvas",
-        "drawing",
+        "clicker",
         "game",
-        "toy",
+        "idle",
         "vercel"
       ]
     },
@@ -86,10 +42,10 @@
       "repo": "stackloom-meta",
       "releases": [
         {
-          "tag": "v2026.11.19",
-          "target": "cdf6fed49a6309583329b0e0c8703a4f1076a617",
-          "name": "Stackloom 2026-11-19",
-          "body": "Added the Jam line, the pull out puzzle from the parking lot and unscrew ads. Every piece can only go the way it points. Tap one to send it off the board, bonk into a blocker and lose a life, and clear the lot to level up. Opened by hiring a hypercasual producer once a level designer is on staff. Ten skins covering cars, arrows, screws, kayaks, trains, knives, fish, pizza, burritos, and carrots, small or big lots, five or three lives, and premium art. Lot Jam joins the studio samples. Added the Mob line and the Farm line from the social network era. The Mob line is the energy and jobs game: spend energy on jobs, stamina on fights, buy gear, invite friends to grow the crew, and climb the ranks, with a Buy points button that does nothing. Seven skins covering mobsters, vampires, zombies, pirates, ninjas, lunch ladies, and cowboys. The Farm line is the crop timer game: pick a seed, plant, wait, harvest, beg friends for water, and level up to unlock better seeds, with optional rotting. Seven skins covering crops, moon farming, fish, baked goods, robot parts, desert critters, and money. Opened by hiring a growth hacker after the level designer, then a retention designer after the growth hacker. Made Guys and Crop Town join the studio samples. Added the Shooter line, built from Dragon Drop. Drag to fly and fire, dodge straight shots from ground targets, and tap Bomb to clear the screen. Runs at a fixed speed on fast phone screens. Opened by hiring an arcade veteran once a physics programmer is on staff. Eight skins: the original pixel dragon, a rocket, a plane, a bee, a witch, a pizza fighting pineapples and anchovies, a seagull raiding a beach, and a laser cat, plus calm or frantic pace, three bombs or none, and premium glow. Dragon Drop joins the studio samples."
+          "tag": "v2026.11.20",
+          "target": "34bca3c5fa99ed83a24ef2a9639eed10e44af4fc",
+          "name": "Stackloom 2026-11-20",
+          "body": "Added cashing out and high scores. The Office tab now has Retire, which scores your cash plus a year of royalties, and Sell the studio, which scores what a buyer pays for the building, rooms, staff, and backlist, scaled by reputation. Both take a second tap to confirm and end the run. The end screen, also shown when the studio folds, takes a three letter tag and an optional link and submits the score to the shared Score Hub board as full-meta-packet, shows the top of the board, and keeps your best runs on the phone. A button on the Office tab shows the board any time."
         }
       ],
       "description": "A studio game with orders, terminals, agents, developers, and offices.",
@@ -102,141 +58,102 @@
       ]
     },
     {
-      "repo": "raineurysm",
+      "repo": "2026-11-04-orange-hush",
       "releases": [
         {
-          "tag": "v2026.11.19",
-          "target": "58e25d3c5510e8f7aabf8a793d3d38a21d75566f",
-          "name": "raineurysm 2026-11-19",
-          "body": "Added twelve more puzzle levels, for twenty four in all, with fixed pieces, lower faucets, and a cup splitter level. Added velocity settings for how much drop size and speed change loudness, plus octave jump speed and an on or off switch. Added fall speed for lanes and a storm that stays on the beat. Settings are kept on the phone."
+          "tag": "v2026.11.20-2",
+          "target": "32d4f0c1fb838b220532dddc4ea86cf0efb568d2",
+          "name": "Hush 2026-11-20 (2)",
+          "body": "Tapping the Clock fixer badge while the fixer is off now opens the Hush app info page first, where Samsung's restricted setting gets unlocked, and the next tap opens the accessibility screen to switch the fixer on."
         }
       ],
-      "description": "A rain music toy where falling rain hits vessels that play notes.",
-      "homepage": "https://raineurysm.vercel.app",
+      "description": "An Android app that blocks notifications and releases them in a digest.",
+      "homepage": "",
       "topics": [
-        "music",
-        "toy",
-        "vercel",
-        "visualizer"
+        "android",
+        "notifications",
+        "tool"
       ]
     },
     {
-      "repo": "2026-10-30-orange-scores",
+      "repo": "2026-10-18-orange-testbed",
       "releases": [
         {
-          "tag": "v2026.11.18-2",
-          "target": "96614bf8d892c52577f407dee2c850caeef10257",
-          "name": "Score Hub 2026-11-18",
-          "body": "Registered Tile Spinner on the score hub with three boards: Rush counts boards cleared before time runs out, Pipes counts total stars earned across challenge levels, and Vault scores how fast and in how few tries a code is cracked. Tile Spinner Vault scores now scale with vault difficulty, up to three times for Expert, so the board accepts scores up to 3000."
+          "tag": "v2026.11.19",
+          "target": "8e5049160bd563c1e289d6cfc4f57ab5e459c7e4",
+          "name": "Agent Test Bed 2026-11-19",
+          "body": "The agent, grok, and steward turns for the day were played and merged into the city."
+        },
+        {
+          "tag": "v2026.11.20",
+          "target": "3f3d425d3a57002aa0025593d37c77c5680cbf2f",
+          "name": "Agent Test Bed 2026-11-20",
+          "body": "The agent, grok, and steward turns for the day were played and merged into the city."
+        },
+        {
+          "tag": "v2026.11.21",
+          "target": "0e2b8c6942473a25a433e5c1b8fcc7e5db61a7b7",
+          "name": "Agent Test Bed 2026-11-21",
+          "body": "The agent turn was played and merged into the city."
+        }
+      ],
+      "description": "A shared city that AI agents build one turn at a time.",
+      "homepage": "https://2026-10-18-orange-testbed.vercel.app",
+      "topics": [
+        "agents",
+        "game",
+        "simulator",
+        "vercel"
+      ]
+    },
+    {
+      "repo": "itchy-troll",
+      "releases": [
+        {
+          "tag": "v2026.11.18",
+          "target": "dc0d20f9c30994c3bc8907cf2c307dfe8c05c2f1",
+          "name": "Itchy Troll 2026-11-18",
+          "body": "Shipped MobbyHill with a gated build where the Jeep on the mountain trail is free and the rest unlocks with the purchase. Added the MobbyHill store page text and images, then shipped it again once the page existed. The scout looked over the repos for new candidates."
         },
         {
           "tag": "v2026.11.19",
-          "target": "bf6803055226056f09569efc55c944c0e9374207",
-          "name": "Score Hub 2026-11-19",
-          "body": "Registered Just Five More on the score hub with seven boards, one for each task: math, petals, paint, scratch tickets, bubble wrap, leaves and cables. A score is how many items the player did in one shift after being told to do five. Raineurysm Puzzle grew to twenty four levels, so its top believable run score went up to match."
+          "target": "aff056c3de48f8d50ee3f5da24a7930c99b4c927",
+          "name": "Itchy Troll 2026-11-19",
+          "body": "The scout looked over the repos for new candidates."
+        },
+        {
+          "tag": "v2026.11.20",
+          "target": "0a614ebec917c88c0dc44fdf4e02adac48c667f2",
+          "name": "Itchy Troll 2026-11-20",
+          "body": "The scout looked over the repos for new candidates."
         }
       ],
-      "description": "A shared score service and hub page for the games",
-      "homepage": "https://2026-10-30-orange-scores.vercel.app",
+      "description": "An agent that publishes finished apps to a game publishing site.",
+      "homepage": "https://itchy-troll.vercel.app",
       "topics": [
+        "automation",
+        "publishing",
+        "tool",
+        "vercel"
+      ]
+    },
+    {
+      "repo": "blue-agent",
+      "releases": [
+        {
+          "tag": "v2026.11.17",
+          "target": "9cb020b94b7049e372ef49ac60e1e40d08ed1885",
+          "name": "Blue Agent 2026-11-17",
+          "body": "The detailer now uses its own Anthropic key for each agent. The deploy script now builds in the Railway login and the DNS fix."
+        }
+      ],
+      "description": "The runner and dashboard that schedule AI agents to play the test bed.",
+      "homepage": "",
+      "topics": [
+        "agents",
         "backend",
-        "scores",
-        "tool",
-        "vercel"
-      ]
-    },
-    {
-      "repo": "bloxx",
-      "releases": [
-        {
-          "tag": "v2026.11.19",
-          "target": "ab5438a69a21369594cf0c176cffee999165ffd4",
-          "name": "Bloxx 2026-11-19",
-          "body": "Added motorized twist lock pins between blocks with lock confirmation. Added cable pass doors, open slots, handrails, clear doors, an inside light, a flat hinge stop, and a kickstand table door. Added a garage bench of door panels that replenish, a bare tower, and a send to sandbox button in design mode. Added named layouts you can save, load, and delete, a parts catalog with animated previews, and info buttons with descriptions. Added video, diffuser, and spotlight doors, a flip, an inside mirror ball, spotlight and strobe, and tools and inside gear on the design bench."
-        }
-      ],
-      "description": "A modular stage block configurator for building lit stage rigs, joined to the Stompbox band room.",
-      "homepage": "",
-      "topics": [
-        "music",
-        "threejs",
-        "tool",
-        "vercel"
-      ]
-    },
-    {
-      "repo": "tile-topia",
-      "releases": [
-        {
-          "tag": "v2026.11.19-2",
-          "target": "f365f95d4f1314cba4b564affc9f0efec92a433a",
-          "name": "Tile-topia 2026-11-19",
-          "body": "Added a War skin with an army map, trenches, bases, HQs, and marching soldiers. Added West and Bunker skins. Added Meadow fields that score points, with a Biggest Meadow record. Each map now keeps its skin, with heart and strip landmarks, and city towers grow with district size."
-        }
-      ],
-      "description": "A tile placing game where you build a map and score finished lanes, districts, and cores.",
-      "homepage": "https://tile-topia.vercel.app",
-      "topics": [
-        "game",
-        "puzzle",
-        "tiles",
-        "vercel"
-      ]
-    },
-    {
-      "repo": "repofind",
-      "releases": [
-        {
-          "tag": "v2026.11.19",
-          "target": "f379fae8cb177c2bf5b92cbe69d0b3701df14799",
-          "name": "Repo Find 2026-11-19",
-          "body": "Added the Teardown tab. Roll or pick one of 61 well known products and see how it is built layer by layer, each layer marked known or inferred, with a rebuild using builder tools and the open alternatives that exist, linked into the catalog. Filters hide big tech alternatives or skip big tech products. Merged Pipeline Builder in as the Builder tab, with build, randomize, diagram and templates modes, Supabase and more tools added, and the current stack saved in backup."
-        }
-      ],
-      "description": "Search and watch tool for code repos, archives, and sites.",
-      "homepage": "https://repofind-delta.vercel.app",
-      "topics": [
-        "search",
-        "tool",
-        "vercel"
-      ]
-    },
-    {
-      "repo": "2026-11-19-orange-packets",
-      "releases": [
-        {
-          "tag": "v2026.11.19",
-          "target": "ed0c9593e3d6a38689c741de90db0bb44140455c",
-          "name": "Packet Baron 2026-11-19",
-          "body": "Created Packet Baron, a tapping and idle game about building a condiment packet empire. Squeeze out packets, buy production lines, and research new packets from ketchup up to a packet of packets. Hit packets pay royalties, and the Packet Gallery opens after three inventions. Upgrades and a goal of one million dollars in lifetime earnings round it out."
-        }
-      ],
-      "description": "A tapping and idle game about building a condiment packet empire.",
-      "homepage": "",
-      "topics": [
-        "game",
-        "idle",
-        "clicker",
-        "vercel"
-      ]
-    },
-    {
-      "repo": "2026-11-19-blue-just-five-more",
-      "releases": [
-        {
-          "tag": "v2026.11.19",
-          "target": "71d50c6a06e766b47def30555ab6f1920d7f6d45",
-          "name": "Just Five More 2026-11-19",
-          "body": "Created Just Five More, a work game where every task ends with a request to do five more. Added seven tasks, excuse memos, fake verification, a secret ledger, and a performance review with a report card grade that never rewards overachieving, plus manager comments. Each shift now posts to the Score Hub, with a board for every task in the review and the menu."
-        }
-      ],
-      "description": "A work game where every task ends with a request to do five more.",
-      "homepage": "https://2026-11-19-blue-just-five-more.vercel.app",
-      "topics": [
-        "game",
-        "tasks",
-        "humor",
-        "vercel"
+        "dashboard",
+        "railway"
       ]
     }
   ]
