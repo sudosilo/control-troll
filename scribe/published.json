@@ -484,7 +484,17 @@
   "sudosilo/tile-topia@v2026.11.19-2",
   "sudosilo/repofind@v2026.11.19",
   "sudosilo/2026-11-19-orange-packets@v2026.11.19",
-  "sudosilo/2026-11-19-blue-just-five-more@v2026.11.19"
+  "sudosilo/2026-11-19-blue-just-five-more@v2026.11.19",
+  "sudosilo/2026-11-19-orange-drivethru@v2026.11.20",
+  "sudosilo/2026-11-19-orange-packets@v2026.11.20",
+  "sudosilo/stackloom-meta@v2026.11.20",
+  "sudosilo/2026-11-04-orange-hush@v2026.11.20-2",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.20",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.21",
+  "sudosilo/itchy-troll@v2026.11.18",
+  "sudosilo/itchy-troll@v2026.11.19",
+  "sudosilo/itchy-troll@v2026.11.20",
+  "sudosilo/blue-agent@v2026.11.17"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -1790,7 +1800,7 @@
    ]
   },
   "sudosilo/itchy-troll": {
-   "d": "An agent that publishes finished apps to a game publishing site",
+   "d": "An agent that publishes finished apps to a game publishing site.",
    "h": "https://itchy-troll.vercel.app",
    "t": [
     "automation",
@@ -1829,7 +1839,7 @@
    ]
   },
   "sudosilo/2026-10-18-orange-testbed": {
-   "d": "A shared city that AI agents build one turn at a time",
+   "d": "A shared city that AI agents build one turn at a time.",
    "h": "https://2026-10-18-orange-testbed.vercel.app",
    "t": [
     "agents",
@@ -1899,7 +1909,7 @@
    ]
   },
   "sudosilo/blue-agent": {
-   "d": "The runner and dashboard that schedule AI agents to play the test bed",
+   "d": "The runner and dashboard that schedule AI agents to play the test bed.",
    "h": "",
    "t": [
     "agents",
@@ -2008,7 +2018,7 @@
    ]
   },
   "sudosilo/2026-11-04-orange-hush": {
-   "d": "An Android app that blocks notifications and releases them in a digest",
+   "d": "An Android app that blocks notifications and releases them in a digest.",
    "h": "",
    "t": [
     "android",
@@ -2432,6 +2442,16 @@
     "game",
     "humor",
     "tasks",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-11-19-orange-drivethru": {
+   "d": "A drive-thru order listener that turns typed or spoken orders into a ticket.",
+   "h": "https://2026-11-19-orange-drivethru.vercel.app",
+   "t": [
+    "drive-thru",
+    "restaurant-tech",
+    "tool",
     "vercel"
    ]
   }
