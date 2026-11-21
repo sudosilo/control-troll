@@ -551,6 +551,14 @@
       "outcome": "needs decision",
       "pullRequest": "https://github.com/sudosilo/control-troll/pull/2",
       "note": "Pull request 2 with the new ids is still open and unmerged, so main keeps the old failing test."
+    },
+    {
+      "date": "2026-11-21",
+      "app": "threat-atlas-v3",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "The repo is named threat-atlas-v3 but the live app is still threat-atlas-two (200), and the v3 Vercel name has no deployment, so the developer must add that domain or drop the v3 link."
     }
   ]
 }

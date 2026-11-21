@@ -1,0 +1,1 @@
+2026-11-21 fixer. Repo threat-atlas-v3 is a single index.html app whose live deployment is still threat-atlas-two.vercel.app; threat-atlas-v3.vercel.app is DEPLOYMENT_NOT_FOUND, so the monitor lists a phantom app. No code fix, needs the developer to alias the domain or retire the link.
