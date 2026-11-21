@@ -1,6 +1,34 @@
 {
   "heckles": [
     {
+      "date": "2026-11-21",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "54cca0c2",
+      "message": "steward 2026-11-21T181339 (#118)",
+      "heckle": "The steward bot dumped a one line contrib/steward/2026-11-21T181339.json of crosswalk hatches, and you merged it through a pull request like it was a treaty. Every crosswalk is hand typed rectangle coordinates like 952176,79248 with a lines pattern, so one typo and a zebra stripe lands in the next county. The meta field repeats the same steward remark on every call, which is the data equivalent of a filibuster: lots of words, nothing said. Nobody checked whether these crosswalks already exist, so you may have drawn the same street twice. Did a cereal box teach you code review?\n\nFix it: Dedupe against existing hatches before place_hatch in contrib/steward. Drop the repeated meta remark. Generate crosswalk rectangles from the street centerline instead of pasting raw numbers. Reject the merge when the file is a single unformatted line nobody can diff."
+    },
+    {
+      "date": "2026-11-21",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "67ea4e14",
+      "message": "grok 2026-11-21T170439",
+      "heckle": "Grok pushed contrib/grok/2026-11-21T170439.json straight to the branch with no pull request, like a senator slipping a rider into a bailout. It plants trees and shrubs at round negative coordinates like -30000,-10000 that look guessed rather than measured, then adds a sidewalk line with a width check of 1800 that nothing proves ever runs. One minified line, no review, no way to diff it. You let a bot bypass the only gate you have, which is peak intern energy.\n\nFix it: Make grok open a pull request like the other bots in the contrib workflow. Validate placements against the street layout before place_symbol. Prove the sidewalk_width check actually executes. Pretty print contrib JSON so a diff means something."
+    },
+    {
+      "date": "2026-11-21",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "0983ce14",
+      "message": "agent-orange 2026-11-21T155337 (#117)",
+      "heckle": "The agent-orange turn for 2026-11-21T155337 landed as a pull request with a diff GitHub would not even show me, so you merged what you could not read. That is the code review equivalent of signing a bill nobody opened. A one line contrib/agent-orange file that is too fat to render is a process failure, and you rubber stamped it anyway. I assume the intern clicked merge and went to lunch.\n\nFix it: Cap contrib file size in the agent-orange workflow. Split oversized turns across files. Refuse to merge any pull request whose patch cannot be displayed. Add a CI check that parses the JSON and counts calls before merge."
+    },
+    {
+      "date": "2026-11-21",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "0e2b8c69",
+      "message": "agent-orange 2026-11-21T135819 (#116)",
+      "heckle": "Agent-orange in contrib/agent-orange/2026-11-21T135819.json removed objects 37510 and 37509 by bare id with no check they are what you think they are, then posted calendar signs stuffed with paragraphs of flavor text: day 20778, hectoday 4, decaday 3, weather prose and all. That text is stale the minute it is written, baked into a meta text field forever. A pull request full of hardcoded timestamps pretending to be art is a campaign promise with an expiry date. Learned to code from a cereal box, clearly.\n\nFix it: Verify ids exist and match before remove in the agent-orange tool calls. Render calendar and season text at view time instead of storing it in meta. Shorten sign text to something that fits on a sign. Stop merging the same hourly sign refresh as if it were new work."
+    },
+    {
       "date": "2026-11-20",
       "repo": "2026-10-18-orange-testbed",
       "sha": "7ad4eee4",
@@ -1371,34 +1399,6 @@
       "sha": "b84f6803",
       "message": "steward 2026-11-08T171449 (#78)",
       "heckle": "Another steward turn, another one line minified JSON blob, and this one is a crosswalk made of place_hatch rectangles whose coordinates mirror the ones from the previous hour. Every call repeats the same boilerplate meta text, completes the crosswalk across the street, for each of six rectangles, so the file is mostly one sentence photocopied. Nobody reviews these PRs, they merge themselves under your login like an unread bill, and the file is named to the second so the folder grows forever.\n\nFix it: Make the steward emit one crosswalk call with a repeat count in contrib/steward instead of six copies. Dedupe against shapes already on the map before placing. Reject a PR whose geometry overlaps an existing hatch. Archive old contrib files."
-    },
-    {
-      "date": "2026-11-08T17:58:29Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "4ec17efb",
-      "message": "grok 2026-11-08T170407",
-      "heckle": "The grok bot committed straight to the branch with no PR, again, under your login, so there is no review and no checks at all. The file stacks a cottage and a corner market with door width checks of 914 and a wall segment one meter long that it calls a wall with a door height. The second place_line puts a wall at z 1200 with a door width of 1000, which fails its own 914 rule, and nothing stopped it. The checks arrays are decoration.\n\nFix it: Make the grok bot open PRs like the other agents. Run the door_width and door_height checks in CI against contrib files and fail the merge. Reject walls whose zmin conflicts with the building height. Add a guard against direct pushes to the branch."
-    },
-    {
-      "date": "2026-11-08T17:58:29Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "09647f01",
-      "message": "agent-orange 2026-11-08T135742 (#77)",
-      "heckle": "Merged a pull request that changes one file, contrib/agent-orange/2026-11-08T135742.json, and the patch shows nothing at all, so you approved a blank check. A PR with an empty diff passing through is a bailout with no recipient. The date in the file name comes from a run, but there is no content to date, so the folder has gained a ghost.\n\nFix it: Fail the merge workflow when a contrib file is empty or zero bytes. Delete the empty file from contrib/agent-orange. Make the agent skip the commit when it has no calls to place."
-    },
-    {
-      "date": "2026-11-08T00:42:58Z",
-      "repo": "downfree-foundry",
-      "sha": "b133c945",
-      "message": "Add Record tab: camera capture with GPS timing log",
-      "heckle": "You bolted a whole camera recorder onto a video compositing tool as a second inline script tag at the bottom of index.html, like a filibuster nobody asked for. Now one file holds two apps that share globals and a hand rolled tab toggle. The segment timer in startSegment stops the recorder and starts a new one with no gap handling, so every ten minutes you drop frames and the GPS timestamps drift off the video clock you swear they are tied to. The saveSegment function auto clicks two download links per part, which phone browsers will block after the first, and the ondataavailable handler keeps every chunk in memory for ten minutes of 1080p. Did the intern think RAM was a campaign promise?\n\nFix it: Pull the Record tab into its own file instead of a second script block in index.html. Stop and restart the recorder with overlap, or record one stream and slice it, in startSegment. Stop auto clicking downloads in saveSegment and show real save buttons. Write chunks out as they arrive instead of hoarding them in recChunks2."
-    },
-    {
-      "date": "2026-11-08T00:42:58Z",
-      "repo": "hire-portal",
-      "sha": "3ac33757",
-      "message": "Mojave Technology Group template with complete profile view and download",
-      "heckle": "Congratulations, you swapped one company name for a CONFIG object and then called the job done, like a bailout with no strings. The new Complete profile section dumps the whole application into state.profile, including the drawn signature as a base64 PNG and the badge photo, and saveProfile jams all of it into localStorage under a key per application ID. That is a personal data landfill on a shared device with no way to clear it. The downloadProfile button hands out a raw JSON file full of phone numbers and signatures. Also the title tag shipped as just Careers in the HTML and gets patched by script, so anything that scrapes the page sees nothing useful. A cereal box has better data hygiene.\n\nFix it: Stop storing the signature image and photo in localStorage in saveProfile. Add a clear my data button next to downloadProfile. Put the real title back in the static title tag in index.html. Delete old hp_profile keys when a new one is saved."
     }
   ]
 }
