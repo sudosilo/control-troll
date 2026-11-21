@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-11-20T21:10:54.959Z",
+  "builtAt": "2026-11-21T20:10:28.499Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -74,6 +74,20 @@
       ],
       "knownProblem": null,
       "snapshot": "snapshots/mission-operator.html"
+    },
+    {
+      "app": "threat-atlas-v3",
+      "url": "https://threat-atlas-v3.vercel.app",
+      "kind": "down",
+      "since": "2026-11-21",
+      "status": 404,
+      "failing": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "features": [],
+      "knownProblem": null,
+      "snapshot": "snapshots/threat-atlas-v3.html"
     },
     {
       "app": "mary-jane-man",
