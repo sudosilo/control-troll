@@ -158,8 +158,8 @@
    "summary": "A field log with a map, receipts, mileage, and an Android app that tracks stops",
    "name": "Field Twin",
    "latest": {
-    "date": "2026-11-16",
-    "text": "Added Tickets. Scan ticket screen reads work tickets from a photo of the work phone, a check screen fixes misreads and picks the locker, and each open ticket shows on the map as a countdown ring. Best next and the fork card rank stops by SLA slack after drive time, and closes inside SLA earn points. The receipt and ticket readers now share one photo reader that falls back through newer models, and Service check shows the reader key and the last reader error."
+    "date": "2026-11-21",
+    "text": "Added a Charging station place type with its own sign and its own form."
    }
   },
   "mohavetech-website": {
@@ -1793,7 +1793,7 @@
    "summary": "A shared city where AI agents take turns building, with a viewer and a web API.",
    "name": "Agent Test Bed",
    "latest": {
-    "date": "2026-11-21",
+    "date": "2026-11-22",
     "text": "The agent turn was played and merged into the city."
    }
   },
@@ -2077,8 +2077,8 @@
    "summary": "A conveyor simulation started from a copy of the agent test bed.",
    "name": "Conveyor Sim",
    "latest": {
-    "date": "2026-10-28",
-    "text": "First release. Started the conveyor simulation as a copy of the agent test bed."
+    "date": "2026-11-21",
+    "text": "Built a packet factory, then rebuilt the whole site as a visual pipeline builder. Sixteen machine types stand for parts of a website and run a live simulation using Packet Baron's sauces, wrapper styles and 50/50 packets. The agent world is gone, so the site is now a static builder. There are four examples, a Build mode to place, connect, rename and delete machines, live counts, a build saved in the browser, and share links that hold the whole plan."
    }
   },
   "pdf-yourself": {
@@ -2835,8 +2835,8 @@
    "summary": "A tapping and idle game about inventing and selling condiment packets",
    "name": "Packet Baron",
    "latest": {
-    "date": "2026-11-20",
-    "text": "Added world news events that can block play, with a popup and a decoy button. Added glitter special editions, sweeteners, blended drinks, egg packets, and many new packet kinds. Packets are now drawn as crimped packets with illustrations, and the Tower view shows each packet line as a floor. Added made versus sold graphs, profit rates for each packet with sort buttons, and endless play with big number formats. Added the 50/50 Machine, which rolls random half and half combo packets."
+    "date": "2026-11-21",
+    "text": "Tower floors now show stock as stacked pallets, one pallet per million packets, with a partly filled pallet for the remainder and a pallet count. 50/50 Machine spin cost now grows gently instead of multiplying every spin. Added timed promos every 10 to 20 minutes: a 50/50 Half Off Sale that halves spin cost and Lab Overtime that runs R and D 25 percent faster, each lasting 5 minutes. Added Butter, Chipotle Honey, Watermelon Honey and Pistachio Honey packets, plus Cashews, Peanuts, Sunflower Kernels, Vitamin B, Vitamin C, Vitamin D, Pink Salt, Crunchy Pepper and Parmesan. Added a search box to the Factory packet list. Each packet now has its own market. Staples like ketchup and mustard face heavy competition, so buyers drop off fast above about x2, while rare novelties hold buyers at much higher prices. Foil, holo and other special editions lose most of their collector premium when too many are sold into the market, based on units sold over the last few seconds. Stock sitting in inventory does not count, the same way an overprinted holo card is worth little, and keep their value when made in small runs. Added Hot Dog Day, Fry Day and Sushi Week holidays that lift staple prices and demand. Wholesale buyers now grow with your production lines, so a packet at normal price sells a bit faster than its lines make it, and raising the price slows sales. Fame now boosts demand on a slow curve instead of without limit, so stock no longer drains in seconds late in the game. Per packet price settings now also slow Gallery sales of that packet, so a packet priced at x100 keeps its stock."
    }
   },
   "2026-11-19-blue-just-five-more": {

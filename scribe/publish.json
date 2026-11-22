@@ -1,32 +1,13 @@
 {
   "jobs": [
     {
-      "repo": "2026-11-19-orange-drivethru",
-      "releases": [
-        {
-          "tag": "v2026.11.20",
-          "target": "16c99e780d2ce4cb841c1bf6550a4162097f256d",
-          "name": "Lane Listener 2026-11-20",
-          "body": "Created Lane Listener, a drive-thru order listener. You type or speak an order to the lane and it reads the order back as a ticket. Added tap mode for picking quantity, size, and options by hand, and a Teach tab for showing it phrases it did not understand."
-        }
-      ],
-      "description": "A drive-thru order listener that turns typed or spoken orders into a ticket.",
-      "homepage": "https://2026-11-19-orange-drivethru.vercel.app",
-      "topics": [
-        "restaurant-tech",
-        "tool",
-        "drive-thru",
-        "vercel"
-      ]
-    },
-    {
       "repo": "2026-11-19-orange-packets",
       "releases": [
         {
-          "tag": "v2026.11.20",
-          "target": "263659ff698e46be6281db2c5bf6759c222416c9",
-          "name": "Packet Baron 2026-11-20",
-          "body": "Added world news events that can block play, with a popup and a decoy button. Added glitter special editions, sweeteners, blended drinks, egg packets, and many new packet kinds. Packets are now drawn as crimped packets with illustrations, and the Tower view shows each packet line as a floor. Added made versus sold graphs, profit rates for each packet with sort buttons, and endless play with big number formats. Added the 50/50 Machine, which rolls random half and half combo packets."
+          "tag": "v2026.11.21",
+          "target": "3ab5cbcff9578837dc192e011f531b29d9b6f1cb",
+          "name": "Packet Baron 2026-11-21",
+          "body": "Tower floors now show stock as stacked pallets, one pallet per million packets, with a partly filled pallet for the remainder and a pallet count. 50/50 Machine spin cost now grows gently instead of multiplying every spin. Added timed promos every 10 to 20 minutes: a 50/50 Half Off Sale that halves spin cost and Lab Overtime that runs R and D 25 percent faster, each lasting 5 minutes. Added Butter, Chipotle Honey, Watermelon Honey and Pistachio Honey packets, plus Cashews, Peanuts, Sunflower Kernels, Vitamin B, Vitamin C, Vitamin D, Pink Salt, Crunchy Pepper and Parmesan. Added a search box to the Factory packet list. Each packet now has its own market. Staples like ketchup and mustard face heavy competition, so buyers drop off fast above about x2, while rare novelties hold buyers at much higher prices. Foil, holo and other special editions lose most of their collector premium when too many are sold into the market, based on units sold over the last few seconds. Stock sitting in inventory does not count, the same way an overprinted holo card is worth little, and keep their value when made in small runs. Added Hot Dog Day, Fry Day and Sushi Week holidays that lift staple prices and demand. Wholesale buyers now grow with your production lines, so a packet at normal price sells a bit faster than its lines make it, and raising the price slows sales. Fame now boosts demand on a slow curve instead of without limit, so stock no longer drains in seconds late in the game. Per packet price settings now also slow Gallery sales of that packet, so a packet priced at x100 keeps its stock."
         }
       ],
       "description": "A tapping and idle game about building a condiment packet empire.",
@@ -39,61 +20,56 @@
       ]
     },
     {
-      "repo": "stackloom-meta",
+      "repo": "conveyor-sim",
       "releases": [
         {
-          "tag": "v2026.11.20",
-          "target": "34bca3c5fa99ed83a24ef2a9639eed10e44af4fc",
-          "name": "Stackloom 2026-11-20",
-          "body": "Added cashing out and high scores. The Office tab now has Retire, which scores your cash plus a year of royalties, and Sell the studio, which scores what a buyer pays for the building, rooms, staff, and backlist, scaled by reputation. Both take a second tap to confirm and end the run. The end screen, also shown when the studio folds, takes a three letter tag and an optional link and submits the score to the shared Score Hub board as full-meta-packet, shows the top of the board, and keeps your best runs on the phone. A button on the Office tab shows the board any time."
+          "tag": "v2026.11.21",
+          "target": "d18c1e8ebf6945c59859c5f0f8bf272ad66d5350",
+          "name": "Conveyor Sim 2026-11-21",
+          "body": "Built a packet factory, then rebuilt the whole site as a visual pipeline builder. Sixteen machine types stand for parts of a website and run a live simulation using Packet Baron's sauces, wrapper styles and 50/50 packets. The agent world is gone, so the site is now a static builder. There are four examples, a Build mode to place, connect, rename and delete machines, live counts, a build saved in the browser, and share links that hold the whole plan."
         }
       ],
-      "description": "A studio game with orders, terminals, agents, developers, and offices.",
-      "homepage": "https://stackloom-meta.vercel.app",
+      "description": "A conveyor simulation started from a copy of the agent test bed",
+      "homepage": "https://conveyor-sim.vercel.app",
       "topics": [
-        "game",
-        "management",
+        "agents",
+        "backend",
         "simulator",
         "vercel"
       ]
     },
     {
-      "repo": "2026-11-04-orange-hush",
+      "repo": "field-twin",
       "releases": [
         {
-          "tag": "v2026.11.20-2",
-          "target": "32d4f0c1fb838b220532dddc4ea86cf0efb568d2",
-          "name": "Hush 2026-11-20 (2)",
-          "body": "Tapping the Clock fixer badge while the fixer is off now opens the Hush app info page first, where Samsung's restricted setting gets unlocked, and the next tap opens the accessibility screen to switch the fixer on."
+          "tag": "v2026.11.21",
+          "target": "a7844441dea98e516c6091ad16d15989649fbd80",
+          "name": "Field Twin 2026-11-21",
+          "body": "Added a Charging station place type with its own sign and its own form."
         }
       ],
-      "description": "An Android app that blocks notifications and releases them in a digest.",
-      "homepage": "",
+      "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
+      "homepage": "https://field-twin-teal.vercel.app",
       "topics": [
-        "android",
-        "notifications",
-        "tool"
+        "field-service",
+        "map",
+        "tool",
+        "vercel"
       ]
     },
     {
       "repo": "2026-10-18-orange-testbed",
       "releases": [
         {
-          "tag": "v2026.11.19",
-          "target": "8e5049160bd563c1e289d6cfc4f57ab5e459c7e4",
-          "name": "Agent Test Bed 2026-11-19",
-          "body": "The agent, grok, and steward turns for the day were played and merged into the city."
-        },
-        {
-          "tag": "v2026.11.20",
-          "target": "3f3d425d3a57002aa0025593d37c77c5680cbf2f",
-          "name": "Agent Test Bed 2026-11-20",
-          "body": "The agent, grok, and steward turns for the day were played and merged into the city."
-        },
-        {
-          "tag": "v2026.11.21",
-          "target": "0e2b8c6942473a25a433e5c1b8fcc7e5db61a7b7",
+          "tag": "v2026.11.21-2",
+          "target": "54cca0c2cd726782fdf231d7236afbd07de8c579",
           "name": "Agent Test Bed 2026-11-21",
+          "body": "The agent, grok, and steward turns for the day were played and merged into the city."
+        },
+        {
+          "tag": "v2026.11.22",
+          "target": "414f302eaa92a6a7f043f533948850aa1985b1a2",
+          "name": "Agent Test Bed 2026-11-22",
           "body": "The agent turn was played and merged into the city."
         }
       ],
@@ -104,56 +80,6 @@
         "game",
         "simulator",
         "vercel"
-      ]
-    },
-    {
-      "repo": "itchy-troll",
-      "releases": [
-        {
-          "tag": "v2026.11.18",
-          "target": "dc0d20f9c30994c3bc8907cf2c307dfe8c05c2f1",
-          "name": "Itchy Troll 2026-11-18",
-          "body": "Shipped MobbyHill with a gated build where the Jeep on the mountain trail is free and the rest unlocks with the purchase. Added the MobbyHill store page text and images, then shipped it again once the page existed. The scout looked over the repos for new candidates."
-        },
-        {
-          "tag": "v2026.11.19",
-          "target": "aff056c3de48f8d50ee3f5da24a7930c99b4c927",
-          "name": "Itchy Troll 2026-11-19",
-          "body": "The scout looked over the repos for new candidates."
-        },
-        {
-          "tag": "v2026.11.20",
-          "target": "0a614ebec917c88c0dc44fdf4e02adac48c667f2",
-          "name": "Itchy Troll 2026-11-20",
-          "body": "The scout looked over the repos for new candidates."
-        }
-      ],
-      "description": "An agent that publishes finished apps to a game publishing site.",
-      "homepage": "https://itchy-troll.vercel.app",
-      "topics": [
-        "automation",
-        "publishing",
-        "tool",
-        "vercel"
-      ]
-    },
-    {
-      "repo": "blue-agent",
-      "releases": [
-        {
-          "tag": "v2026.11.17",
-          "target": "9cb020b94b7049e372ef49ac60e1e40d08ed1885",
-          "name": "Blue Agent 2026-11-17",
-          "body": "The detailer now uses its own Anthropic key for each agent. The deploy script now builds in the Railway login and the DNS fix."
-        }
-      ],
-      "description": "The runner and dashboard that schedule AI agents to play the test bed.",
-      "homepage": "",
-      "topics": [
-        "agents",
-        "backend",
-        "dashboard",
-        "railway"
       ]
     }
   ]
