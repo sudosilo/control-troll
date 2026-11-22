@@ -559,6 +559,30 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "The repo is named threat-atlas-v3 but the live app is still threat-atlas-two (200), and the v3 Vercel name has no deployment, so the developer must add that domain or drop the v3 link."
+    },
+    {
+      "date": "2026-11-22",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "repo not found",
+      "pullRequest": null,
+      "note": "Still 404 and no sudosilo repo matches this name, so the developer must say where its code lives or drop the link."
+    },
+    {
+      "date": "2026-11-22",
+      "app": "mary-jane-man",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Live URL still serves the Vercel Stumbler page and no repo matches, so the developer must redeploy the maze game; the tests match the spec."
+    },
+    {
+      "date": "2026-11-22",
+      "app": "rtss-sigma",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": "https://github.com/sudosilo/control-troll/pull/3",
+      "note": "Pull request 3 with the new RTSS V3 selectors is still open and unmerged, so main keeps the old failing test."
     }
   ]
 }
