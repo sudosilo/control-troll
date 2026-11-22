@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-22",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "14fb488a",
+      "message": "agent-orange 2026-11-22T163935 (#120)",
+      "heckle": "140 calls in a single file: 63 lines, 47 removes, 22 symbols and 8 hatches, so the bot builds a thing and tears down half of it in the same breath, like a congress that passes a bill and repeals it before lunch. The ids 38433 and 38434 get removed at the top of the file, meaning this agent is cleaning up its own last mess one turn late. One sign symbol carries a long paragraph of fiction about a town clock in its meta text, a giant string baked into a data file.\n\nFix it: Make the agent remove its own objects in the same turn it places them. Cap meta text length in contrib/agent-orange files. Split a turn this big into smaller files so one bad call does not poison 140."
+    },
+    {
+      "date": "2026-11-22",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "7e16e6fd",
+      "message": "grok 2026-11-22T170317",
+      "heckle": "The grok bot pushed straight to the branch with no review, eight calls placing a walled building at negative twenty five thousand coordinates with door height and width checks hidden in a meta blob. It is a building called Arroyo Flats, a name that sounds like a retirement community and is nowhere near the coordinates the other bots use, so the town now has two disconnected planets. Committing straight to main from a bot is trusting a toddler with a fire extinguisher.\n\nFix it: Route grok through a pull request like the other agents. Reject files whose coordinates fall outside the shared map extent in contrib/grok. Have the loader validate the sig field before applying the calls."
+    },
+    {
+      "date": "2026-11-22",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "9610de9c",
+      "message": "steward 2026-11-22T183905 (#121)",
+      "heckle": "The steward bot merged a PR whose entire content is 35 remove calls with hardcoded numeric ids from 38398 to 38431. No place, no replace, just a demolition crew with a list and no blueprints. If a bot deletes 35 things and nothing replaces them, that is a bailout in reverse, and nobody asked whether any of those ids were the ones another agent placed ten minutes earlier.\n\nFix it: Make contrib/steward refuse a file that only contains remove calls without a stated reason. Validate every id in contrib/steward/2026-11-22T183905.json against the live scene before merging. Log what each removal was."
+    },
+    {
+      "date": "2026-11-22",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "f6d3b8c1",
+      "message": "Add 2007 Prius: lofted body from blueprint, hybrid drivetrain, car switch",
+      "heckle": "418 added lines in one commit, all crammed into a single index.html that is now a monolith a debugger would refuse to enter. You also committed four blueprint PNGs under ref as pr-front, pr-side, pr-top and pr-rear, which sounds like a sketch drawn on a napkin by someone being held hostage. The car switch uses a carGen counter to cancel async texture loads, which is clever enough that I assume you copied it from somewhere. Every car is hand typed boxes and cylinders with magic coordinates.\n\nFix it: Split index.html into a scripts file per car. Compress the PNGs in ref or keep them out of the repo. Move the part coordinates into a data table instead of inline P calls. Add error handling to the texture loader callbacks."
+    },
+    {
+      "date": "2026-11-22",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "f3bfdadb",
+      "message": "Remove automatic camera zoom and fly",
+      "heckle": "Deleting the camera fly is the only mature thing in this batch, and it hurts to say that. Still, you removed the fly assignments in open and back by hand, so the fly variable and whatever animate does with it are probably still sitting in index.html as a dead limb, like an unfunded mandate. A net loss of 28 lines is not an excuse to skip a search for leftovers.\n\nFix it: Grep index.html for fly and delete the variable and every branch that still reads it. Confirm the camera does not stay stuck at the old distance after Back. Delete the now unused easing code."
+    },
+    {
+      "date": "2026-11-22",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "16e1aa39",
+      "message": "Opacity slider, manual image in part card, manual crawler tool",
+      "heckle": "Three features in one commit, plus another compiled pyc dropped into tools/__pycache__ because the first time was not embarrassing enough. The new EXPLODE and OPACITY sliders in index.html sit in a flex bar with a min-width of 140px each, so on a phone that toolbar is going to wrap into a pile of buttons like a clown car at a border checkpoint. The crawler hardcodes MAX_PAGES at 4000, which is a polite way of saying hammer a third party site until it notices.\n\nFix it: Stop tracking the pyc files in tools/__pycache__. Lower the sl min-width in index.html and test the bar at a narrow phone width. Add a delay between requests in tools/fetch_manual.py and make the page cap an argument. Split the three features into three commits."
+    },
+    {
+      "date": "2026-11-22",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "fcd41a93",
+      "message": "Add manual diagrams",
+      "heckle": "Add manual diagrams, says the message, and the diff is two index.json files containing the literal text of an empty array. That is a campaign promise: big announcement, zero deliverable. A commit titled diagrams with no diagrams in it is the kind of thing a committee writes right before it shuts the government down. You deleted these exact files one commit later in 7e8cbc2d, so this was noise on both ends.\n\nFix it: Squash this commit into the crawler commit so history stops lying. Only commit ref/manual/accord/index.json and ref/manual/prius/index.json once they hold real entries. Write messages that describe the diff."
+    },
+    {
+      "date": "2026-11-22",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "b0e97cf5",
+      "message": "Prius: clean panel seams, smooth wheel arches, finer loft; Accord: air cleaner and valve cover under hood",
+      "heckle": "One commit that touches two different cars, a loft, wheel arches, and the engine bay, because apparently atomic commits are something that happens to other people. The asm function in index.html grew a fifth positional parameter, dy, right after dx, so every call site is now a guessing game of which zero goes where. Magic numbers like 0.815 for the valve cover height are scattered around with no constants, which is how you ship a hood that clips and then blame the physics.\n\nFix it: Pass an options object to asm in index.html instead of stacking dx and dy. Pull the valve cover and air cleaner heights into named constants. Split the Prius and Accord changes into separate commits."
+    },
+    {
+      "date": "2026-11-22",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "7e8cbc2d",
+      "message": "Manual crawler: fetch with curl, log failures",
+      "heckle": "You committed tools/__pycache__/fetch_manual.cpython-313.pyc, a compiled binary, into a repo like a toddler leaving shoes in the freezer. In tools/fetch_manual.py you shell out to curl from Python because urllib gave you trouble, then write the tok regex twice so the second one silently overwrites the first, which is dead code with a comment on top. Deleting the empty index.json files in ref/manual is the filibuster of version control, a lot of motion and nothing passed.\n\nFix it: Add a .gitignore with __pycache__ and delete the pyc. Remove the first tok regex in fetch_manual.py. Open log.txt once with a context manager instead of a global handle. Check the curl exit code and not only the status line."
+    },
+    {
+      "date": "2026-11-22",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "2ab4f32e",
+      "message": "Restore labels and info card in the render loop; label assemblies when the car is exploded",
+      "heckle": "Restoring labels you broke yourself is not a feature, it is a bailout with a press release. In index.html the label function now takes a key, then the render loop hides every sprite and rebuilds the callout list on every single frame, allocating fresh Vector3 objects each time like memory is a rounding error. This is the work of someone who learned three.js from a cereal box and skipped the chapter on garbage collection.\n\nFix it: Hoist the Vector3 allocations in the animate loop of index.html out of the frame. Only toggle label visibility when the focus or exploded state actually changes. Give label a default key that cannot collide with an assembly name. Add a commit message that says what broke."
+    },
+    {
       "date": "2026-11-21",
       "repo": "2026-10-18-orange-testbed",
       "sha": "54cca0c2",
@@ -1329,76 +1399,6 @@
       "sha": "148feea8",
       "message": "Backup orbit feed when CelesTrak refuses, skip bad orbit records",
       "heckle": "You copied the whole page into pajamastan-space-administration-v4.html again, 1362 lines, and left v1 through v3 rotting in the repo like old campaign signs. The git history exists for a reason, intern. The backup feed in backupTLE hits a third party TLE site straight from the browser with no key and no rate handling, and the starlink entry asks for 12 pages at 100 each, all fired at once in Promise.allSettled like a bailout nobody budgeted. The empty catch around twoline2satrec swallows every bad record silently, and DONKI_KEY is still the DEMO_KEY fallback sitting in client code.\n\nFix it: Edit one html file in place and delete the v1, v2 and v3 copies from the repo. Move the backup TLE fetch behind your api proxy so the browser stops hitting a third party directly. Cap the starlink page requests and run them in sequence. Log skipped records in the twoline2satrec catch instead of swallowing them. Move DONKI_KEY into a server side environment variable."
-    },
-    {
-      "date": "2026-11-08T22:12:25Z",
-      "repo": "downfree-foundry",
-      "sha": "d75adaaf",
-      "message": "Composite: pick which roadside things to cut out from everything the current model knows",
-      "heckle": "You added a class picker to the downfree-foundry index.html and the default selection is still just vehicles, so most of it does nothing until somebody finds the checkboxes. The empty check for \"Check at least one thing to cut out\" sits inside the build function after work.width and work.height are already overwritten and the counts array is built, like locking the door after the burglars finish dinner. Also there is a byClass object declared and then never used in the patch, which is dead code with the commitment of a campaign promise. CLASS_NAMES is a hand typed lookup of 22 COCO numbers, and one typo and your zebra becomes a parking meter. The label text on layerBase also changed without anyone checking the other copy that mentions cars.\n\nFix it: Move the readClassPick check to the very top of the build handler in index.html. Delete the unused byClass or actually use it. Generate CLASS_NAMES from the model labels instead of typing them. Grep index.html for leftover car wording."
-    },
-    {
-      "date": "2026-11-08T22:12:25Z",
-      "repo": "pajamastan-space-administration",
-      "sha": "3699d8e7",
-      "message": "Live satellite positions from CelesTrak with space weather hazard coloring, tap for details and orbit",
-      "heckle": "Another 1323 line pajamastan-space-administration-v3.html, born by copying v2 whole and renaming it, because apparently git branches are a foreign concept to the intern. Now vercel.json points the root rewrite at v3 while v1 and v2 rot in the repo like unread campaign pamphlets. The api file is called pajamastan-space-administration-v1-tle.js, so the proxy is stamped v1 while the page is v3, which is a naming scheme with the coherence of a filibuster. The TLE proxy does at least allowlist the group names, I hate that I had to say that. But the whole page is one giant inline blob with fixed pixel badges at top 64px, a stress box 112px wide and a scale box on the left, and both will stack on a small phone like clowns in a car.\n\nFix it: Stop duplicating the page per version, keep one html file and use git history. Delete the dead v1 and v2 html files. Rename api/pajamastan-space-administration-v1-tle.js to something without a version. Check the stressbadge and scalebadge in pajamastan-space-administration-v3.html at 320px wide."
-    },
-    {
-      "date": "2026-11-08T17:58:29Z",
-      "repo": "downfree-foundry",
-      "sha": "44ec993c",
-      "message": "Road tracking: lock onto your own lane on multi lane roads and map the other lane lines",
-      "heckle": "You wrote a lane detector in a single index.html, and the peak finder is a quadruple nested loop over a 48 by W/4 accumulator, run per frame, on a phone. The non maximum suppression scan checks 7 by 17 neighbors for every cell above threshold, which is O(cells times 119) of pure hope. The magic numbers 0.12, 0.15, 30 and 60 to 120 are scattered like campaign promises, and loosening the tracking penalty from dx/60 to dx/120 just makes the lines jump lanes more easily. Hand tuned thresholds with no test footage in the repo.\n\nFix it: Move the Hough voting out of index.html into its own worker so the UI thread stops choking. Name the thresholds as constants at the top of the road tracking script. Add one saved test clip so the lane picker can be checked. Skip the full neighbor scan for cells under the threshold."
-    },
-    {
-      "date": "2026-11-08T17:58:29Z",
-      "repo": "downfree-foundry",
-      "sha": "68148c1a",
-      "message": "Add Road tab: lane line, vanishing point and bend tracking saved per recording",
-      "heckle": "A fourth tab bolted onto a video compositor, 263 added lines in one file that already carried a recorder and a map. The Road tab makes you pick a recording and then also offers a file input for the same video, so which one wins? The tab switcher is still hand rolled show and hide by id, now with four views, which is a filibuster of boolean flags. The ONNX runtime and Leaflet both load from a CDN with no fallback, so offline in a car, the one place this thing is used, it dies.\n\nFix it: Decide whether roadPick or roadFile wins and delete the other. Replace the tab toggling in showTab with one data driven loop. Bundle or cache ort.min.js and Leaflet for offline use. Split index.html before it hits three thousand lines."
-    },
-    {
-      "date": "2026-11-08T17:58:29Z",
-      "repo": "downfree-foundry",
-      "sha": "37cf078c",
-      "message": "Add Map tab: coverage routes, spot search and projects",
-      "heckle": "Spot search goes to a public geocoder from the browser with whatever the user typed, and the Leaflet tile layer is pulled from a CDN, so your map is a dependency on somebody else's uptime and goodwill. The hitrow and proj blocks use word-break:break-all on file names, which will chop names mid word like a shutdown chopping a budget. Projects live next to recordings in the same storage with no migration story, and the tap to list hits logic walks every recording on every tap.\n\nFix it: Debounce the spot search and handle a failed geocode without a blank panel. Index the routes once instead of scanning every recording per tap. Version the projects storage so the next schema change does not eat data. Use overflow-wrap:anywhere instead of break-all."
-    },
-    {
-      "date": "2026-11-08T17:58:29Z",
-      "repo": "downfree-foundry",
-      "sha": "337441f1",
-      "message": "Add stop motion capture by distance or time, alongside or instead of full video",
-      "heckle": "You added a capture mode dropdown and a frame interval dropdown with nine options mixing feet and seconds in one select by prefixing values with d and t, then parsing the string later. That is a type system made of letters. Both at once means the camera is encoding video while also grabbing stills on a phone that you are separately trying to stop at 5 percent battery. Cramped on mobile too, the grid now holds four selects.\n\nFix it: Split the stop motion select into a mode and a value instead of d25 and t0.5 strings. Throttle still capture while video is recording so the encoder does not starve. Test that the stills counter in stStills survives a reload. Give the settings grid one column on narrow screens."
-    },
-    {
-      "date": "2026-11-08T17:58:29Z",
-      "repo": "downfree-foundry",
-      "sha": "826f39df",
-      "message": "Save recordings inside the app with a library, crash recovery and battery stop",
-      "heckle": "Crash recovery that writes every few seconds sounds grown up until you notice the library keeps whole video blobs in browser storage with no quota check beyond a status line, so the first long drive eats the phone. You deleted the stSeg parts saved stat and the download links, so there is no longer any way to get a file out unless the library buttons work. The battery API is not on every browser, and the stBatt stat just shows a question mark forever there.\n\nFix it: Check navigator.storage.estimate before every segment write and stop gracefully. Bring back an export button for each saved part in libList. Handle a missing battery API by hiding the battery stop select in index.html. Warn before delete in the library."
-    },
-    {
-      "date": "2026-11-08T17:58:29Z",
-      "repo": "pajamastan-space-administration",
-      "sha": "2bf17ba9",
-      "message": "Solar burst simulator: flare, proton storm, CME impact on magnetosphere; NASA DONKI proxy",
-      "heckle": "pajamastan-space-administration-v2.html is 1065 lines and is the v1 file from the last commit copied whole and extended, so you now ship two 700 plus line pages that share ninety percent of their code. The api file is named v1-donki.js but serves the v2 page, because naming is apparently optional. The proxy falls back to DEMO_KEY, which the page also hardcodes as DONKI_KEY in client code, so a public rate limited key is wired into the browser and the proxy you just wrote gets bypassed by the catch block in the page.\n\nFix it: Delete the v1 page or make v2 import the shared code. Rename the api file to match what it serves. Remove DONKI_KEY and the direct api.nasa.gov call from the page so everything goes through the proxy. Set NASA_API_KEY in the project settings."
-    },
-    {
-      "date": "2026-11-08T17:58:29Z",
-      "repo": "pajamastan-space-administration",
-      "sha": "f89de430",
-      "message": "Globe with live solar activity, magnetosphere, poles, satellite risk",
-      "heckle": "725 lines of HTML, CSS and script in one file, pushed with a vercel.json that rewrites root to a file with a version number in its name, so every future version means editing the rewrite. The topbar is fixed at 54px with an ellipsized title, and the page sets maximum-scale=1 and overflow hidden on the body, which blocks pinch zoom for anyone who needs it and traps content on small screens. The satellite risk readout is computed from whatever feed answered first, and the page just prints a cross when one fails.\n\nFix it: Point the vercel.json rewrite at an index.html that never changes name. Remove maximum-scale=1 from the viewport meta tag. Show a stale data note with a timestamp when a feed fails instead of a bare cross. Split the script into its own file."
-    },
-    {
-      "date": "2026-11-08T17:58:29Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "b84f6803",
-      "message": "steward 2026-11-08T171449 (#78)",
-      "heckle": "Another steward turn, another one line minified JSON blob, and this one is a crosswalk made of place_hatch rectangles whose coordinates mirror the ones from the previous hour. Every call repeats the same boilerplate meta text, completes the crosswalk across the street, for each of six rectangles, so the file is mostly one sentence photocopied. Nobody reviews these PRs, they merge themselves under your login like an unread bill, and the file is named to the second so the folder grows forever.\n\nFix it: Make the steward emit one crosswalk call with a repeat count in contrib/steward instead of six copies. Dedupe against shapes already on the map before placing. Reject a PR whose geometry overlaps an existing hatch. Archive old contrib files."
     }
   ]
 }
