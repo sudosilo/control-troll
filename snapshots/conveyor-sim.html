@@ -31,6 +31,8 @@ button.sm{padding:3px 8px;font-size:12px}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 #card{position:fixed;left:10px;right:10px;bottom:64px;max-width:440px;display:none;font-size:12px;max-height:42vh;overflow:auto}
 #card b{font-size:13px}
+textarea{width:100%;min-height:120px;font:inherit;font-size:12px;border:1px solid var(--line);border-radius:8px;padding:8px;background:#fff;color:var(--ink)}
+.gap{color:#b4442c}
 p{margin:0 0 10px}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
@@ -48,6 +50,7 @@ p{margin:0 0 10px}
 <div class="chip" id="card"></div>
 <div id="sheet" class="closed">
   <div class="tabs">
+    <button data-tab="stack">Stack</button>
     <button data-tab="examples" class="on">Examples</button>
     <button data-tab="machines">Machines</button>
     <button data-tab="live">Live</button>
@@ -62,6 +65,7 @@ import {PALETTE,MACHINES,BELT_W,DEFAULT_COLOR,PRODUCTS,machineSegs,conveyorSegs,
 import {buildSim,packetLabel} from './sim.js';
 import {SAUCES,STYLES} from './packets.js';
 import {PRESETS} from './presets.js';
+import {STACKS,parseStack,stackToPlan,HOST_COLORS} from './stack.js';
 
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const nk=(s)=>String(s).trim().toLowerCase();
@@ -132,6 +136,8 @@ function drawWorld(){
     const pts=b.pts||autoRoute(A,B);segs(conveyorSegs({pts}),PALETTE[7]);
     for(let i=0;i<pts.length-1;i++){const a=pts[i],c=pts[i+1],len=Math.hypot(c[0]-a[0],c[1]-a[1]);fillBox(F,(a[0]+c[0])/2,(a[1]+c[1])/2,a[2]-80,len+BELT_W,BELT_W,60,Math.atan2(c[1]-a[1],c[0]-a[0]),new THREE.Color(0xd8d2c2));}
   }
+  // Each host colors the floor under the machines it runs.
+  for(const m of plan.machines){const hi=(plan.hosts||[]).indexOf(m.host);if(hi<0)continue;const [w,d]=MACHINES[m.type].size;fillBox(F,m.at[0],m.at[1],-30,w+2400,d+2400,20,0,new THREE.Color(HOST_COLORS[hi%HOST_COLORS.length]));}
   for(const m of plan.machines){
     const [w,d,h]=MACHINES[m.type].size,col=PALETTE[m.color??DEFAULT_COLOR[m.type]],sel=ui.sel&&nk(ui.sel)===nk(m.name);
     segs(machineSegs(Object.assign({rot:0},m)),sel?'#c4621d':col);
@@ -170,10 +176,11 @@ function drawPile(at,type,list,z0){
 }
 // Finished products sit beside the machine that made them.
 function drawProduct(m){
-  const r=m.r,[w,d]=MACHINES[r.type].size,x0=r.at[0]+w/2+600,y0=r.at[1],prod=r.meta&&r.meta.product||'wallpaper',L=m.made;
+  const r=m.r,[w,d]=MACHINES[r.type].size,x0=r.at[0]+w/2+600,y0=r.at[1],L=m.made;
+  const prod=r.type==='showroom'?'wallpaper':r.type==='register'?'token':r.type==='ticker'?'receipt':r.meta&&r.meta.product||'wallpaper';
   if(r.type==='dock'){drawPile([r.at[0]-w/2-3600,r.at[1]],r.type,L.slice(-60),0);return;}
   if(r.type==='reject'){L.forEach((p,i)=>{const a=(p.u*2.399)%6.283,rad=200+((p.u*37)%900);drawPacket(p,r.at[0]+Math.cos(a)*rad,r.at[1]+Math.sin(a)*rad,1500+Math.floor(i/6)*(PT+10),a);});return;}
-  if(prod==='wallpaper'){L.forEach((p,i)=>{const col=i%12,row=Math.floor(i/12)%12,y=y0-6*(PW+40)+col*(PW+40);standing(x0,y,200+row*(PL+40),Math.PI/2,PW,PL,80,sauceCol[p.s]);if(p.b>=0&&!p.half)standing(x0+10,y,200+row*(PL+40)+PL/2,Math.PI/2,PW,PL/2,80,sauceCol[p.b]);});return;}
+  if(prod==='wallpaper'){(r.type==='showroom'?L.slice(-36):L).forEach((p,i)=>{const col=i%12,row=Math.floor(i/12)%12,y=y0-6*(PW+40)+col*(PW+40);standing(x0,y,200+row*(PL+40),Math.PI/2,PW,PL,80,sauceCol[p.s]);if(p.b>=0&&!p.half)standing(x0+10,y,200+row*(PL+40)+PL/2,Math.PI/2,PW,PL/2,80,sauceCol[p.b]);});return;}
   if(prod==='roll'){const ys=r.at[1]-d/2-900;standing(r.at[0],ys,0,0,1400,1400,300,new THREE.Color(0xe9e4d6));L.slice(-18).forEach((p,i)=>box(r.at[0],ys-400-i*(PL*0.55),0,Math.PI/2,PL*0.55,1200,30,sauceCol[p.s]));return;}
   if(prod==='brick'){L.slice(-60).forEach((p,i)=>box(x0+400,y0,i*60,0,2400,1200,60,sauceCol[p.s]));return;}
   if(prod==='token'){L.forEach((p,i)=>{const k=i%4;box(x0+400+(k%2)*900,y0+Math.floor(k/2)*900,Math.floor(i/4)*80,(i*0.7)%3,700,700,80,styleCol[p.st]||sauceCol[p.s]);});return;}
@@ -191,6 +198,7 @@ function drawPackets(){
   pMesh.count=pn;pMesh.instanceMatrix.needsUpdate=true;if(pMesh.instanceColor)pMesh.instanceColor.needsUpdate=true;
 }
 
+function loadStack(st,src){setPlan(stackToPlan(st),src);ui.tab='stack';document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x.dataset.tab==='stack'));renderPanel();}
 // Loading and saving plans. Your own build is kept in this browser and can be shared as a link.
 function normalize(p){p=clone(p);for(const m of p.machines){m.color??=DEFAULT_COLOR[m.type];m.meta??={};}return p;}
 function setPlan(p,src,warm){plan=normalize(p);source=src;ui.sel=null;ui.connect=null;ui.place=null;restart(warm??4000);home();}
@@ -199,7 +207,7 @@ function edited(){source='mine';try{localStorage.setItem(STORE,JSON.stringify(pl
 function savedPlan(){try{const s=localStorage.getItem(STORE);return s?JSON.parse(s):null;}catch(e){return null;}}
 const b64e=(s)=>btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 const b64d=(s)=>decodeURIComponent(escape(atob(s.replace(/-/g,'+').replace(/_/g,'/'))));
-function shareLink(){const p={title:plan.title||'My build',machines:plan.machines,belts:plan.belts};return location.origin+location.pathname+'#p='+b64e(JSON.stringify(p));}
+function shareLink(){const p={title:plan.title||'My build',machines:plan.machines,belts:plan.belts,hosts:plan.hosts,report:plan.report};return location.origin+location.pathname+'#p='+b64e(JSON.stringify(p));}
 function valid(p){return p&&Array.isArray(p.machines)&&Array.isArray(p.belts)&&p.machines.every(m=>MACHINES[m.type]&&typeof m.name==='string'&&Array.isArray(m.at));}
 
 function home(){
@@ -271,6 +279,7 @@ function renderCard(){
   if(!m){card.style.display='none';return;}
   const M=MACHINES[m.type];
   let h=`<b>${esc(m.name)}</b> <span class="muted">${esc(M.name)}</span><br>${esc(M.web)}`;
+  if(m.tool)h+=`<br><span class="muted">Stands in for ${esc(m.tool)}${m.cat?' ('+esc(m.cat)+')':''}${m.host?', runs on '+esc(m.host):''}</span>`;
   h+=`<br><span class="muted" id="cnt">${counts(m)}</span>`;
   if(ui.build){
     const outs=outsOf(m),feeds=plan.belts.map((b,i)=>[b,i]).filter(([b])=>nk(b.from)===nk(m.name));
@@ -301,7 +310,21 @@ document.getElementById('bSheet').onclick=()=>sheet.classList.toggle('closed');
 document.getElementById('bHome').onclick=home;
 document.getElementById('bBuild').onclick=()=>{ui.build=!ui.build;ui.place=null;ui.connect=null;document.getElementById('bBuild').classList.toggle('on',ui.build);if(ui.build){ui.tab='machines';document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x.dataset.tab==='machines'));sheet.classList.remove('closed');}renderPanel();renderCard();hint();};
 function renderPanel(){
-  if(ui.tab==='examples'){
+  if(ui.tab==='stack'){
+    const rep=plan.report;
+    let h='';
+    if(rep){
+      const gaps=rep.filter(r=>!r.kind);
+      h+=`<p><b>${esc(plan.title)}</b><br><span class="muted">${rep.length} tools, ${rep.length-gaps.length} shown as machines or hosts, ${gaps.length} gaps.</span></p>`;
+      if(plan.hosts&&plan.hosts.length)h+='<div class="chips">'+plan.hosts.map((n,i)=>`<span class="chip" style="background:${HOST_COLORS[i%HOST_COLORS.length]};padding:3px 8px;font-size:12px">${esc(n)} floor</span>`).join('')+'</div>';
+      h+=rep.map(r=>`<div class="row"><span class="sw" style="background:${r.kind?r.type==='host'?'#fffdf7':PALETTE[DEFAULT_COLOR[r.type]]:'#ffffff'}"></span><div><b>${esc(r.name)}</b> <span class="muted">${esc(r.cat)}</span><div class="muted ${r.kind?'':'gap'}">${!r.kind?'Gap. No machine stands for this yet. It waits in the gap row.':r.type==='host'?'Host. Colors the floor under the machines it runs.':esc(MACHINES[r.type].name)+', '+esc(MACHINES[r.type].web.split('.')[0])+'.'}</div></div></div>`).join('');
+    }else h+='<p class="muted">This factory was not built from a stack. Load one below or paste one.</p>';
+    h+='<p style="padding-top:8px"><b>Example stacks</b></p>'+STACKS.map((st,i)=>`<div class="row tap" data-stack="${i}"><span class="sw"></span><div><b>${esc(st.title)}</b><div class="muted">${esc(st.about)}</div></div></div>`).join('');
+    h+=`<p style="padding-top:8px"><b>Paste a stack</b><br><span class="muted">Copy the stack text from the pipeline builder, or write lines like Frontend: Next.js, Tailwind CSS</span></p><textarea id="paste" placeholder="Frontend: Next.js, Tailwind CSS"></textarea><div class="chips"><button id="buildStack">Build this stack</button></div>`;
+    body.innerHTML=h;
+    body.querySelectorAll('[data-stack]').forEach(r=>r.onclick=()=>loadStack(STACKS[+r.dataset.stack],'stack'+r.dataset.stack));
+    body.querySelector('#buildStack').onclick=()=>{const st=parseStack(body.querySelector('#paste').value);if(!st.tools.length){hint('No tools found in that text.');return;}loadStack(st,'pasted');};
+  }else if(ui.tab==='examples'){
     const mine=savedPlan();
     body.innerHTML=PRESETS.map((p,i)=>`<div class="row tap" data-preset="${i}"><span class="sw" style="background:${source==='preset'+i?'#c4621d':'#fffdf7'}"></span><div><b>${esc(p.title)}</b><div class="muted">${esc(p.about)}</div></div></div>`).join('')+
     (mine?`<div class="row tap" data-mine="1"><span class="sw" style="background:${source==='mine'?'#c4621d':'#fffdf7'}"></span><div><b>My build</b><div class="muted">${mine.machines.length} machines, saved in this browser.</div></div></div>`:'')+
@@ -335,9 +358,14 @@ function loop(){
 }
 // A shared link opens its plan. Otherwise the page opens on Packet Works.
 let start=null;
-const m=location.hash.match(/#p=([A-Za-z0-9_-]+)/);
+// Links from the pipeline builder: #stack= holds base64url JSON {title, tools:[{cat,name}]},
+// and #tools= holds plain text like frontend:Next.js,frontend:Tailwind CSS,infra:Vercel.
+const m=location.hash.match(/#p=([A-Za-z0-9_-]+)/),ms=location.hash.match(/#stack=([A-Za-z0-9_-]+)/),mt=location.hash.match(/#tools=([^&]+)/);
+let startStack=null;
 if(m){try{const p=JSON.parse(b64d(m[1]));if(valid(p))start=p;}catch(e){}}
-if(start)setPlan(start,'link');else setPlan(PRESETS[0],'preset0');
+if(ms){try{const st=JSON.parse(b64d(ms[1]));if(st&&Array.isArray(st.tools))startStack=st;}catch(e){}}
+if(mt){try{const txt=decodeURIComponent(mt[1]);startStack=parseStack(txt.split(',').map(x=>x.includes(':')?x.replace(':',': '):x).join('\n'));const tm=location.hash.match(/[?&]title=([^&]+)/);if(tm)startStack.title=decodeURIComponent(tm[1]);}catch(e){}}
+if(start)setPlan(start,'link');else if(startStack)loadStack(startStack,'link');else setPlan(PRESETS[0],'preset0');
 loop();
 </script>
 </body>

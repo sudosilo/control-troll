@@ -487,6 +487,7 @@
           <button class="action-btn" onclick="exportStack()">EXPORT</button>
           <button class="action-btn secondary" onclick="copyStack()">COPY</button>
           <button class="action-btn secondary" onclick="clearStack()">CLEAR</button>
+          <button class="action-btn secondary" onclick="openInConveyor()">OPEN IN CONVEYOR SIM</button>
         </div>
         <div class="stack-list" id="stack-list">
           <div class="empty-state">No tools selected yet</div>
@@ -555,6 +556,7 @@
     <div class="stack-list" id="template-detail-tools"></div>
     <div class="stack-name-row" style="margin-top: 14px;">
       <button class="action-btn" onclick="loadTemplateToBuilder()">LOAD INTO BUILDER</button>
+      <button class="action-btn secondary" onclick="openTemplateInConveyor()">OPEN IN CONVEYOR SIM</button>
     </div>
   </div>
 </div>
@@ -1164,6 +1166,26 @@ const CHALLENGE_TYPES = [
     renderToolList();
     renderStackPreview();
     document.querySelector('[data-tab="builder"]').click();
+  }
+
+  // ===== CONVEYOR SIM =====
+  // Opens Conveyor Sim with this stack, where each tool becomes a machine in a packet factory.
+  // The stack rides in the link as base64url JSON: title, about, and tools with category and name.
+  const CONVEYOR_URL = 'https://conveyor-sim.vercel.app/';
+  function conveyorLink(title, about, ids) {
+    const tools = ids.map(id => findTool(id)).filter(Boolean).map(t => ({ cat: (CATEGORIES[t._cat]?.label || t._cat).toLowerCase(), name: t.name }));
+    const json = JSON.stringify({ title, about, tools });
+    const b64 = btoa(unescape(encodeURIComponent(json))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    return CONVEYOR_URL + '#stack=' + b64;
+  }
+  function openInConveyor() {
+    if (selected.size === 0) return;
+    window.open(conveyorLink(document.getElementById('stack-name').value || 'My Stack', '', Array.from(selected)), '_blank');
+  }
+  function openTemplateInConveyor() {
+    if (!activeTemplate) return;
+    const tpl = TEMPLATES[activeTemplate];
+    window.open(conveyorLink(tpl.name, tpl.why || '', tpl.tools), '_blank');
   }
 
   // ===== INITIAL RENDER =====
