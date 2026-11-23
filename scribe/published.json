@@ -499,7 +499,19 @@
   "sudosilo/conveyor-sim@v2026.11.21",
   "sudosilo/field-twin@v2026.11.21",
   "sudosilo/2026-10-18-orange-testbed@v2026.11.21-2",
-  "sudosilo/2026-10-18-orange-testbed@v2026.11.22"
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.22",
+  "sudosilo/chromahum-zq@v2026.11.23",
+  "sudosilo/downfree-foundry@v2026.11.22",
+  "sudosilo/2026-11-17-orange-campus@v2026.11.23",
+  "sudosilo/2026-11-17-orange-campusapi@v2026.11.23",
+  "sudosilo/2026-11-16-pipe-weave@v2026.11.22",
+  "sudosilo/itchy-troll@v2026.11.22",
+  "sudosilo/2026-11-22-orange-hubview@v2026.11.23",
+  "sudosilo/2026-11-22-orange-hubview@v2026.11.22",
+  "sudosilo/2026-11-23-orange-explode@v2026.11.23",
+  "sudosilo/pipeline-builder@v2026.11.22",
+  "sudosilo/threat-atlas-v3@v2026.11.23",
+  "sudosilo/repofind@v2026.11.22"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -2456,6 +2468,35 @@
    "t": [
     "drive-thru",
     "restaurant-tech",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-11-22-orange-hubview": {
+   "d": "A three dimensional exploded view of cars with part cards, manual diagrams, and a buy sheet.",
+   "h": "https://2026-11-22-orange-hubview.vercel.app",
+   "t": [
+    "cars",
+    "threejs",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-11-23-orange-explode": {
+   "d": "A photo toy that cuts objects out of a picture and spreads the pieces apart.",
+   "h": "https://2026-11-23-orange-explode.vercel.app",
+   "t": [
+    "photo",
+    "tool",
+    "toy",
+    "vercel"
+   ]
+  },
+  "sudosilo/pipeline-builder": {
+   "d": "A stack planning tool with a builder, randomizer, diagram, and templates.",
+   "h": "https://pipeline-builder-azure-kappa.vercel.app",
+   "t": [
+    "builder",
     "tool",
     "vercel"
    ]
