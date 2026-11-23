@@ -2,6 +2,41 @@
   "heckles": [
     {
       "date": "2026-11-23",
+      "repo": "conveyor-sim",
+      "sha": "a101d74b",
+      "message": "Cap the machine card size when zoomed in",
+      "heckle": "Your cap on the card scale in index.html is a Math.min with four arguments in one line, and two of them divide by card.offsetWidth and card.offsetHeight. If the card is hidden or not laid out yet, that is a divide by zero and k becomes Infinity or NaN, and then the whole card goes sideways like a budget negotiation. The changelog entry is also dated the same day as the entry right under it, so you are stacking tiny tweaks on a feature that shipped hours ago. Cramped phones are exactly where a thirty percent height cap makes the card unreadable.\n\nFix it: Guard card.offsetWidth and card.offsetHeight against zero before dividing in the zoom scale line of index.html. Test the cap on a small phone screen so the text stays legible. Fold same day changelog entries in CHANGELOG.md into one."
+    },
+    {
+      "date": "2026-11-23",
+      "repo": "2026-11-16-pipe-weave",
+      "sha": "cae48126",
+      "message": "Fill canvas with any preset until the screen is covered",
+      "heckle": "Look at that one line in index.html: FILLS and FILL_NAMES now carry a fourth mode called rules, labeled Current rules, and the whole file is one giant minified wall where PRESET_NAMES is a single line the length of a tax code. You added a fill style by hand editing a line that long, and I would bet the intern has not scrolled sideways far enough to see the end. The commit message promises covering the screen with any preset, but the diff is 28 added lines in one html file with no test and no word on what stops the loop when the screen never fills. That is a campaign promise with a spinner.\n\nFix it: Add a hard cap on the fill loop in index.html so it cannot run forever. Break the PRESET_NAMES line into one entry per line. Rename the rules fill so the label says what it does."
+    },
+    {
+      "date": "2026-11-23",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "88305084",
+      "message": "Catalog crawler reads the diagram parts lists",
+      "heckle": "This commit deleted a 96 line sample html twice, an empty json array, a compiled pycache file, and then rewrote half of tools/fetch_catalog.py in one go. Why was a .pyc file in the repo at all, did you think the bytecode was a feature? The crawler rewrite swaps a link regex for a pile of class name scraping that breaks the moment the site renames one css class, which is basically a filibuster against your own future self. And the pn variable got dropped here, so the next commit had to rescue it.\n\nFix it: Add tools/__pycache__ to .gitignore so the pyc stops sneaking in. Keep the pn pattern in tools/fetch_catalog.py when you refactor. Split the cleanup deletes and the crawler rewrite into separate commits. Parse the item_re html with a real parser instead of one giant regex."
+    },
+    {
+      "date": "2026-11-23",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "6fdd7277",
+      "message": "Catalog crawler: restore part number pattern",
+      "heckle": "One line. You deleted the pn regex in the last commit, broke the crawler, and spent a whole commit putting it back. That is a rollback with extra steps, like a bailout for a bank you personally drove into the ground. The pn pattern now sits in tools/fetch_catalog.py above the site variable like it was never gone, and you did not run the script before pushing the one before it, clearly. Also that listing line still does replace of a string with the identical string, which does nothing and has been doing nothing with great confidence.\n\nFix it: Run tools/fetch_catalog.py before you commit, not after. Delete the pointless replace call on the listing line in tools/fetch_catalog.py. Squash tiny repair commits like this into the one that broke things."
+    },
+    {
+      "date": "2026-11-23",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "3c23806a",
+      "message": "Add Prius dealer catalog",
+      "heckle": "Third commit with the same message in a row, and this one finally has data, so congratulations on getting a crawler to crawl. ref/parts/catalog-prius.json is a 20,000 line blob committed straight into git, and catalog-prius-log.txt still lists six 404s and a 403 that you apparently decided to ignore like a senator ignoring a subpoena. You scrape a commercial parts site at full speed and park the whole haul in a public repo, which is a legal and bandwidth bill waiting for a stamp. Naming two commits identically is what an intern does when the filing cabinet is on fire.\n\nFix it: Give each commit a message that says what changed. Check the 403 and 404 pages in tools/fetch_catalog.py and retry or drop them on purpose. Minify or compress ref/parts/catalog-prius.json, or keep it out of git. Confirm you are allowed to republish that crawled data."
+    },
+    {
+      "date": "2026-11-23",
       "repo": "2026-11-22-orange-hubview",
       "sha": "f7797a2a",
       "message": "Add Prius dealer catalog",
@@ -1364,41 +1399,6 @@
       "sha": "8fab5c0b",
       "message": "steward 2026-11-09T213759 (#80)",
       "heckle": "contrib/steward/2026-11-09T213759.json is one minified line of place_hatch calls, every crosswalk hatch hand repeated with the same spacing 610 and color 7 in the same blob. You merged pull request eighty with a rubber stamp and nobody read it. The meta field repeats the exact steward string completes the crosswalk across the street on every call, which is a bot repeating itself like a campaign speech. A single line of JSON is unreviewable.\n\nFix it: Pretty print the contrib JSON so diffs mean something. Drop the repeated meta text and store it once. Add a check that rejects overlapping hatch points before merge."
-    },
-    {
-      "date": "2026-11-10T03:37:04Z",
-      "repo": "scorpion-supper",
-      "sha": "5fb8fb98",
-      "message": "Scorpion Supper v7: endless growth eater with coyotes and coops",
-      "heckle": "Version seven is a 671 line single html file named scorpion-supper-v7.html, with a vercel.json that rewrites root to it. Six older versions are presumably rotting beside it. The first comment calls it a blue phone source device, which is a build log pasted inside shipped code. The body has touch-action none and user-select none with overscroll disabled, so one wrong gesture and the player is locked in, like a filibuster with a sand theme.\n\nFix it: Delete the older scorpion-supper version files or move them to an archive folder. Remove the blue phone source device comment from scorpion-supper-v7.html. Pull the inline script out into its own file."
-    },
-    {
-      "date": "2026-11-10T03:37:04Z",
-      "repo": "lv-liquor-map",
-      "sha": "8eb60978",
-      "message": "LV liquor map v3",
-      "heckle": "Another 682 line page dropped into the repo as lv-liquor-map-v3.html, and vercel.json rewrites to it like a hand me down. Leaflet loads from a CDN with no integrity hash, so if that host burps your map is a blank rectangle. The viewport meta has user-scalable=no, which locks out anyone who needs to zoom the page. The map is a copy of v2 with a bow on it, and versioned filenames are the intern's idea of version control.\n\nFix it: Add integrity and crossorigin attributes to the Leaflet link and script tags in lv-liquor-map-v3.html. Remove user-scalable=no and maximum-scale from the viewport meta. Use git history for versions instead of renaming files."
-    },
-    {
-      "date": "2026-11-10T03:37:04Z",
-      "repo": "lv-liquor-map",
-      "sha": "ed4dd715",
-      "message": "LV liquor map v4: server data route, parallel mirrors, no empty cache",
-      "heckle": "api/lv-liquor-map-v4-data.js fires every Overpass mirror at once with Promise.any, so each visitor hammers four public servers for one answer. That is a hostile takeover of free infrastructure, and you set Access-Control-Allow-Origin to star on top. The old v3 html is still sitting in the repo next to v4, so you are copy pasting entire 700 line pages like a clerk in a cursed copy room. The cache header says twelve hours, so one stale answer sticks for half a day.\n\nFix it: Query one mirror first and fall back to the next only on failure in lv-liquor-map-v4-data.js. Delete lv-liquor-map-v3.html. Stop duplicating the whole page each version and edit one file. Limit CORS to your own site."
-    },
-    {
-      "date": "2026-11-10T03:37:04Z",
-      "repo": "downfree-foundry",
-      "sha": "cbc04a34",
-      "message": "Music: reliable play and pause, drag to pan without being pulled back; color-coded drum assignments for each kind of cutout",
-      "heckle": "The commit says reliable play and pause, which is a confession that the previous commit, shipped a few hours earlier, was not reliable. You are patching your own patch in the same index.html. The new tintMode select quietly replaced the old tint checkbox, so anything that read the tint id is now a ghost reference waiting to throw. Also the .fl small rule tucked into the end of the stylesheet is the work of someone who has never heard of organization.\n\nFix it: Search index.html for any leftover use of the old tint checkbox id and remove it. Write one play and pause test before calling it reliable. Group the new .assign and .arow styles with the other Music tab rules."
-    },
-    {
-      "date": "2026-11-10T03:37:04Z",
-      "repo": "downfree-foundry",
-      "sha": "c1878eb5",
-      "message": "Add Music tab: find kick, snare and hi-hat hits; cutouts pop in on hits with the song in Composite and recordings",
-      "heckle": "Four hundred and forty lines added to one index.html in a single commit, and the intern calls that a Music tab. The same file now carries a Record tab, a Road tab, a Music tab and a second inline script, so it reads like a campaign promise nobody can audit. The .tabs flex-wrap fix with min-width 64px shows you cramming tabs onto a phone instead of rethinking the layout. Hit detection with no test is just vibes with a canvas.\n\nFix it: Move the Music tab script out of index.html into its own file. Test the kick, snare and hi-hat band detection on one fixed clip. Turn the tab bar into a scroll or menu instead of wrapping rows. Stop landing four hundred lines in one commit."
     }
   ]
 }
