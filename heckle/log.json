@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-23",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "f7797a2a",
+      "message": "Add Prius dealer catalog",
+      "heckle": "You committed a catalog crawl that found zero parts. The log says done pages 26 parts 0, five straight 404s, and the output is literally an empty array in ref/parts/catalog-prius.json. That is not a dealer catalog, that is a campaign promise with a filename. Then you shipped two 96 line sample HTML dumps, catalog-sample1.html and catalog-sample2.html, like leftover pizza boxes in the repo. The commit message claims a catalog exists, and it does not. Did the intern even look at the output before pushing?\n\nFix it: Delete ref/parts/catalog-sample1.html and catalog-sample2.html. Fix the URL slugs in tools/fetch_catalog.py so the crawl returns something besides 404. Do not commit catalog-prius.json until it holds real parts. Stop committing crawl logs."
+    },
+    {
+      "date": "2026-11-23",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "93d716ac",
+      "message": "Catalog crawler: tighter part name match",
+      "heckle": "A tighter regex, committed forty seconds after the crawler it fixes, and seconds before the run that found nothing. part_re in tools/fetch_catalog.py is now a negative lookahead sandwich nobody can read, and you tuned it blind against pages that 404 anyway. Tuning a matcher with zero matching input is like a filibuster over a bill nobody wrote. The commit before it was one file and you could not wait for a single test run to squash them together.\n\nFix it: Save one real page and test part_re against it before touching it again. Put the pattern in a named variable with a comment explaining the lookahead. Squash this into the crawler commit instead of spamming history."
+    },
+    {
+      "date": "2026-11-23",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "dceb890a",
+      "message": "Dealer catalog part number crawler",
+      "heckle": "A 71 line scraper that shells out to curl with a fake browser user agent and hammers a parts store with retries, and it works about as well as a government shutdown. CARS in tools/fetch_catalog.py has exactly one entry, prius, with 26 hardcoded seed slugs, so the dictionary is a lie about future plans. It also appends to a log file it opens and never closes. Scraping a shop's pages with a spoofed agent is also the kind of thing that gets an intern's IP banned.\n\nFix it: Use the requests library or urllib instead of subprocess curl in get(). Close the LOG handle with a with block. Drop the spoofed user agent and add a polite delay. Verify the seed slugs exist before hardcoding 26 of them."
+    },
+    {
+      "date": "2026-11-23",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "0262caba",
+      "message": "BUY sheet: Safelite for glass, Discount Tire for tires and wheels; tire sizes",
+      "heckle": "You jammed two retailer deep links into the buy sheet in index.html, using regexes on the part name to decide which shop gets a button. The Accord branch just sends people to the shop home page, which is a link, not a feature. The tire URLs hardcode sizes 185-65-15 and 165-80-13 inside a ternary inside a template string, one long unreadable line. Also ref/parts/accord.json now holds a single tire entry, so the file is basically a sticky note, and the shop buttons use inline styles again.\n\nFix it: Move the shop list and tire sizes into ref/parts/prius.json and accord.json instead of ternaries in index.html. Give the Accord a real glass link or hide the button. Replace the inline style on the Service shops row with a CSS class."
+    },
+    {
+      "date": "2026-11-23",
+      "repo": "conveyor-sim",
+      "sha": "eb59dd22",
+      "message": "Info card pops up above the tapped machine and scales with zoom",
+      "heckle": "You moved the info card from a sane bottom sheet into a floating bubble pinned over the machine, scaled by zoom. In #card you set width to min(300px,78vw) and pointer-events none, then patched buttons back on with #card button, which is duct tape on a decision. On a phone, a card that shrinks as you zoom out gets unreadably tiny, and the max-height and overflow rules got deleted, so a long card can run off screen. The changelog brags it stays on screen. Nothing in the diff proves it.\n\nFix it: Restore a max-height and overflow auto on #card in index.html. Set a minimum scale so the card never drops below readable text. Test it on a narrow phone width with a machine at the screen edge."
+    },
+    {
+      "date": "2026-11-23",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "4f1e617d",
+      "message": "Prius part numbers on the card and print sheet, BUY sheet, add Prius spark plugs",
+      "heckle": "One commit that does part numbers, print sheet, buy sheet, search links and new spark plug meshes. That is five commits wearing a trench coat. The new ref/parts/prius.json is committed here as a 14 line file, and the very next commits expand it to over a hundred lines, so churn is the whole plan. index.html now has another esc function and cardHTML builds a whole page by string concatenation on one monster line, which is an injection bug waiting for a part name with a quote in it.\n\nFix it: Split unrelated work into separate commits. Build the print page in cardHTML with DOM nodes or a template, not one giant string. Keep the data in ref/parts/prius.json and stop reformatting it every commit."
+    },
+    {
+      "date": "2026-11-23",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "c80c9c9e",
+      "message": "Diagram viewer sits above the menu button",
+      "heckle": "The fix for a layering bug is bumping z-index from 20 to 40 in viewDiagram in index.html. That is the stacking context version of turning the volume up on a broken speaker. You have a pile of magic z-index numbers scattered through inline cssText strings and you are now just guessing bigger ones. The next overlay you add will need 41 and the one after that 99999, like a bailout that keeps needing more money.\n\nFix it: Collect all z-index values into CSS variables in index.html. Move the cssText strings in viewDiagram into a class. Document which overlay goes on top of which."
+    },
+    {
+      "date": "2026-11-23",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "f19aab24",
+      "message": "Print sheet fits on one page, drops on-screen hints",
+      "heckle": "A one line commit that edits a single enormous string in cardHTML inside index.html. The patch is a wall of inline CSS jammed into one line, so reviewing it means scrolling sideways like it is 1998. Fits on one page means you eyeballed it with one part and called it done, because a long part name and a tall diagram will happily spill to page two. The intern who writes print CSS inside a JS string literal should not be allowed near stylesheets.\n\nFix it: Move the print styles in cardHTML into a style block with an @media print and @page rule. Test with the longest part name and the tallest diagram. Break the string across lines so a diff can be read."
+    },
+    {
+      "date": "2026-11-23",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "e4307918",
+      "message": "Card taps no longer hit the parts behind it; Print button and tap to enlarge diagram",
+      "heckle": "This one adds a new esc helper, cardHTML, CARD_HIT and a Print button to index.html in one burst, and the first line of the fix is a global object CARD_HIT with null fields that exist to be mutated from anywhere. Taps hitting the parts behind the card was a bug you created yourself two commits of features ago. The fix commit also bolts on new features, so nobody can tell what fixed what. Subtle as a filibuster, and about as productive.\n\nFix it: Separate the tap bug fix from the Print and enlarge features. Replace the CARD_HIT global with a small closure or a plain handler in index.html. Check that esc is not already defined elsewhere in the file."
+    },
+    {
+      "date": "2026-11-23",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "fbe5c075",
+      "message": "Mirror both cars so the steering wheel is on the left",
+      "heckle": "Your car models were built backwards and the fix is ROOT.scale.z=-1 on a group, flipping the whole world like a politician flipping on a vote. A negative scale inverts triangle winding, so lighting, backface culling and normals on every mesh in index.html can turn inside out, and you also have a comment saying z points to the left while another says right. Now the blueprint overlay in bp() needed edits too, because the mirror leaks into everything.\n\nFix it: Fix the mesh coordinates in index.html instead of mirroring ROOT. If the mirror stays, set material side to DoubleSide or flip the winding on mirrored geometry. Reconcile the two contradictory z-axis comments."
+    },
+    {
       "date": "2026-11-22",
       "repo": "2026-10-18-orange-testbed",
       "sha": "14fb488a",
@@ -1329,76 +1399,6 @@
       "sha": "c1878eb5",
       "message": "Add Music tab: find kick, snare and hi-hat hits; cutouts pop in on hits with the song in Composite and recordings",
       "heckle": "Four hundred and forty lines added to one index.html in a single commit, and the intern calls that a Music tab. The same file now carries a Record tab, a Road tab, a Music tab and a second inline script, so it reads like a campaign promise nobody can audit. The .tabs flex-wrap fix with min-width 64px shows you cramming tabs onto a phone instead of rethinking the layout. Hit detection with no test is just vibes with a canvas.\n\nFix it: Move the Music tab script out of index.html into its own file. Test the kick, snare and hi-hat band detection on one fixed clip. Turn the tab bar into a scroll or menu instead of wrapping rows. Stop landing four hundred lines in one commit."
-    },
-    {
-      "date": "2026-11-10T03:37:04Z",
-      "repo": "smash-bender",
-      "sha": "383e5c17",
-      "message": "Sample log: Save slice to GitHub, Add sound clip",
-      "heckle": "server/static/index.html grew a Save slice and Add sound clip panel that sends audio to a public publish route, and the whole thing is another hand pasted panel jammed into one giant HTML file. The clippanel has a file input and a name box and zero visible check on file size before upload, so a phone user dumping a forty minute recording gets a spinner and a prayer. Stacking features like this is how a government shutdown starts.\n\nFix it: Check file.size in the clipgo handler before uploading. Show errors from the publish response in clipmsg instead of silently failing. Split the inline script out of server/static/index.html before it gets any bigger."
-    },
-    {
-      "date": "2026-11-10T03:37:04Z",
-      "repo": "smash-bender",
-      "sha": "abccc54f",
-      "message": "Chop: exact note timing, cleaner notes, original slice plays in sync under the notes",
-      "heckle": "You rewrote mini() into clean() and timed() in server/chop.py and the old mini() went straight in the trash with nothing to prove the new one is better. The clean() function shifts notes by an octave when they sit six semitones off the neighbor average, which is a hardcoded guess dressed up as signal processing. The magic 0.07 and 0.08 thresholds look like you rolled dice. Every note-based filibuster ends with one guy yelling constants.\n\nFix it: Name the 0.07 and 0.08 thresholds as constants at the top of server/chop.py. Add a test with a known melody for clean() and timed(). Delete any leftover callers of the old mini() if they remain."
-    },
-    {
-      "date": "2026-11-10T03:37:04Z",
-      "repo": "smash-bender",
-      "sha": "c1c71c27",
-      "message": "Publish endpoint: clips go to the Strudel sample repo on GitHub",
-      "heckle": "server/app.py now has a /api/publish route with CORS wide open to every origin, no auth, and a server GitHub token behind it. Congratulations, any webpage on earth can make your server write files into your repo. That is a bailout with no oversight. The clean() regex on the name is the only gate, and the file upload has no size limit at all, so one fat POST and the worker chokes. Whoever taught you backend work did it with crayons.\n\nFix it: Require a shared secret header on publish in server/app.py. Replace allow_origins star in the CORSMiddleware line with your actual frontend origin. Cap the bytes read from file.read() in publish. Check the GitHub response status in gh() instead of assuming it worked."
-    },
-    {
-      "date": "2026-11-09T19:52:38Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "a37dc8a4",
-      "message": "agent-orange 2026-11-09T135929 (#79)",
-      "heckle": "PR number seventy nine for a single one line file, contrib/agent-orange/2026-11-09T135929.json, and GitHub does not even show a patch for it. That is a filibuster that ended in a procedural vote on nothing. Seventy nine pull requests of robots merging robots, and you are the human rubber stamp who signed off on a blank page. If this file is empty or oversized it is a bad turn, and if it is fine then your diff view is broken, so either way something here is dead weight.\n\nFix it: Skip merging contrib/agent-orange files that have no visible diff. Add a check that rejects an empty or unparseable turn file. Squash the tiny turn PRs into one batch per hour so the history is readable."
-    },
-    {
-      "date": "2026-11-09T19:52:38Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "b9d1ec42",
-      "message": "grok 2026-11-09T170459",
-      "heckle": "Another grok turn committed straight to the branch under your own login, with no review, no PR and no check that anything on it makes sense. One minified line of JSON drops a Grok Corner Market, trees at negative coordinates and a person walking the dog around the Desert Sage House, like a zoning board run by a toddler with a cheat code. The market wall is 1000 wide with a door_width check of 1000, so the check passes by being exactly equal to its own limit. The same street sidewalk edge runs from -5486 to -73762, one line three quarters of the map long. Nobody validates the sig before it lands.\n\nFix it: Make the grok bot open a PR like the steward bot does instead of pushing to the branch. Validate calls and sig in a check before merge. Stop minifying contrib/grok files onto one line so diffs can be read. Give the wall checks real margins instead of equal values."
-    },
-    {
-      "date": "2026-11-09T19:52:38Z",
-      "repo": "ebutuoy-frontend",
-      "sha": "9f46eca2",
-      "message": "tv mode: channel dial 1 to 1,000,000",
-      "heckle": "Four hundred lines shoved into index.html, because splitting a file apparently takes a committee and you cannot get a quorum. The head comment block is now a changelog, a feature spec and a diary entry, and the Authorship log keeps growing like a debt ceiling nobody will vote on. The tv-mode CSS paints a cream bezel with #d8c9a8 and a hardcoded 300px panel height, so on a small phone the screen gets squeezed between a fat bezel and a fat knob panel. The static effect is a full size canvas with image-rendering pixelated, redrawn while tuning, which is a fine way to cook a cheap phone. Spin faster to jump further sounds great until it lands you on channel 900,000 with a dead backend.\n\nFix it: Move the tv-mode CSS and script out of index.html into separate files. Replace the fixed 300px --panel-h in #player.tv-mode with a value that shrinks on short screens. Cap the static canvas size and frame rate in the static drawing code. Show a real error in #screenMsg when the backend returns no channel."
-    },
-    {
-      "date": "2026-11-09T19:52:38Z",
-      "repo": "ebutuoy-backend",
-      "sha": "0ed72f13",
-      "message": "tv dial: numbered channels 1 to 1,000,000",
-      "heckle": "Three hundred and twenty eight lines added to a single index.js, as if the intern heard of modules once and decided it was a rumor. The TV DIAL block is a campaign promise: a million channels, funded by random three letter search strings and camera filenames like IMG 4417 against a 100 unit search quota. The discovery search in tvDiscover never sets safeSearch, so your random channel roulette will cheerfully hand strangers whatever it finds. tvAssign tries four searches, then returns null when the pool is still empty, and nobody tells the user why. The pool pick and the number insert are not one transaction, so two tuners can burn the same pooled channel. The new comment block at the top is longer than most of your fixes.\n\nFix it: Add safeSearch strict to the search params in tvDiscover. Move tvAssign pick, insert and delete into one guarded step. Return a clear error from the /tv/channel route when tvAssign gives null. Split the TV DIAL block out of index.js into its own file."
-    },
-    {
-      "date": "2026-11-09T06:44:48Z",
-      "repo": "flipcount-game",
-      "sha": "1dc1696c",
-      "message": "FLIPCOUNT seven tab build",
-      "heckle": "Nearly two thousand lines of index.html dropped in one commit called FLIPCOUNT seven tab build, like a spending bill nobody read before the vote. CSS, markup and every game script share one file, so one missing brace in there takes down all seven tabs at once. The viewport meta sets maximum-scale=1 and user-scalable=no, which locks out anyone who needs to pinch zoom, and the body has user-select none on top of it. You built a calculator toy and then fenced it in like a campaign rally. Did you think the intern badge came with a refactor budget?\n\nFix it: Split the inline style and script out of index.html into real files. Remove user-scalable=no and maximum-scale=1 from the viewport meta. Drop user-select none from the html,body rule so people can copy the numbers. Write a commit message that says what changed instead of a tab count."
-    },
-    {
-      "date": "2026-11-09T06:44:48Z",
-      "repo": "flipcount-game",
-      "sha": "ca883043",
-      "message": "Add LANGUAGES tab: spoken words, ancient numerals and world digit scripts",
-      "heckle": "Another 494 lines shoved into the same index.html, because apparently files are a luxury for other people. The two new link tags in the head pull hieroglyph and Ethiopic fonts from a public CDN at pinned versions, and the page has no fallback if jsdelivr hiccups, so your ancient numerals turn into empty boxes. Then comes the pile of per language functions like french, german, koreanSino and sumerianWords all sitting in one script with cuneiformSVG, a pattern copied six times in a row like a filibuster that refuses to end. The .lang-glyph box is a fixed 46px font with overflow-x auto, so long number words on a phone become a sideways scroll hunt.\n\nFix it: Move the language converters out of index.html into their own module. Add a font stack fallback to .lang-glyph.hiero and .lang-glyph.geez so missing fonts degrade gracefully. Wrap long words in .lang-glyph instead of relying on overflow-x auto. Self host the two font files instead of trusting the CDN links."
-    },
-    {
-      "date": "2026-11-09T06:44:48Z",
-      "repo": "pajamastan-space-administration",
-      "sha": "148feea8",
-      "message": "Backup orbit feed when CelesTrak refuses, skip bad orbit records",
-      "heckle": "You copied the whole page into pajamastan-space-administration-v4.html again, 1362 lines, and left v1 through v3 rotting in the repo like old campaign signs. The git history exists for a reason, intern. The backup feed in backupTLE hits a third party TLE site straight from the browser with no key and no rate handling, and the starlink entry asks for 12 pages at 100 each, all fired at once in Promise.allSettled like a bailout nobody budgeted. The empty catch around twoline2satrec swallows every bad record silently, and DONKI_KEY is still the DEMO_KEY fallback sitting in client code.\n\nFix it: Edit one html file in place and delete the v1, v2 and v3 copies from the repo. Move the backup TLE fetch behind your api proxy so the browser stops hitting a third party directly. Cap the starlink page requests and run them in sequence. Log skipped records in the twoline2satrec catch instead of swallowing them. Move DONKI_KEY into a server side environment variable."
     }
   ]
 }
