@@ -1,84 +1,215 @@
 {
   "jobs": [
     {
-      "repo": "2026-11-19-orange-packets",
+      "repo": "chromahum-zq",
       "releases": [
         {
-          "tag": "v2026.11.21",
-          "target": "3ab5cbcff9578837dc192e011f531b29d9b6f1cb",
-          "name": "Packet Baron 2026-11-21",
-          "body": "Tower floors now show stock as stacked pallets, one pallet per million packets, with a partly filled pallet for the remainder and a pallet count. 50/50 Machine spin cost now grows gently instead of multiplying every spin. Added timed promos every 10 to 20 minutes: a 50/50 Half Off Sale that halves spin cost and Lab Overtime that runs R and D 25 percent faster, each lasting 5 minutes. Added Butter, Chipotle Honey, Watermelon Honey and Pistachio Honey packets, plus Cashews, Peanuts, Sunflower Kernels, Vitamin B, Vitamin C, Vitamin D, Pink Salt, Crunchy Pepper and Parmesan. Added a search box to the Factory packet list. Each packet now has its own market. Staples like ketchup and mustard face heavy competition, so buyers drop off fast above about x2, while rare novelties hold buyers at much higher prices. Foil, holo and other special editions lose most of their collector premium when too many are sold into the market, based on units sold over the last few seconds. Stock sitting in inventory does not count, the same way an overprinted holo card is worth little, and keep their value when made in small runs. Added Hot Dog Day, Fry Day and Sushi Week holidays that lift staple prices and demand. Wholesale buyers now grow with your production lines, so a packet at normal price sells a bit faster than its lines make it, and raising the price slows sales. Fame now boosts demand on a slow curve instead of without limit, so stock no longer drains in seconds late in the game. Per packet price settings now also slow Gallery sales of that packet, so a packet priced at x100 keeps its stock."
+          "tag": "v2026.11.23",
+          "target": "d19d7774ddf37480f8ba30f2b76e71336301773a",
+          "name": "ChromaHum Tiles 2026-11-23",
+          "body": "Sound and camera now start more reliably. The camera has its own controller with a Restart camera button, and the screen says what is wrong when the camera is blocked or in use by another app. A tap wakes the sound if the browser has paused it."
         }
       ],
-      "description": "A tapping and idle game about building a condiment packet empire.",
+      "description": "An instrument that turns camera colors into sound, with tiles, patterns, and an infinite canvas.",
+      "homepage": "https://chromahum-zq.vercel.app",
+      "topics": [
+        "camera",
+        "music",
+        "vercel",
+        "visualizer"
+      ]
+    },
+    {
+      "repo": "downfree-foundry",
+      "releases": [
+        {
+          "tag": "v2026.11.22",
+          "target": "1e95fd6421f7c55a21ec096973037d0eb04bea15",
+          "name": "Road Layers 2026-11-22",
+          "body": "The Composite length is now a picker from 6 seconds up to 5 minutes, or as long as the clips allow, with 30 seconds as the default instead of 6. When a clip limits the length, the status says which clip it is and how to get a longer build."
+        }
+      ],
+      "description": "Road Layers stacks cars from several drive clips onto one road in the browser.",
+      "homepage": "https://downfree-foundry.vercel.app",
+      "topics": [
+        "tool",
+        "vercel",
+        "video"
+      ]
+    },
+    {
+      "repo": "2026-11-17-orange-campus",
+      "releases": [
+        {
+          "tag": "v2026.11.23",
+          "target": "fa110d6b04c832cf78be96001dc2b283b71dbbea",
+          "name": "Campus 2026-11-23",
+          "body": "Campus version 3. Home picks up where you left off and recommends a next video, with a bottom navigation bar and a new navy, green, and gold look. Recommendations now search your subject instead of your bucket name, and a Junk button removes bad picks. The player has a screen off mode and a fullscreen button for picture in picture."
+        }
+      ],
+      "description": "A phone friendly learning tool that plays videos and logs what you build in a credit transcript.",
+      "homepage": "https://campus-ebutuoy.vercel.app",
+      "topics": [
+        "education",
+        "tool",
+        "vercel",
+        "video"
+      ]
+    },
+    {
+      "repo": "2026-11-17-orange-campusapi",
+      "releases": [
+        {
+          "tag": "v2026.11.23",
+          "target": "aca2f0c16edc94639b70619e06663215cfb4601d",
+          "name": "Campus API 2026-11-23",
+          "body": "Search now returns lessons only, using education categories, a three minute minimum, and relevance order. Added a junk list so rejected videos stay out. Entries now carry their subject."
+        }
+      ],
+      "description": "The backend for Campus that stores sources, logged work, and the transcript.",
       "homepage": "",
       "topics": [
-        "clicker",
-        "game",
-        "idle",
-        "vercel"
-      ]
-    },
-    {
-      "repo": "conveyor-sim",
-      "releases": [
-        {
-          "tag": "v2026.11.21",
-          "target": "d18c1e8ebf6945c59859c5f0f8bf272ad66d5350",
-          "name": "Conveyor Sim 2026-11-21",
-          "body": "Built a packet factory, then rebuilt the whole site as a visual pipeline builder. Sixteen machine types stand for parts of a website and run a live simulation using Packet Baron's sauces, wrapper styles and 50/50 packets. The agent world is gone, so the site is now a static builder. There are four examples, a Build mode to place, connect, rename and delete machines, live counts, a build saved in the browser, and share links that hold the whole plan."
-        }
-      ],
-      "description": "A conveyor simulation started from a copy of the agent test bed",
-      "homepage": "https://conveyor-sim.vercel.app",
-      "topics": [
-        "agents",
         "backend",
-        "simulator",
+        "education",
+        "railway"
+      ]
+    },
+    {
+      "repo": "2026-11-16-pipe-weave",
+      "releases": [
+        {
+          "tag": "v2026.11.22",
+          "target": "cae48126c469c6738f2a0b961c2649b4d321606a",
+          "name": "Pipe Weave 2026-11-22",
+          "body": "Fill canvas now works with any preset. It keeps growing pipes until the screen is covered, tops up gaps, and reports the coverage. The fill style has a new Current rules choice."
+        }
+      ],
+      "description": "A pipe drawing toy where pipes turn, split, and weave over and under each other.",
+      "homepage": "https://2026-11-16-pipe-weave.vercel.app",
+      "topics": [
+        "canvas",
+        "drawing",
+        "game",
+        "toy",
         "vercel"
       ]
     },
     {
-      "repo": "field-twin",
+      "repo": "itchy-troll",
       "releases": [
         {
-          "tag": "v2026.11.21",
-          "target": "a7844441dea98e516c6091ad16d15989649fbd80",
-          "name": "Field Twin 2026-11-21",
-          "body": "Added a Charging station place type with its own sign and its own form."
+          "tag": "v2026.11.22",
+          "target": "226d6d59d6daae6718be330ad397504fc14ff55d",
+          "name": "Itchy Troll 2026-11-22",
+          "body": "The scout looked over the repos for new candidates."
         }
       ],
-      "description": "A field log with a map, receipts, mileage, and an Android app that tracks stops.",
-      "homepage": "https://field-twin-teal.vercel.app",
+      "description": "An agent that publishes finished apps to a game publishing site.",
+      "homepage": "https://itchy-troll.vercel.app",
       "topics": [
-        "field-service",
-        "map",
+        "automation",
+        "publishing",
         "tool",
         "vercel"
       ]
     },
     {
-      "repo": "2026-10-18-orange-testbed",
+      "repo": "2026-11-22-orange-hubview",
       "releases": [
         {
-          "tag": "v2026.11.21-2",
-          "target": "54cca0c2cd726782fdf231d7236afbd07de8c579",
-          "name": "Agent Test Bed 2026-11-21",
-          "body": "The agent, grok, and steward turns for the day were played and merged into the city."
+          "tag": "v2026.11.23",
+          "target": "35b7328ac684bbdf422f9b1d255bdae4c1551639",
+          "name": "Hub View 2026-11-23",
+          "body": "Added a car picker menu with makes and nested models and a paint picker for outside body panels. Added part search and a MORE sheet with specs, manual, and links tabs. Added an Extra explode mode that spreads out every part of every assembly. Added manual diagrams for a 2006 Crown Victoria and reshaped the Accord floor pan, trunk floor, and carpet to clear the wheels."
         },
         {
           "tag": "v2026.11.22",
-          "target": "414f302eaa92a6a7f043f533948850aa1985b1a2",
-          "name": "Agent Test Bed 2026-11-22",
-          "body": "The agent turn was played and merged into the city."
+          "target": "2c403b3cd4c58d060ceea8993bdd4d0cd1ad7c80",
+          "name": "Hub View 2026-11-22",
+          "body": "Created Hub View, a three dimensional exploded view that started with a wheel hub and grew into a full car with 25 assemblies. Added a 1982 Accord sedan and a 2007 Prius fitted to blueprints, with a car switch, a retro spec sheet panel, and body shapes that were refined through the day. Parts show an info card in the scene, an opacity slider, and matched manual diagrams. A menu saves the card as an image, finds a part in online shops, and builds a buy sheet with part numbers and tire sizes that prints on one page. Automatic camera zoom was removed and both cars were mirrored so the steering wheel is on the left."
         }
       ],
-      "description": "A shared city that AI agents build one turn at a time.",
-      "homepage": "https://2026-10-18-orange-testbed.vercel.app",
+      "description": "A three dimensional exploded view of cars with part cards, manual diagrams, and a buy sheet.",
+      "homepage": "https://2026-11-22-orange-hubview.vercel.app",
       "topics": [
-        "agents",
-        "game",
-        "simulator",
+        "threejs",
+        "tool",
+        "cars",
+        "vercel"
+      ]
+    },
+    {
+      "repo": "2026-11-23-orange-explode",
+      "releases": [
+        {
+          "tag": "v2026.11.23",
+          "target": "6e4ce22e673f157681f08b2c81a52a1b7de4fcde",
+          "name": "Explode 2026-11-23",
+          "body": "Created Explode, a photo app. Pick a photo, tap anything in it to cut that object out as a piece, then slide to explode the pieces apart and drag them around. Undo, Reset, and a Holes toggle are included."
+        }
+      ],
+      "description": "A photo toy that cuts objects out of a picture and spreads the pieces apart.",
+      "homepage": "https://2026-11-23-orange-explode.vercel.app",
+      "topics": [
+        "tool",
+        "photo",
+        "toy",
+        "vercel"
+      ]
+    },
+    {
+      "repo": "pipeline-builder",
+      "releases": [
+        {
+          "tag": "v2026.11.22",
+          "target": "e7e9a15116779b8c6e5c8e3f764f646689556763",
+          "name": "Pipeline Builder 2026-11-22",
+          "body": "Added the Pipeline Builder source, a tool that builds a software stack from tool choices, with Builder, Randomizer, Diagram, and Templates tabs. Added Open in Conveyor Sim buttons to the builder and to templates."
+        }
+      ],
+      "description": "A stack planning tool with a builder, randomizer, diagram, and templates.",
+      "homepage": "https://pipeline-builder-azure-kappa.vercel.app",
+      "topics": [
+        "tool",
+        "builder",
+        "vercel"
+      ]
+    },
+    {
+      "repo": "threat-atlas-v3",
+      "releases": [
+        {
+          "tag": "v2026.11.23",
+          "target": "b50171bd9758f4e202fb3903940a27cb7260085f",
+          "name": "Threat Atlas 2026-11-23",
+          "body": "Story mode. A new STORY tab walks the incidents in order as twenty seven chapters, rotating the globe and building the map year by year. Intel list now marks which incidents are in the story. Corrected the Triton attribution to Russia."
+        }
+      ],
+      "description": "Interactive globe of security threats with layers, filters, and country intel.",
+      "homepage": "https://threat-atlas-two.vercel.app",
+      "topics": [
+        "globe",
+        "map",
+        "research",
+        "security",
+        "vercel"
+      ]
+    },
+    {
+      "repo": "repofind",
+      "releases": [
+        {
+          "tag": "v2026.11.22",
+          "target": "e1b7f859f673e9254f74234c62521f310a65fd76",
+          "name": "Repo Find 2026-11-22",
+          "body": "Added Conveyor Sim links. Each teardown can open in Conveyor Sim two ways, as built from its layers or as the rebuild, and the builder stack, rolled stacks and templates each have an open in conveyor sim button. Layers with no machine yet show up as gaps there. Info banners now start closed behind an i button. Tap the i to open or close one."
+        }
+      ],
+      "description": "Search and watch tool for code repos, archives, and sites.",
+      "homepage": "https://repofind-delta.vercel.app",
+      "topics": [
+        "search",
+        "tool",
         "vercel"
       ]
     }

@@ -748,8 +748,8 @@
    "summary": "Search and watch tool for code repos, archives, and sites",
    "name": "Repo Find",
    "latest": {
-    "date": "2026-11-19",
-    "text": "Added the Teardown tab. Roll or pick one of 61 well known products and see how it is built layer by layer, each layer marked known or inferred, with a rebuild using builder tools and the open alternatives that exist, linked into the catalog. Filters hide big tech alternatives or skip big tech products. Merged Pipeline Builder in as the Builder tab, with build, randomize, diagram and templates modes, Supabase and more tools added, and the current stack saved in backup."
+    "date": "2026-11-22",
+    "text": "Added Conveyor Sim links. Each teardown can open in Conveyor Sim two ways, as built from its layers or as the rebuild, and the builder stack, rolled stacks and templates each have an open in conveyor sim button. Layers with no machine yet show up as gaps there. Info banners now start closed behind an i button. Tap the i to open or close one."
    }
   },
   "nanoverse": {
@@ -1192,8 +1192,8 @@
    "summary": "Interactive globe of security threats with layers, filters, and country intel.",
    "name": "Threat Atlas",
    "latest": {
-    "date": "2026-11-19",
-    "text": "Data refresh. Added incidents from 2025 and 2026 including Bybit, Poland grid, Stryker, Iranian PLC attacks and ShinyHunters campaigns. Added new countries, conferences, firms, bases, satellites and state entries. Year slider now reaches 2026 and filters the other layers."
+    "date": "2026-11-23",
+    "text": "Story mode. A new STORY tab walks the incidents in order as twenty seven chapters, rotating the globe and building the map year by year. Intel list now marks which incidents are in the story. Corrected the Triton attribution to Russia."
    }
   },
   "dronesim": {
@@ -1679,8 +1679,8 @@
    "summary": "A camera color to sound instrument with tiles, patterns, and an infinite canvas",
    "name": "ChromaHum Tiles",
    "latest": {
-    "date": "2026-10-20",
-    "text": "Added patterns and tiles as sources, plus a My Tile editor. Added zoom, pan, and colors, and removed the chime. Added a movement engine and an infinite canvas. Added voice draw, a cleaner audio chain that avoids pops, and pattern backdrops."
+    "date": "2026-11-23",
+    "text": "Sound and camera now start more reliably. The camera has its own controller with a Restart camera button, and the screen says what is wrong when the camera is blocked or in use by another app. A tap wakes the sound if the browser has paused it."
    }
   },
   "mohave-wtf": {
@@ -1875,7 +1875,7 @@
    "summary": "An agent that ships one app a day to a game publishing site and keeps a ledger",
    "name": "Itchy Troll",
    "latest": {
-    "date": "2026-11-20",
+    "date": "2026-11-22",
     "text": "The scout looked over the repos for new candidates."
    }
   },
@@ -2341,8 +2341,8 @@
    "summary": "A browser tool that stacks cars from several drive clips onto one road",
    "category": "Tools",
    "latest": {
-    "date": "2026-11-12",
-    "text": "Composite can now copy a clip to stack a recording with itself, remove clips, and turn sideways footage upright, in the Road tab too. Record reads the phone tilt to know which way is up, saves it with each recording, and turns clips automatically in Composite and Road. The Record button now sits under the camera. Every card folds open and closed and remembers it, and settings have their own card."
+    "date": "2026-11-22",
+    "text": "The Composite length is now a picker from 6 seconds up to 5 minutes, or as long as the clips allow, with 30 seconds as the default instead of 6. When a clip limits the length, the status says which clip it is and how to get a longer build."
    }
   },
   "pajamastan-badge-tool": {
@@ -2657,8 +2657,8 @@
    "summary": "x",
    "name": "Pipe Weave",
    "latest": {
-    "date": "2026-11-19",
-    "text": "Added a full screen button. Pipes can now have their own colors and lines can shift color as they grow. Added an isometric lock shape mode. Added a memory mode that replays rounds and learns from collisions. Cloth weave now goes over only single lines and under or stays under for bundles."
+    "date": "2026-11-22",
+    "text": "Fill canvas now works with any preset. It keeps growing pipes until the screen is covered, tops up gaps, and reports the coverage. The fill style has a new Current rules choice."
    }
   },
   "2026-11-15-orange-keydecode": {
@@ -2741,8 +2741,8 @@
    "summary": "A video learning tool where building counts more than watching",
    "name": "Campus",
    "latest": {
-    "date": "2026-11-17",
-    "text": "Created Campus, a video learning tool where building counts more than watching. Added stumble mode, course mode, sources, a transcript with credits, education genres, profiles, and a fallback when a course will not embed."
+    "date": "2026-11-23",
+    "text": "Campus version 3. Home picks up where you left off and recommends a next video, with a bottom navigation bar and a new navy, green, and gold look. Recommendations now search your subject instead of your bucket name, and a Junk button removes bad picks. The player has a screen off mode and a fullscreen button for picture in picture."
    }
   },
   "2026-11-17-orange-campusapi": {
@@ -2753,8 +2753,8 @@
    "summary": "The backend for Campus that stores sources, logged work, and the transcript",
    "name": "Campus API",
    "latest": {
-    "date": "2026-11-17",
-    "text": "Created Campus API, the backend for Campus. Added curated sources, course loading in order, the end of video log, and the transcript with credits. The database can now live on a persistent volume."
+    "date": "2026-11-23",
+    "text": "Search now returns lessons only, using education categories, a three minute minimum, and relevance order. Added a junk list so rejected videos stay out. Entries now carry their subject."
    }
   },
   "tile-topia": {
@@ -2866,6 +2866,50 @@
     "date": "2026-11-20",
     "text": "Created Lane Listener, a drive-thru order listener. You type or speak an order to the lane and it reads the order back as a ticket. Added tap mode for picking quantity, size, and options by hand, and a Teach tab for showing it phrases it did not understand."
    }
+  },
+  "2026-11-22-orange-hubview": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-22-orange-hubview.vercel.app"
+   ],
+   "private": false,
+   "latest": {
+    "date": "2026-11-23",
+    "text": "Added a car picker menu with makes and nested models and a paint picker for outside body panels. Added part search and a MORE sheet with specs, manual, and links tabs. Added an Extra explode mode that spreads out every part of every assembly. Added manual diagrams for a 2006 Crown Victoria and reshaped the Accord floor pan, trunk floor, and carpet to clear the wheels."
+   },
+   "name": "Hub View",
+   "category": "Field and Equipment",
+   "summary": "A three dimensional exploded view of cars with part cards, manual diagrams, and a buy sheet"
+  },
+  "2026-11-23-orange-explode": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-23-orange-explode.vercel.app"
+   ],
+   "private": false,
+   "latest": {
+    "date": "2026-11-23",
+    "text": "Created Explode, a photo app. Pick a photo, tap anything in it to cut that object out as a piece, then slide to explode the pieces apart and drag them around. Undo, Reset, and a Holes toggle are included."
+   },
+   "name": "Explode",
+   "category": "Tools",
+   "summary": "A photo toy that cuts objects out of a picture and spreads the pieces apart"
+  },
+  "pipeline-builder": {
+   "apps": [
+    "pipeline-builder-azure-kappa"
+   ],
+   "urls": [
+    "https://pipeline-builder-azure-kappa.vercel.app"
+   ],
+   "private": false,
+   "latest": {
+    "date": "2026-11-22",
+    "text": "Added the Pipeline Builder source, a tool that builds a software stack from tool choices, with Builder, Randomizer, Diagram, and Templates tabs. Added Open in Conveyor Sim buttons to the builder and to templates."
+   },
+   "name": "Pipeline Builder",
+   "category": "Tools",
+   "summary": "A stack planning tool with a builder, randomizer, diagram, and templates"
   }
  }
 }
