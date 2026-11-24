@@ -1,6 +1,34 @@
 {
   "heckles": [
     {
+      "date": "2026-11-24T13:51:45Z",
+      "repo": "starwake-game",
+      "sha": "f958cda59882b580d59bf3d1ac3708819e2e2150",
+      "message": "Balance pass from playtest: Bloom warnings, gentler scouts, better income, exact arrival day, favicon",
+      "heckle": "A balance pass done by editing magic numbers in the middle of a minified one file game. You added PRICE=8 and HAVENPRICE=5 to a comma chain of constants on the HX line, and bumped starting credits from 120 to 200 on a hardcoded line inside the new game function, so the economy now lives in two places and a tax code would be clearer. The favicon is an inline URL encoded svg stuffed into the head, which is unreadable. And a save in localStorage under starwake-v1 never gets a version bump, so anyone with an old save keeps the old balance and the old bugs.\n\nFix it: Move the credits value and prices into one CONFIG object in index.html. Bump the save key or add a migration for old saves. Move the favicon into its own file. Stop calling a number tweak a balance pass without a test run."
+    },
+    {
+      "date": "2026-11-24T13:51:45Z",
+      "repo": "2026-11-16-orange-zion",
+      "sha": "5760181daca20d06c673d84c34cf24c4b885e5c0",
+      "message": "Fix first load hang, move prompt, in game naming, duplicate street labels",
+      "heckle": "Four bugs fixed in one commit, which means four chances to break something and no way to bisect it. The whole app is still one index.html where draw() now builds an edgeLabels Map inside the render loop, so the street label dedupe runs every single frame like a government shutdown that refuses to end. The favicon is a data: URI that is literally empty, which fixes the 404 by hiding it. The retry button is hidden with display none from a stylesheet rule on an id you added three lines earlier, so good luck knowing who owns that state.\n\nFix it: Cache the edge label layout in index.html instead of rebuilding it inside draw(). Give the favicon an actual image. Split the commit per bug next time. Cap the retry button attempts and show the failure reason, not just Try again."
+    },
+    {
+      "date": "2026-11-24T13:51:45Z",
+      "repo": "2026-11-04-orange-hush",
+      "sha": "044035662523ee2ddb8c91485fe7e6099754a89c",
+      "message": "Snooze blocked notifications that refuse a plain cancel",
+      "heckle": "HushService.suppress() cancels, waits 400 milliseconds on a main thread Handler, checks stillShown, snoozes for a week, then waits 1500 more and cancels again. That is three timers stacked like a campaign promise with a rider nobody read. Nothing cancels the pending postDelayed callbacks when the service disconnects, so the Handler keeps firing into a dead listener, and a notification that reposts itself gets snoozed in a loop. The empty catch blocks swallow every failure with a comment instead of a log line, which is how interns hide crime scenes.\n\nFix it: Call handler.removeCallbacksAndMessages(null) in onListenerDisconnected in HushService.java. Log the exceptions in suppress() instead of eating them. Put the 400 and 1500 delays into named constants. Track keys already snoozed so a repost does not restart the whole dance."
+    },
+    {
+      "date": "2026-11-24T13:51:45Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "064603801f731e09df92b31743201c188d0a2b89",
+      "message": "civic2004 archive complete, 10533 pages",
+      "heckle": "Ten thousand pages of scraped repair manual text, committed as jsonl blobs under ref/archive/civic2004, with the commit message reading like a progress bar. Twenty something checkpoint commits in one day for a crawler that should have been a script outside git, you absolute filibuster of a version history. Every file is one enormous line of escaped text and image links pointing at the site you scraped, so the repo is now a bloated bailout nobody can diff, and you republished someone else's content wholesale. Specs.json alone adds 3162 lines. Did a cereal box teach you what .gitignore is for?\n\nFix it: Move ref/archive out of the repo and into storage or a release asset. Add ref/archive to .gitignore. Squash the checkpoint commits into one so history stops looking like a hostage negotiation. Keep only the parsed specs.json, not the raw page text."
+    },
+    {
       "date": "2026-11-24T02:16:11Z",
       "repo": "starwake-game",
       "sha": "af87fc64a9cebcb3d23e0b7b8961d93d3a01f59c",
@@ -1371,34 +1399,6 @@
       "sha": "5232c8d3",
       "message": "Bluebird, tap reactions and synth sound effects",
       "heckle": "Eighty lines added to cityseek-art.js for a bluebird, and the bird function is the same unreadable one line canvas soup as everything else, with a flap value that special cases negative numbers just to hide the wings. The commit mixes art, a Bluebird item entry, and the synth sound effects in one lump, so reviewing it is like reading a spending bill with forty riders attached. The title lists three features and the diff makes you hunt for each.\n\nFix it: Split the bird art, the item catalog entry, and the sound code into separate commits. Break the bird function in cityseek-art.js into readable lines. Document what o.flap values mean."
-    },
-    {
-      "date": "2026-11-11T01:17:43Z",
-      "repo": "city-seek",
-      "sha": "df89b335",
-      "message": "Outside doors that swing, flying birds and Bluebird hunt, tap reactions setup",
-      "heckle": "Swinging doors, flying birds, and a Bluebird hunt, all dumped into cityseek-world.js with a commit title that is half the feature list of the next two commits. The w.spr function now stuffs a var declaration, an assignment chain, and a return onto one line just to tag kind and center onto the item. The skylight loop got the same treatment, a monster line with a nested block and three property assignments. You are bolting state onto items after creation like taping parts onto a car and calling it a redesign.\n\nFix it: Make w.spr in cityseek-world.js return the item through a small helper instead of patching k, cx, and cy on after the fact. Reformat the skylight loop onto several lines. Write commit titles that describe one change."
-    },
-    {
-      "date": "2026-11-10T21:20:08Z",
-      "repo": "city-seek",
-      "sha": "3203148a",
-      "message": "Tray cards count found copies of each item",
-      "heckle": "You added a .ct badge to the tray chips in city-seek-v2.html and then hid it with .chip.got .ct the moment one copy is found, so the number on the card is a countdown that vanishes exactly when the tally gets interesting. Nine pixel font on a 44 pixel card, on a phone, for a toy. The help text now explains a counter in a paragraph, which is what a UI does when the intern could not make the counter obvious. This is a budget amendment nobody read.\n\nFix it: Make the badge readable above nine pixels in city-seek-v2.html. Keep the count visible after the first find instead of hiding .ct on .got. Cut the help paragraph down to one sentence."
-    },
-    {
-      "date": "2026-11-10T21:20:08Z",
-      "repo": "city-seek",
-      "sha": "b583f088",
-      "message": "Ten of every hidden item, spread across the city",
-      "heckle": "In cityseek-world.js the target loop now places EACH = 10 copies of every item, and the spot picker gives up after 40 tries then happily takes whatever best it has, so the spacing rules are a campaign promise. If list is empty you fall back to the used spots anyway, then set best.used on a possibly reused spot. Tower targets skip every check and can stack on one floor. The cap on the intern's confidence is clearly missing.\n\nFix it: Stop the fallback in cityseek-world.js from reusing spots already marked used. Apply the distance check to tower targets too. Fail loudly when no spot is left instead of quietly taking the last pick."
-    },
-    {
-      "date": "2026-11-10T21:20:08Z",
-      "repo": "city-seek",
-      "sha": "7b7a5437",
-      "message": "City Seek v3: tower floor view, x-ray zoom, new hidden items",
-      "heckle": "You deleted 766 lines from city-seek-v2.html and added 98, which means the old inline engine now lives in three script files and the v2 filename still holds a v3 game. Rename debt, filibustered. The new #bview, #floors and #fctrls blocks are all fixed pixel offsets like top:128px and a 66px floor bar, so any phone with a taller header or a keyboard open will clip the floor buttons. Nine pixel labels on the floor chips again.\n\nFix it: Rename city-seek-v2.html to match the version it contains and update vercel.json. Replace the hard coded 128px and 66px offsets in #bview with CSS variables or flex layout. Test the floor bar on a small phone."
     }
   ]
 }
