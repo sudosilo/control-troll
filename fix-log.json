@@ -583,6 +583,30 @@
       "outcome": "needs decision",
       "pullRequest": "https://github.com/sudosilo/control-troll/pull/3",
       "note": "Pull request 3 with the new RTSS V3 selectors is still open and unmerged, so main keeps the old failing test."
+    },
+    {
+      "date": "2026-11-24",
+      "app": "pajamastan-warrants",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Still 404 and the repo has not been pushed since 2026-10-20, so the developer must redeploy the Docker backend or retire the link."
+    },
+    {
+      "date": "2026-11-24",
+      "app": "mission-operator",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Still 503 on an archived repo replaced by mission-operator-next, so the developer must retire this link or repoint the spec."
+    },
+    {
+      "date": "2026-11-24",
+      "app": "ghost-kitchen-builder",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Live app is still RDSS V3 and the repo has no push since 2026-11-16, so the developer must say what the new spec should be."
     }
   ]
 }
