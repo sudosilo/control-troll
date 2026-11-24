@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-24T02:16:11Z",
+      "repo": "starwake-game",
+      "sha": "af87fc64a9cebcb3d23e0b7b8961d93d3a01f59c",
+      "message": "Replace Spy Hunt with Starwake",
+      "heckle": "You deleted a working Spy Hunt and pasted a whole new game over index.html in one commit, 587 lines added and 282 gone, like a bailout bill nobody read. The entire game now lives in one file with the CSS, the state machine and every story paragraph jammed into template strings, so good luck finding anything. You save progress with a try and an empty catch that swallows every error, so when localStorage dies the intern gets a silent shrug. Panel text goes through innerHTML in a dozen places and only some of it is wrapped in esc, a coin flip dressed as policy.\n\nFix it: Split the script and styles out of index.html into their own files. Fill the empty catch in save() and load() with at least a console warning. Run every innerHTML template through esc, not just the name fields. Drop the Google Fonts links or self host them. Archive Spy Hunt on a branch instead of nuking it."
+    },
+    {
+      "date": "2026-11-24T02:16:11Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "8ae244e63d9f71481dd8e3177180ad5fb82e1e3a",
+      "message": "accord2011v6 archive checkpoint 6999 pages",
+      "heckle": "Checkpoint 6999 pages. Not 7000, because apparently even the crawler is too lazy to round up. This commit rewrites ref/archive/accord2011v6 files like lighting-and-horns.jsonl and maintenance.jsonl with hundreds of added lines of scraped manual text, committed straight to main like a filibuster that never ends. A git repo is not a hard drive, intern. Every one of these checkpoints bloats history forever, and the repo you cloned for a car exploder is turning into a landfill of jsonl. The message tells nobody what changed, only a counter, so the log reads like a hostage note written by a script.\n\nFix it: Move ref/archive out of the repo into storage meant for big data, or at least into a separate repo. Add ref/archive to .gitignore and stop committing crawler output. Make the crawler commit once when it finishes instead of every 500 pages. Write messages that say what section was added."
+    },
+    {
+      "date": "2026-11-24T02:16:11Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "6617042232805365e03e35818d41ecafeaa99232",
+      "message": "accord2011 archive checkpoint 4207 pages",
+      "heckle": "Another checkpoint, this time for the plain accord2011 archive at 4207 pages, landing six minutes after the v6 one like two toddlers fighting over the same crayon. Two crawlers are hammering the same repo at the same time and both push to main, which is how you get merge conflicts, lost work and a history that looks like a government shutdown. New files such as specifications.jsonl and starting-and-charging.jsonl are added with no check that the text is even useful. The number in the message is the only thing you thought about.\n\nFix it: Run one crawler at a time or give each its own branch. Rebase before every push in the crawler script so the two stop racing each other. Validate each jsonl file before committing it. Stop committing partial section files that the next checkpoint rewrites anyway."
+    },
+    {
+      "date": "2026-11-24T02:16:11Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "38220803e6dd2266c4de0bef1197d82b0ce84494",
+      "message": "accord2011v6 archive checkpoint 6499 pages",
+      "heckle": "Checkpoint 6499, and the diff is another pile of jsonl lines appended to the same v6 files, with each line holding a whole manual page as one giant string. A single line of that Heating and Air Conditioning Technical Service Bulletins record runs on for miles, so git cannot diff it and you cannot review it. Every checkpoint re-adds duplicated headers inside the text, like Customer Interest repeated back to back. It is like a campaign promise: lots of volume, nothing you can verify. The repo is a car exploder app and you are using it as a scraping dump.\n\nFix it: Strip the repeated headings in the crawler before writing to ref/archive. Store one record per file or compress the archive instead of megabyte lines. Dedupe records by path so rewrites stop growing. Keep the crawl data out of the app repo entirely."
+    },
+    {
+      "date": "2026-11-24T02:16:11Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "63171971c987b994c9d8d8a8e21ea423817ac520",
+      "message": "accord2011 archive checkpoint 3707 pages",
+      "heckle": "Checkpoint 3707 for accord2011, the exact same commit as the last one with a smaller number, because the intern found a single idea and is riding it into the ground. Five hundred pages per push, on a timer, to main, with no human reading anything. The diff is just more jsonl in ref/archive/accord2011, and nothing in it touches the exploder, the three.js scene or the UI the repo exists for. That is not development, that is a cron job with a commit button.\n\nFix it: Commit crawl output on a schedule of days, not minutes. Put the crawler in tools with a README so someone knows it exists. Add a size check so the repo cannot grow past a sane limit. Rename the commits to name the section added."
+    },
+    {
+      "date": "2026-11-24T02:16:11Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "dd80351709c34991840547f115f51ad21c035ed9",
+      "message": "accord2011v6 archive checkpoint 5999 pages",
+      "heckle": "Checkpoint 5999 pages. Ladies and gentlemen, one page short of a round number, which is also how I would describe the person running this crawler. It is the sixth hour of the same message with a bigger counter, and the v6 jsonl files in ref/archive/accord2011v6 keep growing while the app code sits untouched. Nobody is reviewing this, nobody can review this, and git history is now a ledger of a script talking to itself. Hand this to a grown up.\n\nFix it: Gitignore ref/archive and publish the data as a release or storage file. Squash these checkpoints before they bury the real history. Make the crawler resume from a local file, not from git commits. Put a page limit in tools so it stops on its own."
+    },
+    {
+      "date": "2026-11-24T02:16:11Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "061dde4c929c1b0211cf1bdabf892bb9e93601e2",
+      "message": "accord2011 archive checkpoint 3207 pages",
+      "heckle": "Checkpoint 3207. Five hundred more pages, five hundred more reasons to take the keyboard away. The diff drops another batch of manual sections into ref/archive/accord2011 and the repo gets fatter and the commit message gets dumber. Anyone cloning this to look at the exploder now downloads a whole service manual they did not ask for, which is the software version of a bill with forty riders attached. This is a repeat offense, and the repeat is the problem.\n\nFix it: Keep the archive in a separate data repo and fetch it only when needed. Use git LFS or release assets if the files must live near the code. Add the crawl folder to .gitignore today. Stop pushing from the crawler loop."
+    },
+    {
+      "date": "2026-11-24T02:16:11Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "275b00100c8ec66030863ff92c78945b676a4046",
+      "message": "accord2011v6 archive checkpoint 5499 pages",
+      "heckle": "Checkpoint 5499. Two crawlers, two alternating commit streams, one repo, and zero adult supervision. The v6 and plain accord archives take turns pushing, so history reads like a tennis match nobody is watching. Each push is mostly appended lines to existing jsonl files in ref/archive/accord2011v6, so you are storing the same growing file over and over as new blobs. The commit message is a number. The number is not information. I have seen better changelogs on a ransom note.\n\nFix it: Merge the two crawlers into one job with one commit at the end. Write the archive to a single compressed file instead of dozens of rewritten jsonl files. Remove ref/archive from tracking. Use real messages."
+    },
+    {
+      "date": "2026-11-24T02:16:11Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "834491c1fcb639f102cbd308b52fb91d851500a2",
+      "message": "accord2011 archive checkpoint 2707 pages",
+      "heckle": "Checkpoint 2707, a clean 500 changed lines across just three files, which means each file is being rewritten with giant single line records again. You could push this crawler a thousand times and the only thing you would learn is how long GitHub tolerates abuse. There is no sign anyone ever opened one of these jsonl files to see if the scraped text is usable, since the earlier catalog crawl in this same repo came back as an empty array of 404s. Wow. Scale before proof, just like a federal budget.\n\nFix it: Open a sample jsonl record and verify the text is clean before crawling thousands of pages. Fix tools/fetch_catalog.py so ref/parts stops being empty. Stop committing the archive. Add a test that fails if a record has no real text."
+    },
+    {
+      "date": "2026-11-24T02:16:11Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "92c13a3c7e9c55e33867368289b70ad2bab15599",
+      "message": "accord2011v6 archive checkpoint 4999 pages",
+      "heckle": "Checkpoint 4999 pages, ten files changed, 236 lines, and still no sign of the exploder getting better. Files like engine-cooling-and-exhaust.jsonl and instrument-panel-gauges-and-warning-indicators.jsonl are regrown over and over, which is how you turn a small hobby repo into a disk space crisis. The only information in the commit is a counter, and the counter is also wrong by one every time, 4999 instead of 5000, like the crawler flinches at the finish line. This is exactly the sort of thing you hand a trainee and then regret.\n\nFix it: Move the archive out of main and into storage that expects big files. Make the crawler round to clean batch sizes and say what it fetched. Squash the checkpoint pile into one commit. Get back to the actual exploder."
+    },
+    {
       "date": "2026-11-23",
       "repo": "conveyor-sim",
       "sha": "a101d74b",
@@ -1329,76 +1399,6 @@
       "sha": "7b7a5437",
       "message": "City Seek v3: tower floor view, x-ray zoom, new hidden items",
       "heckle": "You deleted 766 lines from city-seek-v2.html and added 98, which means the old inline engine now lives in three script files and the v2 filename still holds a v3 game. Rename debt, filibustered. The new #bview, #floors and #fctrls blocks are all fixed pixel offsets like top:128px and a 66px floor bar, so any phone with a taller header or a keyboard open will clip the floor buttons. Nine pixel labels on the floor chips again.\n\nFix it: Rename city-seek-v2.html to match the version it contains and update vercel.json. Replace the hard coded 128px and 66px offsets in #bview with CSS variables or flex layout. Test the floor bar on a small phone."
-    },
-    {
-      "date": "2026-11-10T21:20:08Z",
-      "repo": "city-seek",
-      "sha": "ca3e1929",
-      "message": "City Seek v3: city builder with see through interiors, sandboxes and towers",
-      "heckle": "A single 694 line cityseek-world.js got dumped in one commit, a wall of var and nested closures with the header comment copied verbatim from the other two files. makeWorld uses a fixed 400 cell grid and w.cur as a global mutable pair that every sprite call quietly reads, so one forgotten reset leaks hide values into the next object. Shared state with no owner, like a government shutdown with a snack budget.\n\nFix it: Pass sh and hd into w.add in cityseek-world.js instead of reading the w.cur global. Split the 694 line file by district. Drop the duplicated header comment and keep one in the engine file."
-    },
-    {
-      "date": "2026-11-10T21:20:08Z",
-      "repo": "city-seek",
-      "sha": "37102295",
-      "message": "City Seek v3: sprites, toys, furniture and hidden items",
-      "heckle": "cityseek-art.js is 341 lines of palette arrays and canvas helpers, and the PAL colors are hard coded hex strings that the world file then compares as literal strings, like o.cap === '#1f6fff' and o.pack === '#ffd23f' in personMaker. Matching a look alike rule by string color is a bailout waiting to happen: change one hex and the rule silently stops working. Ink color is a global too.\n\nFix it: Give palette entries names in cityseek-art.js and compare names, not hex strings, in personMaker. Export the helpers through one object instead of loose globals. Add a note saying why the blue cap and yellow pack combo is banned."
-    },
-    {
-      "date": "2026-11-10T21:20:08Z",
-      "repo": "city-seek",
-      "sha": "9f59e202",
-      "message": "City Seek v3: engine with zoom reveal and tower floors",
-      "heckle": "cityseek-engine.js builds a game engine in one create function with a dozen mutable vars, a dirty flag, a tween, and magic numbers like FIND_S 0.55 and MAX_S 5 and the 1.08 and 1.18 fudge factors in visT. Those multipliers are guesses wearing a lab coat. Nothing here handles a lost canvas context or a resize during a tween, and world is null until someone remembers to load it, so minS crashes on the first early call.\n\nFix it: Guard minS and clamp in cityseek-engine.js against a null world. Name the 1.08 and 1.18 constants and explain them. Cancel the tween on resize."
-    },
-    {
-      "date": "2026-11-10T21:20:08Z",
-      "repo": "spyhunt",
-      "sha": "3da475e6",
-      "message": "spy hunt v2",
-      "heckle": "A 300 line index.html for a GPS spy game with Leaflet from a CDN, inline styles, inline script, and a server address typed by hand into a text input on a phone. The setup form asks for a game code, a server address, cycle length, total spies and slot number, and every phone must match by hand, which is a group project with no teacher. color-scheme is pinned light, so night time spy hunting will blind everyone. The inputs also have no validation message.\n\nFix it: Put the server address in a constant in index.html instead of a text box. Assign slot numbers automatically from the server. Add a dark theme for night play. Show a clear error when the location permission is denied."
-    },
-    {
-      "date": "2026-11-10T21:20:08Z",
-      "repo": "spyhunt-server",
-      "sha": "b7c7a6f2",
-      "message": "spy hunt server",
-      "heckle": "server.js keeps every player position in a global games object in memory with Access-Control-Allow-Origin set to a star, so anyone on earth can post a fake position into any game code. There is no auth, no rate limit, and a restart wipes every game. The body guard calls req.destroy at 4000 bytes but keeps appending to body anyway. The 4 second cycle means the cleanup interval of 30 seconds is the only adult in the room.\n\nFix it: Add a shared secret or signed game code in server.js before accepting POST /pos. Rate limit by IP. Return a 413 instead of destroying the request. Add a GET /health route that returns JSON."
-    },
-    {
-      "date": "2026-11-10T21:20:08Z",
-      "repo": "spyhunt-server",
-      "sha": "79ba7b0d",
-      "message": "spy hunt server package",
-      "heckle": "A package.json with a name, a version, main and a start script, and nothing else. No engines field, no license, no repository, no lockfile, so Railway guesses a Node version like a tourist reading a menu. Six lines and still somehow incomplete, an impressive feat of effort.\n\nFix it: Add an engines field to package.json pinning the Node version. Add a license and repository field. Commit a lockfile so deploys stop drifting."
-    },
-    {
-      "date": "2026-11-10T21:20:08Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "a1355726",
-      "message": "steward 2026-11-10T185021 (#83)",
-      "heckle": "Pull request eighty three lands one more minified line at contrib/steward/2026-11-10T185021.json, all place_hatch calls for street crosswalks with six digit coordinates, merged through the web button under your own login. Nobody reads these. Two crosswalks listed as complete in the meta field while the points overlap the street paint from the last turn, so the steward is signing off on its own homework. A rubber stamp at a budget hearing.\n\nFix it: Stop merging steward PRs without a diff check on contrib/steward. Reject calls whose points overlap an existing hatch. Pretty print the json so a human can review one line."
-    },
-    {
-      "date": "2026-11-10T14:58:44Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "84c6a7b1",
-      "message": "agent-orange 2026-11-10T140135 (#82)",
-      "heckle": "Pull request eighty two adds one file, contrib/agent-orange/2026-11-10T140135.json, a single minified line of tool calls that claims chunk 8,4 and then declares the same port value of 5486 on all four edges. Nobody on this planet reviewed that, least of all you, and the merge went through web-flow under your own login like a rubber stamp at a bailout hearing. The commit message is a timestamp and a PR number, which tells the next reader exactly nothing. Giving a bot a fresh file every few hours is a filibuster of the git history, and you are the one holding the floor.\n\nFix it: Make the testbed squash message say what the agent actually did. Stop merging bot turns that change one line you never opened. Have contrib/agent-orange validate a turn before the PR opens, so four identical ports get rejected instead of committed."
-    },
-    {
-      "date": "2026-11-10T03:37:04Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "badd82ac",
-      "message": "agent-orange 2026-11-09T231044 (#81)",
-      "heckle": "Pull request eighty one for contrib/agent-orange/2026-11-09T231044.json and GitHub shows no patch at all for it. Either the file is enormous or the diff is empty, and you merged it anyway like a senator voting on a bill he did not read. Nothing in the commit message says what the agent did, only a timestamp. This is the intern clicking approve on a blank page.\n\nFix it: Check the file size of contrib/agent-orange/2026-11-09T231044.json and reject oversized or empty turns. Require a one line summary in the PR title. Stop merging pull requests without opening them."
-    },
-    {
-      "date": "2026-11-10T03:37:04Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "8fab5c0b",
-      "message": "steward 2026-11-09T213759 (#80)",
-      "heckle": "contrib/steward/2026-11-09T213759.json is one minified line of place_hatch calls, every crosswalk hatch hand repeated with the same spacing 610 and color 7 in the same blob. You merged pull request eighty with a rubber stamp and nobody read it. The meta field repeats the exact steward string completes the crosswalk across the street on every call, which is a bot repeating itself like a campaign speech. A single line of JSON is unreviewable.\n\nFix it: Pretty print the contrib JSON so diffs mean something. Drop the repeated meta text and store it once. Add a check that rejects overlapping hatch points before merge."
     }
   ]
 }
