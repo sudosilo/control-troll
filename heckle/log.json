@@ -1,6 +1,69 @@
 {
   "heckles": [
     {
+      "date": "2026-11-24T23:56:01Z",
+      "repo": "starwake-game",
+      "sha": "b6a3a2e5c2e0d69921cdc9e78aead03c25f462ac",
+      "message": "Visual pass: nebulae, living Bloom edge, star tints and halos, ringed planet, engine trails, shot glow, shockwaves",
+      "heckle": "The commit message is a grocery list of eight effects in a single breath, and every one of them lives in the same index.html, so the game that already ran like a government shutdown now draws nebulae, halos, trails and shockwaves on top of it. Nothing in the diff throttles any of it, so a phone from last decade will cook while you admire your ringed planet. Eight features, forty eight added lines, and no way to switch any of it off.\n\nFix it: Add a low effects toggle in index.html that skips nebulae, glow and trails. Pre render the nebulae into an offscreen canvas once instead of every frame. Cap the number of live shockwaves. Split the commit next time so a bad effect can be reverted alone."
+    },
+    {
+      "date": "2026-11-24T23:56:01Z",
+      "repo": "topo-wars-server",
+      "sha": "858ed8b5c4e5f08d435718c0a690da44f8f9f05f",
+      "message": "Add a status home page at the root address",
+      "heckle": "You built a home page for a backend and named it topo-wars-server-v1.html, because version numbers in file names are apparently your only version control. The page fetches /api/battle and prints online if the JSON has ok true, so a broken battle route that returns an error body shows up as offline, and a function that merely answers shows online while the game is dead. The README and CHANGELOG say the root returns a status page, but the earlier notes said not found was by design, so you flip flopped like an election year. Both text files also lost their final newline for no reason.\n\nFix it: Make the status page in topo-wars-server-v1.html call a real health route that checks Redis. Rename the html file to something with no version in it. Put the final newlines back in README.md and CHANGELOG.md. Add a timeout so checking never sits there forever."
+    },
+    {
+      "date": "2026-11-24T23:56:01Z",
+      "repo": "datacenter-osint",
+      "sha": "47ac997b81f184237ef174197a6975b78d63913d",
+      "message": "Run the backend inside the site so layers are no longer blocked",
+      "heckle": "Your fix for blocked layers was to jam the whole Express server into a Vercel function with a one line api/datacenter-osint-api.js that requires a file from server/, and you deleted the line from .vercelignore that kept server out of the deploy. Also package-lock.json shows up at 965 lines because nobody had ever installed anything before. In index.html the default is now apiBase = location.host, so the settings box shows a host name nobody typed and local testing points at the wrong place. The CHANGELOG file still has no newline at the end, a tiny crime, but I am keeping count.\n\nFix it: Test the Redis calls from datacenter-osint-v3-server.js on Vercel, because ioredis and serverless are old enemies. Let the apiBase box start empty in index.html so a relative path is the default. Check that the cors package is still needed now that it is same origin. Add the trailing newline to CHANGELOG.md."
+    },
+    {
+      "date": "2026-11-24T23:56:01Z",
+      "repo": "pajamastan-warrants",
+      "sha": "b02b35cf431312c5f1c60fa3164b2cdd4792b637",
+      "message": "Run the docket searches four at a time and allow more time",
+      "heckle": "Your docket scraper was too slow, so you fixed it by hitting the court search four times as hard, which is the kind of thinking that gets a firewall tripped and an address blocked. The workers in api/pajamastan-warrants-api.js share one queue and one found object, which works only because JS is single threaded and you got lucky. Then vercel.json bumps maxDuration from 60 to 300 seconds, so a request that was timing out now takes five minutes to fail. And you reformatted the whole file for no reason, because the diff was not noisy enough.\n\nFix it: Cache the result in api/pajamastan-warrants-api.js instead of scraping on every page load. Retry a failed letter instead of aborting the whole alphabet with a 502. Keep the delay between requests. Check that 300 seconds is even allowed on your Vercel plan."
+    },
+    {
+      "date": "2026-11-24T23:56:01Z",
+      "repo": "mohavetech-website",
+      "sha": "666807fe98efe860b84085034d9b657f925c9ec4",
+      "message": "Add the Mary Jane Man restore script",
+      "heckle": "A one off script named mohavetech-maryjane-fix-v1.js, committed to the website repo, that digs the Vercel login token out of the phone's auth.json and uses it to promote a deploy. That is a script whose whole job is carrying your credentials around, parked in a public looking repo next to your index page. It also hardcodes the team slug and swallows the whoami failure with an empty catch, so when it breaks it will break in silence, like a senate committee. The real problem is that a Stumbler deploy landed on the Mary Jane Man project in the first place and you answered with a band aid.\n\nFix it: Confirm mohavetech-maryjane-fix-v1.js is in a private repo or delete it after use. Print the actual error in the empty catch around vercel whoami. Fix the deploy that keeps pointing Stumbler at the wrong project. Pull the slug out into an environment variable."
+    },
+    {
+      "date": "2026-11-24T23:56:01Z",
+      "repo": "2026-11-24-green-filecensus",
+      "sha": "27ea7a1bdd4324f3412ef64d80eea247704d67db",
+      "message": "Safe delete: review, native confirm, restorable trash, separate erase step",
+      "heckle": "A delete feature written the way a man writes his own will: 320 fresh lines in Trash.java and another 204 in ui.html, all in one commit, with Db.java and MainActivity.java edited on the side. A file deleter is the one place a bug costs somebody their wedding photos, and you shipped it with no tests anywhere in the diff. ui.html is now a single asset file that holds every screen, so a typo in a delete button handler sits one scroll away from the census button. You call it a safe delete, which is exactly what a filibuster calls a bipartisan compromise.\n\nFix it: Add tests for Trash.java covering restore, collision on the same file name, and a full disk. Split the erase step out of Trash.java so it cannot run from the same call as a move. Break ui.html into separate files before it eats the project. Log every delete so a failure leaves a trail."
+    },
+    {
+      "date": "2026-11-24T23:56:01Z",
+      "repo": "2026-11-24-green-fleetindex",
+      "sha": "dc11e17a69d649827d45bcae52df04ef8bc0e49a",
+      "message": "Fleet index server for FileCensus",
+      "heckle": "A 193 line server.js that holds a searchable copy of every phone's file list in memory, with a 40 MB body cap, so the first chatty phone gets to test your RAM and your faith. You set Access-Control-Allow-Origin to star on a server that stores a catalog of everything on your devices. To be fair the key check fails closed when FLEET_KEY is unset, and it hurts to type that, but one shared key for every phone is a bailout with no oversight. Also the commit message says nothing about Redis or the auth, so enjoy explaining it to yourself in a month.\n\nFix it: Lock the CORS header in server.js to the origins you actually use. Use a key per phone so one lost phone does not burn the fleet. Lower MAX_BODY or stream the upload instead of buffering it. Add a README that says what env vars this needs."
+    },
+    {
+      "date": "2026-11-24T23:56:01Z",
+      "repo": "2026-11-24-green-greenscreen",
+      "sha": "e6bd4e8cf6c698823aa77b7d016ea6aff0e2f7db",
+      "message": "Add v3 start script for named tunnel",
+      "heckle": "A fresh shell script named greenscreen_start_v3_2026-11-24.sh, because apparently git history is too hard so you version the filename like a toddler labeling leftovers. It runs pkill -f greenscreen_v, which kills anything on the phone with that string in it, then sleeps one second and hopes the port is free, a plan with the rigor of a campaign promise. The last line echoes $GS_TOKEN, but only GS_HOST is checked for being empty, so a missing token prints a cheerful broken address and the script exits happy.\n\nFix it: Check GS_TOKEN next to GS_HOST in greenscreen_start_v3_2026-11-24.sh. Kill the server by pid file, not by pkill -f. Drop the date and version from the filename and let git do its job. Stop printing the token to the terminal."
+    },
+    {
+      "date": "2026-11-24T23:56:01Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "9a38db7bd31e635fe8ad6a1eb04eabb4a33de84d",
+      "message": "grandmarquis archive checkpoint 8000 pages",
+      "heckle": "Sixteen commits in under two hours, each one a 500 page dump of jsonl into ref/archive/grandmarquis, and you named every one of them checkpoint like this is a hostage negotiation. Open sensors-and-switches.jsonl: the text field on those rows is just the title plus a chopped off <div class=\\\" and nothing else, so you are hoarding eight thousand pages of empty shells and scraped image links from somebody else's manual site. This repo is now a landfill with a git history. Marauder got its own commit message, so the intern can type when scared.\n\nFix it: Check the scraper that fills the text field in ref/archive/grandmarquis, because it cuts off at the first div. Stop committing every 500 pages and commit once when the run finishes. Move the archive out of git into storage built for bulk files. Add a .gitignore for ref/archive."
+    },
+    {
       "date": "2026-11-24T13:51:45Z",
       "repo": "starwake-game",
       "sha": "f958cda59882b580d59bf3d1ac3708819e2e2150",
@@ -1336,69 +1399,6 @@
       "sha": "dc571f52",
       "message": "agent-orange 2026-11-11T140632 (#84)",
       "heckle": "Third time today the agent-orange bot appears with a single line file at contrib/agent-orange/2026-11-11T140632.json and the commit has nothing to read. Same ceremony, same unreadable output, same merge by someone who clearly cannot be bothered. Your review process is a campaign promise: loud on announcement, absent on delivery.\n\nFix it: Add a CI check that fails on empty or unreadable contrib patches. Pretty print the file. Rate limit how many bot PRs merge in a day."
-    },
-    {
-      "date": "2026-11-11T11:06:08Z",
-      "repo": "rainbow-run",
-      "sha": "fc5bd3d5",
-      "message": "Play a song, and the song and chiptune drive the Spectral Engine and Screensaver scenes like the mic does",
-      "heckle": "You bolted a song player onto index.html and the clever trick is that you lie to every scene by assigning micRead to cw.__audio, so a file upload pretends to be a microphone. That is a duct tape fake mustache on a function and it will bite the first time a scene reads real mic data and gets song data instead. The micNote paragraph now reads like a hostage statement with three sources of sound crammed into one sentence. And a hidden file input driven by a button, with no word about what happens on a phone that refuses autoplay? Bold plan for an intern who still treats the audio context like a vending machine.\n\nFix it: Give the song its own __song reader instead of aliasing micRead in index.html. Handle the autoplay block and a failed decode with a visible message near the songFile input. Split the micNote text into short lines so a phone can read it. Revoke the object URL when a new song loads."
-    },
-    {
-      "date": "2026-11-11T11:06:08Z",
-      "repo": "mohavetech-website",
-      "sha": "210028e4",
-      "message": "sync dates with vercel",
-      "heckle": "Another sync commit, another day of you hand dragging the same date through three files like a congressman filibustering his own bill. fleet.html, mohavetech-vercel-projects-v1.json, and script-v53.js all carry the same chassisquiver and field-twin dates, so one change is typed three times and any typo ships quietly. The json also picked up git-main aliases and dropped a rainbow-run one, which is just noise from whatever scraped it. A diff this dull should come from a script, not from a human who is clearly not trusted with copy and paste.\n\nFix it: Generate baseDates in script-v53.js from mohavetech-vercel-projects-v1.json at build time. Make fleet.html read the same json instead of its own date list. Strip the git-branch aliases from the sync output. Stop committing this by hand."
-    },
-    {
-      "date": "2026-11-11T11:06:08Z",
-      "repo": "mohavetech-website",
-      "sha": "7ef089c5",
-      "message": "sync dates with vercel",
-      "heckle": "A commit titled sync dates with vercel whose entire contents are one alias line deleted from mohavetech-vercel-projects-v1.json. Minus one, plus nothing, like a bailout that rescues no one. You made a commit, a push, and a deploy to remove a git-master hostname that your own previous sync added. That is not maintenance, that is a dog chasing its tail with a git client. Nobody asked for this, least of all the build queue.\n\nFix it: Squash noise like this into the next real sync instead of committing it alone. Filter git-master aliases in the sync script so they never land in mohavetech-vercel-projects-v1.json. Skip the push when the date map did not change."
-    },
-    {
-      "date": "2026-11-11T11:06:08Z",
-      "repo": "mohavetech-website",
-      "sha": "03754ecb",
-      "message": "sync dates with vercel",
-      "heckle": "This sync ate its own tail. In script-v53.js the baseDates keys 2026-11-04-field-dispatch and 2026-11-05-drive-thru-dental got rewritten to 2026-11-06 names, so your date sync renamed apps whose names merely start with a date, and the entries now point at repos that do not exist. Then you hand pasted twenty new apps into index.html and fleet.html on top of that, in two separate lists that have to agree like a coalition government. Eighty some lines changed across four files and the one thing that matters, the key names, got mangled.\n\nFix it: Restore the 2026-11-04-field-dispatch and 2026-11-05-drive-thru-dental keys in script-v53.js. Match only the trailing date field when syncing, never the name. Generate the app lists in index.html and fleet.html from the one json file. Add a check that every baseDates key matches a real project name."
-    },
-    {
-      "date": "2026-11-11T01:17:43Z",
-      "repo": "city-seek",
-      "sha": "dfc4bb75",
-      "message": "Eighteen new hidden items: office, outdoor and random",
-      "heckle": "Eighteen new hidden items and you shoved all of them into cityseek-art.js as one-line functions with eleven statements jammed on each row. The mug function alone draws a handle, a cup, coffee, and steam in a single line you cannot read without a magnifying glass and a stiff drink. Seventy four lines added to a file that was already a wall of minified crayon scribbles. Did the intern get paid by the semicolon? This is a filibuster in canvas form, a lot of motion and nothing anyone can review.\n\nFix it: Break the mug, laptop, and notes functions in cityseek-art.js onto multiple lines. Pull the repeated rr and fs pairs into a helper. Drop the unused sticker option on laptop or actually use it."
-    },
-    {
-      "date": "2026-11-11T01:17:43Z",
-      "repo": "city-seek",
-      "sha": "2ba7f5f9",
-      "message": "Office props, sports fields, basketball courts, traffic cones, office item placement",
-      "heckle": "Office props, basketball courts, traffic cones, and the commit message is a grocery list with no verb. In cityseek-world.js you stacked three chance rolls on one line to drop a cooler, a printer, and a cabinet, then a for loop whose bound calls h.ri on every iteration, so the mug count changes while the loop runs. That is a campaign promise: the number sounds fine until someone checks it. You also nudged the clutter thresholds from 0.85 to 0.8 and 0.86 and 0.92 by feel, with no comment explaining why.\n\nFix it: Compute h.ri(0, 3) once before the loop in the office furniture function of cityseek-world.js. Put the three chance rolls on separate lines. Name the clutterWork thresholds so the next edit is not a guess."
-    },
-    {
-      "date": "2026-11-11T01:17:43Z",
-      "repo": "city-seek",
-      "sha": "16431d70",
-      "message": "Sound toggle, look alike message, Bluebird hints",
-      "heckle": "You added a Sound effects checkbox in city-seek-v2.html and the file is still called v2 while the thing inside has clearly moved on, because naming a file is apparently harder than shipping a bluebird. The help text now has a new paragraph about poking pigeons stacked right under the card counter paragraph, so the instructions are a wall of text on a phone where nobody will read it. The miss toast says Close, but that is a look alike, which is a lot of words for a toast that vanishes in a second.\n\nFix it: Rename city-seek-v2.html or stop pretending versions mean anything. Break the help details section in city-seek-v2.html into short lines. Shorten the onMiss toast text."
-    },
-    {
-      "date": "2026-11-11T01:17:43Z",
-      "repo": "city-seek",
-      "sha": "86c1854a",
-      "message": "Tap reactions, word bubbles, flying birds, live doors and sound",
-      "heckle": "One hundred twenty nine added lines in cityseek-engine.js for tap reactions, word bubbles, and flying birds, and the moverPos function is a nest of modulo math and arc trig that no one will touch again without crying. The fxItems, bubbles, active, and lastR variables are lumped on one line like laundry. Cars honk, dogs bark, skylights crack, and the commit title reads like a patch note written by a toddler on a sugar rush. One bad pts array and the bird teleports like a bailout check.\n\nFix it: Split the new variable declaration at the top of cityseek-engine.js into one per line. Comment what perch, fly, and off mean in moverPos. Guard moverPos against an empty pts array."
-    },
-    {
-      "date": "2026-11-11T01:17:43Z",
-      "repo": "city-seek",
-      "sha": "5232c8d3",
-      "message": "Bluebird, tap reactions and synth sound effects",
-      "heckle": "Eighty lines added to cityseek-art.js for a bluebird, and the bird function is the same unreadable one line canvas soup as everything else, with a flap value that special cases negative numbers just to hide the wings. The commit mixes art, a Bluebird item entry, and the synth sound effects in one lump, so reviewing it is like reading a spending bill with forty riders attached. The title lists three features and the diff makes you hunt for each.\n\nFix it: Split the bird art, the item catalog entry, and the sound code into separate commits. Break the bird function in cityseek-art.js into readable lines. Document what o.flap values mean."
     }
   ]
 }
