@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-11-24T00:57:52.084Z",
+  "builtAt": "2026-11-24T23:04:46.328Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -27,39 +27,6 @@
       "snapshot": "snapshots/snapshot-engine-pied.html"
     },
     {
-      "app": "topo-wars-server",
-      "url": "https://topo-wars-server.vercel.app",
-      "kind": "down",
-      "since": "2026-10-11",
-      "status": 404,
-      "failing": [],
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 ()"
-      ],
-      "features": [
-        "Topo Wars server answers requests for friend games."
-      ],
-      "knownProblem": "Returns 404 at the root URL. A backend with no home page does that normally, so it needs a health endpoint added to tell real downtime apart.",
-      "snapshot": "snapshots/topo-wars-server.html"
-    },
-    {
-      "app": "pajamastan-warrants",
-      "url": "https://pajamastan-warrants.vercel.app",
-      "kind": "down",
-      "since": "2026-10-20",
-      "status": 404,
-      "failing": [],
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 ()"
-      ],
-      "features": [
-        "Page loads the active warrants docket from the backend with count, new in the last 24 hours and last checked time.",
-        "Each warrant lists as a public record entry."
-      ],
-      "knownProblem": null,
-      "snapshot": "snapshots/pajamastan-warrants.html"
-    },
-    {
       "app": "mission-operator",
       "url": "https://mission-operator.vercel.app",
       "kind": "down",
@@ -74,39 +41,6 @@
       ],
       "knownProblem": null,
       "snapshot": "snapshots/mission-operator.html"
-    },
-    {
-      "app": "mary-jane-man",
-      "url": "https://mary-jane-man.vercel.app",
-      "kind": "test-failing",
-      "since": "2026-10-21",
-      "status": 200,
-      "failing": [
-        {
-          "test": "start shows the maze",
-          "error": "locator.click: Timeout 6000ms exceeded.",
-          "testFile": "tests/mary-jane-man.json"
-        },
-        {
-          "test": "info opens and closes",
-          "error": "locator.click: Timeout 6000ms exceeded.",
-          "testFile": "tests/mary-jane-man.json"
-        }
-      ],
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 ()",
-        "console: Failed to load resource: the server responded with a status of 404 ()",
-        "console: Failed to load resource: the server responded with a status of 404 ()",
-        "console: Failed to load resource: the server responded with a status of 404 ()"
-      ],
-      "features": [
-        "Maze chase game starts with the start button, with score, lives and level shown.",
-        "Player moves through the maze eating every nug to clear the level.",
-        "Four pipe enemies chase the player, and a golden nug scares them.",
-        "Info screen opens with back, and game over offers try again."
-      ],
-      "knownProblem": null,
-      "snapshot": "snapshots/mary-jane-man.html"
     },
     {
       "app": "j30p4rdy",
