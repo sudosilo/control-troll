@@ -607,6 +607,30 @@
       "outcome": "needs decision",
       "pullRequest": null,
       "note": "Live app is still RDSS V3 and the repo has no push since 2026-11-16, so the developer must say what the new spec should be."
+    },
+    {
+      "date": "2026-11-24",
+      "app": "j30p4rdy",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": "https://github.com/sudosilo/control-troll/pull/1",
+      "note": "Pull request 1 with the splash button click is still open and unmerged, so main keeps the old failing test."
+    },
+    {
+      "date": "2026-11-24",
+      "app": "tower-builder-one",
+      "kind": "test-failing",
+      "outcome": "needs decision",
+      "pullRequest": "https://github.com/sudosilo/control-troll/pull/2",
+      "note": "Pull request 2 with the new ids is still open and unmerged, so main keeps the old failing test."
+    },
+    {
+      "date": "2026-11-24",
+      "app": "tile-spinner",
+      "kind": "test-failing",
+      "outcome": "test fixed",
+      "pullRequest": "https://github.com/sudosilo/control-troll/pull/4",
+      "note": "Shuffle and Reset are id-less buttons in #controls and the score is #statB, so the test selectors were updated."
     }
   ]
 }
