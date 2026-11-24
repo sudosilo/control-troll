@@ -72,6 +72,40 @@ button{font:inherit;color:inherit}
 .link{border:0;background:none;color:var(--muted);text-decoration:underline;cursor:pointer;padding:8px 2px}
 .help{font-size:13px;color:var(--muted);line-height:1.55;max-width:65ch;margin:0}
 @media (prefers-reduced-motion:no-preference){.card{animation:up .18s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.6}}}
+
+:root{--blue:#1d4ed8;--blue-soft:rgba(29,78,216,.12)}
+.tools{max-width:960px;margin:8px auto 0;display:flex;gap:8px;align-items:center}
+.btn.sig{border-color:var(--blue);color:var(--blue);font-weight:600}
+.btn.sig:hover{background:var(--blue-soft)}
+.count{min-width:8.5ch;text-align:right}
+.bar-in{flex-wrap:nowrap}
+.brand{white-space:nowrap}
+@media (max-width:440px){.brand{font-size:16px}.bar-in{gap:10px}.tools .btn{padding:8px 11px}}
+.placing .ln{pointer-events:none}
+.placing .pg{cursor:crosshair;outline:2px dashed var(--blue);outline-offset:3px}
+.mark{position:absolute;touch-action:none;cursor:move;line-height:0;z-index:2}
+.mark img{width:100%;height:100%;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.mark.sel{outline:2px solid var(--blue);outline-offset:2px;background:var(--blue-soft)}
+.mark .del{display:none}
+.mark .grip{position:absolute;display:none;top:-30px;right:-30px;width:24px;height:24px;border-radius:50%;background:var(--blue);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35);touch-action:none;cursor:nesw-resize}
+.mark .grip::before{content:"";position:absolute;inset:-14px;border-radius:50%}
+.mark.sel .grip{display:block}
+.btn.sq{width:48px;justify-content:center;font-size:22px;font-weight:700;padding:0;color:var(--blue);border-color:var(--blue)}
+.placebar,.toast{position:fixed;left:50%;transform:translateX(-50%);z-index:15;width:calc(100% - 24px);max-width:620px;bottom:calc(12px + env(safe-area-inset-bottom,0px));
+  background:var(--surface);border:2px solid var(--blue);border-radius:14px;padding:12px 14px;box-shadow:0 8px 28px rgba(20,30,50,.22);line-height:1.4}
+.placebar p{margin:0 0 8px;font-size:14px}
+.toast{pointer-events:none;font-size:14px;transition:opacity .3s;bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.markbar{position:fixed;left:50%;transform:translateX(-50%);z-index:14;width:calc(100% - 24px);max-width:620px;bottom:calc(12px + env(safe-area-inset-bottom,0px));
+  background:var(--surface);border:2px solid var(--blue);border-radius:14px;padding:10px 12px;box-shadow:0 8px 28px rgba(20,30,50,.22)}
+.btn.danger{border-color:#b42318;color:#b42318;font-weight:600}
+#textInput{width:100%;font:inherit;font-size:17px;padding:12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+#textInput:focus{outline:none;border-color:var(--blue)}
+@media (max-width:440px){.tools{gap:6px}.tools .btn{padding:8px 9px;font-size:14px}}
+.padwrap{position:relative;width:100%;background:#f7f9fc;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+.padwrap::after{content:"";position:absolute;left:6%;right:6%;bottom:24%;border-bottom:1.5px dashed #9aa4b5;pointer-events:none}
+#pad{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.chip{width:34px;height:34px;border-radius:50%;border:3px solid var(--surface);box-shadow:0 0 0 1.5px var(--line);cursor:pointer;padding:0}
+.chip.on{box-shadow:0 0 0 2.5px var(--ink)}
 </style>
 </head>
 <body>
@@ -81,9 +115,14 @@ button{font:inherit;color:inherit}
     <h1 class="brand"><i aria-hidden="true"></i>PDF Text Editor</h1>
     <span class="spacer"></span>
     <span class="count" id="count">0 edits</span>
-    <button class="btn" id="openBtn" type="button">Open PDF</button>
     <button class="btn primary" id="saveBtn" type="button" disabled>Download</button>
     <input id="fileInput" type="file" accept="application/pdf,.pdf" hidden>
+  </div>
+  <div class="tools">
+    <button class="btn" id="openBtn" type="button">Open PDF</button>
+    <button class="btn sig" id="sigBtn" type="button">Signature</button>
+    <button class="btn sig" id="initBtn" type="button">Initials</button>
+    <button class="btn sig" id="textBtn" type="button">Text box</button>
   </div>
 </header>
 
@@ -95,7 +134,7 @@ button{font:inherit;color:inherit}
       <span class="spacer"></span>
       <label class="toggle"><input type="checkbox" id="showToggle" checked> Highlight editable text</label>
     </div>
-    <p class="help">Tap any highlighted line to change what it says. The new text is set in a standard font matched to the original size, weight and color. Edited lines get a green outline. Your file never leaves your device.</p>
+    <p class="help">Tap any highlighted line to change what it says. The new text is set in a standard font matched to the original size, weight and color. Edited lines get a green outline. To sign or fill in a blank, tap Signature, Initials or Text box, then tap just above the line on the form. It sizes itself to the open space over that line. Drag it to move it. Tap it to size it with the plus and minus buttons or the corner dot, or to remove it. Your file and your signature never leave your device.</p>
     <div class="status" id="status" role="status"></div>
     <div class="pages show" id="pages"></div>
   </div>
@@ -116,21 +155,72 @@ button{font:inherit;color:inherit}
   </div>
 </div>
 
+<div class="sheet" id="padSheet" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="padTitle">
+    <h2 id="padTitle">Draw your signature</h2>
+    <div class="padwrap" id="padWrap"><canvas id="pad"></canvas></div>
+    <div class="row">
+      <button class="chip on" id="inkBlue" type="button" aria-label="Blue ink" style="background:#1d4ed8"></button>
+      <button class="chip" id="inkBlack" type="button" aria-label="Black ink" style="background:#111"></button>
+      <span class="spacer"></span>
+      <button class="link" id="padClear" type="button">Clear</button>
+    </div>
+    <div class="row">
+      <span class="spacer"></span>
+      <button class="btn" id="padCancel" type="button">Cancel</button>
+      <button class="btn primary" id="padSave" type="button">Save and place</button>
+    </div>
+  </div>
+</div>
+
+<div class="placebar" id="placebar" hidden>
+  <p id="placeText">Tap just above the line where your signature goes.</p>
+  <div class="row">
+    <button class="link" id="redrawBtn" type="button">Draw it again</button>
+    <span class="spacer"></span>
+    <button class="btn" id="placeCancel" type="button">Cancel</button>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<div class="markbar" id="markbar" hidden>
+  <div class="row">
+    <button class="btn danger" id="markDel" type="button">Remove</button>
+    <button class="btn" id="markEdit" type="button">Edit</button>
+    <span class="spacer"></span>
+    <button class="btn sq" id="markSmaller" type="button" aria-label="Smaller">−</button>
+    <button class="btn sq" id="markBigger" type="button" aria-label="Bigger">+</button>
+    <button class="btn primary" id="markDone" type="button">Done</button>
+  </div>
+</div>
+
+<div class="sheet" id="textSheet" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="textTitle">
+    <h2 id="textTitle">Type what goes on the form</h2>
+    <input id="textInput" type="text" autocomplete="off" spellcheck="true" placeholder="Your printed name">
+    <div class="row">
+      <span class="spacer"></span>
+      <button class="btn" id="textCancel" type="button">Cancel</button>
+      <button class="btn primary" id="textSave" type="button">Place it</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script>
 (function(){
 const $ = id => document.getElementById(id);
 const pagesEl=$('pages'), statusEl=$('status');
-const S = { bytes:null, name:'sample-flyer', isSample:true, lines:[], edits:new Map(), current:null, loadId:0 };
+const S = { bytes:null, name:'sample-flyer', isSample:true, lines:[], edits:new Map(), current:null, loadId:0, pages:[], marks:[], markSeq:0, placing:null, sel:null };
 const measureCtx = document.createElement('canvas').getContext('2d');
 
 if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 function setStatus(msg, kind){ statusEl.textContent = msg||''; statusEl.className = 'status' + (kind?' '+kind:''); }
 function updateCount(){
-  const n = S.edits.size;
-  $('count').textContent = n + (n===1?' edit':' edits');
+  const n = S.edits.size + S.marks.length;
+  $('count').textContent = n + (n===1?' change':' changes');
   $('saveBtn').disabled = n===0;
 }
 
@@ -210,7 +300,7 @@ function buildLines(items){
 async function loadPdf(bytes, name, isSample){
   const myId=++S.loadId;
   S.bytes=bytes.slice(0); S.name=name; S.isSample=isSample;
-  S.lines=[]; S.edits.clear(); updateCount();
+  S.lines=[]; S.edits.clear(); S.pages=[]; S.marks=[]; S.sel=null; stopPlacing(); updateCount();
   $('fileName').textContent=name+'.pdf';
   $('sampleTag').hidden=!isSample;
   pagesEl.innerHTML=''; setStatus('Opening...');
@@ -235,6 +325,9 @@ async function loadPdf(bytes, name, isSample){
     wrap.appendChild(canvas); pagesEl.appendChild(wrap);
     const ctx=canvas.getContext('2d',{willReadFrequently:true});
     await page.render({canvasContext:ctx, viewport:vp, transform:dpr!==1?[dpr,0,0,dpr,0,0]:null}).promise;
+    const pinfo={index:p-1, wrap, canvas, ctx, vp, rot:((page.rotate||0)%360+360)%360};
+    S.pages.push(pinfo);
+    wrap.addEventListener('click',e=>onPageTap(e,pinfo));
     const tc=await page.getTextContent();
     const lines=buildLines(tc.items);
     for(const L of lines){
@@ -254,13 +347,8 @@ async function loadPdf(bytes, name, isSample){
       line.el=btn; wrap.appendChild(btn); S.lines.push(line);
     }
     total+=lines.length;
-    if(!lines.length){
-      const n=document.createElement('div'); n.className='empty-pg';
-      n.textContent='No editable text on this page. Scanned pages are pictures of text, so their words cannot be changed here.';
-      wrap.appendChild(n);
-    }
   }
-  setStatus(total ? '' : 'No editable text was found in this PDF.', total?'':'err');
+  setStatus('');
 }
 
 function paintLine(line){
@@ -314,7 +402,7 @@ $('cancelBtn').addEventListener('click',closeSheet);
 $('revertBtn').addEventListener('click',()=>{ const l=S.current; if(!l) return; S.edits.delete(l.id); paintLine(l); updateCount(); closeSheet(); });
 $('sheet').addEventListener('click',e=>{ if(e.target===$('sheet')) closeSheet(); });
 $('showToggle').addEventListener('change',e=>pagesEl.classList.toggle('show',e.target.checked));
-window.addEventListener('beforeunload',e=>{ if(S.edits.size){ e.preventDefault(); e.returnValue=''; } });
+window.addEventListener('beforeunload',e=>{ if(S.edits.size||S.marks.length){ e.preventDefault(); e.returnValue=''; } });
 
 $('openBtn').addEventListener('click',()=>$('fileInput').click());
 $('fileInput').addEventListener('change',async e=>{
@@ -341,7 +429,7 @@ function wrapContents(doc,page){
   node.set(key, ctx.obj([start,...list,end]));
 }
 async function buildPdf(){
-  const {PDFDocument,StandardFonts,rgb}=PDFLib;
+  const {PDFDocument,StandardFonts,rgb,degrees}=PDFLib;
   const doc=await PDFDocument.load(S.bytes,{ignoreEncryption:true, updateMetadata:false});
   const fonts={}, wrapped=new Set();
   for(const [id,newText] of S.edits){
@@ -354,6 +442,15 @@ async function buildPdf(){
     page.drawRectangle({x:L.x-s*0.06, y:L.y-s*0.26, width:Math.max(L.width,newW)+s*0.12, height:s*1.22,
       color:rgb(L.bg[0]/255,L.bg[1]/255,L.bg[2]/255), borderWidth:0});
     if(txt) page.drawText(txt,{x:L.x, y:L.y, size:s, font, color:rgb(L.fg[0]/255,L.fg[1]/255,L.fg[2]/255)});
+  }
+  const imgs={};
+  for(const m of S.marks){
+    const P=S.pages[m.pageIndex], page=doc.getPage(m.pageIndex), vp=P.vp;
+    if(!wrapped.has(m.pageIndex)){ try{ wrapContents(doc,page); }catch(e){ console.warn(e); } wrapped.add(m.pageIndex); }
+    if(!imgs[m.src]) imgs[m.src]=await doc.embedPng(m.src);
+    const vx=m.l/100*vp.width, vy=m.t/100*vp.height, vw=m.w/100*vp.width, vh=m.h/100*vp.height;
+    const at=vp.convertToPdfPoint(vx, vy+vh);
+    page.drawImage(imgs[m.src],{x:at[0], y:at[1], width:vw/vp.scale, height:vh/vp.scale, rotate:degrees(P.rot)});
   }
   return doc.save();
 }
@@ -368,7 +465,7 @@ $('saveBtn').addEventListener('click',async()=>{
   const btn=$('saveBtn'); btn.disabled=true; setStatus('Building your PDF...');
   try{
     const out=await buildPdf();
-    const fname=S.name+'-edited.pdf';
+    const fname=S.name+(S.marks.length?'-signed.pdf':'-edited.pdf');
     saveBlob(new Blob([out],{type:'application/pdf'}), fname);
     setStatus('Saved '+fname,'ok');
   }catch(e){
@@ -376,6 +473,284 @@ $('saveBtn').addEventListener('click',async()=>{
     setStatus('Could not build the edited PDF. If the file is password protected, remove the password and try again.','err');
   }finally{ updateCount(); }
 });
+
+/* ---------- signing ---------- */
+const KEYS={sig:'pdfy-signature', init:'pdfy-initials'};
+const store={
+  get(k){ try{ return localStorage.getItem(KEYS[k]); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(KEYS[k],v); }catch(e){} }
+};
+const mem={sig:null, init:null};
+function getMark(kind){ return mem[kind] || (mem[kind]=store.get(kind)); }
+
+let toastT=null;
+function toast(msg){
+  const t=$('toast'); t.textContent=msg; t.hidden=false; t.style.opacity='1';
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>{ t.style.opacity='0'; setTimeout(()=>{ t.hidden=true; },300); },3200);
+}
+
+/* drawing pad */
+const pad=$('pad'), padCtx=pad.getContext('2d');
+const P={kind:'sig', ink:'#1d4ed8', drawing:false, last:null, mid:null, inked:false, lw:3};
+function openPad(kind){
+  P.kind=kind;
+  $('padTitle').textContent = kind==='sig' ? 'Draw your signature' : 'Draw your initials';
+  $('padWrap').style.aspectRatio = kind==='sig' ? '3 / 1' : '2 / 1';
+  $('padSheet').hidden=false;
+  requestAnimationFrame(()=>{
+    const r=pad.getBoundingClientRect(), k=3;
+    pad.width=Math.round(r.width*k); pad.height=Math.round(r.height*k);
+    P.lw=Math.max(4, pad.width*0.0095);
+    clearPad();
+  });
+}
+function clearPad(){ padCtx.clearRect(0,0,pad.width,pad.height); P.inked=false; }
+function padPt(e){ const r=pad.getBoundingClientRect(); return {x:(e.clientX-r.left)*pad.width/r.width, y:(e.clientY-r.top)*pad.height/r.height}; }
+function setInk(){ padCtx.strokeStyle=P.ink; padCtx.fillStyle=P.ink; padCtx.lineWidth=P.lw; padCtx.lineCap='round'; padCtx.lineJoin='round'; }
+pad.addEventListener('pointerdown',e=>{
+  e.preventDefault(); pad.setPointerCapture(e.pointerId);
+  P.drawing=true; const p=padPt(e); P.last=p; P.mid=p; setInk();
+  padCtx.beginPath(); padCtx.arc(p.x,p.y,P.lw/2,0,Math.PI*2); padCtx.fill(); P.inked=true;
+});
+pad.addEventListener('pointermove',e=>{
+  if(!P.drawing) return; e.preventDefault();
+  const evs=e.getCoalescedEvents?e.getCoalescedEvents():[e];
+  setInk();
+  for(const ev of (evs.length?evs:[e])){
+    const p=padPt(ev), m={x:(P.last.x+p.x)/2, y:(P.last.y+p.y)/2};
+    padCtx.beginPath(); padCtx.moveTo(P.mid.x,P.mid.y); padCtx.quadraticCurveTo(P.last.x,P.last.y,m.x,m.y); padCtx.stroke();
+    P.last=p; P.mid=m;
+  }
+});
+function endStroke(){ if(!P.drawing) return; P.drawing=false; setInk(); padCtx.beginPath(); padCtx.moveTo(P.mid.x,P.mid.y); padCtx.lineTo(P.last.x,P.last.y); padCtx.stroke(); }
+pad.addEventListener('pointerup',endStroke); pad.addEventListener('pointercancel',endStroke); pad.addEventListener('pointerleave',endStroke);
+function cropPad(){
+  const w=pad.width,h=pad.height, d=padCtx.getImageData(0,0,w,h).data;
+  let x0=w,y0=h,x1=-1,y1=-1;
+  for(let y=0;y<h;y++) for(let x=0;x<w;x++){ if(d[(y*w+x)*4+3]>20){ if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y; } }
+  if(x1<0) return null;
+  const m=Math.round(P.lw);
+  x0=Math.max(0,x0-m); y0=Math.max(0,y0-m); x1=Math.min(w-1,x1+m); y1=Math.min(h-1,y1+m);
+  const c=document.createElement('canvas'); c.width=x1-x0+1; c.height=y1-y0+1;
+  c.getContext('2d').drawImage(pad,x0,y0,c.width,c.height,0,0,c.width,c.height);
+  return c.toDataURL('image/png');
+}
+function pickInk(color){ P.ink=color; $('inkBlue').classList.toggle('on',color==='#1d4ed8'); $('inkBlack').classList.toggle('on',color==='#111111'); }
+$('inkBlue').addEventListener('click',()=>pickInk('#1d4ed8'));
+$('inkBlack').addEventListener('click',()=>pickInk('#111111'));
+$('padClear').addEventListener('click',clearPad);
+$('padCancel').addEventListener('click',()=>{ $('padSheet').hidden=true; });
+$('padSave').addEventListener('click',()=>{
+  if(!P.inked){ toast(P.kind==='sig'?'Draw your signature in the box first.':'Draw your initials in the box first.'); return; }
+  const url=cropPad(); if(!url) return;
+  mem[P.kind]=url; store.set(P.kind,url);
+  $('padSheet').hidden=true;
+  startPlacing(P.kind);
+});
+
+/* placement */
+function startPlacing(kind){
+  S.placing=kind; selectMark(null);
+  pagesEl.classList.add('placing');
+  $('placeText').textContent = kind==='sig' ? 'Tap just above the line where your signature goes.' : kind==='init' ? 'Tap just above the line where your initials go.' : 'Tap just above the line where the text goes.';
+  $('redrawBtn').textContent = kind==='text' ? 'Change text' : 'Draw it again';
+  $('placebar').hidden=false;
+}
+function stopPlacing(){ S.placing=null; pagesEl.classList.remove('placing'); $('placebar').hidden=true; }
+function beginSign(kind){
+  if(!S.pages.length){ toast('Open a PDF first.'); return; }
+  if(kind==='text'){ openText(null); return; }
+  if(getMark(kind)) startPlacing(kind); else openPad(kind);
+}
+function textImage(str){
+  const fs=160, f='400 '+fs+'px Helvetica,Arial,sans-serif';
+  const c=document.createElement('canvas'), x=c.getContext('2d');
+  x.font=f; const w=Math.ceil(x.measureText(str).width)+Math.round(fs*0.12);
+  c.width=Math.max(8,w); c.height=Math.round(fs*1.25);
+  x.font=f; x.fillStyle='#111111'; x.textBaseline='alphabetic';
+  x.fillText(str, Math.round(fs*0.06), Math.round(fs*0.98));
+  return {src:c.toDataURL('image/png'), aspect:c.width/c.height};
+}
+let textTarget=null;
+function openText(m){
+  textTarget=m;
+  let last=''; try{ last=localStorage.getItem('pdfy-text')||''; }catch(e){}
+  $('textInput').value = m ? m.text : last;
+  $('textSave').textContent = m ? 'Save' : 'Place it';
+  $('textSheet').hidden=false;
+  setTimeout(()=>{ $('textInput').focus(); $('textInput').select(); },30);
+}
+function saveText(){
+  const v=$('textInput').value.trim();
+  if(!v){ toast('Type something first.'); return; }
+  try{ localStorage.setItem('pdfy-text',v); }catch(e){}
+  const im=textImage(v);
+  $('textSheet').hidden=true;
+  if(textTarget){
+    const m=textTarget, P0=S.pages[m.pageIndex], r=P0.wrap.getBoundingClientRect(), ratio=r.width/r.height;
+    m.text=v; m.src=im.src; m.aspect=im.aspect;
+    m.w=Math.min(m.h*im.aspect/ratio, 100-m.l);
+    m.h=m.w/m.aspect*ratio;
+    m.el.querySelector('img').src=m.src; placeMarkEl(m); textTarget=null;
+    return;
+  }
+  mem.text=im.src; mem.textValue=v; startPlacing('text');
+}
+$('textBtn').addEventListener('click',()=>beginSign('text'));
+$('textSave').addEventListener('click',saveText);
+$('textCancel').addEventListener('click',()=>{ $('textSheet').hidden=true; textTarget=null; });
+$('textInput').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); saveText(); } });
+$('markDel').addEventListener('click',()=>{ if(S.sel) removeMark(S.sel); });
+$('markDone').addEventListener('click',()=>selectMark(null));
+function holdStep(btn,f){
+  let t=null, iv=null;
+  const step=()=>{ if(S.sel) resizeMark(S.sel, S.sel.w*f); };
+  const stop=()=>{ clearTimeout(t); clearInterval(iv); t=iv=null; };
+  btn.addEventListener('pointerdown',e=>{ e.preventDefault(); step(); t=setTimeout(()=>{ iv=setInterval(step,90); },400); });
+  ['pointerup','pointercancel','pointerleave'].forEach(k=>btn.addEventListener(k,stop));
+}
+holdStep($('markSmaller'),1/1.1);
+holdStep($('markBigger'),1.1);
+$('markEdit').addEventListener('click',()=>{ if(S.sel && S.sel.kind==='text') openText(S.sel); });
+$('sigBtn').addEventListener('click',()=>beginSign('sig'));
+$('initBtn').addEventListener('click',()=>beginSign('init'));
+$('placeCancel').addEventListener('click',stopPlacing);
+$('redrawBtn').addEventListener('click',()=>{ const k=S.placing; stopPlacing(); if(k==='text') openText(null); else openPad(k); });
+
+function isDark(d,k){ return d[k+3]>60 && (0.299*d[k]+0.587*d[k+1]+0.114*d[k+2])<150; }
+function findLine(ctx,cx,cy){
+  const W=ctx.canvas.width, H=ctx.canvas.height;
+  const up=Math.round(W*0.03), down=Math.round(W*0.08), half=Math.round(W*0.06);
+  const x0=Math.max(0,cx-half), x1=Math.min(W,cx+half), y0=Math.max(0,cy-up), y1=Math.min(H,cy+down);
+  const bw=x1-x0, bh=y1-y0; if(bw<4||bh<4) return null;
+  const d=ctx.getImageData(x0,y0,bw,bh).data;
+  const minRun=W*0.045, thin=Math.max(3,W*0.008), cc=cx-x0, cyr=cy-y0;
+  let best=null;
+  for(let j=0;j<bh;j++){
+    let s=-1;
+    for(let o=0;o<=4&&s<0;o++){ for(const c of [cc-o,cc+o]){ if(c>=0&&c<bw&&isDark(d,(j*bw+c)*4)){ s=c; break; } } }
+    if(s<0) continue;
+    let l=s,r=s,gap=0;
+    for(let i=s-1;i>=0;i--){ if(isDark(d,(j*bw+i)*4)){l=i;gap=0;} else if(++gap>3) break; }
+    gap=0;
+    for(let i=s+1;i<bw;i++){ if(isDark(d,(j*bw+i)*4)){r=i;gap=0;} else if(++gap>3) break; }
+    if(r-l < Math.min(minRun, bw*0.9)) continue;
+    let t=j; while(t>0 && isDark(d,((t-1)*bw+s)*4)) t--;
+    let b=j; while(b<bh-1 && isDark(d,((b+1)*bw+s)*4)) b++;
+    if(b-t+1>thin) continue;
+    const score = j<cyr ? (cyr-j)*3 : (j-cyr);
+    if(!best || score<best.score) best={score, row:t+y0, col:s+x0};
+    j=b;
+  }
+  if(!best) return null;
+  const band=Math.max(6,Math.round(W*0.012)), by0=Math.max(0,best.row-band), bh2=Math.min(H,best.row+band+1)-by0;
+  const bd=ctx.getImageData(0,by0,W,bh2).data;
+  const at=(i,y)=>y>=0&&y<bh2&&isDark(bd,(y*W+i)*4);
+  const walk=dir=>{
+    let y=best.row-by0, end=best.col, gap=0, topY=y;
+    for(let i=best.col+dir;i>=0&&i<W;i+=dir){
+      let ny=-1;
+      for(const dy of [0,-1,1,-2,2]){ if(at(i,y+dy)){ ny=y+dy; break; } }
+      if(ny>=0){ y=ny; end=i; gap=0; if(y<topY) topY=y; } else if(++gap>maxGap) break;
+    }
+    return {end, topY};
+  };
+  const maxGap=Math.max(4,Math.round(W*0.006));
+  const wl=walk(-1), wr=walk(1);
+  let L=wl.end, R=wr.end;
+  const top=Math.min(best.row, by0+wl.topY, by0+wr.topY), span=R-L, maxUp=Math.round(W*0.12);
+  const ax0=L+Math.round(span*0.02)+2, aw=Math.max(1,R-L-Math.round(span*0.04)-4);
+  const ay0=Math.max(0,top-maxUp), ah=top-2-ay0;
+  let avail=maxUp;
+  if(ah>0){
+    const a=ctx.getImageData(ax0,ay0,aw,ah).data;
+    for(let j=ah-1;j>=0;j--){
+      let n=0; for(let i=0;i<aw;i++){ if(isDark(a,(j*aw+i)*4) && ++n>1) break; }
+      if(n>1){ avail=top-(ay0+j)-2; break; }
+    }
+  }
+  return {L, R, top, avail};
+}
+
+function onPageTap(e,P0){
+  if(!S.placing) return;
+  e.preventDefault();
+  const kind=S.placing, src=getMark(kind); if(!src) return;
+  const r=P0.wrap.getBoundingClientRect(), cv=P0.canvas, W=cv.width, H=cv.height;
+  const cx=Math.round((e.clientX-r.left)/r.width*W), cy=Math.round((e.clientY-r.top)/r.height*H);
+  const img=new Image();
+  img.onload=()=>{
+    const aspect=img.naturalWidth/img.naturalHeight;
+    const cap=W*(kind==='sig'?0.075:kind==='init'?0.05:0.03), minH=W*(kind==='sig'?0.03:kind==='init'?0.022:0.016);
+    const hit=findLine(P0.ctx,cx,cy);
+    let w,h,l,t;
+    if(hit){
+      h=Math.max(minH, Math.min(cap, hit.avail*0.9));
+      w=h*aspect;
+      const maxW=(hit.R-hit.L)*0.92;
+      if(w>maxW){ w=maxW; h=w/aspect; }
+      l = kind==='init' ? hit.L+((hit.R-hit.L)-w)/2 : hit.L+(hit.R-hit.L)*0.04;
+      t = kind==='text' ? hit.top - h + h*0.1 : hit.top + h*0.08 - h;
+    }else{
+      h=kind==='sig'?W*0.05:kind==='init'?W*0.035:W*0.025; w=h*aspect;
+      l=cx-w/2; t=cy-h/2;
+    }
+    l=Math.max(0,Math.min(W-w,l)); t=Math.max(0,Math.min(H-h,t));
+    const m={id:++S.markSeq, kind, text:kind==='text'?mem.textValue:null, pageIndex:P0.index, src, aspect, l:l/W*100, t:t/H*100, w:w/W*100, h:h/H*100};
+    S.marks.push(m); renderMark(m); stopPlacing(); selectMark(m); updateCount(); setStatus('');
+    toast(hit ? 'Placed on the line. Drag it to move it, use plus and minus to size it.' : 'No line found there, so it was placed where you tapped. Drag it onto the line.');
+  };
+  img.src=src;
+}
+
+function renderMark(m){
+  const P0=S.pages[m.pageIndex];
+  const el=document.createElement('div'); el.className='mark';
+  el.innerHTML='<img alt=""><button class="del" type="button" aria-label="Remove">×</button><span class="grip" aria-hidden="true"></span>';
+  el.querySelector('img').src=m.src;
+  m.el=el; placeMarkEl(m); P0.wrap.appendChild(el);
+  el.addEventListener('click',e=>e.stopPropagation());
+  el.querySelector('.del').addEventListener('click',e=>{ e.stopPropagation(); removeMark(m); });
+  el.querySelector('.del').addEventListener('pointerdown',e=>e.stopPropagation());
+  const grip=el.querySelector('.grip');
+  el.addEventListener('pointerdown',e=>{
+    if(e.target===grip) return;
+    e.preventDefault(); e.stopPropagation(); selectMark(m); el.setPointerCapture(e.pointerId);
+    const r=P0.wrap.getBoundingClientRect(), sx=e.clientX, sy=e.clientY, ol=m.l, ot=m.t;
+    const mv=ev=>{ m.l=Math.max(0,Math.min(100-m.w, ol+(ev.clientX-sx)/r.width*100)); m.t=Math.max(0,Math.min(100-m.h, ot+(ev.clientY-sy)/r.height*100)); placeMarkEl(m); };
+    const up=()=>{ el.removeEventListener('pointermove',mv); el.removeEventListener('pointerup',up); el.removeEventListener('pointercancel',up); };
+    el.addEventListener('pointermove',mv); el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up);
+  });
+  grip.addEventListener('pointerdown',e=>{
+    e.preventDefault(); e.stopPropagation(); selectMark(m); grip.setPointerCapture(e.pointerId);
+    const r=P0.wrap.getBoundingClientRect(), sx=e.clientX, sy=e.clientY;
+    const owPx=m.w/100*r.width, ohPx=m.h/100*r.height, bottom=m.t+m.h;
+    const mv=ev=>{
+      const dx=ev.clientX-sx, dy=sy-ev.clientY;
+      const grow=(dx + dy*owPx/ohPx)/2;
+      resizeMark(m, (owPx+grow)/r.width*100, bottom);
+    };
+    const up=()=>{ grip.removeEventListener('pointermove',mv); grip.removeEventListener('pointerup',up); grip.removeEventListener('pointercancel',up); };
+    grip.addEventListener('pointermove',mv); grip.addEventListener('pointerup',up); grip.addEventListener('pointercancel',up);
+  });
+}
+function resizeMark(m, w, bottom){
+  const r=S.pages[m.pageIndex].wrap.getBoundingClientRect(), ratio=r.width/r.height;
+  if(bottom==null) bottom=m.t+m.h;
+  w=Math.max(6/r.width*100, w);
+  w=Math.min(w, 100-m.l, 100*m.aspect/ratio);
+  m.w=w; m.h=w/m.aspect*ratio; m.t=Math.max(0, Math.min(100-m.h, bottom-m.h)); placeMarkEl(m);
+}
+function placeMarkEl(m){ const s=m.el.style; s.left=m.l+'%'; s.top=m.t+'%'; s.width=m.w+'%'; s.height=m.h+'%'; }
+function selectMark(m){
+  if(S.sel&&S.sel.el) S.sel.el.classList.remove('sel');
+  S.sel=m; if(m&&m.el) m.el.classList.add('sel');
+  $('markbar').hidden=!m;
+  $('markEdit').hidden=!(m&&m.kind==='text');
+}
+function removeMark(m){ S.marks=S.marks.filter(x=>x!==m); if(m.el) m.el.remove(); if(S.sel===m) selectMark(null); updateCount(); }
+document.addEventListener('pointerdown',e=>{ if(S.sel && !e.target.closest('.mark,#markbar,#textSheet')) selectMark(null); });
 
 async function makeSample(){
   const {PDFDocument,StandardFonts,rgb}=PDFLib;
@@ -391,6 +766,11 @@ async function makeSample(){
   page.drawRectangle({x:54,y:430,width:504,height:70,color:rgb(1,0.95,0.78)});
   page.drawText('Friday, November 14',{x:72,y:468,size:20,font:hb,color:rgb(0.55,0.25,0.05)});
   page.drawText('Must be 21 or older to attend',{x:72,y:444,size:13,font:h,color:rgb(0.55,0.25,0.05)});
+  page.drawText('Approved by',{x:54,y:212,size:12,font:h,color:rgb(0.2,0.2,0.22)});
+  page.drawLine({start:{x:54,y:170},end:{x:350,y:170},thickness:1,color:rgb(0.1,0.1,0.12)});
+  page.drawText('Signature',{x:54,y:156,size:10,font:h,color:rgb(0.4,0.4,0.45)});
+  page.drawLine({start:{x:400,y:170},end:{x:470,y:170},thickness:1,color:rgb(0.1,0.1,0.12)});
+  page.drawText('Initials',{x:400,y:156,size:10,font:h,color:rgb(0.4,0.4,0.45)});
   page.drawText('This is an example file. Tap Open PDF to edit your own.',{x:54,y:80,size:13,font:ti,color:rgb(0.4,0.4,0.45)});
   return doc.save();
 }

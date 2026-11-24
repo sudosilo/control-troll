@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-11-22T20:25:17.491Z",
+  "builtAt": "2026-11-24T00:57:52.084Z",
   "budget": {
     "minutes": 15,
     "note": "Stop when the budget runs out, log what was found, move to the next job."
@@ -74,20 +74,6 @@
       ],
       "knownProblem": null,
       "snapshot": "snapshots/mission-operator.html"
-    },
-    {
-      "app": "threat-atlas-v3",
-      "url": "https://threat-atlas-v3.vercel.app",
-      "kind": "down",
-      "since": "2026-11-21",
-      "status": 404,
-      "failing": [],
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 ()"
-      ],
-      "features": [],
-      "knownProblem": null,
-      "snapshot": "snapshots/threat-atlas-v3.html"
     },
     {
       "app": "mary-jane-man",
@@ -257,6 +243,30 @@
       ],
       "knownProblem": null,
       "snapshot": "snapshots/tile-spinner.html"
+    },
+    {
+      "app": "campus-ebutuoy",
+      "url": "https://campus-ebutuoy.vercel.app",
+      "kind": "test-failing",
+      "since": "2026-11-23",
+      "status": 200,
+      "failing": [
+        {
+          "test": "name label prompt shows",
+          "error": "locator.waitFor: Timeout 6000ms exceeded.",
+          "testFile": "tests/campus-ebutuoy.json"
+        }
+      ],
+      "errors": [],
+      "features": [
+        "A name label is saved with no password and used for the transcript.",
+        "Start stumbling plays a random video, with skip and done, log it.",
+        "Course mode loads a course list and plays its videos in order.",
+        "Logged work is saved to the transcript through the Railway backend.",
+        "Open in YouTube opens the current video."
+      ],
+      "knownProblem": null,
+      "snapshot": "snapshots/campus-ebutuoy.html"
     }
   ]
 }
