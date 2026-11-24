@@ -1,140 +1,105 @@
 {
   "jobs": [
     {
-      "repo": "chromahum-zq",
+      "repo": "pajamastan-card-orders",
       "releases": [
         {
           "tag": "v2026.11.23",
-          "target": "d19d7774ddf37480f8ba30f2b76e71336301773a",
-          "name": "ChromaHum Tiles 2026-11-23",
-          "body": "Sound and camera now start more reliably. The camera has its own controller with a Restart camera button, and the screen says what is wrong when the camera is blocked or in use by another app. A tap wakes the sound if the browser has paused it."
+          "target": "4d037b863483e3a5b86b6cab70df7986ceab4502",
+          "name": "Pajamastan Card Orders 2026-11-23",
+          "body": "Created the card order backend. It stores card images, opens a card payment checkout, and has an order page for the owner."
         }
       ],
-      "description": "An instrument that turns camera colors into sound, with tiles, patterns, and an infinite canvas.",
-      "homepage": "https://chromahum-zq.vercel.app",
-      "topics": [
-        "camera",
-        "music",
-        "vercel",
-        "visualizer"
-      ]
-    },
-    {
-      "repo": "downfree-foundry",
-      "releases": [
-        {
-          "tag": "v2026.11.22",
-          "target": "1e95fd6421f7c55a21ec096973037d0eb04bea15",
-          "name": "Road Layers 2026-11-22",
-          "body": "The Composite length is now a picker from 6 seconds up to 5 minutes, or as long as the clips allow, with 30 seconds as the default instead of 6. When a clip limits the length, the status says which clip it is and how to get a longer build."
-        }
-      ],
-      "description": "Road Layers stacks cars from several drive clips onto one road in the browser.",
-      "homepage": "https://downfree-foundry.vercel.app",
-      "topics": [
-        "tool",
-        "vercel",
-        "video"
-      ]
-    },
-    {
-      "repo": "2026-11-17-orange-campus",
-      "releases": [
-        {
-          "tag": "v2026.11.23",
-          "target": "fa110d6b04c832cf78be96001dc2b283b71dbbea",
-          "name": "Campus 2026-11-23",
-          "body": "Campus version 3. Home picks up where you left off and recommends a next video, with a bottom navigation bar and a new navy, green, and gold look. Recommendations now search your subject instead of your bucket name, and a Junk button removes bad picks. The player has a screen off mode and a fullscreen button for picture in picture."
-        }
-      ],
-      "description": "A phone friendly learning tool that plays videos and logs what you build in a credit transcript.",
-      "homepage": "https://campus-ebutuoy.vercel.app",
-      "topics": [
-        "education",
-        "tool",
-        "vercel",
-        "video"
-      ]
-    },
-    {
-      "repo": "2026-11-17-orange-campusapi",
-      "releases": [
-        {
-          "tag": "v2026.11.23",
-          "target": "aca2f0c16edc94639b70619e06663215cfb4601d",
-          "name": "Campus API 2026-11-23",
-          "body": "Search now returns lessons only, using education categories, a three minute minimum, and relevance order. Added a junk list so rejected videos stay out. Entries now carry their subject."
-        }
-      ],
-      "description": "The backend for Campus that stores sources, logged work, and the transcript.",
+      "description": "Backend that stores card images, opens a checkout, and shows orders to the owner.",
       "homepage": "",
       "topics": [
         "backend",
-        "education",
-        "railway"
+        "payments",
+        "pajamastan"
       ]
     },
     {
-      "repo": "2026-11-16-pipe-weave",
+      "repo": "2026-11-24-blue-estate-dossier",
       "releases": [
         {
-          "tag": "v2026.11.22",
-          "target": "cae48126c469c6738f2a0b961c2649b4d321606a",
-          "name": "Pipe Weave 2026-11-22",
-          "body": "Fill canvas now works with any preset. It keeps growing pipes until the screen is covered, tops up gaps, and reports the coverage. The fill style has a new Current rules choice."
+          "tag": "v2026.11.24",
+          "target": "2ae3a9ff6104dd929714d3de6849601d5086d3e6",
+          "name": "Estate Dossier 2026-11-24",
+          "body": "Created Estate Dossier. It has a radial map and a list view of exposures, triage, tasks, an intake wizard, a broker state machine, and exports. A sign in gate was added, with encrypted storage for each account and sync between devices."
         }
       ],
-      "description": "A pipe drawing toy where pipes turn, split, and weave over and under each other.",
-      "homepage": "https://2026-11-16-pipe-weave.vercel.app",
+      "description": "A private dossier that maps where your personal information is exposed and tracks what to do.",
+      "homepage": "https://2026-11-24-blue-estate-dossier.vercel.app",
       "topics": [
-        "canvas",
-        "drawing",
-        "game",
-        "toy",
-        "vercel"
-      ]
-    },
-    {
-      "repo": "itchy-troll",
-      "releases": [
-        {
-          "tag": "v2026.11.22",
-          "target": "226d6d59d6daae6718be330ad397504fc14ff55d",
-          "name": "Itchy Troll 2026-11-22",
-          "body": "The scout looked over the repos for new candidates."
-        }
-      ],
-      "description": "An agent that publishes finished apps to a game publishing site.",
-      "homepage": "https://itchy-troll.vercel.app",
-      "topics": [
-        "automation",
-        "publishing",
         "tool",
+        "privacy",
         "vercel"
       ]
     },
     {
-      "repo": "2026-11-22-orange-hubview",
+      "repo": "starwake-game",
+      "releases": [
+        {
+          "tag": "v2026.11.24",
+          "target": "b6a3a2e5c2e0d69921cdc9e78aead03c25f462ac",
+          "name": "Starwake 2026-11-24",
+          "body": "Added a visual pass with nebulae, a living Bloom edge, star tints and halos, a ringed planet, engine trails, shot glow, and shockwaves."
+        },
+        {
+          "tag": "v2026.11.23",
+          "target": "f958cda59882b580d59bf3d1ac3708819e2e2150",
+          "name": "Starwake 2026-11-23",
+          "body": "Created Starwake, a game on a printed style star chart. It replaced the earlier Spy Hunt page. A balance pass after playtesting added Bloom warnings, gentler scouts, better income, an exact arrival day, and a favicon."
+        }
+      ],
+      "description": "A star chart strategy game where a grey Bloom spreads across the map.",
+      "homepage": "https://starwake-game.vercel.app",
+      "topics": [
+        "game",
+        "strategy",
+        "vercel"
+      ]
+    },
+    {
+      "repo": "2026-11-24-green-filecensus",
+      "releases": [
+        {
+          "tag": "v2026.11.24",
+          "target": "27ea7a1bdd4324f3412ef64d80eea247704d67db",
+          "name": "FileCensus 2026-11-24",
+          "body": "Created FileCensus, an Android app with a file inventory, file details, notes on AI made files, a timeline, and tags. It then gained a duplicate finder and built in visualizers, including a Circuit mode. A board view now draws the whole file catalog, with a look for each file, and the audio Circuit mode was removed. Deleting is now safer, with a review step, a native confirm, a restorable trash, and a separate erase step."
+        }
+      ],
+      "description": "An Android app that takes a census of the files on your phone.",
+      "homepage": "",
+      "topics": [
+        "android",
+        "tool",
+        "files"
+      ]
+    },
+    {
+      "repo": "conveyor-sim",
       "releases": [
         {
           "tag": "v2026.11.23",
-          "target": "35b7328ac684bbdf422f9b1d255bdae4c1551639",
-          "name": "Hub View 2026-11-23",
-          "body": "Added a car picker menu with makes and nested models and a paint picker for outside body panels. Added part search and a MORE sheet with specs, manual, and links tabs. Added an Extra explode mode that spreads out every part of every assembly. Added manual diagrams for a 2006 Crown Victoria and reshaped the Accord floor pan, trunk floor, and carpet to clear the wheels."
+          "target": "9f9aec45f64d06683af4ebdff00bd22b5a0e6859",
+          "name": "Conveyor Sim 2026-11-23",
+          "body": "Every label now leads with what the machine is in software, like Web server, Database or Cron job, with the factory picture second. This covers the floor, the machine card, the tabs, and the build hints."
         },
         {
           "tag": "v2026.11.22",
-          "target": "2c403b3cd4c58d060ceea8993bdd4d0cd1ad7c80",
-          "name": "Hub View 2026-11-22",
-          "body": "Created Hub View, a three dimensional exploded view that started with a wheel hub and grew into a full car with 25 assemblies. Added a 1982 Accord sedan and a 2007 Prius fitted to blueprints, with a car switch, a retro spec sheet panel, and body shapes that were refined through the day. Parts show an info card in the scene, an opacity slider, and matched manual diagrams. A menu saves the card as an image, finds a part in online shops, and builds a buy sheet with part numbers and tire sizes that prints on one page. Automatic camera zoom was removed and both cars were mirrored so the steering wheel is on the left."
+          "target": "a101d74b2c6d7476c0570e4a5445220100a9650c",
+          "name": "Conveyor Sim 2026-11-22",
+          "body": "You can now build a factory from the stacks made in the pipeline builder. Teardown layers are accepted by name, then detail, then category. The machine info card pops up above the tapped machine, scales with your zoom, and stops growing past a readable size."
         }
       ],
-      "description": "A three dimensional exploded view of cars with part cards, manual diagrams, and a buy sheet.",
-      "homepage": "https://2026-11-22-orange-hubview.vercel.app",
+      "description": "A conveyor simulation started from a copy of the agent test bed",
+      "homepage": "https://conveyor-sim.vercel.app",
       "topics": [
-        "threejs",
-        "tool",
-        "cars",
+        "agents",
+        "backend",
+        "simulator",
         "vercel"
       ]
     },
@@ -142,74 +107,142 @@
       "repo": "2026-11-23-orange-explode",
       "releases": [
         {
-          "tag": "v2026.11.23",
-          "target": "6e4ce22e673f157681f08b2c81a52a1b7de4fcde",
+          "tag": "v2026.11.23-2",
+          "target": "61113a0109a7f0fd42f946dfa95016eb79be9b05",
           "name": "Explode 2026-11-23",
-          "body": "Created Explode, a photo app. Pick a photo, tap anything in it to cut that object out as a piece, then slide to explode the pieces apart and drag them around. Undo, Reset, and a Holes toggle are included."
+          "body": "Created Explode, a photo app. Pick a photo, tap anything in it to cut that object out as a piece, then slide to explode the pieces apart and drag them around. Later the same day it gained one by one explode mode, bubbles and deeper cuts, callout labels, toward and away slide directions, pinch zoom and pan, a ping-pong Play with typed out labels, and a Focus mode with a background fade."
         }
       ],
       "description": "A photo toy that cuts objects out of a picture and spreads the pieces apart.",
       "homepage": "https://2026-11-23-orange-explode.vercel.app",
       "topics": [
-        "tool",
         "photo",
+        "tool",
         "toy",
         "vercel"
       ]
     },
     {
-      "repo": "pipeline-builder",
-      "releases": [
-        {
-          "tag": "v2026.11.22",
-          "target": "e7e9a15116779b8c6e5c8e3f764f646689556763",
-          "name": "Pipeline Builder 2026-11-22",
-          "body": "Added the Pipeline Builder source, a tool that builds a software stack from tool choices, with Builder, Randomizer, Diagram, and Templates tabs. Added Open in Conveyor Sim buttons to the builder and to templates."
-        }
-      ],
-      "description": "A stack planning tool with a builder, randomizer, diagram, and templates.",
-      "homepage": "https://pipeline-builder-azure-kappa.vercel.app",
-      "topics": [
-        "tool",
-        "builder",
-        "vercel"
-      ]
-    },
-    {
-      "repo": "threat-atlas-v3",
+      "repo": "pdf-yourself",
       "releases": [
         {
           "tag": "v2026.11.23",
-          "target": "b50171bd9758f4e202fb3903940a27cb7260085f",
-          "name": "Threat Atlas 2026-11-23",
-          "body": "Story mode. A new STORY tab walks the incidents in order as twenty seven chapters, rotating the globe and building the map year by year. Intel list now marks which incidents are in the story. Corrected the Triton attribution to Russia."
+          "target": "c05f13cd5c46f298a09f95173103c703c54f6de4",
+          "name": "PDF Text Editor 2026-11-23",
+          "body": "Added signatures and initials. Draw once, tap a line to auto fit, drag and resize, and the result is flattened into the download. Scanned and photo PDFs can now be signed, and tilted or broken scan lines are followed better. A Text box tool and a bottom Remove bar for placed items were added. Resizing is smoother, with plus and minus buttons that repeat when held."
         }
       ],
-      "description": "Interactive globe of security threats with layers, filters, and country intel.",
-      "homepage": "https://threat-atlas-two.vercel.app",
+      "description": "Open a PDF, tap a line of text, and change what it says without leaving your device",
+      "homepage": "https://pdf-yourself.vercel.app",
       "topics": [
-        "globe",
-        "map",
-        "research",
-        "security",
+        "editor",
+        "pdf",
+        "tool",
         "vercel"
       ]
     },
     {
-      "repo": "repofind",
+      "repo": "field-twin-viridian",
       "releases": [
         {
-          "tag": "v2026.11.22",
-          "target": "e1b7f859f673e9254f74234c62521f310a65fd76",
-          "name": "Repo Find 2026-11-22",
-          "body": "Added Conveyor Sim links. Each teardown can open in Conveyor Sim two ways, as built from its layers or as the rebuild, and the builder stack, rolled stacks and templates each have an open in conveyor sim button. Layers with no machine yet show up as gaps there. Info banners now start closed behind an i button. Tap the i to open or close one."
+          "tag": "v2026.11.23",
+          "target": "67f2dc505e3ce8b62b7ca228aadacaa1924d9750",
+          "name": "Field Twin Viridian 2026-11-23",
+          "body": "Added a sideways layout with the camera on the left. A rotate button holds the screen sideways or upright or lets it turn. A dark screen button dims the screen and keeps it on while the camera and plate reader run."
         }
       ],
-      "description": "Search and watch tool for code repos, archives, and sites.",
-      "homepage": "https://repofind-delta.vercel.app",
+      "description": "A field twin app that reads plates and keeps a list of sightings.",
+      "homepage": "https://field-twin-viridian.vercel.app",
       "topics": [
-        "search",
+        "field",
+        "plate-reader",
         "tool",
+        "vercel"
+      ]
+    },
+    {
+      "repo": "hire-portal",
+      "releases": [
+        {
+          "tag": "v2026.11.23",
+          "target": "ed7050244351f9d92c96e60f0e9e6b99a35690dc",
+          "name": "Hire Portal 2026-11-23",
+          "body": "Added an open positions page with a fully remote Data Collection Specialist posting beside the Systems Support Technician posting. Added a Prove you are human face check where the applicant looks straight, turns left, turns right, and looks straight again. Applications now send to a shared database project, with the badge photo sent when it is chosen. An application that cannot send waits on the device. A menu holds an Applications inbox where an owner signs in to read, open, and download every application."
+        }
+      ],
+      "description": "A practice job application that teaches applicants what to share and what to withhold",
+      "homepage": "https://hire-portal-six.vercel.app",
+      "topics": [
+        "demo",
+        "education",
+        "tool"
+      ]
+    },
+    {
+      "repo": "strudel-samples",
+      "releases": [
+        {
+          "tag": "v2026.11.24",
+          "target": "cdcb21035d258da8dd091570a28ce2c00797378f",
+          "name": "Strudel Samples 2026-11-24",
+          "body": "Added a pad board page that loads every clip from the map. Pick clips from a library menu, set each pad's start point by dragging its waveform or typing seconds, and turn on chain mode so each pad plays the next one when it ends. The board layout saves itself in the browser, and the site root opens the board."
+        }
+      ],
+      "description": "Sound clips for Strudel: samples('github:sudosilo/strudel-samples')",
+      "homepage": "https://strudel-samples.vercel.app",
+      "topics": [
+        "audio",
+        "music",
+        "samples",
+        "strudel"
+      ]
+    },
+    {
+      "repo": "2026-11-04-orange-hush",
+      "releases": [
+        {
+          "tag": "v2026.11.23",
+          "target": "044035662523ee2ddb8c91485fe7e6099754a89c",
+          "name": "Hush 2026-11-23",
+          "body": "Blocked notifications that refuse a plain cancel are now snoozed instead."
+        }
+      ],
+      "description": "An Android app that blocks notifications and releases them in a digest.",
+      "homepage": "",
+      "topics": [
+        "android",
+        "notifications",
+        "tool"
+      ]
+    },
+    {
+      "repo": "2026-10-18-orange-testbed",
+      "releases": [
+        {
+          "tag": "v2026.11.24",
+          "target": "1c97a7d682a49be24ee698c8c95bf5d39778c428",
+          "name": "Agent Test Bed 2026-11-24",
+          "body": "The agent and grok turns for the day were played and merged into the city."
+        },
+        {
+          "tag": "v2026.11.23",
+          "target": "80beca6e0a3eda67ba4bd31e3ce2a00f7d825b79",
+          "name": "Agent Test Bed 2026-11-23",
+          "body": "The agent and grok turns for the day were played and merged into the city."
+        },
+        {
+          "tag": "v2026.11.22-2",
+          "target": "9610de9c279e6761cee93983801c247b94a41ccf",
+          "name": "Agent Test Bed 2026-11-22",
+          "body": "The agent, grok, and steward turns for the day were played and merged into the city."
+        }
+      ],
+      "description": "A shared city that AI agents build one turn at a time.",
+      "homepage": "https://2026-10-18-orange-testbed.vercel.app",
+      "topics": [
+        "agents",
+        "game",
+        "simulator",
         "vercel"
       ]
     }

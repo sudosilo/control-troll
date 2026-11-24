@@ -1765,8 +1765,8 @@
    "summary": "A field twin app that reads and tracks license plates",
    "name": "Field Twin Viridian",
    "latest": {
-    "date": "2026-10-15",
-    "text": "First version. Added a plate reader status and reading while parked, with an upload status. Then added plate sightings, a best photo, a pass on state and color, and a page for each plate."
+    "date": "2026-11-23",
+    "text": "Added a sideways layout with the camera on the left. A rotate button holds the screen sideways or upright or lets it turn. A dark screen button dims the screen and keeps it on while the camera and plate reader run."
    }
   },
   "heckle-troll": {
@@ -1793,8 +1793,8 @@
    "summary": "A shared city where AI agents take turns building, with a viewer and a web API.",
    "name": "Agent Test Bed",
    "latest": {
-    "date": "2026-11-22",
-    "text": "The agent turn was played and merged into the city."
+    "date": "2026-11-24",
+    "text": "The agent and grok turns for the day were played and merged into the city."
    }
   },
   "steward-repo": {
@@ -2074,11 +2074,11 @@
    ],
    "private": false,
    "category": "Backends and Infrastructure",
-   "summary": "A conveyor simulation started from a copy of the agent test bed.",
+   "summary": "A conveyor simulation started from a copy of the agent test bed",
    "name": "Conveyor Sim",
    "latest": {
-    "date": "2026-11-21",
-    "text": "Built a packet factory, then rebuilt the whole site as a visual pipeline builder. Sixteen machine types stand for parts of a website and run a live simulation using Packet Baron's sauces, wrapper styles and 50/50 packets. The agent world is gone, so the site is now a static builder. There are four examples, a Build mode to place, connect, rename and delete machines, live counts, a build saved in the browser, and share links that hold the whole plan."
+    "date": "2026-11-23",
+    "text": "Every label now leads with what the machine is in software, like Web server, Database or Cron job, with the factory picture second. This covers the floor, the machine card, the tabs, and the build hints."
    }
   },
   "pdf-yourself": {
@@ -2088,11 +2088,11 @@
    ],
    "private": false,
    "category": "Tools",
-   "summary": "Open a PDF, tap a line of text, and change what it says without leaving your device.",
+   "summary": "Open a PDF, tap a line of text, and change what it says without leaving your device",
    "name": "PDF Text Editor",
    "latest": {
-    "date": "2026-10-29",
-    "text": "First release. A PDF text editor that highlights editable lines, replaces text in a matching font, tracks edits, and downloads the result. A deploy was triggered later the same day."
+    "date": "2026-11-23",
+    "text": "Added signatures and initials. Draw once, tap a line to auto fit, drag and resize, and the result is flattened into the download. Scanned and photo PDFs can now be signed, and tilted or broken scan lines are followed better. A Text box tool and a bottom Remove bar for placed items were added. Resizing is smoother, with plus and minus buttons that repeat when held."
    }
   },
   "smash-bender": {
@@ -2257,8 +2257,8 @@
    "summary": "An Android notification blocker that holds alerts and releases them together on a schedule",
    "name": "Hush",
    "latest": {
-    "date": "2026-11-20",
-    "text": "Tapping the Clock fixer badge while the fixer is off now opens the Hush app info page first, where Samsung's restricted setting gets unlocked, and the next tap opens the accessibility screen to switch the fixer on."
+    "date": "2026-11-23",
+    "text": "Blocked notifications that refuse a plain cancel are now snoozed instead."
    }
   },
   "2026-11-05-drive-thru-dental": {
@@ -2313,8 +2313,8 @@
    "summary": "A practice job application portal that teaches what to share at each step",
    "name": "Hire Portal",
    "latest": {
-    "date": "2026-11-16",
-    "text": "Fixed the spelling of the company name. The portal is now a Pajamastan portal, with a blue Republic of Pajamastan link at the top that goes back to the Pajamastan site."
+    "date": "2026-11-23",
+    "text": "Added an open positions page with a fully remote Data Collection Specialist posting beside the Systems Support Technician posting. Added a Prove you are human face check where the applicant looks straight, turns left, turns right, and looks straight again. Applications now send to a shared database project, with the badge photo sent when it is chosen. An application that cannot send waits on the device. A menu holds an Applications inbox where an owner signs in to read, open, and download every application."
    }
   },
   "rainbow-run": {
@@ -2463,8 +2463,8 @@
    "summary": "A pack of short sound clips that Strudel can load by name.",
    "name": "Strudel Samples",
    "latest": {
-    "date": "2026-11-10",
-    "text": "Added a word puller that grabs every short clip of one word. The first pull was the word hello, trimmed tight with misses dropped and a hello supercut added. Every sample is now named by its words, show, episode, and clip id, and a catalog lists them all."
+    "date": "2026-11-24",
+    "text": "Added a pad board page that loads every clip from the map. Pick clips from a library menu, set each pad's start point by dragging its waveform or typing seconds, and turn on chain mode so each pad plays the next one when it ends. The board layout saves itself in the browser, and the site root opens the board."
    }
   },
   "city-seek": {
@@ -2889,7 +2889,7 @@
    "private": false,
    "latest": {
     "date": "2026-11-23",
-    "text": "Created Explode, a photo app. Pick a photo, tap anything in it to cut that object out as a piece, then slide to explode the pieces apart and drag them around. Undo, Reset, and a Holes toggle are included."
+    "text": "Created Explode, a photo app. Pick a photo, tap anything in it to cut that object out as a piece, then slide to explode the pieces apart and drag them around. Later the same day it gained one by one explode mode, bubbles and deeper cuts, callout labels, toward and away slide directions, pinch zoom and pan, a ping-pong Play with typed out labels, and a Focus mode with a background fade."
    },
    "name": "Explode",
    "category": "Tools",
@@ -2910,6 +2910,58 @@
    "name": "Pipeline Builder",
    "category": "Tools",
    "summary": "A stack planning tool with a builder, randomizer, diagram, and templates"
+  },
+  "pajamastan-card-orders": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "name": "Pajamastan Card Orders",
+   "summary": "A backend that stores card images, opens a checkout, and lists orders for the owner",
+   "category": "Backends and Infrastructure",
+   "latest": {
+    "date": "2026-11-23",
+    "text": "Created the card order backend. It stores card images, opens a card payment checkout, and has an order page for the owner."
+   }
+  },
+  "2026-11-24-blue-estate-dossier": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-24-blue-estate-dossier.vercel.app"
+   ],
+   "private": false,
+   "name": "Estate Dossier",
+   "summary": "A dossier app that maps where personal information is exposed and tracks the cleanup",
+   "category": "Tools",
+   "latest": {
+    "date": "2026-11-24",
+    "text": "Created Estate Dossier. It has a radial map and a list view of exposures, triage, tasks, an intake wizard, a broker state machine, and exports. A sign in gate was added, with encrypted storage for each account and sync between devices."
+   }
+  },
+  "starwake-game": {
+   "apps": [],
+   "urls": [
+    "https://starwake-game.vercel.app"
+   ],
+   "private": false,
+   "name": "Starwake",
+   "summary": "A star chart game where a grey Bloom eats the map and you race it",
+   "category": "Games",
+   "latest": {
+    "date": "2026-11-24",
+    "text": "Added a visual pass with nebulae, a living Bloom edge, star tints and halos, a ringed planet, engine trails, shot glow, and shockwaves."
+   }
+  },
+  "2026-11-24-green-filecensus": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "name": "FileCensus",
+   "summary": "An Android app that inventories files, finds duplicates, and visualizes the catalog",
+   "category": "Tools",
+   "latest": {
+    "date": "2026-11-24",
+    "text": "Created FileCensus, an Android app with a file inventory, file details, notes on AI made files, a timeline, and tags. It then gained a duplicate finder and built in visualizers, including a Circuit mode. A board view now draws the whole file catalog, with a look for each file, and the audio Circuit mode was removed. Deleting is now safer, with a review step, a native confirm, a restorable trash, and a separate erase step."
+   }
   }
  }
 }
