@@ -511,7 +511,23 @@
   "sudosilo/2026-11-23-orange-explode@v2026.11.23",
   "sudosilo/pipeline-builder@v2026.11.22",
   "sudosilo/threat-atlas-v3@v2026.11.23",
-  "sudosilo/repofind@v2026.11.22"
+  "sudosilo/repofind@v2026.11.22",
+  "sudosilo/pajamastan-card-orders@v2026.11.23",
+  "sudosilo/2026-11-24-blue-estate-dossier@v2026.11.24",
+  "sudosilo/starwake-game@v2026.11.24",
+  "sudosilo/starwake-game@v2026.11.23",
+  "sudosilo/2026-11-24-green-filecensus@v2026.11.24",
+  "sudosilo/conveyor-sim@v2026.11.23",
+  "sudosilo/conveyor-sim@v2026.11.22",
+  "sudosilo/2026-11-23-orange-explode@v2026.11.23-2",
+  "sudosilo/pdf-yourself@v2026.11.23",
+  "sudosilo/field-twin-viridian@v2026.11.23",
+  "sudosilo/hire-portal@v2026.11.23",
+  "sudosilo/strudel-samples@v2026.11.24",
+  "sudosilo/2026-11-04-orange-hush@v2026.11.23",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.24",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.23",
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.22-2"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -1519,7 +1535,7 @@
   },
   "sudosilo/field-twin-viridian": {
    "d": "A field twin app that reads plates and keeps a list of sightings.",
-   "h": "",
+   "h": "https://field-twin-viridian.vercel.app",
    "t": [
     "field",
     "plate-reader",
@@ -2179,7 +2195,7 @@
   },
   "sudosilo/strudel-samples": {
    "d": "Sound clips for Strudel: samples('github:sudosilo/strudel-samples')",
-   "h": "",
+   "h": "https://strudel-samples.vercel.app",
    "t": [
     "audio",
     "music",
@@ -2499,6 +2515,42 @@
     "builder",
     "tool",
     "vercel"
+   ]
+  },
+  "sudosilo/pajamastan-card-orders": {
+   "d": "Backend that stores card images, opens a checkout, and shows orders to the owner.",
+   "h": "",
+   "t": [
+    "backend",
+    "pajamastan",
+    "payments"
+   ]
+  },
+  "sudosilo/2026-11-24-blue-estate-dossier": {
+   "d": "A private dossier that maps where your personal information is exposed and tracks what to do.",
+   "h": "https://2026-11-24-blue-estate-dossier.vercel.app",
+   "t": [
+    "privacy",
+    "tool",
+    "vercel"
+   ]
+  },
+  "sudosilo/starwake-game": {
+   "d": "A star chart strategy game where a grey Bloom spreads across the map.",
+   "h": "https://starwake-game.vercel.app",
+   "t": [
+    "game",
+    "strategy",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-11-24-green-filecensus": {
+   "d": "An Android app that takes a census of the files on your phone.",
+   "h": "",
+   "t": [
+    "android",
+    "files",
+    "tool"
    ]
   }
  }
