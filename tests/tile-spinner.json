@@ -36,13 +36,13 @@
    "name": "shuffle and reset work",
    "steps": [
     {
-     "clickSel": "#shuffle"
+     "clickSel": "#controls button:has-text(\"Shuffle\")"
     },
     {
-     "clickSel": "#reset"
+     "clickSel": "#controls button:has-text(\"Reset\")"
     },
     {
-     "seeSel": "#score"
+     "seeSel": "#statB"
     }
    ]
   }
