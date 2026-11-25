@@ -220,8 +220,8 @@
    "summary": "Twelve sound visualizers that can follow a shared band",
    "name": "Spectral Engine",
    "latest": {
-    "date": "2026-10-14",
-    "text": "Corrected the phone markers."
+    "date": "2026-11-24",
+    "text": "Added a MIC button that feeds any visualizer from the microphone. Fixed the Pendulum visualizer, which drew nothing. A Chromatogram visualizer was added and then removed the same day."
    }
   },
   "looper": {
@@ -620,8 +620,8 @@
    "summary": "Map of data centers, power plants, heavy industry, and drought with live satellite imagery",
    "name": "Data Center OSINT",
    "latest": {
-    "date": "2026-10-09",
-    "text": "Version 4 opens on the whole country. Added power plants, heavy industry, cooling towers, drought, and a backend. The map now shows live satellite imagery with a last day loop, water vapor, infrared, and moving wind trails. An eastern satellite covers the country view, and the panel is shorter and closes when the map is dragged."
+    "date": "2026-11-24",
+    "text": "The backend now runs inside the same site, so the map loads every layer without being blocked by the browser."
    }
   },
   "cross-venue-equivalence-engine": {
@@ -944,8 +944,8 @@
    "summary": "The battle server that keeps Topo Wars friend games in sync",
    "name": "Topo Wars Server",
    "latest": {
-    "date": "2026-10-03",
-    "text": "Added tanks, mines, a chinook, and grenade splash damage. Added a commander aura. The battle rules were synced with the game several times."
+    "date": "2026-11-24",
+    "text": "The root address now shows a status page with a link to the game instead of a not found page."
    }
   },
   "paycheck-hub": {
@@ -976,8 +976,8 @@
    "summary": "Public record page that lists the active warrants docket and checks for new ones.",
    "name": "Pajamastan Warrants",
    "latest": {
-    "date": "2026-10-02",
-    "text": "First deploy of the warrants page and the backend that keeps its docket current."
+    "date": "2026-11-24",
+    "text": "The docket now loads straight from the courts search through a built in endpoint, so the page works on Vercel with no separate server. New entries are judged by warrant date."
    }
   },
   "note-note-note": {
@@ -1016,8 +1016,8 @@
    "summary": "Backend that checks price bars for patterns and grades the signals it logs.",
    "name": "Signal Snapshot Backend",
    "latest": {
-    "date": "2026-09-28",
-    "text": "Created the signal snapshot backend. It takes in price bars, detects patterns, logs snapshots, grades them, and serves a report. A small deploy fix followed the same day."
+    "date": "2026-11-24",
+    "text": "The root address now answers with the service name and its routes instead of a not found page."
    }
   },
   "signal-snapshot": {
@@ -1032,8 +1032,8 @@
    "summary": "Panel that shows trading signals checked by the signal snapshot backend.",
    "name": "Signal Snapshot",
    "latest": {
-    "date": "2026-09-28",
-    "text": "Created the signal snapshot panel with live, graded, and report views."
+    "date": "2026-11-24",
+    "text": "The panel now talks to the live snapshot engine, so it loads instead of being blocked."
    }
   },
   "diamond-driller": {
@@ -1265,11 +1265,11 @@
    ],
    "private": false,
    "category": "Games",
-   "summary": "Endless vertical platformer with moving platforms, powerups, and touch controls for phones.",
+   "summary": "A vertical climbing game with many modes and global leaderboards",
    "name": "Ascend",
    "latest": {
-    "date": "2026-09-10",
-    "text": "First release. Ascend is a vertical climbing game with generated platforms, coins, gems, and powerups. It works with touch controls on a phone."
+    "date": "2026-11-24",
+    "text": "Added a global leaderboard that shows over the game, backed by a new leaderboard service. Added challenge, career, gauntlet, jewels, and marathon modes, each with its own leaderboard. The climb now has five height zones, solid blocks, a ghost replay, synth sound, and vibration. New pickups include shrink and grow, slow motion, and a trail blazer. The glider now burns out after ten seconds."
    }
   },
   "mohavetech-contracts": {
@@ -2699,8 +2699,8 @@
    "summary": "A story and map toy that loads the Agent Test Bed city and lets you move, name, and judge its places.",
    "name": "Zion Wakes",
    "latest": {
-    "date": "2026-11-16",
-    "text": "Created Zion Wakes, a story and map toy that loads the Agent Test Bed city. You pan and zoom the map and read a short story beat. You can pick a place to move it, name it, approve it, or reject it, and start over with New start. Two follow up builds were triggered to get the first deploy live."
+    "date": "2026-11-23",
+    "text": "Fixed four playtest bugs. The first load now retries the city fetch and shows a Try again button instead of hanging. Moving a place now ends after the tap and says where it moved, and a blocked spot cancels with the reason. Name it opens a field inside the game instead of a browser pop up. Street labels are now drawn once per shared edge."
    }
   },
   "bloxx": {
@@ -2961,6 +2961,54 @@
    "latest": {
     "date": "2026-11-24",
     "text": "Created FileCensus, an Android app with a file inventory, file details, notes on AI made files, a timeline, and tags. It then gained a duplicate finder and built in visualizers, including a Circuit mode. A board view now draws the whole file catalog, with a look for each file, and the audio Circuit mode was removed. Deleting is now safer, with a review step, a native confirm, a restorable trash, and a separate erase step."
+   }
+  },
+  "2026-11-24-green-fleetindex": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "name": "Fleet Index",
+   "summary": "A server where FileCensus phones share inventories and find which phone holds a file",
+   "category": "Backends and Infrastructure",
+   "latest": {
+    "date": "2026-11-24",
+    "text": "Created the fleet index server for FileCensus. Phones push their file inventories to it, and any phone can ask which phone holds a given file. It keeps a searchable copy in memory and saves the data to a database. It refuses every request until an access key is set."
+   }
+  },
+  "2026-11-24-green-greenscreen": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "name": "Greenscreen",
+   "summary": "A remote screen page that shows the phone screen and taps where you click",
+   "category": "Tools",
+   "latest": {
+    "date": "2026-11-24",
+    "text": "Created Greenscreen version 2, a step friendly remote screen page for the Green Phone. Each page load takes a fresh screenshot, and clicking the screenshot taps that spot on the phone. It uses plain forms with no scripts. A second start script runs it behind a named tunnel at a fixed address."
+   }
+  },
+  "2026-11-25-blue-cliprig": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "name": "ClipRig",
+   "summary": "An Android app that records the screen, finds highlights, and edits clips",
+   "category": "Tools",
+   "latest": {
+    "date": "2026-11-25",
+    "text": "Created ClipRig, an Android phone app with a screen recorder, a highlight finder, a clip editor, a library, a games list, settings, and an updater. The build now uses the Android tools already on the build machine."
+   }
+  },
+  "2026-11-25-blue-manualrebuild": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "name": "Manual Rebuild",
+   "summary": "Turns manual figures into traced parts with an exploded 3D view",
+   "category": "Tools",
+   "latest": {
+    "date": "2026-11-25",
+    "text": "Created Manual Rebuild, a tool that turns manual figures into parts. Version 2 added a parts studio that traces figures into polygon parts and exports them as SVG. It also shows an exploded 3D view with a spin control and an explode slider."
    }
   }
  }
