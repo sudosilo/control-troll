@@ -1,6 +1,41 @@
 {
   "heckles": [
     {
+      "date": "2026-11-25T08:43:51Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "423a9fbc5a2b4703ef5582e4dac28b25dea4144d",
+      "message": "towncar archive complete, 8683 pages",
+      "heckle": "You called it complete, and then shipped a specs.json with over five thousand added lines in a single commit, next to jsonl files where every text field gets chopped off at the first div tag. That is not an archive, that is a hostage video made of half sentences. Dumping a scraped repair manual into a git repo with fourteen near identical commit messages is a filibuster in file form, long, loud, and accomplishing nothing a reader can use. Did the intern think truncated HTML counts as documentation?\n\nFix it: Repair the scraper so ref/archive/towncar/*.jsonl keeps the full text field instead of stopping at the first div. Move the crawl output out of git and into storage built for bulk data. Squash the checkpoint noise so the history says something. Add a note in the repo about where the scraped content came from and whether you may keep a copy."
+    },
+    {
+      "date": "2026-11-25T08:43:51Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "c69a920eef3821c91f76df8ae0b8f06fc5509538",
+      "message": "towncar archive and diagrams",
+      "heckle": "Hundreds of numbered PNGs under ref/manual/towncar, 0000.png on up, dropped in one commit with a message that says nothing about what is inside. No names, no index, just a pile of numbers like a bailout bill nobody read. Every one of those binaries lives in git history forever, so the repo only gets fatter, and it already carries a crawler with a checkpoint every five hundred pages. The senior dev who has to clone this wants a word with whoever thought that was fine.\n\nFix it: Name the diagram files by the page they came from, not by a counter. Add an index file in ref/manual/towncar that maps each image to its source page. Put the bulk images in object storage or git LFS instead of normal history. Write a message that says how many diagrams landed and from where."
+    },
+    {
+      "date": "2026-11-25T08:43:51Z",
+      "repo": "ascend",
+      "sha": "b65b81881dfb2e10a9993c3070dd77be7f8b18b0",
+      "message": "ascend: leaderboard backend url",
+      "heckle": "You committed a production backend URL into a root json file called ascend-api-v1.json, and the file name already apologizes for the next version you will have to rename it to. It is a public address with a random looking suffix, sitting in a client repo for anyone to read, and nothing in this diff shows the leaderboard behind it checks a single score. This is a campaign promise: a url with nothing behind it that proves the server will check anything.\n\nFix it: Make the leaderboard server validate scores and rate limit by client before this url goes anywhere near players. Read the url from a build setting instead of a committed json file. Drop the v1 from the file name or handle a version field inside it. Add a health route to the backend so you can tell when it is down."
+    },
+    {
+      "date": "2026-11-25T08:43:51Z",
+      "repo": "itchy-troll",
+      "sha": "e6a023ed6df161ec084561c4c9c3a95cc1c58b9a",
+      "message": "Tile-topia: store page files and upload the build to the existing page",
+      "heckle": "One commit that swaps ship.json from one game to another, adds an eighteen hundred line builds/tile-topia/index.html, and sprays screenshots and a cover into pages/tile-topia. The whole game is copied by hand into a second repo, so now there are two versions that will drift apart the first time you fix a bug in only one. ship.json is a single slot mailbox that you overwrite each time, so the history is the only record of what shipped. Copy paste logistics run by a government shutdown of a process.\n\nFix it: Generate builds/tile-topia from the tile-topia repo in the workflow instead of committing a copy. Keep a list in ship.json of past ships instead of overwriting one entry. Compress the cover and shot PNGs in pages/tile-topia before they bloat the repo. Check that the pushed timestamp in ship.json is written by the workflow, not typed."
+    },
+    {
+      "date": "2026-11-25T08:43:51Z",
+      "repo": "itchy-troll",
+      "sha": "f8aa0ba6a5f891fcfa99b6ee215712b4b21b0659",
+      "message": "Ship gated Packet Baron build to the existing packet-baron page",
+      "heckle": "Look at pages/next.json, deleted whole, and ship.json rewritten from MobbyHill to Packet Baron by hand, with a pushed timestamp that somebody typed in like a hall pass. The queue file is the only thing telling you what ships next, and you wipe it the moment you ship, so the next pick lives in your head, which we have all seen the inside of. The note in the deleted file even admits you are shipping a day early, because the schedule is a suggestion, like a debt ceiling.\n\nFix it: Stop deleting pages/next.json and mark the entry shipped instead, so the queue keeps a record. Have the ship workflow write the pushed field instead of hand typing it in ship.json. Enforce the ship date from the schedule rather than overriding it with a note. Record the price somewhere besides a bare string."
+    },
+    {
       "date": "2026-11-24T23:56:01Z",
       "repo": "starwake-game",
       "sha": "b6a3a2e5c2e0d69921cdc9e78aead03c25f462ac",
@@ -1364,41 +1399,6 @@
       "sha": "57f19296",
       "message": "Trigger production build",
       "heckle": "An empty commit. Zero files changed, and the message is the entire contribution. You pushed nothing to make Vercel do something, which tells me the deploy on the first commit did not take and you reached for the shove instead of checking why. It is the software version of a government shutdown, lots of motion and nothing produced. Also the message says production build like it was an event.\n\nFix it: Find out why the first push did not build and fix the project link. Stop using empty commits as a deploy button. Add a vercel.json or confirm the project root so the next push just works."
-    },
-    {
-      "date": "2026-11-11T19:40:05Z",
-      "repo": "2026-11-11-orange-codelens",
-      "sha": "c2608b63",
-      "message": "Code Lens: explain functions from GitHub repos in plain English",
-      "heckle": "One 964 line index.html dropped in a single commit, CSS, parser, explainer tables and UI all mashed into one file like a filibuster that refuses to end. The fetch to api.github.com in the repo loader sends no auth, so the anonymous limit of 60 requests an hour will die after a few clicks and the user gets a raw error string in the status line. The function list is built by string concatenated innerHTML, and you only escape some of it, so every spot is a bet on you remembering esc(). Acorn from a CDN means offline and blocked networks get a dead page.\n\nFix it: Catch the rate limit response in the fetch helper near line 119 and say so in plain words. Use textContent or one shared escape for every innerHTML build in the function list and the explain tab. Split the explainer tables out of index.html into their own file. Show a clear message when the acorn script fails to load."
-    },
-    {
-      "date": "2026-11-11T19:40:05Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "0491d9f6",
-      "message": "steward 2026-11-11T185243 (#86)",
-      "heckle": "Another steward PR, another single minified line in contrib/steward/2026-11-11T185243.json, and this one places crosswalk hatches with six digit coordinates and a note in meta saying the steward completes the crosswalk. The bot is narrating its own homework inside the data. Nobody reads minified one line JSON in review, so the PR number is the only thing a human could possibly approve, and you merged it under your own login like a rubber stamp at a ribbon cutting.\n\nFix it: Pretty print the contrib JSON so a diff is readable. Validate the calls against a schema before the PR opens. Drop the steward commentary out of meta."
-    },
-    {
-      "date": "2026-11-11T19:40:05Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "64c5879f",
-      "message": "agent-orange 2026-11-11T170853 (#85)",
-      "heckle": "Merged PR 85 and the GitHub API shows contrib/agent-orange/2026-11-11T170853.json with a one line addition and no patch to look at. I cannot tell you what it does because the diff will not even show, which is perfect for an approval process that already did not look. This is a bailout with no audit.\n\nFix it: Make the agent write a readable summary file beside each turn. Reject merges where the patch is empty. Stop auto merging what nobody inspects."
-    },
-    {
-      "date": "2026-11-11T19:40:05Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "eabbbd6e",
-      "message": "grok 2026-11-11T170358",
-      "heckle": "The grok bot pushed straight to the branch under your name, no PR, no review, with negative coordinates around minus 68000 for a thing called Caliche Cottage with door widths checked in a meta array. At least the other bots go through a PR, this one skips the line like a lobbyist. Building a cottage out of one minified line is a hell of a way to run a design tool.\n\nFix it: Route grok through a PR like the others. Branch protect the default branch so a bot cannot bypass review. Check that negative coordinates are legal before they land."
-    },
-    {
-      "date": "2026-11-11T19:40:05Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "dc571f52",
-      "message": "agent-orange 2026-11-11T140632 (#84)",
-      "heckle": "Third time today the agent-orange bot appears with a single line file at contrib/agent-orange/2026-11-11T140632.json and the commit has nothing to read. Same ceremony, same unreadable output, same merge by someone who clearly cannot be bothered. Your review process is a campaign promise: loud on announcement, absent on delivery.\n\nFix it: Add a CI check that fails on empty or unreadable contrib patches. Pretty print the file. Rate limit how many bot PRs merge in a day."
     }
   ]
 }
