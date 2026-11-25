@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-25T19:22:03Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "9be40df5dd10dde706d59e93d0f2e1b55c5952bb",
+      "message": "Civic blueprint",
+      "heckle": "The commit message is Civic blueprint, and the change is one binary GIF at ref/civic-2004.gif with zero lines of diff. Not a note on where it came from, not a word on what it is for. Reviewers get a picture and a shrug, and then a claude commit six minutes later had to go trace it into the real work. The intern supplies the input and the robot does the thinking, which is the whole relationship in one commit.\n\nFix it: Put ref/civic-2004.gif next to a short text file saying its source and use. Rename it to match the other reference files. Do not commit loose binaries to the repo root of ref."
+    },
+    {
+      "date": "2026-11-25T19:22:03Z",
+      "repo": "2026-11-25-blue-cliprig",
+      "sha": "5fda5f04500eb6c5ef9e7c5393f17615ea554c6b",
+      "message": "build workflow uses the runner android sdk",
+      "heckle": "Three lines changed and you still managed to make a mess. In the workflow file you replaced a maintained setup action with a shell one liner that pipes yes into sdkmanager and then, if that fails, does it again with a bare sdkmanager after an or. That is a silent fallback chained to output thrown into the void with dev null, so if the licenses step breaks you will never see why. Hardcoded android 36 and build tools 36.0.0 also means the next bump breaks the build and nobody will know where.\n\nFix it: Drop the redirect to dev null so failures show up in the log. Remove the second sdkmanager fallback or make it explicit. Put the SDK versions in one env variable in the workflow file."
+    },
+    {
+      "date": "2026-11-25T19:22:03Z",
+      "repo": "2026-10-18-orange-testbed",
+      "sha": "64fd9de748760ccf39e350202053902b4a520287",
+      "message": "grok 2026-11-25T170434",
+      "heckle": "One line of minified JSON in contrib/grok/2026-11-25T170434.json, committed straight to the branch under the intern's login like a handshake deal. Every coordinate is negative, so the grok bot is building its subdivision off the map in the wrong quadrant while the other bot uses positive six digit ones. A door check of 2134 tall and 1000 wide sits in one wall piece as if code officials read minified blobs. The Brittlebush Duplex has a wall, a lot, and a mesquite, which is a lot of suburb for a file nobody reviewed.\n\nFix it: Make the grok bot open pull requests like the steward bot does. Validate coordinates and reject negative ones before commit. Pretty print the file so a human can read it."
+    },
+    {
+      "date": "2026-11-25T19:22:03Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "726595bc3ae0f9a04d78c76abc6e238b4b5d1348",
+      "message": "blueprints checkpoint 300 images",
+      "heckle": "This is where the rot started: 304 lines and 300 images dropped under ref/blueprints/ in the first of a whole series. A commit message that is just a count, no explanation, no ignore rule, and a claude commit nine minutes earlier had already said to keep that archive out of the deployed site. Did you read it, or do you only skim like a senator reading a bill?\n\nFix it: Confirm the deploy really excludes ref/blueprints/ by checking the ignore file the earlier commit touched. Add the folder to .gitignore. Squash these checkpoints out of history."
+    },
+    {
+      "date": "2026-11-25T19:22:03Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "01b559cfc148b23779b6faac93bec94955856698",
+      "message": "blueprints checkpoint 600 images",
+      "heckle": "Checkpoint 600, and the numbers are the only thing in this commit that went up in quality. The alphabetical sweep through ref/blueprints/ has hit another batch of mixed GIF, PNG and JPG files with zero context. Mixed formats means whatever consumes this later needs three loaders, and nothing in the diff says who will read them. You keep pressing save and calling it engineering.\n\nFix it: Convert the batch to one format before storing it. Gitignore ref/blueprints/. Write down the license of these drawings in the repo, since you are copying a whole archive."
+    },
+    {
+      "date": "2026-11-25T19:22:03Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "b9f68e708e642bfe89c5f11dcf55b2b0e76b5c36",
+      "message": "blueprints checkpoint 900 images",
+      "heckle": "Checkpoint 900 and the commit log of this repo now reads like a hostage note counting up by 300. The alphabet is crawling along ref/blueprints/ one car brand folder at a time, and each batch is a pile of GIFs the reviewer cannot read. Where is the plan, intern? Where is the line between reference junk and the app you are supposedly building? A government shutdown ships more usable output.\n\nFix it: Keep the crawler output out of the repo with a gitignore entry for ref/blueprints/. Track only a small index file listing what was fetched. Commit app changes separately from data dumps."
+    },
+    {
+      "date": "2026-11-25T19:22:03Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "72bb0e260d1197e6b7942d1c68039a6cfdd41652",
+      "message": "blueprints checkpoint 1200 images",
+      "heckle": "Checkpoint 1200. Same stunt, third time in an hour, and I am running out of ways to say the intern has no idea what a repository is. 300 more drawings under ref/blueprints/ with a message that is just a count. Nothing here is code, nothing is documented, and the diff stats say zero lines changed because git can only shrug at an image.\n\nFix it: Gitignore ref/blueprints/ right now. Move the archive to storage built for big files. Add a README line in ref/ saying where the images came from and what they are for."
+    },
+    {
+      "date": "2026-11-25T19:22:03Z",
+      "repo": "2026-11-25-blue-cliprig",
+      "sha": "01937e677919ea0e8d39f86fd262b42ee7c23e1b",
+      "message": "themes with intro animations, rapid fire montage mode, themes tab with live preview, restyle",
+      "heckle": "One commit, 1360 lines, and the message is four features comma spliced like a campaign promise. Themes.kt alone is 862 lines of canvas drawing in one file, so good luck finding anything. ClipEditor.kt had its EditSpec rewritten from startMs and endMs into segments, rapid, hypes, themeId and intro, which breaks every old call and is shoved in with the new feature. ClipRecord.segments is a string you split on semicolons and dashes by hand, which is parsing with a butter knife. And you shipped a Robolectric screenshot test in ThemeShotsTest.kt that writes images, not assertions, so it can never fail.\n\nFix it: Split this into four commits. Break Themes.kt into one file per theme. Store ClipRecord.segments as real JSON, not a delimited string. Give ThemeShotsTest.kt an actual assertion. Add a migration for old saved clips."
+    },
+    {
+      "date": "2026-11-25T19:22:03Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "9704c6c7a6051fa31882edb7532e845ed017b4ad",
+      "message": "blueprints checkpoint 1500 images",
+      "heckle": "Checkpoint 1500, and the intern is still hand cranking the same bulk dump like a bailout nobody voted on. Another 300 binaries land under ref/blueprints/, the commit tells me nothing, and the repo gets fatter by the hour. Did you learn version control from the back of a cereal box? The point of git is reading what changed, and a wall of GIFs is a wall of nothing.\n\nFix it: Stop committing ref/blueprints/ and gitignore it. Let the crawler write to a folder outside the repo. Name checkpoints after what they hold, not a count. Run a history rewrite to drop the images before the clone size gets stupid."
+    },
+    {
+      "date": "2026-11-25T19:22:03Z",
+      "repo": "2026-11-22-orange-hubview",
+      "sha": "2c6ff403516eefd9fdb3e52bc3aa75eacd16a488",
+      "message": "blueprints checkpoint 1800 images",
+      "heckle": "Checkpoint 1800. You are now committing scraped car drawings to git in batches of 300 like a squirrel stuffing a chimney, and the commit message is a number. A number. ref/blueprints/ is a pile of GIFs and PNGs with zero patch text, so nobody can review, diff, or revert a single thing in here. Every clone of this repo now drags a gallery of someone else's artwork around forever, and git never forgets. Treat the repo like a hard drive and the intern gets what a filibuster produces: bulk, no result.\n\nFix it: Move ref/blueprints/ out of git into a release asset or bucket and delete it from history. Add ref/blueprints/ to .gitignore before the next checkpoint. Write one commit message that says what the batch is for. Check you are even allowed to keep those drawings."
+    },
+    {
       "date": "2026-11-25T08:43:51Z",
       "repo": "2026-11-22-orange-hubview",
       "sha": "423a9fbc5a2b4703ef5582e4dac28b25dea4144d",
@@ -1329,76 +1399,6 @@
       "sha": "f0843e90",
       "message": "BLUE PHONE: Song Offset Listener v2, the distilled build at the site root; the old build with every experiment is kept at /classic with archive notes; ear lock clip length fix in all three pages",
       "heckle": "You call this distilled? You kept the entire old app as offset-listener-v1.html and served it at /classic, so the repo now ships two giant pages plus a 26 line archive note explaining which failed experiments you were too attached to delete. That is git's whole job, intern. Then you smuggled a bug fix into three pages at once. In offset-listener-v1.html the new peaks line computes (cs[j] - med) / mad twice, once for zz and again inside the push, so your isFinite check guards a value you then ignore.\n\nFix it: Push z: zz in the peaks line of offset-listener-v1.html. Delete the archived page and let git history hold it. Fix shared bugs once, not in three copies. Cut the archive notes down to something a human will read."
-    },
-    {
-      "date": "2026-11-12T02:17:59Z",
-      "repo": "song-offset-listener",
-      "sha": "2414c98b",
-      "message": "BLUE PHONE: offset listener simplified comic book skin, everything technical moved into a left side menu, BPM only shows when found, buttons never move",
-      "heckle": "You dressed an audio sync tool as a comic book and called it simplified. The head of offset-listener-v1.html now pulls Bangers and Comic Neue from Google Fonts, so the whole look hangs on a third party being up, and a polka dot radial gradient sits behind every control like a bad bounce house. Two hundred twenty three lines added and 182 removed to repaint a page you will repaint again Thursday. Comic Sans as a fallback is a hate crime against typography, and that was your fallback.\n\nFix it: Self host the two fonts or use a system stack in offset-listener-v1.html. Test the left side menu on a narrow phone, since the body padding is 16px and cramped. Drop the dot background, it hurts legibility. Stop rewriting the skin in every commit."
-    },
-    {
-      "date": "2026-11-12T02:17:59Z",
-      "repo": "delivery-twin",
-      "sha": "2405f0a5",
-      "message": "Hide road controls",
-      "heckle": "Hiding road controls by slapping display:none on everything is not removing a feature, it is hiding a body under a rug. In index.html the Roads and Road hazards headings and the Quality, Heat map, Crashes, Construction and Crash history buttons are all still in the DOM with style=\"display:none\", so the code, handlers and map layers behind them still load and run for nothing. Thirteen lines changed and not one deleted feature. Passing off a hidden feature as a cleanup is a bailout, not a fix.\n\nFix it: Remove the road buttons and their headings from index.html if the feature is dead. Remove the matching handlers and layer fetches so phones stop loading them. If you want a toggle, use a class, not inline style on seven elements."
-    },
-    {
-      "date": "2026-11-12T02:17:59Z",
-      "repo": "song-offset-listener",
-      "sha": "358668ce",
-      "message": "BLUE PHONE: offset listener Listen retries as plain WAV when the recorded clip is empty or AudD cannot fingerprint it, and stops any ear tune before listening",
-      "heckle": "Your Listen button now records twice when the first clip comes back empty, which is your way of admitting the first recorder does not work on phones. The new recordWavClip in offset-listener-v1.html grabs the mic through createScriptProcessor, a function deprecated for years, and pushes raw Float32 chunks into an array with no cap beyond hope. This was bolted on as a retry instead of figuring out why the webm clip was empty. Retry logic is a campaign promise: it sounds like governance until you check the results.\n\nFix it: Replace createScriptProcessor in recordWavClip with an AudioWorklet. Find out why the MediaRecorder clip comes back empty instead of papering over it. Stop every mic stream track after the retry. Cap the retry at one attempt and say so in the UI."
-    },
-    {
-      "date": "2026-11-12T02:17:59Z",
-      "repo": "song-offset-listener",
-      "sha": "e15b3853",
-      "message": "BLUE PHONE: offset listener gets ear lock, same method as zone director, plus the control loop, learned per video offsets, tune by ear button and ear lock toggle",
-      "heckle": "Three hundred fifty lines went into offset-listener-v1.html in one commit, and a copy of the ear lock from zone director arrived with them. That is copy paste cloning dressed up as same method, so now two pages need the same bug fixes, as the next commit proves by patching the same code. The UI got an earTuneBtn and an earToggle checked by default, so every user is opted into the phone listening to itself on first load. The status text sits at 0.85rem in gray 999 on white, unreadable outdoors.\n\nFix it: Move the ear lock code into one shared script file instead of pasting it into every page. Make earToggle default off or ask before the mic starts. Darken the gray hint text in offset-listener-v1.html. Split giant commits so a human can review them."
-    },
-    {
-      "date": "2026-11-12T02:17:59Z",
-      "repo": "delivery-twin",
-      "sha": "34c9f8fb",
-      "message": "Delivery Twin from Field Twin",
-      "heckle": "You cloned an entire app, 35 files, and named it Delivery Twin. The README.md still says Field Twin is a phone friendly field log and still claims it is live at field-twin-teal.vercel.app, and the CHANGELOG.md is the other repo's history pasted wholesale, including Parcelsun locker survey entries for a delivery product. A fork with the label peeled off is not a new app. It is a rename with a clone's maintenance bill. Shipping field-twin-companion-v1-flash.html in a delivery repo is also just baggage you did not look at.\n\nFix it: Rewrite README.md and CHANGELOG.md so they describe Delivery Twin and stop pointing at the Field Twin live link. Delete the companion firmware and flash page from this repo. Decide whether this is one app with a mode switch, because that is what it is."
-    },
-    {
-      "date": "2026-11-12T02:17:59Z",
-      "repo": "pajamastan",
-      "sha": "d4481693",
-      "message": "Combined Pajamastan and MTG creator seal",
-      "heckle": "You rewrote 188 lines and removed 176 in a single index.html to change a footer seal. That is a whole page reindented and swapped out for a logo, which makes the diff unreadable and the blame useless. The same seal went into a pile of other repos in the same ten minutes, so this is a shared snippet copied by hand into every app. Copy pasting the same block everywhere is a pork barrel with no committee.\n\nFix it: Keep the seal in one shared script file instead of pasting it into each index.html. Stop reformatting whole pages when changing a block. Commit the pasting script on its own so the page diff stays small. Check the pasted flag image does not bloat the page on mobile."
-    },
-    {
-      "date": "2026-11-12T02:17:59Z",
-      "repo": "infinicanvan",
-      "sha": "1c13e718",
-      "message": "Combined Pajamastan and MTG creator seal",
-      "heckle": "Another day, another hand pasted seal. The commit adds 42 lines to index.html and drops 3 for a logo that has nothing to do with an infinite canvas, and it landed in the same minute as a stack of identical commits in other repos. Same message, same block, a dozen repos, zero reuse. It is a bailout for your own laziness. The intern discovered the idea of a shared include and chose not to learn it.\n\nFix it: Load the seal from one hosted script tag in index.html instead of inlining it. Verify the seal does not cover canvas controls on a small phone. Write a commit message that names the repo's actual change."
-    },
-    {
-      "date": "2026-11-12T02:17:59Z",
-      "repo": "mill-ionaire",
-      "sha": "05b53b2a",
-      "message": "Combined Pajamastan and MTG creator seal",
-      "heckle": "In mill-ionaire-v2.html you pasted a base64 JPEG flag straight into a script as FLAG_SRC, on one line, in a file that is already past 4900 lines. Then you reindented the comment banner by two spaces, which changed a line for the purity of nothing. The banner still says drop this one block into any page, and you proved it by dropping it into a dozen, which is how clones start. A single 4900 line HTML file with an inline image blob is a government shutdown of editing.\n\nFix it: Move FLAG_SRC to a real image file and reference it by path in mill-ionaire-v2.html. Break the giant file into scripts so edits are reviewable. Stop touching comment indentation in commits that are supposed to change behavior. Share the seal block, do not clone it."
-    },
-    {
-      "date": "2026-11-11T19:40:05Z",
-      "repo": "2026-11-11-orange-codelens",
-      "sha": "ad8fb4d1",
-      "message": "Comic book style",
-      "heckle": "You took a clean readable page and dressed it like a garage sale comic, then loaded three font stylesheets from a CDN in index.html so the whole look hangs on a third party staying up. The h1 is 46px Bangers with a text stroke and shadow, the header is rotated a degree for no reason, and every card has a hard 5px shadow plus a 6px right margin that squeezes a phone screen already crowded by Comic Neue body text. This is a redesign that makes a code explainer harder to read, which is a bold move for a tool whose whole job is readability. A comic font on code explanations is a campaign promise with no policy behind it.\n\nFix it: Self host the fonts or drop the CDN links at the top of index.html. Remove the header rotate transform. Cut the card right margin and shadow size on narrow screens. Keep the code blocks in plain monospace so nobody squints."
-    },
-    {
-      "date": "2026-11-11T19:40:05Z",
-      "repo": "2026-11-11-orange-codelens",
-      "sha": "57f19296",
-      "message": "Trigger production build",
-      "heckle": "An empty commit. Zero files changed, and the message is the entire contribution. You pushed nothing to make Vercel do something, which tells me the deploy on the first commit did not take and you reached for the shove instead of checking why. It is the software version of a government shutdown, lots of motion and nothing produced. Also the message says production build like it was an event.\n\nFix it: Find out why the first push did not build and fix the project link. Stop using empty commits as a deploy button. Add a vercel.json or confirm the project root so the next push just works."
     }
   ]
 }
