@@ -1,78 +1,33 @@
 {
- "duration_api_ms": 34078,
- "stop_reason": "end_turn",
- "session_id": "4ac1da9b-fcd1-442d-b071-874c078193e0",
- "total_cost_usd": 0.1605129,
+ "duration_api_ms": 0,
+ "stop_reason": "stop_sequence",
+ "session_id": "11eae73b-ef41-4a2a-808d-1e3b98e32267",
+ "total_cost_usd": 0,
  "usage": {
-  "input_tokens": 26,
-  "cache_creation_input_tokens": 21464,
-  "cache_read_input_tokens": 346742,
-  "output_tokens": 3980,
   "output_tokens_details": {
-   "thinking_tokens": 484
+   "thinking_tokens": 0
   },
+  "input_tokens": 0,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "output_tokens": 0,
   "server_tool_use": {
    "web_search_requests": 0,
    "web_fetch_requests": 0
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 21464,
+   "ephemeral_1h_input_tokens": 0,
    "ephemeral_5m_input_tokens": 0
   },
-  "inference_geo": "global",
-  "iterations": [
-   {
-    "input_tokens": 2,
-    "output_tokens": 386,
-    "cache_read_input_tokens": 34079,
-    "cache_creation_input_tokens": 791,
-    "cache_creation": {
-     "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 791
-    },
-    "type": "message"
-   }
-  ],
+  "inference_geo": "",
+  "iterations": [],
   "speed": "standard",
   "fallback_credit": null
  },
- "modelUsage": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1207,
-   "outputTokens": 20,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
-   "webSearchRequests": 0,
-   "costUSD": 0.0001307,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 0,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
-  "claude-sonnet-5-5": {
-   "inputTokens": 26,
-   "outputTokens": 3980,
-   "cacheReadInputTokens": 346742,
-   "cacheCreationInputTokens": 21464,
-   "webSearchRequests": 0,
-   "costUSD": 0.16038219999999997,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 484,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 21464,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  }
- },
+ "modelUsage": {},
  "permission_denials": [],
- "terminal_reason": "completed",
+ "terminal_reason": "api_error",
  "fast_mode_state": "off",
  "fast_mode_disabled_reason": "sdk_opt_in_required",
  "subagent_stats": {
@@ -100,52 +55,18 @@
   "by_type": {}
  },
  "safety_stops": 0,
- "is_error": false,
- "num_turns": 13,
+ "is_error": true,
+ "num_turns": 1,
  "subtype": "success",
- "api_error_status": null,
- "result": "I worked three apps: j30p4rdy, tower-builder-one and tile-spinner.\n\nThe other five jobs were skipped. snapshot-engine-pied, mission-operator, ghost-kitchen-builder and rtss-sigma were each logged in the last three days with the same error. campus-ebutuoy was past the three-job limit.\n\nj30p4rdy and tower-builder-one already have test fixes waiting. Those pull requests are still open and unmerged, so main keeps the old failing tests. Nothing new to open there.\n\ntile-spinner is a new fix. The live app now builds Shuffle and Reset as plain buttons inside #controls with no ids, and the score is #statB. The test was looking for #shuffle, #reset and #score. I changed only the test selectors and left the spec alone. I haven't run the updated test against the live app.\n\nThe new pull request is github.com/sudosilo/control-troll/pull/4. The waiting ones are github.com/sudosilo/control-troll/pull/1 and github.com/sudosilo/control-troll/pull/2.\n\nI logged all three jobs in fix-log.json, added two notes in agents/notes, and pushed to main.",
- "ttft_ms": 1235,
+ "api_error_status": 429,
+ "api_error_type": "rate_limit_error",
+ "api_error_origin": "first_party",
+ "api_error": "usage_limit_reached",
+ "result": "You've hit your weekly limit \u00b7 resets Nov 27, 12am (UTC)",
  "type": "result",
- "duration_ms": 39619,
- "uuid": "2e27a973-2a22-47f6-a0cf-8ee61edb756f",
- "ttft_stream_ms": 954,
- "time_to_request_ms": 422,
- "first_content_frame_ms": 954,
+ "duration_ms": 607,
+ "uuid": "e5a75bd0-5fcb-4684-99ab-5726804fb0e1",
  "queued_turn_count": 0,
  "result_index": 0,
- "model_usage_since_last_result": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1207,
-   "outputTokens": 20,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
-   "webSearchRequests": 0,
-   "costUSD": 0.0001307,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 0,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
-  "claude-sonnet-5-5": {
-   "inputTokens": 26,
-   "outputTokens": 3980,
-   "cacheReadInputTokens": 346742,
-   "cacheCreationInputTokens": 21464,
-   "webSearchRequests": 0,
-   "costUSD": 0.16038219999999997,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 484,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 21464,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  }
- }
+ "model_usage_since_last_result": {}
 }
