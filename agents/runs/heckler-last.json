@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 41171,
+ "duration_api_ms": 58338,
  "stop_reason": "end_turn",
- "session_id": "61611e99-eba4-4b30-8eb9-8aa94f9106dd",
- "total_cost_usd": 0.22487859999999998,
+ "session_id": "0e609678-b74c-485a-8270-339e3f395366",
+ "total_cost_usd": 0.17305679999999998,
  "usage": {
-  "input_tokens": 18,
-  "cache_creation_input_tokens": 37824,
-  "cache_read_input_tokens": 284373,
-  "output_tokens": 4498,
+  "input_tokens": 16,
+  "cache_creation_input_tokens": 33530,
+  "cache_read_input_tokens": 228870,
+  "output_tokens": 5639,
   "output_tokens_details": {
-   "thinking_tokens": 517
+   "thinking_tokens": 638
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 37824,
-   "ephemeral_5m_input_tokens": 0
+   "ephemeral_1h_input_tokens": 6466,
+   "ephemeral_5m_input_tokens": 27064
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 114,
-    "cache_read_input_tokens": 50268,
-    "cache_creation_input_tokens": 957,
+    "output_tokens": 74,
+    "cache_read_input_tokens": 46461,
+    "cache_creation_input_tokens": 470,
     "cache_creation": {
-     "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 957
+     "ephemeral_5m_input_tokens": 470,
+     "ephemeral_1h_input_tokens": 0
     },
     "type": "message"
    }
@@ -38,35 +38,35 @@
   "fallback_credit": null
  },
  "modelUsage": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1208,
-   "outputTokens": 17,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
+  "claude-sonnet-5-5": {
+   "inputTokens": 16,
+   "outputTokens": 5639,
+   "cacheReadInputTokens": 228870,
+   "cacheCreationInputTokens": 33530,
    "webSearchRequests": 0,
-   "costUSD": 0.0001293,
+   "costUSD": 0.17283299999999996,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 0,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
+   "thinkingTokens": 638,
+   "cacheCreationEphemeral5mInputTokens": 27064,
+   "cacheCreationEphemeral1hInputTokens": 6466,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   },
-  "claude-sonnet-5-5": {
-   "inputTokens": 18,
-   "outputTokens": 4498,
-   "cacheReadInputTokens": 284373,
-   "cacheCreationInputTokens": 37824,
+  "claude-haiku-5-5": {
+   "inputTokens": 1208,
+   "outputTokens": 206,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.22474929999999999,
+   "costUSD": 0.00022380000000000002,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 517,
+   "thinkingTokens": 187,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 37824,
-   "canonicalModel": "claude-sonnet-5-5",
+   "cacheCreationEphemeral1hInputTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
@@ -101,49 +101,49 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 9,
+ "num_turns": 8,
  "subtype": "success",
  "api_error_status": null,
- "result": "I heckled 5 commits and did not write a fleet verdict, since the last one was written 2026-11-20 and is not due until after 2026-11-27.\n\nThe heckles went to two hubview archive commits, one ascend commit and two itchy-troll commits, all posted as commit comments. The log, state and notes are committed and pushed to control-troll main.",
- "ttft_ms": 1270,
+ "result": "I heckled 10 commits and did not write a fleet verdict, because the last one was only 5 days old.\n\nThe cap of 10 left two commits unheckled: the original cliprig v1 commit and an older testbed bot turn.",
+ "ttft_ms": 1036,
  "type": "result",
- "duration_ms": 65108,
- "uuid": "f9dbf868-dd1e-4f4b-86d8-f1cf51821d15",
- "ttft_stream_ms": 997,
- "time_to_request_ms": 449,
- "first_content_frame_ms": 998,
+ "duration_ms": 80741,
+ "uuid": "c97165e2-daee-41a6-a45e-f929a01d4af2",
+ "ttft_stream_ms": 777,
+ "time_to_request_ms": 307,
+ "first_content_frame_ms": 777,
  "queued_turn_count": 0,
  "result_index": 0,
  "model_usage_since_last_result": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1208,
-   "outputTokens": 17,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
+  "claude-sonnet-5-5": {
+   "inputTokens": 16,
+   "outputTokens": 5639,
+   "cacheReadInputTokens": 228870,
+   "cacheCreationInputTokens": 33530,
    "webSearchRequests": 0,
-   "costUSD": 0.0001293,
+   "costUSD": 0.17283299999999996,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 0,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
+   "thinkingTokens": 638,
+   "cacheCreationEphemeral5mInputTokens": 27064,
+   "cacheCreationEphemeral1hInputTokens": 6466,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   },
-  "claude-sonnet-5-5": {
-   "inputTokens": 18,
-   "outputTokens": 4498,
-   "cacheReadInputTokens": 284373,
-   "cacheCreationInputTokens": 37824,
+  "claude-haiku-5-5": {
+   "inputTokens": 1208,
+   "outputTokens": 206,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
    "webSearchRequests": 0,
-   "costUSD": 0.22474929999999999,
+   "costUSD": 0.00022380000000000002,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 517,
+   "thinkingTokens": 187,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 37824,
-   "canonicalModel": "claude-sonnet-5-5",
+   "cacheCreationEphemeral1hInputTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
