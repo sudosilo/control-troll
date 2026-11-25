@@ -527,7 +527,19 @@
   "sudosilo/2026-11-04-orange-hush@v2026.11.23",
   "sudosilo/2026-10-18-orange-testbed@v2026.11.24",
   "sudosilo/2026-10-18-orange-testbed@v2026.11.23",
-  "sudosilo/2026-10-18-orange-testbed@v2026.11.22-2"
+  "sudosilo/2026-10-18-orange-testbed@v2026.11.22-2",
+  "sudosilo/2026-11-24-green-fleetindex@v2026.11.24",
+  "sudosilo/2026-11-24-green-greenscreen@v2026.11.24",
+  "sudosilo/2026-11-25-blue-cliprig@v2026.11.25",
+  "sudosilo/2026-11-25-blue-manualrebuild@v2026.11.25",
+  "sudosilo/ascend@v2026.11.24",
+  "sudosilo/spectral-engine@v2026.11.24",
+  "sudosilo/2026-11-16-orange-zion@v2026.11.23",
+  "sudosilo/datacenter-osint@v2026.11.24",
+  "sudosilo/topo-wars-server@v2026.11.24",
+  "sudosilo/pajamastan-warrants@v2026.11.24",
+  "sudosilo/signal-snapshot-backend@v2026.11.24",
+  "sudosilo/signal-snapshot@v2026.11.24"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -777,7 +789,7 @@
    ]
   },
   "sudosilo/ascend": {
-   "d": "Endless vertical platformer with moving platforms, powerups, and touch controls for phones.",
+   "d": "Vertical platformer with endless platforms, many modes, and global leaderboards.",
    "h": "https://ascend-pearl-ten.vercel.app",
    "t": [
     "game",
@@ -1515,10 +1527,10 @@
    ]
   },
   "sudosilo/spectral-engine": {
-   "d": "Twelve music visualizers that can follow a shared band.",
+   "d": "Set of sound visualizers that react to music or the microphone.",
    "h": "https://spectral-engine.vercel.app",
    "t": [
-    "band-sync",
+    "audio",
     "music",
     "vercel",
     "visualizer"
@@ -2360,7 +2372,7 @@
    ]
   },
   "sudosilo/2026-11-16-orange-zion": {
-   "d": "A story and map toy built on the Agent Test Bed city.",
+   "d": "Story and map toy set in the Agent Test Bed city.",
    "h": "https://2026-11-16-orange-zion.vercel.app",
    "t": [
     "game",
@@ -2550,6 +2562,46 @@
    "t": [
     "android",
     "files",
+    "tool"
+   ]
+  },
+  "sudosilo/2026-11-24-green-fleetindex": {
+   "d": "Server that lets FileCensus phones share inventories and find which phone holds a file.",
+   "h": "",
+   "t": [
+    "android",
+    "backend",
+    "nodejs",
+    "tool"
+   ]
+  },
+  "sudosilo/2026-11-24-green-greenscreen": {
+   "d": "Step friendly remote screen page that shows the phone screen and taps where you click.",
+   "h": "",
+   "t": [
+    "android",
+    "python",
+    "remote-control",
+    "tool"
+   ]
+  },
+  "sudosilo/2026-11-25-blue-cliprig": {
+   "d": "Android app that records your screen, finds highlights, and edits clips.",
+   "h": "",
+   "t": [
+    "android",
+    "kotlin",
+    "tool",
+    "video"
+   ]
+  },
+  "sudosilo/2026-11-25-blue-manualrebuild": {
+   "d": "Traces manual figures into parts and shows them in an exploded 3D view.",
+   "h": "",
+   "t": [
+    "3d",
+    "svg",
+    "threejs",
     "tool"
    ]
   }
