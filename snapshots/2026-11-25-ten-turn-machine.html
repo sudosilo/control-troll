@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Ten Turn Machine</title>
+<style>
+body{margin:0;background:#fbfaf7;color:#1f2328;font:16px system-ui,sans-serif}
+header{padding:16px 12px 4px;text-align:center}
+h1{margin:0 0 4px;font-size:26px}
+.how{color:#62666d;font-size:14px;margin:0 auto 6px;max-width:520px}
+#status{color:#a8410a;min-height:22px;font-weight:600}
+.bar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:8px 12px;position:sticky;top:0;background:#fbfaf7;z-index:2;border-bottom:1px solid #d9d6cf}
+button{font:600 15px system-ui;padding:10px 14px;border-radius:10px;border:2px solid #1f2328;background:#fff;color:#1f2328}
+button.go{background:#e8590c;border-color:#e8590c;color:#fff}
+button:disabled{opacity:.4}
+#machine{max-width:640px;margin:0 auto;padding:4px 12px 40px}
+.turn{background:#fff;border:1px solid #d9d6cf;border-radius:12px;margin:12px 0;padding:10px}
+.card{display:inline-block;font-size:13px;font-weight:600;padding:3px 8px;border-radius:6px;background:#fff1e6;color:#a8410a;margin-left:6px}
+.card.miss{background:#eee;color:#62666d}
+.line{margin:6px 0}
+canvas{width:100%;height:auto;display:block}
+</style>
+</head>
+<body>
+<header>
+<h1>Ten Turn Machine</h1>
+<p class="how">Each turn draws a card and builds the next chunk of a Rube Goldberg machine, starting where the last chunk dropped the ball. After ten turns, run the whole chain.</p>
+<div id="status"></div>
+</header>
+<div class="bar">
+<button id="build" class="go"></button>
+<button id="run">Run the machine</button>
+<button id="reset">Start over</button>
+</div>
+<div id="machine"></div>
+<script src="parts.js"></script>
+<script>
+const W = 300, H = 210, TURNS = 10, KEY = "ttm-v2", SPEED = 130;
+const $ = id => document.getElementById(id);
+const pick = a => a[Math.floor(Math.random() * a.length)];
+let chunks = JSON.parse(localStorage.getItem(KEY) || "[]");
+let objs = [], canvases = [], run = null, resetArmed = 0;
+
+function realize(d) {
+  let x = 0, y = d.entry; const parts = [], path = [];
+  for (const q of d.parts) { const o = PARTS[q.n].make(x, y, q.p); parts.push(o); path.push(...o.path); x += 100; y = o.exit; }
+  return { parts, path, exit: y };
+}
+function check(d) {
+  let x = 0, y = d.entry;
+  for (const q of d.parts) {
+    const P = PARTS[q.n];
+    if (y + P.t < 4 || y + P.b > 206) return null;
+    y = P.make(x, y, q.p).exit; x += 100;
+  }
+  return (y < 25 || y > 180) ? null : y;
+}
+function generate(entry) {
+  const [txt, test] = pick(CARDS), names = Object.keys(PARTS); let spare = null;
+  for (let k = 0; k < 2000; k++) {
+    const d = { entry, card: txt, ok: true, parts: [0, 1, 2].map(() => ({ n: pick(names), p: Math.random() })) };
+    const exit = check(d); if (exit === null) continue;
+    if (!spare) spare = d;
+    if (test(d.parts.map(q => q.n), entry, exit)) return d;
+  }
+  if (spare) { spare.ok = false; return spare; }
+  return { entry, card: txt, ok: false, parts: [0, 1, 2].map(() => ({ n: "dominoes", p: 0 })) };
+}
+function sentence(d) {
+  const v = d.parts.map(q => PARTS[q.n].v);
+  return "The ball " + v.slice(0, -1).join(", ") + ", and " + v[v.length - 1] + ".";
+}
+function addTurn(i) {
+  const d = chunks[i], box = document.createElement("div"); box.className = "turn";
+  box.innerHTML = "<b>Turn " + (i + 1) + "</b><span class='card" + (d.ok ? "" : " miss") + "'>" + (d.ok ? "" : "Missed: ") + d.card + "</span><p class='line'>" + sentence(d) + "</p>";
+  const cv = document.createElement("canvas"); cv.width = W * 2; cv.height = H * 2;
+  box.appendChild(cv); $("machine").appendChild(box);
+  canvases[i] = cv; objs[i] = realize(d);
+  return box;
+}
+function ball(c, p) { c.fillStyle = "#e8590c"; c.beginPath(); c.arc(p[0], p[1], 5, 0, 7); c.fill(); }
+function drawChunk(i, now) {
+  const c = canvases[i].getContext("2d");
+  c.setTransform(2, 0, 0, 2, 0, 0); c.clearRect(0, 0, W, H);
+  c.strokeStyle = "#1f2328"; c.lineWidth = 2; c.lineCap = "round"; c.lineJoin = "round";
+  objs[i].parts.forEach((pt, j) => {
+    const t = run ? run.fired[i][j] : null;
+    pt.draw(c, t == null ? -1 : (now - t) / 1000);
+  });
+  if (run && !run.over && run.i === i && run.pos) ball(c, run.pos);
+  else if (!run && i === 0) ball(c, objs[0].path[0]);
+}
+function drawAll(now) { for (let i = 0; i < objs.length; i++) drawChunk(i, now || performance.now()); }
+function along(path, d) {
+  for (let k = 1; k < path.length; k++) {
+    const [x0, y0] = path[k - 1], [x1, y1] = path[k], L = Math.hypot(x1 - x0, y1 - y0);
+    if (d <= L) { const t = L ? d / L : 1; return [x0 + (x1 - x0) * t, y0 + (y1 - y0) * t]; }
+    d -= L;
+  }
+  return null;
+}
+function tick(now) {
+  const dt = Math.min(0.05, (now - run.last) / 1000); run.last = now; run.d += dt * SPEED;
+  const o = objs[run.i]; run.pos = along(o.path, run.d);
+  if (!run.pos) {
+    run.i++; run.d = 0;
+    if (run.i >= objs.length) { run.over = true; drawAll(now); setStatus("The machine ran all " + objs.length + " turns."); update(); return; }
+    canvases[run.i].parentNode.scrollIntoView({ behavior: "smooth", block: "center" });
+    requestAnimationFrame(tick); return;
+  }
+  o.parts.forEach((pt, j) => { if (run.fired[run.i][j] == null && run.pos[0] >= pt.trig) run.fired[run.i][j] = now; });
+  drawAll(now);
+  requestAnimationFrame(tick);
+}
+function setStatus(s) { $("status").textContent = s; }
+function update() {
+  const n = chunks.length, busy = run && !run.over;
+  $("build").textContent = n >= TURNS ? "All ten turns built" : "Build turn " + (n + 1);
+  $("build").disabled = n >= TURNS || busy;
+  $("run").disabled = !n || busy;
+  $("reset").disabled = !n || busy;
+}
+$("build").onclick = () => {
+  const entry = chunks.length ? realize(chunks[chunks.length - 1]).exit : 40;
+  const d = generate(entry); chunks.push(d); localStorage.setItem(KEY, JSON.stringify(chunks));
+  run = null; const box = addTurn(chunks.length - 1); drawAll();
+  box.scrollIntoView({ behavior: "smooth", block: "center" });
+  setStatus(d.ok ? "Card met: " + d.card + "." : "The card beat the builder this time.");
+  update();
+};
+$("run").onclick = () => {
+  run = { i: 0, d: 0, last: performance.now(), pos: null, over: false, fired: chunks.map(c => c.parts.map(() => null)) };
+  canvases[0].parentNode.scrollIntoView({ behavior: "smooth", block: "center" });
+  setStatus("Running..."); update(); requestAnimationFrame(tick);
+};
+$("reset").onclick = () => {
+  if (Date.now() - resetArmed > 3000) { resetArmed = Date.now(); setStatus("Tap Start over again to clear."); return; }
+  chunks = []; objs = []; canvases = []; run = null; localStorage.removeItem(KEY);
+  $("machine").innerHTML = ""; setStatus("Cleared. Tap Build turn 1."); update();
+};
+chunks.forEach((d, i) => addTurn(i)); drawAll(); update();
+setStatus(chunks.length ? "Turn " + chunks.length + " is in." : "Tap Build turn 1 to start.");
+</script>
+</body>
+</html>
