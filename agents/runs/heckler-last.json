@@ -1,78 +1,33 @@
 {
- "duration_api_ms": 58338,
- "stop_reason": "end_turn",
- "session_id": "0e609678-b74c-485a-8270-339e3f395366",
- "total_cost_usd": 0.17305679999999998,
+ "duration_api_ms": 0,
+ "stop_reason": "stop_sequence",
+ "session_id": "7fbade89-f7ce-417d-9cf4-84d18bb16ae6",
+ "total_cost_usd": 0,
  "usage": {
-  "input_tokens": 16,
-  "cache_creation_input_tokens": 33530,
-  "cache_read_input_tokens": 228870,
-  "output_tokens": 5639,
   "output_tokens_details": {
-   "thinking_tokens": 638
+   "thinking_tokens": 0
   },
+  "input_tokens": 0,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "output_tokens": 0,
   "server_tool_use": {
    "web_search_requests": 0,
    "web_fetch_requests": 0
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 6466,
-   "ephemeral_5m_input_tokens": 27064
+   "ephemeral_1h_input_tokens": 0,
+   "ephemeral_5m_input_tokens": 0
   },
-  "inference_geo": "global",
-  "iterations": [
-   {
-    "input_tokens": 2,
-    "output_tokens": 74,
-    "cache_read_input_tokens": 46461,
-    "cache_creation_input_tokens": 470,
-    "cache_creation": {
-     "ephemeral_5m_input_tokens": 470,
-     "ephemeral_1h_input_tokens": 0
-    },
-    "type": "message"
-   }
-  ],
+  "inference_geo": "",
+  "iterations": [],
   "speed": "standard",
   "fallback_credit": null
  },
- "modelUsage": {
-  "claude-sonnet-5-5": {
-   "inputTokens": 16,
-   "outputTokens": 5639,
-   "cacheReadInputTokens": 228870,
-   "cacheCreationInputTokens": 33530,
-   "webSearchRequests": 0,
-   "costUSD": 0.17283299999999996,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 638,
-   "cacheCreationEphemeral5mInputTokens": 27064,
-   "cacheCreationEphemeral1hInputTokens": 6466,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
-  "claude-haiku-5-5": {
-   "inputTokens": 1208,
-   "outputTokens": 206,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
-   "webSearchRequests": 0,
-   "costUSD": 0.00022380000000000002,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 187,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  }
- },
+ "modelUsage": {},
  "permission_denials": [],
- "terminal_reason": "completed",
+ "terminal_reason": "api_error",
  "fast_mode_state": "off",
  "fast_mode_disabled_reason": "sdk_opt_in_required",
  "subagent_stats": {
@@ -100,52 +55,18 @@
   "by_type": {}
  },
  "safety_stops": 0,
- "is_error": false,
- "num_turns": 8,
+ "is_error": true,
+ "num_turns": 1,
  "subtype": "success",
- "api_error_status": null,
- "result": "I heckled 10 commits and did not write a fleet verdict, because the last one was only 5 days old.\n\nThe cap of 10 left two commits unheckled: the original cliprig v1 commit and an older testbed bot turn.",
- "ttft_ms": 1036,
+ "api_error_status": 429,
+ "api_error_type": "rate_limit_error",
+ "api_error_origin": "first_party",
+ "api_error": "usage_limit_reached",
+ "result": "You've hit your weekly limit \u00b7 resets 12am (UTC)",
  "type": "result",
- "duration_ms": 80741,
- "uuid": "c97165e2-daee-41a6-a45e-f929a01d4af2",
- "ttft_stream_ms": 777,
- "time_to_request_ms": 307,
- "first_content_frame_ms": 777,
+ "duration_ms": 566,
+ "uuid": "c8e01061-ff39-45d9-aa4d-ff1e5c6316dc",
  "queued_turn_count": 0,
  "result_index": 0,
- "model_usage_since_last_result": {
-  "claude-sonnet-5-5": {
-   "inputTokens": 16,
-   "outputTokens": 5639,
-   "cacheReadInputTokens": 228870,
-   "cacheCreationInputTokens": 33530,
-   "webSearchRequests": 0,
-   "costUSD": 0.17283299999999996,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 638,
-   "cacheCreationEphemeral5mInputTokens": 27064,
-   "cacheCreationEphemeral1hInputTokens": 6466,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
-  "claude-haiku-5-5": {
-   "inputTokens": 1208,
-   "outputTokens": 206,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
-   "webSearchRequests": 0,
-   "costUSD": 0.00022380000000000002,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 187,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  }
- }
+ "model_usage_since_last_result": {}
 }
