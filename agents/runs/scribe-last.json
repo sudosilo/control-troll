@@ -1,78 +1,33 @@
 {
- "duration_api_ms": 125906,
- "stop_reason": "end_turn",
- "session_id": "3286fe07-918b-475d-ac26-915070b6aba8",
- "total_cost_usd": 0.37941120000000006,
+ "duration_api_ms": 0,
+ "stop_reason": "stop_sequence",
+ "session_id": "d9fb9869-f473-43c1-953a-06610ae01850",
+ "total_cost_usd": 0,
  "usage": {
-  "input_tokens": 50,
-  "cache_creation_input_tokens": 45341,
-  "cache_read_input_tokens": 953955,
-  "output_tokens": 16066,
   "output_tokens_details": {
-   "thinking_tokens": 4096
+   "thinking_tokens": 0
   },
+  "input_tokens": 0,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "output_tokens": 0,
   "server_tool_use": {
    "web_search_requests": 0,
    "web_fetch_requests": 0
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 6513,
-   "ephemeral_5m_input_tokens": 38828
+   "ephemeral_1h_input_tokens": 0,
+   "ephemeral_5m_input_tokens": 0
   },
-  "inference_geo": "global",
-  "iterations": [
-   {
-    "input_tokens": 2,
-    "output_tokens": 530,
-    "cache_read_input_tokens": 58041,
-    "cache_creation_input_tokens": 701,
-    "cache_creation": {
-     "ephemeral_5m_input_tokens": 701,
-     "ephemeral_1h_input_tokens": 0
-    },
-    "type": "message"
-   }
-  ],
+  "inference_geo": "",
+  "iterations": [],
   "speed": "standard",
   "fallback_credit": null
  },
- "modelUsage": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1207,
-   "outputTokens": 26,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
-   "webSearchRequests": 0,
-   "costUSD": 0.0001337,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 0,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
-  "claude-sonnet-5-5": {
-   "inputTokens": 50,
-   "outputTokens": 16066,
-   "cacheReadInputTokens": 953955,
-   "cacheCreationInputTokens": 45341,
-   "webSearchRequests": 0,
-   "costUSD": 0.37927750000000005,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 4096,
-   "cacheCreationEphemeral5mInputTokens": 38828,
-   "cacheCreationEphemeral1hInputTokens": 6513,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  }
- },
+ "modelUsage": {},
  "permission_denials": [],
- "terminal_reason": "completed",
+ "terminal_reason": "api_error",
  "fast_mode_state": "off",
  "fast_mode_disabled_reason": "sdk_opt_in_required",
  "subagent_stats": {
@@ -100,52 +55,18 @@
   "by_type": {}
  },
  "safety_stops": 0,
- "is_error": false,
- "num_turns": 25,
+ "is_error": true,
+ "num_turns": 1,
  "subtype": "success",
- "api_error_status": null,
- "result": "I documented 12 repos this run. All the pushes went through.\n\nFour were backfills: `2026-11-24-green-fleetindex`, `2026-11-24-green-greenscreen`, `2026-11-25-blue-cliprig` and `2026-11-25-blue-manualrebuild`. Three updates got docs pushes: `ascend`, `spectral-engine` and `2026-11-16-orange-zion`. Five more needed only release jobs, because the developer had already written the changelog entries and READMEs. Those five are `datacenter-osint`, `topo-wars-server`, `pajamastan-warrants` and both `signal-snapshot` repos. I also refreshed the state for 20 repos whose only new commits were the scribe's own.\n\nNo new repo has a live site at its own name. They all answered 404, so those homepages are empty. No repo needed a root `vercel.json`.\n\nSix updates were deferred by the 12-repo cap: `field-twin`, `2026-11-22-orange-hubview`, `mohavetech-website`, `itchy-troll`, `2026-10-18-orange-testbed` and `2026-11-24-green-filecensus`. The `sudosilo`, `control-troll` and `heckle-troll` repos have no state entries. Earlier runs skipped them on purpose, so I did too, and no other backfills remain.\n\nThe profile page in `sudosilo/sudosilo` is updated. `scribe state` is pushed to control-troll main, with the new notes included. The release and settings work will happen when the `scribe-publish` workflow runs on that push. I did not check that it ran.",
- "ttft_ms": 1254,
+ "api_error_status": 429,
+ "api_error_type": "rate_limit_error",
+ "api_error_origin": "first_party",
+ "api_error": "usage_limit_reached",
+ "result": "You've hit your weekly limit \u00b7 resets 12am (UTC)",
  "type": "result",
- "duration_ms": 187276,
- "uuid": "469e2024-be04-4e59-a45a-4b424f5fa329",
- "ttft_stream_ms": 1000,
- "time_to_request_ms": 371,
- "first_content_frame_ms": 1000,
+ "duration_ms": 582,
+ "uuid": "335ada0b-6837-4cc7-a710-4027126f44ab",
  "queued_turn_count": 0,
  "result_index": 0,
- "model_usage_since_last_result": {
-  "claude-haiku-5-5": {
-   "inputTokens": 1207,
-   "outputTokens": 26,
-   "cacheReadInputTokens": 0,
-   "cacheCreationInputTokens": 0,
-   "webSearchRequests": 0,
-   "costUSD": 0.0001337,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 0,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 0,
-   "canonicalModel": "claude-haiku-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
-  "claude-sonnet-5-5": {
-   "inputTokens": 50,
-   "outputTokens": 16066,
-   "cacheReadInputTokens": 953955,
-   "cacheCreationInputTokens": 45341,
-   "webSearchRequests": 0,
-   "costUSD": 0.37927750000000005,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 4096,
-   "cacheCreationEphemeral5mInputTokens": 38828,
-   "cacheCreationEphemeral1hInputTokens": 6513,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  }
- }
+ "model_usage_since_last_result": {}
 }
