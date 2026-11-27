@@ -1,33 +1,78 @@
 {
- "duration_api_ms": 0,
- "stop_reason": "stop_sequence",
- "session_id": "a75ac6e0-21ec-4704-a0a0-3cf8c9640774",
- "total_cost_usd": 0,
+ "duration_api_ms": 62670,
+ "stop_reason": "end_turn",
+ "session_id": "b0f753b3-b8ca-43cc-b433-11f1cc62b665",
+ "total_cost_usd": 0.26030190000000003,
  "usage": {
+  "input_tokens": 24,
+  "cache_creation_input_tokens": 38986,
+  "cache_read_input_tokens": 388791,
+  "output_tokens": 6518,
   "output_tokens_details": {
-   "thinking_tokens": 0
+   "thinking_tokens": 413
   },
-  "input_tokens": 0,
-  "cache_creation_input_tokens": 0,
-  "cache_read_input_tokens": 0,
-  "output_tokens": 0,
   "server_tool_use": {
    "web_search_requests": 0,
    "web_fetch_requests": 0
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 38986,
    "ephemeral_5m_input_tokens": 0
   },
-  "inference_geo": "",
-  "iterations": [],
+  "inference_geo": "global",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 139,
+    "cache_read_input_tokens": 51894,
+    "cache_creation_input_tokens": 493,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 493
+    },
+    "type": "message"
+   }
+  ],
   "speed": "standard",
   "fallback_credit": null
  },
- "modelUsage": {},
+ "modelUsage": {
+  "claude-sonnet-5-5": {
+   "inputTokens": 24,
+   "outputTokens": 6518,
+   "cacheReadInputTokens": 388791,
+   "cacheCreationInputTokens": 38986,
+   "webSearchRequests": 0,
+   "costUSD": 0.26005110000000004,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 413,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 38986,
+   "canonicalModel": "claude-sonnet-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-haiku-5-5": {
+   "inputTokens": 1208,
+   "outputTokens": 260,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "webSearchRequests": 0,
+   "costUSD": 0.0002508,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 241,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
  "permission_denials": [],
- "terminal_reason": "api_error",
+ "terminal_reason": "completed",
  "fast_mode_state": "off",
  "fast_mode_disabled_reason": "sdk_opt_in_required",
  "subagent_stats": {
@@ -55,18 +100,52 @@
   "by_type": {}
  },
  "safety_stops": 0,
- "is_error": true,
- "num_turns": 1,
+ "is_error": false,
+ "num_turns": 12,
  "subtype": "success",
- "api_error_status": 429,
- "api_error_type": "rate_limit_error",
- "api_error_origin": "first_party",
- "api_error": "usage_limit_reached",
- "result": "You've hit your weekly limit \u00b7 resets 12am (UTC)",
+ "api_error_status": null,
+ "result": "I heckled 10 commits this run and did not write a fleet verdict, because the last one is under 7 days old.\n\nI posted the 10 as commit comments and pushed the log, `lastChecked` and the agent notes to control-troll main. About 40 heckle-able commits were pushed, so the 10-commit cap left the rest unheckled, including the hubview checkpoints and the starfighter, hopper and lobhill commits.",
+ "ttft_ms": 1134,
  "type": "result",
- "duration_ms": 549,
- "uuid": "07c72c51-e23a-4e6d-a7d0-1a30abc89a5a",
+ "duration_ms": 133496,
+ "uuid": "9a0bdaae-431c-4e85-aa91-200753d6c81d",
+ "ttft_stream_ms": 855,
+ "time_to_request_ms": 332,
+ "first_content_frame_ms": 855,
  "queued_turn_count": 0,
  "result_index": 0,
- "model_usage_since_last_result": {}
+ "model_usage_since_last_result": {
+  "claude-sonnet-5-5": {
+   "inputTokens": 24,
+   "outputTokens": 6518,
+   "cacheReadInputTokens": 388791,
+   "cacheCreationInputTokens": 38986,
+   "webSearchRequests": 0,
+   "costUSD": 0.26005110000000004,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 413,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 38986,
+   "canonicalModel": "claude-sonnet-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-haiku-5-5": {
+   "inputTokens": 1208,
+   "outputTokens": 260,
+   "cacheReadInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "webSearchRequests": 0,
+   "costUSD": 0.0002508,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 241,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 0,
+   "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ }
 }
