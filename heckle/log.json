@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-27T01:46:32Z",
+      "repo": "2026-10-30-orange-scores",
+      "sha": "a1b29162fdbfd06047dbe255070bfe48fa9c0d80",
+      "message": "Register centipede-text",
+      "heckle": "Another game registered in api/_games.js, and the intern again picked a perSecond of 3000 for centipede-text like a number that big is a personal achievement. Every other entry in that file sits at 3 a second, so this one is a blank check the server will honor for anyone who can type a curl command. It has the fiscal discipline of a bailout bill with no cap, and max 9999999 is the cherry on top. Hand pasted object entry number forty something, because apparently a lookup table is beyond you.\n\nFix it: Drop perSecond for centipede-text in api/_games.js to something a human can actually score. Lower max to a number the game can reach. Stop hand pasting entries and read limits from the game itself."
+    },
+    {
+      "date": "2026-11-27T01:46:32Z",
+      "repo": "2026-11-26-orange-centipede",
+      "sha": "a3ed9009e2f072386bc017ad54bdb7ddc9d89304",
+      "message": "Add page description and favicon",
+      "heckle": "Two lines in index.html and this counts as a commit. Wow, a meta description and a favicon, stop the presses, call the Senate. The favicon is an inline SVG data URI with the at sign as the logo, which is the kind of branding you get when the budget is zero and the committee is asleep. The Claude trailer sits in the message while your login takes the credit, so even the hand holding is laundered. This should have been folded into the v3 commit minutes earlier like an adult would do.\n\nFix it: Squash this into the v3 commit in index.html instead of padding the log. Move the favicon out of the head into a real file. Write a description that says something about the controls."
+    },
+    {
+      "date": "2026-11-27T01:46:32Z",
+      "repo": "2026-11-26-orange-centipede",
+      "sha": "190b95cfac1b2cf4e399108bc61afe457d234e7d",
+      "message": "Add Centipede Text Edition v3",
+      "heckle": "A 427 line index.html dropped in one shot, CSS, markup and game all mashed into a single file, named v3 when the repo has no v1 or v2 in sight. Nice versioning, you did a filibuster on your own history. The root block lists a dozen color variables for a game drawn in letters, and body is locked at 13px mono, so on a phone the tiny glyphs will be a squint test. Then you wire the score to the hub with a max of nearly ten million. The intern strikes again.\n\nFix it: Split the script and styles out of index.html so it can be reviewed. Rename the version or delete the stale v3 label. Check the 13px body font on a phone and size the glyph grid up. Validate scores on the server, not the page."
+    },
+    {
+      "date": "2026-11-27T01:46:32Z",
+      "repo": "2026-11-26-orange-casino",
+      "sha": "cc6c6853b1aa9303ff50581f0a534d618bb258e2",
+      "message": "pixel texas holdem",
+      "heckle": "holdem.html is 281 lines of pasted CSS and script, and the head block is a straight copy of the blackjack page from the next commit, same color variables, same px class, same checkerboard background. Copy paste is not a design system, it is a campaign promise you already broke. Everything is forced uppercase with a Courier font and font smoothing turned off, so on a phone the hand text will be a cramped shouting match. A poker table fed by a server and you could not share one stylesheet.\n\nFix it: Pull the shared CSS from holdem.html and blackjack.html into one file. Drop text-transform uppercase on body so cards and chip counts stay readable. Test the 560px column on a small phone."
+    },
+    {
+      "date": "2026-11-27T01:46:32Z",
+      "repo": "2026-11-26-orange-casino-server",
+      "sha": "fdf30bdc59839623e60349844e255220a398320c",
+      "message": "texas holdem table",
+      "heckle": "holdem.js is 321 lines of poker logic crammed into one function that takes players, broadcast and crypto as arguments, because apparently a module that can import its own dependencies is beyond the intern. The state object he is one giant bag with a timer in it, and the hook into server.js is a bare startsWith slash he check with no auth beyond whatever player object arrives. Zero tests on a hand evaluator, which is the part that decides who wins the pot. A shuffle with crypto, fine, I will say it once and it hurts.\n\nFix it: Write tests for the hand ranking in holdem.js before anyone plays for chips. Require crypto inside the file instead of passing it in. Validate the body in handle for every /he/ route. Split the state bag from the timer."
+    },
+    {
+      "date": "2026-11-27T01:46:32Z",
+      "repo": "2026-11-26-orange-casino",
+      "sha": "7567f6a7e43e39e4ed3102609fe1f63633d07f7e",
+      "message": "pixel video blackjack",
+      "heckle": "The 260 line blackjack.html is the original sin that holdem.html later photocopied. All the styling lives inline, everything is uppercase Courier with smoothing off, and the title says Video Blackjack for what is a form posting to a server. A fixed 560px column with 4px borders and 4px shadows on every panel will eat the width of a phone for breakfast. No shared script, no shared styles, just a file thrown on the desk like a late tax return.\n\nFix it: Move the css in blackjack.html to a shared stylesheet. Cut border and shadow sizes on narrow screens. Stop uppercasing every string in the body rule."
+    },
+    {
+      "date": "2026-11-27T01:46:32Z",
+      "repo": "2026-11-26-orange-casino-server",
+      "sha": "3fd5b5392196e0b003d0422bda9a58927d60408b",
+      "message": "casino server with shared shoe blackjack",
+      "heckle": "A 248 line server.js with a shared six deck shoe, a players Map in memory, and server sent events, all in one file with no persistence. Restart the dyno and every chip stack evaporates like a government surplus. Credit where it hurts: you used crypto.randomInt for the shuffle instead of Math.random, so the intern got one thing right by accident. The package.json has no dependencies and no tests, and the CORS and auth story is nowhere in sight in the first 120 lines of patch.\n\nFix it: Add a real auth check to every POST route in server.js. Persist chips somewhere other than the players Map. Add a GET /health route. Write a test for handValue with aces."
+    },
+    {
+      "date": "2026-11-27T01:46:32Z",
+      "repo": "downfree-foundry",
+      "sha": "393a08ba50d39dbc133e3bfd43e382500c599de5",
+      "message": "Library grouped by drive with pictures, length, miles and route sketch",
+      "heckle": "That commit message is a ransom note, one sentence stuffing in a library, thumbnails, mileage, a route sketch, a map popup and a whole rewrite of the composite flow. 334 lines added to the same index.html, which is now a landfill. You shrank video.thumbvid max-height from 60vh to 28vh, so videos are tiny on a phone, and the drive cards put a 64px canvas next to a flex summary that will cramp on narrow screens. Scope creep like a spending bill with forty riders.\n\nFix it: Split this into separate commits for the library, the popup and the composite flow. Move the details.drive css and script out of index.html. Check the 28vh thumbnail on a phone. Keep the commit message to one line."
+    },
+    {
+      "date": "2026-11-27T01:46:32Z",
+      "repo": "2026-11-26-orange-bingo",
+      "sha": "850e030477c0884f7d4d81271a236383cbfae963",
+      "message": "bingo game page",
+      "heckle": "A 205 line index.html with every style inline and buttons at 100 percent width, 18px type, and four color classes named blue, green, gold and gray. Naming a class after its color is a cry for help, and the next time you want it red the rename is on you. The h1 letter-spacing of 6px at 30px will wrap on a small phone and the whole page maxes at 520px with 16px padding. A bingo card in markup you did not even bother to look at. Cereal box code.\n\nFix it: Rename the .blue, .green, .gold and .gray classes in index.html to what they do. Test the h1 on a narrow phone. Pull the script into its own file."
+    },
+    {
+      "date": "2026-11-27T01:46:32Z",
+      "repo": "2026-11-26-orange-bingo-server",
+      "sha": "6be3327b0af8366e4fbd12d831d570a9934f3831",
+      "message": "bingo server",
+      "heckle": "server.js builds player ids with Math.random().toString(36), so anyone can guess the next one, and the whole game state is module level lets: players, called, winner, all shared by every connection like a bad group project. hasBingo runs called.includes inside every line check, a quadratic mess for a 75 number game, but at least it is small. No auth, no rate limit, no health route, and one global game for the entire internet. The intern built a bingo hall with no doors.\n\nFix it: Use crypto.randomBytes for ids in makeId in server.js. Use a Set for called so lookups are not a scan. Add a GET /health route. Scope game state per room instead of globals."
+    },
+    {
       "date": "2026-11-25T19:22:03Z",
       "repo": "2026-11-22-orange-hubview",
       "sha": "9be40df5dd10dde706d59e93d0f2e1b55c5952bb",
@@ -1329,76 +1399,6 @@
       "sha": "8c9d41c1",
       "message": "Add step 4 script",
       "heckle": "Another step script, step4.sh, 177 lines, dropped in the repo like a casserole nobody asked for. It writes a food spots file to HOME with a heredoc, pulls from the public Overpass endpoint with no sign of rate limiting, and defaults dtFoodOn to on from localStorage. Every phone that opens the map hammers a free community server. Calling this a build process is like calling a bailout a savings plan. Step 4 is also deleted one commit later, so you committed it just to throw it away, which is the intern equivalent of paying a lawyer to read the contract and then burning it.\n\nFix it: Stop committing step scripts. Add a cache and a delay around the Overpass fetch in the food spots code. Squash throwaway commits before pushing."
-    },
-    {
-      "date": "2026-11-13T11:07:52Z",
-      "repo": "delivery-twin",
-      "sha": "7684ed37",
-      "message": "Food spots layer and form",
-      "heckle": "A hundred and seventy four lines pasted into index.html for a food spots layer, and the commit message is five words long. The file is already a giant single page where every feature is another dt prefixed global, so now there are even more loose variables like dtFoodOn, dtFoodLayer, dtFoodTimer and dtFoodBusy, all hanging off window like campaign signs after an election. The same commit also deletes step4.sh, so the history is the intern generating code with scripts and then cleaning up the crime scene. Menu buttons Food spots on map and Add food spot went in with no mention of mobile spacing.\n\nFix it: Wrap the food spots code in index.html in one object or module scope. Put a real description in the commit message. Check the new menu buttons on a narrow phone screen."
-    },
-    {
-      "date": "2026-11-13T11:07:52Z",
-      "repo": "delivery-twin",
-      "sha": "27e4b384",
-      "message": "Add step 5 script",
-      "heckle": "You committed a two hundred line shell script named step5.sh into the repo root. A shell script that rewrites index.html with awk and then writes to a dotfile in HOME. This is not a feature, this is the intern leaving sticky notes on the production server. The awk line deletes everything from the Delivery Twin food spots comment to dayLogN, which is surgery with a butter knife, and the script has no check that the markers even exist. Run it twice and who knows what you cut. And the commit message is Add step 5 script, which tells the next reader exactly nothing.\n\nFix it: Delete step5.sh and commit the real change to index.html instead. Never keep one shot patch scripts in the repo root. Write a message that says what the step does."
-    },
-    {
-      "date": "2026-11-13T11:07:52Z",
-      "repo": "downfree-foundry",
-      "sha": "1f13f31c",
-      "message": "Composite: copy a clip to stack a recording with itself, remove clips, turn sideways footage upright",
-      "heckle": "Copy a clip to stack a recording with itself. Wow. The intern invented a filibuster for video: take one clip, talk over it with itself, and call it compositing. The hint paragraph under 1. Clips in index.html is now a wall of instructions about sliding the copy's Start later so cars land on the earlier road, which is what you write when the UI cannot explain itself. Remove clips and turn upright got jammed in the same commit as the copy feature, so when one breaks you get to bisect your own mess. The Road tab got the same turn control pasted in, so now two tabs carry the same logic twice.\n\nFix it: Move the turn logic in index.html into one shared function. Replace the hint wall with a short label and a tooltip. Split remove and copy into separate commits next time."
-    },
-    {
-      "date": "2026-11-13T11:07:52Z",
-      "repo": "downfree-foundry",
-      "sha": "acb857ea",
-      "message": "Record: read the phone's tilt to know which way is up",
-      "heckle": "You want the phone's tilt to decide which way is up, which is bold for someone who cannot decide which way is up in their own commit messages. The orientLine in index.html says waiting for the camera and will say it forever on any phone that refuses the sensor permission, and on iPhones that permission needs a tap you did not wire to anything I could see. Then you auto turn saved clips in Composite and Road based on a number captured at record time, so one wobbly start and every clip is sideways for life. Ninety two lines added and not a single test, a campaign promise with a gyroscope.\n\nFix it: Ask for motion permission from a real button tap in index.html. Show a clear message when the sensor is denied. Keep the manual turn option as the default fallback."
-    },
-    {
-      "date": "2026-11-13T11:07:52Z",
-      "repo": "downfree-foundry",
-      "sha": "37bce1da",
-      "message": "Record button under the camera; every card folds open and closed and remembers it; settings tucked into their own card",
-      "heckle": "Three features in one commit, because apparently the intern thinks git charges per push. You touched the tab CSS in index.html, deleted the #recBig rule, bolted collapsible cards onto every section and called it a button move. That is a omnibus bill stuffed with unrelated riders, the kind of thing a legislature passes at midnight so nobody reads it. Now every card remembers its fold state, so one bad localStorage value and the whole Record view opens like a government shutdown. Also the tabs got font-size 15px with flex 1 1 auto, which on a narrow phone will wrap them into a ragged mess.\n\nFix it: Split the fold memory into its own commit. Guard the saved fold state in index.html against bad or missing values. Check the tab row at 320 pixels wide before you trust it."
-    },
-    {
-      "date": "2026-11-13T01:52:53Z",
-      "repo": "thanks-for-watching",
-      "sha": "83d18356",
-      "message": "Point api at backend",
-      "heckle": "One line changed in vercel.json and it still took you a whole commit to swap a placeholder host that literally read xxxxxxxx for a hardcoded Railway production URL. Somebody shipped a rewrite pointing at xxxxxxxx and called it done, which is a campaign promise with a domain name. Now the backend address is welded into the config with a random looking suffix, so the next redeploy means another commit. The root rewrite also still serves thanks-for-watching-v1.html while the log is full of v2, v3 and v4 work, so the front door shows the oldest version. Cereal box coding at its finest.\n\nFix it: Move the backend host out of vercel.json and into a Vercel environment variable. Point the root rewrite in vercel.json at the newest versioned page. Add a GET /health route on the backend so you can tell when it is down instead of guessing."
-    },
-    {
-      "date": "2026-11-13T01:52:53Z",
-      "repo": "smash-bender",
-      "sha": "0d825985",
-      "message": "Toolbox page: every tool, what it does, whether it is ready, which button uses it",
-      "heckle": "You built a Toolbox page to explain your own tools to yourself, because apparently nobody could remember what the pile does. server/extras.py hardcodes /opt/smash-bender as a fallback BASE and then pokes around site-packages folders with startswith checks to guess whether Demucs and WhisperX are installed, which is a ready check as reliable as a bailout promise. It also adds main.py just to wrap app.py, so now two entry points exist and anyone still running uvicorn app:app silently skips every extra route. And tools.html loads Google fonts from a CDN for a page that lists audio utilities. The unauthenticated publish route is still sitting in app.py, by the way.\n\nFix it: Add auth to the /api/publish route in server/app.py before anything else. Replace the site-packages sniffing in has() in server/extras.py with real import checks. Move the font links in server/static/tools.html to local files. Delete the old entry point or document that main:app is the only one."
-    },
-    {
-      "date": "2026-11-13T01:52:53Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "9a194e5d",
-      "message": "grok 2026-11-12T170310",
-      "heckle": "Another grok turn shoved straight onto the branch with no pull request, no review, and no one watching, like a bill passed at 3am with nobody reading it. contrib/grok/2026-11-12T170310.json draws a Grok Corner Market that is a flat four point rectangle, a second rectangle lifted to 1829, and a hatch that does not even match the building footprint. It sits at negative coordinates again, so it floats in the same corner as every other grok turn. The person is browsing shelves for snacks, which is the most detailed thing in the whole file, and the sig field is trusted by nothing you can see in the diff. Lovely work, intern.\n\nFix it: Make the grok bot open pull requests like the steward bot does instead of committing to the branch. Add a check that rejects turns whose hatch points do not match the building outline. Verify the sig field in a workflow before the file lands."
-    },
-    {
-      "date": "2026-11-12T02:17:59Z",
-      "repo": "delivery-twin",
-      "sha": "4d429900",
-      "message": "Hide road controls",
-      "heckle": "You hid the road controls by gluing a second style attribute onto buttons that already had one. Open index.html around roadQualityBtn and roadHeatBtn and you will find style=\"display:none\" style=\"display:none\", a duplicate attribute that browsers ignore and linters scream about. Eleven lines changed to accomplish nothing the previous commit had not already done, which is the commit equivalent of a filibuster. Did a cereal box teach you find and replace?\n\nFix it: Delete the duplicated style attributes in index.html on the Roads and Road hazards buttons. Stop hiding features with inline display:none and use one hidden class or remove the markup. Squash your back to back hide commits next time."
-    },
-    {
-      "date": "2026-11-12T02:17:59Z",
-      "repo": "song-offset-listener",
-      "sha": "f0843e90",
-      "message": "BLUE PHONE: Song Offset Listener v2, the distilled build at the site root; the old build with every experiment is kept at /classic with archive notes; ear lock clip length fix in all three pages",
-      "heckle": "You call this distilled? You kept the entire old app as offset-listener-v1.html and served it at /classic, so the repo now ships two giant pages plus a 26 line archive note explaining which failed experiments you were too attached to delete. That is git's whole job, intern. Then you smuggled a bug fix into three pages at once. In offset-listener-v1.html the new peaks line computes (cs[j] - med) / mad twice, once for zz and again inside the push, so your isFinite check guards a value you then ignore.\n\nFix it: Push z: zz in the peaks line of offset-listener-v1.html. Delete the archived page and let git history hold it. Fix shared bugs once, not in three copies. Cut the archive notes down to something a human will read."
     }
   ]
 }
