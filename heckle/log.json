@@ -1,6 +1,34 @@
 {
   "heckles": [
     {
+      "date": "2026-11-27T12:35:09Z",
+      "repo": "2026-11-26-orange-rocketbench",
+      "sha": "0d40af08b4465b59082bb26f13820d2119d43998",
+      "message": "Rocketbench: time step rocket sim with parts stacking, staging, missions",
+      "heckle": "You dumped 935 lines of index.html and 923 lines of sim.js into one commit called a time step rocket sim, like the whole thing arrived in a single delivery from the stork. Nobody can review that, and I suspect that was the plan. The stage in index.html is locked to overflow hidden with user-scalable=no and a min-height of 44vh, so on a small phone the build panel gets whatever scraps are left, and pinch zoom is disabled so nobody can read your 10px HUD text either. You wrote a 1976 atmosphere model and then crammed the controls into a space the size of a campaign promise.\n\nFix it: Split sim.js work from the UI so a bug has somewhere to hide that is not everywhere. Remove user-scalable=no from the viewport meta in index.html. Raise the 10px font sizes in the #hud and #hudL rules. Let the build panel scroll instead of starving it under the 44vh stage."
+    },
+    {
+      "date": "2026-11-27T12:35:09Z",
+      "repo": "2026-11-26-orange-centipede",
+      "sha": "7b7e4fa93170f89618e9774ffa091d18dbb73138",
+      "message": "Add Career mode with 10 levels and Puzzle mode with 12 solver verified puzzles",
+      "heckle": "Career mode and Puzzle mode in one commit, because apparently one half finished thing at a time was too disciplined for you. The index.html grew 207 lines on top of a single file that was already a junk drawer, and the spawn logic is still Math.random sprayed through the spider and flea code, so the solver verified puzzles are verified against the one part of the game that behaves. The new .picks buttons use white-space nowrap with ellipsis at 11px, so level names get chopped on a phone like a bad bailout bill. Twelve puzzles proved by a solver nobody can see in this diff is a trust me bro.\n\nFix it: Seed the random calls in the spider and flea spawn code so puzzles are repeatable. Commit the solver or drop the verified claim. Let the .picks buttons wrap in index.html instead of truncating. Start moving the game logic out of the single file."
+    },
+    {
+      "date": "2026-11-27T12:35:09Z",
+      "repo": "2026-11-26-orange-centipede",
+      "sha": "badaac04eeb1b65ff0b54d692afb7e4ea6cc0372",
+      "message": "Add screen shake, flashes, shot trails, wave clear slowdown, combo multiplier, and Printout and Amber skins",
+      "heckle": "Screen shake, flashes, trails, slowdown, combo multiplier and two skins in one commit, which is how you build a game when you cannot say no to yourself. The skins are copy pasted blocks of CSS variables, body[data-skin=print] and body[data-skin=amber], each redefining the same twenty colors by hand, and then you tacked on a pile of per skin h1 selectors that repeat the same rule twice in one line. Flashing and shaking the screen by default with no obvious off switch is how you turn a toy into a headache. Even the Amber skin muddy brown on cream looks like a filing cabinet.\n\nFix it: Add a reduce motion toggle for the shake and flashes and honor prefers-reduced-motion in index.html. Collapse the duplicated body[data-skin] h1 and .hud b selectors into one rule. Put the skin palettes in a single object instead of hand copying every variable. Ship fewer features per commit."
+    },
+    {
+      "date": "2026-11-27T12:35:09Z",
+      "repo": "2026-11-26-green-ghostwing",
+      "sha": "6f05d55d3a39f90afd7a4ec542b626a3410dd41e",
+      "message": "Ghost Wing v1",
+      "heckle": "Ghost Wing v1 is 2352 lines in one index.html, and the first thing I saw was the same ui-monospace, DejaVu Sans Mono, overflow hidden body block that Rocketbench uses. You copy pasted your own boilerplate between two different apps and then gave one a green repo name and one an orange name, like swapping the hat fixes the clone. A bare v1 commit message tells me nothing, which fits, since nothing about this review was easy. The load and save helpers swallow every localStorage error with an empty catch, so when saving breaks the player gets silence and a lost run.\n\nFix it: Pull the shared CSS and helper code into one file both apps can use. Log the errors in the empty catch blocks of load and save in index.html. Write a real commit message. Break the 2352 line file into scripts you can actually review."
+    },
+    {
       "date": "2026-11-27T01:46:32Z",
       "repo": "2026-10-30-orange-scores",
       "sha": "a1b29162fdbfd06047dbe255070bfe48fa9c0d80",
@@ -1371,34 +1399,6 @@
       "sha": "dc73cbd9",
       "message": "Mail room machine art: inserter, press, paper roll, guillotine, sorter, folder",
       "heckle": "One commit, six machines, 109 lines added and 111 removed in index.html, which means you basically retyped the file and hoped diff would be gentle. The artChips function now uses Math.random to scatter four specks every time it is called, so the picture twitches on every redraw like a polling error. You changed the chip color from a brown to a pale blue and called it art direction, which is the same energy as repainting a government building and declaring the deficit fixed. Inserter, press, paper roll, guillotine, sorter and folder in one go means when the sorter looks wrong you have no idea which change did it.\n\nFix it: Seed or cache the random specks in artChips in index.html so they stop flickering. Commit one machine at a time. Pull the shared drawing helpers into one block."
-    },
-    {
-      "date": "2026-11-13T11:07:52Z",
-      "repo": "mail-ionaire",
-      "sha": "a4352f58",
-      "message": "Mail room art: wide format print and cut plotter on the main screen, mail machines on the floor",
-      "heckle": "You rewrote the machine drawing block in index.html, ripping out the knee mill motor, fins, quill lever and the whole column drawing, and replaced it with wide format printer art. Twenty nine lines in, twenty three out, in a file that is already a landfill. The old comments describing each part are just gone, so the next person gets minified canvas calls with hardcoded pixel coordinates like 284,30,32,8 and no clue what any of them draw. It is a campaign promise to be art, a pile of magic numbers drawn with fillRect and a hope. And the message says mail machines on the floor, which does not match a diff full of mill parts.\n\nFix it: Name the coordinates in the draw functions in index.html as constants. Keep a one line comment per machine. Make the commit message match the diff."
-    },
-    {
-      "date": "2026-11-13T11:07:52Z",
-      "repo": "delivery-twin",
-      "sha": "a0c23772",
-      "message": "Add step 3 script",
-      "heckle": "Step 3, step3.sh, 210 lines of offer logger stuffed into a heredoc and committed to the repo root. The pattern is now clear: write a shell script, run it on a phone, commit the script, repeat, and call the result a project. Inside, the dtOffersSave function swallows every error with an empty catch, so when localStorage fills up the offer simply disappears and nobody is told. That is a bailout with no audit. A logger that silently loses the data it exists to log is not a logger, it is a rumor.\n\nFix it: Show an error when the save in dtOffersSave fails instead of the empty catch. Remove step3.sh from the repo root. Put the offer logger straight into the app source."
-    },
-    {
-      "date": "2026-11-13T11:07:52Z",
-      "repo": "delivery-twin",
-      "sha": "0eaa5d67",
-      "message": "Rename to Delivery Twin, own tables, offer logger",
-      "heckle": "This is a clone of Field Twin with a find and replace and a prayer. The README now says Delivery Twin is a phone friendly field log for a person who drives to job sites and needs to record stops, receipts and miles, which is not a delivery app, it is the old description wearing a fake mustache. The CHANGELOG kept the old Field Twin history under the new title, including Parcelsun locker notes that have nothing to do with food delivery. Renaming the companion installer title while leaving the whole product copy untouched is the party line version of rebranding. Also a rename, new tables and an offer logger in one commit is three jobs for one message.\n\nFix it: Rewrite the README.md description so it is about deliveries. Cut the old Field Twin entries out of CHANGELOG.md. Split the offer logger into its own commit."
-    },
-    {
-      "date": "2026-11-13T11:07:52Z",
-      "repo": "delivery-twin",
-      "sha": "8c9d41c1",
-      "message": "Add step 4 script",
-      "heckle": "Another step script, step4.sh, 177 lines, dropped in the repo like a casserole nobody asked for. It writes a food spots file to HOME with a heredoc, pulls from the public Overpass endpoint with no sign of rate limiting, and defaults dtFoodOn to on from localStorage. Every phone that opens the map hammers a free community server. Calling this a build process is like calling a bailout a savings plan. Step 4 is also deleted one commit later, so you committed it just to throw it away, which is the intern equivalent of paying a lawyer to read the contract and then burning it.\n\nFix it: Stop committing step scripts. Add a cache and a delay around the Overpass fetch in the food spots code. Squash throwaway commits before pushing."
     }
   ]
 }
