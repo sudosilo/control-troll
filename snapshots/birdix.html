@@ -32,16 +32,16 @@
     gap: 4px;
     flex-wrap: wrap;
   }
-  .hud-item { font-size: 8px; color: #44aa44; letter-spacing: 1px; white-space: nowrap; }
+  .hud-item { font-size: 6px; color: #44aa44; letter-spacing: 1px; white-space: nowrap; }
   .hud-item span { color: #00ff66; }
 
   #menuBtn {
     font-family: 'Press Start 2P', monospace;
-    font-size: 8px;
+    font-size: 5px;
     background: #1a4a1a;
-    color: #aaffaa;
-    border: 1px solid #44aa44;
-    padding: 6px 8px;
+    color: #44aa44;
+    border: 1px solid #2a6a2a;
+    padding: 4px 6px;
     cursor: pointer;
     letter-spacing: 1px;
   }
@@ -111,15 +111,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: safe center;
-    overflow-y: auto;
-    touch-action: pan-y;
+    justify-content: center;
     background: radial-gradient(ellipse at 50% 38%, #143514 0%, #0a1f0a 55%, #030d03 100%);
     color: #00ff66;
     text-align: center;
     padding: 24px 20px;
-    gap: 14px;
+    gap: 18px;
     z-index: 30;
+    overflow: hidden;
   }
   /* Scanline shimmer */
   .screen::before {
@@ -226,7 +225,6 @@
     padding: 5px 8px;
     flex-shrink: 0;
     gap: 6px;
-    justify-content: flex-start;
   }
   #cityHud.active { display: flex; }
 
@@ -235,7 +233,7 @@
     width: 100%;
     max-width: 480px;
     display: none;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     background: #1a3a1a;
     border-bottom: 1px solid #2a8a2a;
@@ -250,7 +248,7 @@
     width: 100%;
     max-width: 480px;
     display: none;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     background: #1a1a2e;
     border-bottom: 2px solid #d7bde2;
@@ -260,21 +258,20 @@
     flex-wrap: wrap;
   }
   #glassHud.active { display: flex; }
-  #glassMenuBtn, #paintMenuBtn, #photoMenuBtn, #cityMenuBtn { margin-left: auto; }
   .ghud-btn {
     font-family: 'Press Start 2P', monospace;
-    font-size: 8px;
+    font-size: 5px;
     background: #2a2a4a;
     color: #ffffff;
     border: 1px solid #aaaacc;
-    padding: 7px 7px;
+    padding: 4px 5px;
     cursor: pointer;
     letter-spacing: 0px;
     white-space: nowrap;
   }
   .ghud-btn:active { color:#ffffff; border-color:#ffffff; background:#3a3a6a; }
   .auto-btn.auto-on { color:#00ff66; border-color:#00ff66; background:#0a2a0a; box-shadow: 0 0 6px #00ff6666; }
-  .glass-label { font-size: 8px; color: #ffffff; letter-spacing: 1px; display:flex; align-items:center; gap:5px; cursor:pointer; }
+  .glass-label { font-size: 5px; color: #ffffff; letter-spacing: 1px; display:flex; align-items:center; gap:5px; cursor:pointer; }
   .glass-preview {
     width: 28px; height: 18px;
     border: 2px solid #aaaacc;
@@ -299,10 +296,6 @@
     flex-shrink: 0;
   }
   .color-picker-panel.open { display: flex; }
-  .color-picker-panel { touch-action: pan-y; }
-  .swatch.multi { background: linear-gradient(135deg,#e74c3c,#f1c40f,#2ecc71,#1e90ff,#9b59b6); }
-  .glass-preview.multi { background: linear-gradient(135deg,#e74c3c,#f1c40f,#2ecc71,#1e90ff,#9b59b6) !important; }
-  .ver { font-size: 8px; color: #88ffaa; letter-spacing: 2px; }
   .swatch {
     width: 26px; height: 26px;
     border-radius: 2px;
@@ -312,7 +305,7 @@
   }
   .swatch:active { transform: scale(1.2); }
   .swatch.active-sel { border-color: #ffffff; box-shadow: 0 0 4px #fff; }
-  .paint-label { font-size: 8px; color: #ccffcc; letter-spacing: 1px; display:flex; align-items:center; gap:5px; cursor:pointer; }
+  .paint-label { font-size: 5px; color: #44aa44; letter-spacing: 1px; display:flex; align-items:center; gap:5px; cursor:pointer; }
   .color-preview {
     width: 28px; height: 18px;
     border: 2px solid #2a6a2a;
@@ -323,11 +316,11 @@
   .color-preview.active-picker { border-color: #00ff66; box-shadow: 0 0 6px #00ff66; }
   .phud-btn {
     font-family: 'Press Start 2P', monospace;
-    font-size: 8px;
+    font-size: 5px;
     background: #1a4a1a;
-    color: #ccffcc;
-    border: 1px solid #44aa44;
-    padding: 7px 7px;
+    color: #44aa44;
+    border: 1px solid #2a6a2a;
+    padding: 4px 5px;
     cursor: pointer;
     letter-spacing: 0px;
     white-space: nowrap;
@@ -362,13 +355,12 @@
 <!-- Legacy swatchDrawer removed -->
 
 <div id="glassHud">
-  <div style="font-size:8px;color:#ffffff;letter-spacing:1px;">◈ GLASS</div>
+  <div style="font-size:5px;color:#ffffff;letter-spacing:1px;">◈ STAINED GLASS</div>
   <div class="glass-label" id="glassTrailLabel">LEAD<div class="glass-preview" id="glassTrailPreview" style="background:#111111"></div></div>
   <button class="ghud-btn auto-btn" id="autoWanderBtn">WANDER</button>
   <button class="ghud-btn auto-btn" id="autoHunterBtn">HUNTER</button>
   <button class="ghud-btn auto-btn" id="autoBounceBtn">BOUNCE</button>
   <button class="ghud-btn auto-btn" id="autoTracerBtn">TRACER</button>
-  <button class="ghud-btn" id="glassViewBtn">FIT</button>
   <button class="ghud-btn" id="glassClearBtn">CLR</button>
   <button class="ghud-btn" id="glassExportBtn">EXP</button>
   <button class="ghud-btn" id="glassMenuBtn">MENU</button>
@@ -378,11 +370,11 @@
 <div id="photoHud" style="
   width:100%;max-width:480px;
   display:none;
-  justify-content:flex-start;align-items:center;
+  justify-content:space-between;align-items:center;
   background:#1a1a2e;border-bottom:2px solid #00d2d3;
   padding:5px 8px;flex-shrink:0;gap:6px;flex-wrap:wrap;
 ">
-  <div style="font-size:8px;color:#ffffff;letter-spacing:1px;">📷 PHOTO</div>
+  <div style="font-size:5px;color:#ffffff;letter-spacing:1px;">📷 PHOTO GLASS</div>
   <button class="ghud-btn" id="photoUploadBtn">UPLOAD</button>
   <button class="ghud-btn" id="photoExportBtn">EXP</button>
   <button class="ghud-btn" id="photoMenuBtn">MENU</button>
@@ -394,8 +386,8 @@
   background:#0d0d1a;
   color:#aaaacc;
   font-family:'Press Start 2P',monospace;
-  font-size:7px;
-  padding:6px 8px;
+  font-size:4px;
+  padding:4px 8px;
   letter-spacing:0.5px;
   flex-shrink:0;
   border-bottom:1px solid #2a2a4a;
@@ -404,7 +396,7 @@
 "></div>
 
 <div id="cityHud">
-  <div class="paint-label" style="color:#00ffff;font-size:8px;letter-spacing:1px;">⬛ CITY</div>
+  <div class="paint-label" style="color:#00ffff;font-size:6px;letter-spacing:1px;">⬛ CITYSCAPE</div>
   <button class="phud-btn" id="cityRegenBtn" style="color:#00ffff;border-color:#00ffff;">REGEN</button>
   <button class="phud-btn" id="cityExportBtn" style="color:#ff44ff;border-color:#ff44ff;">EXPORT</button>
   <button class="phud-btn" id="cityMenuBtn">MENU</button>
@@ -428,7 +420,6 @@
 
   <div class="screen" id="menuScreen">
     <h1>BIRDIXEL</h1>
-    <div class="ver">v3</div>
     <div class="sub">
       ── CLASSIC ──<br>
       CLAIM 80% · DODGE ENEMY BIRDS<br>
@@ -438,9 +429,6 @@
       <br>
       ── STAINED GLASS ──<br>
       DRAW LEAD · AUTO JEWEL FILL<br>
-      <br>
-      ── PHOTO GLASS ──<br>
-      YOUR PHOTO AS STAINED GLASS<br>
       <br>
       ── CITYSCAPE ──<br>
       NEON CITY BUILDS ITSELF LIVE
@@ -508,8 +496,6 @@ function resize() {
 }
 resize();
 window.addEventListener('resize', resize);
-// HUD panels opening and closing change the play area without a window resize
-if (window.ResizeObserver) new ResizeObserver(resize).observe(document.getElementById('gameWrapper'));
 
 // ═══════════════════════════════════════════════════
 // STATE
@@ -522,8 +508,7 @@ let grid, player, enemies, drawPath;
 // ── AUTO BIRD ─────────────────────────────────────
 let autoMode = null; // null | 'wander' | 'hunter' | 'bounce' | 'tracer'
 let autoState = {};  // per-mode scratch state
-let glassMultiLead = true;  // glass strokes pick a random jewel unless a fixed LEAD color is chosen
-let fitView = false;        // glass: show the whole canvas instead of following the bird
+let glassFillCooldown = 0; // ticks remaining before completeShape can fire again
 
 let glassStats = { startTime:0, deaths:0, leftTurns:0, rightTurns:0, selfHits:0, shapes:0 };
 let glassTimerInterval = null;
@@ -587,7 +572,7 @@ function processPhotoImage(img) {
   }
 
   // Merge tiny regions (<16 cells) into the dominant neighboring region
-  const MIN_REGION = 24;
+  const MIN_REGION = 16;
   for (const reg of regions) {
     if (reg.cells.length >= MIN_REGION || reg.cells.length === 0) continue;
     // count neighbor region frequencies
@@ -625,10 +610,12 @@ function processPhotoImage(img) {
     const interior = [];
     for (const idx of reg.cells) {
       const r2 = Math.floor(idx/COLS), c2 = idx%COLS;
-      // Lead on the frame, and on one side of each seam (right and below),
-      // so lines between panes come out one cell thick
       let isB = (r2===0||r2===ROWS-1||c2===0||c2===COLS-1);
-      if (!isB) isB = !inRegion.has(idx+1) || !inRegion.has(idx+COLS);
+      if (!isB) {
+        for (const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]) {
+          if (!inRegion.has((r2+dr)*COLS + (c2+dc))) { isB = true; break; }
+        }
+      }
       (isB ? boundary : interior).push(idx);
     }
 
@@ -664,13 +651,11 @@ function processPhotoImage(img) {
   photoReady = true;
 }
 
-let queueLeadRate = 8, queueFillRate = 60;
-
 function updatePhoto() {
   if (!photoReady || photoIdx >= photoQueue.length) return;
 
   // Lead steps are visible bird movement; fills are fast batch
-  let leadSteps = queueLeadRate, fillSteps = queueFillRate;
+  let leadSteps = 8, fillSteps = 60;
 
   while (photoIdx < photoQueue.length && (leadSteps > 0 || fillSteps > 0)) {
     const step = photoQueue[photoIdx];
@@ -680,13 +665,13 @@ function updatePhoto() {
     } else if (step.type === 'lead') {
       if (leadSteps <= 0) break;
       sc(step.r, step.c, CLAIMED);
-      cellColors[(step.r)*COLS+(step.c)] = step.color || PHOTO_LEAD;
+      cellColors[step.r+','+step.c] = PHOTO_LEAD;
       player.row = step.r; player.col = step.c;
       photoIdx++; leadSteps--;
     } else { // fill
       if (fillSteps <= 0) break;
       sc(step.r, step.c, CLAIMED);
-      cellColors[(step.r)*COLS+(step.c)] = step.color;
+      cellColors[step.r+','+step.c] = step.color;
       photoIdx++; fillSteps--;
     }
   }
@@ -721,7 +706,16 @@ let camX=0, camY=0;
 let paintTrailColor = '#ff7700';
 let glassStrokeColor = '#111111'; // per-stroke color in GLASS mode
 let paintFillColor  = '#2a8a2a';
-let cellColors = [];
+let cellColors = {};
+
+// City state
+let cityBuildings = [];    // array of building descriptors
+let cityBuildIdx  = 0;     // which building is currently animating
+let cityRowProgress = 0;   // current row being drawn in active building
+let cityWindows   = [];    // window flicker targets {r,c,color,on,timer}
+let cityDone      = false;
+let cityAnimTimer = 0;
+const CITY_SPEED  = 1;     // rows per frame per building
 
 // ═══════════════════════════════════════════════════
 // GRID
@@ -742,23 +736,21 @@ const sc = (r,c,v) => { if(r>=0&&r<ROWS&&c>=0&&c<COLS) grid[r*COLS+c]=v; };
 // PLAYER
 // ═══════════════════════════════════════════════════
 function glassSpawnPos() {
-  // Start on safe lead: a BORDER cell that touches open space or a pane,
-  // preferring lead the bird drew over the outer frame once some exists
-  const candidates = [], inner = [];
+  // Find all OPEN cells adjacent to at least one BORDER or CLAIMED cell
+  const candidates = [];
   for (let r=0; r<ROWS; r++) {
     for (let c=0; c<COLS; c++) {
-      if (gc(r,c) !== BORDER) continue;
-      for (const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]) {
-        const t=gc(r+dr,c+dc);
-        if (t===OPEN||t===CLAIMED) {
-          candidates.push([r,c]);
-          if (r>0&&r<ROWS-1&&c>0&&c<COLS-1) inner.push([r,c]);
-          break;
+      if (gc(r,c) !== OPEN) continue;
+      const neighbors = [[-1,0],[1,0],[0,-1],[0,1]];
+      for (const [dr,dc] of neighbors) {
+        const nr=r+dr, nc=c+dc;
+        if (nr>=0&&nr<ROWS&&nc>=0&&nc<COLS) {
+          const t=gc(nr,nc);
+          if (t===BORDER||t===CLAIMED) { candidates.push([r,c]); break; }
         }
       }
     }
   }
-  if (inner.length && Math.random()<0.75) return inner[Math.floor(Math.random()*inner.length)];
   if (candidates.length === 0) {
     // Fallback: random position on world border
     const edge = Math.floor(Math.random()*4);
@@ -783,63 +775,31 @@ function initPlayer() {
 function killPlayer() {
   if (!player.alive) return;
   player.alive = false;
-  restorePath(drawPath);
+  for (const [r,c] of drawPath) if (gc(r,c)===DRAWING) sc(r,c,OPEN);
   drawPath = [];
   if (gameState===S.GLASS || gameState===S.PAINT) {
     // No lives in creative modes — just respawn
     if (gameState===S.GLASS) {
       glassStats.deaths++;
       if (autoMode) glassStats.selfHits++;
-      glassStrokeColor = nextStrokeColor();
+      glassStrokeColor = randomJewel();
+      glassFillCooldown = 0;
       updateGlassStatsDisplay();
     }
     autoState = {};
-    const mode = gameState;
-    setTimeout(() => { if (gameState!==mode) return; initPlayer(); if (autoMode) player.moveDelay=2; }, 300);
+    setTimeout(() => { initPlayer(); if (autoMode) player.moveDelay=2; }, 300);
     return;
   }
   lives--;
   updateHUD();
-  setTimeout(() => { if (gameState!==S.PLAYING) return; lives<=0 ? showGameOver() : initPlayer(); }, 800);
-}
-
-// Put every cell of an abandoned stroke back the way it was before the bird crossed it
-function restorePath(path) {
-  for (let i=path.length-1; i>=0; i--) {
-    const [r,c,prev,prevColor] = path[i];
-    if (gc(r,c)!==DRAWING) continue;
-    sc(r,c, prev===undefined ? OPEN : prev);
-    cellColors[r*COLS+c] = prevColor;
-  }
-}
-
-function nextStrokeColor() {
-  return glassMultiLead ? randomJewel() : paintTrailColor;
-}
-
-// Step the bird onto (nr,nc) as part of the current stroke, remembering what was there
-function extendStroke(nr, nc, color) {
-  const i = nr*COLS+nc;
-  drawPath.push([nr, nc, grid[i], cellColors[i]]);
-  sc(nr,nc,DRAWING);
-  if (color) cellColors[i] = color;
-  player.drawing = true;
-  player.col=nc; player.row=nr;
-}
-
-// Bird reached safe ground: finish the stroke
-function finishStroke() {
-  const path = drawPath;
-  player.drawing=false; drawPath=[];
-  if (path.length===0) return;
-  if (gameState===S.GLASS && path.length<3) { restorePath(path); return; }
-  completeShape(path);
+  setTimeout(() => lives<=0 ? showGameOver() : initPlayer(), 800);
 }
 
 function updatePlayer() {
   if (!player.alive) return;
   if (++player.moveTimer < player.moveDelay) return;
   player.moveTimer = 0;
+  if (glassFillCooldown > 0) glassFillCooldown--;
 
   let dc=0, dr=0;
 
@@ -861,20 +821,42 @@ function updatePlayer() {
   }
 
   const t=gc(nr,nc);
-  const strokeColor = gameState===S.GLASS ? glassStrokeColor : gameState===S.PAINT ? paintTrailColor : null;
-  if (t===BORDER || (t===CLAIMED && gameState!==S.GLASS)) {
-    // Safe ground: closes any stroke in progress
-    if (player.drawing) finishStroke();
+  if (t===BORDER||t===CLAIMED) {
+    if (gameState===S.GLASS && t===CLAIMED) {
+      // Paint over claimed cell — reassign its color and keep drawing
+      for (const [pr,pc] of drawPath) if (pr===nr&&pc===nc) { killPlayer(); return; }
+      if (!player.drawing) glassStrokeColor = randomJewel(); // new stroke starting
+      player.drawing=true;
+      sc(nr,nc,DRAWING);
+      drawPath.push([nr,nc]);
+      cellColors[nr+','+nc] = gameState===S.GLASS ? glassStrokeColor : paintTrailColor;
+      player.col=nc; player.row=nr;
+      if (autoMode) autoState.onBorder = false;
+    } else {
+      if (player.drawing && drawPath.length>1 && (gameState!==S.GLASS || glassFillCooldown===0)) {
+        const pathCopy = drawPath.slice();
+        player.drawing=false; drawPath=[];
+        completeShape(pathCopy);
+      } else {
+        player.drawing=false; drawPath=[];
+      }
+      player.col=nc; player.row=nr;
+      if (autoMode) autoState.onBorder = true;
+    }
+  } else if (t===OPEN) {
+    for (const [pr,pc] of drawPath) if (pr===nr&&pc===nc) { killPlayer(); return; }
+    if (!player.drawing) glassStrokeColor = randomJewel(); // new stroke starting
+    player.drawing=true;
+    sc(nr,nc,DRAWING);
+    drawPath.push([nr,nc]);
+    if (gameState===S.GLASS) cellColors[nr+','+nc] = glassStrokeColor;
+    else if (gameState===S.PAINT) cellColors[nr+','+nc] = paintTrailColor;
     player.col=nc; player.row=nr;
-    if (autoMode) autoState.onBorder = true;
-  } else if (t===OPEN || t===CLAIMED) {
-    // Open space, or (glass only) an existing pane the bird paints over
-    if (!player.drawing && gameState===S.GLASS) glassStrokeColor = nextStrokeColor();
-    extendStroke(nr, nc, gameState===S.GLASS ? glassStrokeColor : strokeColor);
     if (autoMode) autoState.onBorder = false;
   } else if (t===DRAWING) {
-    if (autoMode) autoState.dir=null;
-    killPlayer();
+    // auto-bird crossed own trail — reset direction
+    if (autoMode) { autoState.dir=null; autoState.onBorder=false; killPlayer(); }
+    else killPlayer();
   }
 }
 
@@ -891,54 +873,20 @@ function computeAutoDir() {
   else if (autoMode === 'tracer') dir = autoTracer(r, c, onBorder);
   else dir = [0,0];
 
-  // Safety: never step out of the world or into the bird's own tail when another way exists
-  dir = safeDir(r, c, dir);
-
   // Track turns: cross product of prev vs new dir
   if (prevDir && dir) {
     const [pr,pc] = prevDir;
     const [nr,nc] = dir;
-    // Screen rows grow downward, so a positive cross product is a left turn
-    const cross = pr*nc - pc*nr;
-    if (cross > 0) glassStats.leftTurns++;
-    else if (cross < 0) glassStats.rightTurns++;
+    const cross = pr*nc - pc*nr; // +1 = right turn, -1 = left turn
+    if (cross > 0) glassStats.rightTurns++;
+    else if (cross < 0) glassStats.leftTurns++;
   }
   autoState.lastDir = dir;
   return dir;
 }
 
-function stepIsSafe(r, c, d) {
-  const nr=r+d[0], nc=c+d[1];
-  return nr>=0&&nr<ROWS&&nc>=0&&nc<COLS && gc(nr,nc)!==DRAWING;
-}
-
-function safeDir(r, c, d) {
-  if (d && (d[0]||d[1]) && stepIsSafe(r,c,d)) return d;
-  const dirs = [[-1,0],[1,0],[0,-1],[0,1]].filter(x => stepIsSafe(r,c,x));
-  if (dirs.length===0) return d || [1,0];
-  // Prefer a turn over a reversal, and prefer cells that keep the most room around them
-  const score = x => {
-    const nr=r+x[0], nc=c+x[1];
-    let free=0;
-    for (const [a,b] of [[-1,0],[1,0],[0,-1],[0,1]]) {
-      const v=gc(nr+a,nc+b);
-      if (v!==-1 && v!==DRAWING) free++;
-    }
-    return free + Math.random()*0.5;
-  };
-  dirs.sort((a,b)=>score(b)-score(a));
-  if (autoState) { autoState.dir = dirs[0]; }
-  return dirs[0];
-}
-
 // WANDER: random walk, biased away from walls, changes direction randomly
 function autoWander(r, c) {
-  // A long stroke is a risky stroke: head for the nearest lead to close it
-  if (autoMode==='wander' && player.drawing && drawPath.length > 60) {
-    if (!autoState.route || !autoState.route.length) autoState.route = routeToLead(r,c);
-    const nxt = autoState.route && autoState.route.shift();
-    if (nxt) return [nxt[0]-r, nxt[1]-c];
-  } else if (autoMode==='wander') autoState.route = null;
   const dirs = [[-1,0],[1,0],[0,-1],[0,1]];
 
   // Classify each direction
@@ -973,72 +921,43 @@ function autoWander(r, c) {
   return autoState.dir;
 }
 
-// HUNTER: flies out to a nearby target, then takes the shortest route back
-// to the nearest lead line so every outing closes into a pane.
+// HUNTER: seeks nearest large open area, cuts straight across it
 function autoHunter(r, c) {
-  const st = autoState;
-  if (!st.phase || (!player.drawing && st.phase==='home')) {
-    st.phase='out'; st.target=findOpenTarget(r,c); st.steps=70; st.route=null;
+  // Re-pick target every N steps or when reached
+  if (!autoState.target || autoState.steps<=0 || (player.row===autoState.target[0]&&player.col===autoState.target[1])) {
+    autoState.target = findOpenTarget(r, c);
+    autoState.steps = 40 + Math.floor(Math.random()*30);
   }
-  if (st.phase==='out') {
-    st.steps--;
-    const [tr,tc] = st.target;
-    if ((r===tr && c===tc) || st.steps<=0) {
-      if (player.drawing) { st.phase='home'; st.route=null; }
-      else { st.target=findOpenTarget(r,c); st.steps=70; }
-    } else {
-      const dr = Math.sign(tr-r), dc = Math.sign(tc-c);
-      const tries = Math.abs(tr-r) >= Math.abs(tc-c) ? [[dr,0],[0,dc]] : [[0,dc],[dr,0]];
-      for (const d of tries) if ((d[0]||d[1]) && stepIsSafe(r,c,d)) return d;
-      st.phase = player.drawing ? 'home' : 'out';
-      st.route = null;
-    }
+  autoState.steps--;
+  if (!autoState.target) return autoWander(r,c);
+  const [tr,tc] = autoState.target;
+  const dr = tr===r ? 0 : (tr>r?1:-1);
+  const dc = tc===c ? 0 : (tc>c?1:-1);
+
+  // Prefer dominant axis, but skip if that cell is DRAWING
+  const candidates = Math.abs(tr-r) >= Math.abs(tc-c)
+    ? [[dr,0],[0,dc]]
+    : [[0,dc],[dr,0]];
+
+  for (const [mdr,mdc] of candidates) {
+    if (mdr===0&&mdc===0) continue;
+    const nr=r+mdr, nc=c+mdc;
+    if (nr>=0&&nr<ROWS&&nc>=0&&nc<COLS && gc(nr,nc)!==DRAWING) return [mdr,mdc];
   }
-  if (st.phase==='home') {
-    if (!st.route || !st.route.length) st.route = routeToLead(r,c);
-    const nxt = st.route && st.route.shift();
-    if (nxt) return [nxt[0]-r, nxt[1]-c];
-  }
+  // Fallback: wander safely
   return autoWander(r, c);
 }
 
-// Shortest path from (r,c) to any lead/edge cell without crossing the bird's own tail
-function routeToLead(r, c) {
-  const prev = new Int32Array(COLS*ROWS).fill(-1);
-  const start = r*COLS+c;
-  prev[start] = start;
-  const q=[start];
-  for (let h=0; h<q.length; h++) {
-    const idx=q[h], r2=(idx/COLS)|0, c2=idx%COLS;
-    for (const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]) {
-      const nr=r2+dr, nc=c2+dc;
-      if (nr<0||nr>=ROWS||nc<0||nc>=COLS) continue;
-      const j=nr*COLS+nc;
-      if (prev[j]!==-1) continue;
-      const v=grid[j];
-      if (v===DRAWING) continue;
-      prev[j]=idx;
-      if (v===BORDER) {
-        const route=[]; let k=j;
-        while (k!==start) { route.push([(k/COLS)|0, k%COLS]); k=prev[k]; }
-        return route.reverse();
-      }
-      q.push(j);
-    }
-  }
-  return null;
-}
-
 function findOpenTarget(r, c) {
-  // A spot 12 to 45 cells away, preferring open space, else a pane to repaint
-  let best=null, bestScore=-1;
-  for (let i=0;i<40;i++) {
-    const ang=Math.random()*Math.PI*2, dist=12+Math.random()*33;
-    const tr=Math.round(r+Math.sin(ang)*dist), tc=Math.round(c+Math.cos(ang)*dist);
-    if (tr<1||tr>=ROWS-1||tc<1||tc>=COLS-1) continue;
-    const v=gc(tr,tc);
-    const sc3 = v===OPEN ? 2 : v===CLAIMED ? 1 : 0;
-    if (sc3>bestScore) { bestScore=sc3; best=[tr,tc]; if (sc3===2) break; }
+  // sample random open cells, pick one that's far away
+  let best=null, bestDist=0;
+  for (let i=0;i<20;i++) {
+    const tr=1+Math.floor(Math.random()*(ROWS-2));
+    const tc=1+Math.floor(Math.random()*(COLS-2));
+    if (gc(tr,tc)===OPEN) {
+      const d=Math.abs(tr-r)+Math.abs(tc-c);
+      if (d>bestDist) { bestDist=d; best=[tr,tc]; }
+    }
   }
   return best || [Math.floor(ROWS/2), Math.floor(COLS/2)];
 }
@@ -1050,9 +969,8 @@ function autoBounce(r, c) {
   const nr=r+bdr, nc=c+bdc;
 
   // check each axis independently for reflection
-  const wall = (v) => v===-1 || v===DRAWING || (v===BORDER && !player.drawing && Math.random()<0.5);
-  const hitR = wall(gc(nr,c));
-  const hitC = wall(gc(r,nc));
+  const hitR = nr<0||nr>=ROWS||gc(nr,c)===BORDER||gc(nr,c)===CLAIMED;
+  const hitC = nc<0||nc>=COLS||gc(r,nc)===BORDER||gc(r,nc)===CLAIMED;
 
   if (hitR && hitC) { bdr=-bdr; bdc=-bdc; }
   else if (hitR)    { bdr=-bdr; }
@@ -1065,153 +983,180 @@ function autoBounce(r, c) {
   return autoState.bounceAxis ? [bdr,0] : [0,bdc];
 }
 
-// TRACER: walks along lead lines and the edge, then cuts a U shaped notch inward
-// (in, across, back out) so every cut closes into a clean rectangle-ish pane.
-const CW = [[0,1],[1,0],[0,-1],[-1,0]]; // right, down, left, up
+// TRACER: follows the border clockwise, then cuts inward at intervals
+function autoTracer(r, c, onBorder) {
+  if (!autoState.tracerState) autoState.tracerState = 'border';
+  if (!autoState.cutCountdown) autoState.cutCountdown = 15 + Math.floor(Math.random()*20);
 
-function autoTracer(r, c) {
-  const st = autoState;
-  if (!st.phase) { st.phase='walk'; st.facing=0; st.walkLeft=10+Math.floor(Math.random()*25); }
-
-  if (st.phase==='walk') {
-    const d = tracerFollowBorder(r, c);
-    if (--st.walkLeft<=0 && gc(r,c)===BORDER) {
-      // Pick an inward direction: a side of the walk heading that opens into a pane or open space
-      const f = st.facing;
-      const sides = [ (f+1)%4, (f+3)%4 ].filter(fi => {
-        const v = gc(r+CW[fi][0], c+CW[fi][1]);
-        return v===OPEN || v===CLAIMED;
-      });
-      if (sides.length) {
-        st.inF = sides[Math.floor(Math.random()*sides.length)];
-        st.acrossF = f;
-        st.phase='in'; st.left = 6+Math.floor(Math.random()*18);
-        return CW[st.inF];
-      }
-      st.walkLeft = 5;
+  if (autoState.tracerState === 'border') {
+    autoState.cutCountdown--;
+    if (autoState.cutCountdown <= 0) {
+      autoState.tracerState = 'cut';
+      autoState.cutDir = autoState.tracerDir||[0,1];
+      autoState.cutSteps = 8 + Math.floor(Math.random()*12);
+      autoState.cutCountdown = 15 + Math.floor(Math.random()*20);
     }
-    return d;
+    return tracerFollowBorder(r, c);
   }
-  if (st.phase==='in') {
-    if (--st.left<=0) { st.phase='across'; st.left = 6+Math.floor(Math.random()*18); }
-    return CW[st.inF];
+
+  if (autoState.tracerState === 'cut') {
+    autoState.cutSteps--;
+    if (autoState.cutSteps <= 0) { autoState.tracerState = 'border'; }
+    return autoState.cutDir || [0,1];
   }
-  if (st.phase==='across') {
-    if (--st.left<=0) st.phase='out';
-    return CW[st.acrossF];
-  }
-  // out: head back the way we came in until we land on lead or the edge
-  if (st.phase==='out') {
-    if (!player.drawing) { st.phase='walk'; st.walkLeft=10+Math.floor(Math.random()*25); return tracerFollowBorder(r,c); }
-    return CW[(st.inF+2)%4];
-  }
+
   return tracerFollowBorder(r, c);
 }
 
 function tracerFollowBorder(r, c) {
-  // Follow BORDER cells (edge and lead) with a right hand rule; leave them only if stranded
-  const f = autoState.facing||0;
-  const order = [(f+1)%4, f, (f+3)%4, (f+2)%4];
-  for (const fi of order) {
-    const nr=r+CW[fi][0], nc=c+CW[fi][1];
-    if (gc(nr,nc)===BORDER) { autoState.facing=fi; return CW[fi]; }
+  // Try to stay adjacent to border/claimed, move clockwise
+  const cw = [[0,1],[1,0],[0,-1],[-1,0]]; // right, down, left, up
+  if (!autoState.tracerFacing) autoState.tracerFacing = 0;
+
+  // Turn right first (clockwise wall-following: try right, forward, left, back)
+  const turnRight = (autoState.tracerFacing+1)%4;
+  const tryOrder = [turnRight, autoState.tracerFacing, (autoState.tracerFacing+3)%4, (autoState.tracerFacing+2)%4];
+
+  for (const fi of tryOrder) {
+    const [dr,dc] = cw[fi];
+    const nr=r+dr, nc=c+dc;
+    if (nr<0||nr>=ROWS||nc<0||nc>=COLS) continue;
+    const t=gc(nr,nc);
+    if (t===OPEN||t===BORDER||t===CLAIMED) {
+      autoState.tracerFacing = fi;
+      autoState.tracerDir = [dr,dc];
+      return [dr,dc];
+    }
   }
-  // Not touching any lead: keep heading straight until we meet some
-  return CW[f];
+  return cw[autoState.tracerFacing];
 }
 
 // ═══════════════════════════════════════════════════
 // SHAPE FILL
 // ═══════════════════════════════════════════════════
 function completeShape(pathSnapshot) {
-  const path = pathSnapshot || drawPath;
-  player.drawing=false; drawPath=[];
-  if (!path.length) return;
-
-  // The stroke becomes permanent lead / wall
-  for (const [r,c] of path) sc(r,c,BORDER);
-
-  if (gameState === S.PAINT || gameState === S.GLASS) {
-    fillPiecesAround(path);
+  const activePath = pathSnapshot || drawPath;
+  // In GLASS mode ignore strokes too short to meaningfully enclose anything
+  if (gameState === S.GLASS && activePath.length < 4) {
+    for (const [r,c] of activePath) if(gc(r,c)===DRAWING) sc(r,c,OPEN);
+    player.drawing=false; drawPath=[];
+    return;
+  }
+  // Cooldown — prevent re-firing on the same region immediately after a fill
+  if (gameState === S.GLASS && glassFillCooldown > 0) {
+    for (const [r,c] of activePath) if(gc(r,c)===DRAWING) sc(r,c,OPEN);
+    player.drawing=false; drawPath=[];
+    return;
+  }
+  if (gameState === S.CITY) {
+    // City mode: just make the trail permanent — convert DRAWING to CLAIMED
+    // with the trail color. No flood fill. The outline IS the art.
+    for (const [r,c] of activePath) {
+      sc(r,c,CLAIMED);
+      cellColors[r+','+c] = paintTrailColor;
+    }
+    claimedCount += activePath.length;
+    player.drawing=false; drawPath=[];
     updateHUD();
     return;
   }
 
-  // Classic: the drawn line itself counts as claimed ground
-  let gained = path.length;
+  for (const [r,c] of activePath) sc(r,c,BORDER);
 
-  // Flood from each enemy to mark their side; everything else is captured
+  if (gameState === S.PAINT || gameState === S.GLASS) {
+    // Paint/Glass mode: find all disconnected OPEN regions, fill smallest (or all if tied)
+    // Only OPEN cells are fillable — CLAIMED cells already have a color and stay put.
+    // The bird can still DRAW over claimed cells (that's handled elsewhere), but the
+    // flood fill itself only targets newly-enclosed open territory.
+    const fillable = (v) => v===OPEN;
+    const visited = new Uint8Array(COLS * ROWS);
+    const regions = [];
+
+    for (let i=0; i<COLS*ROWS; i++) {
+      if (fillable(grid[i]) && !visited[i]) {
+        const cells = [];
+        const q = [i]; visited[i]=1;
+        let h=0;
+        while (h<q.length) {
+          const idx=q[h++];
+          cells.push(idx);
+          const r2=Math.floor(idx/COLS), c2=idx%COLS;
+          for (const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]) {
+            const nr=r2+dr, nc=c2+dc;
+            if (nr>=0&&nr<ROWS&&nc>=0&&nc<COLS) {
+              const ni=nr*COLS+nc;
+              if (fillable(grid[ni]) && !visited[ni]) { visited[ni]=1; q.push(ni); }
+            }
+          }
+        }
+        regions.push(cells);
+      }
+    }
+
+    if (regions.length===0) { player.drawing=false; drawPath=[]; return; }
+
+    const maxFillSize = Math.floor(totalOpen * 0.35);
+
+    let fillTargets;
+    if (gameState === S.GLASS) {
+      // Fill ALL enclosed regions under the cap — don't just pick smallest
+      if (regions.length === 1) {
+        fillTargets = regions[0].length <= maxFillSize ? regions : [];
+      } else {
+        fillTargets = regions.filter(r => r.length <= maxFillSize);
+      }
+    } else {
+      // PAINT mode: original behavior — fill smallest region(s) only
+      const minSize = Math.min(...regions.map(r=>r.length));
+      const toFill = regions.filter(r=>r.length===minSize);
+      fillTargets = (regions.length===1 && regions[0].length > maxFillSize)
+        ? []
+        : (regions.length===1 ? regions : toFill.filter(r=>r.length<=maxFillSize));
+    }
+
+    let gained=0;
+    for (const cells of fillTargets) {
+      // Each region in glass mode gets its own random jewel
+      const fc = gameState === S.GLASS ? randomJewel() : paintFillColor;
+      for (const idx of cells) {
+        grid[idx]=CLAIMED; gained++;
+        const r2=Math.floor(idx/COLS), c2=idx%COLS;
+        cellColors[r2+','+c2]=fc;
+      }
+    }
+
+    claimedCount+=gained;
+    if (gameState===S.GLASS) {
+      glassStats.shapes += fillTargets.length;
+      glassFillCooldown = 12; // ~12 ticks before next fill can fire
+      updateGlassStatsDisplay();
+    }
+    player.drawing=false; drawPath=[];
+    updateHUD();
+    return;
+  }
+
+  // Classic mode: BFS flood from each enemy to mark their side
   const scratch = new Uint8Array(grid);
   for (const e of enemies) {
-    let er=(e.py/TILE)|0, ec=(e.px/TILE)|0;
-    if (scratch[er*COLS+ec]!==OPEN) { const n=findNearestOpen(er,ec); if (!n) continue; [er,ec]=n; }
-    bfsMark(scratch, er, ec, OPEN, 99);
+    bfsMark(scratch, (e.py/TILE)|0, (e.px/TILE)|0, OPEN, 99);
   }
+
+  let gained=0;
   for (let i=0; i<scratch.length; i++) {
     if (scratch[i]===OPEN) { grid[i]=CLAIMED; gained++; }
   }
+
   for (const e of enemies) {
     if (enemyOverlapsSolid(e.px, e.py)) teleportToOpen(e);
   }
 
   claimedCount+=gained;
   score+=gained*8*level;
+  player.drawing=false; drawPath=[];
   updateHUD();
 
-  if (getClaimedPct()>=CLAIM_TARGET && !levelUpPending) {
-    levelUpPending = true;
-    setTimeout(()=>{ levelUpPending=false; if (gameState!==S.PLAYING) return; level++; showBanner(); }, 500);
-  }
-}
-let levelUpPending = false;
-
-// Paint and Glass: a finished stroke splits whatever it crossed into pieces.
-// Only those pieces can change. The biggest piece keeps what it had (so the
-// background never floods); every other piece gets a fresh fill.
-function fillPiecesAround(path) {
-  // What the stroke ran through: open space and/or panes of particular colors
-  const kinds = new Set();
-  for (const [, , prev, prevColor] of path) kinds.add(prev===CLAIMED ? 'c'+prevColor : 'o');
-  if (gameState===S.PAINT) { kinds.clear(); kinds.add('o'); }
-
-  const kindAt = (i) => grid[i]===OPEN ? 'o' : grid[i]===CLAIMED ? 'c'+cellColors[i] : null;
-  const seen = new Uint8Array(COLS*ROWS);
-  const pieces = [];
-  for (const [r,c] of path) {
-    for (const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]) {
-      const nr=r+dr, nc=c+dc;
-      if (nr<0||nr>=ROWS||nc<0||nc>=COLS) continue;
-      const start = nr*COLS+nc;
-      if (seen[start]) continue;
-      const k = kindAt(start);
-      if (k===null || !kinds.has(k)) continue;
-      // flood this piece
-      const cells=[start]; seen[start]=1;
-      for (let h=0; h<cells.length; h++) {
-        const idx=cells[h], r2=(idx/COLS)|0, c2=idx%COLS;
-        if (r2>0)      { const j=idx-COLS; if(!seen[j]&&kindAt(j)===k){seen[j]=1;cells.push(j);} }
-        if (r2<ROWS-1) { const j=idx+COLS; if(!seen[j]&&kindAt(j)===k){seen[j]=1;cells.push(j);} }
-        if (c2>0)      { const j=idx-1;    if(!seen[j]&&kindAt(j)===k){seen[j]=1;cells.push(j);} }
-        if (c2<COLS-1) { const j=idx+1;    if(!seen[j]&&kindAt(j)===k){seen[j]=1;cells.push(j);} }
-      }
-      pieces.push({cells, kind:k});
-    }
-  }
-  if (pieces.length < 2) return; // nothing was enclosed
-
-  pieces.sort((a,b)=>b.cells.length-a.cells.length);
-  const maxFill = Math.floor(totalOpen * 0.30); // never flood a huge background area
-  let filled=0;
-  for (let pi=1; pi<pieces.length; pi++) {
-    if (pieces[pi].cells.length > maxFill) continue;
-    const fc = gameState===S.GLASS ? randomJewel() : paintFillColor;
-    for (const idx of pieces[pi].cells) {
-      if (grid[idx]===OPEN) claimedCount++;
-      grid[idx]=CLAIMED; cellColors[idx]=fc;
-    }
-    filled++;
-  }
-  if (gameState===S.GLASS) { glassStats.shapes += filled; updateGlassStatsDisplay(); }
+  if (getClaimedPct()>=CLAIM_TARGET) setTimeout(()=>{ level++; showBanner(); }, 500);
 }
 
 // BFS to find nearest OPEN cell from a starting position
@@ -1434,51 +1379,7 @@ function updateCamera() {
 // ═══════════════════════════════════════════════════
 // RENDER
 // ═══════════════════════════════════════════════════
-// Whole-canvas view: one pixel per cell, scaled up to fit the screen
-const fitCanvas = document.createElement('canvas');
-fitCanvas.width = COLS; fitCanvas.height = ROWS;
-const fitCtx = fitCanvas.getContext('2d');
-const fitImg = fitCtx.createImageData(COLS, ROWS);
-const fitBuf = new Uint32Array(fitImg.data.buffer);
-const packCache = new Map();
-function packColor(hex) {
-  let v = packCache.get(hex);
-  if (v === undefined) {
-    const n = parseInt(hex.slice(1,7),16);
-    v = ((255<<24) | ((n&255)<<16) | (n&0xff00) | ((n>>16)&255)) >>> 0;
-    packCache.set(hex, v);
-  }
-  return v;
-}
-
-function drawFit() {
-  const bg=packColor(C.bg), brd=packColor(C.border), clm=packColor(C.claimed), drw=packColor(C.drawing);
-  for (let i=0; i<COLS*ROWS; i++) {
-    const v=grid[i];
-    if (v===OPEN) { fitBuf[i]=bg; continue; }
-    const cc=cellColors[i];
-    fitBuf[i] = cc ? packColor(cc) : v===BORDER ? brd : v===CLAIMED ? clm : drw;
-  }
-  fitCtx.putImageData(fitImg,0,0);
-  ctx.fillStyle='#1a2e1a'; ctx.fillRect(0,0,viewW,viewH);
-  const sc2=Math.min(viewW/COLS, viewH/ROWS);
-  const dw=COLS*sc2, dh=ROWS*sc2, ox=(viewW-dw)/2, oy=(viewH-dh)/2;
-  ctx.imageSmoothingEnabled=false;
-  ctx.drawImage(fitCanvas, ox, oy, dw, dh);
-  for (const e of enemies) {
-    ctx.fillStyle=C.enemy[e.kind];
-    ctx.fillRect(ox+(e.px/TILE)*sc2-2, oy+(e.py/TILE)*sc2-2, 4, 4);
-  }
-  if (player && (player.alive||(Math.floor(Date.now()/100)%2===0))) {
-    const ps=Math.max(4, sc2*1.5);
-    const px=ox+(player.col+0.5)*sc2-ps/2, py=oy+(player.row+0.5)*sc2-ps/2;
-    ctx.fillStyle=C.playerGlow; ctx.fillRect(px-3,py-3,ps+6,ps+6);
-    ctx.fillStyle='#ffffff'; ctx.fillRect(px,py,ps,ps);
-  }
-}
-
 function drawScene() {
-  if (gameState===S.PHOTO || gameState===S.CITY || (gameState===S.GLASS && fitView)) { drawFit(); return; }
   ctx.fillStyle=C.bg; ctx.fillRect(0,0,viewW,viewH);
   const cx=Math.floor(camX), cy=Math.floor(camY);
 
@@ -1495,20 +1396,20 @@ function drawScene() {
         ctx.fillStyle=C.dot;
         ctx.fillRect(sx+TILE/2-1,sy+TILE/2-1,2,2);
       } else if (v===BORDER) {
-        const bc = cellColors[(r)*COLS+(c)];
+        const bc = (gameState===S.PAINT||gameState===S.GLASS) ? cellColors[r+','+c] : null;
         ctx.fillStyle = bc || C.border;
         ctx.fillRect(sx,sy,TILE,TILE);
         ctx.fillStyle = bc || C.borderHi;
         ctx.fillRect(sx,sy,TILE,1);
         ctx.fillRect(sx,sy,1,TILE);
       } else if (v===CLAIMED) {
-        const cc = cellColors[(r)*COLS+(c)];
+        const cc = cellColors[r+','+c];
         ctx.fillStyle = cc || C.claimed;
         ctx.fillRect(sx,sy,TILE,TILE);
         ctx.fillStyle = cc ? cc+'cc' : C.claimedFg;
         ctx.fillRect(sx+1,sy+1,TILE-2,TILE-2);
       } else if (v===DRAWING) {
-        const tc = (gameState===S.PAINT||gameState===S.GLASS||gameState===S.CITY) ? (cellColors[(r)*COLS+(c)]||paintTrailColor) : C.drawing;
+        const tc = (gameState===S.PAINT||gameState===S.GLASS||gameState===S.CITY) ? (cellColors[r+','+c]||paintTrailColor) : C.drawing;
         ctx.fillStyle = tc;
         ctx.fillRect(sx,sy,TILE,TILE);
         ctx.fillStyle = '#ffffff55';
@@ -1542,6 +1443,56 @@ function drawScene() {
   drawMinimap(cx,cy);
 }
 
+function drawCityScene() {
+  const cx = 0;
+  const cy = 0;
+  // Deep night sky background
+  ctx.fillStyle='#2a4020';
+  ctx.fillRect(0,0,viewW,viewH);
+
+  const c0=Math.max(0,Math.floor(cx/TILE)-1);
+  const c1=Math.min(COLS-1,Math.ceil((cx+viewW)/TILE)+1);
+  const r0=Math.max(0,Math.floor(cy/TILE)-1);
+  const r1=Math.min(ROWS-1,Math.ceil((cy+viewH)/TILE)+1);
+
+  for (let r=r0;r<=r1;r++) {
+    for (let c=c0;c<=c1;c++) {
+      const v=grid[r*COLS+c];
+      const sx=c*TILE-cx, sy=r*TILE-cy;
+      if (v===CLAIMED||v===BORDER) {
+        const cc=cellColors[r+','+c]||'#222244';
+        ctx.fillStyle=cc;
+        ctx.fillRect(sx,sy,TILE,TILE);
+      }
+    }
+  }
+
+  // Stars in unclaimed sky cells
+  if (!cityDone || Math.floor(Date.now()/500)%2===0) {
+    ctx.fillStyle='rgba(255,255,255,0.6)';
+    // Deterministic stars using cell position as seed
+    for (let r=r0;r<=r1;r++) {
+      for (let c=c0;c<=c1;c++) {
+        if (grid[r*COLS+c]===OPEN) {
+          // cheap hash to scatter stars
+          const h=(r*31+c*17)%100;
+          if (h<3) {
+            const sx=c*TILE-cx+(h%TILE), sy=r*TILE-cy+(h%TILE);
+            ctx.fillRect(sx,sy,1,1);
+          }
+        }
+      }
+    }
+  }
+
+  // Progress indicator while building
+  if (!cityDone && cityBuildings.length) {
+    const pct = cityBuildIdx/cityBuildings.length;
+    ctx.fillStyle='rgba(0,255,255,0.15)';
+    ctx.fillRect(0,viewH-3,viewW*pct,3);
+  }
+}
+
 function drawMinimap(cx,cy) {
   const mmW=64,mmH=50,mmX=viewW-mmW-4,mmY=6;
   ctx.fillStyle='rgba(0,12,0,0.88)';
@@ -1556,7 +1507,7 @@ function drawMinimap(cx,cy) {
     for (let c=0;c<COLS;c+=step) {
       const v=grid[r*COLS+c];
       if (v===OPEN) continue;
-      ctx.fillStyle=cellColors[r*COLS+c] || (v===BORDER?'#00cc00':v===CLAIMED?'#1a5a1a':C.drawing);
+      ctx.fillStyle=v===BORDER?'#00cc00':v===CLAIMED?'#1a5a1a':C.drawing;
       ctx.fillRect(mmX+c*sx,mmY+r*sy,Math.ceil(step*sx)+1,Math.ceil(step*sy)+1);
     }
   }
@@ -1789,40 +1740,142 @@ function buildTemplate() {
   return zones;
 }
 
-// The bird builds the city zone by zone: it traces each zone's outline in
-// the zone's neon trail color, then the inside floods with the zone's fill.
-// Zones are painted in order, so windows land on top of their buildings and
-// every cell of the grid ends up colored.
+// Convert a zone into a sequence of waypoints that outline it then close back
+function zoneToWaypoints(zone, zIdx) {
+  const {r, c, w, h} = zone;
+  const tr = r, br = r+h-1, lc = c, rc = c+w-1;
+  const wps = [];
+
+  // Navigate to entry point (top-left of zone) along border/claimed
+  // Entry: from border, step into open space
+  // The "border" entry row for each zone is tr-1 (the row above, which must be claimed)
+
+  // Outline: top-left → top-right → bottom-right → bottom-left → back to entry
+  for (let cc=lc; cc<=rc; cc++) wps.push({r:tr, c:cc, zIdx});        // top edge
+  for (let rr=tr+1; rr<=br; rr++) wps.push({r:rr, c:rc, zIdx});      // right edge
+  for (let cc=rc-1; cc>=lc; cc--) wps.push({r:br, c:cc, zIdx});      // bottom edge
+  for (let rr=br-1; rr>=tr+1; rr--) wps.push({r:rr, c:lc, zIdx});    // left edge
+
+  return wps;
+}
+
+let cityZones      = [];
+let cityZoneIdx    = 0;
+let cityWaypoints  = [];
+let cityWaypointIdx= 0;
+let cityBirdTimer  = 0;
+const CITY_BIRD_DELAY = 1;
+
 function generateCity() {
-  cellColors = [];
+  cellColors   = {};
+  cityWindows  = [];
+  cityDone     = false;
+  cityBuildIdx = 0;
+
   initGrid();
-  const zones = buildTemplate();
-  photoQueue = [];
-  for (const z of zones) {
-    const tr=z.r, br=z.r+z.h-1, lc=z.c, rc=z.c+z.w-1;
-    if (z.w<=0 || z.h<=0) continue;
-    photoQueue.push({type:'jump', r:tr, c:lc});
-    const outline=[];
-    for (let c=lc; c<=rc; c++) outline.push([tr,c]);
-    for (let r=tr+1; r<=br; r++) outline.push([r,rc]);
-    if (br>tr) for (let c=rc-1; c>=lc; c--) outline.push([br,c]);
-    if (rc>lc) for (let r=br-1; r>tr; r--) outline.push([r,lc]);
-    for (const [r,c] of outline) photoQueue.push({type:'lead', r, c, color:z.trail});
-    for (let r=tr+1; r<br; r++)
-      for (let c=lc+1; c<rc; c++) photoQueue.push({type:'fill', r, c, color:z.fill});
+
+  // Build template zones
+  cityZones    = buildTemplate();
+  cityZoneIdx  = 0;
+
+  // Convert zones → flat waypoint list with border-navigation between zones
+  cityWaypoints   = [];
+  cityWaypointIdx = 0;
+
+  for (let zi=0; zi<cityZones.length; zi++) {
+    const zone = cityZones[zi];
+    // Move to entry: row above zone's top-left (must be border or ROWS-1/0)
+    // We navigate along top border (row 0) or bottom border (ROWS-1)
+    // For now: nav along top border to zone's left col, then descend
+    const entryR = zone.r - 1; // row just above zone (should be border or claimed)
+    const entryC = zone.c;
+
+    // Navigate to (0, entryC) along top border, then down to entryR
+    cityWaypoints.push({r:0, c:entryC, zIdx:zi, phase:'nav'});
+    if (entryR > 0) cityWaypoints.push({r:entryR, c:entryC, zIdx:zi, phase:'nav'});
+
+    // Outline waypoints
+    const outline = zoneToWaypoints(zone, zi);
+    for (const wp of outline) cityWaypoints.push({...wp, phase:'draw'});
+
+    // Return to border after closing
+    cityWaypoints.push({r:0, c:zone.c, zIdx:zi, phase:'nav'});
   }
-  // Paint the outer frame last so the city sits inside a neon border
-  const frame = '#00ffff';
-  photoQueue.push({type:'jump', r:0, c:0});
-  for (let c=0; c<COLS; c++) photoQueue.push({type:'lead', r:0, c, color:frame});
-  for (let r=1; r<ROWS; r++) photoQueue.push({type:'lead', r, c:COLS-1, color:frame});
-  for (let c=COLS-2; c>=0; c--) photoQueue.push({type:'lead', r:ROWS-1, c, color:frame});
-  for (let r=ROWS-2; r>0; r--) photoQueue.push({type:'lead', r, c:0, color:frame});
-  photoIdx = 0;
-  photoReady = true;
-  queueLeadRate = 6; queueFillRate = 90;
-  player = { col:1, row:1, alive:true, drawing:false, moveTimer:0, moveDelay:1 };
-  drawPath = [];
+
+  // End at top-right corner
+  cityWaypoints.push({r:0, c:COLS-2, zIdx:-1, phase:'nav'});
+
+  camX = 0; camY = 0;
+}
+
+function stepCityAnimation() {
+  if (cityDone) { flickerWindows(); return; }
+
+  if (cityWaypointIdx >= cityWaypoints.length) {
+    cityDone = true;
+    registerWindows();
+    return;
+  }
+
+  cityBirdTimer++;
+  if (cityBirdTimer < CITY_BIRD_DELAY) return;
+  cityBirdTimer = 0;
+
+  const wp = cityWaypoints[cityWaypointIdx];
+
+  // Set zone colors
+  if (wp.zIdx >= 0 && wp.zIdx < cityZones.length) {
+    paintTrailColor = cityZones[wp.zIdx].trail;
+    paintFillColor  = cityZones[wp.zIdx].fill;
+  }
+
+  // If already at target, advance
+  if (player.row === wp.r && player.col === wp.c) {
+    cityWaypointIdx++;
+    return;
+  }
+
+  // Step one cell toward waypoint
+  const dr = wp.r - player.row;
+  const dc = wp.c - player.col;
+  let mr = player.row, mc = player.col;
+  if (Math.abs(dr) >= Math.abs(dc) && dr !== 0) mr = player.row + Math.sign(dr);
+  else if (dc !== 0) mc = player.col + Math.sign(dc);
+
+  autoMovePlayer(mr, mc);
+}
+
+function onSafe(r, c) {
+  const v = gc(r, c);
+  return v === BORDER || v === CLAIMED;
+}
+
+function autoMovePlayer(nr, nc) {
+  if (!player.alive) { initPlayer(); return; }
+  if (nr<0||nr>=ROWS||nc<0||nc>=COLS) return;
+  const t = gc(nr, nc);
+
+  if (t === BORDER || t === CLAIMED) {
+    if (player.drawing && drawPath.length > 1) completeShape();
+    else { player.drawing=false; drawPath=[]; }
+    player.col=nc; player.row=nr; player.drawing=false;
+  } else if (t === OPEN) {
+    for (const [pr,pc] of drawPath) {
+      if (pr===nr && pc===nc) {
+        for (const [dr2,dc2] of drawPath) if(gc(dr2,dc2)===DRAWING) sc(dr2,dc2,OPEN);
+        drawPath=[]; player.drawing=false; return;
+      }
+    }
+    player.drawing=true;
+    sc(nr,nc,DRAWING);
+    drawPath.push([nr,nc]);
+    if (gameState === S.CITY) cellColors[nr+','+nc] = paintTrailColor;
+    else if (gameState===S.PAINT) cellColors[nr+','+nc] = paintTrailColor;
+    player.col=nc; player.row=nr;
+  } else if (t === DRAWING) {
+    for (const [dr2,dc2] of drawPath) if(gc(dr2,dc2)===DRAWING) sc(dr2,dc2,OPEN);
+    drawPath=[]; player.drawing=false;
+  }
 }
 
 function startCity() {
@@ -1831,18 +1884,41 @@ function startCity() {
   document.getElementById('paintHud').classList.remove('active');
   document.getElementById('cityHud').classList.add('active');
   document.getElementById('progressBar').style.display='none';
-  document.getElementById('dpad').style.display='none';
-  enemies=[];
-  gameState = S.CITY;
+  enemies=[]; drawPath=[];
   generateCity();
+  initPlayer();
+  player.row = 0; player.col = 1;
+  cityBirdTimer   = 0;
+  cityWaypointIdx = 0;
+  cityZoneIdx     = 0;
+  camX = 0; camY = 0;
+  gameState = S.CITY;
 }
 
-function exportCityCanvas() { exportCanvas(); }
+function exportCityCanvas() {
+  const oc=document.createElement('canvas');
+  oc.width=W; oc.height=H;
+  const octx=oc.getContext('2d');
+  octx.fillStyle='#2a4020'; octx.fillRect(0,0,W,H);
+  for (let r=0; r<ROWS; r++) {
+    for (let c=0; c<COLS; c++) {
+      const v=grid[r*COLS+c];
+      if (v===CLAIMED||v===BORDER) {
+        octx.fillStyle=cellColors[r+','+c]||C.border;
+        octx.fillRect(c*TILE,r*TILE,TILE,TILE);
+      }
+    }
+  }
+  oc.toBlob(blob=>{
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download='birdixel-city-'+Date.now()+'.png'; a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),3000);
+  },'image/png');
+}
 
 function showMenuFromCity() {
   gameState=S.MENU;
-  photoQueue=[]; photoIdx=0; photoReady=false;
-  document.getElementById('dpad').style.display='';
   document.getElementById('cityHud').classList.remove('active');
   document.getElementById('hud').classList.remove('hidden');
   document.getElementById('progressBar').style.display='';
@@ -1914,19 +1990,6 @@ function buildSwatchPanel(panelId, target) {
   const panel = document.getElementById(panelId);
   if (!panel) return;
   panel.innerHTML = '';
-  if (target === 'glass') {
-    // Rainbow swatch: every stroke gets its own random jewel color
-    const m = document.createElement('div');
-    m.className = 'swatch multi' + (glassMultiLead ? ' active-sel' : '');
-    m.title = 'multicolor';
-    m.addEventListener('click', () => {
-      glassMultiLead = true;
-      document.getElementById('glassTrailPreview').classList.add('multi');
-      panel.querySelectorAll('.swatch').forEach(x=>x.classList.remove('active-sel'));
-      m.classList.add('active-sel');
-    });
-    panel.appendChild(m);
-  }
   for (const color of SWATCHES) {
     const s = document.createElement('div');
     s.className = 'swatch';
@@ -1938,8 +2001,6 @@ function buildSwatchPanel(panelId, target) {
         document.getElementById('trailPreview').style.background = color;
       } else if (target === 'glass') {
         paintTrailColor = color;
-        glassMultiLead = false;
-        document.getElementById('glassTrailPreview').classList.remove('multi');
         document.getElementById('glassTrailPreview').style.background = color;
       } else {
         paintFillColor = color;
@@ -1958,8 +2019,7 @@ function buildSwatches() {
 }
 
 function startPaint() {
-  cellColors = [];
-  gameState = S.PAINT;
+  cellColors = {};
   initGrid(); initPlayer(); enemies = [];
   lives = 999; // unlimited in paint mode
   claimedCount=0; score=0; level=1;
@@ -1973,41 +2033,49 @@ function startPaint() {
 }
 
 function clearPaint() {
-  cellColors = [];
+  cellColors = {};
   initGrid(); initPlayer();
   claimedCount=0;
 }
 
 function exportCanvas() {
-  // Render the entire world at full size, using each cell's real color
+  // Render entire world to an offscreen canvas then save as PNG
   const oc = document.createElement('canvas');
   oc.width = W; oc.height = H;
   const octx = oc.getContext('2d');
+
   octx.fillStyle = C.bg;
   octx.fillRect(0,0,W,H);
+
   for (let r=0; r<ROWS; r++) {
     for (let c=0; c<COLS; c++) {
-      const i = r*COLS+c, v = grid[i];
-      if (v===OPEN) continue;
-      const cc = cellColors[i];
-      octx.fillStyle = cc || (v===BORDER ? C.border : v===CLAIMED ? C.claimed : C.drawing);
-      octx.fillRect(c*TILE, r*TILE, TILE, TILE);
+      const v = grid[r*COLS+c];
+      const sx=c*TILE, sy=r*TILE;
+      if (v===OPEN) {
+        octx.fillStyle=C.dot;
+        octx.fillRect(sx+TILE/2,sy+TILE/2,1,1);
+      } else if (v===BORDER) {
+        octx.fillStyle=C.border;
+        octx.fillRect(sx,sy,TILE,TILE);
+      } else if (v===CLAIMED) {
+        const cc=cellColors[r+','+c];
+        octx.fillStyle=cc||C.claimed;
+        octx.fillRect(sx,sy,TILE,TILE);
+        octx.fillStyle=cc?cc+'cc':C.claimedFg;
+        octx.fillRect(sx+1,sy+1,TILE-2,TILE-2);
+      } else if (v===DRAWING) {
+        octx.fillStyle=paintTrailColor;
+        octx.fillRect(sx,sy,TILE,TILE);
+      }
     }
   }
-  const mode = gameState===S.GLASS?'glass':gameState===S.PHOTO?'photo':gameState===S.CITY?'city':'paint';
-  const name = 'birdixel-'+mode+'-'+Date.now()+'.png';
-  oc.toBlob(async blob => {
-    try {
-      const file = new File([blob], name, {type:'image/png'});
-      if (navigator.canShare && navigator.canShare({files:[file]})) {
-        await navigator.share({files:[file], title:'BIRDIXEL'});
-        return;
-      }
-    } catch (e) { if (e && e.name==='AbortError') return; }
+
+  oc.toBlob(blob=>{
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
-    a.href=url; a.download=name;
-    document.body.appendChild(a); a.click(); a.remove();
+    a.href=url;
+    a.download='birdixel-'+Date.now()+'.png';
+    a.click();
     setTimeout(()=>URL.revokeObjectURL(url),3000);
   },'image/png');
 }
@@ -2021,15 +2089,13 @@ function showMenuFromPaint() {
 }
 
 function startGlass() {
-  cellColors = [];
-  gameState = S.GLASS;
+  cellColors = {};
   initGrid(); initPlayer(); enemies = [];
   lives = 999;
   claimedCount=0; score=0; level=1;
   paintTrailColor = '#111111';
-  glassMultiLead = true;
   glassStrokeColor = randomJewel();
-  document.getElementById('glassTrailPreview').classList.add('multi');
+  document.getElementById('glassTrailPreview').style.background = paintTrailColor;
   document.getElementById('menuScreen').classList.add('hidden');
   document.getElementById('hud').classList.add('hidden');
   document.getElementById('glassHud').classList.add('active');
@@ -2040,8 +2106,7 @@ function startGlass() {
 }
 
 function startPhoto() {
-  cellColors = [];
-  queueLeadRate = 8; queueFillRate = 60;
+  cellColors = {};
   initGrid(); enemies = [];
   player = { col:Math.floor(COLS/2), row:Math.floor(ROWS/2), alive:true, drawing:false, moveTimer:0, moveDelay:1 };
   drawPath = [];
@@ -2072,9 +2137,8 @@ function handlePhotoFile(file) {
   const url = URL.createObjectURL(file);
   const img = new Image();
   img.onload = () => {
-    cellColors = [];
+    cellColors = {};
     initGrid();
-    queueLeadRate = 8; queueFillRate = 60;
     processPhotoImage(img);
     URL.revokeObjectURL(url);
   };
@@ -2095,9 +2159,7 @@ function showMenuFromGlass() {
   document.getElementById('menuScreen').classList.remove('hidden');
 }
 function startGame() {
-  level=1; lives=3; score=0; levelUpPending=false;
-  cellColors = [];
-  gameState = S.PLAYING;
+  level=1; lives=3; score=0;
   document.getElementById('menuScreen').classList.add('hidden');
   document.getElementById('gameOverScreen').classList.add('hidden');
   initGrid(); initPlayer(); spawnEnemies(level+1);
@@ -2106,7 +2168,6 @@ function startGame() {
 }
 
 function startLevel() {
-  cellColors = [];
   initGrid(); initPlayer(); spawnEnemies(level+1);
   updateHUD(); gameState=S.PLAYING;
 }
@@ -2123,9 +2184,12 @@ function loop() {
     case S.GLASS:
       updatePlayer(); updateCamera(); drawScene(); break;
     case S.PHOTO:
-      updatePhoto(); drawScene(); break;
+      updatePhoto(); updateCamera(); drawScene(); break;
     case S.CITY:
-      updatePhoto(); drawScene(); break;
+      stepCityAnimation();
+      updateCamera();
+      drawScene();
+      break;
     case S.BANNER:
       updateCamera(); drawScene();
       if (--levelBannerTimer<=0) { hideBanner(); startLevel(); }
@@ -2174,23 +2238,15 @@ document.getElementById('photoUploadBtn').addEventListener('click', ()=> documen
 document.getElementById('photoExportBtn').addEventListener('click', exportCanvas);
 document.getElementById('photoMenuBtn').addEventListener('click', showMenuFromPhoto);
 document.getElementById('photoFileInput').addEventListener('change', (e)=> handlePhotoFile(e.target.files[0]));
-document.getElementById('glassClearBtn').addEventListener('click', ()=>{
-  cellColors=[]; initGrid(); initPlayer(); claimedCount=0; autoState={};
-  if (autoMode) { player.moveDelay=2; resetGlassStats(); }
-});
-document.getElementById('glassViewBtn').addEventListener('click', ()=>{
-  fitView = !fitView;
-  document.getElementById('glassViewBtn').textContent = fitView ? 'ZOOM' : 'FIT';
-});
+document.getElementById('glassClearBtn').addEventListener('click', ()=>{ cellColors={}; initGrid(); initPlayer(); claimedCount=0; autoState={}; glassFillCooldown=0; });
 document.getElementById('glassExportBtn').addEventListener('click', exportCanvas);
 document.getElementById('glassMenuBtn').addEventListener('click', showMenuFromGlass);
 
 function setAutoMode(mode) {
-  if (!mode || autoMode === mode) {
+  if (autoMode === mode) {
     autoMode = null;
     autoState = {};
     player.moveDelay = 4;
-    if (glassTimerInterval) { clearInterval(glassTimerInterval); glassTimerInterval = null; }
   } else {
     autoMode = mode;
     autoState = {};
@@ -2216,7 +2272,7 @@ document.getElementById('autoHunterBtn').addEventListener('click', ()=> setAutoM
 document.getElementById('autoBounceBtn').addEventListener('click', ()=> setAutoMode('bounce'));
 document.getElementById('autoTracerBtn').addEventListener('click', ()=> setAutoMode('tracer'));
 document.getElementById('cityBtn').addEventListener('click', startCity);
-document.getElementById('cityRegenBtn').addEventListener('click', ()=>{ gameState=S.CITY; generateCity(); });
+document.getElementById('cityRegenBtn').addEventListener('click', ()=>{ generateCity(); gameState=S.CITY; });
 document.getElementById('cityExportBtn').addEventListener('click', exportCityCanvas);
 document.getElementById('cityMenuBtn').addEventListener('click', showMenuFromCity);
 document.getElementById('glassTrailLabel').addEventListener('click', ()=>{
@@ -2255,5 +2311,233 @@ initGrid(); initPlayer(); spawnEnemies(2); updateHUD();
 camX=W/2-viewW/2; camY=H/2-viewH/2;
 loop();
 </script>
+  <!-- =====================================================================
+       MOHAVE TECHNOLOGY GROUP // CREATOR SEAL
+       Drop this ONE block into any HTML page, anywhere before </body>.
+       The only thing you edit is the CONFIG object on the next few lines.
+       ===================================================================== -->
+  <script>
+  (function () {
+
+    /* RED PHONE: Pajamastan flag as a data URI. Self-contained so the seal
+       stays a single drop-in block with no external image to host. */
+    var FLAG_SRC = "data:image/jpeg;base64,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";
+
+    /* ---------- CONFIG: the only part you change ---------- */
+    var CONFIG = {
+      org:      "Mohave Technology Group",
+      monogram: "MTG",
+      mission:  "Practical software and hardware, built in the field.",
+
+      // RED PHONE: Pajamastan export homage.
+      nation:   "Pajamastan",
+      site:     "https://pajamastan.vercel.app",
+      flag:     FLAG_SRC,
+
+      // BLUE PHONE: one money donate link (Stripe live payment link).
+      donate:   "https://buy.stripe.com/28EeV64rb6ga7fneyp6AM00",
+
+      github:   "https://github.com/sudosilo",
+      linkedin: "https://www.linkedin.com/in/dicktemple"
+    };
+    /* ----------------------------------------------------- */
+
+
+    /* ---------- LAYER 1: the signature pressed into the source ---------- */
+    var head = document.head || document.getElementsByTagName("head")[0];
+
+    head.appendChild(document.createComment(
+      " Made by " + CONFIG.org + " // " + CONFIG.github + " // " + CONFIG.linkedin + " "
+    ));
+    // RED PHONE: export origin banner in the source.
+    head.appendChild(document.createComment(
+      " Certified export of " + CONFIG.nation + " // " + CONFIG.site + " "
+    ));
+
+    var metaAuthor = document.createElement("meta");
+    metaAuthor.setAttribute("name", "author");
+    metaAuthor.setAttribute("content", CONFIG.org);
+    head.appendChild(metaAuthor);
+
+    // RED PHONE: export-origin meta tag.
+    var metaOrigin = document.createElement("meta");
+    metaOrigin.setAttribute("name", "x-export-origin");
+    metaOrigin.setAttribute("content", CONFIG.nation);
+    head.appendChild(metaOrigin);
+
+    [CONFIG.github, CONFIG.linkedin].forEach(function (url) {
+      var l = document.createElement("link");
+      l.setAttribute("rel", "me");
+      l.setAttribute("href", url);
+      head.appendChild(l);
+    });
+
+    var ld = document.createElement("script");
+    ld.type = "application/ld+json";
+    ld.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": CONFIG.org,
+      "url": CONFIG.site,
+      "sameAs": [CONFIG.github, CONFIG.linkedin]
+    });
+    head.appendChild(ld);
+
+
+    /* ---------- LAYER 2: the visible seal ---------- */
+
+    // Round Mohave Technology Group seal, kept beside the Pajamastan flag.
+    function buildSeal() {
+      var org = CONFIG.org.toUpperCase();
+      return ''
+        + '<svg class="mtg-seal-svg" viewBox="0 0 120 120" width="58" height="58" '
+        +   'role="img" aria-label="' + CONFIG.org + ' seal">'
+        +   '<defs>'
+        +     '<path id="mtgTop" d="M 23,60 A 37,37 0 0 1 97,60" fill="none"/>'
+        +   '</defs>'
+        +   '<circle cx="60" cy="60" r="55" fill="none" stroke="#7a2e28" stroke-width="2.5"/>'
+        +   '<circle cx="60" cy="60" r="48" fill="none" stroke="#7a2e28" stroke-width="1"/>'
+        +   '<text font-family="Georgia,serif" font-size="8" fill="#7a2e28">'
+        +     '<textPath href="#mtgTop" startOffset="50%" text-anchor="middle" '
+        +     'textLength="106" lengthAdjust="spacingAndGlyphs">'
+        +     org + '</textPath>'
+        +   '</text>'
+        +   '<text x="60" y="60" text-anchor="middle" dominant-baseline="central" '
+        +     'font-family="Georgia,serif" font-weight="700" font-size="27" '
+        +     'fill="#7a2e28">' + CONFIG.monogram + '</text>'
+        +   '<g fill="#7a2e28">'
+        +     '<rect x="58" y="83.5" width="4" height="4"/>'
+        +     '<rect x="63" y="88.5" width="4" height="4"/>'
+        +     '<rect x="53" y="93.5" width="4" height="4"/>'
+        +     '<rect x="58" y="93.5" width="4" height="4"/>'
+        +     '<rect x="63" y="93.5" width="4" height="4"/>'
+        +   '</g>'
+        + '</svg>';
+    }
+
+
+    var css = ''
+      + '.mtg-seal{box-sizing:border-box;width:100%;background:#efe9da;'
+      + 'border-top:1px solid #cabfa3;color:#2b2620;'
+      + 'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;'
+      + 'padding:18px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;}'
+      + '.mtg-seal-row{display:flex;align-items:center;gap:14px;}'
+      // RED PHONE: round flag badge, brand-red ring to echo the old seal.
+      + '.mtg-flag-btn{background:none;border:0;padding:0;margin:0;cursor:pointer;'
+      + 'display:flex;align-items:center;line-height:0;'
+      + 'transition:transform .18s ease;}'
+      + '.mtg-seal.open .mtg-flag-btn{transform:scale(.94);}'
+      + '.mtg-flag{width:48px;height:72px;border-radius:8px;object-fit:cover;'
+      + 'display:block;border:2px solid #7a2e28;box-shadow:0 1px 3px rgba(43,38,32,.25);}'
+      + '.mtg-seal-btn{background:none;border:0;padding:0;margin:0;cursor:pointer;'
+      + 'display:flex;align-items:center;line-height:0;transition:transform .18s ease;}'
+      + '.mtg-seal.open .mtg-seal-btn{transform:rotate(-8deg) scale(.94);}'
+      + '.mtg-seal-svg{display:block;}'
+      + '.mtg-seal-label{text-align:left;line-height:1.35;}'
+      + '.mtg-seal-org{display:block;font-family:Georgia,"Times New Roman",serif;'
+      + 'font-size:14px;letter-spacing:.3px;color:#2b2620;}'
+      // RED PHONE: export subtitle with an inline linkable nation word.
+      + '.mtg-seal-export{display:block;font-family:Georgia,"Times New Roman",serif;'
+      + 'font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#4a443b;margin:2px 0;}'
+      + '.mtg-seal-link{color:#7a2e28;text-decoration:underline;}'
+      + '.mtg-seal-link:hover{color:#5f231e;}'
+      + '.mtg-seal-ask{display:inline-block;background:none;border:0;padding:0;margin:0;'
+      + 'font:inherit;font-size:12px;color:#7a2e28;text-decoration:underline;cursor:pointer;}'
+      + '.mtg-seal-panel{overflow:hidden;max-height:0;opacity:0;'
+      + 'transition:max-height .25s ease,opacity .25s ease;width:100%;max-width:360px;}'
+      + '.mtg-seal.open .mtg-seal-panel{max-height:300px;opacity:1;}'
+      + '.mtg-seal-mission{font-style:italic;color:#4a443b;font-size:13px;'
+      + 'text-align:center;margin:0 0 12px;line-height:1.5;}'
+      + '.mtg-seal-links{display:flex;justify-content:center;gap:10px;}'
+      + '.mtg-seal-links a{flex:1;text-align:center;text-decoration:none;'
+      + 'font-size:13px;color:#2b2620;background:#faf7ef;border:1px solid #cabfa3;'
+      + 'border-radius:6px;padding:8px 10px;transition:background .15s ease;}'
+      + '.mtg-seal-links a:hover{background:#fff;}'
+      + '.mtg-flag-btn:focus-visible,.mtg-seal-btn:focus-visible,.mtg-seal-ask:focus-visible,'
+      + '.mtg-seal-link:focus-visible{outline:2px solid #7a2e28;outline-offset:3px;border-radius:4px;}'
+      + '.mtg-seal-links a:focus-visible{outline:2px solid #7a2e28;outline-offset:2px;}'
+      // BLUE PHONE: support the micronation donate pill with a coin icon.
+      + '.mtg-donate{display:inline-flex;align-items:center;gap:10px;text-decoration:none;'
+      + 'background:linear-gradient(180deg,#fffaf0,#f3e7cc);color:#2b2620;'
+      + 'border:1px solid #b89a5a;border-radius:999px;padding:6px 16px 6px 6px;'
+      + 'box-shadow:0 1px 0 #fff inset,0 2px 6px rgba(122,46,40,.18);'
+      + 'transition:transform .15s ease,box-shadow .15s ease;}'
+      + '.mtg-donate:hover{transform:translateY(-1px);box-shadow:0 1px 0 #fff inset,0 4px 10px rgba(122,46,40,.25);}'
+      + '.mtg-donate:active{transform:translateY(0);}'
+      + '.mtg-donate-coin{display:block;flex:none;}'
+      + '.mtg-donate-text{display:flex;flex-direction:column;line-height:1.2;text-align:left;}'
+      + '.mtg-donate-main{font-family:Georgia,"Times New Roman",serif;font-size:13px;color:#7a2e28;letter-spacing:.2px;}'
+      + '.mtg-donate-sub{font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:#6b6255;}'
+      + '.mtg-donate:focus-visible{outline:2px solid #7a2e28;outline-offset:3px;}'
+      + '@media (prefers-reduced-motion: reduce){.mtg-donate{transition:none;}}'
+      + '@media (prefers-reduced-motion: reduce){'
+      + '.mtg-flag-btn,.mtg-seal-btn,.mtg-seal-panel{transition:none;}}';
+
+    var style = document.createElement("style");
+    style.textContent = css;
+    head.appendChild(style);
+
+    var seal = document.createElement("footer");
+    seal.className = "mtg-seal";
+    seal.innerHTML = ''
+      + '<div class="mtg-seal-row">'
+      +   '<button class="mtg-flag-btn" type="button" aria-label="Toggle maker details">'
+      +     '<img class="mtg-flag" src="' + CONFIG.flag + '" alt="' + CONFIG.nation + ' flag">'
+      +   '</button>'
+      +   '<button class="mtg-seal-btn" type="button" aria-label="Toggle maker details">'
+      +     buildSeal()
+      +   '</button>'
+      +   '<span class="mtg-seal-label">'
+      +     '<span class="mtg-seal-org">' + CONFIG.org + '</span>'
+      +     '<span class="mtg-seal-export">Certified export of '
+      +       '<a class="mtg-seal-link" href="' + CONFIG.site + '" target="_blank" rel="noopener">'
+      +       CONFIG.nation + '</a></span>'
+      +     '<button class="mtg-seal-ask" type="button" aria-expanded="false">Who made this?</button>'
+      +   '</span>'
+      + '</div>'
+      // BLUE PHONE: donate pill, always visible under the seal row.
+      + '<a class="mtg-donate" href="' + CONFIG.donate + '" target="_blank" rel="noopener">'
+      +   '<svg class="mtg-donate-coin" viewBox="0 0 40 40" width="34" height="34" aria-hidden="true">'
+      +       '<circle cx="20" cy="20" r="19" fill="#d9b25a" stroke="#8a6a24" stroke-width="1.5"/>'
+      +       '<circle cx="20" cy="20" r="14.5" fill="#f2d68a" stroke="#b08a3a" stroke-width="1"/>'
+      +       '<path d="M11 24c2-1 3-4 3-7M29 24c-2-1-3-4-3-7" fill="none" stroke="#8a6a24" stroke-width="1.2" stroke-linecap="round"/>'
+      +       '<text x="20" y="25.5" text-anchor="middle" font-family="Georgia,serif" font-size="15" font-weight="bold" fill="#7a2e28">1</text>'
+      +     '</svg>'
+      +   '<span class="mtg-donate-text">'
+      +     '<span class="mtg-donate-main">Support the Micronation of ' + CONFIG.nation + '</span>'
+      +     '<span class="mtg-donate-sub">Give one money</span>'
+      +   '</span>'
+      + '</a>'
+      + '<div class="mtg-seal-panel">'
+      +   '<p class="mtg-seal-mission">' + CONFIG.mission + '</p>'
+      +   '<div class="mtg-seal-links">'
+      +     '<a href="' + CONFIG.site + '" target="_blank" rel="noopener">' + CONFIG.nation + '</a>'
+      +     '<a href="' + CONFIG.github + '" target="_blank" rel="noopener me">GitHub</a>'
+      +     '<a href="' + CONFIG.linkedin + '" target="_blank" rel="noopener me">LinkedIn</a>'
+      +   '</div>'
+      + '</div>';
+
+    // RED PHONE: flag badge and "Who made this?" both toggle the panel.
+    var ask = seal.querySelector(".mtg-seal-ask");
+    var flagBtn = seal.querySelector(".mtg-flag-btn");
+    function toggle() {
+      var nowOpen = seal.classList.toggle("open");
+      ask.setAttribute("aria-expanded", nowOpen ? "true" : "false");
+    }
+    ask.addEventListener("click", toggle);
+    flagBtn.addEventListener("click", toggle);
+    seal.querySelector(".mtg-seal-btn").addEventListener("click", toggle);
+
+    // RED PHONE: drop this block into a page with no seal container and it
+    // still lands at the bottom of body exactly like before. Give a page a
+    // <div id="mtgSealContainer"> anywhere and the seal lands there instead,
+    // which is how the landing screen pins it to its own bottom edge rather
+    // than the bottom of the whole document.
+    var sealContainer = document.getElementById("mtgSealContainer") || document.body;
+    sealContainer.appendChild(seal);
+
+  })();
+  </script>
+  <!-- ===================== END CREATOR SEAL ===================== -->
 </body>
 </html>

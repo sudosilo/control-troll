@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- hubview build 2026-11-26 shared library -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Hub View</title>
@@ -71,6 +72,9 @@ button.on{background:#3d3d3d;color:#fff}
 #scan .tag.lib,#scan .tag.model{background:#1e6fd9;color:#fff;border-color:#1e6fd9}
 #scan .tag.spec{color:#1e6fd9;border-color:#1e6fd9}
 #scan .tag.photo{color:#8a8a8a;border-color:#bbb}
+#scan .dg{display:flex;gap:6px;flex-wrap:wrap}
+#scan .dg img{width:48%;max-height:none;border:1px solid #3d3d3d}
+#scan .it.lib{cursor:pointer}
 #scan .src{display:block;padding:7px 0;border-bottom:1px solid #eee4d2;color:#1e6fd9;word-break:break-all}
 </style>
 </head>
@@ -82,6 +86,7 @@ button.on{background:#3d3d3d;color:#fff}
 <button id="mScan" class="blue">Take or pick a photo</button>
 <input id="mPhoto" type="file" accept="image/*" style="display:none">
 <div class="note" id="mScanNote">Snap a car or anything else. It finds the exact model and its service manual, then gives you a parts list with part numbers, sizes and threads, and an exploded view you can take apart.</div>
+<button id="mLib" class="blue">Shared library</button>
 <button id="mLastScan" style="display:none">Open last scan</button>
 <h4>SAVE</h4>
 <button id="mSave" class="blue">Save card as image</button>
@@ -2721,6 +2726,20 @@ function scanText(rec){
     h+='<h5>'+esc(g.name)+'</h5>';
     g.items.forEach(it=>{const t=it.model_url?'model':srcOf(it);h+='<div class="it"><span class="q">'+esc(it.qty)+(it.unit?' '+esc(it.unit):'')+'</span><b>'+esc(it.name)+'</b> <span class="tag '+t+'">'+TAG[t]+'</span><small>'+[it.spec,it.part_number&&('PART NO '+it.part_number),it.thread&&('THREAD '+it.thread),it.torque&&('TORQUE '+it.torque),it.material].filter(Boolean).map(esc).join('<br>')+'</small></div>'});
   });
+  const v=rec.verify;
+  if(rec.status){
+    h+='<h5>Fact check</h5><div class="st">'+(rec.status==='verified'?'VERIFIED AGAINST THE MANUAL':'DRAFT, NOT FULLY VERIFIED')+'</div>';
+    if(v&&v.summary)h+='<div>'+esc(v.summary)+'</div>';
+    const bad=[].concat((v&&v.checks||[]).filter(c=>!c.ok),(v&&v.geometry)||[]);
+    bad.forEach(c=>{h+='<div class="it"><b>'+esc(c.part)+'</b> <span class="tag photo">FLAGGED</span><small>'+esc(c.note)+'</small></div>'});
+    ((v&&v.missing)||[]).forEach(m=>{h+='<div class="it"><b>'+esc(m)+'</b> <span class="tag photo">MISSING</span></div>'});
+  }else{
+    const job=jobFor(rec);
+    h+='<h5>Shared library</h5><div class="st" id="scJob" data-k="'+esc(libKey(ident))+'">'+(job?'BUILDING THE VERIFIED VERSION: '+esc((job.note||job.stage||'queued').toUpperCase()):'THIS IS A QUICK DRAFT ON THIS PHONE ONLY')+'</div>';
+  }
+  if(rec.diagrams&&rec.diagrams.length){h+='<h5>Diagrams</h5><div class="dg">'+rec.diagrams.map(d=>'<a target="_blank" rel="noopener" href="'+esc(d.url)+'"><img src="'+esc(d.url)+'" alt="Diagram page '+esc(d.page)+'"></a>').join('')+'</div>'}
+  if(rec.pages_url)h+='<a class="src" target="_blank" rel="noopener" href="'+esc(rec.pages_url)+'">Manual pages used for this build</a>';
+  ((rec.extracted&&rec.extracted.manuals)||[]).forEach(m=>{h+='<a class="src" target="_blank" rel="noopener" href="'+esc(m.url)+'">'+esc(m.title||m.url)+'</a>'});
   if(ident.sources&&ident.sources.length){h+='<h5>Sources</h5>';ident.sources.forEach(s=>{h+='<a class="src" target="_blank" rel="noopener" href="'+esc(s.url)+'">'+esc(s.title||s.url)+'</a>'})}
   return h;
 }
@@ -2733,6 +2752,7 @@ function scanPlain(rec){
 function openScan(){menu.classList.remove('open');hb.classList.remove('on');$('scan').classList.add('open')}
 function openSaved(id){const car=CARS[id];if(!car)return;$('scan').classList.remove('open');loadCar(id);carTarget=1;if(car.urls.length)loadScanModels(car)}
 function showScan(rec,img){
+  if(!CARS[rec.id])CARS[rec.id]=scanCar(rec);
   const b=$('scBody');b.innerHTML=(img?'<img src="'+img+'">':'')+scanText(rec);openScan();
   $('scBuild').onclick=()=>openSaved(rec.id);
   const data=rec.data;
@@ -2774,6 +2794,11 @@ async function runScan(file,labelFile){
     $('scAnyway').onclick=()=>{pend=null;runParts(file,img,ident)};
     return;
   }
+  const key=libKey(ident);
+  if(key){
+    try{const row=await libBuild(key);if(row){clearInterval(scanJob);showScan(libRec(row),img);return}}catch(e){}
+    try{await queueJob(key,ident,img)}catch(e){}
+  }
   const saved=findSaved(ident);
   if(saved){clearInterval(scanJob);
     $('scBody').innerHTML='<img src="'+img+'"><div style="font-weight:bold;font-size:17px;text-transform:uppercase;margin-top:10px">'+esc(ident.maker+' '+ident.exact_model)+'</div><div class="st">ALREADY IN YOUR SCANNED LIBRARY</div><div class="act" style="margin-top:12px"><button id="scSaved">Open the saved build</button><button id="scFresh">Scan it fresh</button></div>';
@@ -2797,8 +2822,55 @@ $('scClose').onclick=()=>{clearInterval(scanJob);$('scan').classList.remove('ope
 $('mLastScan').onclick=()=>{const r=scanLib()[0];if(r)showScan(r,'')};
 ['pointerdown','touchstart','wheel'].forEach(ev=>$('scan').addEventListener(ev,e=>e.stopPropagation()));
 syncScanned();
+
+/* SHARED LIBRARY: finished builds live in Supabase for everyone. A new exact model gets queued for the worker,
+   which downloads the manuals, builds the model, fact checks it and publishes it. */
+const SB_URL='https://zasyjjoypkpvyqdueums.supabase.co',SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inphc3lqam95cGtwdnlxZHVldW1zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjk1NjQsImV4cCI6MjEwNjgwNTU2NH0.PZrUvG4qsTpMQeihXbbzaFYUAAJ9YV7FtxLTkcQGFVI';
+const sbHead=x=>Object.assign({apikey:SB_ANON,Authorization:'Bearer '+SB_ANON},x||{});
+async function sbGet(path){const r=await fetch(SB_URL+'/rest/v1/'+path,{headers:sbHead()});if(!r.ok)throw new Error('library');return r.json()}
+function libKey(ident){return ident&&ident.exact_model?scanSlug((ident.maker||'')+' '+ident.exact_model):''}
+async function libBuild(key){const r=await sbGet('hv_builds?key=eq.'+encodeURIComponent(key)+'&select=*');return r[0]||null}
+function libRec(row){return {id:'lib_'+row.key,data:row.data,ident:row.ident||{},verify:row.verify,status:row.status,pages_url:row.pages_url,diagrams:row.diagrams||[],extracted:row.extracted||{}}}
+function jobFor(rec){const k=libKey(rec.ident);return k?(store.get('jobs',[]).find(j=>j.key===k)||null):null}
+async function queueJob(key,ident,img){
+  const jobs=store.get('jobs',[]);if(jobs.some(j=>j.key===key&&j.status!=='failed'))return;
+  const path='photos/'+key+'-'+Date.now().toString(36)+'.jpg';
+  const blob=await (await fetch(img)).blob();
+  const up=await fetch(SB_URL+'/storage/v1/object/hv-files/'+path,{method:'POST',headers:sbHead({'Content-Type':'image/jpeg'}),body:blob});
+  const r=await fetch(SB_URL+'/rest/v1/hv_jobs',{method:'POST',headers:sbHead({'Content-Type':'application/json',Prefer:'return=representation'}),body:JSON.stringify({key,ident,photo_path:up.ok?path:null})});
+  if(!r.ok)throw new Error('queue');
+  const row=(await r.json())[0];jobs.unshift({id:row.id,key,name:(ident.maker||'')+' '+ident.exact_model,stage:'queued',note:'Waiting for the worker',status:'queued'});store.set('jobs',jobs.slice(0,20));pollJobs();
+}
+let pollT=null;
+async function pollJobs(){
+  clearTimeout(pollT);const jobs=store.get('jobs',[]),open=jobs.filter(j=>j.status==='queued'||j.status==='working');
+  if(!open.length)return;
+  try{const rows=await sbGet('hv_jobs?id=in.('+open.map(j=>j.id).join(',')+')&select=id,status,stage,note');
+    rows.forEach(r=>{const j=jobs.find(x=>x.id===r.id);if(j){j.status=r.status;j.stage=r.stage;j.note=r.note}});store.set('jobs',jobs);
+    const e=$('scJob'),j=e&&jobs.find(x=>x.key===e.dataset.k);if(j)e.textContent=j.status==='done'?'THE VERIFIED VERSION IS READY IN THE SHARED LIBRARY':j.status==='failed'?'THE SHARED BUILD FAILED':'BUILDING THE VERIFIED VERSION: '+String(j.note||j.stage).toUpperCase();
+    if(jobs.some(j=>j.status==='done'&&!j.seen)){$('mLib').textContent='Shared library (new build ready)'}
+  }catch(err){}
+  pollT=setTimeout(pollJobs,15000);
+}
+async function showLibrary(){
+  openScan();const b=$('scBody');b.innerHTML='<div class="st">LOADING THE SHARED LIBRARY</div>';
+  const jobs=store.get('jobs',[]);let rows=[];
+  try{rows=await sbGet('hv_builds?select=key,name,maker,exact_model,status,updated_at&order=updated_at.desc&limit=200')}catch(e){b.innerHTML='<div class="st">The shared library did not answer. Try again in a moment.</div>';return}
+  let h='<div style="font-weight:bold;font-size:17px">SHARED LIBRARY</div><div style="color:#6a6a6a">Every finished build is saved here for anyone who scans the same model.</div>';
+  const pend=jobs.filter(j=>j.status!=='done');
+  if(pend.length){h+='<h5>Your scans being built</h5>';pend.forEach(j=>{h+='<div class="it"><b>'+esc(j.name)+'</b> <span class="tag '+(j.status==='failed'?'photo':'spec')+'">'+esc(j.status==='failed'?'FAILED':'BUILDING')+'</span><small>'+esc(j.note||j.stage||'')+'</small></div>'})}
+  h+='<h5>Builds</h5>';
+  if(!rows.length)h+='<div style="color:#6a6a6a">Nothing here yet. Scan something with a readable model number and it will show up once it is built.</div>';
+  rows.forEach(r=>{h+='<div class="it lib" data-k="'+esc(r.key)+'"><b>'+esc([r.maker,r.exact_model||r.name].filter(Boolean).join(' '))+'</b> <span class="tag '+(r.status==='verified'?'lib':'photo')+'">'+(r.status==='verified'?'VERIFIED':'DRAFT')+'</span><small>'+esc(r.name||'')+'</small></div>'});
+  b.innerHTML=h;jobs.forEach(j=>{if(j.status==='done')j.seen=true});store.set('jobs',jobs);$('mLib').textContent='Shared library';
+  b.querySelectorAll('.it.lib').forEach(d=>d.onclick=async()=>{d.style.opacity=.5;try{const row=await libBuild(d.dataset.k);if(row)showScan(libRec(row),row.photo_url||'')}catch(e){d.style.opacity=1}});
+}
+$('mLib').onclick=showLibrary;
+pollJobs();
+const H0=location.hash.slice(1);
 loadCar(CARS[location.hash.slice(1)]?location.hash.slice(1):'prius');
 if(CAR&&/^scan_/.test(CAR.id)&&CAR.urls.length)loadScanModels(CAR);
+if(/^lib_/.test(H0))libBuild(H0.slice(4)).then(row=>{if(row){const rec=libRec(row);CARS[rec.id]=scanCar(rec);openSaved(rec.id)}}).catch(()=>{});
 
 
 const goal=V(0,0,0);

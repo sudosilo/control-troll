@@ -12,7 +12,7 @@ canvas{display:block;width:100vw;height:100vh}
 <body>
 <canvas id="c"></canvas>
 <script>
-// GREEN PHONE EDIT: HOPPER v6, endless side scroller with templated kinetic obstacles, zones, combos
+// GREEN PHONE EDIT: HOPPER v7, endless side scroller with templated kinetic obstacles, zones, combos
 (()=>{
 const cv=document.getElementById('c'),g=cv.getContext('2d');
 const VH=540,GROUND=460;
@@ -24,7 +24,7 @@ const yOffNow=()=>Math.max(0,Math.min(viewH-VH,viewH*.7-GROUND));
 const visBottom=()=>camY-yOffNow()+viewH+40;
 
 // GREEN PHONE EDIT: tuning knobs, change feel here
-const T={gravity:2300,jumpV:780,holdGrav:0.45,maxHold:0.45,cutMul:0.5,cruise:200,maxSpeed:640,accel:520,decel:260,wallSlide:140,wallJumpV:740,wallKick:520,kickDecay:7,coyote:0.1,buffer:0.13,hitKick:520,hitUp:520,invuln:0.9};
+const T={gravity:2300,jumpV:780,holdGrav:0.45,maxHold:0.45,cutMul:0.5,cruise:200,maxSpeed:640,accel:520,decel:260,wallSlide:140,wallJumpV:740,wallKick:520,kickDecay:7,coyote:0.1,buffer:0.13,hitKick:520,hitUp:520,invuln:0.9,upSide:340,upBounce:1050};
 
 const rand=(a,b)=>a+Math.random()*(b-a);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -65,7 +65,7 @@ case'boing':f0=180;f1=900;d=.3;w='sine';v=.12;break;case'boost':f0=400;f1=1800;d
 o.type=w;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f1,t+d);gn.gain.setValueAtTime(v,t);gn.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(gn).connect(AC.destination);o.start(t);o.stop(t+d+.02);}catch(e){}}
 
 // GREEN PHONE EDIT: player
-const P={x:120,y:GROUND-40,w:40,h:40,vx:0,vy:0,speed:T.cruise,kick:0,grounded:true,ground:null,coyote:0,buffer:0,hold:0,holding:false,wall:0,touchWall:false,inv:0,squash:0,sqv:0,tube:null,wallJumps:0,boostCd:0,wallL:0,inShaft:false,wing:null,wingT:0,launchCd:0};
+const P={x:120,y:GROUND-40,w:40,h:40,vx:0,vy:0,speed:T.cruise,kick:0,grounded:true,ground:null,coyote:0,buffer:0,hold:0,holding:false,wall:0,touchWall:false,inv:0,squash:0,sqv:0,tube:null,wallJumps:0,boostCd:0,wallL:0,inShaft:false,wing:null,wingT:0,launchCd:0,mode:'side',up:null};
 
 // GREEN PHONE EDIT: helpers for building pieces
 function mk(x,w,o){return Object.assign({x,w,solids:[],ramps:[],rings:[],hazards:[],portals:[],stars:[],zones:[],bumpers:[],t:0,update(p,dt){p.t+=dt;},draw(){}},o);}
@@ -75,7 +75,7 @@ function star(x,y){return{x,y,got:false,ph:Math.random()*6};}
 function starLine(x0,x1,y,n){const a=[];for(let i=0;i<n;i++)a.push(star(n<2?(x0+x1)/2:x0+(x1-x0)*i/(n-1),y));return a;}
 function starArc(x0,x1,y,h,n){const a=[];for(let i=0;i<n;i++){const t=n<2?.5:i/(n-1);a.push(star(x0+(x1-x0)*t,y-Math.sin(Math.PI*t)*h));}return a;}
 // GREEN PHONE EDIT: v4 sky stretch builder, reused by every flying section
-function skyRun(x,len,y0,d){const rings=[],zones=[],solids=[],stars=[],y1=GROUND-140,n=Math.floor(len/230),up=y=>GROUND-(GROUND-y)*2; // GREEN PHONE EDIT: flight path sits twice as high
+function skyRun(x,len,y0,d,raw){const rings=[],zones=[],solids=[],stars=[],y1=GROUND-140,n=Math.floor(len/230),up=raw?(y=>y):(y=>GROUND-(GROUND-y)*2); // GREEN PHONE EDIT: flight path sits twice as high
  for(let i=1;i<n;i++){const t=i/n;rings.push({x:x+i*230,y:up(y0+(y1-y0)*t+Math.sin(t*7)*110),r:36,got:false,ph:Math.random()*6});}
  const nu=1+Math.floor(len/1100);for(let i=0;i<nu;i++){const ux=x+len*(i+.6)/(nu+.2),py=up(y0+(y1-y0)*((ux-x)/len));zones.push({type:'wind',x:ux,y:py-260,w:130,h:520,force:2700,updraft:true});}
  if(Math.random()<.85){const ix=x+len*rand(.3,.7),iy=up(y0+(y1-y0)*((ix-x)/len))+130;solids.push({x:ix,y:iy,w:150,h:26,kind:'island',keepWing:true});stars.push(...starLine(ix+20,ix+130,iy-40,3));}
@@ -262,7 +262,33 @@ const TEMPLATES={
   return mk(x,endX+260-x,{solids:[floor(x,run-x),...sky.solids,floor(endX,260)],zones:[z,...sky.zones],rings:sky.rings,stars:[...starLine(x+40,bx-20,GROUND-60,3),...sky.stars],
    draw(p){g.save();g.translate(bx+60,GROUND-40);g.rotate(-Math.PI/4);const gr=g.createLinearGradient(0,-36,0,36);gr.addColorStop(0,'#ff4fa3');gr.addColorStop(1,'#7a5cff');g.fillStyle=gr;rr(-20,-36,170,72,20);g.fill();
     g.fillStyle='#ffe14f';for(let i=0;i<3;i++)g.fillRect(20+i*40,-36,12,72);g.fillStyle='#fff';g.beginPath();g.ellipse(150,0,14,34,0,0,Math.PI*2);g.fill();g.restore();
-    g.fillStyle='#ffd23f';rr(bx+10,GROUND-46,100,46,12);g.fill();g.strokeStyle='#fff';g.lineWidth=3;g.stroke();txt('BLAST OFF!',bx+60,GROUND-230+Math.sin(time*5)*5,20,'#ff3d8b','center');}});}}
+    g.fillStyle='#ffd23f';rr(bx+10,GROUND-46,100,46,12);g.fill();g.strokeStyle='#fff';g.lineWidth=3;g.stroke();txt('BLAST OFF!',bx+60,GROUND-230+Math.sin(time*5)*5,20,'#ff3d8b','center');}});}},
+ // GREEN PHONE EDIT: v7 UP MODE tower. A full vertical segment. Walk in at the bottom and the controls flip:
+ // you bounce on every ledge automatically, hold LEFT or RIGHT to steer. Exit at the top right and glide back to side mode.
+ upTower:{weight:d=>.35,build(x,d){const pre=260,ww=40,W=560,H=Math.round(rand(2400,3000)+d*600),ix=x+pre+ww,top=GROUND-H,rx=ix+W;
+  const solids=[floor(x,pre+ww+W+ww)],hz=[],st=[],movers=[];
+  solids.push({x:x+pre,y:top-400,w:ww,h:(GROUND-120)-(top-400),kind:'wall'});
+  solids.push({x:rx,y:top+300,w:ww,h:GROUND-(top+300),kind:'wall',eyes:true});
+  solids.push({x:ix,y:top,w:W,h:18,kind:'ledge',oneWay:true,hue:50});
+  let y=GROUND-140,cx=ix+W/2;
+  while(y>top+40){const lw=rand(90,140);cx=clamp(cx+rand(-220,220),ix+lw/2+6,rx-lw/2-6);const r=Math.random(),lx=cx-lw/2;
+   if(r<.1){solids.push({x:lx+lw/2-35,y,w:70,h:14,kind:'vspring',oneWay:true,bounce:1500,squish:0});y-=rand(200,240);continue;}
+   if(r<.1+.12+d*.1)solids.push({x:lx,y,w:lw,h:20,kind:'crumble',crumble:true,oneWay:true,ct:-1,fy:0,off:false});
+   else if(r<.45){const m={x:lx,y,w:lw,h:18,kind:'ledge',oneWay:true,hue:190,dx:0,dy:0,bx:lx,amp:rand(50,110),ph:Math.random()*6,sp:rand(1,1.8)};m.bx=clamp(lx,ix+m.amp+4,rx-lw-m.amp-4);solids.push(m);movers.push(m);}
+   else solids.push({x:lx,y,w:lw,h:18,kind:'ledge',oneWay:true,hue:(320+Math.random()*80)%360});
+   if(Math.random()<.4)st.push(star(cx,y-60));
+   if(Math.random()<.25){const lw2=rand(80,110),cx2=cx>ix+W/2?ix+lw2/2+20+Math.random()*120:rx-lw2/2-20-Math.random()*120;solids.push({x:cx2-lw2/2,y:y-rand(0,30),w:lw2,h:18,kind:'ledge',oneWay:true,hue:120});}
+   y-=rand(120,160);}
+  for(let hy=GROUND-500;hy>top+400;hy-=rand(450,650))hz.push({type:'circle',x:ix+W/2,y:hy,r:22,ph:Math.random()*6,sp:rand(1,1.8)+d,rot:0});
+  const ex=rx+ww+120,len=Math.round(H*1.1),sky=skyRun(ex,len,top+40,d,true),endX=ex+len;
+  return mk(x,endX+260-x,{solids:[...solids,floor(rx+ww,120,top+300),...sky.solids,floor(endX,260)],hazards:hz,stars:[...st,...sky.stars],rings:sky.rings,
+   zones:[{type:'upMode',x:ix,y:GROUND-200,w:50,h:200,info:{ix,W,top,bottom:GROUND}},{type:'sideMode',x:rx-10,y:top-500,w:ww+140,h:800},...sky.zones],
+   update(p,dt){p.t+=dt;for(const m of movers){const nx=m.bx+Math.sin(p.t*m.sp+m.ph)*m.amp;m.dx=nx-m.x;m.x=nx;}for(const h of hz){h.x=ix+W/2+Math.sin(p.t*h.sp+h.ph)*(W/2-40);h.rot+=dt*10;}
+    for(const s of p.solids){if(s.squish)s.squish*=Math.exp(-8*dt);if(s.crumble&&s.ct>=0){s.ct+=dt;if(s.ct>.35&&!s.off){s.off=true;if(onScreen(s.x))sfx('crack');}if(s.off)s.fy+=dt*(200+s.fy*3);if(s.ct>3){s.ct=-1;s.off=false;s.fy=0;}}}},
+   back(p){g.fillStyle='rgba(255,255,255,.35)';g.fillRect(ix,top-400,W,GROUND-top+400);g.strokeStyle='rgba(122,92,255,.25)';g.lineWidth=2;
+    for(let yy=GROUND-500;yy>top;yy-=500){g.beginPath();g.moveTo(ix,yy);g.lineTo(rx,yy);g.stroke();txt(Math.round((GROUND-yy)/10)+'m',ix+30,yy-6,14,'#9a8ad6','left');}
+    txt('UP!',ix+W/2,GROUND-150+Math.sin(time*5)*6,28,`hsl(${(time*200)%360},90%,55%)`,'center');txt('EXIT',rx+ww/2+40,top+260,18,'#ff3d8b','center');},
+   draw(p){for(const h of hz){g.save();g.translate(h.x,h.y);g.rotate(h.rot);g.fillStyle='#ff5fa8';g.beginPath();for(let i=0;i<20;i++){const a=i*Math.PI/10,r=i%2?h.r+2:h.r+9;g.lineTo(Math.cos(a)*r,Math.sin(a)*r);}g.closePath();g.fill();g.fillStyle='#fff';circle(0,0,h.r*.6);g.restore();}}});}}
 };
 
 function spawnNext(){const d=Math.min(1,genX/25000);const keys=Object.keys(TEMPLATES).filter(k=>k!==lastT);let tot=0;const ws=keys.map(k=>{const w=TEMPLATES[k].weight(d);tot+=w;return w;});
@@ -293,8 +319,27 @@ function updateTube(dt){const tb=P.tube;tb.t+=dt;const k=Math.min(1,tb.t/tb.dur)
 function getStar(st){st.got=true;stars++;comboN=comboT>0?comboN+1:1;comboT=1.6;const v=25*Math.min(comboN,10);pts+=v;burst(st.x,st.y,14,40,220,'spark');popup(st.x,st.y-20,'+'+v,45);if(comboN>1)popup(st.x,st.y-46,'x'+comboN+' COMBO',(time*300)%360,18);sfx('star');}
 
 function getRing(r){r.got=true;comboN=comboT>0?comboN+1:1;comboT=2.2;const v=50*Math.min(comboN,10);pts+=v;burst(r.x,r.y,24,(time*300)%360,300,'spark');popup(r.x,r.y-50,'+'+v,(time*300)%360);if(comboN>1)popup(r.x,r.y-76,'x'+comboN+' COMBO',(time*300)%360,18);sfx('star');shake(2);}
+// GREEN PHONE EDIT: UP MODE physics. Auto bounce on ledges, hold LEFT or RIGHT to steer, ledges let you pass up through them.
+function updateUp(dt){
+ const near=nearby(),solids=[];for(const p of near)for(const s of p.solids)if(!s.off)solids.push(s);
+ P.inv=Math.max(0,P.inv-dt);
+ const tv=(leftHeld&&!rightHeld)?-T.upSide:(rightHeld&&!leftHeld)?T.upSide:0;P.vx+=(tv-P.vx)*Math.min(1,dt*12);
+ P.vy=Math.min(1100,P.vy+T.gravity*dt);
+ P.x+=P.vx*dt;for(const s of solids)if(!s.oneWay&&ov(P,s)){if(P.vx>0)P.x=s.x-P.w;else P.x=s.x+s.w;P.vx=0;}
+ const prevB=P.y+P.h;P.y+=P.vy*dt;let landed=null;
+ for(const s of solids)if(ov(P,s)){if(s.oneWay){if(P.vy>0&&prevB<=s.y+2){P.y=s.y-P.h;landed=s;}}else if(P.vy>0){P.y=s.y-P.h;landed=s;}else if(P.vy<0){P.y=s.y+s.h;P.vy=0;}}
+ P.grounded=false;
+ if(landed){P.vy=-(landed.bounce||T.upBounce);P.squash=landed.bounce?-.45:-.3;if(landed.bounce){landed.squish=1;sfx('boing');popup(P.x+20,P.y-20,'BOING!',300);shake(4);}else sfx('jump');
+  burst(P.x+P.w/2,P.y+P.h,8,(time*200)%360,140,'dust');if(landed.crumble&&landed.ct<0)landed.ct=0;}
+ const cx=P.x+P.w/2,cy=P.y+P.h/2;
+ if(P.inv<=0){outer:for(const p of near)for(const h of p.hazards)if(hitHaz(h)){P.vy=Math.max(P.vy,450);P.vx=-P.vx;P.inv=T.invuln;bonks++;comboN=0;comboT=0;shake(10);burst(cx,cy,24,0,300,'spark');popup(cx,P.y-20,pick(['BONK!','OOF!']),340);sfx('hit');break outer;}}
+ for(const p of near)for(const st of p.stars)if(!st.got&&(st.x-cx)**2+(st.y-cy)**2<34*34)getStar(st);
+ for(const p of near)for(const z of p.zones)if(z.type==='sideMode'&&P.x<z.x+z.w&&P.x+P.w>z.x&&P.y<z.y+z.h&&P.y+P.h>z.y){P.mode='side';P.up=null;P.wing='glider';P.wingT=0;P.speed=420;P.kick=200;P.vy=Math.min(P.vy,-300);banner={text:'SIDE MODE!',t:0};flashA=.5;sfx('zone');popup(cx,P.y-40,'GLIDE!',190,30);}
+ parts.push({x:P.x+P.w/2,y:P.y+P.h,vx:rand(-20,20),vy:60,life:0,max:.35,size:5,hue:(time*300)%360,kind:'trail'});
+}
 function updatePlayer(dt){
  if(P.tube){updateTube(dt);return;}
+ if(P.mode==='up'){updateUp(dt);return;}
  const near=nearby(),solids=[];for(const p of near)for(const s of p.solids)if(!s.off)solids.push(s);
  if(leftHeld)P.speed=Math.min(T.maxSpeed,P.speed+T.accel*dt);else P.speed=Math.max(T.cruise,P.speed-T.decel*dt);
  P.kick*=Math.exp(-(P.inShaft?4:T.kickDecay)*dt);if(Math.abs(P.kick)<5)P.kick=0;
@@ -335,6 +380,7 @@ function updatePlayer(dt){
  for(const p of near)for(const z of p.zones)if(P.x<z.x+z.w&&P.x+P.w>z.x&&P.y<z.y+z.h&&P.y+P.h>z.y){
   if(z.type==='wind'){P.vy=Math.max(-420,P.vy-z.force*dt);if(Math.random()<.3)parts.push({x:P.x+rand(0,40),y:P.y+P.h,vx:0,vy:rand(80,160),life:0,max:.3,size:3,hue:200,kind:'dust'});}
   if(z.type==='shaft')shaftNow=true;
+  if(z.type==='upMode'){P.mode='up';P.up=z.info;P.wing=null;P.kick=0;P.speed=T.cruise;P.vx=0;banner={text:'UP MODE!',t:0};flashA=.5;sfx('zone');popup(cx,P.y-40,'HOLD LEFT / RIGHT TO STEER',190,18);return;}
   if(z.type==='wing'&&P.wing!==z.wing){P.wing=z.wing;P.wingT=0;popup(cx,P.y-30,z.wing==='para'?'PARACHUTE!':'GLIDER!',190);sfx('zone');burst(cx,cy,20,190,260,'spark');}
   if(z.type==='launch'&&P.launchCd<=0){P.vy=-1900;P.kick=650;P.speed=Math.max(P.speed,420);P.grounded=false;P.ground=null;P.holding=false;P.wing='glider';P.wingT=0;P.launchCd=1.2;shake(12);sfx('fire');sfx('whoosh');burst(cx,cy,40,20,420,'spark');popup(cx,P.y-40,'BLAST OFF!',20,34);}
   if(z.type==='boost'&&P.boostCd<=0){P.speed=T.maxSpeed;P.kick=Math.max(P.kick,380);P.boostCd=.6;shake(4);sfx('boost');popup(cx,P.y-20,'BOOST!',30);burst(P.x,cy,20,20,300,'spark');}}
@@ -356,8 +402,8 @@ function step(dt){
  for(let i=pops.length-1;i>=0;i--){pops[i].life+=dt;pops[i].y-=50*dt;if(pops[i].life>.9)pops.splice(i,1);}
  comboT=Math.max(0,comboT-dt);if(comboT===0)comboN=0;
  const sf=(P.speed-T.cruise)/(T.maxSpeed-T.cruise);
- const tx=P.x-VW*(.3-sf*.1);camX+=(tx-camX)*Math.min(1,dt*8);
- const ty=Math.min(0,P.y+yOffNow()-viewH*.45);camY+=(ty-camY)*Math.min(1,dt*6);
+ const tx=P.mode==='up'&&P.up?P.up.ix+P.up.W/2-VW/2:P.x-VW*(.3-sf*.1);camX+=(tx-camX)*Math.min(1,dt*8);
+ const ty=Math.min(0,P.y+yOffNow()-viewH*(P.mode==='up'?.55:.45));camY+=(ty-camY)*Math.min(1,dt*6);
  shakeA*=Math.exp(-8*dt);flashA*=Math.exp(-4*dt);
  const th=themeAt(P.x).hue;let dh=((th-skyHue+540)%360)-180;skyHue=(skyHue+dh*Math.min(1,dt*1.5)+360)%360;
  const z=Math.floor(Math.max(0,P.x)/ZONE_LEN);if(z>zoneN){zoneN=z;banner={text:'ZONE '+(z+1)+': '+themeAt(P.x).name,t:0};flashA=.7;sfx('zone');}
@@ -398,6 +444,8 @@ function drawSolid(s,p){
  if(s.kind==='piston'){const gr=g.createLinearGradient(s.x,0,s.x+s.w,0);gr.addColorStop(0,'#c9d6ff');gr.addColorStop(.5,'#ffffff');gr.addColorStop(1,'#a9b8f0');g.fillStyle=gr;g.fillRect(s.x+10,s.y+20,s.w-20,VH-s.y);
   g.fillStyle=`hsl(${(p.hue+180)%360},90%,62%)`;rr(s.x,s.y,s.w,24,8);g.fill();g.strokeStyle='#fff';g.lineWidth=3;g.stroke();return;}
  if(s.kind==='cannon')return;
+ if(s.kind==='ledge'){g.fillStyle=`hsl(${s.hue},90%,66%)`;rr(s.x,s.y,s.w,s.h,9);g.fill();g.fillStyle='rgba(255,255,255,.55)';rr(s.x+6,s.y+3,s.w-12,5,3);g.fill();g.strokeStyle='#fff';g.lineWidth=3;rr(s.x,s.y,s.w,s.h,9);g.stroke();return;}
+ if(s.kind==='vspring'){const sq=s.squish||0;g.strokeStyle='#7a5cff';g.lineWidth=4;g.beginPath();for(let i=0;i<=4;i++)g.lineTo(s.x+12+(i%2)*(s.w-24),s.y+2+i*4-sq*4);g.stroke();g.fillStyle=`hsl(${(time*200)%360},100%,62%)`;rr(s.x-4,s.y-8+sq*4,s.w+8,10,5);g.fill();g.strokeStyle='#fff';g.lineWidth=3;g.stroke();return;}
  if(s.kind==='pillar'){const gr=g.createLinearGradient(s.x,0,s.x+s.w,0);gr.addColorStop(0,`hsl(${s.hue},90%,70%)`);gr.addColorStop(1,`hsl(${s.hue+40},85%,62%)`);g.fillStyle=gr;const vb=Math.min(s.y+s.h,visBottom());g.fillRect(s.x,s.y,s.w,vb-s.y);
   g.fillStyle='rgba(255,255,255,.5)';for(let yy=s.y+30;yy<vb;yy+=50)for(let xx=s.x+16;xx<s.x+s.w-20;xx+=34)g.fillRect(xx,yy,16,22);
   g.fillStyle='#fff';g.fillRect(s.x,s.y,s.w,6);return;}
@@ -472,7 +520,7 @@ function render(){
  g.setTransform(S,0,0,S,0,0);drawBG();
  const yOff=yOffNow(),shx=(Math.random()-.5)*shakeA,shy=(Math.random()-.5)*shakeA;
  g.save();g.translate(-camX+shx,-camY+yOff+shy);
- for(const p of pieces){if(p.x>camX+VW+80||p.x+p.w<camX-80)continue;for(const z of p.zones)if(z.updraft)drawUpdraft(z);for(const r of p.ramps)drawRamp(r,p);for(const s of p.solids)drawSolid(s,p);p.draw(p);for(const rg of p.rings)drawRing(rg);for(const st of p.stars)if(!st.got)drawStar(st);}
+ for(const p of pieces){if(p.x>camX+VW+80||p.x+p.w<camX-80)continue;if(p.back)p.back(p);for(const z of p.zones)if(z.updraft)drawUpdraft(z);for(const r of p.ramps)drawRamp(r,p);for(const s of p.solids)drawSolid(s,p);p.draw(p);for(const rg of p.rings)drawRing(rg);for(const st of p.stars)if(!st.got)drawStar(st);}
  for(const q of parts){const a=1-q.life/q.max;g.globalAlpha=a;g.fillStyle=q.kind==='dust'?`hsl(${q.hue},60%,80%)`:`hsl(${q.hue},100%,62%)`;circle(q.x,q.y,q.kind==='trail'?q.size*a:q.size);}g.globalAlpha=1;
  drawPlayer();
  if(P.touchWall&&!P.grounded&&!P.tube&&Math.floor(time*6)%2===0)txt('HOP!',P.x+P.w/2,P.y-14,16,'#ff3d8b','center');
@@ -489,6 +537,8 @@ function render(){
  txt('BONKS '+bonks,VW-16,60,14,'#ff3d5a','right');
  if(comboN>1){const pulse=1+Math.sin(time*20)*.06;txt('x'+comboN+' COMBO',VW/2,40,26*pulse,`hsl(${(time*400)%360},95%,52%)`,'center');g.fillStyle='rgba(255,255,255,.8)';rr(VW/2-60,50,120,8,4);g.fill();g.fillStyle='#ff4fa3';rr(VW/2-60,50,120*comboT/1.6,8,4);g.fill();}
  meter(16,viewH-26,150,sf,'SPEED',190);
+ if(P.mode==='up'&&P.up){const fr=clamp((P.up.bottom-P.y)/(P.up.bottom-P.up.top),0,1);g.fillStyle='rgba(255,255,255,.8)';rr(VW-26,90,12,viewH-200,6);g.fill();g.fillStyle='#3dd68c';rr(VW-26,90+(viewH-200)*(1-fr),12,(viewH-200)*fr,6);g.fill();
+  txt('UP MODE: hold LEFT or RIGHT to steer',VW/2,viewH-60,15,'#1aa7d6','center');}
  if(P.y<GROUND-300)txt('ALT '+Math.round((GROUND-P.y)/10)+'m',VW/2,viewH-14,18,'#1aa7d6','center');
  if(P.wing&&!P.grounded)txt(P.wing==='glider'?'HOLD RIGHT TO GLIDE':'HOLD RIGHT TO FLOAT',VW/2,viewH-38,14,'#7a5cff','center');
  meter(VW-166,viewH-26,150,P.holding?1-P.hold/T.maxHold:0,'HOP',330,'right');
