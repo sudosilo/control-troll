@@ -539,7 +539,21 @@
   "sudosilo/topo-wars-server@v2026.11.24",
   "sudosilo/pajamastan-warrants@v2026.11.24",
   "sudosilo/signal-snapshot-backend@v2026.11.24",
-  "sudosilo/signal-snapshot@v2026.11.24"
+  "sudosilo/signal-snapshot@v2026.11.24",
+  "sudosilo/2026-11-25-ten-turn-machine@v2026.11.25",
+  "sudosilo/2026-11-25-purple-turret-sight@v2026.11.26",
+  "sudosilo/2026-11-25-purple-lobhill@v2026.11.26",
+  "sudosilo/2026-11-25-green-hopper@v2026.11.25",
+  "sudosilo/2026-11-25-green-hopper@v2026.11.26",
+  "sudosilo/2026-11-25-green-starfighter@v2026.11.25",
+  "sudosilo/2026-11-25-green-starfighter@v2026.11.26",
+  "sudosilo/2026-11-26-orange-bingo-server@v2026.11.26",
+  "sudosilo/2026-11-26-orange-bingo@v2026.11.26",
+  "sudosilo/2026-11-26-orange-casino-server@v2026.11.26",
+  "sudosilo/2026-11-26-orange-casino@v2026.11.26",
+  "sudosilo/2026-11-26-green-ghostwing@v2026.11.26",
+  "sudosilo/2026-11-26-orange-centipede@v2026.11.26",
+  "sudosilo/2026-11-26-orange-rocketbench@v2026.11.26"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -2602,6 +2616,125 @@
     "3d",
     "svg",
     "threejs",
+    "tool"
+   ]
+  },
+  "sudosilo/2026-11-25-ten-turn-machine": {
+   "d": "Build a ball run machine from tile parts in ten turns, then watch it go.",
+   "h": "https://2026-11-25-ten-turn-machine.vercel.app",
+   "t": [
+    "game",
+    "isometric",
+    "puzzle",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-11-25-purple-turret-sight": {
+   "d": "Low poly tank artillery game aimed from the turret seat.",
+   "h": "https://turret-sight.vercel.app",
+   "t": [
+    "artillery",
+    "game",
+    "threejs",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-11-25-purple-lobhill": {
+   "d": "Wireframe tank artillery from a dug in turret: duel a tank or hold the hill.",
+   "h": "https://2026-11-25-purple-lobhill.vercel.app",
+   "t": [
+    "artillery",
+    "game",
+    "vercel",
+    "wireframe"
+   ]
+  },
+  "sudosilo/2026-11-25-green-hopper": {
+   "d": "Endless side scrolling hopper with slopes, boulders, gliders, and flight stretches.",
+   "h": "https://2026-11-25-green-hopper.vercel.app",
+   "t": [
+    "arcade",
+    "game",
+    "platformer",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-11-25-green-starfighter": {
+   "d": "Wireframe space dogfighting game with story missions, race and territory modes, and online scores.",
+   "h": "",
+   "t": [
+    "game",
+    "railway",
+    "shooter",
+    "space"
+   ]
+  },
+  "sudosilo/2026-11-26-orange-bingo-server": {
+   "d": "Server that runs shared bingo games with a rotating caller.",
+   "h": "",
+   "t": [
+    "backend",
+    "game",
+    "nodejs",
+    "railway"
+   ]
+  },
+  "sudosilo/2026-11-26-orange-bingo": {
+   "d": "Play bingo with friends online, with a caller who rotates each game.",
+   "h": "https://2026-11-26-orange-bingo.vercel.app",
+   "t": [
+    "bingo",
+    "game",
+    "multiplayer",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-11-26-orange-casino-server": {
+   "d": "Server for shared video blackjack and Texas hold em tables.",
+   "h": "",
+   "t": [
+    "backend",
+    "game",
+    "nodejs",
+    "railway"
+   ]
+  },
+  "sudosilo/2026-11-26-orange-casino": {
+   "d": "Pixel video blackjack and Texas hold em at shared online tables.",
+   "h": "https://2026-11-26-orange-casino.vercel.app/blackjack.html",
+   "t": [
+    "casino",
+    "game",
+    "multiplayer",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-11-26-green-ghostwing": {
+   "d": "Early Ghost Wing repo whose page is a tile placing map building game.",
+   "h": "",
+   "t": [
+    "game",
+    "puzzle",
+    "tiles"
+   ]
+  },
+  "sudosilo/2026-11-26-orange-centipede": {
+   "d": "Centipede style arcade shooter drawn in letters, with career and puzzle modes.",
+   "h": "https://2026-11-26-orange-centipede.vercel.app",
+   "t": [
+    "arcade",
+    "game",
+    "shooter",
+    "vercel"
+   ]
+  },
+  "sudosilo/2026-11-26-orange-rocketbench": {
+   "d": "Rocket flight simulator with part stacking, staging, and missions.",
+   "h": "",
+   "t": [
+    "physics",
+    "rocket",
+    "simulator",
     "tool"
    ]
   }
