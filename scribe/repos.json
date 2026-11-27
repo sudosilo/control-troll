@@ -3010,6 +3010,164 @@
     "date": "2026-11-25",
     "text": "Created Manual Rebuild, a tool that turns manual figures into parts. Version 2 added a parts studio that traces figures into polygon parts and exports them as SVG. It also shows an exploded 3D view with a spin control and an explode slider."
    }
+  },
+  "2026-11-25-ten-turn-machine": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-25-ten-turn-machine.vercel.app"
+   ],
+   "private": false,
+   "name": "Ten Turn Machine",
+   "summary": "A Rube Goldberg style puzzle where you build a ball machine in ten turns",
+   "category": "Games",
+   "latest": {
+    "date": "2026-11-25",
+    "text": "Created Ten Turn Machine with a library of machine parts, turn cards, and a page where you place parts and run the machine. It then moved to an isometric board with drawn tile parts, a ball path, and cards you meet along the run."
+   }
+  },
+  "2026-11-25-purple-turret-sight": {
+   "apps": [],
+   "urls": [
+    "https://turret-sight.vercel.app"
+   ],
+   "private": false,
+   "name": "Turret Sight",
+   "summary": "A low poly tank artillery game aimed from the driver seat",
+   "category": "Games",
+   "latest": {
+    "date": "2026-11-26",
+    "text": "Created Turret Sight, a low poly tank artillery game aimed from the turret seat. The creator seal now shows its flag image correctly."
+   }
+  },
+  "2026-11-25-purple-lobhill": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-25-purple-lobhill.vercel.app"
+   ],
+   "private": false,
+   "name": "Lob Hill",
+   "summary": "Wireframe tank artillery from a dug in turret, with duel and defense modes",
+   "category": "Games",
+   "latest": {
+    "date": "2026-11-26",
+    "text": "Created Lob Hill with hatch aiming, a map view, a computer opponent, and pass and play. It was rebuilt in the MobbyHill wireframe style with a turret seat view, wheel traverse, dials, pedals, and an orthographic map. New modes are Duel, Jeep raid, Bradley push, and Android swarm, along with a sandbag pit, driving, a new gun, and a drive panel."
+   }
+  },
+  "2026-11-25-green-hopper": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-25-green-hopper.vercel.app"
+   ],
+   "private": false,
+   "name": "Hopper",
+   "summary": "An endless side scroller with kinetic obstacles, zones, and combos",
+   "category": "Games",
+   "latest": {
+    "date": "2026-11-26",
+    "text": "Flight rings, updrafts, and islands are twice as high. The ground now sits at 70 percent of the height on tall screens, and the canvas uses a lighter resolution."
+   }
+  },
+  "2026-11-25-green-starfighter": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "name": "Polygon Starfighter",
+   "summary": "A wireframe space shooter with five ships, many modes, story missions, and online scores",
+   "category": "Games",
+   "latest": {
+    "date": "2026-11-26",
+    "text": "Added a Story mode campaign with briefings and ship unlocks. Online scores arrived with a leaderboard and a score server, and the game now connects to it. Story mode now follows the Starwake storyline."
+   }
+  },
+  "2026-11-26-orange-bingo-server": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "name": "Bingo Server",
+   "summary": "Server that runs shared bingo games",
+   "category": "Backends and Infrastructure",
+   "latest": {
+    "date": "2026-11-26",
+    "text": "Created the bingo server, which deals cards, tracks called numbers, and checks claims."
+   }
+  },
+  "2026-11-26-orange-bingo": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-26-orange-bingo.vercel.app"
+   ],
+   "private": false,
+   "name": "Bingo",
+   "summary": "A shared bingo game page with a rotating caller",
+   "category": "Games",
+   "latest": {
+    "date": "2026-11-26",
+    "text": "Created the bingo game page with joining, a card, calling the next number, claiming bingo, and starting a new game."
+   }
+  },
+  "2026-11-26-orange-casino-server": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "name": "Casino Server",
+   "summary": "Server for shared blackjack and Texas hold em tables",
+   "category": "Backends and Infrastructure",
+   "latest": {
+    "date": "2026-11-26",
+    "text": "Created the casino server with a shared shoe blackjack table, then added a Texas hold em table."
+   }
+  },
+  "2026-11-26-orange-casino": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-26-orange-casino.vercel.app/blackjack.html"
+   ],
+   "private": false,
+   "name": "Pixel Casino",
+   "summary": "Pixel style video blackjack and Texas hold em played at shared tables",
+   "category": "Games",
+   "latest": {
+    "date": "2026-11-26",
+    "text": "Created pixel video blackjack and pixel Texas hold em pages that play at shared tables."
+   }
+  },
+  "2026-11-26-green-ghostwing": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "name": "Ghost Wing",
+   "summary": "Repo named Ghost Wing whose page is currently a tile placing game",
+   "category": "Games",
+   "latest": {
+    "date": "2026-11-26",
+    "text": "Created Ghost Wing v1 as a single page tile placing game."
+   }
+  },
+  "2026-11-26-orange-centipede": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-26-orange-centipede.vercel.app"
+   ],
+   "private": false,
+   "name": "Centipede Text Edition",
+   "summary": "A centipede arcade shooter drawn entirely in letters",
+   "category": "Games",
+   "latest": {
+    "date": "2026-11-26",
+    "text": "Created Centipede Text Edition, then added a page description and favicon. Screen shake, flashes, shot trails, a slowdown when a wave clears, a combo multiplier, and Printout and Amber skins followed. Career mode with 10 levels and Puzzle mode with 12 solver verified puzzles were added last."
+   }
+  },
+  "2026-11-26-orange-rocketbench": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "name": "Rocketbench",
+   "summary": "A rocket flight simulator where you stack parts, stage, and fly missions",
+   "category": "Tools",
+   "latest": {
+    "date": "2026-11-26",
+    "text": "Created Rocketbench, a time step rocket simulation with part stacking, staging, and missions."
+   }
   }
  }
 }
