@@ -631,6 +631,30 @@
       "outcome": "test fixed",
       "pullRequest": "https://github.com/sudosilo/control-troll/pull/4",
       "note": "Shuffle and Reset are id-less buttons in #controls and the score is #statB, so the test selectors were updated."
+    },
+    {
+      "date": "2026-11-27",
+      "app": "snapshot-engine-pied",
+      "kind": "down",
+      "outcome": "repo not found",
+      "pullRequest": null,
+      "note": "Still 404 and the only snapshot repos are snapshot and snapshot-backend, so the developer must say where its code lives or retire the link."
+    },
+    {
+      "date": "2026-11-27",
+      "app": "2026-11-05-locker-screen",
+      "kind": "down",
+      "outcome": "needs decision",
+      "pullRequest": null,
+      "note": "Vercel says DEPLOYMENT_NOT_FOUND although the repo has a good root index.html, so the developer must recreate or relink the Vercel project."
+    },
+    {
+      "date": "2026-11-27",
+      "app": "2026-11-26-orange-casino",
+      "kind": "down",
+      "outcome": "fixed",
+      "pullRequest": "https://github.com/sudosilo/2026-11-26-orange-casino/pull/1",
+      "note": "The repo had only blackjack.html and holdem.html so the root 404ed; the pull request adds an index.html linking both tables."
     }
   ]
 }

@@ -1,0 +1,1 @@
+2026-11-27 fixer. Repo has blackjack.html and holdem.html only, default branch master. Root 404 fixed by index.html in PR 1 (unmerged as of this date). Add apps.json URL may need /blackjack.html if the PR stays open.
