@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-27T23:29:55Z",
+      "repo": "RTSS",
+      "sha": "fa6ef76427184f19b6228f4e284cf7dcee378e98",
+      "message": "footer: tag one money link with site name",
+      "heckle": "You pasted the same donate hash line into index.html and resto-survey.html because apparently the legacy page needed a tip jar too. That long inline hostname regex sits glued into a string concatenation like the intern was paid by the plus sign, and CONFIG.donate gets a hardcoded question mark that breaks the moment that URL already has a query string. Forty minutes of copy paste across the whole fleet and not one shared helper. Truly a filibuster in a single line.\n\nFix it:Build the URL in one small function instead of inline in the mtg-donate anchor in index.html. Check CONFIG.donate for an existing question mark before appending. Delete the legacy copy in resto-survey.html or stop editing it."
+    },
+    {
+      "date": "2026-11-27T23:29:55Z",
+      "repo": "67-press-proccessor",
+      "sha": "f66a6b79b801f68aa2882811b7d59abb938a2678",
+      "message": "footer: tag one money link with site name",
+      "heckle": "Another repo, same one liner, same regex pasted into the mtg-donate anchor in index.html. Did you write this once and carpet bomb it across every repo like a bailout nobody voted on? The repo name still has proccessor spelled with two c's, so I have zero faith in your attention to detail. The nested replace chain falls back to unknown, which means a thousand tips could land on one identical label.\n\nFix it: Pull the donate widget into one shared file. Use CONFIG.donate safely with a query check in index.html. Fix the repo name while you are cleaning up."
+    },
+    {
+      "date": "2026-11-27T23:29:55Z",
+      "repo": "67-idea-generator",
+      "sha": "85fcea153cfffe4b3378697024cc531f9781ec91",
+      "message": "footer: tag one money link with site name",
+      "heckle": "Same line, third repo, and you still did not learn to share code. The mtg-donate anchor in index.html builds a URL with a regex that strips vercel.app and swaps every odd character for a dash, so two different hosts can collapse into the same tag. That is a campaign promise: sounds tracked, means nothing. An idea generator with no ideas about reuse is almost funny.\n\nFix it: Share the donate snippet from one file. Make the tag keep the full hostname in index.html. Test the link on a custom domain before you ship another clone."
+    },
+    {
+      "date": "2026-11-27T23:29:55Z",
+      "repo": "2026-11-25-blue-manualrebuild",
+      "sha": "7fbf3d8a19a7c4e17b3800c07af9575f5cbe84fd",
+      "message": "footer: tag one money link with site name",
+      "heckle": "You edited four whole page copies, manualrebuild-v1 through v4, because you version apps by duplicating files like a hoarder with a photocopier. The same mtg-donate regex now lives in every one of them, so the next change means four more edits and one you will forget. This is a government shutdown of version control.\n\nFix it: Stop copying pages into new v files and use git history. Keep one live page and delete the dead v1 to v3 html. Move the mtg-donate snippet into a shared script."
+    },
+    {
+      "date": "2026-11-27T23:29:55Z",
+      "repo": "2026-11-24-blue-estate-dossier",
+      "sha": "424ea2685054f3138e210cc056f1e06e3dc9d397",
+      "message": "footer: tag one money link with site name",
+      "heckle": "Estate dossier, and the only thing you laid to rest is your standards. One line in 2026-11-24-blue-estate-dossier-v1.html drops a hostname regex into the donate pill that no human can read without squinting. You named the file v1 and then repeated the same blob everywhere else, so it will never reach v2 without a fight. It is a bailout for a tip jar.\n\nFix it: Wrap the client reference tag in a named function in the v1 html. Drop the v1 suffix if there is only one version. Verify that a dossier host with dots does not become a mush of dashes."
+    },
+    {
+      "date": "2026-11-27T23:29:55Z",
+      "repo": "2026-11-23-orange-explode",
+      "sha": "715fbd90edd25d91ea8d4a935315143095693a25",
+      "message": "footer: tag one money link with site name",
+      "heckle": "Explode, and this commit blew up nothing but my patience. The mtg-donate anchor in index.html gets the exact same inline hostname scrub as every other repo you own, jammed into a string concat with no comment explaining why. If the host is empty the tag becomes unknown, and all your tips from every app pile into one bucket, which defeats the whole point. Nice work, intern.\n\nFix it: Add a comment on what client_reference_id is for in index.html. Do not let several apps fall back to the same unknown label. Share one helper across repos."
+    },
+    {
+      "date": "2026-11-27T23:29:55Z",
+      "repo": "2026-11-19-orange-packets",
+      "sha": "cfddbee7e7650990b716063e188bae2b8e4f0ce5",
+      "message": "footer: tag one money link with site name",
+      "heckle": "Packets got the same one liner, which is the fifth near identical patch I have had to read today. The inline expression in the mtg-donate anchor in index.html is longer than the actual feature it supports. Did you learn string building from a cereal box? A decent dev would write the tag once and call it everywhere, but here we are, voting on the same bill again.\n\nFix it: Move the hostname cleanup out of the anchor string in index.html. Reuse one function for all repos. Escape the value with encodeURIComponent instead of a hand rolled regex."
+    },
+    {
+      "date": "2026-11-27T23:29:55Z",
+      "repo": "2026-11-19-orange-drivethru",
+      "sha": "4ff234df1b999ba773c87ec46ddd442acabe0a5b",
+      "message": "footer: tag one money link with site name",
+      "heckle": "Drivethru, same copy paste order, same unreadable regex in the mtg-donate link in index.html. You bolted tracking onto a donate pill without a single comment, and the replace for vercel.app only works on that one host, so any custom domain leaks its dots into the tag. This is service so slow the customer drives off.\n\nFix it: Use encodeURIComponent for the tag in index.html. Handle custom domains as well as vercel.app. Document the tag format in a comment."
+    },
+    {
+      "date": "2026-11-27T23:29:55Z",
+      "repo": "2026-11-19-blue-just-five-more",
+      "sha": "a974ec6aa7c017ed0b7fb9f4021ad8371878a9d1",
+      "message": "footer: tag one money link with site name",
+      "heckle": "Just five more repos with the same patch, right? Every time you touch just-five-more-v1.html you paste the same donate scrub, and just like the name promises, it never ends. The versioned filename already tells me you copy pages instead of editing them, and this commit makes that rot worse. Your promises about tidying up are worth about as much as a campaign pledge.\n\nFix it: Stop shipping new copies of the page and edit the existing file. Pull the client reference code into one shared helper. Rename just-five-more-v1.html to something that is not already stale."
+    },
+    {
+      "date": "2026-11-27T23:29:55Z",
+      "repo": "2026-11-17-orange-campus",
+      "sha": "c84928b67bd341d0ee4b01de861c13d522db8ff4",
+      "message": "footer: tag one money link with site name",
+      "heckle": "Campus, and you graduated with the same regex that I have now read ten times. The mtg-donate anchor in index.html builds its href with a one line expression that has three nested calls and no whitespace, which is how you get a bug nobody can find at midnight. You tagged one money link and left the rest of your standards behind, and I should not have to keep correcting this.\n\nFix it: Break the href expression in index.html into a named variable. Validate that CONFIG.donate exists before you append anything. Share the snippet across your repos instead of copying it again."
+    },
+    {
       "date": "2026-11-27T12:35:09Z",
       "repo": "2026-11-26-orange-rocketbench",
       "sha": "0d40af08b4465b59082bb26f13820d2119d43998",
@@ -1329,76 +1399,6 @@
       "sha": "9465a931",
       "message": "grok 2026-11-13T170846",
       "heckle": "The grok bot pushed contrib/grok/2026-11-13T170846.json straight to the branch with no pull request, no review and no check, under your own name, three times in under two minutes at 170726, 170813 and 170846. It defines a lot with a zone, then places a Brittlebush Cottage with a wall height of 3658 and hand typed coordinates. Three machine commits in two minutes is a loop with no brakes, and your branch protection is a decorative sign. Every other bot at least goes through a pull request. This one just walks in the front door.\n\nFix it: Make grok open a pull request like the other bots instead of pushing to the branch. Turn on branch protection for the main branch of the testbed. Rate limit the grok turns so three do not land in two minutes. Pretty print the contrib JSON files."
-    },
-    {
-      "date": "2026-11-13T19:48:37Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "bffbbb02",
-      "message": "steward 2026-11-13T184712 (#88)",
-      "heckle": "The steward bot added contrib/steward/2026-11-13T184712.json with place_hatch calls painting a crosswalk across Saguaro Road using negative coordinates in the tens of thousands. Notice the two hatches have swapped corner order, one going from 83448 to 80448 and the other from 79248 to 84734, so the rectangle winding flips between them and the lines will render inconsistently. The whole thing is still one minified line that no one on earth can read, merged by you as pull request 88 without a comment. You are running a city planning department where the planner is a script and the inspector is asleep.\n\nFix it: Normalize point winding in the hatch calls before writing contrib/steward files. Pretty print the JSON so a review is possible. Add a lint step that checks hatch polygons for consistent winding. Read the bot output before merging it."
-    },
-    {
-      "date": "2026-11-13T19:48:37Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "97755743",
-      "message": "agent-orange 2026-11-13T185250 (#89)",
-      "heckle": "This pull request added contrib/agent-orange/2026-11-13T185250.json and GitHub shows no patch for it at all, so the merge went through with nothing visible to review. You merged a file nobody could read, under your own login, and the history now says you approved it. That is a rubber stamp the size of a federal budget line. The robot turn naming scheme, the date and the time, is fine, but the content is a black box. Either the file is too big for the diff view or it is empty, and you did not bother to find out which.\n\nFix it: Open contrib/agent-orange/2026-11-13T185250.json and check it is not empty or oversized. Add a size limit on contrib files in the testbed workflow. Block merges where the changed file shows no patch. Review before you press merge."
-    },
-    {
-      "date": "2026-11-13T19:48:37Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "2569e085",
-      "message": "agent-orange 2026-11-13T194647 (#90)",
-      "heckle": "A one line minified JSON file at contrib/agent-orange/2026-11-13T194647.json holding place_line calls that draw puffs of drill smoke coming out of a second floor window, each puff a closed eleven point polygon with a bob animation in the meta. That is eleven hand typed coordinate triples per puff, which no human can review, so the pull request merge button was clicked on faith like a bailout vote. The only thing visible in the diff is a single unreadable line, so a typo in one number would sit there unseen. This repo is a merge queue for robot art and the review step is you pressing a green button.\n\nFix it: Pretty print the contrib JSON so a diff can show which call changed. Add a validation check on contrib files that fails on bad coordinates before merge. Use a shape helper for circles instead of eleven typed points. Do not merge turns you did not look at."
-    },
-    {
-      "date": "2026-11-13T19:48:37Z",
-      "repo": "delivery-twin",
-      "sha": "f91b83a7",
-      "message": "Fog of war spots",
-      "heckle": "You renamed Food spots to Spots in index.html and then ripped out about seventy five lines of the old marker code in favor of a DtSquare class that extends L.CircleMarker and overrides the private _updatePath, so you are now depending on Leaflet internals that can change under you in any minor release. dtFoodOn flipped from default off to default on, with the check now being not equal to zero, so every existing user suddenly gets a map full of gray squares and a heavier data load without asking. The step5.sh that did this was also pushed, deleting 202 lines of itself next commit. The function names still say Food while the menu says Spots, so the naming is half renamed.\n\nFix it: Stop overriding the private _updatePath in DtSquare, draw with a canvas layer or a supported marker. Keep dtFoodOn default off or add a first run prompt. Rename the dtFood functions to match Spots. Delete step5.sh from the repo."
-    },
-    {
-      "date": "2026-11-13T19:48:37Z",
-      "repo": "delivery-twin",
-      "sha": "2197e9f4",
-      "message": "Add step 6 script",
-      "heckle": "step6.sh is two lines, one of which is a sed call with six dash e expressions, three kinds of quote escaping and ampersand escapes, aimed at index.html to hide the lockers menu. Nobody can review that line and nobody can trust it, including you. If any pattern misses, sed exits zero and the app ships with half the lockers hidden and half not, which is how you get a menu that looks haunted. You pushed a script that edits the code instead of pushing the code. Do the interns at least get a lanyard where you work?\n\nFix it: Delete step6.sh from the repo root. Apply the lockers hide edit directly in index.html. Check that the edit actually landed by grepping for lockerPageBtn before you commit. Stop treating the repo as a scratch pad."
-    },
-    {
-      "date": "2026-11-13T19:48:37Z",
-      "repo": "delivery-twin",
-      "sha": "7decce34",
-      "message": "Add step 7 script",
-      "heckle": "Another step script, step7.sh, dropped in the repo root. It is a sed command with escaped quotes nested inside escaped quotes that rewrites index.html by matching exact whitespace, so one stray space in the heading line and it silently does nothing. You are patching a four thousand line file with regular expressions like you are defusing a bomb with oven mitts. The next commit applies it and then deletes it, which means this commit exists only to prove you needed two tries. This is the sixth time the pattern shows up and I am starting to think it is a lifestyle.\n\nFix it: Remove step7.sh from the repo. Make the legendRows change straight in index.html with an editor. Stop using sed on exact whitespace matches for markup. Stop pushing a patch and then the result as separate commits."
-    },
-    {
-      "date": "2026-11-13T19:48:37Z",
-      "repo": "delivery-twin",
-      "sha": "6ba6de84",
-      "message": "Hide lockers, fold color key, add Field Dispatch link",
-      "heckle": "You hid the lockers feature by slapping style display none on the h3 and two buttons in index.html instead of deleting it, so the dead menu code is still shipping and still wired up, like a campaign promise nobody canceled. The same trick runs through step6.sh, which filters the locker brand category out of CATEGORIES in two places, so the data still carries a category the app pretends does not exist. The new Field Dispatch button uses an inline onclick with window.open and a hardcoded vercel address, and the Color key toggle is another inline onclick that flips legendRows by hand. Inline handlers all over a file with addEventListener elsewhere. Pick one style, intern.\n\nFix it: Delete the lockers markup and its handlers if the feature is dead. Remove the locker category filter hack in CATEGORIES and drop the category. Move the Field Dispatch and legendBtn onclick code into addEventListener calls. Put the Field Dispatch address in one config constant."
-    },
-    {
-      "date": "2026-11-13T19:48:37Z",
-      "repo": "delivery-twin",
-      "sha": "e5af08d1",
-      "message": "Add step 8 script",
-      "heckle": "You committed a 93 line shell script named step8.sh into the repo root whose whole job is to cat a heredoc into a file in your home folder and splice it into index.html. That is not version control, that is a ransom note you wrote to yourself. The repo already has step3 through step7 style litter and this adds another, and the script only works on the one phone where the dollar HOME path and awk line match. The real code change shows up in the next commit, so this one is pure noise that someone has to scroll past forever. A government shutdown at least ships a memo.\n\nFix it: Delete step8.sh from the repo root. Edit index.html directly instead of splicing with awk and a heredoc. Add a gitignore entry for step scripts so they cannot land again. Squash the step commits so the history reads like a project."
-    },
-    {
-      "date": "2026-11-13T19:48:37Z",
-      "repo": "delivery-twin",
-      "sha": "238d7eda",
-      "message": "Pickups, dropoffs and delivery lines",
-      "heckle": "Ninety lines wedged into an index.html that is already past line 4900, because splitting a file into modules apparently requires a license you have not earned. You wrote dtStartDelivery and dtDropOff around a localStorage key called dtActiveDelivery, so one cleared browser and the open pickup vanishes while the database row stays orphaned. The floating dtDropBar is pinned with position absolute at top 120px, which on a cramped phone will sit on top of the map controls like a filibuster sits on a budget. The cancel handler also awaits a delete inside a try with an empty catch, so failures vanish quietly. Also, step8.sh got committed and then deleted next commit, so the repo history is a diary of a guy hand patching with heredocs.\n\nFix it: Move the delivery code out of index.html into its own script file. Store the active delivery in the database, not only in localStorage, in dtActiveSave. Log errors in the empty catch inside dtActiveBar. Give dtDropBar a bottom anchored layout so it stops covering the map. Stop committing stepN.sh scripts to the repo root."
-    },
-    {
-      "date": "2026-11-13T11:07:52Z",
-      "repo": "mail-ionaire",
-      "sha": "dc73cbd9",
-      "message": "Mail room machine art: inserter, press, paper roll, guillotine, sorter, folder",
-      "heckle": "One commit, six machines, 109 lines added and 111 removed in index.html, which means you basically retyped the file and hoped diff would be gentle. The artChips function now uses Math.random to scatter four specks every time it is called, so the picture twitches on every redraw like a polling error. You changed the chip color from a brown to a pale blue and called it art direction, which is the same energy as repainting a government building and declaring the deficit fixed. Inserter, press, paper roll, guillotine, sorter and folder in one go means when the sorter looks wrong you have no idea which change did it.\n\nFix it: Seed or cache the random specks in artChips in index.html so they stop flickering. Commit one machine at a time. Pull the shared drawing helpers into one block."
     }
   ]
 }
