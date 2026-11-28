@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 34057,
+ "duration_api_ms": 31568,
  "stop_reason": "end_turn",
- "session_id": "059cf6da-cced-409f-b462-e1e491cf9c75",
- "total_cost_usd": 0.17040630000000004,
+ "session_id": "420fde73-727a-461e-ba9f-e7b0759a3082",
+ "total_cost_usd": 0.17813639999999997,
  "usage": {
   "input_tokens": 24,
-  "cache_creation_input_tokens": 22970,
-  "cache_read_input_tokens": 325376,
-  "output_tokens": 4581,
+  "cache_creation_input_tokens": 25566,
+  "cache_read_input_tokens": 358437,
+  "output_tokens": 3985,
   "output_tokens_details": {
-   "thinking_tokens": 521
+   "thinking_tokens": 510
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 22970,
+   "ephemeral_1h_input_tokens": 25566,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 328,
-    "cache_read_input_tokens": 35423,
-    "cache_creation_input_tokens": 948,
+    "output_tokens": 404,
+    "cache_read_input_tokens": 38137,
+    "cache_creation_input_tokens": 830,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 948
+     "ephemeral_1h_input_tokens": 830
     },
     "type": "message"
    }
@@ -56,16 +56,16 @@
   },
   "claude-sonnet-5-5": {
    "inputTokens": 24,
-   "outputTokens": 4581,
-   "cacheReadInputTokens": 325376,
-   "cacheCreationInputTokens": 22970,
+   "outputTokens": 3985,
+   "cacheReadInputTokens": 358437,
+   "cacheCreationInputTokens": 25566,
    "webSearchRequests": 0,
-   "costUSD": 0.1702756,
+   "costUSD": 0.1780057,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 521,
+   "thinkingTokens": 510,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 22970,
+   "cacheCreationEphemeral1hInputTokens": 25566,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
@@ -104,14 +104,14 @@
  "num_turns": 12,
  "subtype": "success",
  "api_error_status": null,
- "result": "I worked three jobs. One is fixed, and the other two need the developer.\n\n**2026-11-26-orange-casino:** The repo had only blackjack.html and holdem.html, so the root URL returned 404. I opened a pull request that adds a small index.html linking both tables. It is unmerged: github.com/sudosilo/2026-11-26-orange-casino/pull/1\n\n**2026-11-05-locker-screen:** Vercel answers with DEPLOYMENT_NOT_FOUND, even though the repo has a good root index.html. No code change can fix that. The developer must recreate or relink the Vercel project. I logged it as needs decision.\n\n**snapshot-engine-pied:** Still 404, and no sudosilo repo matches it. I logged it as repo not found.\n\nI skipped mission-operator because it was logged on 11-24 with the same error. I also did not touch the test-failing jobs, because only three jobs fit the budget.\n\nThe fix log and notes are pushed to control-troll main.",
- "ttft_ms": 1099,
+ "result": "I worked three apps today: mission-operator, ghost-kitchen-builder and campus-ebutuoy.\n\ncampus-ebutuoy was a bad test. The name prompt sits in a sheet that stays hidden until the \"Logging as\" chip is clicked. I changed the test to click the chip first and opened a pull request in control-troll: github.com/sudosilo/control-troll/pull/5\n\nmission-operator is still a 503 because its repo is archived and replaced by mission-operator-next. I changed no code and logged it as needs decision, because the developer must retire the link or repoint the spec.\n\nghost-kitchen-builder is still serving RDSS V3, but its spec describes the old Build, Demo and Export screens. I did not touch the spec and logged it as needs decision.\n\nI skipped the other jobs. snapshot-engine-pied, 2026-11-05-locker-screen and 2026-11-26-orange-casino were logged yesterday. rtss-sigma, tile-spinner, tower-builder-one, j30p4rdy and orange-casino have open pull requests. 2026-11-26-orange-bingo was the fourth eligible job, so it was past the limit of three.\n\nThe fix log and notes are pushed to main.",
+ "ttft_ms": 1071,
  "type": "result",
- "duration_ms": 46045,
- "uuid": "312e6993-6693-4002-aad6-44f521e8cfdc",
- "ttft_stream_ms": 824,
- "time_to_request_ms": 340,
- "first_content_frame_ms": 824,
+ "duration_ms": 38482,
+ "uuid": "9861815e-7253-45ea-ab66-14e4602a4206",
+ "ttft_stream_ms": 805,
+ "time_to_request_ms": 299,
+ "first_content_frame_ms": 805,
  "queued_turn_count": 0,
  "result_index": 0,
  "model_usage_since_last_result": {
@@ -133,16 +133,16 @@
   },
   "claude-sonnet-5-5": {
    "inputTokens": 24,
-   "outputTokens": 4581,
-   "cacheReadInputTokens": 325376,
-   "cacheCreationInputTokens": 22970,
+   "outputTokens": 3985,
+   "cacheReadInputTokens": 358437,
+   "cacheCreationInputTokens": 25566,
    "webSearchRequests": 0,
-   "costUSD": 0.1702756,
+   "costUSD": 0.1780057,
    "contextWindow": 1000000,
    "maxOutputTokens": 128000,
-   "thinkingTokens": 521,
+   "thinkingTokens": 510,
    "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 22970,
+   "cacheCreationEphemeral1hInputTokens": 25566,
    "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
