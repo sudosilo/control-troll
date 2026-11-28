@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-28T17:36:43Z",
+      "repo": "city-seek",
+      "sha": "edee7dd68fa4595ae67e708ef2fa4af064fdba0e",
+      "message": "footer: tag one money link with site name",
+      "heckle": "In city-seek-v2.html you bolted a donate tracker onto a page that is still named v2 while holding v3, so the file name is already lying and now the footer is too. One line changed, copied from a dozen other repos like a bailout nobody read. The hostname regex is stuffed inline in a string concatenation, which is unreadable even for a cereal box graduate.\n\nFix it: Move the donate URL builder into one small function in city-seek-v2.html. Build the link with URL and searchParams instead of gluing a question mark onto CONFIG.donate. Rename the file so it stops claiming to be v2."
+    },
+    {
+      "date": "2026-11-28T17:36:43Z",
+      "repo": "circuit-musicfx",
+      "sha": "eff973f9ed0f6cd25fb09380062b3bd76704ab9b",
+      "message": "footer: tag one money link with site name",
+      "heckle": "A music effects toy now phones home a tag through the donate pill in index.html, and you did it by pasting the same long string concatenation you pasted everywhere else. The intern discovered copy and paste and decided that counts as architecture. If CONFIG.donate ever carries a query string this link breaks, and nothing here checks.\n\nFix it: In index.html, parse CONFIG.donate with new URL and set the search param instead of appending a hardcoded question mark. Pull the tag into a named constant. Stop pasting the same snippet into every repo."
+    },
+    {
+      "date": "2026-11-28T17:36:43Z",
+      "repo": "cipher-wars-v3",
+      "sha": "c70cbab94543c0ea5988a540eebdc18742868f52",
+      "message": "footer: tag one money link with site name",
+      "heckle": "Cipher Wars is on version three and the donate link in index.html still gets patched by hand with a regex chewing on location.hostname. Same one liner as the other repos, because original thought is apparently on strike like a filibuster with no end. The fallback of unknown will land in your payment dashboard as a pile of mystery money.\n\nFix it: Replace the inline hostname regex in index.html with one helper. Hardcode the app tag in CONFIG instead of guessing it from the host. Check that the link still works on a custom domain."
+    },
+    {
+      "date": "2026-11-28T17:36:43Z",
+      "repo": "chromahum-zq",
+      "sha": "f3ed0ccdf1d27824bf9828bc9ee0853eab20e5d8",
+      "message": "footer: tag one money link with site name",
+      "heckle": "Two files this time, and you managed to paste the string into chromahum-v2-tiles.html as well as index.html, so a dead experiment now carries live tracking code. The tiles file even got a doubled comment line touched along the way, which tells me you ran a blind find and replace and never read the diff. Sloppy as a campaign promise.\n\nFix it: Delete or archive chromahum-v2-tiles.html if it is not served. Share one donate helper between the files instead of two paste jobs. Read the diff before you push."
+    },
+    {
+      "date": "2026-11-28T17:36:43Z",
+      "repo": "checkin-kiosk",
+      "sha": "b561c1e582e378b2ef0c98442bb9be13e3911c7b",
+      "message": "footer: tag one money link with site name",
+      "heckle": "A check in kiosk is the one page where a stranger walks up and taps, and kiosk.html now sends them off to a payment page through a link built from a regex. Pasted word for word from the other repos, because why would a kiosk need its own thought. No target check, no error path, and a kiosk that navigates away is a kiosk nobody can use.\n\nFix it: In kiosk.html, ask whether a donate pill belongs on a kiosk at all. If it stays, open it behind a confirm so a tap does not strand the screen. Use one helper for building the URL."
+    },
+    {
+      "date": "2026-11-28T17:36:43Z",
+      "repo": "chassisquiver",
+      "sha": "68fbd07842cb076d6a0464b84192cd35a024d2f0",
+      "message": "footer: tag one money link with site name",
+      "heckle": "Chassisquiver shares a database with kat-chat and still gets the same donate paste as a calculator toy. In index.html the link is a wall of quotes and plus signs that only a sleep deprived intern could love. The unknown fallback is a lazy shrug, like a government shutdown deadline that just gets extended.\n\nFix it: Build the donate URL in index.html with URL and searchParams. Put the hostname tag logic in one named function. Drop the unknown fallback and use a fixed app name from CONFIG."
+    },
+    {
+      "date": "2026-11-28T17:36:43Z",
+      "repo": "charley-douglass",
+      "sha": "718be19691a33a646959a04e54345c7b06631800",
+      "message": "footer: tag one money link with site name",
+      "heckle": "The laugh track box got a donate tag in index.html, and the tag is guessed from the hostname, which on this repo is a name that has already 404ed before. Whoever clicks that pill sends back a tag derived from a URL that may not even exist. Same pasted line as everywhere, zero thought, maximum confidence.\n\nFix it: Set a fixed tag in CONFIG in index.html instead of reading location.hostname. Use new URL to attach it to CONFIG.donate. Test the pill on the live site once."
+    },
+    {
+      "date": "2026-11-28T17:36:43Z",
+      "repo": "carchive",
+      "sha": "e0a4624a093b4b3bcea782be2437438a081c0a4d",
+      "message": "footer: tag one money link with site name",
+      "heckle": "Carchive in index.html gets the exact same donate string splice as the rest of the fleet, regex and all. You are running a find and replace across thirty repos and calling it a feature, and the intern in me wants to know if you even opened this file. The line is longer than the attention span of a congressional hearing.\n\nFix it: Wrap the donate link building in index.html in a short function. Use URLSearchParams instead of string gluing. Open one app and click the pill before pushing the next twenty."
+    },
+    {
+      "date": "2026-11-28T17:36:43Z",
+      "repo": "bpm-finder",
+      "sha": "618d5994ccb633f69c0c5df7e10ae3a062e9cf1f",
+      "message": "footer: tag one money link with site name",
+      "heckle": "A tempo tapper now carries payment tracking in index.html, delivered by the same copy pasted mess of quotes and plus signs. The commit message says footer but the change is a tracking tag, so the message lies as hard as a campaign ad. One regex, no tests, no review, just vibes and a push button.\n\nFix it: Rename the commit style so it says what changed, like donate link tag. In index.html move the hostname cleanup into a helper. Add a fallback that does not read unknown."
+    },
+    {
+      "date": "2026-11-28T17:36:43Z",
+      "repo": "boba-breakeven-x8k4",
+      "sha": "69e16f0e764e2cd8b4b99b69ab7e3ede54936c49",
+      "message": "footer: tag one money link with site name",
+      "heckle": "Boba Breakeven is a calculator and the donate pill in index.html now builds its link from location.hostname, which on a random suffixed Vercel name gives you a tag nobody can map back to an app without a lookup table. You pasted the same line into every repo and made the reporting worse for it. Real shutdown energy.\n\nFix it: Use a fixed app tag from CONFIG in index.html, not the suffixed hostname. Build the URL with URLSearchParams. Keep one shared snippet in a single place."
+    },
+    {
       "date": "2026-11-28T07:56:40Z",
       "repo": "2026-11-26-orange-rocketbench",
       "sha": "28dcf7996904c7115e2174c08acb782ac06400eb",
@@ -1329,76 +1399,6 @@
       "sha": "86c7c4bc",
       "message": "sync dates with vercel",
       "heckle": "Another sync dates with vercel commit, and the same date typed by hand into three places: fleet.html, mohavetech-vercel-projects-v1.json, and script-v53.js, which still gets renamed every time like you are dodging a subpoena. The 2026-11-14 bump on 2026-10-18-orange-testbed and the new codelens, artifactium and delivery-twin rows had to be pasted into three separate lists that should be one list. Every sync is a coin flip on whether those lists still agree. A message that says nothing about what changed is the commit equivalent of a press release.\n\nFix it: Generate fleet.html rows and baseDates from mohavetech-vercel-projects-v1.json with one script. Stop renaming script-vNN.js and use a ?v= query string instead. Write a commit message that lists which projects were added. Delete the duplicate project list in index.html."
-    },
-    {
-      "date": "2026-11-14T22:30:31Z",
-      "repo": "delivery-twin",
-      "sha": "0ced3cc5",
-      "message": "Add Android build workflow",
-      "heckle": "A 103 line workflow dropped in one commit, untested, in .github/workflows/build-apps.yml. The version is 1.0 plus github.run_number, so the app version climbs every time you push anything, including typos. permissions contents: write means this thing publishes releases from a push trigger, handed out like a stimulus check with no oversight. Third party actions are pinned to floating tags like stable and v2, so a compromised update walks straight into your signing step. Then it ships a debug quality android build to a release page, which is a very optimistic definition of shipping.\n\nFix it: Pin the third party actions in build-apps.yml to commit hashes. Set permissions to read at the top and grant write only on the release job. Move the version into src-tauri config instead of the run number. Run the workflow by dispatch on a branch before wiring it to master pushes."
-    },
-    {
-      "date": "2026-11-14T22:30:31Z",
-      "repo": "delivery-twin",
-      "sha": "6f6d48f3",
-      "message": "Build the Android icon from the Delivery Twin icon",
-      "heckle": "Two lines changed in .github/workflows/build-apps.yml, png to svg, and you needed a whole commit to do it because the first one was already broken. The icon command runs twice, once before android init and once after, which is a filibuster where the same speech gets read into the record again. Nobody here ever tested whether the Tauri icon command takes an svg without choking, and the workflow only finds out in the cloud where every try costs a build. This is guessing with a credit card.\n\nFix it: Run the tauri icon command once locally with app-icon.svg and confirm it works before pushing. Drop the duplicate icon call in build-apps.yml. Keep one source of truth for the icon and delete the png reference."
-    },
-    {
-      "date": "2026-11-14T22:30:31Z",
-      "repo": "delivery-twin",
-      "sha": "1c5e5fe1",
-      "message": "Delivery Twin app icon",
-      "heckle": "A 1024 square svg at src-tauri/app-icon.svg made of a rectangle, a trapezoid that is supposed to be a bag, and a map pin that looks like a bailout nobody asked for. Orange on darker orange with a white stroke, so it will read as a smudge at launcher size. Hand typed path data with no preview and no check that the bag handle survives shrinking, which tells me you eyeballed it once and called it design. The old app-icon.png is still hanging around too, a leftover like a campaign promise.\n\nFix it: Delete src-tauri/app-icon.png now that the svg replaced it. Render app-icon.svg at 48 pixels and look at it before shipping. Give the pin and bag more contrast against the orange background. Drop the heavy white stroke on the inner square in app-icon.svg."
-    },
-    {
-      "date": "2026-11-14T22:30:31Z",
-      "repo": "delivery-twin",
-      "sha": "787cdeff",
-      "message": "Add step 11 script",
-      "heckle": "Step eleven of a script you apparently cannot stop committing. step11.sh sits in the repo root, a three line sed heredoc that cds into ~/delivery-twin like the repo is your home directory, then hides the Companion screen by pasting style=\"display:none\" onto elements that are already marked hidden. Hidden and display none together is a belt, suspenders, and a second belt, and deleting lines from index.html by regex on whole html strings is how you pick up a surprise bug at midnight. Ten patch scripts later you still treat version control like a clipboard. Run it and forget it, intern, that is not a workflow, that is a shutdown with extra steps.\n\nFix it: Delete step11.sh from the root and stop committing patch scripts. Edit index.html directly and remove the Companion block instead of hiding it twice. Drop the redundant hidden attributes on companionBtn and companionText. Add a .gitignore rule for step*.sh."
-    },
-    {
-      "date": "2026-11-14T18:12:00Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "9f1850ed",
-      "message": "agent-orange 2026-11-14T175523 (#95)",
-      "heckle": "Another day, another one line JSON file dropped into contrib/agent-orange/2026-11-14T175523.json, and this one is mostly the same declare_port call repeated with port 5486 on the north, south and east edges, like a filibuster that only knows one sentence. Nobody reads these before merging, and the merge button gets mashed like a vending machine. A minified single line blob has no reviewable diff, so the pull request process is theater.\n\nFix it: Pretty print the contrib file so a diff shows something. Make declare_port reject identical values on every edge of a chunk. Add a schema check before the merge button works."
-    },
-    {
-      "date": "2026-11-14T18:12:00Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "b4e145de",
-      "message": "agent-orange 2026-11-14T173216 (#94)",
-      "heckle": "You merged this through a pull request like a bailout nobody audited. contrib/agent-orange/2026-11-14T173216.json is one unreadable line of place_symbol calls with coordinates like 346400,506400,140344, and the sign text is a paragraph of prose stuffed into meta.part, as if a sign were a diary. Makes me question whether the intern knows what a bounds check is.\n\nFix it: Validate coordinates against the world extent before merging. Cap meta text length in the place_symbol handler. Break contrib files into lines so review is possible."
-    },
-    {
-      "date": "2026-11-14T18:12:00Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "28831058",
-      "message": "steward 2026-11-14T171845 (#93)",
-      "heckle": "The steward turn landed with no visible patch in contrib/steward/2026-11-14T171845.json, which is the code review equivalent of a campaign promise: big claims, nothing to inspect. You merged a pull request you could not read and called it a day, like a senator voting on a bill he never opened.\n\nFix it: Refuse to merge when the diff shows no patch. Store steward turns pretty printed so they show in the diff. Add a size sanity check to the workflow."
-    },
-    {
-      "date": "2026-11-14T18:12:00Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "883a9ab8",
-      "message": "grok 2026-11-14T170340",
-      "heckle": "The grok bot shoved contrib/grok/2026-11-14T170340.json straight onto the branch with no pull request and no review, like an executive order signed in the dark. It lays out a street with negative coordinates like -158496,-73762 while the other bots live in six digit positive space, so the map is stitched together from agents who never agreed on an origin. Branch protection is apparently a rumor here.\n\nFix it: Force grok through a pull request like the other bots. Pick one coordinate origin and document it. Turn on branch protection for the default branch."
-    },
-    {
-      "date": "2026-11-14T18:12:00Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "6b238758",
-      "message": "agent-orange 2026-11-14T135804 (#92)",
-      "heckle": "Agent-orange turn 135804 is a single line file, contrib/agent-orange/2026-11-14T135804.json, that builds a shop from a closed wall polygon at 253000,263000 and then a place_hatch call nobody on earth can read in one sitting. The building name sits in meta as free text with no registry behind it, so duplicates will breed like a congressional subcommittee. This is a data dump pretending to be a commit.\n\nFix it: Reference buildings by id, not by free text. Pretty print the json. Add a duplicate building check before merge."
-    },
-    {
-      "date": "2026-11-14T01:28:38Z",
-      "repo": "city-seek",
-      "sha": "f580716f",
-      "message": "Music mode: Rain view, color jar catching game, rain over every view",
-      "heckle": "A rain view, a jar catching game and a rain overlay for every view, all in one commit, like a spending bill with eleven riders nobody read. cityseek-music-v1.js grows another 168 lines of makeRain, packed with one line canvas math nobody could debug at gunpoint. In city-seek-v2.html the Top down button got renamed to Top while you squeezed Rain into the same segmented row, so on a phone that row is now four buttons fighting over the same thumb space. The changelog entry is another wall of prose that reads like a campaign press release. This is the fifth Music mode commit in four hours and the feature still has no tests, no pause for sanity, and no end in sight.\n\nFix it: Check the viewSeg row in city-seek-v2.html on a narrow phone and let it wrap. Split makeRain out of cityseek-music-v1.js into its own file before that one hits a thousand lines. Put the jar game behind its own switch instead of hiding it under Hunt while it plays. Stop piling one changelog paragraph per commit and write one per day."
     }
   ]
 }
