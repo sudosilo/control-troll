@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Family Tree</title>
+<style>
+:root{--blue:#1f6feb;--blue2:#e3eeff;--ink:#1b2430;--muted:#6b7686;--bg:#f5f8fc;--card:#fff;--line:#d6dde8;--good:#1a8f4e;--bad:#c2412d}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden}
+button{font-family:inherit;cursor:pointer}
+a{color:var(--blue)}
+#top{position:fixed;top:0;left:0;right:0;height:150px;background:#fff;border-bottom:2px solid var(--blue);z-index:10}
+.r1{height:52px;display:flex;align-items:center;gap:6px;padding:0 8px}
+#burger{flex:0 0 44px;width:44px;height:44px;border:0;background:var(--blue2);border-radius:10px;font-size:22px;color:var(--blue)}
+.stat{flex:1;min-width:0;font-size:11px;color:var(--muted);line-height:1.15}
+.stat b{display:block;font-size:15px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r2{height:46px;display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:6px;padding:2px 8px 6px;position:relative}
+.r2 button{border:1px solid var(--blue);background:#fff;color:var(--blue);border-radius:10px;font-weight:700;font-size:14px}
+.r2 button.main{background:var(--blue);color:#fff}
+.ybar{position:absolute;left:8px;right:8px;bottom:0;height:3px;background:var(--blue2);border-radius:3px;overflow:hidden}
+.ybar i{display:block;height:100%;width:0;background:var(--blue)}
+#tabs{height:50px;display:grid;grid-template-columns:repeat(6,1fr);gap:3px;padding:6px 6px}
+#tabs button{border:1px solid var(--line);background:#fff;border-radius:10px;font-size:12px;font-weight:600;color:var(--ink);padding:0}
+#tabs button.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+#main{position:fixed;top:150px;bottom:0;left:0;right:0;overflow-y:auto;padding:10px 10px 40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px}
+.card.tap{cursor:pointer}
+.ch{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ch b{font-size:15px}
+.sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pill{font-size:11px;padding:2px 7px;border-radius:20px;background:var(--blue2);color:var(--blue);font-weight:700;white-space:nowrap}
+.pill.grey{background:#eef0f3;color:var(--muted)}
+.pill.red{background:#fde8e4;color:var(--bad)}
+.pill.green{background:#e2f5ea;color:var(--good)}
+.pills{display:flex;gap:4px;align-items:center}
+.bars{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}
+.bars.four{grid-template-columns:repeat(4,1fr)}
+.bars div{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden}
+.bars span{display:block;height:5px;background:#eef1f6;border-radius:4px;overflow:hidden;margin-top:2px}
+.bars span i{display:block;height:100%;background:var(--blue)}
+.slots{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:8px}
+.slot{border:1px dashed var(--line);background:#fafcff;border-radius:9px;height:42px;font-size:12px;text-align:left;padding:4px 8px;overflow:hidden;color:var(--ink)}
+.slot.f{border:1px solid var(--blue);background:var(--blue2)}
+.slot small{display:block;color:var(--muted);font-size:10px}
+.acts{display:grid;grid-template-columns:2fr 1fr;gap:6px;margin-top:8px}
+.btn{height:40px;border:0;border-radius:10px;background:var(--blue);color:#fff;font-weight:700;font-size:13px;width:100%}
+.btn.ghost{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+.btn.red{background:#fff;color:var(--bad);border:1px solid var(--bad)}
+.btn:disabled{background:#c9d3e2;color:#fff;border:0}
+.btn.ghost:disabled{background:#fff;color:#b5c0d0;border:1px solid #d5dce6}
+h3{margin:14px 2px 8px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--blue)}
+.banner{background:linear-gradient(135deg,#1f6feb,#4f93ff);color:#fff;border-radius:12px;padding:12px;margin-bottom:10px}
+.banner small{opacity:.85}
+.log div{font-size:13px;padding:7px 2px;border-bottom:1px solid #e8edf4}
+.log b{color:var(--blue);margin-right:6px}
+#ovBg,#drBg{position:fixed;inset:0;background:rgba(20,30,50,.35);z-index:50;display:none}
+#ovBg.on,#drBg.on{display:block}
+#ov{position:absolute;left:10px;right:10px;top:50px;max-height:calc(100% - 70px);overflow-y:auto;background:#fff;border-radius:14px;padding:14px;border-top:4px solid var(--blue)}
+#ov h2{margin:0 0 4px;font-size:19px;padding-right:40px}
+#ov .x{position:absolute;right:8px;top:8px;width:36px;height:36px;border:0;background:var(--blue2);color:var(--blue);border-radius:9px;font-size:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+.grid3 .btn,.grid4 .btn{font-size:11px;height:50px;line-height:1.2;padding:0 2px}
+.kv{font-size:13px;margin:3px 0}
+.kv span{color:var(--muted)}
+.pickrow{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:48px;border:1px solid var(--line);background:#fff;border-radius:10px;margin-top:6px;padding:4px 10px;font-size:14px;color:var(--ink);text-align:left;gap:8px}
+.pickrow em{font-style:normal;color:var(--blue);font-weight:700;white-space:nowrap}
+.pickrow small{display:block;color:var(--muted);font-size:11px}
+.pickrow:disabled{opacity:.45}
+#drawer{position:absolute;left:0;top:0;bottom:0;width:78%;max-width:320px;background:#fff;overflow-y:auto;padding:14px;border-right:4px solid var(--blue)}
+details{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;padding:0 10px}
+summary{height:44px;line-height:44px;font-weight:700;color:var(--blue);list-style:none}
+details p{font-size:13px;line-height:1.45;margin:0 0 10px}
+details .btn{margin-bottom:8px}
+#treeWrap{overflow:auto;background:#fff;border:1px solid var(--line);border-radius:12px;height:calc(100vh - 230px)}
+.tog{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.ladder div{font-size:13px;padding:5px 0;border-top:1px solid #eef1f6;display:flex;justify-content:space-between;gap:6px}
+.ladder small{color:var(--muted)}
+.why{font-size:12px;background:var(--blue2);border-radius:9px;padding:8px;margin-top:8px;line-height:1.4}
+</style>
+</head>
+<body>
+<div id="top">
+  <div class="r1">
+    <button id="burger" onclick="A.drawer()" aria-label="menu">&#9776;</button>
+    <div class="stat">Year<b id="sYear"></b></div>
+    <div class="stat">Money<b id="sMoney"></b></div>
+    <div class="stat">Per year<b id="sInc"></b></div>
+    <div class="stat">Home<b id="sFam"></b></div>
+  </div>
+  <div class="r2">
+    <button id="bPlay" onclick="A.play()"></button>
+    <button id="bSpeed" onclick="A.speed()"></button>
+    <button class="main" onclick="A.next()">Next year</button>
+    <div class="ybar"><i id="yBar"></i></div>
+  </div>
+  <div id="tabs">
+    <button data-t="family" onclick="A.tab('family')">Family</button>
+    <button data-t="tree" onclick="A.tab('tree')">Tree</button>
+    <button data-t="biz" onclick="A.tab('biz')">Business</button>
+    <button data-t="skills" onclick="A.tab('skills')">Skills</button>
+    <button data-t="home" onclick="A.tab('home')">Home</button>
+    <button data-t="log" onclick="A.tab('log')">Log</button>
+  </div>
+</div>
+<div id="main"></div>
+<div id="drBg" onclick="if(event.target===this)A.drawerClose()"><div id="drawer"></div></div>
+<div id="ovBg" onclick="if(event.target===this&&!askOpen)A.close()"><div id="ov"></div></div>
+<script>
+const KEY="2026-11-27-blue-familytree-v3-save";
+const FN=["Ada","Bea","Cora","Dot","Edie","Fay","Gail","Hope","Iris","June","Lena","Mae","Nora","Opal","Pia","Rhea","Tess","Uma","Wren","Yara","Ivy","Lou","Rose","Sage","Vera","Elsa","Greta","Hazel","Joy","Nell","Ruth","Faye","Lila","Moll","Tilly","Dixie","Bonnie","Pearl","Etta","Lacey"];
+const MN=["Abe","Bram","Cal","Dale","Eli","Finn","Gus","Hank","Ivo","Jude","Kai","Milo","Ned","Otto","Quin","Roy","Sol","Teo","Vic","Zeke","Amos","Bert","Cyrus","Dex","Emil","Floyd","Hugo","Jay","Lyle","Rex","Walt","Clem","Ira","Silas","Wade","Buck","Cody","Earl","Merle","Tex"];
+const SURN=["Ashby","Brook","Calder","Dunmore","Ellery","Fenwick","Garrow","Hollis","Ivers","Kemble","Larkin","Marsh","Northby","Orrin","Pell","Quarry","Rowe","Stroud","Thorne","Vale","Wick","Yarrow","Birch","Crane","Doyle","Fallow","Grist","Hatch"];
+const STATS=["smarts","charm","grit"];
+const DOM={law:{n:"Law",c:"#1f6feb"},tech:{n:"Tech",c:"#0ea5b7"},trade:{n:"Trade",c:"#b7791f"},med:{n:"Medicine",c:"#1a8f4e"},money:{n:"Money",c:"#6b46c1"},hustle:{n:"Hustle",c:"#c2412d"},show:{n:"Showbiz",c:"#d53f8c"},civic:{n:"Civic",c:"#4a5568"},west:{n:"Western",c:"#a0522d"},road:{n:"Transport",c:"#2b6cb0"},food:{n:"Food",c:"#dd6b20"}};
+const DK=Object.keys(DOM);
+const AL={L:{n:"Straight arrow",p:"green"},N:{n:"Neutral",p:"grey"},C:{n:"Crooked",p:"red"}};
+const CAREER_DATA=`cop|Police Officer|law|grit|3000|0|L|.006||hustle,civic
+guard|Security Guard|law|grit|2000|0||.003||hustle,show
+prisonguard|Prison Guard|law|grit|2800|5|L|.006||hustle,med
+detective|Detective|law|smarts|5200|25|L|.004||hustle,tech
+pi|Private Investigator|law|smarts|4200|15||.003||hustle,tech
+bounty|Bounty Hunter|law|grit|5000|20||.012||hustle,road
+lawyer|Lawyer|law|smarts|6000|20||||hustle,money
+judge|Judge|law|smarts|13000|60|L|||civic,money
+bail|Bail Bondsman|law|charm|4200|10||.003||hustle,money
+ittech|IT Technician|tech|smarts|2600|0||||trade
+sysadmin|System Administrator|tech|smarts|4200|15||||trade,money
+coder|Programmer|tech|smarts|5000|15||||money,show
+gamedev|Game Developer|tech|smarts|4600|20||||show,hustle
+neteng|Network Engineer|tech|smarts|5600|25||||trade,civic
+infosec|Information Security Engineer|tech|smarts|7500|35||||law,hustle
+analyst|Data Analyst|tech|smarts|5200|20||||money,med
+drone|Drone Pilot|tech|grit|3800|10||.003||road,show
+hacker|Black Hat Hacker|tech|smarts|9500|40|C|.002|.05|hustle,money
+mechanic|Mechanic|trade|grit|2500|0||.003||hustle,road
+electrician|Electrician|trade|grit|3200|10||.004||tech,civic
+welder|Welder|trade|grit|2900|5||.004||west,civic
+plumber|Plumber|trade|grit|3400|10||.002||civic,road
+hvac|HVAC Technician|trade|grit|3300|10||.002||tech,civic
+carpenter|Carpenter|trade|grit|3000|5||.003||west,show
+roofer|Roofer|trade|grit|2700|0||.008||road
+locksmith|Locksmith|trade|smarts|3100|10||||law,hustle
+crane|Crane Operator|trade|grit|4200|20||.006||road,civic
+janitor|Janitor|trade|grit|1800|0||||civic,med
+maint|Maintenance Technician|trade|grit|2600|0||.002||tech,civic
+pawn|Pawn Shop Owner|trade|charm|3800|15||||law,hustle,money
+tattoo|Tattoo Artist|trade|charm|3200|10||||show,hustle
+medic|Paramedic|med|grit|3000|0||.004||civic,law
+nurse|Nurse|med|charm|3600|10||||civic
+orderly|Hospital Orderly|med|grit|1900|0||||civic
+hygienist|Dental Hygienist|med|charm|3800|10||||show
+pharmacist|Pharmacist|med|smarts|7500|35||||money,hustle
+vet|Veterinarian|med|smarts|7000|35||||west,money
+dentist|Dentist|med|smarts|9000|40||||money,show
+surgeon|Surgeon|med|smarts|15000|60||||money,tech
+teller|Bank Teller|money|charm|2000|0||||law
+bookkeeper|Bookkeeper|money|smarts|2800|0||||law,trade
+taxprep|Tax Preparer|money|smarts|3200|10||||law,civic
+accountant|Accountant|money|smarts|4500|10||||law,hustle
+insurance|Insurance Adjuster|money|smarts|3600|10||||law,trade
+debtcol|Debt Collector|money|grit|3000|0||.002||hustle,law
+repo|Repo Man|money|grit|3200|5||.006||road,hustle
+realtor|Real Estate Agent|money|charm|5000|15||||law,show
+banker|Banker|money|charm|8000|30||||law,show
+broker|Stockbroker|money|charm|9000|35||||hustle,tech
+loanshark|Loan Shark|money|grit|7000|10|C|.008|.06|hustle,law
+pickpocket|Pickpocket|hustle|charm|2400|0|C||.07|show
+cardsharp|Card Sharp|hustle|charm|3800|10|C||.03|show,money
+bookie|Bookie|hustle|charm|5000|0|C|.004|.05|show,money
+moonshiner|Moonshiner|hustle|grit|4000|5|C|.004|.04|west,food
+conartist|Con Artist|hustle|charm|4500|10|C||.05|show,law
+fence|Fence|hustle|charm|5200|15|C||.05|trade,money
+getaway|Getaway Driver|hustle|grit|5000|10|C|.012|.06|road,trade
+forger|Forger|hustle|smarts|5500|20|C||.05|tech,money
+smuggler|Smuggler|hustle|grit|6500|10|C|.012|.07|road,civic
+gangster|Gangster|hustle|grit|7500|20|C|.02|.08|law,money
+counterfeit|Counterfeiter|hustle|smarts|8000|35|C||.06|money,tech
+kingpin|Crime Boss|hustle|charm|22000|70|C|.015|.06|law,money,civic
+rideop|Ride Operator|show|grit|1900|0||.004||trade
+barker|Carnival Barker|show|charm|2000|0||||hustle,west
+singer|Lounge Singer|show|charm|2200|0||||hustle,food
+fairmaint|Fairgrounds Maintenance Person|show|grit|2200|0||.004||trade,west
+comedian|Stand Up Comedian|show|charm|2400|5||||food,hustle
+dj|DJ|show|charm|2600|5||||tech
+dealer|Card Dealer|show|charm|2600|5||||money,hustle
+magician|Stage Magician|show|charm|2600|10||||tech,hustle
+stunt|Stunt Performer|show|grit|4000|10||.02||med,road
+fair|Fairgrounds Operations Manager|show|grit|4800|20||.002||trade,civic,west
+pitboss|Pit Boss|show|charm|6000|30||||hustle,law
+casino|Casino Boss|show|charm|16000|55||||hustle,money,law
+ranchhand|Ranch Hand|west|grit|1800|0||.004||trade
+wrangler|Trail Wrangler|west|grit|2200|5||.005||civic
+clown|Rodeo Clown|west|grit|2000|0||.01||med,show
+bullrider|Bull Rider|west|grit|3500|10||.03||med,show
+saddle|Saddle Maker|west|grit|3600|15||||trade,show
+horsetrainer|Horse Trainer|west|charm|4000|20||.004||med,show
+auctioneer|Livestock Auctioneer|west|charm|4800|20||||money,show
+farrier|Farrier|west|grit|5200|15||.005||med,trade
+rancher|Cattle Rancher|west|grit|6000|35||.003||money,trade
+rodeomgr|Rodeo Manager|west|charm|7000|40||||show,money,med
+cabbie|Cab Driver|road|charm|2100|0||.004||hustle
+delivery|Delivery Driver|road|grit|2200|0||.004||food
+forklift|Forklift Operator|road|grit|2400|0||.003||trade
+bus|Bus Driver|road|grit|2600|0||.002||civic
+tow|Tow Truck Driver|road|grit|2800|0||.006||hustle,trade
+flightatt|Flight Attendant|road|charm|3200|5||||food,med
+trucker|Truck Driver|road|grit|3400|5||.006||trade,hustle
+cropduster|Crop Duster|road|grit|4500|20||.015||west,trade
+atc|Air Traffic Controller|road|smarts|9000|40||||tech,civic
+pilot|Airline Pilot|road|smarts|11000|45||.002||tech,show
+dishwasher|Dishwasher|food|grit|1400|0||||civic
+flipper|Burger Flipper|food|grit|1500|0||.001||trade
+barista|Barista|food|charm|1700|0||||show
+waiter|Waiter|food|charm|1800|0||||show
+linecook|Line Cook|food|grit|2000|0||.002||show
+bartender|Bartender|food|charm|2400|0||||hustle,show
+caterer|Caterer|food|charm|3500|10||||show,west
+foodtruck|Food Truck Owner|food|charm|3800|15||||road,show
+chef|Head Chef|food|charm|6000|35||||show,money
+crossing|Crossing Guard|civic|charm|1300|0||||law
+dmv|DMV Clerk|civic|smarts|2000|0||||road,law
+librarian|Librarian|civic|smarts|2300|5||||tech
+mail|Mail Carrier|civic|grit|2300|0||.002||law
+ranger|Park Ranger|civic|grit|2500|0||.003||law,west
+sewer|Sewer Worker|civic|grit|2600|0||.006||trade
+teacher|Teacher|civic|smarts|2800|10||||med,law
+waste|Waste Management Professional|civic|grit|3000|0||.006||hustle,trade
+fire|Firefighter|civic|grit|3300|5||.01||med,trade
+principal|Principal|civic|smarts|4800|35||||law,money
+lineman|Power Lineman|civic|grit|5200|20||.012||trade,tech
+planner|City Planner|civic|smarts|5500|30||||trade,road
+professor|Professor|civic|smarts|6500|50||||tech,med
+mayor|Mayor|civic|charm|12000|60||||law,hustle,money`;
+const CAREERS=CAREER_DATA.split("\n").map(l=>{const p=l.split("|");return{k:p[0],n:p[1],d:p[2],a:p[3],pay:+p[4],req:+p[5],al:p[6]||"",risk:+p[7]||0,heat:+p[8]||0,syn:p[9]?p[9].split(","):[]}});
+const CK={};CAREERS.forEach(c=>CK[c.k]=c);
+const SYN_TOTAL=CAREERS.reduce((t,c)=>t+c.syn.length,0);
+const KIDJOBS=[
+ {k:"lemonade",n:"Lemonade Stand",d:"money",a:"charm",pay:200,age:8},
+ {k:"paper",n:"Paper Route",d:"road",a:"grit",pay:300,age:10},
+ {k:"dogwalk",n:"Dog Walking",d:"west",a:"charm",pay:260,age:10},
+ {k:"lawn",n:"Mowing Lawns",d:"trade",a:"grit",pay:350,age:11},
+ {k:"babysit",n:"Babysitting",d:"med",a:"charm",pay:320,age:12},
+ {k:"chores",n:"Ranch Chores",d:"west",a:"grit",pay:300,age:11},
+ {k:"ticket",n:"Fairgrounds Ticket Booth",d:"show",a:"charm",pay:340,age:12},
+ {k:"carwash",n:"Car Wash",d:"road",a:"grit",pay:330,age:13},
+ {k:"bagger",n:"Grocery Bagger",d:"food",a:"grit",pay:380,age:14},
+ {k:"caddie",n:"Golf Caddie",d:"show",a:"grit",pay:420,age:14},
+ {k:"arcade",n:"Arcade Attendant",d:"tech",a:"smarts",pay:380,age:15},
+ {k:"lifeguard",n:"Lifeguard",d:"med",a:"grit",pay:500,age:15},
+ {k:"tutor",n:"Tutoring",d:"civic",a:"smarts",pay:450,age:15}
+];
+const KJ={};KIDJOBS.forEach(j=>KJ[j.k]=j);
+const HOBBY_DATA=`birdhouse|building birdhouses|trade|carpenter,saddle
+rcplane|flying RC airplanes|road|drone,pilot,cropduster
+fishing|bass fishing|west|ranger,wrangler
+trains|model trains|trade|maint,crane
+quilting|quilting|show|tattoo,saddle
+bees|beekeeping|west|rancher,ranchhand
+metaldet|metal detecting|money|pawn,fence
+bonsai|bonsai|med|ranger,pharmacist
+hamradio|ham radio|tech|neteng,atc
+woodcarve|woodcarving|trade|saddle,carpenter
+oldtrucks|restoring old trucks|road|mechanic,tow
+pickle|pickleball|show|teacher,stunt
+chili|growing chili peppers|food|chef,foodtruck
+bottleship|ships in bottles|trade|locksmith
+birdwatch|birdwatching|civic|ranger
+poker|poker night|hustle|dealer,cardsharp,pitboss
+tinker|tinkering with code|tech|coder,gamedev,hacker
+bbq|backyard barbecue|food|linecook,caterer,chef
+riding|horseback riding|west|horsetrainer,farrier,bullrider
+cardtricks|card tricks|show|magician,conartist
+openmic|open mic comedy|show|comedian
+videogames|video games|tech|gamedev,analyst
+dragrace|drag racing|road|getaway,stunt
+lockpick|lockpicking|hustle|locksmith,pickpocket
+genealogy|family genealogy|civic|librarian,pi
+gardening|gardening|west|ranchhand,rancher
+baking|baking|food|caterer,chef
+truecrime|true crime podcasts|law|pi,detective
+moonshine|home brewing|food|moonshiner,bartender
+lasso|rope tricks|west|clown,wrangler
+records|collecting vinyl|show|dj
+firstaid|first aid classes|med|medic,nurse`;
+const HOBBIES=HOBBY_DATA.split("\n").map(l=>{const p=l.split("|");return{k:p[0],n:p[1],d:p[2],pro:p[3].split(",")}});
+const HK={};HOBBIES.forEach(h=>HK[h.k]=h);
+const TIERS=[["Dabbler",0],["Hobbyist",20],["Enthusiast",45],["Expert",75],["Master",110],["Legend",160]];
+const REASONS=["chasing bigger money","got headhunted","got bored","had a falling out with the boss","followed a hunch","wanted a fresh start"];
+const BIZ=[
+ {k:"stand",n:"Lemonade Stand",cost:500,inc:300,slots:1,stat:"charm",dom:"food"},
+ {k:"burger",n:"Burger Joint",cost:2500,inc:800,slots:2,stat:"grit",dom:"food"},
+ {k:"diner",n:"Diner",cost:4000,inc:1200,slots:2,stat:"charm",dom:"food"},
+ {k:"carwash",n:"Car Wash",cost:7000,inc:1500,slots:3,stat:"grit",dom:"road"},
+ {k:"garage",n:"Repair Garage",cost:12000,inc:2200,slots:3,stat:"grit",dom:"trade"},
+ {k:"feed",n:"Feed Store",cost:16000,inc:2700,slots:3,stat:"charm",dom:"west"},
+ {k:"pawnshop",n:"Pawn Shop",cost:22000,inc:3600,slots:3,stat:"charm",dom:"trade"},
+ {k:"shop",n:"General Store",cost:35000,inc:5000,slots:3,stat:"charm",dom:"money"},
+ {k:"ranch",n:"Cattle Ranch",cost:50000,inc:7000,slots:4,stat:"grit",dom:"west"},
+ {k:"wasteco",n:"Waste Hauling Company",cost:60000,inc:8500,slots:4,stat:"grit",dom:"civic"},
+ {k:"clinic",n:"Clinic",cost:100000,inc:13000,slots:4,stat:"smarts",dom:"med"},
+ {k:"trucking",n:"Trucking Company",cost:150000,inc:18000,slots:4,stat:"grit",dom:"road"},
+ {k:"secfirm",n:"Security Firm",cost:200000,inc:24000,slots:4,stat:"smarts",dom:"tech"},
+ {k:"steak",n:"Steakhouse",cost:260000,inc:30000,slots:4,stat:"charm",dom:"food"},
+ {k:"factory",n:"Factory",cost:300000,inc:34000,slots:5,stat:"grit",dom:"trade"},
+ {k:"rodeo",n:"Rodeo Arena",cost:600000,inc:62000,slots:5,stat:"grit",dom:"west"},
+ {k:"lab",n:"Tech Lab",cost:1e6,inc:100000,slots:5,stat:"smarts",dom:"tech"},
+ {k:"casinob",n:"Casino",cost:2e6,inc:190000,slots:5,stat:"charm",dom:"show"},
+ {k:"airfield",n:"Airfield",cost:3e6,inc:280000,slots:5,stat:"smarts",dom:"road"},
+ {k:"bank",n:"Bank",cost:4e6,inc:360000,slots:5,stat:"smarts",dom:"money"},
+ {k:"fairb",n:"Fairgrounds",cost:8e6,inc:700000,slots:6,stat:"grit",dom:"show"},
+ {k:"media",n:"Media Network",cost:15e6,inc:1.25e6,slots:6,stat:"charm",dom:"show"},
+ {k:"port",n:"Shipping Port",cost:6e7,inc:4.5e6,slots:6,stat:"grit",dom:"road"},
+ {k:"rail",n:"Railroad",cost:2.5e8,inc:1.7e7,slots:7,stat:"grit",dom:"road"},
+ {k:"space",n:"Rocket Company",cost:1e9,inc:6e7,slots:7,stat:"smarts",dom:"tech"}
+];
+const ROLES=[{n:"Manager",stat:"smarts",dom:null},{n:"Bookkeeper",stat:"smarts",dom:"money"},{n:"Maintenance",stat:"grit",dom:"trade"}];
+const HOMES=[{n:"Trailer",cap:4,cost:0},{n:"Cottage",cap:6,cost:2500},{n:"Family House",cap:9,cost:18000},{n:"Farmhouse",cap:13,cost:90000},{n:"Manor",cap:18,cost:450000},{n:"Estate",cap:25,cost:2.5e6},{n:"Compound",cap:34,cost:1.2e7}];
+const CS1=["Red","Dry","Iron","Salt","Stone","Mesa","Copper","Dust","Pine","Lake","Sun","Wolf","Silver","Blue","Cedar","High"];
+const CS2=["ford","ridge","wells","creek","field","haven","rock","bend","port","dale","gate","view","springs","hollow","falls","crossing"];
+const GENW=["","second","third","fourth","fifth","sixth","seventh","eighth","ninth","tenth"];
+const YEARSEC=3;
+let S,M={},T={},acc=0,modal=false,askOpen=false,tab="family",treeAll=false,choices=[];
+const $=id=>document.getElementById(id);
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function fmt(n){const neg=n<0;n=Math.abs(n);const u=[["",1],["K",1e3],["M",1e6],["B",1e9],["T",1e12],["Qa",1e15],["Qi",1e18],["Sx",1e21],["Sp",1e24]];let i=0;while(i<u.length-1&&n>=u[i+1][1])i++;const v=n/u[i][1];return(neg?"-":"")+"$"+(i?v.toFixed(v<10?2:v<100?1:0):Math.round(v))+u[i][0]}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function load(){try{const t=localStorage.getItem(KEY);if(t){S=JSON.parse(t);idx();return true}}catch(e){}return false}
+function idx(){M={};S.members.forEach(m=>M[m.id]=m)}
+function log(t){S.log.unshift({y:S.year,t});if(S.log.length>300)S.log.length=300}
+function living(){return S.members.filter(m=>m.alive)}
+function nm(m){return m.first+" "+m.last}
+function cap(){return HOMES[S.home].cap+S.wings*8}
+function cityMult(){return 1+0.6*S.city}
+function newCityName(){let n;do{n=pick(CS1)+pick(CS2)}while(S.cities.includes(n));return n}
+function def(b){return BIZ.find(x=>x.k===b.k)}
+function slotsOf(b){return def(b).slots+Math.floor((b.lvl-1)/3)}
+function bizName(b){return def(b).n+(b.no>1?" #"+b.no:"")}
+function blankSk(){const o={};DK.forEach(d=>o[d]=0);return o}
+function randAl(){const r=Math.random();return r<.45?"L":r<.85?"N":"C"}
+function newMember(o){const m=Object.assign({id:S.nextId++,sex:"F",age:0,alive:true,born:S.year,died:null,parents:null,spouse:null,blood:true,last:S.surname,smarts:ri(10,35),charm:ri(10,35),grit:ri(10,35),school:false,sk:blankSk(),al:randAl(),career:null,cyears:0,hist:[],wealth:0,hobby:null,hob:{},mode:"full",retired:false,kidjob:null,disabled:false,jail:0,lessons:0,lock:false,ra:ri(60,72),pay:0},o);if(!m.first)m.first=pick(m.sex==="F"?FN:MN);S.members.push(m);M[m.id]=m;S.ever++;return m}
+function newGame(){
+ S={year:1950,money:1500,nextId:1,members:[],biz:[],bizUid:1,home:0,wings:0,city:0,cities:[],log:[],surname:pick(SURN),speed:1,paused:false,boost:0,lastInc:0,ever:0,peak:0,found:[],unlocked:[]};
+ M={};S.cities.push(newCityName());
+ const a=newMember({sex:"M",age:24,born:1926,smarts:ri(25,45),charm:ri(25,45),grit:ri(25,45)});
+ const b=newMember({sex:"F",age:22,born:1928,blood:false,last:pick(SURN.filter(s=>s!==S.surname)),smarts:ri(25,45),charm:ri(25,45),grit:ri(25,45)});
+ a.sk[pick(DK)]=ri(10,25);b.sk[pick(DK)]=ri(10,25);[a,b].forEach(m=>{m.hobby=pick(HOBBIES).k;m.hob[m.hobby]=ri(5,30)});
+ a.spouse=b.id;b.spouse=a.id;
+ log("The "+S.surname+" family begins in "+S.cities[0]+" with "+a.first+" and "+b.first+".");
+ T=totals();[a,b].forEach(m=>chooseCareer(m,true));
+ save();
+}
+function totals(){const t=blankSk();living().forEach(m=>DK.forEach(d=>t[d]+=m.sk[d]));return t}
+function jobOf(id){for(const b of S.biz){const i=b.staff.indexOf(id);if(i>=0)return{b,i}}return null}
+function canWork(m){return m&&m.alive&&m.age>=16&&m.age<=72&&!m.disabled&&!m.jail}
+function alOk(m,c){return !c.al||c.al===m.al}
+function canTake(m,c){return alOk(m,c)&&effSk(m,c)>=c.req}
+function streak(m,k,depth){depth=depth||0;if(!m.parents||depth>15)return 0;let best=0;m.parents.forEach(pid=>{const p=M[pid];if(p&&p.hist.includes(k))best=Math.max(best,1+streak(p,k,depth+1))});return best}
+function careerPay(m,c){const yrs=m.career===c.k?m.cyears:0;const st=streak(m,c.k);const ln=1+0.3*st;let sm=1;const parts=[];c.syn.forEach(d=>{const b=Math.min(0.6,((T[d]||0)-m.sk[d])/500);if(b>0.02){sm*=1+b;parts.push([d,b])}});const hb=hobbyBoost(m,c);const v=c.pay*(1+m.sk[c.d]/40)*(0.6+m[c.a]/80)*ln*sm*hb*(1+Math.min(0.6,yrs*0.03))*cityMult();return{v,ln,st,sm,parts,hb}}
+function an(w){return(/^[aeiou]/i.test(w)?"an ":"a ")+w}
+function genWord(st){return st>=1?(GENW[st]||((st+1)+"th"))+" generation":""}
+function roleLabel(m){if(!m.alive)return"Remembered";if(m.jail)return"In jail, "+m.jail+" yr left";if(m.disabled)return"Disabled, needs care"+(m.hobby?", "+hobbyLabel(m):"");const j=jobOf(m.id);if(j)return roleOf(j.b,j.i).n+" at "+bizName(j.b);if(m.age<18)return(m.kidjob?KJ[m.kidjob].n:"Kid")+(m.school?", in school":"")+(m.hobby?", "+hobbyLabel(m):"");if(m.retired)return"Retired, "+hobbyLabel(m);if(m.mode==="hobby")return"No job, "+hobbyLabel(m);if(m.career){const c=CK[m.career];const st=streak(m,c.k);return c.n+(st?", "+genWord(st):"")+(m.mode==="part"?", part time":"")}return"Between jobs"}
+function roleOf(b,i){const d=def(b);if(i<ROLES.length){const r=ROLES[i];return{n:r.n,stat:i===0?d.stat:r.stat,dom:r.dom||d.dom}}return{n:"Worker",stat:d.stat,dom:d.dom}}
+function unassign(id){const j=jobOf(id);if(j)j.b.staff[j.i]=null}
+function staffVal(b,m,i){const d=def(b);const r=roleOf(b,i);const n=slotsOf(b);const base=d.inc*Math.pow(1.6,b.lvl-1);return base/n*(0.4+m[r.stat]/60+m.sk[r.dom]/80)*cityMult()}
+function bizIncome(b){const d=def(b);const base=d.inc*Math.pow(1.6,b.lvl-1);const n=slotsOf(b);let sum=0;for(let i=0;i<n;i++){const m=M[b.staff[i]];const r=roleOf(b,i);sum+=m?(0.4+m[r.stat]/60+m.sk[r.dom]/80):0.15}const mg=M[b.staff[0]],bk=M[b.staff[1]],mt=M[b.staff[2]];const mm=(mg?1+mg.smarts/250:1)*(bk?1+bk.sk.money/400:1)*(mt?1+mt.sk.trade/400:1);return base/n*sum*mm*cityMult()*(S.boost?1.25:1)}
+function careerIncome(){return living().reduce((t,m)=>t+(m.career&&m.mode!=="hobby"&&m.age>=18&&!m.jail&&!m.disabled&&!jobOf(m.id)?careerPay(m,CK[m.career]).v*0.85*(m.mode==="part"?0.5:1):0)+(m.kidjob?kidPay(m)*0.5:0),0)}
+function upkeep(){return living().reduce((t,m)=>t+40*(1+S.city*0.4)*(1+S.home*0.15)*(m.disabled?3:m.jail?0.3:1)+(m.school?schoolCost():0),0)}
+function schoolCost(){return Math.round(300*(1+S.city))}
+function grossIncome(){return S.biz.reduce((t,b)=>t+bizIncome(b),0)+careerIncome()}
+function netIncome(){return grossIncome()-upkeep()}
+function worth(){return S.money+S.biz.reduce((t,b)=>t+b.spent*0.5,0)}
+function buyCost(d){const owned=S.biz.filter(b=>b.k===d.k).length;return Math.round(d.cost*Math.pow(1.5,owned))}
+function upCost(b){return Math.round(def(b).cost*Math.pow(1.8,b.lvl)*0.6)}
+function homeNext(){if(S.home<HOMES.length-1)return{n:HOMES[S.home+1].n,cost:HOMES[S.home+1].cost,cap:HOMES[S.home+1].cap};return{n:"New wing",cost:Math.round(2.5e7*Math.pow(3,S.wings)),cap:cap()+8}}
+function cityCost(){return Math.round(60000*Math.pow(12,S.city))}
+function trainCost(m,s){return Math.round(100*Math.pow(1.07,m[s]-10)*(1+S.city*0.3))}
+function matchCost(){return Math.round(1500*Math.pow(4,S.city))}
+function retireGoal(){return Math.round(200000*cityMult())}
+function mentor(m,d){return living().find(r=>r!==m&&(r.retired||r.mode==="hobby"||r.disabled||r.age>=60)&&r.sk[d]>=20)}
+function famTrade(m){const ps=(m.parents||[]).map(p=>M[p]).filter(Boolean);let best=null,bv=19;ps.forEach(p=>DK.forEach(d=>{if(p.sk[d]>bv){bv=p.sk[d];best=d}}));return best}
+function teachCost(m,d){return Math.round(400*Math.pow(1.35,m.lessons)*(1+S.city*0.5)*(mentor(m,d)?0.5:1))}
+function head(){const l=living().filter(m=>m.blood).sort((a,b)=>b.age-a.age);return l[0]||living().sort((a,b)=>b.age-a.age)[0]}
+function gens(){const g={};const f=m=>{if(g[m.id]!=null)return g[m.id];g[m.id]=0;let v=0;if(m.parents&&M[m.parents[0]])v=f(M[m.parents[0]])+1;else if(!m.blood&&M[m.spouse])v=f(M[m.spouse]);g[m.id]=v;return v};S.members.forEach(f);return g}
+function relativeCop(m){return living().find(r=>r!==m&&r.career==="cop"||r!==m&&r.career==="detective")}
+function discover(m,c,parts){parts.forEach(([d])=>{const key=c.k+"|"+d;if(!S.found.includes(key)){S.found.push(key);log("Synergy found: "+c.n+" gets a boost from "+DOM[d].n+" relatives ("+m.first+").")}})}
+function setCareer(m,c,reason){if(m.career&&m.career!==c.k&&reason)log(m.first+" left "+CK[m.career].n+" to become "+an(c.n)+", "+reason+".");m.career=c.k;m.cyears=0;if(!m.hist.includes(c.k))m.hist.push(c.k);const st=streak(m,c.k);if(st>=1)log(m.first+" is now "+an(genWord(st))+" "+c.n+".")}
+function chooseCareer(m,quiet){if(m.age<18)return;const opts=CAREERS.filter(c=>canTake(m,c)).map(c=>({c,v:careerPay(m,c).v*(0.7+Math.random()*0.6)})).sort((a,b)=>b.v-a.v);if(!opts.length)return;const c=opts[Math.random()<.6?0:Math.min(opts.length-1,ri(1,2))].c;const had=m.career;setCareer(m,c,null);if(!quiet&&!had)log(m.first+" started work as "+an(c.n)+".")}
+function marry(m,q){if(living().length>=cap())return false;const sp=newMember({sex:m.sex==="F"?"M":"F",age:Math.max(18,m.age+ri(-4,4)),blood:false,last:pick(SURN.filter(s=>s!==S.surname)),smarts:ri(10,40)+q+S.city*4,charm:ri(10,40)+q+S.city*4,grit:ri(10,40)+q+S.city*4});sp.born=S.year-sp.age;sp.sk[pick(DK)]=ri(5,25)+q;if(Math.random()<.5)sp.sk[pick(DK)]+=ri(5,15);sp.al=Math.random()<.5?m.al:randAl();m.spouse=sp.id;sp.spouse=m.id;log(m.first+" married "+nm(sp)+", a "+AL[sp.al].n.toLowerCase()+".");T=totals();chooseCareer(sp,false);return true}
+function die(m,why){m.alive=false;m.died=S.year;unassign(m.id);m.school=false;let t=nm(m)+" "+(why||"passed away")+" at "+m.age+".";if(m.wealth>1){S.money+=m.wealth;t+=" Left "+fmt(m.wealth)+" to the family.";m.wealth=0}log(t)}
+function tierOf(l){let t=0;TIERS.forEach((x,i)=>{if(l>=x[1])t=i});return t}
+function hobLvl(m){return m.hobby?(m.hob[m.hobby]||0):0}
+function hobbyLabel(m){if(!m.hobby)return"";return HK[m.hobby].n+" ("+TIERS[tierOf(hobLvl(m))][0].toLowerCase()+")"}
+function effSk(m,c){let s=m.sk[c.d];if(m.hobby&&HK[m.hobby].pro.includes(c.k))s+=Math.floor(hobLvl(m)/3);return s}
+function hobbyBoost(m,c){if(!m.hobby)return 1;const h=HK[m.hobby],t=tierOf(hobLvl(m));if(h.pro.includes(c.k))return 1+t*0.06;if(h.d===c.d)return 1+t*0.03;return 1}
+function kidPay(m){const j=KJ[m.kidjob];return j.pay*(1+m[j.a]/100)*cityMult()}
+function hoursOf(m){if(m.disabled)return 4;if(m.age<18)return m.kidjob?3:5;if(m.retired||m.mode==="hobby")return 7;if(m.mode==="part")return 4;return 1.5}
+function wf(k){return Math.round(Math.max(2000*cityMult(),upkeep())*k*(0.6+Math.random()*0.8))}
+function yearTick(){
+ if(!living().length)return;
+ S.year++;
+ living().forEach(m=>m.age++);
+ T=totals();
+ let gross=0;
+ S.biz.forEach(b=>{b.staff.forEach((id,i)=>{const m=M[id];if(!m)return;if(m.age>72||!canWork(m)){b.staff[i]=null;return}const r=roleOf(b,i);m[r.stat]=Math.min(250,m[r.stat]+1);m.sk[r.dom]+=2;m.wealth+=staffVal(b,m,i)*0.1})});
+ living().forEach(m=>{
+  if(m.jail){m.jail--;if(!m.jail){log(m.first+" got out of jail.");if(Math.random()<.35){m.al="N";log(m.first+" says they are going straight.")}}return}
+  if(m.school){if(m.age>17){m.school=false;log(m.first+" graduated.")}else m.smarts+=3}
+  if(!m.hobby&&m.age>=6)m.hobby=pick(HOBBIES).k;
+  if(m.hobby){const h=HK[m.hobby];const before=tierOf(hobLvl(m));m.hob[m.hobby]=(m.hob[m.hobby]||0)+hoursOf(m);const after=tierOf(hobLvl(m));if(after>before&&after>=2)log(m.first+" is now "+an(TIERS[after][0].toLowerCase())+" at "+h.n+".");if(after>=2&&Math.random()<.3)m.sk[h.d]+=1;
+   if((m.mode==="hobby"||m.age<18||m.disabled||m.retired)&&Math.random()<0.08+after*0.05){const s=Math.round(150*Math.pow(after+1,2)*cityMult());gross+=s;if(Math.random()<.3)log(m.first+" made "+fmt(s)+" from "+h.n+".")}}
+  if(m.retired||m.mode==="hobby")m.wealth*=0.95;
+  if(m.kidjob){if(m.age>=18){log(m.first+" aged out of "+KJ[m.kidjob].n.toLowerCase()+".");m.kidjob=null}else{const j=KJ[m.kidjob];const v=kidPay(m);gross+=v*0.5;m.wealth+=v*0.5;m.sk[j.d]+=1;if(Math.random()<.3)m[j.a]+=1}}
+  m.pay=0;
+  if(m.career&&m.mode!=="hobby"&&!m.disabled&&!jobOf(m.id)&&m.age>=18){const c=CK[m.career];const p=careerPay(m,c);const f=m.mode==="part"?0.5:1;m.pay=p.v*f;gross+=m.pay*0.85;m.wealth+=m.pay*0.15;m.cyears+=f;m.sk[c.d]+=f===1?2:1;if(Math.random()<.4*f)m[c.a]=Math.min(250,m[c.a]+1);discover(m,c,p.parts)}
+ });
+ gross+=S.biz.reduce((t,b)=>t+bizIncome(b),0);
+ const up=upkeep();S.money+=gross-up;S.lastInc=gross-up;
+ const tight=S.money<up*2||S.lastInc<0,rich=S.money>up*40&&S.lastInc>up;
+ living().filter(m=>m.age>=8&&m.age<18&&!m.disabled&&!m.jail).forEach(m=>{if(m.kidjob){if(!tight&&Math.random()<.1){log(m.first+" quit "+KJ[m.kidjob].n.toLowerCase()+".");m.kidjob=null}}else if(Math.random()<(tight?.45:.08)){const ops=KIDJOBS.filter(j=>j.age<=m.age);if(ops.length){const j=pick(ops);m.kidjob=j.k;log(m.first+(tight?" chipped in with money tight and started ":" started ")+j.n.toLowerCase()+".")}}});
+ living().forEach(m=>{
+  if(m.age<18||m.jail)return;
+  const c=m.career?CK[m.career]:null;const working=!!(c&&m.mode!=="hobby"&&!jobOf(m.id));
+  if(m.disabled){if(Math.random()<.04){m.disabled=false;log(m.first+" recovered and can work again.")}return}
+  if(Math.random()<0.0015+(working&&c.risk?c.risk*0.6*(m.mode==="part"?.5:1):0)){m.disabled=true;unassign(m.id);m.career=null;m.mode="hobby";log(m.first+" was badly hurt"+(working?" on the job as "+an(c.n):"")+" and can no longer work. Their care costs the family more now.");return}
+  if(working&&c.heat){const lawyers=(T.law-m.sk.law);const p=c.heat*(1-Math.min(0.7,lawyers/300))*(m.mode==="part"?.5:1);if(Math.random()<p){const cop=relativeCop(m);m.jail=ri(2,6);m.career=null;if(cop&&Math.random()<.35)log("Officer "+cop.first+" arrested their own relative "+m.first+" for working as "+an(c.n)+". "+m.jail+" years.");else log(m.first+" got busted working as "+an(c.n)+". "+m.jail+" years in jail.");return}else if(lawyers>40&&Math.random()<.05)log("The family lawyers kept "+m.first+" out of trouble again.")}
+  if(Math.random()<.012){const old=m.al;m.al=m.al==="C"?(Math.random()<.5?"N":"L"):m.al==="L"?"N":(Math.random()<.5?"C":"L");if(old!==m.al)log(m.first+" is now "+AL[m.al].n.toLowerCase()+".");if(c&&!alOk(m,c))m.career=null}
+  if(m.retired){if(tight&&m.age<70&&m.wealth<20000*cityMult()&&Math.random()<.15){m.retired=false;m.mode="full";log(m.first+" came out of retirement to help the family.")}return}
+  if(m.age>=m.ra&&!m.lock){unassign(m.id);m.retired=true;m.mode="hobby";m.career=null;log(m.first+" retired at "+m.age+(m.hobby?" to focus on "+HK[m.hobby].n:"")+".");return}
+  if(m.mode!=="hobby"&&m.wealth>=retireGoal()&&m.age>=28&&!m.lock&&Math.random()<.25){unassign(m.id);m.mode="hobby";m.career=null;log(m.first+" saved "+fmt(m.wealth)+" and quit to spend time on "+(m.hobby?HK[m.hobby].n:"nothing much")+".");return}
+  if(m.hobby&&!m.lock&&!jobOf(m.id)&&tierOf(hobLvl(m))>=3&&Math.random()<.12){const h=HK[m.hobby];const opts=h.pro.map(k=>CK[k]).filter(x=>x&&canTake(m,x)&&x.k!==m.career);if(opts.length){const x=opts.sort((a,b)=>careerPay(m,b).v-careerPay(m,a).v)[0];const cur=working?careerPay(m,c).v:0;if(careerPay(m,x).v>cur*0.9){m.mode="full";m.career=null;setCareer(m,x,null);log(m.first+"'s "+h.n+" turned into a real career as "+an(x.n)+".");return}}}
+  if(m.mode==="hobby"){if(tight&&Math.random()<.35){m.mode="full";log(m.first+" put down the "+(m.hobby?HK[m.hobby].n:"hobby")+" and went back to work.")}else if(!rich&&m.wealth<50000*cityMult()&&Math.random()<.1){m.mode="full";log(m.first+" ran low on savings and went back to work.")}}
+  else if(rich&&!m.lock&&!jobOf(m.id)&&Math.random()<.025){m.mode=Math.random()<.5?"part":"hobby";if(m.mode==="hobby")m.career=null;log(m.first+(m.mode==="part"?" cut back to part time to make room for ":" quit working since the family is doing fine and went all in on ")+(m.hobby?HK[m.hobby].n:"relaxing")+".")}
+  else if(tight&&m.mode==="part"&&Math.random()<.4){m.mode="full";log(m.first+" went back to full time.")}
+  if(m.mode!=="hobby"&&!jobOf(m.id)){
+   if(m.career&&!m.lock){const cc=CK[m.career];const cur=careerPay(m,cc).v;if(Math.random()<.03){m.career=null;log(m.first+" got fired from "+cc.n+".")}else if(Math.random()<.15){const best=CAREERS.filter(x=>x.k!==cc.k&&canTake(m,x)).map(x=>({x,v:careerPay(m,x).v})).sort((a,b)=>b.v-a.v)[0];if(best&&best.v>cur*1.15)setCareer(m,best.x,pick(REASONS))}else if(Math.random()<.01){const r=pick(CAREERS.filter(x=>x.k!==cc.k&&canTake(m,x)));if(r)setCareer(m,r,"in a midlife crisis")}}
+   if(!m.career&&canWork(m))chooseCareer(m,false);
+  }
+ });
+ living().forEach(m=>{const c=m.career&&m.mode!=="hobby"?CK[m.career]:null;let p=0.0015+(c&&c.risk?c.risk*0.4:0);if(m.age>58)p+=Math.pow(m.age-58,2)/1100;if(m.age>=105)p=1;if(Math.random()<p)die(m,m.age<58?pick(["died suddenly","died in an accident","passed away unexpectedly"]):"passed away")});
+ living().filter(m=>m.blood&&m.spouse==null&&m.age>=19&&m.age<=45).forEach(m=>{if(Math.random()<0.22)marry(m,0)});
+ living().filter(m=>m.blood&&M[m.spouse]&&M[m.spouse].alive).forEach(m=>{const sp=M[m.spouse];const mom=m.sex==="F"?m:sp;if(mom.age<18||mom.age>44)return;const kids=S.members.filter(k=>k.parents&&k.parents.includes(m.id)).length;if(kids>=6||living().length>=cap())return;if(Math.random()<0.3-kids*0.03){const c=newMember({sex:Math.random()<.5?"F":"M",parents:[m.id,sp.id]});STATS.forEach(s=>c[s]=Math.round((m[s]+sp[s])/2*0.85+ri(0,22)));DK.forEach(d=>c.sk[d]=Math.round((m.sk[d]+sp.sk[d])*0.08));c.al=Math.random()<.8?pick([m.al,sp.al]):randAl();log(m.first+" and "+sp.first+" welcomed "+c.first+".")}});
+ S.boost=0;
+ if(tight&&Math.random()<.5)pick(WINDFALLS)();else if(Math.random()<0.3)pick(Math.random()<.25?WINDFALLS:EVENTS)();
+ S.peak=Math.max(S.peak,worth());
+ T=totals();
+ if(!living().length){log("The family line has ended.");endGame()}
+ save();render();
+}
+const WINDFALLS=[
+ ()=>{const cr=living().filter(m=>m.al==="C");const v=wf(cr.length?5:3);ask("A token of appreciation","A sharply dressed man drops off an envelope with "+fmt(v)+" from the mob"+(cr.length?", thanking "+pick(cr).first+" for their good work":", for reasons nobody will explain")+".",[["Take it",()=>{S.money+=v;log("The mob sent a token of their appreciation worth "+fmt(v)+".");const l=living().filter(m=>m.al==="L");if(l.length&&Math.random()<.3){const x=pick(l);x.al="N";log(x.first+" spent some of the envelope money and is now neutral.")}}],["Send it back",()=>log("The family sent the mob's envelope back. Bold move.")]])},
+ ()=>{const v=wf(3);S.money+=v;const e=living().filter(m=>m.age>=50);log("Sold "+(e.length?pick(e).first+"'s":"an")+" old car to a collector for "+fmt(v)+", way more than anyone thought it was worth.")},
+ ()=>{const v=wf(2.5);S.money+=v;log("Found a shoebox of old baseball cards in the attic worth "+fmt(v)+".")},
+ ()=>{const v=wf(2);S.money+=v;log("Found "+fmt(v)+" in cash stuffed inside a wall.")},
+ ()=>{const v=wf(2);S.money+=v;log("An old lamp from the garage got appraised for "+fmt(v)+".")},
+ ()=>{const v=wf(1.5);S.money+=v;log("A scratch ticket hit for "+fmt(v)+".")},
+ ()=>{const l=living().filter(m=>m.hobby==="metaldet");const v=wf(l.length?4:1.5);S.money+=v;log(l.length?pick(l).first+" dug up a coin stash while metal detecting worth "+fmt(v)+".":"A garage sale brought in "+fmt(v)+".")},
+ ()=>{const v=wf(2.5);S.money+=v;log("Grandma's ugly painting turned out to be worth "+fmt(v)+".")}
+];
+function endGame(){S.paused=true;openOv(`<h2>The line has ended</h2><p class="sub">The ${S.surname} family lasted until ${S.year} with ${S.ever} members across its history.</p><div class="grid2"><button class="btn" onclick="A.reset()">New family</button><button class="btn ghost" onclick="A.close()">Look around</button></div>`)}
+const EVENTS=[
+ ()=>{S.boost=1;log("Boom year. Every business earns more next year.")},
+ ()=>{if(!S.biz.length)return;const b=pick(S.biz);const c=Math.round(bizIncome(b)*0.8);ask("Fire at the "+bizName(b),"Repairs cost "+fmt(c)+". Skip the repairs and it drops a level.",[["Pay repairs",()=>{if(S.money>=c){S.money-=c;log("Repaired the "+bizName(b)+" after a fire.")}else{b.lvl=Math.max(1,b.lvl-1);log("Could not afford repairs. The "+bizName(b)+" dropped a level.")}}],["Let it drop",()=>{b.lvl=Math.max(1,b.lvl-1);b.staff.length=slotsOf(b);log("The "+bizName(b)+" dropped a level after a fire.")}]])},
+ ()=>{const g=Math.round(Math.max(500,Math.abs(S.lastInc)*0.6));S.money+=g;log("A distant cousin left the family "+fmt(g)+".")},
+ ()=>{const k=living().filter(m=>m.age<18);if(!k.length)return;const c=pick(k),d=pick(DK);c.sk[d]+=8;log(c.first+" showed a gift for "+DOM[d].n+".")},
+ ()=>{if(!S.biz.length)return;const b=pick(S.biz);const offer=Math.round(b.spent*2.5);ask("Buyout offer","A rival offers "+fmt(offer)+" for your "+bizName(b)+".",[["Sell it",()=>{sellBiz(b,offer)}],["Decline",()=>log("Turned down an offer for the "+bizName(b)+".")]])},
+ ()=>{const c=Math.round(Math.max(1000,S.money*0.2));if(S.money<c)return;ask("Investment pitch","A stranger wants "+fmt(c)+". It could triple or vanish.",[["Invest",()=>{S.money-=c;if(Math.random()<.45){S.money+=c*3;log("The investment tripled to "+fmt(c*3)+".")}else log("The investment vanished.")}],["Pass",()=>log("Passed on a shady investment.")]])},
+ ()=>{const l=living().filter(x=>x.age>=16&&x.age<=60&&!x.jail);if(!l.length)return;const m=pick(l),d=pick(DK);m.sk[d]+=6;log(m.first+" took a night class in "+DOM[d].n+".")},
+ ()=>{const l=living().filter(x=>x.al==="C"&&x.age>=18&&!x.jail&&!x.disabled);if(!l.length)return;const m=pick(l);const c=Math.round(Math.max(2000,Math.abs(S.lastInc)*0.4));ask(m.first+" needs a favor",m.first+" owes some rough people "+fmt(c)+". Pay it off or let "+m.first+" handle it.",[["Pay it",()=>{S.money-=c;log("The family quietly paid off "+m.first+"'s debt.")}],["Let them handle it",()=>{if(Math.random()<.5){m.sk.hustle+=10;log(m.first+" handled it. Hustle went up.")}else{m.disabled=true;m.career=null;unassign(m.id);log(m.first+" did not handle it well and was badly hurt.")}}]])},
+ ()=>{const l=living().filter(x=>x.career&&!x.lock);if(!l.length)return;const m=pick(l);const c=pick(CAREERS.filter(x=>x.k!==m.career&&canTake(m,x)));if(!c)return;const v=careerPay(m,c).v*1.3;ask("Job offer for "+m.first,"Someone wants "+m.first+" as "+an(c.n)+" with a signing bonus of "+fmt(v*0.5)+".",[["Take it",()=>{S.money+=v*0.5;setCareer(m,c,"after a juicy offer")}],["Stay put",()=>log(m.first+" turned down an offer to be "+an(c.n)+".")]])}
+];
+function ask(t,body,opts){choices=opts.map(o=>o[1]);askOpen=true;openOv(`<h2>${t}</h2><p class="sub" style="font-size:14px">${body}</p><div class="grid2">${opts.map((o,i)=>`<button class="btn ${i?'ghost':''}" onclick="A.choose(${i})">${o[0]}</button>`).join("")}</div>`,true)}
+function sellBiz(b,price){S.money+=price;S.biz=S.biz.filter(x=>x!==b);log("Sold the "+bizName(b)+" for "+fmt(price)+".")}
+function openOv(h,noX){$("ov").innerHTML=(noX?"":`<button class="x" onclick="A.close()">&times;</button>`)+h;$("ovBg").classList.add("on");modal=true}
+function bars(m){return`<div class="bars">${STATS.map(s=>`<div>${s} ${m[s]}<span><i style="width:${Math.min(100,m[s]/2.5)}%"></i></span></div>`).join("")}</div>`}
+function skBars(m){return`<div class="bars four">${DK.map(d=>`<div>${DOM[d].n} ${m.sk[d]}<span><i style="width:${Math.min(100,m.sk[d])}%;background:${DOM[d].c}"></i></span></div>`).join("")}</div>`}
+function topSk(m){let b=DK[0];DK.forEach(d=>{if(m.sk[d]>m.sk[b])b=d});return b}
+function memberCard(m){const ts=topSk(m);return`<div class="card tap" onclick="A.member(${m.id})"><div class="ch"><b>${nm(m)}</b><span class="pills"><span class="pill ${AL[m.al].p}">${AL[m.al].n}</span><span class="pill ${m.blood?'':'grey'}">${m.age}</span></span></div><div class="sub">${roleLabel(m)}${m.pay?" &middot; "+fmt(m.pay)+" a yr":""}${m.lock?" &middot; locked":""}</div><div class="sub">Best at ${DOM[ts].n} ${m.sk[ts]} &middot; saved ${fmt(m.wealth)}${m.blood?"":" &middot; married in"}</div>${bars(m)}</div>`}
+function renderFamily(){const h=head();const l=living().sort((a,b)=>b.age-a.age);const g=gens();const mg=Math.max(0,...l.map(m=>g[m.id]));return`<div class="banner"><small>Head of the family</small><div style="font-size:18px;font-weight:700">${h?nm(h):"None"}</div><small>${l.length} living of ${cap()} room &middot; generation ${mg+1} &middot; ${S.cities[S.city]}</small></div>`+l.map(memberCard).join("")}
+function renderBiz(){let h=`<div class="grid2" style="margin-top:0"><button class="btn" onclick="A.auto()">Fill open jobs</button><button class="btn ghost" onclick="A.tab('home')">Cities</button></div><div class="sub" style="margin-top:6px">Fill open jobs pulls in free family first, then anyone whose career pays less than the slot.</div>`;
+ h+=`<h3>Your businesses</h3>`;if(!S.biz.length)h+=`<div class="card sub">No businesses yet. Buy a Lemonade Stand below to start.</div>`;
+ S.biz.forEach(b=>{const d=def(b),n=slotsOf(b),c=upCost(b);let sl="";for(let i=0;i<n;i++){const m=M[b.staff[i]];sl+=`<button class="slot ${m?'f':''}" onclick="A.slot(${b.uid},${i})"><small>${roleOf(b,i).n}</small>${m?m.first+" ("+m[roleOf(b,i).stat]+")":"Open"}</button>`}
+  h+=`<div class="card"><div class="ch"><b>${bizName(b)}</b><span class="pill">Level ${b.lvl}</span></div><div class="sub">Earns ${fmt(bizIncome(b))} per year &middot; uses ${d.stat} and ${DOM[d.dom].n}</div><div class="slots">${sl}</div><div class="acts"><button class="btn" ${S.money<c?"disabled":""} onclick="A.up(${b.uid})">Upgrade ${fmt(c)}</button><button class="btn red" onclick="A.sellAsk(${b.uid})">Sell</button></div></div>`});
+ h+=`<h3>Buy a business</h3>`;
+ BIZ.forEach((d,i)=>{if(i>0&&!S.biz.some(b=>b.k===BIZ[i-1].k)&&!S.unlocked.includes(d.k)&&!S.unlocked.includes(BIZ[i-1].k))return;const c=buyCost(d);h+=`<div class="card"><div class="ch"><b>${d.n}</b><span class="pill grey">${d.slots} jobs</span></div><div class="sub">Base ${fmt(d.inc*cityMult())} per year &middot; uses ${d.stat} and ${DOM[d.dom].n}</div><div class="acts" style="grid-template-columns:1fr"><button class="btn" ${S.money<c?"disabled":""} onclick="A.buy('${d.k}')">Buy ${fmt(c)}</button></div></div>`});
+ return h}
+function renderSkills(){
+ let h=`<div class="card"><div class="ch"><b>Synergies found</b><span class="pill">${S.found.length} of ${SYN_TOTAL}</span></div><div class="sub">A career earns more when relatives are skilled in the right other fields. A family line in the same career stacks a lineage bonus on top. Synergies show up here the first time they kick in.</div>`;
+ const byC={};S.found.forEach(k=>{const[c,d]=k.split("|");(byC[c]=byC[c]||[]).push(d)});
+ h+=Object.keys(byC).length?`<div class="ladder">${Object.keys(byC).map(c=>`<div><span>${CK[c].n}</span><small>${byC[c].map(d=>DOM[d].n).join(", ")}</small></div>`).join("")}</div>`:`<div class="sub" style="margin-top:6px">None yet.</div>`;h+=`</div>`;
+ const hb=living().filter(m=>m.hobby).sort((a,b)=>hobLvl(b)-hobLvl(a));h+=`<div class="card"><div class="ch"><b>Family hobbies</b><span class="pill">${HOBBIES.length} hobbies</span></div><div class="ladder">${hb.map(m=>`<div><span>${m.first}: ${HK[m.hobby].n}</span><small>${TIERS[tierOf(hobLvl(m))][0]}</small></div>`).join("")||"<div><span>None yet</span></div>"}</div></div>`;
+ DK.forEach(d=>{const best=living().sort((a,b)=>b.sk[d]-a.sk[d])[0];const cs=CAREERS.filter(c=>c.d===d).sort((a,b)=>a.req-b.req);
+  h+=`<div class="card"><div class="ch"><b><span class="dot" style="background:${DOM[d].c}"></span>${DOM[d].n}</b><span class="pill grey">family ${T[d]||0}</span></div><div class="sub">Top: ${best&&best.sk[d]?nm(best)+" "+best.sk[d]:"nobody yet"}</div><div class="ladder">${cs.map(c=>{const n=living().filter(m=>m.career===c.k).length;return`<div><span>${c.n}${c.al==="C"?" &middot; crooked":c.al==="L"?" &middot; straight":""}${n?" &middot; <b style='color:#1f6feb'>"+n+" in family</b>":""}</span><small>needs ${c.req}</small></div>`}).join("")}</div></div>`});
+ return h}
+function renderHome(){const hn=homeNext();const cc=cityCost();
+ return`<h3>Home</h3><div class="card"><div class="ch"><b>${HOMES[S.home].n}${S.wings?" plus "+S.wings+" wing"+(S.wings>1?"s":""):""}</b><span class="pill">${living().length} of ${cap()}</span></div><div class="sub">Room decides how many people can live in the family. Babies and marriages wait for space.</div><div class="acts" style="grid-template-columns:1fr"><button class="btn" ${S.money<hn.cost?"disabled":""} onclick="A.home()">${hn.n} for ${fmt(hn.cost)} (room ${hn.cap})</button></div></div>
+ <h3>City</h3><div class="card"><div class="ch"><b>${S.cities[S.city]}</b><span class="pill">income x${cityMult().toFixed(1)}</span></div><div class="sub">A bigger city multiplies every paycheck, business and spouse quality. Costs and the early retirement goal rise too.</div><div class="acts" style="grid-template-columns:1fr"><button class="btn" ${S.money<cc?"disabled":""} onclick="A.city()">Expand to a new city ${fmt(cc)}</button></div></div>
+ <h3>Records</h3><div class="card"><div class="kv"><span>Founded</span> 1950</div><div class="kv"><span>Members ever</span> ${S.ever}</div><div class="kv"><span>Net worth</span> ${fmt(worth())}</div><div class="kv"><span>Peak worth</span> ${fmt(S.peak)}</div><div class="kv"><span>Cities</span> ${S.cities.slice(0,S.city+1).join(", ")}</div><div class="kv"><span>Yearly upkeep</span> ${fmt(upkeep())}</div><div class="kv"><span>Early retirement goal</span> ${fmt(retireGoal())} saved</div></div>`}
+function renderLog(){return`<div class="card log">${S.log.map(l=>`<div><b>${l.y}</b>${l.t}</div>`).join("")}</div>`}
+function renderTree(){
+ const g=gens();const all=S.members;const maxG=Math.max(...all.map(m=>g[m.id]));const minG=treeAll?0:Math.max(0,maxG-3);
+ const W=104,H=56,GX=8,GU=22,RH=110,PAD=14;const pos={};
+ for(let gi=minG;gi<=maxG;gi++){let r=all.filter(m=>g[m.id]===gi&&(m.blood||!M[m.spouse]||!M[m.spouse].blood));
+  r.sort((a,b)=>{const pa=a.parents&&pos[a.parents[0]]?pos[a.parents[0]].x:-1,pb=b.parents&&pos[b.parents[0]]?pos[b.parents[0]].x:-1;return pa-pb||a.born-b.born});
+  let x=PAD;const y=PAD+(gi-minG)*RH;r.forEach(m=>{pos[m.id]={x,y};x+=W;const s=M[m.spouse];if(s&&m.blood){x+=GX;pos[s.id]={x,y};x+=W}x+=GU})}
+ let maxX=0;Object.values(pos).forEach(p=>maxX=Math.max(maxX,p.x+W));const hgt=PAD*2+(maxG-minG+1)*RH;
+ let lines="",boxes="";
+ all.forEach(m=>{if(!m.blood||!pos[m.id])return;const s=M[m.spouse];const kids=all.filter(k=>k.parents&&(k.parents[0]===m.id||k.parents[1]===m.id)&&pos[k.id]);if(!kids.length)return;
+  const p=pos[m.id];const mx=s&&pos[s.id]?(p.x+W+pos[s.id].x)/2:p.x+W/2;const yb=p.y+H,ym=p.y+H+(RH-H)/2;lines+=`<path d="M${mx} ${yb}V${ym}" />`;
+  const xs=kids.map(k=>pos[k.id].x+W/2);const lo=Math.min(mx,...xs),hi=Math.max(mx,...xs);lines+=`<path d="M${lo} ${ym}H${hi}" />`;xs.forEach(x=>lines+=`<path d="M${x} ${ym}V${ym+(RH-H)/2}" />`)});
+ all.forEach(m=>{const p=pos[m.id];if(!p)return;const s2=M[m.spouse];if(s2&&m.blood&&pos[s2.id])lines+=`<path d="M${p.x+W} ${p.y+H/2}H${pos[s2.id].x}" style="stroke:#e07a9b" />`;
+  const st=m.alive?(m.blood?"#1f6feb":"#8a96a8"):"#c7ced9";const fill=m.alive?(m.blood?"#e3eeff":"#f3f5f8"):"#fafbfc";
+  const last=m.career||(m.hist.length?m.hist[m.hist.length-1]:null);const job=m.alive&&m.retired?"Retired":m.alive&&m.age<18?(m.kidjob?KJ[m.kidjob].n:"Kid"):last?CK[last].n:(m.alive&&m.mode==="hobby"?"Hobbyist":"");const jt=job.length>16?job.slice(0,15)+".":job;
+  boxes+=`<g onclick="A.member(${m.id})" style="cursor:pointer"><rect x="${p.x}" y="${p.y}" width="${W}" height="${H}" rx="9" fill="${fill}" stroke="${st}" stroke-width="2"/><rect x="${p.x+6}" y="${p.y+6}" width="6" height="6" rx="3" fill="${m.al==='C'?'#c2412d':m.al==='L'?'#1a8f4e':'#9aa4b2'}"/><text x="${p.x+W/2}" y="${p.y+18}" text-anchor="middle" font-size="13" font-weight="700" fill="${m.alive?'#1b2430':'#9aa4b2'}">${m.first}</text><text x="${p.x+W/2}" y="${p.y+33}" text-anchor="middle" font-size="10" fill="#6b7686">${m.alive?"age "+m.age:m.born+" to "+m.died}</text><text x="${p.x+W/2}" y="${p.y+47}" text-anchor="middle" font-size="9" fill="#1f6feb">${jt}</text></g>`});
+ return`<div class="tog"><button class="btn ${treeAll?'ghost':''}" onclick="A.treeMode(false)">Recent generations</button><button class="btn ${treeAll?'':'ghost'}" onclick="A.treeMode(true)">Whole tree</button></div><div id="treeWrap"><svg width="${maxX+PAD}" height="${hgt}" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#9bb8e8" stroke-width="2">${lines}</g>${boxes}</svg></div>`}
+function render(){
+ $("sYear").textContent=S.year;$("sMoney").textContent=fmt(S.money);const ni=netIncome();$("sInc").textContent=fmt(ni);$("sInc").style.color=ni<0?"var(--bad)":"var(--good)";$("sFam").textContent=living().length+" of "+cap();
+ $("bPlay").textContent=S.paused?"Play":"Pause";$("bSpeed").textContent="Speed "+S.speed+"x";
+ document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===tab));
+ const st=$("main").scrollTop;const tw=$("treeWrap");const tl=tw?tw.scrollLeft:0,tt=tw?tw.scrollTop:0;
+ $("main").innerHTML=tab==="family"?renderFamily():tab==="tree"?renderTree():tab==="biz"?renderBiz():tab==="skills"?renderSkills():tab==="home"?renderHome():renderLog();
+ $("main").scrollTop=st;const tw2=$("treeWrap");if(tw2){tw2.scrollLeft=tl;tw2.scrollTop=tt}
+}
+function payWhy(m,c){const p=careerPay(m,c);let t=`${c.n} pays ${fmt(p.v)} a year.`;if(p.st)t+=` Lineage: ${genWord(p.st)}, times ${p.ln.toFixed(1)}.`;if(p.parts.length)t+=` Family synergy from ${p.parts.map(([d,b])=>DOM[d].n+" plus "+Math.round(b*100)+"%").join(", ")}.`;else t+=` Helpful relative fields: ${c.syn.map(d=>DOM[d].n).join(", ")}.`;if(p.hb>1)t+=` Hobby boost from ${HK[m.hobby].n}, times ${p.hb.toFixed(2)}.`;if(m.mode==="part")t+=` Part time, so half of that.`;return t}
+const A={
+ tab(t){tab=t;$("main").scrollTop=0;render()},
+ play(){S.paused=!S.paused;save();render()},
+ speed(){S.speed=S.speed===1?2:S.speed===2?4:1;save();render()},
+ next(){if(modal)return;acc=0;yearTick()},
+ close(){$("ovBg").classList.remove("on");modal=false;askOpen=false;render()},
+ choose(i){const f=choices[i];askOpen=false;A.close();f&&f();T=totals();save();render()},
+ treeMode(v){treeAll=v;render()},
+ member(id){T=totals();const m=M[id];const par=m.parents?m.parents.map(p=>M[p]).filter(Boolean):[];const spo=M[m.spouse];const kids=S.members.filter(k=>k.parents&&k.parents.includes(id));
+  let h=`<h2>${nm(m)}</h2><div class="sub">${m.alive?"Age "+m.age+" &middot; born "+m.born:"Lived "+m.born+" to "+m.died} &middot; ${AL[m.al].n}${m.blood?"":" &middot; married in"}</div>${bars(m)}${skBars(m)}
+  <div style="margin-top:10px"><div class="kv"><span>Role</span> ${roleLabel(m)}</div><div class="kv"><span>Own savings</span> ${fmt(m.wealth)}</div>${m.hist.length?`<div class="kv"><span>Careers held</span> ${m.hist.map(k=>CK[k].n).join(", ")}</div>`:""}${par.length?`<div class="kv"><span>Parents</span> ${par.map(p=>`<a href="#" onclick="A.member(${p.id});return false">${p.first}</a>`).join(" and ")}</div>`:""}${spo?`<div class="kv"><span>Spouse</span> <a href="#" onclick="A.member(${spo.id});return false">${nm(spo)}</a></div>`:""}${kids.length?`<div class="kv"><span>Children</span> ${kids.map(k=>`<a href="#" onclick="A.member(${k.id});return false">${k.first}</a>`).join(", ")}</div>`:""}</div>`;
+  if(m.alive&&m.career&&m.mode!=="hobby"&&!jobOf(id))h+=`<div class="why">${payWhy(m,CK[m.career])}</div>`;
+  if(m.alive){
+   if(m.age>=4&&m.age<=17){const ft=famTrade(m);h+=`<h3>Teach ${m.first}</h3><div class="sub">Each lesson costs more than the last. A parent skilled in a field teaches it better. A retired or older relative who knows the field cuts the cost in half.</div><div class="grid4">${DK.map(d=>{const c=teachCost(m,d);return`<button class="btn ${d===ft?'':'ghost'}" ${S.money<c?"disabled":""} onclick="A.teach(${id},'${d}')">${DOM[d].n}${d===ft?"<br>family trade":""}<br>${fmt(c)}</button>`}).join("")}</div>`}
+   h+=`<h3>Training</h3><div class="grid3">${STATS.map(s=>{const c=trainCost(m,s);return`<button class="btn ghost" ${S.money<c?"disabled":""} onclick="A.train(${id},'${s}')">${s} plus five<br>${fmt(c)}</button>`}).join("")}</div>`;
+   if(canWork(m)&&m.age>=18&&!jobOf(id)&&!m.retired)h+=`<h3>Work time</h3><div class="grid3">${[["full","Full time"],["part","Part time"],["hobby","Hobby only"]].map(([k,n])=>`<button class="btn ${m.mode===k?'':'ghost'}" onclick="A.mode(${id},'${k}')">${n}</button>`).join("")}</div>`;
+   h+=`<h3>Hobby</h3><div class="sub">${m.hobby?HK[m.hobby].n+", "+TIERS[tierOf(hobLvl(m))][0].toLowerCase()+" at "+Math.floor(hobLvl(m))+". Can turn into "+HK[m.hobby].pro.map(k=>CK[k].n).join(" or ")+".":"No hobby yet."}</div>`;
+   h+=`<h3>Choices</h3><div class="grid2">`;
+   h+=`<button class="btn ghost" onclick="A.hobbies(${id})">Change hobby</button>`;
+   if(m.age>=8&&m.age<=17&&!m.jail&&!m.disabled)h+=m.kidjob?`<button class="btn red" onclick="A.setKJ(${id},null)">Quit ${KJ[m.kidjob].n.toLowerCase()}</button>`:`<button class="btn ghost" onclick="A.kidjobs(${id})">Get a kid job</button>`;
+   if(canWork(m)&&m.age>=18&&!jobOf(id)&&!m.retired)h+=`<button class="btn" onclick="A.careers(${id})">Pick a career</button><button class="btn ghost" onclick="A.lock(${id})">${m.lock?"Unlock career":"Lock career"}</button>`;
+   if(m.age>=5&&m.age<=17)h+=`<button class="btn ghost" onclick="A.school(${id})">${m.school?"Leave school":"School "+fmt(schoolCost())+" a year"}</button>`;
+   if(m.blood&&m.spouse==null&&m.age>=18&&m.age<=60)h+=`<button class="btn ghost" ${S.money<matchCost()||living().length>=cap()?"disabled":""} onclick="A.match(${id})">Find a strong match ${fmt(matchCost())}</button>`;
+   if(canWork(m))h+=jobOf(id)?`<button class="btn red" onclick="A.fire(${id})">Remove from business</button>`:`<button class="btn ghost" onclick="A.jobs(${id})">Work in family business</button>`;
+   if(m.retired)h+=`<button class="btn" onclick="A.unretire(${id})">Come out of retirement</button>`;else if(canWork(m)&&m.age>=18)h+=`<button class="btn ghost" onclick="A.retire(${id})">Retire</button>`;
+   h+=`</div>`}
+  openOv(h)},
+ careers(id){T=totals();const m=M[id];const l=CAREERS.map(c=>({c,ok:canTake(m,c),v:careerPay(m,c).v})).sort((a,b)=>(b.ok-a.ok)||b.v-a.v);
+  let h=`<h2>Career for ${m.first}</h2><div class="sub">${AL[m.al].n}. Gray ones need more skill or a different alignment.</div>`;
+  l.forEach(o=>{const p=careerPay(m,o.c);h+=`<button class="pickrow" ${o.ok?"":"disabled"} onclick="A.setC(${id},'${o.c.k}')"><span>${o.c.n}${m.career===o.c.k?" (now)":""}<small>${DOM[o.c.d].n} ${effSk(m,o.c)} of ${o.c.req}${o.c.al?" &middot; "+(o.c.al==="C"?"crooked only":"straight only"):""}${p.st?" &middot; "+genWord(p.st):""}${p.parts.length?" &middot; synergy":""}${p.hb>1?" &middot; hobby boost":""}</small></span><em>${fmt(o.v)}</em></button>`});openOv(h)},
+ setC(id,k){const m=M[id];unassign(id);if(m.mode==="hobby")m.mode="full";m.retired=false;setCareer(m,CK[k],m.career?"on the family's say so":null);save();A.member(id)},
+ lock(id){M[id].lock=!M[id].lock;save();A.member(id)},
+ teach(id,d){const m=M[id],c=teachCost(m,d);if(S.money<c)return;S.money-=c;const ps=(m.parents||[]).map(p=>M[p]).filter(Boolean);const pb=ps.some(p=>p.sk[d]>=20);const me=mentor(m,d);const g=6+(pb?4:0)+Math.floor(m.smarts/25);m.sk[d]+=g;m.lessons++;log(m.first+" learned "+DOM[d].n+(me?" from "+me.first:"")+(pb?" at the dinner table":"")+".");save();A.member(id);render()},
+ train(id,s){const m=M[id],c=trainCost(m,s);if(S.money<c)return;S.money-=c;m[s]+=5;save();A.member(id);render()},
+ school(id){const m=M[id];m.school=!m.school;save();A.member(id);render()},
+ match(id){const m=M[id],c=matchCost();if(S.money<c)return;if(marry(m,25+S.city*8)){S.money-=c}save();A.member(id);render()},
+ fire(id){unassign(id);save();A.member(id);render()},
+ retire(id){const m=M[id];unassign(id);m.career=null;m.mode="hobby";m.retired=true;log(m.first+" retired"+(m.hobby?" to focus on "+HK[m.hobby].n:"")+".");save();A.member(id)},
+ unretire(id){const m=M[id];m.retired=false;m.mode="full";log(m.first+" came out of retirement.");T=totals();chooseCareer(m,false);save();A.member(id)},
+ mode(id,k){const m=M[id];m.mode=k;if(k==="hobby"){m.career=null;log(m.first+" stopped working to focus on "+(m.hobby?HK[m.hobby].n:"relaxing")+".")}else{T=totals();if(!m.career)chooseCareer(m,false)}save();A.member(id)},
+ hobbies(id){const m=M[id];let h=`<h2>Hobby for ${m.first}</h2><div class="sub">Levels carry over if they come back to an old hobby. Expert hobbies can turn into a career.</div>`;HOBBIES.slice().sort((a,b)=>(m.hob[b.k]||0)-(m.hob[a.k]||0)).forEach(x=>{const l=m.hob[x.k]||0;h+=`<button class="pickrow" onclick="A.setH(${id},'${x.k}')"><span>${x.n}${m.hobby===x.k?" (now)":""}<small>${DOM[x.d].n} &middot; leads to ${x.pro.map(k=>CK[k].n).join(", ")}</small></span><em>${l?TIERS[tierOf(l)][0]+" "+Math.floor(l):"new"}</em></button>`});openOv(h)},
+ setH(id,k){M[id].hobby=k;save();A.member(id)},
+ kidjobs(id){const m=M[id];let h=`<h2>Kid job for ${m.first}</h2><div class="sub">Half the pay goes to ${m.first}'s savings and half to the family. It also builds a little skill in its field.</div>`;KIDJOBS.forEach(j=>{const ok=j.age<=m.age;const v=ok?j.pay*(1+m[j.a]/100)*cityMult():0;h+=`<button class="pickrow" ${ok?"":"disabled"} onclick="A.setKJ(${id},'${j.k}')"><span>${j.n}<small>${DOM[j.d].n} &middot; age ${j.age} and up</small></span><em>${ok?fmt(v):""}</em></button>`});openOv(h)},
+ setKJ(id,k){const m=M[id];if(k&&m.kidjob!==k)log(m.first+" started "+KJ[k].n.toLowerCase()+".");m.kidjob=k;save();A.member(id)},
+ jobs(id){const m=M[id];let h=`<h2>Business job for ${m.first}</h2><div class="sub">Value is what ${m.first} would add there. Taking a slot ends their outside career.</div>`;let any=false;
+  S.biz.forEach(b=>{const d=def(b);for(let i=0;i<slotsOf(b);i++){if(b.staff[i]!=null)continue;any=true;const r=roleOf(b,i);h+=`<button class="pickrow" onclick="A.put(${b.uid},${i},${id})"><span>${r.n} at ${bizName(b)}<small>${r.stat} ${m[r.stat]} &middot; ${DOM[r.dom].n} ${m.sk[r.dom]}</small></span><em>${fmt(staffVal(b,m,i))}</em></button>`}});
+  if(!any)h+=`<p class="sub">No open slots. Buy or upgrade a business to add jobs.</p>`;openOv(h)},
+ slot(uid,i){const b=S.biz.find(x=>x.uid===uid),d=def(b);const cur=M[b.staff[i]];const l=living().filter(canWork).sort((a,c)=>staffVal(b,c,i)-staffVal(b,a,i));
+  const rr=roleOf(b,i);let h=`<h2>${rr.n} at ${bizName(b)}</h2><div class="sub">Uses ${rr.stat} and ${DOM[rr.dom].n}. Sorted by value added.${i===0?" Managers add smarts to the whole business.":i===1?" Bookkeepers add Money skill to the whole business.":i===2?" Maintenance adds Trade skill to the whole business.":""}</div>`;
+  if(cur)h+=`<button class="pickrow" onclick="A.put(${uid},${i},null)"><span>Leave this job open</span><em>remove ${cur.first}</em></button>`;
+  l.forEach(m=>{h+=`<button class="pickrow" onclick="A.put(${uid},${i},${m.id})"><span>${nm(m)}<small>${roleLabel(m)}${m.pay?" &middot; "+fmt(m.pay):""}</small></span><em>${fmt(staffVal(b,m,i))}</em></button>`});
+  if(!l.length)h+=`<p class="sub">Nobody able to work.</p>`;openOv(h)},
+ put(uid,i,id){const b=S.biz.find(x=>x.uid===uid);if(id!=null){unassign(id);const m=M[id];m.career=null;m.mode="full";m.retired=false;m.kidjob=null;m.pay=0}else{const m=M[b.staff[i]];b.staff[i]=null;if(m){T=totals();chooseCareer(m,false)}}b.staff[i]=id;save();A.close()},
+ auto(){T=totals();const open=[];S.biz.forEach(b=>{for(let i=0;i<slotsOf(b);i++)if(b.staff[i]==null)open.push({b,i,v:bizIncome(b)/slotsOf(b)})});open.sort((a,c)=>c.v-a.v);
+  open.forEach(o=>{const f=living().filter(m=>canWork(m)&&!jobOf(m.id)&&m.age>=16&&!m.retired).map(m=>({m,gain:staffVal(o.b,m,o.i)-(m.career&&m.mode!=='hobby'?careerPay(m,CK[m.career]).v*0.85*(m.mode==='part'?0.5:1):0)})).filter(x=>x.gain>0).sort((a,c)=>c.gain-a.gain)[0];if(f){f.m.career=null;f.m.mode='full';f.m.kidjob=null;f.m.pay=0;o.b.staff[o.i]=f.m.id}});save();render()},
+ buy(k){const d=BIZ.find(x=>x.k===k),c=buyCost(d);if(S.money<c)return;S.money-=c;const no=S.biz.filter(b=>b.k===k).length+1;S.biz.push({uid:S.bizUid++,k,lvl:1,no,staff:new Array(d.slots).fill(null),spent:c});if(!S.unlocked.includes(k))S.unlocked.push(k);log("Bought a "+d.n+".");save();render()},
+ up(uid){const b=S.biz.find(x=>x.uid===uid),c=upCost(b);if(S.money<c)return;S.money-=c;b.spent+=c;b.lvl++;while(b.staff.length<slotsOf(b))b.staff.push(null);log("Upgraded the "+bizName(b)+" to level "+b.lvl+".");save();render()},
+ sellAsk(uid){const b=S.biz.find(x=>x.uid===uid);const p=Math.round(b.spent*0.5);openOv(`<h2>Sell the ${bizName(b)}?</h2><p class="sub">You get ${fmt(p)}. Staff go find outside careers.</p><div class="grid2"><button class="btn red" onclick="A.sell(${uid})">Sell</button><button class="btn ghost" onclick="A.close()">Keep it</button></div>`)},
+ sell(uid){const b=S.biz.find(x=>x.uid===uid);const st=b.staff.filter(x=>x!=null);sellBiz(b,Math.round(b.spent*0.5));T=totals();st.forEach(id=>{if(canWork(M[id]))chooseCareer(M[id],false)});save();A.close()},
+ home(){const hn=homeNext();if(S.money<hn.cost)return;S.money-=hn.cost;if(S.home<HOMES.length-1){S.home++;log("Moved into a "+HOMES[S.home].n+".")}else{S.wings++;log("Built a new wing on the "+HOMES[S.home].n+".")}save();render()},
+ city(){const c=cityCost();if(S.money<c)return;S.money-=c;S.city++;if(!S.cities[S.city])S.cities.push(newCityName());log("The family expanded to "+S.cities[S.city]+".");save();render()},
+ drawer(){$("drawer").innerHTML=`<div style="font-weight:800;font-size:18px;color:#1f6feb;margin:4px 0 12px">The ${S.surname} Family</div>
+  <details open><summary>Game</summary><button class="btn" onclick="save();A.drawerClose()">Save now</button><button class="btn red" onclick="A.resetAsk()">Start a new family</button></details>
+  <details><summary>Speed</summary><div class="grid3" style="margin-bottom:10px">${[1,2,4].map(v=>`<button class="btn ${S.speed===v?'':'ghost'}" onclick="S.speed=${v};save();render();A.drawer()">${v}x</button>`).join("")}</div></details>
+  <details><summary>How to play</summary><p>A year passes every few seconds. Kids and retirees spend most of their time on hobbies. Kids can take paper routes and other kid jobs, and they jump on them when money gets tight. Adults can work full time, part time, or drop work for a hobby, which costs the family upkeep but grows the hobby fast. One big earner can carry a houseful of hobbyists. Hobbies climb from dabbler to legend, boost matching careers, and can turn into a career outright, like RC airplanes into a drone pilot job. When money runs low, windfalls show up, like the mob dropping off a token of appreciation or old baseball cards in the attic.</p><p> Adults pick careers on their own and hop to better paying ones often. Each worker keeps part of their pay as their own savings, and the rest goes to the family.</p><p>Every career sits under a field: Law, Tech, Trade, Medicine, Money, Hustle, Showbiz, Civic, Western, Transport and Food. Skill in the field raises pay and unlocks the top careers in it.</p><p>Teach kids any field. Teaching the family trade goes further, and a retired relative who knows the field halves the cost. A child whose parents and grandparents held the same career gets a lineage bonus that stacks every generation.</p><p>Careers also earn more when relatives are skilled in certain other fields. A pawn shop owner with lawyers and hustlers in the family does better than one without. Find them all in the Skills tab.</p><p>Everyone is a straight arrow, neutral, or crooked. Crooked careers pay big but can land people in jail. Lawyers in the family cut the odds. Cops in the family might be the ones making the arrest.</p><p>Risky jobs can kill or disable people. Disabled relatives cannot work and cost more to care for. Anyone who saves enough may quit early for a hobby, and will go back to work if the money runs low.</p><p>Every business has a manager, a bookkeeper who uses Money skill and a maintenance person who uses Trade skill, plus workers. A bigger home and new cities still work the same as before. Nothing tops out.</p></details>
+  <details><summary>Stats</summary><p>Members ever ${S.ever}<br>Living ${living().length}<br>Businesses ${S.biz.length}<br>Synergies found ${S.found.length} of ${SYN_TOTAL}<br>Net worth ${fmt(worth())}<br>Peak worth ${fmt(S.peak)}</p></details>`;$("drBg").classList.add("on")},
+ drawerClose(){$("drBg").classList.remove("on")},
+ resetAsk(){A.drawerClose();openOv(`<h2>Start over?</h2><p class="sub">This family and its whole tree will be erased.</p><div class="grid2"><button class="btn red" onclick="A.reset()">Erase and start</button><button class="btn ghost" onclick="A.close()">Keep playing</button></div>`)},
+ reset(){newGame();tab="family";A.close()}
+};
+if(!load())newGame();
+T=totals();
+render();
+let last=performance.now();
+setInterval(()=>{const now=performance.now(),dt=(now-last)/1000;last=now;
+ if(S.paused||modal||$("drBg").classList.contains("on")){$("yBar").style.width=(acc/YEARSEC*100)+"%";return}
+ acc+=dt*S.speed;if(acc>=YEARSEC){acc=0;yearTick()}$("yBar").style.width=(acc/YEARSEC*100)+"%"},100);
+</script>
+</body>
+</html>

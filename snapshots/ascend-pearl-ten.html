@@ -9,7 +9,14 @@
 ╔══════════════════════════════════════════════════════════════╗
 ║  ITERATION MANIFEST - READ THIS FIRST                        ║
 ╠══════════════════════════════════════════════════════════════╣
-║  CURRENT BUILD : v1.9 - SIDE SCROLL MARATHON                 ║
+║  CURRENT BUILD : v2.0 - FUEL MODE                            ║
+║  v2.0: FUEL mode on the side scroll engine (SIDE.fuelOn).    ║
+║        Fuel drains as you go, gems and fuel cans refill it,  ║
+║        empty tank ends the run. The road is cut into         ║
+║        stretches with a gate at the end; grab every gem in   ║
+║        a stretch to level up (full tank, harder terrain).    ║
+║        All climb power-ups spawn: rocket (forward boost),    ║
+║        glider, steady, shrink, grow, static, slow-mo, trail. ║
 ║  v1.9: SIDE SCROLL mode (SIDE object). Run right forever on  ║
 ║        the climb physics. Terrain generates ahead: flats,    ║
 ║        slopes, steps, gaps, bridges, clearings, and jump     ║
@@ -213,6 +220,7 @@
     <button id="modeGauntlet" data-mode="gauntlet">GAUNTLET</button>
     <button id="modeJewels" data-mode="jewels">JEWELS</button>
     <button id="modeSide" data-mode="side">SIDE SCROLL</button>
+    <button id="modeFuel" data-mode="fuel">FUEL</button>
   </div>
   <label>CAREER LEVEL</label>
   <div id="lbLevel">
@@ -382,6 +390,15 @@ let cameraY = 0;       // world-Y of the top of the screen
 
 let highestPlatY = 0;     // y of the highest platform generated so far
 let worldGenBottom = 800; // lowest rescue platform generated
+
+function sideLike() { return mode === 'side' || mode === 'fuel'; }
+function offView(y, m) {
+  m = m || 20;
+  if (sideLike()) return y < SIDE.camY - m * 2 || y > SIDE.camY + SIDE.vh + m * 2;
+  const sy = y - cameraY;
+  return sy < -m || sy > H + m;
+}
+function keepY(y) { return sideLike() ? true : y < cameraY + H + 200; }
 
 function rand(min, max) { return min + Math.random() * (max - min); }
 const SOLID_CHANCE = 0.13;
@@ -754,7 +771,7 @@ const GHOST = {
     this.recT += ms;
     if (this.recT >= 100 && this.rec.length < 18000) {
       this.recT = 0;
-      this.rec.push(mode === 'side' ? Math.round(player.x) : +(player.x / W).toFixed(3), Math.round(player.y));
+      this.rec.push(sideLike() ? Math.round(player.x) : +(player.x / W).toFixed(3), Math.round(player.y));
     }
     if (this.metric() > this.playBest) this.dirty = true;
   },
@@ -771,7 +788,7 @@ const GHOST = {
   pos() {
     if (!this.play || !SETTINGS.ghost) return null;
     const i = Math.floor(this.runT / 100) * 2;
-    const sx = mode === 'side' ? 1 : W;
+    const sx = sideLike() ? 1 : W;
     if (i + 1 >= this.play.length) return { x: this.play[this.play.length - 2] * sx, y: this.play[this.play.length - 1], done: true };
     return { x: this.play[i] * sx, y: this.play[i + 1] };
   },
@@ -792,7 +809,7 @@ const GHOST = {
   hud() {
     const g = this.pos();
     if (!g) return;
-    const d = mode === 'side' ? Math.round((player.x - g.x) / SIDE.UNIT) : Math.round((g.y - player.y) / 10);
+    const d = sideLike() ? Math.round((player.x - g.x) / SIDE.UNIT) : Math.round((g.y - player.y) / 10);
     ctx.textAlign = 'left';
     ctx.font = 'bold 12px monospace';
     ctx.fillStyle = d >= 0 ? '#3dff9b' : '#ff6688';
@@ -835,7 +852,7 @@ function initPlayer() {
 // ════════════════════════════════════════════════════════════
 //  SCORE
 // ════════════════════════════════════════════════════════════
-let mode = ['challenge', 'career', 'gauntlet', 'jewels', 'side'].includes(localStorage.getItem('ascendMode')) ? localStorage.getItem('ascendMode') : 'climb';
+let mode = ['challenge', 'career', 'gauntlet', 'jewels', 'side', 'fuel'].includes(localStorage.getItem('ascendMode')) ? localStorage.getItem('ascendMode') : 'climb';
 let bestChallenge = parseInt(localStorage.getItem('bestChallenge') || '0');
 let bestGauntlet  = parseInt(localStorage.getItem('bestGauntlet') || '0');
 let bestJewels    = parseInt(localStorage.getItem('bestJewels') || '0');
@@ -1319,13 +1336,12 @@ function updateGliders() {
       }
     }
   }
-  gliders = gliders.filter(g => !g.taken && g.y < cameraY + H + 200);
+  gliders = gliders.filter(g => !g.taken && keepY(g.y));
 }
 
 function drawGliders(time) {
   for (const g of gliders) {
-    const sy = g.y - cameraY;
-    if (sy < -20 || sy > H + 20) continue;
+    if (offView(g.y)) continue;
     const bob = Math.sin(time * 0.004 + g.ph) * 3;
     const y = g.y + bob;
     ctx.globalAlpha = 0.3 + 0.2 * Math.abs(Math.sin(time * 0.005 + g.ph));
@@ -1499,7 +1515,7 @@ function updateSteadies(ms) {
       }
     }
   }
-  steadies = steadies.filter(st => !st.taken && (mode === 'challenge' || st.y < cameraY + H + 200));
+  steadies = steadies.filter(st => !st.taken && (mode === 'challenge' || keepY(st.y)));
   if (player.steadyTime > 0) {
     player.steadyTime -= ms;
     if (player.steadyTime <= 0) {
@@ -1512,8 +1528,7 @@ function updateSteadies(ms) {
 
 function drawSteadies(time) {
   for (const st of steadies) {
-    const sy = st.y - cameraY;
-    if (sy < -20 || sy > H + 20) continue;
+    if (offView(st.y)) continue;
     const y = st.y + Math.sin(time * 0.004 + st.ph) * 3;
     ctx.globalAlpha = 0.3 + 0.2 * Math.abs(Math.sin(time * 0.005 + st.ph));
     ctx.fillStyle = '#3d8bff';
@@ -1595,7 +1610,7 @@ function updateOddities(ms) {
         hue: o.kind === 'static' ? Math.random() * 360 : 210, type: 'splash' });
     }
   }
-  oddities = oddities.filter(o => !o.taken && (mode === 'challenge' || o.y < cameraY + H + 200));
+  oddities = oddities.filter(o => !o.taken && (mode === 'challenge' || keepY(o.y)));
 
   if (player.sizeTime > 0) {
     player.sizeTime -= ms;
@@ -1627,8 +1642,7 @@ function updateOddities(ms) {
 
 function drawOddities(time) {
   for (const o of oddities) {
-    const sy = o.y - cameraY;
-    if (sy < -24 || sy > H + 24) continue;
+    if (offView(o.y, 24)) continue;
     const y = o.y + Math.sin(time * 0.004 + o.ph) * 3;
     ctx.globalAlpha = 0.3 + 0.2 * Math.abs(Math.sin(time * 0.005 + o.ph));
     ctx.fillStyle = o.kind === 'static' ? 'hsl(' + ((time * 0.3) % 360) + ',100%,60%)' : '#3d8bff';
@@ -2185,7 +2199,7 @@ function updateBlaze() {
 function drawBlaze() {
   const band = 3;
   for (const b of blaze) {
-    if (b.y - cameraY < -30 || b.y - cameraY > H + 30) continue;
+    if (offView(b.y, 30)) continue;
     ctx.globalAlpha = Math.min(1, b.life * 1.4);
     for (let k = 0; k < 6; k++) {
       ctx.fillStyle = b.pal[k];
@@ -2226,7 +2240,7 @@ function updateRockets(ms) {
       }
     }
   }
-  rockets = rockets.filter(r => !r.taken && r.y < cameraY + H + 200);
+  rockets = rockets.filter(r => !r.taken && keepY(r.y));
 
   // Rocket flight
   if (player.rocketTimer > 0) {
@@ -2256,8 +2270,7 @@ function updateRockets(ms) {
 
 function drawRockets(time) {
   for (const r of rockets) {
-    const sy = r.y - cameraY;
-    if (sy < -20 || sy > H + 20) continue;
+    if (offView(r.y)) continue;
     const bob = Math.sin(time * 0.004 + r.ph) * 3;
     const y = r.y + bob;
     // Glow
@@ -2428,17 +2441,144 @@ function drawStarfield(time) {
 //  Nobody dies. Score is the farthest distance reached.
 // ════════════════════════════════════════════════════════════
 let bestSide = parseInt(localStorage.getItem('bestSide') || '0');
+let bestFuel = parseInt(localStorage.getItem('bestFuel') || '0');
+let bestFuelLevel = parseInt(localStorage.getItem('bestFuelLevel') || '0');
 
 const SIDE = {
   DEEP: 2600,      // ground blocks reach this far down
   STEP: 16,        // ledge height you walk up without jumping
   ABYSS: 420,      // abyss line sits this far below the nearby ground
   UNIT: 25,        // world px per meter of distance
+  GATE_LEN: 3200,  // fuel mode: world px per level stretch
+  fuel: 100, level: 1, fuelOn: false, gates: [], counts: [], gi: 0, cans: [],
   VIEW: 720,       // world px across the screen on a phone
   terrain: [], gems: [], lane: [], deco: [],
   genX: 0, genY: 0, last: '', camX: 0, camY: 0, S: 1, vw: 0, vh: 0, t: 0,
   falls: 0, gemCount: 0, dropping: false, zi: 0, zl: 0, minX: -300, standOn: null,
 
+  fuelTick(ms, cx, pcy) {
+    const P = player;
+    for (const c of this.cans) {
+      if (c.taken) continue;
+      const dx = cx - c.x, dy = pcy - c.y;
+      if (dx * dx + dy * dy < 24 * 24) {
+        c.taken = true;
+        this.fuel = Math.min(100, this.fuel + 30);
+        showBanner('FUEL +30');
+        audio.triggers.token();
+      }
+    }
+    // gates: every gem in the stretch means a level up
+    while (this.gi < this.gates.length && P.x > this.gates[this.gi].x) {
+      const c = this.counts[this.gi] || { total: 0, taken: 0 };
+      if (c.taken >= c.total) {
+        this.level++;
+        this.fuel = 100;
+        if (this.level > bestFuelLevel) { bestFuelLevel = this.level; localStorage.setItem('bestFuelLevel', bestFuelLevel); }
+        showBanner('LEVEL ' + this.level + '  FULL TANK');
+        audio.triggers.milestone();
+        for (let i = 0; i < 30; i++) {
+          const a = Math.random() * Math.PI * 2, sp = 2 + Math.random() * 6;
+          particles.push({ x: cx, y: pcy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, decay: 0.02, size: 2 + Math.random() * 3, hue: 200 + Math.random() * 40, type: 'splash' });
+        }
+      } else {
+        showBanner('MISSED ' + (c.total - c.taken) + ' GEMS  NO LEVEL UP');
+        audio.triggers.wrong();
+      }
+      this.gi++;
+    }
+    const burn = (1.2 + 1.2 * Math.min(1, Math.abs(P.vx) / 15)) * (1 + 0.05 * Math.min(20, this.level - 1));
+    this.fuel -= burn * ms / 1000;
+    if (this.fuel < 20 && !this.lowWarned) { this.lowWarned = true; showBanner('LOW FUEL'); audio.triggers.spent(); }
+    if (this.fuel >= 25) this.lowWarned = false;
+    if (this.fuel <= 0) {
+      this.fuel = 0;
+      audio.triggers.die();
+      GHOST.save();
+      LB.queue();
+      setState(STATE.DEAD);
+      return true;
+    }
+    return false;
+  },
+  drawFuelWorld(time) {
+    for (let i = this.gi; i < this.gates.length; i++) {
+      const g = this.gates[i];
+      if (g.x < this.camX - 40 || g.x > this.camX + this.vw + 40) continue;
+      const c = this.counts[i] || { total: 0, taken: 0 };
+      const top = this.camY, h = this.vh;
+      ctx.globalAlpha = 0.18 + 0.1 * Math.sin(time * 0.005);
+      ctx.fillStyle = '#3d8bff';
+      ctx.fillRect(g.x - 10, top, 20, h);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = '#3d8bff';
+      ctx.fillRect(g.x - 2, top, 4, h);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold ' + Math.round(14 / this.S) + 'px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(i === this.gi ? 'LEVEL UP GATE' : 'GATE', g.x, top + 150 / this.S);
+      if (i === this.gi) ctx.fillText('◆ ' + c.taken + ' / ' + c.total, g.x, top + 172 / this.S);
+    }
+    for (const c of this.cans) {
+      if (c.x < this.camX - 30 || c.x > this.camX + this.vw + 30) continue;
+      const y = c.y + Math.sin(time * 0.004 + c.ph) * 3;
+      ctx.globalAlpha = 0.3;
+      ctx.fillStyle = '#3d8bff';
+      ctx.beginPath(); ctx.arc(c.x, y, 15, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = '#ff4466';
+      ctx.fillRect(c.x - 7, y - 9, 14, 18);
+      ctx.fillStyle = '#1b2440';
+      ctx.fillRect(c.x - 3, y - 13, 6, 4);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(c.x - 4, y - 2, 8, 2);
+      ctx.fillRect(c.x - 1, y - 5, 2, 8);
+    }
+    drawBlaze();
+    drawRockets(time);
+    drawSteadies(time);
+    drawOddities(time);
+    drawGliders(time);
+  },
+  fuelHud() {
+    const bx = 14, by = 134, bw = 110;
+    const f = this.fuel / 100;
+    const low = this.fuel < 20 && Math.floor(performance.now() / 250) % 2;
+    ctx.textAlign = 'left';
+    ctx.fillStyle = low ? '#ff4466' : '#6fb0ff';
+    ctx.font = 'bold 11px monospace';
+    ctx.fillText('FUEL', bx, by - 4);
+    ctx.fillStyle = '#16223f';
+    ctx.fillRect(bx, by, bw, 9);
+    ctx.fillStyle = f > 0.2 ? '#3d8bff' : '#ff4466';
+    ctx.fillRect(bx, by, bw * f, 9);
+    ctx.strokeStyle = '#bfe0ff'; ctx.lineWidth = 1;
+    ctx.strokeRect(bx, by, bw, 9);
+    const P = player;
+    const t = [];
+    if (P.rocketTimer > 0) t.push('rocket ' + Math.ceil(P.rocketTimer) + 's');
+    if (P.hasGlider) t.push('glider ' + Math.ceil(P.gliderTime / 1000) + 's');
+    if (P.steadyTime > 0) t.push('steady ' + Math.ceil(P.steadyTime / 1000) + 's');
+    if (P.sizeTime > 0) t.push((P.sizeKind === 'shrink' ? 'shrunk ' : 'grown ') + Math.ceil(P.sizeTime / 1000) + 's');
+    if (P.slowTime > 0) t.push('slow-mo ' + Math.ceil(P.slowTime / 1000) + 's');
+    if (P.trailTime > 0) t.push('trail ' + Math.ceil(P.trailTime / 1000) + 's');
+    if (P.staticTime > 0) t.push('static ' + Math.ceil(P.staticTime / 1000) + 's');
+    ctx.fillStyle = '#6fb0ff';
+    ctx.font = 'bold 11px monospace';
+    t.forEach((s, i) => ctx.fillText(s, bx, by + 26 + i * 16));
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#6fb0ff';
+    ctx.font = 'bold 14px monospace';
+    ctx.fillText('LEVEL ' + this.level, W - 14, 104);
+    const c = this.counts[this.gi] || { total: 0, taken: 0 };
+    ctx.font = 'bold 11px monospace';
+    ctx.fillStyle = c.taken >= c.total ? '#3dff9b' : '#bfe0ff';
+    ctx.fillText('stretch ◆ ' + c.taken + '/' + c.total, W - 14, 122);
+    if (this.gates[this.gi]) {
+      ctx.fillStyle = CFG.UI_DIM;
+      ctx.fillText('gate in ' + Math.max(0, Math.round((this.gates[this.gi].x - P.x) / this.UNIT)) + 'm', W - 14, 138);
+    }
+  },
   view() {
     this.S = Math.max(0.5, Math.min(1.2, W / this.VIEW));
     this.vw = W / this.S;
@@ -2451,6 +2591,9 @@ const SIDE = {
     this.genX = 0; this.genY = 0; this.last = ''; this.t = 0;
     this.falls = 0; this.gemCount = 0; this.dropping = false; this.standOn = null;
     this.minX = -300;
+    this.fuelOn = mode === 'fuel';
+    this.fuel = 100; this.level = 1; this.gates = []; this.counts = []; this.gi = 0;
+    this.gateNext = this.GATE_LEN; this.cans = []; this.puGap = 3; this.lowWarned = false;
     const z = zoneAt(0); this.zi = z.i; this.zl = z.lap;
     // back wall at the start line
     this.terrain.push({ k: 'block', x: -300, y: -3000, w: 300, h: 3000 + this.DEEP, wall: true });
@@ -2481,14 +2624,41 @@ const SIDE = {
     this.lanePt(x, y + Math.abs(p.ay)); this.lanePt(x + w + Math.abs(p.ax), y + Math.abs(p.ay));
     return p;
   },
-  gem(x, y) { this.gems.push({ x, y, ph: Math.random() * 6.28 }); },
+  gem(x, y) {
+    const g = { x, y, ph: Math.random() * 6.28 };
+    if (this.fuelOn) {
+      let i = 0;
+      while (i < this.gates.length && this.gates[i].x <= x) i++;
+      g.si = i;
+      if (!this.counts[i]) this.counts[i] = { total: 0, taken: 0 };
+      this.counts[i].total++;
+    }
+    this.gems.push(g);
+  },
+  maybePU(x, y) {
+    if (!this.fuelOn) return;
+    this.puGap++;
+    if (this.puGap < 6 || Math.random() > 0.35) return;
+    this.puGap = 0;
+    let total = 0; for (const k in PU_WEIGHTS) total += PU_WEIGHTS[k];
+    let r = Math.random() * total, kind = 'rocket';
+    for (const k in PU_WEIGHTS) { r -= PU_WEIGHTS[k]; if (r <= 0) { kind = k; break; } }
+    const item = { x, y, taken: false, ph: Math.random() * Math.PI * 2 };
+    if (kind === 'rocket') rockets.push(item);
+    else if (kind === 'glider') gliders.push(item);
+    else if (kind === 'steady') steadies.push(item);
+    else { item.kind = kind; oddities.push(item); }
+  },
   gemArc(x0, x1, y, lift, n) {
     for (let i = 0; i < n; i++) {
       const f = n === 1 ? 0.5 : i / (n - 1);
       this.gem(x0 + (x1 - x0) * f, y - Math.sin(f * Math.PI) * lift);
     }
   },
-  diff() { return Math.min(1, Math.max(0, (this.genX - 2500) / 40000)); },
+  diff() {
+    if (this.fuelOn) return Math.min(1, (this.level - 1) / 10 + Math.max(0, this.genX - 2500) / 200000);
+    return Math.min(1, Math.max(0, (this.genX - 2500) / 40000));
+  },
   bias(dy) {
     if (this.genY < -1600) return Math.abs(dy);
     if (this.genY > 500) return -Math.abs(dy);
@@ -2509,6 +2679,8 @@ const SIDE = {
         this.gemArc(lx + 10, lx + 90, ly - 26, 0, 3);
       }
       if (Math.random() < 0.3) this.deco.push({ k: 'tree', x: this.genX + rand(30, len - 30), y: this.genY, s: rand(0.7, 1.3), hue: Math.floor(rand(190, 230)) });
+      if (this.fuelOn && Math.random() < 0.14) this.cans.push({ x: this.genX + len * 0.6, y: this.genY - 18, ph: Math.random() * 6.28 });
+      this.maybePU(this.genX + len * 0.8, this.genY - 16);
     }
     this.genX += len;
   },
@@ -2565,6 +2737,9 @@ const SIDE = {
     this.plat(lx, ly, 120);
     this.gemArc(lx + 10, lx + 110, ly - 28, 0, 4);
     for (let i = 0; i < 4; i++) this.deco.push({ k: 'tree', x: x0 + rand(40, len - 40), y, s: rand(0.8, 1.5), hue: Math.floor(rand(190, 230)) });
+    this.puGap += 3;
+    this.maybePU(x0 + len * 0.7, y - 16);
+    if (this.fuelOn) this.cans.push({ x: x0 + len * 0.25, y: y - 18, ph: Math.random() * 6.28 });
     this.genX += len;
   },
   land(x, y) {
@@ -2660,7 +2835,13 @@ const SIDE = {
     this.last = pick;
   },
   generate() {
-    while (this.genX < this.camX + this.vw * 2.5) this.nextSegment();
+    while (this.genX < this.camX + this.vw * 2.5) {
+      while (this.fuelOn && this.gateNext < this.genX + 4000) {
+        this.gates.push({ x: this.gateNext });
+        this.gateNext += this.GATE_LEN;
+      }
+      this.nextSegment();
+    }
   },
   cull() {
     const cut = this.camX - this.vw * 1.5;
@@ -2669,6 +2850,13 @@ const SIDE = {
     this.lane = this.lane.filter(p => p.x > cut - 800);
     this.gems = this.gems.filter(g => !g.taken && g.x > cut);
     this.deco = this.deco.filter(o => (o.x1 || o.x) > cut);
+    if (this.fuelOn) {
+      this.cans = this.cans.filter(c => !c.taken && c.x > cut);
+      rockets = rockets.filter(r => r.x > cut);
+      gliders = gliders.filter(r => r.x > cut);
+      steadies = steadies.filter(r => r.x > cut);
+      oddities = oddities.filter(r => r.x > cut);
+    }
   },
   abyssAt(x) {
     let m = -Infinity;
@@ -2682,19 +2870,40 @@ const SIDE = {
     this.view();
     const inp = getInput();
     const P = player;
-    this.t += ms;
+    this.t += ms * worldRate();
 
-    P.vx += (inp.right ? CFG.PLAYER_SPEED : 0) - (inp.left ? CFG.PLAYER_SPEED : 0);
-    P.vx *= CFG.FRICTION;
+    const steady = P.steadyTime > 0;
+    const accel = steady ? STEADY_ACCEL : CFG.PLAYER_SPEED;
+    P.vx += (inp.right ? accel : 0) - (inp.left ? accel : 0);
+    P.vx *= steady ? STEADY_FRICTION : CFG.FRICTION;
     if (Math.abs(P.vx) < 0.05) P.vx = 0;
 
-    let grav;
-    if (P.chute) grav = CFG.CHUTE_GRAVITY;
-    else if (inp.jump && P.vy < 0 && P.vy > -4) grav = CFG.BUBBLE_GRAV;
-    else grav = CFG.GRAVITY;
-    P.vy += grav * dt;
-    const maxFall = P.chute ? CFG.CHUTE_MAX_FALL : CFG.MAX_FALL;
-    if (P.vy > maxFall) P.vy = maxFall;
+    if (P.rocketTimer > 0) {
+      // rocket: blast forward along the course, slight climb, no gravity
+      P.vx = 14;
+      P.vy = -1.2;
+      P.chute = false;
+      P.fallTimer = 0;
+    } else {
+      let grav;
+      if (P.chute) grav = P.hasGlider ? 0.16 : CFG.CHUTE_GRAVITY;
+      else if (inp.jump && P.vy < 0 && P.vy > -4) grav = CFG.BUBBLE_GRAV;
+      else grav = CFG.GRAVITY;
+      P.vy += grav * dt;
+      if (P.chute && P.hasGlider) {
+        P.gliderTime -= ms;
+        if (P.gliderTime <= 0) { P.gliderTime = 0; P.hasGlider = false; showBanner('GLIDER SPENT'); audio.triggers.spent(); }
+      }
+      if (P.chute && P.hasGlider) {
+        if (inp.jumpPressed) P.vy = GLIDER_LIFT;
+        if (inp.left || inp.right) {
+          if (P.vy > GLIDER_DIVE_FALL) P.vy = GLIDER_DIVE_FALL;
+          P.vx += (inp.right ? 1 : -1) * (steady ? 0.4 : 1.2);
+        } else if (P.vy > GLIDER_MAX_FALL) P.vy = GLIDER_MAX_FALL;
+      }
+      const maxFall = P.chute ? (P.hasGlider ? GLIDER_DIVE_FALL : CFG.CHUTE_MAX_FALL) : CFG.MAX_FALL;
+      if (P.vy > maxFall) P.vy = maxFall;
+    }
 
     if (inp.jumpPressed && (P.onGround || P.coyoteTimer > 0)) {
       P.vy = CFG.JUMP_FORCE;
@@ -2791,9 +3000,9 @@ const SIDE = {
     if (P.vx < -0.1) P.facing = -1;
 
     // parachute, same rule as the climb
-    if (!P.onGround && P.vy > 0) {
+    if (!P.onGround && P.vy > 0 && P.rocketTimer <= 0) {
       P.fallTimer += ms / 1000;
-      if (!P.chute && P.fallTimer >= CFG.CHUTE_DEPLOY_S) { P.chute = true; audio.triggers.chuteOpen(); }
+      if (!P.chute && P.fallTimer >= (P.hasGlider ? 0.35 : CFG.CHUTE_DEPLOY_S)) { P.chute = true; P.hasGlider ? audio.triggers.glider() : audio.triggers.chuteOpen(); }
     }
 
     // abyss: drop back out of the sky above this spot
@@ -2816,7 +3025,9 @@ const SIDE = {
     const m = Math.floor(P.x / this.UNIT);
     if (m > score) {
       score = m;
-      if (score > bestSide) {
+      if (this.fuelOn) {
+        if (score > bestFuel) { bestFuel = score; localStorage.setItem('bestFuel', bestFuel); LB.queue(); }
+      } else if (score > bestSide) {
         bestSide = score;
         localStorage.setItem('bestSide', bestSide);
         LB.queue();
@@ -2837,6 +3048,10 @@ const SIDE = {
       if (dx * dx + dy * dy < 22 * 22) {
         g.taken = true;
         this.gemCount++;
+        if (this.fuelOn) {
+          this.fuel = Math.min(100, this.fuel + 1.5);
+          if (this.counts[g.si]) this.counts[g.si].taken++;
+        }
         audio.triggers.gem();
         for (let i = 0; i < 10; i++) {
           const a = Math.random() * Math.PI * 2, sp = 1.5 + Math.random() * 3.5;
@@ -2844,6 +3059,8 @@ const SIDE = {
         }
       }
     }
+
+    if (this.fuelOn && this.fuelTick(ms, cx, pcy)) return;
 
     // camera: leads to the right, never shows below the abyss
     const k = Math.min(1, 0.2 * dt), kv = Math.min(1, 0.12 * dt);
@@ -3028,20 +3245,39 @@ const SIDE = {
     }
     ctx.globalAlpha = 1;
 
+    if (this.fuelOn) this.drawFuelWorld(time);
     drawParticles();
     GHOST.draw(time);
-    if (player.chute) drawParachute();
+    if (player.chute) { if (player.hasGlider) drawGliderWing(); else drawParachute(); }
 
     const P = player;
     ctx.globalAlpha = 0.3;
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = P.rocketTimer > 0 ? 'hsl(' + (20 + Math.sin(time * 0.02) * 15) + ', 100%, 60%)' : '#ffffff';
     ctx.fillRect(P.x - 2, P.y - 2, P.w + 4, P.h + 4);
     ctx.globalAlpha = 1;
-    ctx.fillStyle = z.Z.player;
+    ctx.fillStyle = P.rocketTimer > 0 ? CFG.PLAYER : z.Z.player;
     ctx.fillRect(P.x, P.y, P.w, P.h);
+    if (P.rocketTimer > 0) {
+      ctx.fillStyle = '#ff4422';
+      ctx.beginPath();
+      ctx.moveTo(P.x + P.w, P.y); ctx.lineTo(P.x + P.w + 12, P.y + P.h / 2); ctx.lineTo(P.x + P.w, P.y + P.h);
+      ctx.closePath(); ctx.fill();
+      ctx.fillRect(P.x - 5, P.y - 4, 8, 5);
+      ctx.fillRect(P.x - 5, P.y + P.h - 1, 8, 5);
+      for (let i = 0; i < 3; i++) particles.push({ x: P.x, y: P.y + P.h / 2 + (Math.random() - 0.5) * 8, vx: -3 - Math.random() * 3, vy: (Math.random() - 0.5) * 1.5, life: 1, decay: 0.06, size: 2.5 + Math.random() * 3, hue: 18 + Math.random() * 35, type: 'splash' });
+    }
     ctx.fillStyle = '#3d8bff';
     ctx.fillRect(P.facing > 0 ? P.x + P.w - 5 : P.x + 2, P.y + 5, 3, 3);
     ctx.restore();
+
+    staticFx.draw(16.67 * worldRate());
+    if (P.slowTime > 0) {
+      const sg = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.3, W / 2, H / 2, Math.max(W, H) * 0.75);
+      sg.addColorStop(0, 'rgba(61,139,255,0)');
+      sg.addColorStop(1, 'rgba(61,139,255,0.35)');
+      ctx.fillStyle = sg;
+      ctx.fillRect(0, 0, W, H);
+    }
 
     if (warpFlash > 0) {
       ctx.globalAlpha = warpFlash;
@@ -3054,6 +3290,7 @@ const SIDE = {
     ctx.shadowColor = 'rgba(0,0,0,0.75)';
     ctx.shadowBlur = 3;
     this.hud();
+    if (this.fuelOn) this.fuelHud();
     GHOST.hud();
     drawBanner();
     ctx.shadowBlur = 0;
@@ -3083,7 +3320,7 @@ const SIDE = {
     ctx.fillText(score + 'm', W - 14, 28);
     ctx.fillStyle = CFG.UI_DIM;
     ctx.font = '11px monospace';
-    ctx.fillText('best ' + bestSide + 'm', W - 14, 46);
+    ctx.fillText('best ' + (this.fuelOn ? bestFuel : bestSide) + 'm', W - 14, 46);
     ctx.fillStyle = '#6fb0ff';
     ctx.font = 'bold 14px monospace';
     ctx.fillText('◆ ' + this.gemCount, W - 14, 66);
@@ -3138,7 +3375,7 @@ function initGame() {
   applyDifficulty();
   warpFlash       = 0;
   resetTokens();
-  if (mode === 'side') { initPlayer(); SIDE.init(); GHOST.reset(); return; }
+  if (sideLike()) { initPlayer(); SIDE.init(); GHOST.reset(); return; }
   addGround();
   generateUpTo(-H * 2);
   initPlayer();
@@ -3398,7 +3635,7 @@ function render(time) {
   if (state === STATE.MENU) { drawMenu(); return; }
   if (state === STATE.DEAD)  { drawDead(); return; }
   if (state === STATE.RESULT) { drawResult(); return; }
-  if (mode === 'side') { SIDE.render(time); return; }
+  if (sideLike()) { SIDE.render(time); return; }
 
   drawZoneSky();
 
@@ -3781,18 +4018,18 @@ function drawMenu() {
   ctx.fillStyle = '#6fb0ff';
   ctx.font = 'bold 12px monospace';
   ctx.fillText(mode === 'gauntlet' ? 'RUN THE GAUNTLET' : mode === 'jewels' ? 'JEWELS MODE' : mode === 'career' ? 'CAREER  LEVEL ' + careerLevel + '  REACH ' + LEVEL_TARGET(careerLevel) + 'm'
-    : mode === 'challenge' ? 'CHALLENGE MODE' : mode === 'side' ? 'SIDE SCROLL MARATHON' : 'MARATHON MODE', W / 2, H / 2 - 54);
+    : mode === 'challenge' ? 'CHALLENGE MODE' : mode === 'side' ? 'SIDE SCROLL MARATHON' : mode === 'fuel' ? 'FUEL MODE' : 'MARATHON MODE', W / 2, H / 2 - 54);
 
   ctx.fillStyle = CFG.UI_DIM;
   ctx.font = '13px monospace';
-  ctx.fillText(mode === 'side' ? 'run right as far as you can' : 'climb as high as you can', W / 2, H / 2 + 2);
-  ctx.fillText(mode === 'side' ? 'fall in the abyss, drop from the sky' : 'fall 2s → parachute deploys', W / 2, H / 2 + 22);
+  ctx.fillText(mode === 'fuel' ? 'grab every gem in a stretch to level up' : mode === 'side' ? 'run right as far as you can' : 'climb as high as you can', W / 2, H / 2 + 2);
+  ctx.fillText(mode === 'fuel' ? 'gems are fuel, run dry and the run ends' : mode === 'side' ? 'fall in the abyss, drop from the sky' : 'fall 2s → parachute deploys', W / 2, H / 2 + 22);
 
   ctx.fillStyle = CFG.ACCENT;
   ctx.font = 'bold 14px monospace';
   ctx.fillText('tap to start', W / 2, H / 2 + 56);
 
-  const menuBest = mode === 'challenge' ? bestChallenge : mode === 'career' ? careerCleared : mode === 'gauntlet' ? bestGauntlet : mode === 'jewels' ? bestJewels : mode === 'side' ? bestSide : best;
+  const menuBest = mode === 'challenge' ? bestChallenge : mode === 'career' ? careerCleared : mode === 'gauntlet' ? bestGauntlet : mode === 'jewels' ? bestJewels : mode === 'side' ? bestSide : mode === 'fuel' ? bestFuel : best;
   if (menuBest > 0) {
     ctx.fillStyle = CFG.SCORE_COL;
     ctx.font = '11px monospace';
@@ -3842,6 +4079,24 @@ function drawResult() {
 }
 
 function drawDead() {
+  if (mode === 'fuel') {
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#3d8bff';
+    ctx.font = 'bold 26px monospace';
+    ctx.fillText('OUT OF FUEL', W / 2, H / 2 - 40);
+    ctx.fillStyle = CFG.SCORE_COL;
+    ctx.font = 'bold 20px monospace';
+    ctx.fillText(score + 'm', W / 2, H / 2 - 8);
+    ctx.fillStyle = '#6fb0ff';
+    ctx.font = 'bold 14px monospace';
+    ctx.fillText('LEVEL ' + SIDE.level, W / 2, H / 2 + 16);
+    ctx.fillStyle = CFG.UI_DIM;
+    ctx.font = '12px monospace';
+    ctx.fillText(score >= bestFuel && score > 0 ? 'new best!' : 'best ' + bestFuel + 'm  top level ' + bestFuelLevel, W / 2, H / 2 + 38);
+    ctx.fillText('tap to fuel up and go again', W / 2, H / 2 + 64);
+    drawNamePrompt(H / 2 + 90);
+    return;
+  }
   ctx.fillStyle = CFG.UI_TEXT;
   ctx.font = 'bold 26px monospace';
   ctx.textAlign = 'center';
@@ -3897,10 +4152,18 @@ function tick(ts) {
   const dt = ms / 16.67;
   lastTs = ts;
 
-  if (state === STATE.PLAYING && !LB.open && mode === 'side') {
+  if (state === STATE.PLAYING && !LB.open && sideLike()) {
+    const wr = worldRate();
     worldClock += ms;
     SIDE.update(dt, ms);
-    updateParticles(dt);
+    if (state === STATE.PLAYING && mode === 'fuel') {
+      updateRockets(ms);
+      updateSteadies(ms);
+      updateOddities(ms);
+      updateGliders();
+      updateBlaze();
+    }
+    updateParticles(dt * wr);
   } else if (state === STATE.PLAYING && !LB.open) {
     const wr = worldRate();
     worldClock += ms * wr;
@@ -3932,7 +4195,7 @@ function tick(ts) {
 //  GLOBAL LEADERBOARD (ascend-backend on Railway)
 // ════════════════════════════════════════════════════════════
 const LB = {
-  open: false, api: null, timer: null, posted: 0, postedC: 0, postedK: 0, postedG: 0, postedJ: 0, postedS: 0,
+  open: false, api: null, timer: null, posted: 0, postedC: 0, postedK: 0, postedG: 0, postedJ: 0, postedS: 0, postedF: 0,
   name: localStorage.getItem('ascendName') || '',
   el: id => document.getElementById(id),
   clean(s) { return String(s || '').toUpperCase().replace(/[^A-Z0-9 _.-]/g, '').trim().slice(0, 12); },
@@ -4004,6 +4267,7 @@ const LB = {
     if (bestGauntlet > 0 && bestGauntlet > this.postedG) jobs.push(['gauntlet', bestGauntlet]);
     if (bestJewels > 0 && bestJewels > this.postedJ) jobs.push(['jewels', bestJewels]);
     if (bestSide > 0 && bestSide > this.postedS) jobs.push(['side', bestSide]);
+    if (bestFuel > 0 && bestFuel > this.postedF) jobs.push(['fuel', bestFuel]);
     for (const [m, val] of jobs) {
       try {
         const r = await fetch(api + '/scores', {
@@ -4017,6 +4281,7 @@ const LB = {
         else if (m === 'career') { this.postedK = val; localStorage.setItem('ascendPostedK', String(val)); }
         else if (m === 'gauntlet') { this.postedG = val; localStorage.setItem('ascendPostedG', String(val)); }
         else if (m === 'side') { this.postedS = val; localStorage.setItem('ascendPostedS', String(val)); }
+        else if (m === 'fuel') { this.postedF = val; localStorage.setItem('ascendPostedF', String(val)); }
         else { this.postedJ = val; localStorage.setItem('ascendPostedJ', String(val)); }
         if (this.open && m === mode) {
           this.render(j.scores || []);
@@ -4057,8 +4322,9 @@ const LB = {
     this.el('modeGauntlet').className = m === 'gauntlet' ? 'on' : '';
     this.el('modeJewels').className = m === 'jewels' ? 'on' : '';
     this.el('modeSide').className = m === 'side' ? 'on' : '';
+    this.el('modeFuel').className = m === 'fuel' ? 'on' : '';
     this.el('lbTitle').textContent = m === 'career' ? 'LEVEL ' + careerLevel + ' FASTEST TIMES'
-      : ({ challenge: 'CHALLENGE', gauntlet: 'GAUNTLET', jewels: 'JEWELS', side: 'SIDE SCROLL' }[m] || 'MARATHON') + ' LEADERBOARD';
+      : ({ challenge: 'CHALLENGE', gauntlet: 'GAUNTLET', jewels: 'JEWELS', side: 'SIDE SCROLL', fuel: 'FUEL' }[m] || 'MARATHON') + ' LEADERBOARD';
     this.syncLevel();
   },
   syncLevel() {
@@ -4092,6 +4358,7 @@ const LB = {
     this.postedG = sameName ? parseInt(localStorage.getItem('ascendPostedG') || '0') : 0;
     this.postedJ = sameName ? parseInt(localStorage.getItem('ascendPostedJ') || '0') : 0;
     this.postedS = sameName ? parseInt(localStorage.getItem('ascendPostedS') || '0') : 0;
+    this.postedF = sameName ? parseInt(localStorage.getItem('ascendPostedF') || '0') : 0;
     this.setMode(mode);
     document.querySelectorAll('#lbOpts button').forEach(b => {
       const k = b.dataset.opt;
@@ -4118,7 +4385,7 @@ const LB = {
     };
     this.el('lvPrev').addEventListener('click', () => pickLevel(-1));
     this.el('lvNext').addEventListener('click', () => pickLevel(1));
-    ['modeClimb', 'modeChallenge', 'modeCareer', 'modeGauntlet', 'modeJewels', 'modeSide'].forEach(id => this.el(id).addEventListener('click', e => {
+    ['modeClimb', 'modeChallenge', 'modeCareer', 'modeGauntlet', 'modeJewels', 'modeSide', 'modeFuel'].forEach(id => this.el(id).addEventListener('click', e => {
       const m = e.currentTarget.dataset.mode;
       if (m === mode) return;
       GHOST.save();
@@ -4138,13 +4405,13 @@ const LB = {
     this.el('lbSave').addEventListener('click', async () => {
       const nm = this.clean(this.el('lbName').value);
       if (!nm) { this.status('name needs letters or numbers'); return; }
-      if (nm !== this.name) { this.posted = 0; this.postedC = 0; this.postedK = 0; this.postedG = 0; this.postedJ = 0; this.postedS = 0; }
+      if (nm !== this.name) { this.posted = 0; this.postedC = 0; this.postedK = 0; this.postedG = 0; this.postedJ = 0; this.postedS = 0; this.postedF = 0; }
       this.name = nm;
       this.el('lbName').value = nm;
       localStorage.setItem('ascendName', nm);
       localStorage.setItem('ascendPostedName', nm);
       this.postAllTimes();
-      if (best > 0 || bestChallenge > 0 || careerCleared > 0 || bestGauntlet > 0 || bestJewels > 0 || bestSide > 0) { this.status('posting'); await this.post(); }
+      if (best > 0 || bestChallenge > 0 || careerCleared > 0 || bestGauntlet > 0 || bestJewels > 0 || bestSide > 0 || bestFuel > 0) { this.status('posting'); await this.post(); }
       this.load();
     });
     document.addEventListener('visibilitychange', () => {
@@ -4344,7 +4611,7 @@ requestAnimationFrame(loop);
       +   '</span>'
       + '</div>'
       // BLUE PHONE: donate pill, always visible under the seal row.
-      + '<a class="mtg-donate" href="' + CONFIG.donate + '" target="_blank" rel="noopener">'
+      + '<a class="mtg-donate" href="' + CONFIG.donate + '?client_reference_id=' + ((location.hostname.replace(/\.vercel\.app$/,'').replace(/[^A-Za-z0-9_-]/g,'-')) || 'unknown') + '" target="_blank" rel="noopener">'
       +   '<svg class="mtg-donate-coin" viewBox="0 0 40 40" width="34" height="34" aria-hidden="true">'
       +       '<circle cx="20" cy="20" r="19" fill="#d9b25a" stroke="#8a6a24" stroke-width="1.5"/>'
       +       '<circle cx="20" cy="20" r="14.5" fill="#f2d68a" stroke="#b08a3a" stroke-width="1"/>'

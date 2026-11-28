@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="theme-color" content="#fffdf7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>BIRDIXEL</title>
 <style>
@@ -328,6 +329,57 @@
   .phud-btn:active { color:#00ff66; border-color:#00ff66; }
 
   .hidden { display:none !important; }
+  #menuScreen { justify-content:flex-start; overflow-y:auto; touch-action:pan-y; padding-bottom:0; }
+  #menuScreen > h1 { margin-top:auto; }
+  #mtgSealContainer { margin-top:auto; width:calc(100% + 40px); margin-left:-20px; margin-right:-20px; flex-shrink:0; }
+
+  /* ── LIGHT THEME (2026-11-27) ── */
+  body { background:#efe8d6; }
+  #gameWrapper { background:#f7f2e6; box-shadow:0 0 0 1px #d9ccae; }
+  #hud, #paintHud, #glassHud, #cityHud, #photoHud {
+    background:#fffdf7 !important; border-bottom:1px solid #d9ccae !important;
+  }
+  .hud-item { font-size:7px; color:#6b6255; }
+  .hud-item span { color:#2f7d55; }
+  #menuBtn, .phud-btn, .ghud-btn {
+    font-size:7px !important; background:#fffdf7 !important; color:#2f7d55 !important;
+    border:1px solid #2f7d55 !important; border-radius:3px; padding:5px 7px !important;
+  }
+  #menuBtn:active, .phud-btn:active, .ghud-btn:active { background:#2f7d55 !important; color:#fff !important; }
+  .auto-btn.auto-on { background:#2f7d55 !important; color:#fff !important; box-shadow:none; }
+  .paint-label, .glass-label, #glassHud > div, #photoHud > div, #cityHud > div { font-size:7px !important; color:#3b4a3f !important; }
+  .color-picker-panel { background:#fffdf7 !important; border-bottom:2px solid #d9ccae !important; }
+  .swatch.active-sel { border-color:#233127; box-shadow:0 0 0 1px #fff; }
+  #glassStats { background:#f3ecdb !important; color:#3b4a3f !important; font-size:6px !important; border-bottom:1px solid #d9ccae !important; }
+  #progressBar { background:#e6dcc4; }
+  #progressFill { background:#2f7d55; }
+  #progressMark { background:#e0662b; width:2px; }
+
+  .screen { background: radial-gradient(ellipse at 50% 30%, #fffdf7 0%, #f6efdd 60%, #ece2c9 100%); color:#233127; }
+  .screen::before { background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(47,125,85,0.035) 3px, rgba(47,125,85,0.035) 4px); }
+  .screen h1 { color:#2f7d55; text-shadow:3px 3px 0 #e0662b33; animation:none; }
+  .screen .sub, .screen .stat { color:#4a5a4e; text-shadow:none; }
+  .scr-btn { background:#2f7d55; color:#fffdf7; border:2px solid #2f7d55; text-shadow:none; box-shadow:0 3px 0 #1d5a3b; animation:none; border-radius:4px; }
+  .scr-btn:active { background:#24653f; transform:translateY(2px); box-shadow:0 1px 0 #1d5a3b; }
+  .scr-btn-alt, #menuScreen .scr-btn-alt {
+    background:#fffdf7 !important; color:#233127 !important; text-shadow:none !important;
+    box-shadow:0 3px 0 #d9ccae !important; border-radius:4px;
+  }
+  .scr-btn-alt:active { transform:translateY(2px); }
+  #paintBtn { border-color:#e0662b !important; }
+  #glassBtn { border-color:#7b2cbf !important; }
+  #photoBtn { border-color:#0f8b8d !important; }
+  #cityBtn  { border-color:#1f5fd6 !important; }
+  .scr-btn-sm { color:#2f7d55; border:1px solid #2f7d55; background:#fffdf7; border-radius:4px; }
+  .scr-btn-sm:active { background:#2f7d55; color:#fff; }
+  #bannerScreen { background:rgba(255,253,247,0.9); color:#2f7d55; }
+  #bannerScreen h2 { text-shadow:3px 3px 0 #e0662b33; }
+  #bannerScreen p { color:#4a5a4e; text-shadow:none; }
+
+  #dpad { opacity:0.9; grid-template-columns:52px 52px 52px; grid-template-rows:52px 52px 52px; gap:4px; bottom:18px; }
+  .db { background:rgba(255,253,247,0.92); border:1px solid #2f7d55; color:#2f7d55; font-size:16px; border-radius:8px; box-shadow:0 2px 0 #d9ccae; }
+  .db:active, .db.on { background:#2f7d55; color:#fff; border-color:#2f7d55; }
+  .db-blank { background:transparent; border-color:transparent; box-shadow:none; }
 </style>
 </head>
 <body>
@@ -438,6 +490,7 @@
     <button class="scr-btn-alt" id="glassBtn" style="color:#ffffff;border-color:#d7bde2;box-shadow:0 0 10px #d7bde255;">◈ STAINED GLASS</button>
     <button class="scr-btn-alt" id="photoBtn" style="color:#ffffff;border-color:#00d2d3;box-shadow:0 0 10px #00d2d355;">📷 PHOTO GLASS</button>
     <button class="scr-btn-alt" id="cityBtn" style="color:#00ffff;border-color:#00ffff;box-shadow:0 0 10px #00ffff33;">⬛ CITYSCAPE</button>
+    <div id="mtgSealContainer"></div>
   </div>
 
   <div class="screen hidden" id="gameOverScreen">
@@ -467,18 +520,20 @@ const CLAIM_TARGET = 0.80;
 const OPEN=0, BORDER=1, CLAIMED=2, DRAWING=3;
 
 const C = {
-  bg:        '#2a4a2a',
-  dot:       '#4a8a4a',
-  border:    '#00ff44',
-  borderHi:  '#ccffcc',
-  claimed:   '#2a6a2a',
-  claimedFg: '#44aa44',
-  drawing:   '#ff9900',
-  drawHi:    '#ffee00',
-  player:    '#00ffaa',
-  playerGlow:'rgba(0,255,170,0.6)',
-  enemy:     ['#ff4444','#4499ff','#ffdd22','#ff44ff'],
+  bg:        '#f7f2e6',
+  dot:       '#ddd3bc',
+  border:    '#2f7d55',
+  borderHi:  '#5fae84',
+  claimed:   '#a8d8b9',
+  claimedFg: '#bfe3cb',
+  drawing:   '#e0662b',
+  drawHi:    '#ffb070',
+  player:    '#1f5fd6',
+  playerGlow:'rgba(31,95,214,0.28)',
+  enemy:     ['#d7263d','#7b2cbf','#e89a0c','#0f8b8d'],
 };
+let popups = [];      // floating +score text
+let flashTimer = 0;   // red flash after losing a life
 
 // ═══════════════════════════════════════════════════
 // CANVAS
@@ -768,7 +823,7 @@ function initPlayer() {
     const pos = glassSpawnPos();
     row = pos[0]; col = pos[1];
   }
-  player = { col, row, alive:true, drawing:false, moveTimer:0, moveDelay:4 };
+  player = { col, row, alive:true, drawing:false, moveTimer:0, moveDelay:4, grace: RESPAWN_GRACE };
   drawPath = [];
 }
 
@@ -791,6 +846,7 @@ function killPlayer() {
     return;
   }
   lives--;
+  flashTimer = 14;
   updateHUD();
   setTimeout(() => lives<=0 ? showGameOver() : initPlayer(), 800);
 }
@@ -1139,7 +1195,7 @@ function completeShape(pathSnapshot) {
   // Classic mode: BFS flood from each enemy to mark their side
   const scratch = new Uint8Array(grid);
   for (const e of enemies) {
-    bfsMark(scratch, (e.py/TILE)|0, (e.px/TILE)|0, OPEN, 99);
+    bfsMark(scratch, e.r, e.c, OPEN, 99);
   }
 
   let gained=0;
@@ -1148,11 +1204,12 @@ function completeShape(pathSnapshot) {
   }
 
   for (const e of enemies) {
-    if (enemyOverlapsSolid(e.px, e.py)) teleportToOpen(e);
+    if (isSolidCell(e.r, e.c)) rescueEnemy(e);
   }
 
   claimedCount+=gained;
   score+=gained*8*level;
+  if (gained>0) popups.push({ x:player.col*TILE, y:player.row*TILE, text:'+'+(gained*8*level), t:60 });
   player.drawing=false; drawPath=[];
   updateHUD();
 
@@ -1196,171 +1253,98 @@ const getClaimedPct = () => claimedCount/totalOpen;
 // ═══════════════════════════════════════════════════
 // ENEMIES
 // ═══════════════════════════════════════════════════
-// Half-size of enemy bounding box in pixels (slightly smaller than TILE so it fits in a cell)
-const EHALF = TILE * 0.45;
+// Birds live on the grid and always fly on a 45 degree diagonal, like classic
+// Xonix. A diagonal bird can never slide along a wall, so it can never hug one.
+const SAFE_SPAWN_DIST = 32;   // cells a bird must be from the player when placed
+const RESPAWN_GRACE   = 90;   // frames of protection after the player respawns
 
-// Returns true if a world-pixel point is inside a solid cell
-function isSolidPx(wx, wy) {
-  const r=(wy/TILE)|0, c=(wx/TILE)|0;
-  const v=gc(r,c);
-  return v===BORDER||v===CLAIMED;
-}
+const isSolidCell = (r,c) => { const v=gc(r,c); return v===BORDER||v===CLAIMED||v===-1; };
 
-// Returns true if the enemy AABB at (wx,wy) overlaps any solid cell
-function enemyOverlapsSolid(wx, wy) {
-  // Check all four corners of the bounding box
-  const x0=wx-EHALF, x1=wx+EHALF;
-  const y0=wy-EHALF, y1=wy+EHALF;
-  return isSolidPx(x0,y0)||isSolidPx(x1,y0)||isSolidPx(x0,y1)||isSolidPx(x1,y1);
-}
-
-// Build a list of guaranteed OPEN cell centers for safe spawning/teleport
-function getOpenCells() {
-  const open=[];
-  for (let r=2;r<ROWS-2;r++)
-    for (let c=2;c<COLS-2;c++)
-      if (gc(r,c)===OPEN) open.push([r,c]);
-  return open;
-}
-
-function randomOpenPos() {
-  // Pick random OPEN cell, return its pixel center
-  let tries=0;
-  while(tries++<200) {
+// Pick an OPEN cell far from the player and the line being drawn.
+function safeOpenCell(minDist) {
+  const pr = player ? player.row : 0, pc = player ? player.col : Math.floor(COLS/2);
+  const farFromPlayer = (r,c) => Math.abs(r-pr)+Math.abs(c-pc) >= minDist;
+  const farFromLine = (r,c) => {
+    if (!drawPath || !drawPath.length) return true;
+    for (let i=0;i<drawPath.length;i+=3) {
+      const [lr,lc]=drawPath[i];
+      if (Math.abs(lr-r)+Math.abs(lc-c) < 8) return false;
+    }
+    return true;
+  };
+  for (let tries=0; tries<400; tries++) {
     const r=2+Math.floor(Math.random()*(ROWS-4));
     const c=2+Math.floor(Math.random()*(COLS-4));
-    if (gc(r,c)===OPEN && !enemyOverlapsSolid(c*TILE+TILE/2, r*TILE+TILE/2))
-      return [c*TILE+TILE/2, r*TILE+TILE/2];
+    if (gc(r,c)===OPEN && farFromPlayer(r,c) && farFromLine(r,c)) return [r,c];
   }
-  // Fallback: scan from top-left
-  for (let r=2;r<ROWS-2;r++)
-    for (let c=2;c<COLS-2;c++)
-      if (gc(r,c)===OPEN) return [c*TILE+TILE/2, r*TILE+TILE/2];
-  return [W/2, H/2];
+  // Fallback: the OPEN cell farthest from the player.
+  let best=null, bestD=-1;
+  for (let r=1;r<ROWS-1;r+=2) for (let c=1;c<COLS-1;c+=2) {
+    if (gc(r,c)!==OPEN) continue;
+    const d=Math.abs(r-pr)+Math.abs(c-pc);
+    if (d>bestD) { bestD=d; best=[r,c]; }
+  }
+  return best || [Math.floor(ROWS/2), Math.floor(COLS/2)];
 }
 
 function spawnEnemies(count) {
   enemies=[];
   for (let i=0;i<count;i++) {
-    const [px,py] = randomOpenPos();
-    // Start at a random diagonal-ish angle (never axis-aligned)
-    const a = (Math.random()*0.6+0.2)*Math.PI + Math.floor(Math.random()*4)*(Math.PI/2);
-    const spd = 0.8 + i*0.15 + Math.random()*0.3 + level*0.08;
+    const [r,c] = safeOpenCell(SAFE_SPAWN_DIST);
     enemies.push({
-      px, py,
-      vx: Math.cos(a)*spd, vy: Math.sin(a)*spd,
+      r, c,
+      dr: Math.random()<0.5?-1:1,
+      dc: Math.random()<0.5?-1:1,
+      // cells per frame; gentle ramp with level and bird index
+      speed: Math.min(0.5, 0.22 + i*0.025 + (level||1)*0.02 + Math.random()*0.04),
+      acc: Math.random(),
       kind: i%4,
-      stuckCheckX: px, stuckCheckY: py,   // position at last stuck check
-      stuckTimer: 0,                        // frames since last stuck check
+      trail: [],
     });
   }
 }
 
-function teleportToOpen(e) {
-  const [px,py]=randomOpenPos();
-  e.px=px; e.py=py;
-  // Full random angle on teleport, guaranteed diagonal
-  const a = Math.random()*Math.PI*2;
-  const spd = Math.hypot(e.vx,e.vy) || 1.0;
-  e.vx=Math.cos(a)*spd; e.vy=Math.sin(a)*spd;
-  e.stuckCheckX=px; e.stuckCheckY=py; e.stuckTimer=0;
+// If a fill ever lands on a bird, move it to the nearest open cell in place
+// (never across the map next to the player).
+function rescueEnemy(e) {
+  const spot = findNearestOpen(e.r, e.c);
+  if (spot) { e.r=spot[0]; e.c=spot[1]; }
+  else { const s=safeOpenCell(SAFE_SPAWN_DIST); e.r=s[0]; e.c=s[1]; }
+  e.trail=[];
 }
 
-function applyBounce(e, reflectX, reflectY) {
-  const spd = Math.hypot(e.vx, e.vy);
-
-  // Reflect
-  if (reflectX) e.vx = -e.vx;
-  if (reflectY) e.vy = -e.vy;
-
-  // Add ±50° jitter to current angle
-  let angle = Math.atan2(e.vy, e.vx);
-  angle += (Math.random() - 0.5) * (Math.PI * 0.55);
-
-  // Enforce min 20° off-axis so birds can't hug walls
-  const MIN_OFF = Math.PI * 0.111; // 20°
-  if (reflectX) {
-    // After X-wall hit, need meaningful vy (sin of angle not near zero)
-    if (Math.abs(Math.sin(angle)) < Math.sin(MIN_OFF)) {
-      angle = (Math.sin(angle) >= 0 ? 1 : -1) * MIN_OFF + (Math.cos(angle) >= 0 ? 0 : Math.PI);
-    }
-  }
-  if (reflectY) {
-    // After Y-wall hit, need meaningful vx (cos of angle not near zero)
-    if (Math.abs(Math.cos(angle)) < Math.sin(MIN_OFF)) {
-      angle = Math.PI/2 * (Math.sin(angle) >= 0 ? 1 : -1) - (Math.cos(angle) >= 0 ? 1 : -1) * MIN_OFF;
-    }
-  }
-
-  e.vx = Math.cos(angle) * spd;
-  e.vy = Math.sin(angle) * spd;
-
-  // NaN guard — fall back to safe 45° diagonal at original speed
-  if (!isFinite(e.vx) || !isFinite(e.vy) || spd === 0) {
-    const a = Math.PI/4 + Math.floor(Math.random()*4) * Math.PI/2;
-    const s = spd || 1.0;
-    e.vx = Math.cos(a) * s;
-    e.vy = Math.sin(a) * s;
+function stepEnemy(e) {
+  let { r, c, dr, dc } = e;
+  const hitC = isSolidCell(r, c+dc);
+  const hitR = isSolidCell(r+dr, c);
+  if (hitC) dc=-dc;
+  if (hitR) dr=-dr;
+  if (!hitC && !hitR && isSolidCell(r+dr, c+dc)) { dr=-dr; dc=-dc; }
+  e.dr=dr; e.dc=dc;
+  const nr=r+dr, nc=c+dc;
+  if (!isSolidCell(nr,nc)) {
+    e.trail.push([r,c]); if (e.trail.length>3) e.trail.shift();
+    e.r=nr; e.c=nc;
   }
 }
 
-const STUCK_FRAMES = 60;  // check every 60 frames (~1 sec)
-const STUCK_DIST  = TILE; // must move at least 1 tile or considered stuck
+function enemyTouchesPlayer(e) {
+  if (!player.alive || !player.drawing || player.grace>0) return false;
+  if (gc(e.r,e.c)===DRAWING) return true;
+  return Math.abs(e.r-player.row)<=1 && Math.abs(e.c-player.col)<=1;
+}
 
 function updateEnemies() {
+  if (player.grace>0) player.grace--;
   for (const e of enemies) {
-
-    // --- Stuck detection (every STUCK_FRAMES frames) ---
-    e.stuckTimer++;
-    if (e.stuckTimer >= STUCK_FRAMES) {
-      const dx = e.px - e.stuckCheckX;
-      const dy = e.py - e.stuckCheckY;
-      if (Math.hypot(dx,dy) < STUCK_DIST) {
-        // Hasn't moved enough — teleport to two positions away from current
-        teleportToOpen(e);
-        continue;
-      }
-      e.stuckCheckX = e.px;
-      e.stuckCheckY = e.py;
-      e.stuckTimer  = 0;
+    if (isSolidCell(e.r,e.c)) rescueEnemy(e);
+    e.acc += e.speed;
+    while (e.acc >= 1) {
+      e.acc -= 1;
+      stepEnemy(e);
+      if (enemyTouchesPlayer(e)) { killPlayer(); break; }
     }
-
-    // --- Move X, check AABB ---
-    const nx = e.px + e.vx;
-    if (enemyOverlapsSolid(nx, e.py)) {
-      applyBounce(e, true, false);
-      const nx2 = e.px + e.vx;
-      e.px = enemyOverlapsSolid(nx2, e.py) ? e.px : nx2;
-    } else {
-      e.px = nx;
-    }
-
-    // --- Move Y, check AABB ---
-    const ny = e.py + e.vy;
-    if (enemyOverlapsSolid(e.px, ny)) {
-      applyBounce(e, false, true);
-      const ny2 = e.py + e.vy;
-      e.py = enemyOverlapsSolid(e.px, ny2) ? e.py : ny2;
-    } else {
-      e.py = ny;
-    }
-
-    // Clamp to world bounds
-    e.px = Math.max(TILE+EHALF+1, Math.min(W-TILE-EHALF-1, e.px));
-    e.py = Math.max(TILE+EHALF+1, Math.min(H-TILE-EHALF-1, e.py));
-
-    // Nuclear escape: if still overlapping solid, teleport
-    if (enemyOverlapsSolid(e.px, e.py)) {
-      teleportToOpen(e);
-      continue;
-    }
-
-    // --- Game collision checks ---
-    const er=(e.py/TILE)|0, ec=(e.px/TILE)|0;
-    // Line hit: always deadly while drawing
-    if (player.alive && player.drawing && gc(er,ec)===DRAWING) { killPlayer(); continue; }
-    // Body hit: only deadly while drawing (on wall = safe)
-    if (player.alive && player.drawing && Math.abs(er-player.row)<=1 && Math.abs(ec-player.col)<=1) killPlayer();
+    if (enemyTouchesPlayer(e)) killPlayer();
   }
 }
 
@@ -1418,26 +1402,54 @@ function drawScene() {
     }
   }
 
-  // Enemies — single TILE-sized pixel square
+  // Birds: short fading trail, then a body with a flapping wing pixel
+  const flap = Math.floor(Date.now()/160)%2;
   for (const e of enemies) {
-    const sx=Math.floor(e.px)-cx, sy=Math.floor(e.py)-cy;
-    if (sx<-TILE||sx>viewW||sy<-TILE||sy>viewH) continue;
-    ctx.fillStyle=C.enemy[e.kind];
-    ctx.fillRect(sx,sy,TILE,TILE);
-    // bright 1px center
+    const sx=e.c*TILE-cx, sy=e.r*TILE-cy;
+    if (sx<-TILE*3||sx>viewW+TILE*2||sy<-TILE*3||sy>viewH+TILE*2) continue;
+    const col=C.enemy[e.kind];
+    ctx.globalAlpha=0.22;
+    ctx.fillStyle=col;
+    for (const [tr,tc] of e.trail) ctx.fillRect(tc*TILE-cx,tr*TILE-cy,TILE,TILE);
+    ctx.globalAlpha=1;
+    ctx.fillStyle=col;
+    ctx.fillRect(sx-1,sy-1,TILE+2,TILE+2);
+    ctx.fillRect(sx-3,sy+(flap?-2:2),2,2);
+    ctx.fillRect(sx+TILE+1,sy+(flap?-2:2),2,2);
+    ctx.fillStyle='#fffdf7';
+    ctx.fillRect(sx+(e.dc>0?2:0),sy+(e.dr>0?2:0),2,2);
+  }
+
+  // Player: blue pixel with a soft ring; blinks while protected after respawn
+  const blinkOff = player.grace>0 && Math.floor(Date.now()/90)%2===0;
+  if ((player.alive && !blinkOff) || (!player.alive && Math.floor(Date.now()/100)%2===0)) {
+    const sx=player.col*TILE-cx, sy=player.row*TILE-cy;
+    ctx.fillStyle=C.playerGlow;
+    ctx.fillRect(sx-3,sy-3,TILE+6,TILE+6);
+    ctx.fillStyle=C.player;
+    ctx.fillRect(sx-1,sy-1,TILE+2,TILE+2);
     ctx.fillStyle='#ffffff';
     ctx.fillRect(sx+1,sy+1,TILE-2,TILE-2);
   }
 
-  // Player — single TILE pixel + glow halo
-  if (player.alive||(Math.floor(Date.now()/100)%2===0)) {
-    const sx=player.col*TILE-cx, sy=player.row*TILE-cy;
-    ctx.fillStyle=C.playerGlow;
-    ctx.fillRect(sx-2,sy-2,TILE+4,TILE+4);
-    ctx.fillStyle=C.player;
-    ctx.fillRect(sx,sy,TILE,TILE);
-    ctx.fillStyle='#ffffff';
-    ctx.fillRect(sx+1,sy+1,TILE-2,TILE-2);
+  // Score popups
+  if (popups.length) {
+    ctx.font='8px "Press Start 2P", monospace';
+    ctx.textAlign='center';
+    for (const p of popups) {
+      ctx.globalAlpha=Math.min(1,p.t/30);
+      ctx.fillStyle='#1d3b2a';
+      ctx.fillText(p.text, p.x-cx, p.y-cy-(60-p.t)*0.5);
+    }
+    ctx.globalAlpha=1;
+    popups.forEach(p=>p.t--);
+    popups = popups.filter(p=>p.t>0);
+  }
+
+  if (flashTimer>0) {
+    ctx.fillStyle='rgba(215,38,61,'+(flashTimer/14*0.35)+')';
+    ctx.fillRect(0,0,viewW,viewH);
+    flashTimer--;
   }
 
   drawMinimap(cx,cy);
@@ -1495,9 +1507,9 @@ function drawCityScene() {
 
 function drawMinimap(cx,cy) {
   const mmW=64,mmH=50,mmX=viewW-mmW-4,mmY=6;
-  ctx.fillStyle='rgba(0,12,0,0.88)';
+  ctx.fillStyle='rgba(255,253,247,0.92)';
   ctx.fillRect(mmX,mmY,mmW,mmH);
-  ctx.strokeStyle='#2a6a2a'; ctx.lineWidth=1;
+  ctx.strokeStyle='#b8a98a'; ctx.lineWidth=1;
   ctx.strokeRect(mmX,mmY,mmW,mmH);
 
   const sx=mmW/W, sy=mmH/H;
@@ -1507,7 +1519,7 @@ function drawMinimap(cx,cy) {
     for (let c=0;c<COLS;c+=step) {
       const v=grid[r*COLS+c];
       if (v===OPEN) continue;
-      ctx.fillStyle=v===BORDER?'#00cc00':v===CLAIMED?'#1a5a1a':C.drawing;
+      ctx.fillStyle=v===BORDER?C.border:v===CLAIMED?C.claimed:C.drawing;
       ctx.fillRect(mmX+c*sx,mmY+r*sy,Math.ceil(step*sx)+1,Math.ceil(step*sy)+1);
     }
   }
@@ -1515,7 +1527,7 @@ function drawMinimap(cx,cy) {
   // Enemies
   for (const e of enemies) {
     ctx.fillStyle=C.enemy[e.kind];
-    ctx.fillRect(mmX+(e.px/W)*mmW-0.5,mmY+(e.py/H)*mmH-0.5,2,2);
+    ctx.fillRect(mmX+(e.c/COLS)*mmW-1,mmY+(e.r/ROWS)*mmH-1,2,2);
   }
 
   // Player dot
@@ -1523,7 +1535,7 @@ function drawMinimap(cx,cy) {
   ctx.fillRect(mmX+player.col*(mmW/(COLS))-1,mmY+player.row*(mmH/(ROWS))-1,3,3);
 
   // Viewport rect
-  ctx.strokeStyle='rgba(0,255,102,0.5)'; ctx.lineWidth=1;
+  ctx.strokeStyle='rgba(31,95,214,0.6)'; ctx.lineWidth=1;
   ctx.strokeRect(mmX+cx*sx,mmY+cy*sy,viewW*sx,viewH*sy);
 }
 
@@ -2175,7 +2187,17 @@ function startLevel() {
 // ═══════════════════════════════════════════════════
 // LOOP
 // ═══════════════════════════════════════════════════
-function loop() {
+let lastFrame = 0, frameAcc = 0;
+function loop(now) {
+  requestAnimationFrame(loop);
+  if (!lastFrame) lastFrame = now || 0;
+  frameAcc += Math.min(100, (now||0) - lastFrame);
+  lastFrame = now || 0;
+  if (frameAcc < 1000/60 - 1) return;
+  frameAcc = Math.max(0, frameAcc - 1000/60);
+  tick();
+}
+function tick() {
   switch(gameState) {
     case S.PLAYING:
       updatePlayer(); updateEnemies(); updateCamera(); drawScene(); break;
@@ -2197,7 +2219,6 @@ function loop() {
     default:
       if (grid) { updateCamera(); drawScene(); } break;
   }
-  requestAnimationFrame(loop);
 }
 
 // ═══════════════════════════════════════════════════
@@ -2496,7 +2517,7 @@ loop();
       +   '</span>'
       + '</div>'
       // BLUE PHONE: donate pill, always visible under the seal row.
-      + '<a class="mtg-donate" href="' + CONFIG.donate + '" target="_blank" rel="noopener">'
+      + '<a class="mtg-donate" href="' + CONFIG.donate + '?client_reference_id=' + ((location.hostname.replace(/\.vercel\.app$/,'').replace(/[^A-Za-z0-9_-]/g,'-')) || 'unknown') + '" target="_blank" rel="noopener">'
       +   '<svg class="mtg-donate-coin" viewBox="0 0 40 40" width="34" height="34" aria-hidden="true">'
       +       '<circle cx="20" cy="20" r="19" fill="#d9b25a" stroke="#8a6a24" stroke-width="1.5"/>'
       +       '<circle cx="20" cy="20" r="14.5" fill="#f2d68a" stroke="#b08a3a" stroke-width="1"/>'

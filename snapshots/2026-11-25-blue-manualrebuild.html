@@ -154,6 +154,32 @@ h3{margin:14px 0 6px;font-size:15px;color:var(--blue)}
 #cbGrid .ct{background:#fff;border:2px solid var(--line);border-radius:10px;padding:4px;text-align:center;font-size:12px;color:#506078}
 #cbGrid .ct.on{border-color:var(--blue);background:var(--blue2);color:var(--blue);font-weight:700}
 #cbGrid img{width:100%;height:110px;object-fit:contain;background:#eef2f7;border-radius:6px;display:block}
+
+#lift{position:fixed;inset:0;z-index:35;display:none;background-color:#f6f9fd;background-image:linear-gradient(rgba(30,111,217,.075) 1px,transparent 1px),linear-gradient(90deg,rgba(30,111,217,.075) 1px,transparent 1px),linear-gradient(rgba(30,111,217,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(30,111,217,.035) 1px,transparent 1px);background-size:96px 96px,96px 96px,24px 24px,24px 24px;transform:translateY(100%);transition:transform .34s cubic-bezier(.2,.8,.2,1)}
+#lift.show{display:block}
+#lift.up{transform:none}
+#lfHead{position:absolute;top:0;left:0;right:0;height:52px;display:flex;gap:6px;align-items:center;padding:6px 8px;background:#fff;border-bottom:3px solid var(--blue);z-index:3}
+#lfName{flex:1;min-width:0;font-weight:700;color:var(--blue);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#lfCanvas{position:absolute;top:52px;left:0;width:100%;height:calc(100% - 164px);touch-action:none;display:block}
+#lfLabels{position:absolute;top:52px;left:0;right:0;height:calc(100% - 164px);pointer-events:none;overflow:hidden}
+.dim{position:absolute;transform:translate(-50%,-50%);height:auto;min-height:0;background:#fff;border:1.5px solid #1e6fd9;border-radius:3px;color:#123d75;font:600 12px/1 "Arial Narrow","Roboto Condensed",system-ui,sans-serif;letter-spacing:.02em;padding:5px 7px;pointer-events:auto;white-space:nowrap;box-shadow:0 1px 3px rgba(18,61,117,.2)}
+.dim.num{border-style:dashed;color:#506078;border-color:#7f9cc0}
+.dim.sel{background:#1e6fd9;color:#fff;border-color:#1e6fd9;border-style:solid}
+#lfStatus{position:absolute;top:60px;left:8px;right:8px;background:rgba(30,111,217,.94);color:#fff;padding:6px 10px;border-radius:8px;font-size:13px;pointer-events:none;opacity:0;transition:opacity .2s;z-index:4}
+#lfStatus.show{opacity:1}
+#lfCard{bottom:120px}
+#lfCardT{font-size:13px;color:#26324a;margin-bottom:8px}
+#lfTools{position:absolute;left:0;right:0;bottom:0;height:112px;background:#fff;border-top:1px solid var(--line)}
+#lfTools .row{height:56px}
+#lfTools .row button{flex:1;min-width:0;padding:0 2px;font-size:13px}
+#lfTools label{flex:1.6;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--blue);font-weight:700;min-width:0}
+#lfTools input[type=range]{flex:1;min-width:50px}
+.bpage .figimg{-webkit-user-drag:none;-webkit-touch-callout:none;user-select:none}
+.liftghost{position:fixed;z-index:34;pointer-events:none;background:#fff;box-shadow:0 16px 30px rgba(20,40,80,.3);transform-origin:50% 100%;margin:0}
+.liftghost.ready{box-shadow:0 0 0 3px #1e6fd9,0 22px 40px rgba(20,40,80,.35)}
+.liftghost.drop{transition:transform .25s ease}
+.liftghost.go{transition:transform .4s ease,opacity .4s ease;opacity:0}
+@media (prefers-reduced-motion:reduce){#lift{transition:none}.liftghost.drop,.liftghost.go{transition:none}}
 </style>
 </head>
 <body>
@@ -264,7 +290,7 @@ h3{margin:14px 0 6px;font-size:15px;color:var(--blue)}
 </div>
 
 <div id="studio">
-  <div id="stHead"><button id="stBack">Back</button><input id="stName" type="text"><button id="tabTrace" class="on">Trace</button><button id="tab3d">3D</button></div>
+  <div id="stHead"><button id="stBack">Back</button><input id="stName" type="text"><button id="tabTrace" class="on">Trace</button><button id="tab3d">3D</button><button id="stLift">Lift</button></div>
   <div id="stTools">
     <div id="toolsTrace">
       <div class="row"><button data-tool="select" class="on">Select</button><button data-tool="merge">Merge</button><button data-tool="delete">Delete</button><button data-tool="move">Move</button><button id="tuneBtn">Tune</button></div>
@@ -306,6 +332,17 @@ h3{margin:14px 0 6px;font-size:15px;color:var(--blue)}
 <div id="lightbox"><img id="lbImg"></div>
 <input type="file" id="bkFile" accept="image/*" multiple hidden>
 
+<div id="lift">
+  <div id="lfHead"><button id="lfBack">Back</button><div id="lfName"></div><button id="lfParts">Parts</button></div>
+  <canvas id="lfCanvas"></canvas>
+  <div id="lfLabels"></div>
+  <div id="lfStatus"></div>
+  <div id="lfCard" class="card"><div id="lfCardT">Tap the edge this size belongs to.</div><div class="g2"><button id="lfRemove">Remove size</button><button id="lfDone" class="primary">Done</button></div></div>
+  <div id="lfTools">
+    <div class="row"><button id="lfFront">Front</button><button id="lfSide">Side</button><button id="lfTop">Top</button><button id="lfAngle">Angle</button><button id="lfSpin">Spin</button></div>
+    <div class="row"><label>Depth <input id="lfDepth" type="range" min="0" max="300" value="100"></label><button id="lfSizes" class="on">Sizes</button><button id="lfPage" class="on">Page</button><button id="lfReset">Reset sizes</button></div>
+  </div>
+</div>
 <div id="pages">
   <div id="pagesTop"><span>All pages</span><button id="pagesAdd">Add photos</button><button id="pagesClose">Done</button></div>
   <div id="grid"></div>
@@ -844,15 +881,15 @@ function resetView(){const{THREE}=T,b=new THREE.Box3();if(T.group)b.setFromObjec
   const c=new THREE.Vector3(),sz=new THREE.Vector3();b.getCenter(c);b.getSize(sz);const vf=T.camera.fov*Math.PI/360,hf=Math.atan(Math.tan(vf)*T.camera.aspect);
   const d=Math.max(sz.x/2/Math.tan(hf),sz.y/2/Math.tan(vf))*1.25+sz.z;const dir=new THREE.Vector3(.3,.25,1).normalize();
   T.camera.position.copy(c).addScaledVector(dir,d);T.controls.target.copy(c);T.controls.update()}
-function latheGeo(p,s){
-  const{THREE}=T,[x0,y0,x1,y1]=p.bb.map(Math.round),w=Math.max(1,x1-x0),h=Math.max(1,y1-y0),c=document.createElement('canvas');c.width=w;c.height=h;
+function latheGeo(p,s,TH,seg){
+  const THREE=TH||T.THREE,[x0,y0,x1,y1]=p.bb.map(Math.round),w=Math.max(1,x1-x0),h=Math.max(1,y1-y0),c=document.createElement('canvas');c.width=w;c.height=h;
   const x=c.getContext('2d');x.fillStyle='#000';polyPath(x,p,-x0,-y0);x.fill('nonzero');
   const d=x.getImageData(0,0,w,h).data,m=i=>d[i*4+3]>127,vert=p.kind==='latheV',L=vert?h:w,n=Math.min(90,L),pts=[];
   for(let k=0;k<=n;k++){const t=Math.min(L-1,Math.round(k*(L-1)/n));let lo=-1,hi=-1;
     if(vert){for(let i=0;i<w;i++)if(m(t*w+i)){if(lo<0)lo=i;hi=i}}else{for(let i=0;i<h;i++)if(m(i*w+t)){if(lo<0)lo=i;hi=i}}
     pts.push(new THREE.Vector2(lo<0?0:(hi-lo+1)/2*s,(L/2-t)*s*(vert?1:-1)))}
   pts.unshift(new THREE.Vector2(0,pts[0].y));pts.push(new THREE.Vector2(0,pts[pts.length-1].y));
-  const g=new THREE.LatheGeometry(pts,48);if(!vert)g.rotateZ(-Math.PI/2);return g}
+  const g=new THREE.LatheGeometry(pts,seg||48);if(!vert)g.rotateZ(-Math.PI/2);return g}
 function build3D(){
   const{THREE}=T,f=ST.fig,W=ST.tw,H=ST.th,s=4/Math.max(W,H);
   if(T.group){T.scene.remove(T.group);T.group.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material)[].concat(o.material).forEach(m=>m.dispose())})}
@@ -960,7 +997,7 @@ async function pageHTML(p,si){
   const re=links.length?new RegExp('\\b('+links.map(l=>escRe(esc(l.n))).join('|')+')\\b','gi'):null;
   const link=s=>re?s.replace(re,m=>{const l=links.find(l=>esc(l.n).toLowerCase()===m.toLowerCase());return l?`<span class="plink" data-si="${si}" data-fi="${l.fi}" data-pid="${l.pid}">${m}</span>`:m}):s;
   const figHTML=async fi=>{const f=p.figures[fi],im=await figImg(p,f,fi),mh=(BK.ph*.36/(BK.pw*.034)).toFixed(2);
-    return `<figure><img class="figimg" data-si="${si}" data-fi="${fi}" src="${im.url}" width="${im.w}" height="${im.h}" style="max-height:${mh}em"><figcaption>${esc(f.name||('Figure '+(fi+1)))}${f.parts?' <b>tap for 3D</b>':''}</figcaption></figure>`};
+    return `<figure><img class="figimg" draggable="false" data-si="${si}" data-fi="${fi}" src="${im.url}" width="${im.w}" height="${im.h}" style="max-height:${mh}em"><figcaption>${esc(f.name||('Figure '+(fi+1)))}<b>${f.parts?' tap for parts, drag up for 3D':' drag up for 3D'}</b></figcaption></figure>`};
   const order=(p.figures||[]).map((f,fi)=>fi).sort((a,b)=>p.figures[a].y-p.figures[b].y);
   let top='',bot='';for(const fi of order){const h=await figHTML(fi);if(p.figures[fi].y+p.figures[fi].h/2<.33)top+=h;else bot+=h}
   let body='';blocksOf(p.text).forEach(b=>{body+=b.head?`<h4>${link(esc(b.text))}</h4>`:`<p>${link(esc(b.text)).replace(/\n/g,'<br>')}</p>`});
@@ -1066,6 +1103,7 @@ addEventListener('resize',()=>{if(!$('#book').classList.contains('open'))return;
 
 /* taps on things inside a page */
 $('#bkSpread').addEventListener('click',e=>{
+  if(BK.noClick&&Date.now()-BK.noClick<450)return;
   const pg0=e.target.closest('.bpage');if(pg0&&pg0.dataset.pane==='b'){if(e.target.closest('.ph')){$('#lbImg').src=e.target.closest('.ph').src;$('#lightbox').classList.add('open')}else if(e.target.closest('.figimg,.plink,.sticky'))bkStatus('Switch to that book to open its figures and notes');return}
   const fig=e.target.closest('.figimg'),pl=e.target.closest('.plink'),stk=e.target.closest('.sticky'),ph=e.target.closest('.ph');
   if(fig){const si=+fig.dataset.si,fi=+fig.dataset.fi;bkOpenFigure(si,fi,null)}
@@ -1201,10 +1239,454 @@ $('#libFile').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)retur
   P.order=P.order.map(x=>map[x]).filter(Boolean);const ins={};for(const k in (P.inserts||{}))ins[k==='_start'?k:map[k]]=P.inserts[k].map(x=>map[x]).filter(Boolean);P.inserts=ins;delete P.bookAt;
   await putBook(bookId,P);LIB.books.push({id:bookId,title:P.title||''});await saveLib();LIB.current=null;await switchBook(bookId);status('Book loaded')})};
 
+/* ================= LIFT: drag a figure up off the page into a 3D wireframe ================= */
+const LF={p:null,f:null,fi:0,si:-1,from:'book',sel:null,run:false,ghost:true,sizes:'on',tags:[],opening:false};
+let L=null;
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function lfStatus(msg,keep){const s=$('#lfStatus');s.textContent=msg;s.classList.add('show');clearTimeout(s._t);if(!keep)s._t=setTimeout(()=>s.classList.remove('show'),2600)}
+
+/* the figure cut from its page, at the same size the parts studio uses */
+async function figCrop(p,f){
+  const pc=await ensureProc(p),sx=f.x*pc.width,sy=f.y*pc.height,sw=f.w*pc.width,sh=f.h*pc.height,s=Math.min(1,1400/Math.max(sw,sh));
+  const c=document.createElement('canvas');c.width=Math.max(8,Math.round(sw*s));c.height=Math.max(8,Math.round(sh*s));
+  const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(pc,sx,sy,sw,sh,0,0,c.width,c.height);return c}
+function ensureParts(f,c){
+  if(!f.trace)f.trace={ink:150,brk:2,min:4};if(!f.drawn)f.drawn='exploded';
+  if(f.parts&&f.tw&&(f.tw!==c.width||f.th!==c.height)){const kx=c.width/f.tw,ky=c.height/f.th;
+    f.parts.forEach(p=>{p.polys=p.polys.map(P=>P.map(q=>[q[0]*kx,q[1]*ky]));p.bb=[p.bb[0]*kx,p.bb[1]*ky,p.bb[2]*kx,p.bb[3]*ky];p.ax*=kx;p.ex*=kx;p.ay*=ky;p.ey*=ky});
+    if(f.dims)f.dims.forEach(d=>{d.x0*=kx;d.x1*=kx;d.y0*=ky;d.y1*=ky});f.wire=null;f.words=null;f.tw=c.width;f.th=c.height}
+  if(!f.parts){const keep=ST;ST={fig:f,tw:c.width,th:c.height,gray:grayOf(c)};try{traceFigure()}finally{ST=keep}}}
+
+/* line work: thin the ink to one pixel lines, then follow them into vector polylines */
+function thin(m,W,H){let changed=true;const del=[];
+  while(changed){changed=false;
+    for(let pass=0;pass<2;pass++){del.length=0;
+      for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){const i=y*W+x;if(!m[i])continue;
+        const p2=m[i-W],p3=m[i-W+1],p4=m[i+1],p5=m[i+W+1],p6=m[i+W],p7=m[i+W-1],p8=m[i-1],p9=m[i-W-1],B=p2+p3+p4+p5+p6+p7+p8+p9;if(B<2||B>6)continue;
+        const A=(!p2&&p3?1:0)+(!p3&&p4?1:0)+(!p4&&p5?1:0)+(!p5&&p6?1:0)+(!p6&&p7?1:0)+(!p7&&p8?1:0)+(!p8&&p9?1:0)+(!p9&&p2?1:0);if(A!==1)continue;
+        if(pass===0?(p2&&p4&&p6)||(p4&&p6&&p8):(p2&&p4&&p8)||(p2&&p6&&p8))continue;del.push(i)}
+      if(del.length){changed=true;for(const i of del)m[i]=0}}}
+  return m}
+function skelLines(m,W,H){
+  const N8=[-W,1,W,-1,-W+1,W+1,W-1,-W-1],deg=new Uint8Array(W*H),vis=new Uint8Array(W*H),lines=[],seen=new Set();
+  for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){const i=y*W+x;if(!m[i])continue;let d=0;for(const o of N8)d+=m[i+o];deg[i]=d}
+  const node=i=>deg[i]!==2,xy=i=>[i%W,(i/W)|0];
+  const walk=(a,b)=>{const pts=[xy(a),xy(b)];let prev=a,cur=b;
+    while(!node(cur)){vis[cur]=1;let nx=-1;for(const o of N8){const j=cur+o;if(!m[j]||j===prev)continue;if(node(j)||!vis[j]){nx=j;break}}
+      if(nx<0)break;pts.push(xy(nx));prev=cur;cur=nx}
+    return pts};
+  for(let i=0;i<W*H;i++){if(!m[i]||!node(i)||!deg[i])continue;vis[i]=1;
+    for(const o of N8){const j=i+o;if(!m[j])continue;
+      if(node(j)){const k=i<j?i+','+j:j+','+i;if(!seen.has(k)){seen.add(k);lines.push([xy(i),xy(j)])}continue}
+      if(!vis[j])lines.push(walk(i,j))}}
+  for(let i=0;i<W*H;i++){if(!m[i]||vis[i]||deg[i]!==2)continue;vis[i]=1;let nb=-1;for(const o of N8)if(m[i+o]){nb=i+o;break}
+    if(nb<0||vis[nb])continue;const pts=walk(i,nb);pts.push(xy(i));lines.push(pts)}
+  return lines}
+function wireLines(f,c){
+  const W=c.width,H=c.height,key=[W,H,f.trace.ink].join(':');if(f.wire&&f.wire.key===key)return;
+  const k=Math.min(1,560/Math.max(W,H)),w=Math.max(8,Math.round(W*k)),h=Math.max(8,Math.round(H*k));
+  const sc=document.createElement('canvas');sc.width=w;sc.height=h;const x=sc.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(c,0,0,w,h);
+  const g=grayOf(sc),m=new Uint8Array(w*h);for(let y=1;y<h-1;y++)for(let xx=1;xx<w-1;xx++){const i=y*w+xx;m[i]=g[i]<f.trace.ink?1:0}
+  thin(m,w,h);const lines=[];
+  skelLines(m,w,h).forEach(P=>{let len=0;for(let i=1;i<P.length;i++)len+=Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]);if(len<4)return;
+    lines.push(dp(P,.9).map(q=>[Math.round((q[0]+.5)/k*10)/10,Math.round((q[1]+.5)/k*10)/10]))});
+  f.wire={key,lines}}
+
+/* sizes: read the numbers on the drawing, keep the ones that look like measurements */
+const DIM_RE=/^(?:(?:[\u00d8\u00f8R]|M(?=\d))?\d+(?:[.,]\d+)?(?:\s?[x\u00d7]\s?\d+(?:[.,]\d+)?)?(?:\s?(?:mm|cm|in|ft|m|"|'|\u00b0))?|\d+\/\d+(?:\s?(?:in|"))?|\d+-\d+\/\d+(?:\s?(?:in|"))?)$/i;
+function sizeKind(t){t=t.replace(/\s+/g,' ').trim();if(!t||!DIM_RE.test(t))return null;return /^\d+$/.test(t)?'num':'size'}
+async function figWords(f,c){
+  const key=c.width+':'+c.height;if(f.words&&f.words.key===key)return f.words.list;
+  const w=await getWorker(),up=Math.max(1,Math.min(2.5,1600/Math.max(c.width,c.height)));let src=c;
+  if(up>1.05){src=document.createElement('canvas');src.width=Math.round(c.width*up);src.height=Math.round(c.height*up);const x=src.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(c,0,0,src.width,src.height)}
+  try{await w.setParameters({tessedit_pageseg_mode:'11'})}catch(e){}
+  let data;try{({data}=await w.recognize(src))}finally{try{await w.setParameters({tessedit_pageseg_mode:'3'})}catch(e){}}
+  const raw=(data.words||[]).filter(q=>q.confidence>35&&q.text&&q.text.trim()).map(q=>({t:q.text.trim().replace(/[,;:)(]+$/,'').replace(/^[(]+/,''),x0:q.bbox.x0/up,y0:q.bbox.y0/up,x1:q.bbox.x1/up,y1:q.bbox.y1/up}));
+  raw.sort((a,b)=>Math.abs(a.y0-b.y0)>6?a.y0-b.y0:a.x0-b.x0);
+  const list=[];for(let i=0;i<raw.length;i++){const a=raw[i],b=raw[i+1],hh=a.y1-a.y0;
+    if(b&&/^\d/.test(a.t)&&/^(mm|cm|in|ft|m|"|')$/i.test(b.t)&&Math.abs((a.y0+a.y1)-(b.y0+b.y1))<hh&&b.x0-a.x1<hh*1.2){list.push({t:a.t+' '+b.t,x0:a.x0,y0:Math.min(a.y0,b.y0),x1:b.x1,y1:Math.max(a.y1,b.y1)});i++;continue}
+    list.push(a)}
+  f.words={key,list:list.map(q=>({t:q.t,x0:Math.round(q.x0),y0:Math.round(q.y0),x1:Math.round(q.x1),y1:Math.round(q.y1)}))};return f.words.list}
+function segsOf(f){const out=[];f.parts.forEach(p=>{if(p.hidden)return;p.polys.forEach((P,ri)=>{for(let i=0;i<P.length;i++){const a=P[i],b=P[(i+1)%P.length],len=Math.hypot(b[0]-a[0],b[1]-a[1]);if(len>=6)out.push({pid:p.id,ri,si:i,a,b})}})});return out}
+function segDist(x,y,a,b){const dx=b[0]-a[0],dy=b[1]-a[1],L2=dx*dx+dy*dy||1,t=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/L2));return Math.hypot(x-(a[0]+t*dx),y-(a[1]+t*dy))}
+function autoAttach(d,segs){const cx=(d.x0+d.x1)/2,cy=(d.y0+d.y1)/2;let best=null,bd=1e9;segs.forEach(s=>{const v=segDist(cx,cy,s.a,s.b);if(v<bd){bd=v;best=s}});d.on=best?{pid:best.pid,ri:best.ri,si:best.si}:null;d.auto=true}
+function dimValid(f,d){if(!d.on)return false;const p=f.parts.find(x=>x.id===d.on.pid);if(!p||p.hidden)return false;const P=p.polys[d.on.ri];return !!P&&d.on.si<P.length}
+async function liftSave(){const p=LF.p;if(!p)return;await putPage(p)}
+
+/* the 3D scene */
+async function initLift(){if(L)return L;
+  const THREE=await import('three'),{OrbitControls}=await import('three/addons/controls/OrbitControls.js');
+  const canvas=$('#lfCanvas'),renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setClearColor(0xffffff,0);
+  const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(32,1,.02,200),controls=new OrbitControls(camera,canvas);controls.enableDamping=true;controls.dampingFactor=.12;
+  L={THREE,renderer,scene,camera,controls,canvas,group:null,dimG:null,pick:[],faces:{},tw:null,rise:0,ray:new THREE.Raycaster(),
+    mats:{ink:new THREE.LineBasicMaterial({color:0x1f3550}),inner:new THREE.LineBasicMaterial({color:0x2f5584}),back:new THREE.LineBasicMaterial({color:0x8fa9c9}),rib:new THREE.LineBasicMaterial({color:0x5b7aa2}),
+      off:new THREE.LineBasicMaterial({color:0x9ab0cc}),lead:new THREE.LineBasicMaterial({color:0x1e6fd9}),edge:new THREE.MeshBasicMaterial({color:0x1e6fd9}),edgeSel:new THREE.MeshBasicMaterial({color:0xe2552b})}};
+  L.ray.params.Line.threshold=.05;
+  let down=null;canvas.addEventListener('pointerdown',e=>{down=[e.clientX,e.clientY]});
+  canvas.addEventListener('pointerup',e=>{const d=down;down=null;if(!d||Math.hypot(e.clientX-d[0],e.clientY-d[1])>7)return;lfTap(e)});
+  controls.addEventListener('start',()=>{L.tw=null});
+  addEventListener('resize',lfSize);return L}
+function lfSize(){if(!L)return;const w=L.canvas.clientWidth,h=L.canvas.clientHeight;if(!w||!h)return;L.renderer.setSize(w,h,false);L.camera.aspect=w/h;L.camera.updateProjectionMatrix()}
+function lfDispose(o){o.traverse(n=>{if(n.geometry)n.geometry.dispose();if(n.material)[].concat(n.material).forEach(m=>{if(!Object.values(L.mats).includes(m)){if(m.map)m.map.dispose();m.dispose()}})})}
+function lfBuild(){
+  const{THREE}=L,f=LF.f,W=LF.W,H=LF.H,s=4/Math.max(W,H),mul=f.wd==null?1:f.wd,M=L.mats;LF.s=s;
+  const sz=L.group?L.group.scale.z:1;if(L.group){L.scene.remove(L.group);lfDispose(L.group)}
+  const G=new THREE.Group();G.scale.z=sz;L.group=G;L.scene.add(G);L.pick=[];L.faces={};L.dimG=null;
+  const X=x=>(x-W/2)*s,Y=y=>(H/2-y)*s;
+  const seg=(arr,mat,ud)=>{if(!arr.length)return null;const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(arr,3));const l=new THREE.LineSegments(g,mat);if(ud){l.userData=ud;L.pick.push(l)}G.add(l);return l};
+  let maxD=.05;
+  f.parts.forEach(p=>{if(p.hidden)return;
+    const bw=p.bb[2]-p.bb[0],bh=p.bb[3]-p.bb[1],d=Math.min(1.4,Math.max(.03,Math.min(bw,bh)*s*.45))*mul,z0=p.z||0,[bx,by]=bbCenter(p);
+    if(p.kind!=='flat'){const lg=latheGeo(p,s,THREE,18),wg=new THREE.WireframeGeometry(lg);lg.dispose();const l=new THREE.LineSegments(wg,M.rib);l.position.set(X(bx),Y(by),z0);G.add(l);
+      maxD=Math.max(maxD,Math.min(bw,bh)*s);
+      p.polys.forEach((P,ri)=>{const a=[];for(let k=0;k<P.length;k++){const q=P[k],r=P[(k+1)%P.length];a.push(X(q[0]),Y(q[1]),z0,X(r[0]),Y(r[1]),z0)}seg(a,M.back,{pid:p.id,ri});L.faces[p.id+':'+ri]={P,zf:z0}});return}
+    maxD=Math.max(maxD,d);const zf=z0+d/2,zb=z0-d/2;
+    p.polys.forEach((P,ri)=>{const fr=[],bk=[],rb=[],n=P.length;
+      for(let k=0;k<n;k++){const a=P[k],b=P[(k+1)%n],pr=P[(k-1+n)%n];fr.push(X(a[0]),Y(a[1]),zf,X(b[0]),Y(b[1]),zf);bk.push(X(a[0]),Y(a[1]),zb,X(b[0]),Y(b[1]),zb);
+        const v1x=a[0]-pr[0],v1y=a[1]-pr[1],v2x=b[0]-a[0],v2y=b[1]-a[1];if(Math.abs(Math.atan2(v1x*v2y-v1y*v2x,v1x*v2x+v1y*v2y))>.45)rb.push(X(a[0]),Y(a[1]),zf,X(a[0]),Y(a[1]),zb)}
+      seg(fr,M.ink,{pid:p.id,ri});seg(bk,M.back);seg(rb,M.rib);L.faces[p.id+':'+ri]={P,zf}})});
+  /* line work from the drawing: lines inside a part sit on its front face, the rest (leaders, dimension lines) float in the middle */
+  const words=(f.words&&f.words.list)||[];
+  const inWord=P=>{let a=1e9,b=1e9,c=-1e9,e=-1e9;P.forEach(q=>{if(q[0]<a)a=q[0];if(q[1]<b)b=q[1];if(q[0]>c)c=q[0];if(q[1]>e)e=q[1]});return words.some(w=>a>=w.x0-3&&c<=w.x1+3&&b>=w.y0-3&&e<=w.y1+3)};
+  const zOf=(x,y)=>{for(let i=f.parts.length-1;i>=0;i--){const p=f.parts[i];if(p.hidden||p.kind!=='flat')continue;if(p.polys.some(Q=>inPoly(x,y,Q))){const F=L.faces[p.id+':0'];return F?F.zf+.004:null}}return null};
+  const on=[],off=[];
+  ((f.wire&&f.wire.lines)||[]).forEach(P=>{if(inWord(P))return;const mq=P[P.length>>1],z=zOf(mq[0],mq[1]),arr=z==null?off:on,zz=z==null?0:z;
+    for(let k=1;k<P.length;k++)arr.push(X(P[k-1][0]),Y(P[k-1][1]),zz,X(P[k][0]),Y(P[k][1]),zz)});
+  seg(on,M.inner);seg(off,M.off);
+  /* the page itself, faint, behind the model */
+  const tex=new THREE.CanvasTexture(LF.crop);tex.colorSpace=THREE.SRGBColorSpace;
+  const plane=new THREE.Mesh(new THREE.PlaneGeometry(W*s,H*s),new THREE.MeshBasicMaterial({map:tex,transparent:true,opacity:.3,depthWrite:false}));
+  plane.position.z=-maxD/2-.15;plane.visible=LF.ghost;G.add(plane);L.plane=plane;LF.maxD=maxD}
+function lfBar(a,b,r,mat){const{THREE}=L,dir=new THREE.Vector3().subVectors(b,a),len=dir.length()||1e-4;
+  const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,len,6,1,true),mat);m.position.copy(a).addScaledVector(dir,.5);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.normalize());return m}
+function lfDims(){
+  const{THREE}=L,f=LF.f,box=$('#lfLabels'),s=LF.s,W=LF.W,H=LF.H,X=x=>(x-W/2)*s,Y=y=>(H/2-y)*s;box.innerHTML='';LF.tags=[];
+  if(L.dimG){L.group.remove(L.dimG);lfDispose(L.dimG)}L.dimG=new THREE.Group();L.group.add(L.dimG);
+  if(LF.sizes==='off'||!f.dims)return;
+  const segs=segsOf(f);let fixed=false;f.dims.forEach(d=>{if(!dimValid(f,d)){autoAttach(d,segs);fixed=true}});if(fixed)liftSave();
+  f.dims.forEach(d=>{if(d.hide||(d.kind==='num'&&LF.sizes!=='all'))return;
+    const sel=LF.sel===d,cx=(d.x0+d.x1)/2,cy=(d.y0+d.y1)/2,F=d.on&&L.faces[d.on.pid+':'+d.on.ri];let pos;
+    if(F){const P=F.P,a=P[d.on.si],b=P[(d.on.si+1)%P.length],A=new THREE.Vector3(X(a[0]),Y(a[1]),F.zf),B=new THREE.Vector3(X(b[0]),Y(b[1]),F.zf),mid=A.clone().lerp(B,.5);
+      pos=new THREE.Vector3(X(cx),Y(cy),F.zf);L.dimG.add(lfBar(A,B,sel?.016:.011,sel?L.mats.edgeSel:L.mats.edge));
+      const g=new THREE.BufferGeometry().setFromPoints([pos,mid]);L.dimG.add(new THREE.Line(g,L.mats.lead))}
+    else pos=new THREE.Vector3(X(cx),Y(cy),0);
+    const el=document.createElement('button');el.className='dim'+(d.kind==='num'?' num':'')+(sel?' sel':'');el.textContent=d.t;
+    el.onclick=e=>{e.stopPropagation();lfPick(d)};box.append(el);LF.tags.push({d,el,pos})});
+  lfTags()}
+function lfTags(){if(!LF.tags.length)return;const w=L.canvas.clientWidth,h=L.canvas.clientHeight,v=new L.THREE.Vector3();L.group.updateMatrixWorld();
+  LF.tags.forEach(t=>{v.copy(t.pos).applyMatrix4(L.group.matrixWorld).project(L.camera);if(v.z>1||v.z<-1){t.el.style.display='none';return}
+    t.el.style.display='';t.el.style.left=((v.x+1)/2*w).toFixed(1)+'px';t.el.style.top=((1-v.y)/2*h).toFixed(1)+'px'})}
+function lfPick(d){LF.sel=LF.sel===d?null:d;$('#lfCard').classList.toggle('open',!!LF.sel);if(LF.sel)$('#lfCardT').textContent='Size '+d.t+'. Tap the edge it belongs to, and it moves there.';lfDims()}
+function lfTap(e){if(!LF.sel)return;const r=L.canvas.getBoundingClientRect(),ptr=new L.THREE.Vector2((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);
+  L.ray.setFromCamera(ptr,L.camera);const hit=L.ray.intersectObjects(L.pick,false)[0];if(!hit){lfStatus('No edge there. Tap closer to a line.');return}
+  const u=hit.object.userData,si=Math.floor(hit.index/2);LF.sel.on={pid:u.pid,ri:u.ri,si};LF.sel.auto=false;liftSave();lfDims();lfStatus('Size '+LF.sel.t+' moved to that edge')}
+function lfView(name,ms){
+  const{THREE}=L,b=new THREE.Box3().setFromObject(L.group);if(L.plane&&!L.plane.visible){}
+  if(b.isEmpty())b.set(new THREE.Vector3(-2,-2,-.5),new THREE.Vector3(2,2,.5));
+  const c=new THREE.Vector3(),sz=new THREE.Vector3();b.getCenter(c);b.getSize(sz);
+  const dir={front:[0,0,1],side:[1,0,.0001],top:[0,1,.02],three:[.62,.38,1]}[name]||[0,0,1],D=new THREE.Vector3(...dir).normalize();
+  const vf=L.camera.fov*Math.PI/360,hf=Math.atan(Math.tan(vf)*L.camera.aspect),R=sz.length()/2,dist=R/Math.sin(Math.min(vf,hf))*1.02;
+  const p1=c.clone().addScaledVector(D,dist);
+  if(!ms){L.camera.position.copy(p1);L.controls.target.copy(c);L.controls.update();L.tw=null;return}
+  L.tw={t0:performance.now(),dur:ms,p0:L.camera.position.clone(),p1,c0:L.controls.target.clone(),c1:c}}
+function lfLoop(){if(!LF.run)return;requestAnimationFrame(lfLoop);const now=performance.now();
+  if(L.tw){let k=Math.min(1,(now-L.tw.t0)/L.tw.dur);k=1-Math.pow(1-k,3);L.camera.position.lerpVectors(L.tw.p0,L.tw.p1,k);L.controls.target.lerpVectors(L.tw.c0,L.tw.c1,k);if(k>=1)L.tw=null}
+  if(L.rise){let k=Math.min(1,(now-L.rise)/1000);k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;L.group.scale.z=.02+.98*k;if(k>=1)L.rise=0}
+  L.controls.update();L.renderer.render(L.scene,L.camera);lfTags()}
+
+/* open and close */
+async function openLift(pid,fi,from,si){
+  if(LF.opening)return;LF.opening=true;
+  try{
+    const p=(page&&page.id===pid)?page:await getPage(pid);const f=p&&p.figures&&p.figures[fi];if(!f){bkStatus('That figure is gone');return}
+    if(!f.id)f.id=uid();if(!f.name)f.name='Figure '+(fi+1);
+    Object.assign(LF,{p,f,fi,from,si:si==null?-1:si,sel:null,tags:[]});
+    $('#lfName').textContent=f.name;$('#lfCard').classList.remove('open');$('#lfLabels').innerHTML='';$('#lfParts').style.display=from==='book'?'':'none';
+    $('#lfDepth').value=Math.round((f.wd==null?1:f.wd)*100);
+    const el=$('#lift');el.classList.add('show');await nextFrame();el.classList.add('up');
+    lfStatus('Tracing the drawing',true);await nextFrame();
+    const c=await figCrop(p,f);ensureParts(f,c);wireLines(f,c);LF.crop=c;LF.W=c.width;LF.H=c.height;await liftSave();
+    lfStatus('Loading 3D',true);await initLift();lfSize();
+    lfBuild();lfView('front',0);if(REDUCED)L.group.scale.z=1;else{L.group.scale.z=.02;L.rise=performance.now()}
+    lfDims();if(!LF.run){LF.run=true;lfLoop()}
+    setTimeout(()=>{if(LF.f===f)lfView('three',REDUCED?0:1100)},REDUCED?0:250);
+    lfStatus('Drag to spin. Pinch to zoom.');
+    if(!f.dims){lfStatus('Reading the sizes on the drawing',true);
+      try{const words=await figWords(f,c),segs=segsOf(f);
+        f.dims=words.filter(w=>sizeKind(w.t)).map(w=>{const d={id:uid(),t:w.t.replace(/\s+/g,' '),x0:w.x0,y0:w.y0,x1:w.x1,y1:w.y1,kind:sizeKind(w.t),hide:false};autoAttach(d,segs);return d});
+        await putPage(p);
+        if(LF.f===f&&LF.run){lfBuild();lfDims();const n=f.dims.filter(d=>d.kind==='size').length,m=f.dims.length-n;
+          lfStatus(n?n+' size'+(n>1?'s':'')+' found. Tap one, then tap its edge to move it.':m?'No sizes found. Tap Sizes to show the plain numbers.':'No sizes found on this drawing.')}}
+      catch(e){console.error(e);if(LF.f===f)lfStatus('Could not read the sizes: '+e.message)}}
+  }catch(e){console.error(e);lfStatus('Error: '+e.message)}
+  finally{LF.opening=false}}
+function closeLift(){LF.run=false;LF.sel=null;if(L){L.controls.autoRotate=false;L.tw=null}$('#lfSpin').classList.remove('on');
+  const el=$('#lift');el.classList.remove('up');setTimeout(()=>{if(!el.classList.contains('up'))el.classList.remove('show')},REDUCED?0:360)}
+$('#lfBack').onclick=closeLift;
+$('#lfParts').onclick=()=>{const si=LF.si,fi=LF.fi;closeLift();if(si>=0)bkOpenFigure(si,fi,null)};
+$('#lfFront').onclick=()=>L&&lfView('front',450);
+$('#lfSide').onclick=()=>L&&lfView('side',450);
+$('#lfTop').onclick=()=>L&&lfView('top',450);
+$('#lfAngle').onclick=()=>L&&lfView('three',450);
+$('#lfSpin').onclick=()=>{if(!L)return;L.controls.autoRotate=!L.controls.autoRotate;L.controls.autoRotateSpeed=2.2;$('#lfSpin').classList.toggle('on',L.controls.autoRotate)};
+$('#lfPage').onclick=()=>{LF.ghost=!LF.ghost;$('#lfPage').classList.toggle('on',LF.ghost);if(L&&L.plane)L.plane.visible=LF.ghost};
+$('#lfSizes').onclick=()=>{LF.sizes={on:'all',all:'off',off:'on'}[LF.sizes];const b=$('#lfSizes');b.textContent={on:'Sizes',all:'All numbers',off:'No sizes'}[LF.sizes];b.classList.toggle('on',LF.sizes!=='off');
+  if(LF.sizes==='off'){LF.sel=null;$('#lfCard').classList.remove('open')}if(L&&LF.f)lfDims()};
+$('#lfReset').onclick=async()=>{const f=LF.f;if(!f||!f.dims)return;const segs=segsOf(f);f.dims.forEach(d=>{d.hide=false;autoAttach(d,segs)});LF.sel=null;$('#lfCard').classList.remove('open');await liftSave();lfDims();lfStatus('Sizes put back where they were found')};
+$('#lfRemove').onclick=async()=>{const d=LF.sel;if(!d)return;d.hide=true;LF.sel=null;$('#lfCard').classList.remove('open');await liftSave();lfDims();lfStatus('Size removed. Reset sizes brings it back.')};
+$('#lfDone').onclick=()=>{LF.sel=null;$('#lfCard').classList.remove('open');lfDims()};
+$('#lfDepth').addEventListener('input',e=>{const f=LF.f;if(!f||!L)return;f.wd=e.target.value/100;lfBuild();lfDims();cshow');clearLF._dt);LF._dt=setTimeout(liftSave,400)});
+$('#stLift').onclick=()=>{if(!ST)return;const fi=ST.page.figures.indexOf(ST.fig);if(fi>=0)openLift(ST.page.id,fi,'studio')};
+
+/* drag a figure up off the book page */
+{let D=null;const sp=$('#bkSpread');
+  sp.addEventListener('pointerdown',e=>{const im=e.target.closest('.figimg');if(!im||BK.s>1.02||BK.busy)return;const pg=im.closest('.bpage');if(pg&&pg.dataset.pane==='b')return;
+    D={im,id:e.pointerId,x0:e.clientX,y0:e.clientY,on:false,gh:null};try{im.setPointerCapture(e.pointerId)}catch(_){}});
+  sp.addEventListener('pointermove',e=>{if(!D||e.pointerId!==D.id)return;const dx=e.clientX-D.x0,dy=e.clientY-D.y0;
+    if(!D.on){if(dy<-12&&Math.abs(dy)>Math.abs(dx)*1.3){D.on=true;const r=D.im.getBoundingClientRect(),g=D.im.cloneNode();g.className='liftghost';g.removeAttribute('style');
+        Object.assign(g.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'});document.body.append(g);D.gh=g;D.im.style.visibility='hidden'}else return}
+    const up=Math.max(0,-dy),ready=up>70;D.gh.style.transform=`translate(${dx*.25}px,${-up}px) scale(${1+Math.min(.12,up/900)})`;
+    if(ready&&!D.gh.classList.contains('ready'))bkStatus('Let go to lift it into 3D');D.gh.classList.toggle('ready',ready)});
+  const end=e=>{if(!D||e.pointerId!==D.id)return;const d=D;D=null;if(!d.on)return;BK.noClick=Date.now();const up=-(e.clientY-d.y0),g=d.gh;
+    const done=()=>{g.remove();d.im.style.visibility=''};
+    if(e.type==='pointerup'&&up>70){const si=+d.im.dataset.si,fi=+d.im.dataset.fi,en=BK.seq[si];
+      g.classList.add('go');g.style.transform=`translateY(${-up-140}px) scale(1.2)`;setTimeout(done,REDUCED?0:420);
+      if(en&&!en.added)openLift(en.id,fi,'book',si)}
+    else{g.classList.remove('ready');g.classList.add('drop');g.style.transform='';setTimeout(done,REDUCED?0:260)}};
+  sp.addEventListener('pointerup',end);sp.addEventListener('pointercancel',end)}
+
 /* boot */
 window.addEventListener('resize',()=>{if(!page)return;if(mode==='corners'&&srcImg)drawCorners();else if(procCanvas)drawResult()});
 (async()=>{db=await openDB();await loadLibrary();$('#titleIn').value=proj.title||'';$('#lang').value=proj.lang||'eng';
   if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();await render()})();
 </script>
+  <!-- =====================================================================
+       MOHAVE TECHNOLOGY GROUP // CREATOR SEAL
+       Drop this ONE block into any HTML page, anywhere before </body>.
+       The only thing you edit is the CONFIG object on the next few lines.
+       ===================================================================== -->
+  <script>
+  (function () {
+
+    /* RED PHONE: Pajamastan flag as a data URI. Self-contained so the seal
+       stays a single drop-in block with no external image to host. */
+    var FLAG_SRC = "data:image/jpeg;base64,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";
+
+    /* ---------- CONFIG: the only part you change ---------- */
+    var CONFIG = {
+      org:      "Mohave Technology Group",
+      monogram: "MTG",
+      mission:  "Practical software and hardware, built in the field.",
+
+      // RED PHONE: Pajamastan export homage.
+      nation:   "Pajamastan",
+      site:     "https://pajamastan.vercel.app",
+      flag:     FLAG_SRC,
+
+      // BLUE PHONE: one money donate link (Stripe live payment link).
+      donate:   "https://buy.stripe.com/28EeV64rb6ga7fneyp6AM00",
+
+      github:   "https://github.com/sudosilo",
+      linkedin: "https://www.linkedin.com/in/dicktemple"
+    };
+    /* ----------------------------------------------------- */
+
+
+    /* ---------- LAYER 1: the signature pressed into the source ---------- */
+    var head = document.head || document.getElementsByTagName("head")[0];
+
+    head.appendChild(document.createComment(
+      " Made by " + CONFIG.org + " // " + CONFIG.github + " // " + CONFIG.linkedin + " "
+    ));
+    // RED PHONE: export origin banner in the source.
+    head.appendChild(document.createComment(
+      " Certified export of " + CONFIG.nation + " // " + CONFIG.site + " "
+    ));
+
+    var metaAuthor = document.createElement("meta");
+    metaAuthor.setAttribute("name", "author");
+    metaAuthor.setAttribute("content", CONFIG.org);
+    head.appendChild(metaAuthor);
+
+    // RED PHONE: export-origin meta tag.
+    var metaOrigin = document.createElement("meta");
+    metaOrigin.setAttribute("name", "x-export-origin");
+    metaOrigin.setAttribute("content", CONFIG.nation);
+    head.appendChild(metaOrigin);
+
+    [CONFIG.github, CONFIG.linkedin].forEach(function (url) {
+      var l = document.createElement("link");
+      l.setAttribute("rel", "me");
+      l.setAttribute("href", url);
+      head.appendChild(l);
+    });
+
+    var ld = document.createElement("script");
+    ld.type = "application/ld+json";
+    ld.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": CONFIG.org,
+      "url": CONFIG.site,
+      "sameAs": [CONFIG.github, CONFIG.linkedin]
+    });
+    head.appendChild(ld);
+
+
+    /* ---------- LAYER 2: the visible seal ---------- */
+
+    // Round Mohave Technology Group seal, kept beside the Pajamastan flag.
+    function buildSeal() {
+      var org = CONFIG.org.toUpperCase();
+      return ''
+        + '<svg class="mtg-seal-svg" viewBox="0 0 120 120" width="58" height="58" '
+        +   'role="img" aria-label="' + CONFIG.org + ' seal">'
+        +   '<defs>'
+        +     '<path id="mtgTop" d="M 23,60 A 37,37 0 0 1 97,60" fill="none"/>'
+        +   '</defs>'
+        +   '<circle cx="60" cy="60" r="55" fill="none" stroke="#7a2e28" stroke-width="2.5"/>'
+        +   '<circle cx="60" cy="60" r="48" fill="none" stroke="#7a2e28" stroke-width="1"/>'
+        +   '<text font-family="Georgia,serif" font-size="8" fill="#7a2e28">'
+        +     '<textPath href="#mtgTop" startOffset="50%" text-anchor="middle" '
+        +     'textLength="106" lengthAdjust="spacingAndGlyphs">'
+        +     org + '</textPath>'
+        +   '</text>'
+        +   '<text x="60" y="60" text-anchor="middle" dominant-baseline="central" '
+        +     'font-family="Georgia,serif" font-weight="700" font-size="27" '
+        +     'fill="#7a2e28">' + CONFIG.monogram + '</text>'
+        +   '<g fill="#7a2e28">'
+        +     '<rect x="58" y="83.5" width="4" height="4"/>'
+        +     '<rect x="63" y="88.5" width="4" height="4"/>'
+        +     '<rect x="53" y="93.5" width="4" height="4"/>'
+        +     '<rect x="58" y="93.5" width="4" height="4"/>'
+        +     '<rect x="63" y="93.5" width="4" height="4"/>'
+        +   '</g>'
+        + '</svg>';
+    }
+
+
+    var css = ''
+      + '.mtg-seal{box-sizing:border-box;width:100%;background:#efe9da;'
+      + 'border-top:1px solid #cabfa3;color:#2b2620;'
+      + 'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;'
+      + 'padding:18px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;}'
+      + '.mtg-seal-row{display:flex;align-items:center;gap:14px;}'
+      // RED PHONE: round flag badge, brand-red ring to echo the old seal.
+      + '.mtg-flag-btn{background:none;border:0;padding:0;margin:0;cursor:pointer;'
+      + 'display:flex;align-items:center;line-height:0;'
+      + 'transition:transform .18s ease;}'
+      + '.mtg-seal.open .mtg-flag-btn{transform:scale(.94);}'
+      + '.mtg-flag{width:48px;height:72px;border-radius:8px;object-fit:cover;'
+      + 'display:block;border:2px solid #7a2e28;box-shadow:0 1px 3px rgba(43,38,32,.25);}'
+      + '.mtg-seal-btn{background:none;border:0;padding:0;margin:0;cursor:pointer;'
+      + 'display:flex;align-items:center;line-height:0;transition:transform .18s ease;}'
+      + '.mtg-seal.open .mtg-seal-btn{transform:rotate(-8deg) scale(.94);}'
+      + '.mtg-seal-svg{display:block;}'
+      + '.mtg-seal-label{text-align:left;line-height:1.35;}'
+      + '.mtg-seal-org{display:block;font-family:Georgia,"Times New Roman",serif;'
+      + 'font-size:14px;letter-spacing:.3px;color:#2b2620;}'
+      // RED PHONE: export subtitle with an inline linkable nation word.
+      + '.mtg-seal-export{display:block;font-family:Georgia,"Times New Roman",serif;'
+      + 'font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#4a443b;margin:2px 0;}'
+      + '.mtg-seal-link{color:#7a2e28;text-decoration:underline;}'
+      + '.mtg-seal-link:hover{color:#5f231e;}'
+      + '.mtg-seal-ask{display:inline-block;background:none;border:0;padding:0;margin:0;'
+      + 'font:inherit;font-size:12px;color:#7a2e28;text-decoration:underline;cursor:pointer;}'
+      + '.mtg-seal-panel{overflow:hidden;max-height:0;opacity:0;'
+      + 'transition:max-height .25s ease,opacity .25s ease;width:100%;max-width:360px;}'
+      + '.mtg-seal.open .mtg-seal-panel{max-height:300px;opacity:1;}'
+      + '.mtg-seal-mission{font-style:italic;color:#4a443b;font-size:13px;'
+      + 'text-align:center;margin:0 0 12px;line-height:1.5;}'
+      + '.mtg-seal-links{display:flex;justify-content:center;gap:10px;}'
+      + '.mtg-seal-links a{flex:1;text-align:center;text-decoration:none;'
+      + 'font-size:13px;color:#2b2620;background:#faf7ef;border:1px solid #cabfa3;'
+      + 'border-radius:6px;padding:8px 10px;transition:background .15s ease;}'
+      + '.mtg-seal-links a:hover{background:#fff;}'
+      + '.mtg-flag-btn:focus-visible,.mtg-seal-btn:focus-visible,.mtg-seal-ask:focus-visible,'
+      + '.mtg-seal-link:focus-visible{outline:2px solid #7a2e28;outline-offset:3px;border-radius:4px;}'
+      + '.mtg-seal-links a:focus-visible{outline:2px solid #7a2e28;outline-offset:2px;}'
+      // BLUE PHONE: support the micronation donate pill with a coin icon.
+      + '.mtg-donate{display:inline-flex;align-items:center;gap:10px;text-decoration:none;'
+      + 'background:linear-gradient(180deg,#fffaf0,#f3e7cc);color:#2b2620;'
+      + 'border:1px solid #b89a5a;border-radius:999px;padding:6px 16px 6px 6px;'
+      + 'box-shadow:0 1px 0 #fff inset,0 2px 6px rgba(122,46,40,.18);'
+      + 'transition:transform .15s ease,box-shadow .15s ease;}'
+      + '.mtg-donate:hover{transform:translateY(-1px);box-shadow:0 1px 0 #fff inset,0 4px 10px rgba(122,46,40,.25);}'
+      + '.mtg-donate:active{transform:translateY(0);}'
+      + '.mtg-donate-coin{display:block;flex:none;}'
+      + '.mtg-donate-text{display:flex;flex-direction:column;line-height:1.2;text-align:left;}'
+      + '.mtg-donate-main{font-family:Georgia,"Times New Roman",serif;font-size:13px;color:#7a2e28;letter-spacing:.2px;}'
+      + '.mtg-donate-sub{font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:#6b6255;}'
+      + '.mtg-donate:focus-visible{outline:2px solid #7a2e28;outline-offset:3px;}'
+      + '@media (prefers-reduced-motion: reduce){.mtg-donate{transition:none;}}'
+      + '@media (prefers-reduced-motion: reduce){'
+      + '.mtg-flag-btn,.mtg-seal-btn,.mtg-seal-panel{transition:none;}}';
+
+    var style = document.createElement("style");
+    style.textContent = css;
+    head.appendChild(style);
+
+    var seal = document.createElement("footer");
+    seal.className = "mtg-seal";
+    seal.innerHTML = ''
+      + '<div class="mtg-seal-row">'
+      +   '<button class="mtg-flag-btn" type="button" aria-label="Toggle maker details">'
+      +     '<img class="mtg-flag" src="' + CONFIG.flag + '" alt="' + CONFIG.nation + ' flag">'
+      +   '</button>'
+      +   '<button class="mtg-seal-btn" type="button" aria-label="Toggle maker details">'
+      +     buildSeal()
+      +   '</button>'
+      +   '<span class="mtg-seal-label">'
+      +     '<span class="mtg-seal-org">' + CONFIG.org + '</span>'
+      +     '<span class="mtg-seal-export">Certified export of '
+      +       '<a class="mtg-seal-link" href="' + CONFIG.site + '" target="_blank" rel="noopener">'
+      +       CONFIG.nation + '</a></span>'
+      +     '<button class="mtg-seal-ask" type="button" aria-expanded="false">Who made this?</button>'
+      +   '</span>'
+      + '</div>'
+      // BLUE PHONE: donate pill, always visible under the seal row.
+      + '<a class="mtg-donate" href="' + CONFIG.donate + '?client_reference_id=' + ((location.hostname.replace(/\.vercel\.app$/,'').replace(/[^A-Za-z0-9_-]/g,'-')) || 'unknown') + '" target="_blank" rel="noopener">'
+      +   '<svg class="mtg-donate-coin" viewBox="0 0 40 40" width="34" height="34" aria-hidden="true">'
+      +       '<circle cx="20" cy="20" r="19" fill="#d9b25a" stroke="#8a6a24" stroke-width="1.5"/>'
+      +       '<circle cx="20" cy="20" r="14.5" fill="#f2d68a" stroke="#b08a3a" stroke-width="1"/>'
+      +       '<path d="M11 24c2-1 3-4 3-7M29 24c-2-1-3-4-3-7" fill="none" stroke="#8a6a24" stroke-width="1.2" stroke-linecap="round"/>'
+      +       '<text x="20" y="25.5" text-anchor="middle" font-family="Georgia,serif" font-size="15" font-weight="bold" fill="#7a2e28">1</text>'
+      +     '</svg>'
+      +   '<span class="mtg-donate-text">'
+      +     '<span class="mtg-donate-main">Support the Micronation of ' + CONFIG.nation + '</span>'
+      +     '<span class="mtg-donate-sub">Give one money</span>'
+      +   '</span>'
+      + '</a>'
+      + '<div class="mtg-seal-panel">'
+      +   '<p class="mtg-seal-mission">' + CONFIG.mission + '</p>'
+      +   '<div class="mtg-seal-links">'
+      +     '<a href="' + CONFIG.site + '" target="_blank" rel="noopener">' + CONFIG.nation + '</a>'
+      +     '<a href="' + CONFIG.github + '" target="_blank" rel="noopener me">GitHub</a>'
+      +     '<a href="' + CONFIG.linkedin + '" target="_blank" rel="noopener me">LinkedIn</a>'
+      +   '</div>'
+      + '</div>';
+
+    // RED PHONE: flag badge and "Who made this?" both toggle the panel.
+    var ask = seal.querySelector(".mtg-seal-ask");
+    var flagBtn = seal.querySelector(".mtg-flag-btn");
+    function toggle() {
+      var nowOpen = seal.classList.toggle("open");
+      ask.setAttribute("aria-expanded", nowOpen ? "true" : "false");
+    }
+    ask.addEventListener("click", toggle);
+    flagBtn.addEventListener("click", toggle);
+    seal.querySelector(".mtg-seal-btn").addEventListener("click", toggle);
+
+    // RED PHONE: drop this block into a page with no seal container and it
+    // still lands at the bottom of body exactly like before. Give a page a
+    // <div id="mtgSealContainer"> anywhere and the seal lands there instead,
+    // which is how the landing screen pins it to its own bottom edge rather
+    // than the bottom of the whole document.
+    var sealContainer = document.getElementById("mtgSealContainer") || document.body;
+    sealContainer.appendChild(seal);
+
+  })();
+  </script>
+  <!-- ===================== END CREATOR SEAL ===================== -->
 </body>
 </html>

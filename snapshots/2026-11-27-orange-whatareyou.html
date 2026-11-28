@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WHAT ARE YOU?</title>
+<style>
+:root{
+  --bg:#fff8e7;--ink:#1c1c1c;--card:#ffffff;--line:#1c1c1c;
+  --y:#ffd23f;--t:#3bceac;--p:#ee4266;--b:#4d9de0;--o:#ff8c42;--g:#7bc950;--v:#a27bd8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"Trebuchet MS",Verdana,sans-serif;min-height:100vh;
+  background-image:radial-gradient(#e9dcb8 1.2px,transparent 1.2px);background-size:18px 18px}
+.wrap{max-width:760px;margin:0 auto;padding:18px 14px 60px}
+header{text-align:center;margin-bottom:18px}
+.logo{display:inline-block;background:var(--y);border:3px solid var(--line);box-shadow:5px 5px 0 var(--line);
+  padding:10px 20px;transform:rotate(-2deg);font-family:Impact,"Arial Black",sans-serif;font-size:clamp(2rem,8vw,3.2rem);letter-spacing:1px}
+.tag{margin-top:12px;font-size:.9rem;font-style:italic}
+.nav{display:flex;gap:8px;justify-content:center;margin:14px 0 4px;flex-wrap:wrap}
+.btn{background:var(--card);border:3px solid var(--line);box-shadow:3px 3px 0 var(--line);padding:9px 14px;
+  font:inherit;font-weight:bold;cursor:pointer;color:var(--ink);transition:transform .1s,box-shadow .1s}
+.btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--line)}
+.btn.primary{background:var(--t)}
+.btn.pink{background:var(--p);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-top:14px}
+.tile{border:3px solid var(--line);box-shadow:4px 4px 0 var(--line);padding:14px 10px;text-align:center;cursor:pointer;
+  transition:transform .12s;position:relative;min-height:130px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.tile:hover{transform:rotate(-1.5deg) scale(1.03)}
+.tile .ic{font-size:2.4rem}
+.tile .nm{font-weight:bold;font-size:.95rem}
+.tile .done{position:absolute;top:6px;right:6px;background:var(--ink);color:#fff;font-size:.65rem;padding:2px 6px}
+.panel{background:var(--card);border:3px solid var(--line);box-shadow:6px 6px 0 var(--line);padding:20px;margin-top:14px}
+.qhead{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;margin-bottom:10px;font-weight:bold}
+.bar{height:12px;border:2px solid var(--line);background:#fff;margin-bottom:16px}
+.fill{height:100%;background:var(--p);transition:width .3s}
+.qtext{font-size:1.3rem;font-weight:bold;margin-bottom:16px;line-height:1.35}
+.ans{display:block;width:100%;text-align:left;margin-bottom:10px;background:#fff;border:3px solid var(--line);
+  padding:12px 14px;font:inherit;font-size:1rem;cursor:pointer;box-shadow:3px 3px 0 var(--line);color:var(--ink)}
+.ans:hover{background:var(--y)}
+.ans span{font-weight:bold;margin-right:8px}
+.res{text-align:center}
+.res .big{font-size:4.5rem;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(4deg)}}
+.res .youare{font-size:.85rem;letter-spacing:3px;margin-top:6px}
+.res h2{font-family:Impact,"Arial Black",sans-serif;font-size:clamp(1.8rem,7vw,2.6rem);margin:6px 0 10px;letter-spacing:.5px}
+.res p{font-size:1.05rem;line-height:1.55;max-width:520px;margin:0 auto 14px}
+.meter{max-width:420px;margin:0 auto 16px;text-align:left;font-size:.8rem}
+.mrow{display:flex;align-items:center;gap:8px;margin:4px 0}
+.mrow b{width:130px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mtrack{flex:1;height:10px;border:2px solid var(--line);background:#fff}
+.mfill{height:100%}
+.code{font-family:"Courier New",monospace;background:var(--bg);border:2px dashed var(--line);padding:10px;margin:10px auto;
+  max-width:420px;word-break:break-all;font-weight:bold}
+.row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+input.inp{font:inherit;border:3px solid var(--line);padding:10px;width:100%;max-width:420px;font-family:"Courier New",monospace}
+.match-out{margin-top:16px;text-align:center}
+.pct{font-family:Impact,"Arial Black",sans-serif;font-size:4rem;color:var(--p)}
+.small{font-size:.85rem;margin-top:6px}
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.wcard{border:3px solid var(--line);padding:12px;box-shadow:3px 3px 0 var(--line)}
+.wcard .q{font-size:.75rem;font-weight:bold;letter-spacing:1px}
+.wcard .r{font-size:1.1rem;font-weight:bold;margin-top:4px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;
+  font-weight:bold;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+footer{text-align:center;font-size:.75rem;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">WHAT ARE YOU?</div>
+    <div class="tag">Ten questions. One truth. Zero science.</div>
+    <div class="nav">
+      <button class="btn" onclick="home()">All Quizzes</button>
+      <button class="btn" onclick="wall()">My Wall</button>
+      <button class="btn pink" onclick="matchScreen()">Match Me</button>
+    </div>
+  </header>
+  <main id="app"></main>
+  <footer>Results are for fun. The cheese does not lie, though.</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const COLORS=["var(--y)","var(--t)","var(--p)","var(--b)","var(--o)","var(--g)","var(--v)"];
+
+const QUIZZES=[
+{id:"cheese",title:"What Cheese Are You?",icon:"🧀",
+results:[
+["Aged Parmesan","Two years in a cellar made you complex, patient and impossible to replace. People underestimate you once."],
+["Sharp Cheddar","Direct, dependable and sharper every year. Everyone knows where they stand with you."],
+["Stinky Washed Rind","The one people warn others about, and the one they cannot stop talking about. Worth the smell."],
+["Creamy Brie","Soft, inviting and a little fancy. You make any room more civilized just by showing up."],
+["Holey Swiss","Steady, mild and full of space for others. The backbone of every good sandwich."],
+["Moody Blue","Bold, veined with drama, not for everyone. Your fans are devoted for life."]],
+q:[
+["You walk into a party. Where do you end up?",["Center of the room",1,5],["By the snacks",3,4],["Porch with two deep thinkers",0,3],["Wherever smells weird",2,5]],
+["Saturday morning plan?",["Up at 6 with a list",1,0],["Sleep till noon",3,4],["Coffee and a book",0,3],["Outside getting muddy",2,4]],
+["A friend shows you a bad haircut.",["Tell them straight",1,5],["Gentle redirect",3,4],["Praise the boldness",5,2],["Say it will grow on you",0,3]],
+["Rules are...",["Load bearing",4,3],["Suggestions",2,5],["Mine, if I wrote them",1,0],["Made to be bent with skill",0,2]],
+["Pick a place.",["Green hills and cows",4,3],["Cold mountain cliff",1,5],["Damp ancient cave",2,5],["Quiet cellar",0,1]],
+["A crisis hits. You...",["Go calm and still",0,4],["Escalate until you win",1,5],["Feed everyone first",3,4],["Vanish and return with a fix",2,0]],
+["People say you are...",["A lot at first",2,5],["The same every day",4,3],["Hard to figure out",0,5],["The sharpest one here",1,0]],
+["Free afternoon?",["Start a project",1,0],["Cook something huge",3,4],["Long solo walk",0,5],["Ferment something",2,0]],
+["Best quality?",["Depth",0,5],["Reliability",4,3],["Intensity",1,5],["No filter",2,1]],
+["Getting older means...",["Getting better",0,1],["Fine, fresh is good too",3,4],["Getting sharper",1,0],["Getting weirder, good",2,5]]]},
+
+{id:"car",title:"What Car Are You?",icon:"🚗",
+results:[
+["Lifted Pickup","Loud, tough and always the one hauling everybody's stuff. Mud is your love language."],
+["Beige Minivan","Reliable, roomy and secretly the hero of every family story. Snacks in every door."],
+["Vintage Convertible","Top down, slow road, perfect sunset. You turn errands into scenes from a movie."],
+["Rally Hatchback","Small, fast and sideways on purpose. You take every curve like it owes you money."],
+["Quiet Electric Sedan","Smooth, efficient and always charged up. You arrive before anyone hears you coming."],
+["Desert Dune Buggy","No doors, no roof, no plan. Pure off grid chaos with sand in every crevice."]],
+q:[
+["Your ideal road?",["Dirt with ruts",0,5],["School pickup lane",1,4],["Coastal highway",2,3],["Mountain switchbacks",3,5]],
+["What is in your trunk?",["Tow strap and shovel",0,3],["Snacks and spare socks",1,4],["A picnic blanket",2,1],["Sand. Just sand.",5,0]],
+["Road trip music?",["Loud and twangy",0,5],["Podcasts for the kids",1,4],["Old records",2,1],["Fast electronic",3,4]],
+["Someone cuts you off.",["Lay on the horn",0,3],["Let them go",1,4],["Wave politely",2,1],["Pass them on the next curve",3,5]],
+["Weekend plan?",["Haul something heavy",0,1],["Errands, so many errands",1,4],["Sunset cruise",2,4],["Off grid wandering",5,0]],
+["How do you handle mud?",["Drive straight through it",0,5],["Avoid it",4,1],["Mud? Top is down, no thanks",2,4],["Slide through sideways",3,5]],
+["Maintenance style?",["I fix it myself",0,3],["Dealer every 5k",4,1],["Lovingly polished",2,4],["Tape and hope",5,3]],
+["Friends call you when...",["They need a couch moved",0,1],["They need a ride",1,4],["They want a nice evening",2,4],["They want chaos",5,3]],
+["Fuel of choice?",["Diesel",0,5],["Whatever is cheapest",1,3],["Premium only",2,4],["A wall plug",4,1]],
+["Your speed in life?",["Steady and strong",0,1],["Speed limit exactly",1,4],["Slow and scenic",2,0],["Redline",3,5]]]},
+
+{id:"lover",title:"What Kind of Lover Are You?",icon:"💘",
+results:[
+["The Slow Burn","Patient, steady and worth the wait. Your love builds like a campfire that lasts all night."],
+["The Firework","Big sparks, bold moves, zero hesitation. Every date with you is an event."],
+["The Poet","You love with words, notes and moonlight. Your texts get screenshotted and saved forever."],
+["The Caretaker","Soup when they are sick, coffee how they like it. You love by showing up."],
+["The Adventurer","Your idea of romance is a plane ticket and no itinerary. Keep up or get left at the airport."],
+["The Comedian","You flirt with jokes and win hearts with bits. Laughing together is your whole thing."]],
+q:[
+["Perfect date night?",["Long dinner, longer talk",0,2],["Something loud and spontaneous",1,4],["Stargazing with a notebook",2,0],["Cooking for them at home",3,0]],
+["How do you flirt?",["Eye contact and patience",0,2],["Bold opener",1,5],["A clever note",2,5],["Bring them soup",3,0]],
+["Love language?",["Quality time",0,3],["Physical touch",1,4],["Words",2,0],["Acts of service",3,1]],
+["First kiss timing?",["When it is earned",0,2],["First date, obviously",1,4],["Under a full moon",2,0],["After trust is built",3,0]],
+["A fight happens. You...",["Wait, then talk it out",0,3],["Big emotions, big makeup",1,2],["Write it down first",2,0],["Make tea and fix it",3,5]],
+["Best gift?",["The thing they hinted at months ago",0,3],["Surprise weekend trip",4,1],["Handwritten poem",2,0],["Joke gift that is secretly sweet",5,3]],
+["Ideal trip together?",["Cabin, fire, no plans",0,3],["Wherever the flight is cheapest",4,1],["Old city with bookshops",2,0],["Theme park",5,4]],
+["Texting style?",["Few words, all meaning",0,2],["Rapid fire",1,5],["Paragraphs",2,3],["Memes only",5,4]],
+["What wins you over?",["Patience",0,3],["Confidence",1,4],["Wit",2,5],["Kindness",3,0]],
+["Romance is...",["A long game",0,3],["A spark",1,4],["A story",2,0],["A punchline",5,1]]]},
+
+{id:"date",title:"What First Date Are You?",icon:"🌹",
+results:[
+["Late Night Diner","Pancakes at 2 AM and conversations that wander everywhere. You are cozy chaos."],
+["Museum Stroll","Curious, quiet and full of fun facts. You make people smarter just by walking next to them."],
+["Sunrise Hike","Early, tough and a little sweaty. The view at the top is the whole point."],
+["Karaoke Bar","Loud, brave and slightly off key. You turn strangers into backup singers."],
+["Home Cooked Dinner","Warm, generous and secretly a great cook. Nobody leaves your table hungry."],
+["Random Road Trip","Grab a map, pick a direction, see what happens. You are a story waiting to be told."]],
+q:[
+["Pick a time.",["2 AM",0,3],["Rainy afternoon",1,4],["5 AM",2,5],["Friday 9 PM",3,0]],
+["Small talk topic?",["Weird dreams",0,5],["Art and history",1,2],["Trails and gear",2,5],["Embarrassing stories",3,0]],
+["Dress code?",["Hoodie",0,4],["Nice jacket",1,4],["Boots and a hat",2,5],["Something shiny",3,1]],
+["Ideal snack?",["Pie",0,4],["Tiny fancy pastry",1,4],["Trail mix",2,5],["Bar fries",3,0]],
+["Awkward silence?",["Order more coffee",0,1],["Point at a painting",1,2],["Enjoy the view",2,1],["Grab the mic",3,5]],
+["Who pays?",["Split it",0,3],["I planned it, I pay",1,4],["It was outside, it was free",2,5],["Whoever loses the bet",3,5]],
+["Phone rule?",["Out for photos only",1,2],["Face down",4,0],["No signal anyway",2,5],["Out for recording the singing",3,5]],
+["Second date?",["Same booth",0,4],["Another exhibit",1,0],["Bigger mountain",2,5],["Duet night",3,1]],
+["Your vibe?",["Night owl",0,3],["Curious",1,5],["Early riser",2,4],["Show off",3,1]],
+["Best compliment?",["You are fun at 2 AM",0,3],["You know so much",1,2],["You are tough",2,5],["You are a great cook",4,1]]]},
+
+{id:"dino",title:"What Dinosaur Are You?",icon:"🦖",
+results:[
+["T-Rex","Big presence, bigger roar, tiny arms you do not discuss. You run the room."],
+["Triceratops","Armored, loyal and ready to defend your herd. Nobody messes with your people."],
+["Velociraptor","Fast, clever and always three moves ahead. You and your crew are trouble."],
+["Brontosaurus","Gentle giant. Calm, steady and somehow everyone's comfort animal."],
+["Stegosaurus","Spiky on the outside, chill on the inside. You keep to yourself and that is fine."],
+["Pterodactyl","Technically not a dinosaur and you love that. Above it all, always."]],
+q:[
+["Group project role?",["Leader",0,2],["Defender of the plan",1,4],["Secret strategist",2,0],["Quiet heavy lifter",3,1]],
+["Lunch?",["Steak",0,2],["Big salad",1,3],["Whatever is fast",2,5],["Salad all day",3,4]],
+["Your arms are...",["Short but mighty",0,1],["Busy holding a shield",1,4],["Fast and clever",2,0],["Who needs arms",3,5]],
+["Conflict style?",["Roar",0,1],["Stand ground",1,4],["Outsmart",2,5],["Keep walking",3,4]],
+["Hangout spot?",["Top of the food chain",0,2],["The herd",1,3],["A tight crew",2,1],["High cliffs",5,3]],
+["Social battery?",["Huge presence",0,5],["Loyal circle",1,3],["Pack only",2,1],["Recharge alone",4,5]],
+["Fashion?",["Classic",0,3],["Armored",1,4],["Sleek",2,5],["Spiky accessories",4,1]],
+["A storm rolls in.",["Stand in it",0,1],["Shield the young",1,3],["Use the confusion",2,0],["Fly above it",5,2]],
+["Superpower wish?",["Pure fear factor",0,2],["Unbreakable",1,4],["Speed",2,5],["Flight",5,3]],
+["Legacy?",["Most famous",0,5],["Most dependable",1,3],["Smartest",2,0],["Gentle giant",3,4]]]},
+
+{id:"pizza",title:"What Pizza Topping Are You?",icon:"🍕",
+results:[
+["Pepperoni","The classic. Everyone's favorite and you know it. Crispy edges, no regrets."],
+["Pineapple","Controversial and proud. You start debates just by walking in."],
+["Anchovy","An acquired taste with a cult following. Rarely seen, never forgotten."],
+["Mushroom","Quiet, earthy and deeper than people think. You grew up in the dark and thrived."],
+["Jalapeno","Hot, quick and ready to make things interesting. Not everyone can handle you."],
+["Extra Cheese","Pure comfort. You make everything better and ask for nothing."]],
+q:[
+["At the party you are...",["Everyone's favorite",0,5],["The debate",1,2],["An acquired taste",2,3],["Quiet but deep",3,5]],
+["Pick a getaway.",["Classic city",0,5],["Tropical island",1,4],["Foggy fishing town",2,3],["Forest cabin",3,2]],
+["Spice level?",["Medium",0,5],["Sweet heat",1,4],["Salty",2,0],["Fire",4,1]],
+["People react to you with...",["A smile",0,5],["A gasp, then a try",1,2],["Running",2,4],["A slow nod",3,0]],
+["Your motto?",["Classics never die",0,3],["Rules are toppings",1,4],["Love me or leave",2,1],["Grow in the dark",3,2]],
+["Movie genre?",["Action",0,4],["Rom com",1,5],["Old noir",2,3],["Documentary",3,0]],
+["Best time of day?",["Lunch",0,5],["Sunset",1,3],["Dawn on the dock",2,3],["Midnight",4,2]],
+["You are crispy when...",["Always",0,4],["Grilled",1,0],["Packed in oil",2,5],["Never, I am soft",3,5]],
+["Group role?",["Glue",0,5],["Wild card",1,4],["Contrarian",2,1],["Philosopher",3,2]],
+["What do you add to life?",["Comfort",5,0],["Surprise",1,4],["Character",2,3],["Heat",4,0]]]},
+
+{id:"kitchen",title:"What Kitchen Appliance Are You?",icon:"🍳",
+results:[
+["Blender","Loud, fast and great at breaking problems down. Your energy is a smoothie of chaos."],
+["Slow Cooker","Low and slow wins. You show up late with the best food at the party."],
+["Toaster","Simple, reliable and you pop up right when needed. Everyone starts the day with you."],
+["Microwave","Instant results, lots of beeping. Impatient but undeniably useful."],
+["Espresso Machine","Precise, high pressure and a little fancy. People cannot function without you."],
+["Cast Iron Skillet","Built to outlast everyone. Seasoned by time and tougher every year."]],
+q:[
+["Morning routine?",["Loud and fast",0,4],["What morning",1,5],["Simple and quick",2,3],["Precise and caffeinated",4,0]],
+["Energy level?",["Max RPM",0,4],["Low and steady",1,5],["Pops up when ready",2,3],["Beeps a lot",3,0]],
+["Time to get ready?",["Thirty seconds",3,0],["Eight hours",1,5],["Two minutes",2,3],["Exactly 25 seconds",4,2]],
+["Your secret?",["I crush problems",0,5],["Patience",1,5],["Reliability",2,1],["Pressure",4,0]],
+["Weakness?",["Too noisy",0,3],["Too slow",1,5],["Burns things",2,4],["Uneven results",3,2]],
+["What lasts forever?",["Nothing, I break",0,3],["Leftovers",1,3],["Crumbs",2,0],["Me",5,1]],
+["Your fan club?",["Smoothie people",0,4],["Grandmas",1,5],["Kids",2,3],["Snobs",4,0]],
+["Pick a weekend.",["Gym and juice",0,4],["Chili cookoff",1,5],["Lazy brunch",2,1],["Campfire",5,1]],
+["Party flaw?",["Too loud",0,3],["Late, but bring food",1,5],["Leave early",2,3],["Steam at people",4,0]],
+["Life motto?",["Mix it up",0,4],["Low and slow",1,5],["Toast to that",2,3],["Seasoned by time",5,1]]]},
+
+{id:"weather",title:"What Weather Are You?",icon:"⛈️",
+results:[
+["Thunderstorm","Loud entrance, dramatic exit, everything is greener after you leave."],
+["Desert Heat","Relentless, unbothered and impossible to ignore. You are 118 in the shade."],
+["Morning Fog","Mysterious and quiet. People squint at you and wonder what you are hiding."],
+["Snow Day","Everyone cancels plans when you show up, and they love you for it."],
+["Rainbow","Rare, joyful and everybody stops to take a picture. You make the gloom worth it."],
+["Dust Devil","A small spinning tornado of chaos. Here, gone, and somehow your hat is missing."]],
+q:[
+["Your entrance?",["Loud",0,5],["Slow and heavy",1,2],["Barely noticed",2,3],["Everyone cheers",3,4]],
+["Mood at work?",["Intense",0,1],["Relentless",1,5],["Mysterious",2,0],["Makes people take a break",3,4]],
+["Pick a color.",["Purple gray",0,2],["Bright orange",1,5],["Silver white",2,3],["All of them",4,3]],
+["How do you leave?",["Suddenly",0,5],["I never leave",1,0],["Slowly fading",2,4],["Leave a mess for fun",5,3]],
+["Best friend?",["Lightning",0,1],["A cactus",1,5],["A lighthouse",2,0],["Hot cocoa",3,4]],
+["People prepare for you by...",["Unplugging stuff",0,3],["Drinking water",1,4],["Driving slow",2,3],["Buying bread",3,0]],
+["Hidden talent?",["Recharging the air",0,4],["Making mirages",1,2],["Hiding things",2,5],["Silence",3,2]],
+["What do you leave behind?",["Puddles",0,4],["Sunburns",1,5],["Damp hair",2,0],["Snowmen",3,4]],
+["Social style?",["Dramatic",0,5],["Unbothered",1,2],["Introverted",2,3],["Joy spreader",4,3]],
+["Song speed?",["Pounding",0,5],["Slow grind",1,0],["Ambient",2,3],["Upbeat",4,5]]]},
+
+{id:"cryptid",title:"What Cryptid Are You?",icon:"👣",
+results:[
+["Bigfoot","Gentle, private and great at hide and seek. Every photo of you is blurry on purpose."],
+["Mothman","Mysterious, a little ominous, very good at standing on bridges. Red eyes, big vibes."],
+["Chupacabra","Feral, hungry and a ranch legend. Lock up the goats, you are in town."],
+["Lake Monster","Ancient, patient and only surface once a decade. Tourists still wait for you."],
+["Jackalope","Part rabbit, part deer, fully a gift shop icon. Cute but do not test the antlers."],
+["Desert Alien","You came for the stars and stayed for the gas station jerky. Big eyes, bigger secrets."]],
+q:[
+["Your photos are always...",["Blurry",0,3],["Too dark",1,5],["Gross",2,4],["Underwater",3,0]],
+["Where you live?",["Deep woods",0,4],["Abandoned bridge",1,5],["Ranch outskirts",2,4],["Cold lake",3,0]],
+["Your hobby?",["Hiding",0,3],["Omens",1,5],["Snacking",2,4],["Long naps",3,0]],
+["Diet?",["Berries",0,4],["Porch lights",1,5],["Goats",2,0],["Fish and mystery",3,2]],
+["Social media?",["None",0,3],["Cryptic posts",1,5],["Gross videos",2,4],["One post per decade",3,1]],
+["Fans describe you as...",["Gentle giant",0,3],["Unsettling",1,2],["Feral",2,4],["Ancient",3,1]],
+["Pick a souvenir.",["Plaster footprint",0,4],["Red sunglasses",1,5],["Bite mark",2,0],["Lake postcard",3,4]],
+["Your speed?",["Calm stroll",0,3],["Flutter",1,5],["Sprint",2,4],["Glide",3,1]],
+["Weakness?",["Camera flash",0,1],["Bright lights",1,4],["Fences",2,0],["Sonar",3,5]],
+["Why do you hide?",["Peace",0,3],["Mystery",1,5],["Hunger",2,4],["Tradition",3,0]]]},
+
+{id:"tool",title:"What Tool Are You?",icon:"🔧",
+results:[
+["Duct Tape","Holds the whole world together and nobody says thank you. Legend status."],
+["Sledgehammer","Direct, heavy and very good at removing obstacles. One swing, problem solved."],
+["Multimeter","Quiet nerd energy. You find the fault while everyone else is guessing."],
+["Pocket Multitool","Ready for anything. Knife, pliers, bottle opener, emotional support."],
+["Level","Balanced, fair and always pointing out when things are crooked. Annoying but needed."],
+["Zip Tie","Cheap, strong and everywhere. Once you commit, there is no undoing it."]],
+q:[
+["A thing breaks.",["Tape it",0,5],["Hit it",1,0],["Test it",2,4],["Fold out a fix",3,2]],
+["Your style?",["Improvise",0,3],["Force",1,5],["Measure",2,4],["Everything at once",3,0]],
+["Ideal job?",["Emergency repair",0,5],["Demolition",1,0],["Troubleshooting",2,4],["Camping",3,0]],
+["Your weakness?",["Heat",0,5],["Precision",1,0],["Batteries",2,4],["Tiny blades",3,2]],
+["Friends rely on you to...",["Hold it together",0,5],["Break the wall",1,3],["Find the fault",2,4],["Have the thing",3,0]],
+["Pick a vibe.",["Scrappy",0,5],["Heavy",1,4],["Quiet nerd",2,4],["Prepared",3,2]],
+["Storage spot?",["Every drawer",0,3],["Truck bed",1,0],["Padded case",2,4],["Pocket",3,5]],
+["Speed?",["Instant",0,5],["One big swing",1,0],["Careful steps",2,4],["Depends on the blade",3,2]],
+["Your flaw?",["Leaves residue",0,5],["Overkill",1,0],["Overthinks",2,4],["Jack of all trades",3,0]],
+["Life motto?",["If it moves, tape it",0,5],["Swing big",1,0],["Measure twice",4,2],["Be ready",3,5]]]},
+
+{id:"plant",title:"What Houseplant Are You?",icon:"🪴",
+results:[
+["Cactus","Prickly, tough and thriving on neglect. Loyal to the few who get close."],
+["Monstera","Big, dramatic and the star of every room. Your leaves have holes and you call it style."],
+["Fern","Soft, ancient and a little sensitive. You need humidity and kindness."],
+["Succulent","Small, cute and low maintenance. You fit anywhere and survive anything."],
+["Venus Flytrap","Charming until someone gets too close. Snap."],
+["Pothos","Grows on everyone. You trail across every shelf and nobody minds."]],
+q:[
+["Water needs?",["Monthly",0,3],["Weekly",1,5],["Daily mist",2,1],["I catch my own",4,0]],
+["Personality?",["Prickly but loyal",0,4],["Big and dramatic",1,4],["Soft and shy",2,3],["Grows on anyone",5,1]],
+["Light?",["Full blast",0,3],["Bright indirect",1,5],["Shade",2,5],["Windowsill",3,0]],
+["What do you do with space?",["Stay compact",3,0],["Take the whole corner",1,5],["Spread low",2,5],["Climb the shelves",5,1]],
+["Social life?",["Few friends, deep",0,3],["Everyone knows me",1,5],["Bathroom hangouts",2,1],["I eat my guests",4,0]],
+["Under stress you...",["Thrive",0,4],["Droop dramatically",1,2],["Crisp up",2,3],["Snap shut",4,0]],
+["Pick a pot.",["Terracotta",0,3],["Huge ceramic",1,5],["Hanging basket",2,5],["Teacup",3,4]],
+["Your secret?",["I store water",0,3],["Holes in my leaves",1,2],["Ancient lineage",2,1],["Trigger hairs",4,2]],
+["Best owner?",["Forgetful",0,3],["Designer",1,4],["Gentle",2,5],["Curious kid",4,3]],
+["Motto?",["Tough love",0,4],["Go big",1,5],["Stay damp",2,1],["Hang in there",5,3]]]},
+
+{id:"critter",title:"What Desert Critter Are You?",icon:"🦎",
+results:[
+["Roadrunner","Zoom. You are already gone. Beep beep is your whole personality."],
+["Coyote","Clever, scrappy and always scheming. Your plans fail loudly and you try again."],
+["Desert Tortoise","Slow, wise and planning to live 100 years. You outlast every trend."],
+["Scorpion","Still, patient, then a strike. People check their boots for you."],
+["Jackrabbit","Giant ears, quick feet, always listening. You hear the gossip first."],
+["Gila Monster","Slow, spicy and covered in beaded armor. Leave you alone and nobody gets hurt."]],
+q:[
+["Your pace?",["Zoom",0,4],["Trot",1,0],["Slow forever",2,5],["Still, then strike",3,5]],
+["Mealtime?",["Snack on the run",0,4],["Whatever I can scheme",1,3],["Wildflowers",2,4],["Midnight hunt",3,1]],
+["Plan B?",["Outrun it",0,4],["Outsmart it",1,0],["Hide in my shell",2,5],["Sting it",3,5]],
+["Night or day?",["Day",0,2],["Dusk",1,4],["Early morning",2,0],["Deep night",3,1]],
+["Friends call you...",["Fast",0,4],["Sneaky",1,3],["Wise",2,5],["Spicy",5,3]],
+["Heat wave?",["Run faster",0,1],["Find shade and scheme",1,4],["Burrow and nap",2,5],["Under a rock",3,5]],
+["Pick a sound.",["Beep",0,4],["Howl",1,0],["Silence",2,5],["Click",3,1]],
+["Your ears are...",["Normal",0,1],["Pointy",1,4],["Tiny",2,5],["Giant",4,0]],
+["Lifespan goal?",["Live fast",0,4],["Survive anything",1,3],["100 years",2,5],["Outlast everyone",3,2]],
+["Your bite?",["Peck",0,1],["Snarl",1,0],["Gentle nibble",2,4],["Venom",5,3]]]},
+
+{id:"sandwich",title:"What Sandwich Are You?",icon:"🥪",
+results:[
+["Grilled Cheese","Simple, warm, perfect. Comfort food in human form."],
+["Club Stack","Tall, organized and layered. A single toothpick holds your whole life together."],
+["Spicy Cuban","Pressed, bold and full of attitude. You bring the heat to lunch."],
+["PB and J","Sweet, nostalgic and everyone's childhood friend. Crusts optional."],
+["Cheesesteak","Messy, loud and loyal to your city forever. Napkins required."],
+["Cucumber Tea Sandwich","Dainty, proper, crusts removed. Pinky out at all times."]],
+q:[
+["Pick a lunch spot.",["Your own kitchen",0,3],["Deli counter",1,4],["Food truck",2,4],["Garden party",5,1]],
+["How do you handle stress?",["Melt a little",0,3],["Make a layered plan",1,5],["Press through it",2,4],["Have a snack",3,0]],
+["Your style?",["Cozy",0,3],["Stacked",1,2],["Spicy",2,4],["Refined",5,1]],
+["Favorite age?",["Whatever is comfy",0,4],["Thirties, organized",1,5],["Wild twenties",2,4],["Eight forever",3,0]],
+["How messy are you?",["A little drippy",0,4],["Neat with toothpicks",1,5],["Pressed flat",2,1],["Total mess",4,2]],
+["Pick a side.",["Tomato soup",0,3],["Iced tea",1,5],["Strong coffee",2,4],["Glass of milk",3,0]],
+["Weekend?",["Blanket and a movie",0,3],["Brunch reservations",1,5],["Salsa dancing",2,4],["Ballgame",4,2]],
+["Crust policy?",["Golden and buttery",0,4],["Toasted, three layers",1,0],["Crispy pressed",2,0],["Removed, obviously",5,3]],
+["Best compliment?",["You are so comforting",0,3],["You have it together",1,5],["You are bold",2,4],["You are a classic",3,0]],
+["Motto?",["Keep it simple",0,3],["More layers",1,2],["Turn up the heat",2,4],["Manners matter",5,1]]]},
+
+{id:"dog",title:"What Dog Breed Are You?",icon:"🐕",
+results:[
+["Golden Retriever","Friendly with everyone, loyal to the end, mildly damp at all times."],
+["Border Collie","Brilliant and driven. Give you a job or you start herding the furniture."],
+["Chihuahua","Tiny body, massive opinions. You would fight a truck and expect to win."],
+["Basset Hound","Slow, droopy and the greatest nap partner alive."],
+["Husky","Dramatic, athletic and you scream when you talk. Snow is your playground."],
+["Lovable Mutt","A bit of everything and better for it. Unpredictable and impossible not to love."]],
+q:[
+["A new person arrives.",["Run over happy",0,5],["Study them",1,2],["Bark at them",2,4],["Keep napping",3,5]],
+["Exercise?",["Fetch for hours",0,1],["Herding drills",1,4],["Lap time",2,3],["Run 20 miles",4,1]],
+["Bath time?",["Love it",0,5],["Get it over with",1,3],["Total betrayal",2,4],["Lie down and accept it",3,0]],
+["Talk style?",["Happy wags",0,5],["Focused stare",1,3],["Yapping",2,4],["Howling opinions",4,2]],
+["Ideal day?",["Park with friends",0,5],["A job to do",1,4],["Purse ride",2,3],["Couch",3,0]],
+["Weather?",["Sunny lake",0,5],["Any, if there is work",1,0],["Indoors and warm",2,3],["Snowstorm",4,1]],
+["Smarts?",["People smart",0,3],["Genius",1,4],["Street smart",2,5],["Smart enough to nap",3,0]],
+["Your bark?",["Rare",0,3],["Purposeful",1,0],["Constant",2,4],["Dramatic aroo",4,3]],
+["Family role?",["Best friend",0,5],["Manager",1,4],["Security",2,1],["Comfort",3,0]],
+["Origin story?",["Classic",0,1],["Working farm",1,4],["Tiny but fierce",2,5],["Shelter surprise",5,0]]]},
+
+{id:"font",title:"What Font Are You?",icon:"🔤",
+results:[
+["Comic Sans","Friendly, mocked by snobs and secretly loved. You show up at every bake sale."],
+["Helvetica","Clean, neutral and everywhere. Designers trust you with their lives."],
+["Times New Roman","Formal, reliable, a little old school. You write the important letters."],
+["Papyrus","Mystical and earnest, maybe a little much. You believe in the journey."],
+["Courier","Typewriter soul. Every word has weight and every letter gets equal space."],
+["Wingdings","Nobody can read you and you love it. Pure symbols, pure mystery."]],
+q:[
+["Your handwriting?",["Bubbly",0,3],["Clean print",1,2],["Cursive",2,3],["Symbols",5,4]],
+["Dream job?",["Party planner",0,5],["Designer",1,4],["Lawyer",2,1],["Spiritual guide",3,0]],
+["Pick a room.",["Kids art room",0,3],["Minimal loft",1,4],["Library",2,4],["Incense shop",3,5]],
+["People misread you as...",["Childish",0,3],["Boring",1,2],["Stiff",2,1],["Gibberish",5,4]],
+["Spacing in life?",["Loose",0,3],["Balanced",1,2],["Tight",2,1],["Monospaced",4,5]],
+["Pick a tool.",["Crayons",0,3],["Laptop",1,2],["Fountain pen",2,4],["Typewriter",4,2]],
+["Your era?",["Nineties",0,5],["Modern",1,0],["Classic",2,4],["Ancient Egypt",3,5]],
+["How do you communicate?",["Exclamation points",0,3],["Clear and short",1,4],["Formal paragraphs",2,4],["Emoji only",5,0]],
+["Weekend?",["Bake sale",0,3],["Design museum",1,2],["Book club",2,4],["Desert vision quest",3,5]],
+["Motto?",["Have fun",0,5],["Less is more",1,4],["Proper always",2,1],["Decode me",5,3]]]},
+
+{id:"sign",title:"What Road Sign Are You?",icon:"🛑",
+results:[
+["Stop Sign","Firm boundaries, red and proud. When you say stop, things stop."],
+["Yield Sign","Polite, flexible and lets others go first. Peacekeeper of the road."],
+["Speed Bump","You slow people down and they thank you later. Or curse you."],
+["Deer Crossing","Gentle and wild at heart. People watch for you at dusk."],
+["Detour","Plans change around you and somehow it works out. Scenic route expert."],
+["Dead End","Mysterious, final, a little dramatic. You end conversations on your terms."]],
+q:[
+["Boundaries?",["Firm",0,5],["Flexible",1,4],["Gentle reminders",2,1],["What boundaries",4,3]],
+["Ideal road?",["Busy intersection",0,1],["Merge lane",1,4],["School zone",2,0],["Forest road",3,4]],
+["Plans change. You...",["Refuse",0,5],["Adapt",1,4],["Slow everyone down",2,0],["Make a new route",4,1]],
+["Color?",["Red",0,2],["Yellow and white",1,2],["Gray",2,5],["Brown and green",3,4]],
+["Conflict?",["Shut it down",0,5],["Let them pass",1,3],["Make them pause",2,0],["Go around it",4,1]],
+["Social life?",["Center of attention",0,4],["Everyone's buddy",1,3],["Neighborhood favorite",2,1],["Rarely found",5,3]],
+["Time of day?",["Rush hour",0,2],["Afternoon",1,2],["School pickup",2,1],["Dusk",3,5]],
+["What do drivers say?",["Finally",0,1],["Thank you",1,3],["Ouch",2,0],["Where am I",4,5]],
+["Secret?",["I am fair",0,1],["I am patient",1,2],["I protect kids",2,3],["I hide something good",5,4]],
+["Motto?",["Full stop",0,5],["After you",1,3],["Slow down",2,1],["Take the long way",4,3]]]},
+
+{id:"sea",title:"What Sea Creature Are You?",icon:"🐙",
+results:[
+["Octopus","Eight arms, three hearts, endless tricks. You escape any situation."],
+["Shark","Focused, fearless, always moving forward. People respect your space."],
+["Dolphin","Playful, social and smarter than you let on. Life of the reef."],
+["Sea Turtle","Old soul, long journeys, calm in any current."],
+["Jellyfish","Drifting, glowing, unbothered. Do not touch."],
+["Anglerfish","Lives in the deep dark and brings its own light. Weird and proud."]],
+q:[
+["Problem solving?",["Clever tricks",0,2],["Direct attack",1,5],["Teamwork",2,3],["Wait it out",3,4]],
+["Depth?",["Rocky reef",0,2],["Open ocean",1,3],["Surface waves",2,4],["Total darkness",5,0]],
+["Friends?",["A few odd ones",0,5],["None needed",1,5],["Huge pod",2,3],["Old friends far away",3,0]],
+["Movement?",["Crawl and squeeze",0,4],["Swim nonstop",1,3],["Jump and spin",2,4],["Slow glide",3,4]],
+["Defense?",["Ink and vanish",0,4],["Teeth",1,5],["Outswim it",2,1],["Hard shell",3,0]],
+["Diet?",["Crabs",0,1],["Whatever I want",1,5],["Fish with friends",2,1],["Jellyfish",3,4]],
+["Vibe?",["Genius",0,2],["Intense",1,5],["Playful",2,4],["Wise",3,0]],
+["Light?",["Camouflage",0,4],["Who cares",1,3],["Sunlight",2,3],["My own glow",5,4]],
+["Travel?",["Stay home and redecorate",0,5],["Patrol",1,2],["Follow the boats",2,1],["Cross oceans",3,4]],
+["Motto?",["Adapt",0,4],["Keep moving",1,3],["Play more",2,4],["Glow in the dark",5,4]]]},
+
+{id:"planet",title:"What Planet Are You?",icon:"🪐",
+results:[
+["Mars","Red, rugged and adventurous. Everyone wants to visit you someday."],
+["Saturn","Stylish and ringed. You have the best accessories in the solar system."],
+["Jupiter","Huge personality, huge storms, protects everyone smaller."],
+["Neptune","Cold, blue, deep and distant. Mysterious winds follow you."],
+["Pluto","Small, demoted and still iconic. Underdog of the cosmos."],
+["Earth","Warm, alive and full of everything. The home base."]],
+q:[
+["Your size?",["Medium and tough",0,5],["Big with style",1,2],["Enormous",2,1],["Tiny",4,0]],
+["Temperature?",["Dusty cold",0,4],["Chill",1,3],["Stormy",2,3],["Room temp",5,1]],
+["Accessories?",["None, raw",0,4],["Rings",1,3],["Many moons",2,1],["One good moon",5,0]],
+["Personality?",["Explorer",0,5],["Fashionable",1,2],["Protector",2,5],["Underdog",4,3]],
+["Distance from others?",["Close enough",0,5],["Comfortable gap",1,2],["Center of attention",2,1],["Far out",3,4]],
+["Mood swings?",["Dust storms",0,2],["Steady",1,5],["Giant red spot",2,0],["Supersonic winds",3,4]],
+["People say?",["Let's go there",0,1],["So pretty",1,3],["So big",2,1],["Still counts",4,3]],
+["Color?",["Rusty red",0,2],["Butter gold",1,2],["Swirly tan",2,1],["Deep blue",3,5]],
+["Hobby?",["Hiking",0,5],["Spinning",1,3],["Collecting moons",2,1],["Hiding at the edge",4,3]],
+["Motto?",["Go further",0,4],["Rings are a lifestyle",1,2],["Bigger is better",2,1],["Size is not status",4,3]]]},
+
+{id:"instrument",title:"What Instrument Are You?",icon:"🥁",
+results:[
+["Drums","Loud, physical, the heartbeat. Nothing starts until you count it in."],
+["Violin","Elegant and emotional. You make people cry in the good way."],
+["Bass Guitar","Nobody notices you until you stop. Then everything falls apart."],
+["Accordion","Folksy, joyful and a little unexpected. A party in a box."],
+["Kazoo","Silly, cheap and impossible to take seriously. Pure joy."],
+["Pipe Organ","Massive and dramatic. You fill the whole building. Spooky on Halloween."]],
+q:[
+["Volume?",["Loud",0,5],["Expressive",1,5],["Low rumble",2,0],["Silly",4,3]],
+["Band role?",["Keep time",0,2],["Solo",1,5],["Hold it together",2,0],["Comic relief",4,3]],
+["Pick a stage.",["Garage",0,2],["Concert hall",1,5],["Dive bar",2,0],["Street fair",3,4]],
+["Practice style?",["Bang on things",0,4],["Hours daily",1,5],["Groove along",2,3],["Practice what",4,3]],
+["Outfit?",["Tank top",0,2],["Formal black",1,5],["Jeans",2,0],["Lederhosen",3,4]],
+["Mood?",["Pumped",0,4],["Moody",1,5],["Chill",2,3],["Goofy",4,3]],
+["Size?",["Big set",0,5],["Compact and fancy",1,2],["Long neck",2,1],["Pocket sized",4,3]],
+["Fans say?",["That beat hits",0,2],["Beautiful",1,5],["Groovy",2,3],["Why is this so fun",4,3]],
+["Dream gig?",["Arena",0,5],["Symphony",1,5],["Funk band",2,0],["Polka festival",3,4]],
+["Motto?",["Count it in",0,2],["Make them cry",1,5],["Lay the groove",2,0],["Hum along",4,3]]]},
+
+{id:"tree",title:"What Tree Are You?",icon:"🌳",
+results:[
+["Oak","Strong, steady, shelter for everyone. Acorns of wisdom."],
+["Willow","Graceful and soft. You bend in every storm and never break."],
+["Joshua Tree","Weird shape, desert soul, built for hard places."],
+["Pine","Evergreen and dependable. You smell great and stay green all year."],
+["Palm","Laid back, beachy, permanently on vacation."],
+["Redwood","Ancient, enormous, quietly stunning. You take the long view."]],
+q:[
+["Where do you grow?",["Town square",0,5],["Riverbank",1,3],["Desert",2,4],["Mountain",3,5]],
+["A storm comes.",["Stand firm",0,5],["Bend",1,4],["Barely notice",2,3],["Sway and chill",4,1]],
+["Shape?",["Wide",0,1],["Droopy",1,3],["Twisted",2,4],["Tall and straight",5,3]],
+["Seasons?",["Change with them",0,1],["Weep a little",1,0],["What seasons",2,4],["Always green",3,5]],
+["Visitors?",["Squirrels",0,3],["Poets",1,5],["Hikers",2,3],["Tourists",4,5]],
+["Weather?",["Mild",0,1],["Rainy",1,5],["Scorching",2,4],["Snowy",3,5]],
+["Age goal?",["Hundreds of years",0,5],["Graceful aging",1,0],["Odd and old",2,5],["Thousands of years",5,0]],
+["Gift to the world?",["Shade",0,1],["Beauty",1,4],["Survival",2,3],["Awe",5,2]],
+["Vibe?",["Dependable",0,3],["Romantic",1,4],["Quirky",2,4],["Majestic",5,0]],
+["Motto?",["Root deep",0,5],["Bend, not break",1,4],["Thrive anywhere",2,3],["Look up",5,3]]]},
+
+{id:"dessert",title:"What Dessert Are You?",icon:"🍰",
+results:[
+["Chocolate Cake","Rich, crowd pleasing and always invited to the birthday."],
+["Fruit Tart","Bright, fresh and beautifully arranged. You look good and know it."],
+["Ice Cream Sundae","Fun, messy, toppings on toppings. Every day is a party."],
+["Creme Brulee","Fancy shell, soft heart. People crack you open slowly."],
+["Churro","Warm, sweet, a little crunchy. Best found at fairs and street corners."],
+["Fruitcake","Nobody understands you, but you last forever. Respect the dense."]],
+q:[
+["Party role?",["Main event",0,2],["Pretty centerpiece",1,3],["Fun station",2,4],["The one nobody touches",5,3]],
+["Texture?",["Rich",0,3],["Fresh",1,2],["Melty",2,0],["Dense",5,3]],
+["Style?",["Classic",0,5],["Elegant",1,3],["Wild",2,4],["Mysterious",3,5]],
+["Pick a place.",["Birthday party",0,2],["Bakery window",1,3],["Boardwalk",2,4],["Grandma's pantry",5,0]],
+["Toppings?",["Frosting",0,2],["Glazed fruit",1,3],["Everything",2,4],["Burnt sugar",3,1]],
+["Under stress?",["Eat cake",0,2],["Rearrange things",1,3],["Get messy",2,4],["Age gracefully",5,3]],
+["Temperature?",["Room temp",0,5],["Chilled",1,3],["Frozen",2,1],["Hot",4,3]],
+["Friends call you...",["Sweet",0,2],["Put together",1,3],["Fun",2,4],["Underrated",5,3]],
+["Season?",["Any",0,2],["Summer",1,2],["July",2,4],["December",5,3]],
+["Motto?",["More layers",0,2],["Presentation is everything",1,3],["Extra sprinkles",2,4],["Crack the surface",3,5]]]},
+
+{id:"shoe",title:"What Shoe Are You?",icon:"👢",
+results:[
+["Cowboy Boots","Tough, stylish, a little swagger. You walk into rooms like a saloon."],
+["Running Shoes","Always moving, goal driven, never late."],
+["Flip Flops","Relaxed, sandy, no worries. You live in vacation mode."],
+["Dress Shoes","Polished, sharp and ready for the big meeting."],
+["Work Boots","Steel toe, no nonsense. You get the job done."],
+["Fuzzy Slippers","Cozy expert. Home is your favorite place on earth."]],
+q:[
+["Morning?",["Coffee on the porch",0,4],["5 AM run",1,4],["Sleep in",2,5],["Iron a shirt",3,1]],
+["Pick a floor.",["Dirt",0,4],["Track",1,3],["Sand",2,5],["Carpet",5,2]],
+["Style?",["Western",0,4],["Athletic",1,2],["Beach",2,5],["Sharp",3,1]],
+["Weekend?",["Rodeo",0,4],["Race",1,4],["Beach day",2,5],["Gala",3,0]],
+["Rain?",["Stomp through",0,4],["Run anyway",1,0],["Wet feet, who cares",2,1],["Stay inside",5,3]],
+["Music?",["Country",0,4],["Workout mix",1,3],["Reggae",2,5],["Jazz",3,5]],
+["People notice your...",["Swagger",0,3],["Speed",1,4],["Chill",2,5],["Polish",3,0]],
+["Work?",["Ranch",0,4],["Coach",1,0],["Lifeguard",2,1],["Office",3,1]],
+["Vacation?",["Desert ride",0,4],["Marathon city",1,3],["Island",2,5],["Staycation",5,2]],
+["Motto?",["Giddy up",0,4],["Keep moving",1,4],["No worries",2,5],["Stay cozy",5,2]]]},
+
+{id:"coffee",title:"What Coffee Order Are You?",icon:"☕",
+results:[
+["Black Coffee","No frills, no nonsense, works every time."],
+["Oat Latte","Smooth, trendy and thoughtful about everything."],
+["Espresso Shot","Small, intense, gone in a second."],
+["Frozen Mocha","Sweet and fun. Basically dessert with ambition."],
+["Cold Brew","Slow made and cool on the surface, strong underneath."],
+["Herbal Tea","Calm, kind and asleep by ten. You never needed the caffeine."]],
+q:[
+["Waking up?",["Instant",0,2],["Slow with music",1,5],["Already wired",2,4],["After noon",3,4]],
+["Pick a mug.",["Diner mug",0,4],["Handmade ceramic",1,5],["Tiny cup",2,1],["Giant plastic cup",3,4]],
+["Speed?",["Steady",0,4],["Mindful",1,5],["Fast",2,0],["Fun pace",3,1]],
+["Weekend?",["Hardware store",0,4],["Farmers market",1,5],["Work anyway",2,0],["Mall",3,1]],
+["Sweet tooth?",["None",0,2],["A little",1,4],["None, bitter please",2,0],["Huge",3,5]],
+["Vibe?",["Classic",0,4],["Trendy",1,3],["Intense",2,0],["Cozy",5,1]],
+["Sleep?",["Whenever",0,4],["Eight hours, tracked",1,5],["What is sleep",2,4],["By ten",5,1]],
+["Temperature?",["Hot",0,2],["Warm",1,5],["Scalding",2,0],["Ice cold",4,3]],
+["Social?",["Quiet",0,4],["Brunch crowd",1,3],["Busy busy",2,0],["Party",3,1]],
+["Motto?",["Just coffee",0,2],["Make it nice",1,5],["Shoot it",2,0],["Chill but strong",4,0]]]},
+
+{id:"bird",title:"What Bird Are You?",icon:"🦉",
+results:[
+["Owl","Wise, nocturnal, sees everything. You ask who and mean it."],
+["Crow","Clever, collects shiny things, remembers every face."],
+["Flamingo","Pink, fabulous, standing on one leg for no reason."],
+["Hummingbird","Tiny, fast and always buzzing. Your heart runs a thousand beats a minute."],
+["Pigeon","City survivor. You eat anything and fear nothing."],
+["Eagle","Majestic, sharp eyed and owner of the sky."]],
+q:[
+["Time of day?",["Midnight",0,1],["Dawn",1,5],["Sunset",2,3],["Rush hour",4,1]],
+["Hobby?",["Reading",0,1],["Collecting",1,4],["Posing",2,3],["Flying fast",3,5]],
+["Home?",["Old barn",0,1],["Power line",1,4],["Lagoon",2,3],["Mountain cliff",5,0]],
+["Diet?",["Mice",0,5],["Anything shiny or tasty",1,4],["Shrimp",2,3],["Nectar",3,2]],
+["Social?",["Solo",0,5],["Big group",1,4],["Flock of friends",2,4],["Darting around",3,2]],
+["Color?",["Brown",0,4],["Black",1,0],["Pink",2,3],["Iridescent",3,2]],
+["Talent?",["Head turning",0,1],["Remembering faces",1,0],["Balance",2,3],["Hovering",3,2]],
+["Vibe?",["Wise",0,5],["Clever",1,0],["Fabulous",2,3],["Scrappy",4,1]],
+["People think you are...",["Spooky",0,1],["Sneaky",1,4],["Fancy",2,3],["Everywhere",4,1]],
+["Motto?",["Who?",0,1],["Remember everything",1,0],["Stand out",2,3],["Soar",5,0]]]}
+];
+
+const BIG=[
+["Am the life of the party.",0,1],["Have little concern for others.",1,-1],["Am always prepared.",2,1],["Get stressed out easily.",3,-1],["Have a rich vocabulary.",4,1],
+["Don't talk a lot.",0,-1],["Am interested in people.",1,1],["Leave my belongings around.",2,-1],["Am relaxed most of the time.",3,1],["Have difficulty understanding abstract ideas.",4,-1],
+["Am comfortable around people.",0,1],["Insult people.",1,-1],["Pay attention to details.",2,1],["Worry about things.",3,-1],["Have a vivid imagination.",4,1],
+["Keep in the background.",0,-1],["Sympathize with others.",1,1],["Make a mess of things.",2,-1],["Am seldom blue.",3,1],["Am not interested in abstract ideas.",4,-1],
+["Start conversations.",0,1],["Am not interested in other people's problems.",1,-1],["Get chores done right away.",2,1],["Am easily disturbed.",3,-1],["Have excellent ideas.",4,1],
+["Have little to say.",0,-1],["Have a soft heart.",1,1],["Often forget to put things back in their proper place.",2,-1],["Get upset easily.",3,-1],["Do not have a good imagination.",4,-1],
+["Talk to a lot of different people at parties.",0,1],["Am not really interested in others.",1,-1],["Like order.",2,1],["Change my mood a lot.",3,-1],["Am quick to understand things.",4,1],
+["Don't like to draw attention to myself.",0,-1],["Take time out for others.",1,1],["Shirk my duties.",2,-1],["Have frequent mood swings.",3,-1],["Use difficult words.",4,1],
+["Don't mind being the center of attention.",0,1],["Pick up on others' emotions.",1,1],["Follow a schedule.",2,1],["Get irritated easily.",3,-1],["Spend time reflecting on things.",4,1],
+["Am quiet around strangers.",0,-1],["Make people comfortable.",1,1],["Am exacting in my work.",2,1],["Am often blue.",3,-1],["Am full of ideas.",4,1]];
+const TRAITS=["Social","Kind","Organized","Calm","Imaginative"];
+const LIKERT=["Very inaccurate","Mostly inaccurate","Neither","Mostly accurate","Very accurate"];
+// Trait profile per result, order: Social Kind Organized Calm Imaginative
+const PROFILES={
+cheese:"00+++ 0-++0 +0-0+ ++0+0 -+++- +-0-+",car:"+00+- 0++0- ++-++ +--0+ -0+++ +0--+",
+lover:"-+++0 +0--0 -+0-+ 0+++- +0-++ ++-00",date:"0+--+ -0+++ 00++0 ++-00 -+++0 +0-0+",
+dino:"+-000 0+++- +-+0+ -+0+- -0+00 00-0+",pizza:"++0+- +0-0+ --00+ -+0++ +---0 0+0+-",
+kitchen:"+0--0 -+++0 0+0+- 00--- +-+-+ -0++0",weather:"+-0-0 0-++- -000+ 0+-+0 ++0++ +0--+",
+cryptid:"-+0+- -00-+ +---0 -0++0 ++-0+ 00+0+",tool:"0+-++ +-00- -0+0+ 0++0+ -0++- 00+0-",
+plant:"--++0 +000+ -+0-+ 0+++- +-0-+ ++0+0",critter:"+0-00 +--0+ -+++0 --+00 0+0-0 --0+-",
+sandwich:"0+0+- 00++0 +-00+ ++-0- +---- -++0+",dog:"++0+0 00+-+ +-0-- -+-+- +0--+ 0+-0+",
+font:"++-00 -0++0 -0+0- 0+--+ --+0+ 0--0+",sign:"0-+0- 0+0+0 -0+0- -+0-+ +0-++ --0-0",
+sea:"-000+ 0-++- ++0+0 -+++0 00-+- --0-+",planet:"+000+ +0++0 +++00 -00-+ -+--0 0+0+0",
+instrument:"+0+0- -++-+ -+++0 ++-00 +0-+- 0-0-+",tree:"0+++0 -+0-+ -00++ 00++- ++-+0 -0+++",
+dessert:"++0+- 00+0+ ++-00 -0+0+ ++-+0 --+00",shoe:"+-0+0 +0+-0 ++-+0 00+-+ -0++- -+-00",
+coffee:"-0++- 0+00+ +-+-0 ++-0- -00++ -+0+0",bird:"-0+++ 0-+0+ ++-00 +00-0 00-+- +-++0"};
+
+const HEX=["#ffd23f","#3bceac","#ee4266","#4d9de0","#ff8c42","#7bc950","#a27bd8"];
+const PHRASE={cheese:"is basically {r}",car:"drives a {r}",lover:"loves like {r}",date:"dreams of a {r} first date",
+dino:"roars like the {r}",pizza:"tastes like {r}",kitchen:"cooks like the {r}",weather:"rolls in like {r}",
+cryptid:"hides like the {r}",tool:"fixes things with {r}",plant:"grows like the {r}",critter:"moves like the {r}",
+sandwich:"stacks up like the {r}",dog:"is loyal as the {r}",font:"writes in {r}",sign:"lives by the {r}",
+sea:"swims like the {r}",planet:"orbits like {r}",instrument:"plays the {r}",tree:"stands tall like the {r}",
+dessert:"is sweet as {r}",shoe:"walks in {r}",coffee:"runs on {r}",bird:"flies like the {r}"};
+
+const app=document.getElementById("app");
+let cur=null,qi=0,picks=[],order=[];
+
+function store(){try{return JSON.parse(localStorage.getItem("wau_wall")||"{}")}catch(e){return {}}}
+function save(id,data){try{const s=store();s[id]=data;localStorage.setItem("wau_wall",JSON.stringify(s))}catch(e){}}
+function toast(t){const el=document.getElementById("toast");el.textContent=t;el.classList.add("on");setTimeout(()=>el.classList.remove("on"),1600)}
+function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+function home(){
+  const s=store();
+  app.innerHTML='<div class="tile" style="background:#a27bd8;min-height:0;padding:18px;margin-top:6px" onclick="bigStart()">'+
+    '<div class="nm" style="font-size:1.4rem;font-family:Impact,\'Arial Black\',sans-serif;letter-spacing:1px">🧠 THE BIG TEST</div>'+
+    '<div style="font-size:.9rem">50 questions from a real personality test. Unlocks all '+QUIZZES.length+' results at once.</div></div>'+
+    '<div class="grid">'+QUIZZES.map((z,i)=>
+    '<div class="tile" style="background:'+COLORS[i%COLORS.length]+'" onclick="start(\''+z.id+'\')">'+
+    (s[z.id]?'<div class="done">DONE</div>':'')+
+    '<div class="ic">'+z.icon+'</div><div class="nm">'+esc(z.title)+'</div></div>').join("")+'</div>';
+  scrollTo(0,0);
+}
+
+let bigAns=[];
+function bigStart(){bigAns=[];bigAsk()}
+function bigAsk(){
+  const i=bigAns.length;
+  app.innerHTML='<div class="panel"><div class="qhead"><span>🧠 THE BIG TEST</span><span>'+(i+1)+' / '+BIG.length+'</span></div>'+
+    '<div class="bar"><div class="fill" style="width:'+(i/BIG.length*100)+'%"></div></div>'+
+    '<div class="small" style="margin-bottom:6px">How well does this describe you?</div>'+
+    '<div class="qtext">I '+esc(BIG[i][0].charAt(0).toLowerCase()+BIG[i][0].slice(1))+'</div>'+
+    LIKERT.map((l,k)=>'<button class="ans" onclick="bigPick('+(k+1)+')"><span>'+(k+1)+'</span>'+l+'</button>').join("")+
+    (i?'<div class="row"><button class="btn" onclick="bigAns.pop();bigAsk()">Back</button></div>':'')+'</div>';
+}
+function bigPick(v){bigAns.push(v);if(bigAns.length<BIG.length)bigAsk();else bigFinish()}
+
+function traitScores(ans){
+  const t=[0,0,0,0,0];
+  ans.forEach((v,i)=>{const [_,f,k]=BIG[i];t[f]+=k>0?v-3:3-v});
+  return t.map(x=>x/20);
+}
+function profileMatch(id,t){
+  const groups=PROFILES[id].split(" ");
+  let best=0,bs=-1e9;
+  groups.forEach((g,ri)=>{
+    let sc=0;
+    for(let k=0;k<5;k++){const c=g[k];const p=c==="+"?1:c==="-"?-1:0;sc+=p===0?-Math.abs(t[k])*0.3:p*t[k]}
+    if(sc>bs){bs=sc;best=ri}
+  });
+  return best;
+}
+function bigFinish(){
+  const t=traitScores(bigAns);
+  const code="big."+bigAns.join("");
+  QUIZZES.forEach(z=>save(z.id,{best:profileMatch(z.id,t),code:null}));
+  save("_big",{code,t});
+  bigResult(t,code);
+}
+function bigResult(t,code){
+  const s=store();
+  app.innerHTML='<div class="panel res"><div class="big">🧠</div><div class="youare">YOUR BIG TEST PROFILE</div>'+
+    '<div class="meter" style="margin-top:14px">'+TRAITS.map((n,i)=>'<div class="mrow"><b>'+n+'</b><div class="mtrack"><div class="mfill" style="width:'+
+      Math.round((t[i]+1)*50)+'%;background:'+HEX[i]+'"></div></div></div>').join("")+'</div>'+
+    '<div class="wall" style="text-align:left">'+QUIZZES.map((z,i)=>'<div class="wcard" style="background:'+HEX[i%HEX.length]+'">'+
+      '<div class="q" style="font-size:.7rem;font-weight:bold">'+z.icon+' '+esc(z.title.toUpperCase())+'</div><div class="r" style="font-weight:bold">'+esc(z.results[s[z.id].best][0])+'</div></div>').join("")+'</div>'+
+    '<div class="small" style="margin-top:14px">Your Big Test match code</div><div class="code">'+esc(code)+'</div>'+
+    '<div class="row"><button class="btn pink" onclick="matchScreen(\''+code+'\')">Match With Someone</button>'+
+    '<button class="btn primary" onclick="wall()">My Wall</button><button class="btn" onclick="home()">Home</button></div>'+
+    '<div class="small" style="margin-top:14px">Questions adapted from the International Personality Item Pool, public domain.</div></div>';
+  scrollTo(0,0);
+}
+
+function start(id){cur=QUIZZES.find(z=>z.id===id);qi=0;picks=[];ask()}
+
+function ask(){
+  const q=cur.q[qi];
+  order=shuffle([0,1,2,3]);
+  const keys="ABCD";
+  app.innerHTML='<div class="panel"><div class="qhead"><span>'+cur.icon+' '+esc(cur.title)+'</span><span>'+(qi+1)+' / 10</span></div>'+
+    '<div class="bar"><div class="fill" style="width:'+(qi*10)+'%"></div></div>'+
+    '<div class="qtext">'+esc(q[0])+'</div>'+
+    order.map((o,k)=>'<button class="ans" onclick="pick('+o+')"><span>'+keys[k]+'</span>'+esc(q[o+1][0])+'</button>').join("")+'</div>';
+}
+
+function pick(o){picks.push(o);qi++;if(qi<cur.q.length)ask();else finish()}
+
+function tally(quiz,p){
+  const sc=new Array(quiz.results.length).fill(0);
+  p.forEach((o,i)=>{const a=quiz.q[i][o+1];sc[a[1]]+=2;sc[a[2]]+=1});
+  let best=0;sc.forEach((v,i)=>{if(v>sc[best])best=i});
+  return {sc,best};
+}
+
+function finish(){
+  const {sc,best}=tally(cur,picks);
+  const code=cur.id+"."+picks.join("");
+  save(cur.id,{best,code});
+  showResult(cur,sc,best,code);
+}
+
+function showResult(quiz,sc,best,code){
+  const r=quiz.results[best];
+  const max=Math.max(...sc)||1;
+  app.innerHTML='<div class="panel res"><div class="big">'+quiz.icon+'</div><div class="youare">YOU ARE</div>'+
+    '<h2>'+esc(r[0])+'</h2><p>'+esc(r[1])+'</p>'+
+    '<div class="meter">'+quiz.results.map((x,i)=>'<div class="mrow"><b>'+esc(x[0])+'</b><div class="mtrack"><div class="mfill" style="width:'+
+      Math.round(sc[i]/max*100)+'%;background:'+COLORS[i%COLORS.length]+'"></div></div></div>').join("")+'</div>'+
+    '<div class="small">Your match code. Send it to someone who took this quiz.</div>'+
+    '<div class="code" id="mycode">'+esc(code)+'</div>'+
+    '<div class="row"><button class="btn pink" onclick="cardOut(\''+quiz.id+'\','+best+',\'save\')">Save Result Card</button>'+
+    '<button class="btn pink" onclick="cardOut(\''+quiz.id+'\','+best+',\'share\')">Share Result Card</button></div>'+
+    '<div class="row"><button class="btn primary" onclick="copyCode(\''+code+'\',\''+esc(r[0]).replace(/'/g,"")+'\',\''+esc(quiz.title).replace(/'/g,"")+'\')">Copy and Share</button>'+
+    '<button class="btn pink" onclick="matchScreen(\''+code+'\')">Match With Someone</button>'+
+    '<button class="btn" onclick="start(\''+quiz.id+'\')">Retake</button>'+
+    '<button class="btn" onclick="home()">More Quizzes</button></div></div>';
+  scrollTo(0,0);
+}
+
+function copyCode(code,name,title){
+  const t=title+" I got "+name+"! My match code: "+code;
+  try{navigator.clipboard.writeText(t).then(()=>toast("Copied"),()=>toast(code))}catch(e){toast(code)}
+}
+
+function parseCode(c){
+  c=(c||"").trim().toLowerCase();
+  const m=c.match(/^([a-z]+)\.([0-3]{10})$/);
+  if(!m)return null;
+  const quiz=QUIZZES.find(z=>z.id===m[1]);
+  if(!quiz)return null;
+  return {quiz,picks:m[2].split("").map(Number)};
+}
+
+function matchScreen(mine){
+  const s=store();
+  const saved=[s._big&&s._big.code].concat(Object.values(s).map(v=>v.code)).filter(Boolean);
+  app.innerHTML='<div class="panel"><div class="qtext">💞 Compatibility Match</div>'+
+    '<div class="small">Both people take the same quiz. Paste both codes. The machine decides your destiny.</div>'+
+    '<div style="margin-top:14px"><b>Your code</b></div><input class="inp" id="c1" value="'+esc(mine||saved[0]||"")+'" placeholder="cheese.0123012301">'+
+    '<div style="margin-top:12px"><b>Their code</b></div><input class="inp" id="c2" placeholder="cheese.3210321032">'+
+    '<div class="row"><button class="btn pink" onclick="runMatch()">Calculate Love</button></div>'+
+    '<div class="match-out" id="mout"></div></div>';
+  scrollTo(0,0);
+}
+
+function runMatch(){
+  const out=document.getElementById("mout");
+  const r1=document.getElementById("c1").value.trim().toLowerCase(),r2=document.getElementById("c2").value.trim().toLowerCase();
+  const bigRe=/^big\.([1-5]{50})$/;
+  if(bigRe.test(r1)||bigRe.test(r2)){
+    if(!(bigRe.test(r1)&&bigRe.test(r2))){out.innerHTML='<div class="small">Big Test codes only match other Big Test codes.</div>';return}
+    const ta=traitScores(r1.match(bigRe)[1].split("").map(Number)),tb=traitScores(r2.match(bigRe)[1].split("").map(Number));
+    let d=0;ta.forEach((v,i)=>d+=Math.abs(v-tb[i]));
+    const pct=Math.max(1,Math.min(100,Math.round(100-d/10*100*1.6)));
+    let same=0;QUIZZES.forEach(z=>{if(profileMatch(z.id,ta)===profileMatch(z.id,tb))same++});
+    const verdict=pct>=85?"Soulmates. Book the venue.":pct>=65?"Strong match. Go get pancakes.":pct>=45?"Could work with effort and snacks.":pct>=25?"Opposites attract, allegedly.":"Run. Both directions.";
+    out.innerHTML='<div class="pct">'+pct+'%</div><div class="qtext" style="margin:0">'+verdict+'</div>'+
+      '<div class="small">Same result on '+same+' of '+QUIZZES.length+' quizzes</div>'+
+      '<div class="meter" style="margin-top:10px">'+TRAITS.map((n,i)=>'<div class="mrow"><b>'+n+'</b><span>'+Math.round((ta[i]+1)*50)+' vs '+Math.round((tb[i]+1)*50)+'</span></div>').join("")+'</div>';
+    return;
+  }
+  const a=parseCode(r1);
+  const b=parseCode(r2);
+  if(!a||!b){out.innerHTML='<div class="small">One of those codes is busted. Codes look like cheese.0123012301</div>';return}
+  if(a.quiz.id!==b.quiz.id){out.innerHTML='<div class="small">Different quizzes. You cannot compare a cheese to a dinosaur. Well, you can, but not here.</div>';return}
+  const q=a.quiz;
+  const ta=tally(q,a.picks),tb=tally(q,b.picks);
+  let same=0;a.picks.forEach((p,i)=>{if(p===b.picks[i])same++});
+  let dot=0,na=0,nb=0;ta.sc.forEach((v,i)=>{dot+=v*tb.sc[i];na+=v*v;nb+=tb.sc[i]*tb.sc[i]});
+  const cos=(na&&nb)?dot/Math.sqrt(na*nb):0;
+  let pct=Math.round(same*4+cos*50+(ta.best===tb.best?10:0));
+  pct=Math.max(1,Math.min(100,pct));
+  const verdict=pct>=85?"Soulmates. Book the venue.":pct>=65?"Strong match. Go get pancakes.":pct>=45?"Could work with effort and snacks.":pct>=25?"Opposites attract, allegedly.":"Run. Both directions.";
+  out.innerHTML='<div class="pct">'+pct+'%</div><div class="qtext" style="margin:0">'+verdict+'</div>'+
+    '<div class="small">'+esc(q.results[ta.best][0])+' + '+esc(q.results[tb.best][0])+'</div>'+
+    '<div class="small">Same answers on '+same+' of 10 questions</div>';
+}
+
+function wrap(ctx,text,x,y,maxW,lh,maxLines){
+  const words=String(text).split(" ");let line="",lines=[];
+  words.forEach(w=>{const t=line?line+" "+w:w;if(ctx.measureText(t).width>maxW&&line){lines.push(line);line=w}else line=t});
+  if(line)lines.push(line);
+  if(maxLines&&lines.length>maxLines){lines=lines.slice(0,maxLines);lines[maxLines-1]+="..."}
+  lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lh));
+  return y+lines.length*lh;
+}
+
+function cardBase(W,H,color){
+  const c=document.createElement("canvas");c.width=W;c.height=H;
+  const x=c.getContext("2d");
+  x.fillStyle="#fff8e7";x.fillRect(0,0,W,H);
+  x.fillStyle="#e9dcb8";
+  for(let i=0;i<W;i+=28)for(let j=0;j<H;j+=28){x.beginPath();x.arc(i,j,2.5,0,6.283);x.fill()}
+  x.fillStyle="#1c1c1c";x.fillRect(76,76,W-120,H-120);
+  x.fillStyle="#ffffff";x.fillRect(60,60,W-120,H-120);
+  x.lineWidth=8;x.strokeStyle="#1c1c1c";x.strokeRect(60,60,W-120,H-120);
+  x.fillStyle=color;x.fillRect(64,64,W-128,360);
+  x.fillStyle="#1c1c1c";x.fillRect(64,424,W-128,8);
+  return {c,x};
+}
+
+function logo(x,W,y){
+  x.save();x.translate(W/2,y);x.rotate(-0.03);
+  x.font="bold 46px Impact, 'Arial Black', sans-serif";
+  const tw=x.measureText("WHAT ARE YOU?").width+50;
+  x.fillStyle="#1c1c1c";x.fillRect(-tw/2+8,-38,tw,72);
+  x.fillStyle="#ffd23f";x.fillRect(-tw/2,-46,tw,72);
+  x.lineWidth=5;x.strokeRect(-tw/2,-46,tw,72);
+  x.fillStyle="#1c1c1c";x.textAlign="center";x.fillText("WHAT ARE YOU?",0,8);
+  x.restore();
+}
+
+function makeCard(id,best){
+  const qi=QUIZZES.findIndex(z=>z.id===id),quiz=QUIZZES[qi],r=quiz.results[best];
+  const W=1080,H=1350,{c,x}=cardBase(W,H,HEX[qi%HEX.length]);
+  x.textAlign="center";x.textBaseline="alphabetic";
+  x.font="200px sans-serif";x.fillText(quiz.icon,W/2,320);
+  x.fillStyle="#1c1c1c";x.font="bold 34px 'Trebuchet MS', Verdana, sans-serif";
+  x.fillText(quiz.title.toUpperCase(),W/2,510);
+  x.font="bold 30px 'Trebuchet MS', Verdana, sans-serif";x.fillText("I AM",W/2,580);
+  x.font="92px Impact, 'Arial Black', sans-serif";
+  let y=wrap(x,r[0].toUpperCase(),W/2,680,W-220,100,2);
+  x.font="40px 'Trebuchet MS', Verdana, sans-serif";
+  wrap(x,r[1],W/2,y+40,W-240,56,6);
+  logo(x,W,H-150);
+  return c;
+}
+
+function makeWallCard(done,s){
+  const W=1080,H=1350,{c,x}=cardBase(W,H,"#3bceac");
+  x.textAlign="center";x.fillStyle="#1c1c1c";
+  x.font="150px sans-serif";x.fillText(done.slice(0,4).map(z=>z.icon).join(""),W/2,290);
+  x.font="bold 34px 'Trebuchet MS', Verdana, sans-serif";x.fillText("MY WALL: "+done.length+" OF "+QUIZZES.length,W/2,510);
+  x.font="38px 'Trebuchet MS', Verdana, sans-serif";
+  wrap(x,identity(done,s),W/2,590,W-220,54,11);
+  logo(x,W,H-150);
+  return c;
+}
+
+function cardOut(id,best,mode){
+  const c=id==="wall"?(()=>{const s=store();return makeWallCard(QUIZZES.filter(z=>s[z.id]),s)})():makeCard(id,best);
+  const name="whatareyou-"+id+"-"+Date.now()+".png";
+  const dl=()=>{const a=document.createElement("a");a.href=c.toDataURL("image/png");a.download=name;document.body.appendChild(a);a.click();a.remove();toast("Saved")};
+  if(mode==="share"){
+    c.toBlob(b=>{
+      try{const f=new File([b],name,{type:"image/png"});
+        if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:"WHAT ARE YOU?"}).catch(()=>{});return}
+      }catch(e){}
+      dl();
+    },"image/png");
+  }else dl();
+}
+
+function identity(done,s){
+  if(!done.length)return "";
+  const parts=done.map(z=>PHRASE[z.id].replace("{r}",z.results[s[z.id].best][0]));
+  if(parts.length===1)return "Behold, a being who "+parts[0]+".";
+  return "Behold, a being who "+parts.slice(0,-1).join(", ")+", and "+parts[parts.length-1]+".";
+}
+
+function imagePrompt(done,s){
+  const names=done.map(z=>z.results[s[z.id].best][0]);
+  return "A single whimsical cartoon character that is a mashup of all of these at once: "+names.join(", ")+
+    ". Every element is visible in one body or outfit. Bright light cream background, playful sticker art style, thick black outlines, bold cheerful colors, full body, centered, no text, no words, no letters.";
+}
+
+function copyText(t){try{navigator.clipboard.writeText(t).then(()=>toast("Copied"),()=>toast("Copy failed"))}catch(e){toast("Copy failed")}}
+
+function wall(){
+  const s=store();
+  const done=QUIZZES.filter(z=>s[z.id]);
+  const prompt=done.length?imagePrompt(done,s):"";
+  window._wallPrompt=prompt;
+  app.innerHTML='<div class="panel"><div class="qtext">📌 My Wall</div><div class="small">'+done.length+' of '+QUIZZES.length+' quizzes complete</div>'+
+    (done.length?'<div class="panel" style="margin-top:14px;background:#fffdf5"><div class="q" style="font-weight:bold;font-size:.8rem;letter-spacing:1px">YOUR TRUE FORM</div>'+
+      '<p style="margin-top:8px;line-height:1.55">'+esc(identity(done,s))+'</p>'+
+      '<div class="q" style="font-weight:bold;font-size:.8rem;letter-spacing:1px;margin-top:14px">IMAGE PROMPT</div>'+
+      '<div class="small">Paste into any image generator to see your mashup creature.</div>'+
+      '<div class="code" style="max-width:none;font-weight:normal;word-break:normal;font-family:Trebuchet MS,Verdana,sans-serif">'+esc(prompt)+'</div>'+
+      '<div class="row"><button class="btn primary" onclick="copyText(window._wallPrompt)">Copy Prompt</button>'+
+      '<button class="btn pink" onclick="cardOut(\'wall\',0,\'save\')">Save Wall Card</button>'+
+      '<button class="btn pink" onclick="cardOut(\'wall\',0,\'share\')">Share Wall Card</button></div></div>':'')+
+    (done.length?'<div class="wall">'+done.map((z,i)=>'<div class="wcard" style="background:'+COLORS[QUIZZES.indexOf(z)%COLORS.length]+'">'+
+      '<div class="q">'+z.icon+' '+esc(z.title.toUpperCase())+'</div><div class="r">'+esc(z.results[s[z.id].best][0])+'</div></div>').join("")+'</div>'
+      :'<div class="small" style="margin-top:12px">Take a quiz and your results stack up here.</div>')+
+    '<div class="row"><button class="btn primary" onclick="home()">Take More</button></div></div>';
+  scrollTo(0,0);
+}
+
+home();
+</script>
+</body>
+</html>

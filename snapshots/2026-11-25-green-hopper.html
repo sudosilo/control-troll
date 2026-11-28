@@ -12,10 +12,11 @@ canvas{display:block;width:100vw;height:100vh}
 <body>
 <canvas id="c"></canvas>
 <script>
-// GREEN PHONE EDIT: HOPPER v7, endless side scroller with templated kinetic obstacles, zones, combos
+// GREEN PHONE EDIT: HOPPER v8, endless side scroller with templated kinetic obstacles, zones, combos
 (()=>{
 const cv=document.getElementById('c'),g=cv.getContext('2d');
-const VH=540,GROUND=460;
+const VH=540,GROUND=460,GROUND0=GROUND;
+let BASE=GROUND; // GREEN PHONE EDIT: current floor level, rises after up towers, drops after cliffs
 let S=1,VW=960,viewH=540;
 function resize(){const d=Math.min(window.devicePixelRatio||1,1.5);cv.width=innerWidth*d;cv.height=innerHeight*d;S=Math.min(cv.height/VH,cv.width/720);VW=cv.width/S;viewH=cv.height/S;}
 addEventListener('resize',resize);resize();
@@ -24,7 +25,7 @@ const yOffNow=()=>Math.max(0,Math.min(viewH-VH,viewH*.7-GROUND));
 const visBottom=()=>camY-yOffNow()+viewH+40;
 
 // GREEN PHONE EDIT: tuning knobs, change feel here
-const T={gravity:2300,jumpV:780,holdGrav:0.45,maxHold:0.45,cutMul:0.5,cruise:200,maxSpeed:640,accel:520,decel:260,wallSlide:140,wallJumpV:740,wallKick:520,kickDecay:7,coyote:0.1,buffer:0.13,hitKick:520,hitUp:520,invuln:0.9,upSide:340,upBounce:1050};
+const T={gravity:2300,jumpV:780,holdGrav:0.45,maxHold:0.45,cutMul:0.5,cruise:200,maxSpeed:640,accel:520,decel:260,wallSlide:140,wallJumpV:740,wallKick:520,kickDecay:7,coyote:0.1,buffer:0.13,hitKick:520,hitUp:520,invuln:0.9,upSide:380,upBounce:1050};
 
 const rand=(a,b)=>a+Math.random()*(b-a);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -69,17 +70,26 @@ const P={x:120,y:GROUND-40,w:40,h:40,vx:0,vy:0,speed:T.cruise,kick:0,grounded:tr
 
 // GREEN PHONE EDIT: helpers for building pieces
 function mk(x,w,o){return Object.assign({x,w,solids:[],ramps:[],rings:[],hazards:[],portals:[],stars:[],zones:[],bumpers:[],t:0,update(p,dt){p.t+=dt;},draw(){}},o);}
-function floor(x,w,y){y=y==null?GROUND:y;return{x,y,w,h:600+GROUND-y,kind:'floor'};}
+function floor(x,w,y){y=y==null?BASE:y;return{x,y,w,h:600+GROUND-y,kind:'floor'};}
 function surf(r,x){return r.y0+(r.y1-r.y0)*(x-r.x)/r.w;}
 function star(x,y){return{x,y,got:false,ph:Math.random()*6};}
 function starLine(x0,x1,y,n){const a=[];for(let i=0;i<n;i++)a.push(star(n<2?(x0+x1)/2:x0+(x1-x0)*i/(n-1),y));return a;}
 function starArc(x0,x1,y,h,n){const a=[];for(let i=0;i<n;i++){const t=n<2?.5:i/(n-1);a.push(star(x0+(x1-x0)*t,y-Math.sin(Math.PI*t)*h));}return a;}
 // GREEN PHONE EDIT: v4 sky stretch builder, reused by every flying section
-function skyRun(x,len,y0,d,raw){const rings=[],zones=[],solids=[],stars=[],y1=GROUND-140,n=Math.floor(len/230),up=raw?(y=>y):(y=>GROUND-(GROUND-y)*2); // GREEN PHONE EDIT: flight path sits twice as high
+function skyRun(x,len,y0,d,raw,yEnd){const B=BASE,rings=[],zones=[],solids=[],stars=[],bumpers=[],hazards=[],y1=yEnd==null?B-140:yEnd,n=Math.floor(len/230),up=raw?(y=>y):(y=>B-(B-y)*2),path=t=>up(y0+(y1-y0)*t);
  for(let i=1;i<n;i++){const t=i/n;rings.push({x:x+i*230,y:up(y0+(y1-y0)*t+Math.sin(t*7)*110),r:36,got:false,ph:Math.random()*6});}
- const nu=1+Math.floor(len/1100);for(let i=0;i<nu;i++){const ux=x+len*(i+.6)/(nu+.2),py=up(y0+(y1-y0)*((ux-x)/len));zones.push({type:'wind',x:ux,y:py-260,w:130,h:520,force:2700,updraft:true});}
- if(Math.random()<.85){const ix=x+len*rand(.3,.7),iy=up(y0+(y1-y0)*((ix-x)/len))+130;solids.push({x:ix,y:iy,w:150,h:26,kind:'island',keepWing:true});stars.push(...starLine(ix+20,ix+130,iy-40,3));}
- return{rings,zones,solids,stars};}
+ const nu=1+Math.floor(len/1100);for(let i=0;i<nu;i++){const ux=x+len*(i+.6)/(nu+.2),py=path((ux-x)/len);zones.push({type:'wind',x:ux,y:py-260,w:130,h:520,force:2700,updraft:true});}
+ if(Math.random()<.85){const ix=x+len*rand(.3,.7),iy=path((ix-x)/len)+130;solids.push({x:ix,y:iy,w:150,h:26,kind:'island',keepWing:true});stars.push(...starLine(ix+20,ix+130,iy-40,3));}
+ // GREEN PHONE EDIT: v8 air traffic. Balloon bumpers bounce you around, spiky mines bob up and down, star clusters float between them.
+ const na=Math.max(2,Math.floor(len/380));for(let i=0;i<na;i++){const t=(i+.5+rand(-.2,.2))/na,xx=x+len*t,yy=path(t)+rand(-140,140),r=Math.random();
+  if(r<.4)bumpers.push({x:xx,y:yy,by:yy,r:rand(24,32),ph:Math.random()*6,amp:rand(20,60),cd:0,flash:0,hue:Math.floor(Math.random()*360)});
+  else if(r<.4+.3+d*.15)hazards.push({type:'circle',x:xx,y:yy,by:yy,r:18,amp:rand(60,150),sp:rand(1,2)+d,ph:Math.random()*6});
+  else stars.push(...starArc(xx-70,xx+70,yy,40,4));}
+ return{rings,zones,solids,stars,bumpers,hazards,
+  tick(dt,t){for(const b of bumpers){b.y=b.by+Math.sin(t*1.6+b.ph)*b.amp;b.flash*=Math.exp(-6*dt);b.cd-=dt;}for(const h of hazards)h.y=h.by+Math.sin(t*h.sp+h.ph)*h.amp;},
+  draw(){for(const b of bumpers){g.strokeStyle='rgba(90,70,140,.5)';g.lineWidth=1.5;g.beginPath();g.moveTo(b.x,b.y+b.r);g.quadraticCurveTo(b.x+8*Math.sin(time*3+b.ph),b.y+b.r+30,b.x,b.y+b.r+55);g.stroke();
+    const r=b.r*(1+b.flash*.3);g.fillStyle=`hsl(${b.hue},95%,64%)`;g.beginPath();g.ellipse(b.x,b.y,r*.9,r,0,0,Math.PI*2);g.fill();g.fillStyle='rgba(255,255,255,.6)';g.beginPath();g.ellipse(b.x-r*.35,b.y-r*.4,r*.18,r*.28,-.4,0,Math.PI*2);g.fill();g.fillStyle=`hsl(${b.hue},95%,55%)`;g.beginPath();g.moveTo(b.x-5,b.y+r+6);g.lineTo(b.x+5,b.y+r+6);g.lineTo(b.x,b.y+r-2);g.fill();}
+   for(const h of hazards){g.save();g.translate(h.x,h.y);g.rotate(time*2+h.ph);g.fillStyle='#ff5fa8';g.beginPath();for(let i=0;i<16;i++){const a=i*Math.PI/8,rr2=i%2?h.r:h.r+10;g.lineTo(Math.cos(a)*rr2,Math.sin(a)*rr2);}g.closePath();g.fill();g.restore();angryFace(h.x,h.y-2,h.r*1.6);}}};}
 function onScreen(x){return x>camX-100&&x<camX+VW+100;}
 
 // GREEN PHONE EDIT: TEMPLATE REGISTRY. Every obstacle lives here.
@@ -93,18 +103,18 @@ function onScreen(x){return x>camX-100&&x<camX+VW+100;}
 //   wing (hands you a glider or parachute), launch (blasts you into the sky). rings: fly through for points.
 // skyRun(x,len,y0,d) builds a whole flying stretch: rings, updrafts, floating islands. bumpers: pinball bounce, no damage, points.
 const TEMPLATES={
- flat:{weight:d=>1,build(x,d){const w=rand(260,420);return mk(x,w,{solids:[floor(x,w)],stars:starLine(x+60,x+w-60,GROUND-60,3)});}},
+ flat:{weight:d=>1,build(x,d,GROUND){const w=rand(260,420);return mk(x,w,{solids:[floor(x,w)],stars:starLine(x+60,x+w-60,GROUND-60,3)});}},
 
- pit:{weight:d=>1.1,build(x,d){const a=rand(120,200),gap=rand(110,160+d*100),b=rand(130,200);return mk(x,a+gap+b,{solids:[floor(x,a),floor(x+a+gap,b)],stars:starArc(x+a-20,x+a+gap+20,GROUND-110,90,4)});}},
+ pit:{weight:d=>1.1,build(x,d,GROUND){const a=rand(120,200),gap=rand(110,160+d*100),b=rand(130,200);return mk(x,a+gap+b,{solids:[floor(x,a),floor(x+a+gap,b)],stars:starArc(x+a-20,x+a+gap+20,GROUND-110,90,4)});}},
 
- tallWall:{weight:d=>1,build(x,d){const pre=rand(160,240),ww=rand(64,110),hh=rand(170,240+d*140),post=rand(180,260),w=pre+ww+post;
+ tallWall:{weight:d=>1,build(x,d,GROUND){const pre=rand(160,240),ww=rand(64,110),hh=rand(170,240+d*140),post=rand(180,260),w=pre+ww+post;
   return mk(x,w,{solids:[floor(x,w),{x:x+pre,y:GROUND-hh,w:ww,h:hh,kind:'wall',eyes:true}],stars:[star(x+pre+ww/2,GROUND-hh-60)]});}},
 
- staircase:{weight:d=>.7,build(x,d){const n=3+Math.floor(Math.random()*2),sw=80,pre=120,post=200,w=pre+n*sw+post;const solids=[floor(x,w)],st=[];
+ staircase:{weight:d=>.7,build(x,d,GROUND){const n=3+Math.floor(Math.random()*2),sw=80,pre=120,post=200,w=pre+n*sw+post;const solids=[floor(x,w)],st=[];
   for(let i=0;i<n;i++){const h=70+i*(60+d*25);solids.push({x:x+pre+i*sw,y:GROUND-h,w:sw,h,kind:'step'});st.push(star(x+pre+i*sw+sw/2,GROUND-h-40));}
   return mk(x,w,{solids,stars:st});}},
 
- spinner:{weight:d=>.5+d,build(x,d){const w=rand(360,440),cx=x+w/2,cy=GROUND-95,L=100,sp=(1.3+d*1.5)*(Math.random()<.5?1:-1),a0=Math.random()*6;
+ spinner:{weight:d=>.5+d,build(x,d,GROUND){const w=rand(360,440),cx=x+w/2,cy=GROUND-95,L=100,sp=(1.3+d*1.5)*(Math.random()<.5?1:-1),a0=Math.random()*6;
   const hz={type:'seg',x1:0,y1:0,x2:0,y2:0,r:10};
   return mk(x,w,{solids:[floor(x,w)],hazards:[hz],stars:[star(cx,cy-150)],
    update(p,dt){p.t+=dt;const a=a0+p.t*sp,c=Math.cos(a)*L,s=Math.sin(a)*L;hz.x1=cx-c;hz.y1=cy-s;hz.x2=cx+c;hz.y2=cy+s;},
@@ -112,7 +122,7 @@ const TEMPLATES={
     g.lineWidth=8;g.strokeStyle='#ffe14f';g.setLineDash([10,10]);g.lineDashOffset=-p.t*120;g.stroke();g.setLineDash([]);
     g.fillStyle='#7a5cff';circle(cx,cy,16);g.fillStyle='#fff';circle(cx,cy,6);}});}},
 
- stomper:{weight:d=>.4+d,build(x,d){const w=rand(320,400),bw=96,bh=130,bx=x+w/2-bw/2,top=40,per=Math.max(1.3,rand(1.9,2.4)-d*.6),off=Math.random()*per;
+ stomper:{weight:d=>.4+d,build(x,d,GROUND){const w=rand(320,400),bw=96,bh=130,bx=x+w/2-bw/2,top=GROUND-420,per=Math.max(1.3,rand(1.9,2.4)-d*.6),off=Math.random()*per;
   const hz={type:'rect',x:bx,y:top-bh,w:bw,h:bh};let prev=top;
   return mk(x,w,{solids:[floor(x,w)],hazards:[hz],stars:[star(bx+bw/2,GROUND-50)],
    update(p,dt){p.t+=dt;const ph=((p.t+off)%per)/per;let by;
@@ -124,19 +134,19 @@ const TEMPLATES={
     g.save();rr(hz.x,hz.y,bw,bh,10);g.clip();g.fillStyle='#ffe14f';for(let i=-2;i<8;i++){g.beginPath();g.moveTo(bx+i*20,hz.y+bh);g.lineTo(bx+i*20+10,hz.y+bh);g.lineTo(bx+i*20+28,hz.y+bh-18);g.lineTo(bx+i*20+18,hz.y+bh-18);g.fill();}g.restore();
     angryFace(bx+bw/2,hz.y+45,bw);}});}},
 
- roller:{weight:d=>.4+d*.8,build(x,d){const w=rand(420,560),r=24,sp=rand(140,220+d*120);const hz={type:'circle',x:x+w-40,y:GROUND-r,r:r-3};let rot=0;
+ roller:{weight:d=>.4+d*.8,build(x,d,GROUND){const w=rand(420,560),r=24,sp=rand(140,220+d*120);const hz={type:'circle',x:x+w-40,y:GROUND-r,r:r-3};let rot=0;
   return mk(x,w,{solids:[floor(x,w)],hazards:[hz],stars:starArc(x+w*.3,x+w*.6,GROUND-80,60,3),
    update(p,dt){p.t+=dt;hz.x-=sp*dt;rot-=sp*dt/r;if(hz.x<x+30)hz.x=x+w-30;},
    draw(p){const a=Math.min(1,(hz.x-x-30)/60,(x+w-30-hz.x)/60+.15);g.save();g.globalAlpha=clamp(a,0,1);g.translate(hz.x,hz.y);g.rotate(rot);
     g.fillStyle='#3dd68c';circle(0,0,r);g.strokeStyle='#fff';g.lineWidth=5;g.beginPath();g.moveTo(-r+4,0);g.lineTo(r-4,0);g.moveTo(0,-r+4);g.lineTo(0,r-4);g.stroke();
     g.fillStyle='#ffe14f';circle(0,0,7);g.restore();}});}},
 
- bobPlat:{weight:d=>.6,build(x,d){const a=rand(120,180),gap=rand(300,370),b=rand(140,200),pw=120,px=x+a+gap/2-pw/2,amp=70,mid=GROUND-110,sp=rand(1.2,2);
+ bobPlat:{weight:d=>.6,build(x,d,GROUND){const a=rand(120,180),gap=rand(300,370),b=rand(140,200),pw=120,px=x+a+gap/2-pw/2,amp=70,mid=GROUND-110,sp=rand(1.2,2);
   const plat={x:px,y:mid,w:pw,h:22,kind:'plat',dx:0,dy:0};
   return mk(x,a+gap+b,{solids:[floor(x,a),plat,floor(x+a+gap,b)],stars:[star(px+pw/2,mid-90)],update(p,dt){p.t+=dt;const ny=mid+Math.sin(p.t*sp)*amp;plat.dy=ny-plat.y;plat.y=ny;}});}},
 
  // GREEN PHONE EDIT: the maze turnaround. Hop into the hole on top, loop around inside, shoot out the far side.
- chute:{weight:d=>.5,build(x,d){const w=540,th=220+d*50,tx=x+180,lipL=40,hole=92,lipR=50,tw=lipL+hole+lipR,top=GROUND-th,hx=tx+lipL;
+ chute:{weight:d=>.5,build(x,d,GROUND){const w=540,th=220+d*50,tx=x+180,lipL=40,hole=92,lipR=50,tw=lipL+hole+lipR,top=GROUND-th,hx=tx+lipL;
   const portal={x:hx+6,y:top,w:hole-12,h:th,path:[[hx+hole/2-20,top+20],[hx+hole/2-20,GROUND-120],[tx+4,GROUND-150],[tx+4,GROUND-60],[hx+hole/2,GROUND-44],[tx+tw+30,GROUND-40]]};
   return mk(x,w,{solids:[floor(x,w),{x:x+80,y:GROUND-100,w:100,h:100,kind:'step'},{x:tx,y:top,w:lipL,h:th,kind:'hidden'},{x:hx+hole,y:top,w:lipR,h:th,kind:'hidden'}],portals:[portal],stars:[star(hx+hole/2,top-80)],
    draw(p){const gr=g.createLinearGradient(0,top,0,GROUND);gr.addColorStop(0,'#3dd6ff');gr.addColorStop(1,'#3d7dff');g.fillStyle=gr;rr(tx,top,tw,th+4,12);g.fill();
@@ -147,32 +157,32 @@ const TEMPLATES={
     if(P.tube&&P.tube.portal===portal){g.strokeStyle=`hsl(${(time*400)%360},100%,60%)`;g.lineWidth=6;g.setLineDash([12,8]);g.lineDashOffset=-time*200;g.beginPath();portal.path.forEach((q,i)=>{const X=q[0]+20,Y=q[1]+20;i?g.lineTo(X,Y):g.moveTo(X,Y);});g.stroke();g.setLineDash([]);}}});}},
 
  // GREEN PHONE EDIT: v2 additions start here
- spring:{weight:d=>.8,build(x,d){const pre=rand(150,210),sw=60,gp=rand(90,130),ww=rand(70,100),hh=rand(280,350),post=220,w=pre+sw+gp+ww+post;
+ spring:{weight:d=>.8,build(x,d,GROUND){const pre=rand(150,210),sw=60,gp=rand(90,130),ww=rand(70,100),hh=rand(280,350),post=220,w=pre+sw+gp+ww+post;
   const sp={x:x+pre,y:GROUND-14,w:sw,h:14,kind:'spring',bounce:1350,squish:0};
   const st=[];for(let i=1;i<=4;i++)st.push(star(x+pre+sw/2,GROUND-60-i*80));st.push(star(x+pre+sw+gp+ww/2,GROUND-hh-50));
   return mk(x,w,{solids:[floor(x,w),sp,{x:x+pre+sw+gp,y:GROUND-hh,w:ww,h:hh,kind:'wall',eyes:true}],stars:st,update(p,dt){p.t+=dt;sp.squish*=Math.exp(-8*dt);}});}},
 
- boostGap:{weight:d=>.7,build(x,d){const a=rand(280,340),gap=rand(300,370+d*80),b=rand(170,230);const z={type:'boost',x:x+a-160,y:GROUND-40,w:110,h:40};
+ boostGap:{weight:d=>.7,build(x,d,GROUND){const a=rand(280,340),gap=rand(300,370+d*80),b=rand(170,230);const z={type:'boost',x:x+a-160,y:GROUND-40,w:110,h:40};
   return mk(x,a+gap+b,{solids:[floor(x,a),floor(x+a+gap,b)],zones:[z],stars:starArc(x+a,x+a+gap,GROUND-130,130,5),
    draw(p){for(let i=0;i<3;i++){const k=((time*3-i*.33)%1+1)%1;g.fillStyle=`hsla(${(time*300+i*60)%360},100%,60%,${.5+k*.5})`;const ax=z.x+10+i*34;g.beginPath();g.moveTo(ax,GROUND-2);g.lineTo(ax+18,GROUND-2);g.lineTo(ax+34,GROUND-14);g.lineTo(ax+18,GROUND-26);g.lineTo(ax,GROUND-26);g.lineTo(ax+16,GROUND-14);g.fill();}}});}},
 
- fanPit:{weight:d=>.6,build(x,d){const a=rand(140,200),gap=rand(300,380),b=rand(150,210),fx=x+a+gap/2;
-  const z={type:'wind',x:x+a+20,y:GROUND-280,w:gap-40,h:VH+400,force:2900};
+ fanPit:{weight:d=>.6,build(x,d,GROUND){const a=rand(140,200),gap=rand(300,380),b=rand(150,210),fx=x+a+gap/2;
+  const z={type:'wind',x:x+a+20,y:GROUND-280,w:gap-40,h:GROUND+480,force:2900};
   return mk(x,a+gap+b,{solids:[floor(x,a),floor(x+a+gap,b)],zones:[z],stars:starLine(fx-60,fx+60,GROUND-230,3),
-   draw(p){g.save();g.beginPath();g.rect(z.x,z.y-60,z.w,VH);g.clip();for(let i=0;i<14;i++){const sx=z.x+hash(i)*z.w,yy=VH-((p.t*260*(1+hash(i+9))+i*57)%(VH-z.y+80));g.strokeStyle=`rgba(255,255,255,${.35+hash(i+3)*.4})`;g.lineWidth=3;g.beginPath();g.moveTo(sx,yy);g.lineTo(sx,yy+30);g.stroke();}g.restore();
-    g.save();g.translate(fx,VH-12);g.fillStyle='#9fd8ff';rr(-70,-8,140,30,10);g.fill();g.rotate(p.t*14);g.fillStyle='#fff';for(let i=0;i<4;i++){g.rotate(Math.PI/2);g.beginPath();g.ellipse(0,-22,9,22,0,0,Math.PI*2);g.fill();}g.restore();}});}},
+   draw(p){g.save();g.beginPath();g.rect(z.x,z.y-60,z.w,GROUND+80);g.clip();for(let i=0;i<14;i++){const sx=z.x+hash(i)*z.w,yy=GROUND+80-((p.t*260*(1+hash(i+9))+i*57)%(GROUND+160-z.y));g.strokeStyle=`rgba(255,255,255,${.35+hash(i+3)*.4})`;g.lineWidth=3;g.beginPath();g.moveTo(sx,yy);g.lineTo(sx,yy+30);g.stroke();}g.restore();
+    g.save();g.translate(fx,GROUND+68);g.fillStyle='#9fd8ff';rr(-70,-8,140,30,10);g.fill();g.rotate(p.t*14);g.fillStyle='#fff';for(let i=0;i<4;i++){g.rotate(Math.PI/2);g.beginPath();g.ellipse(0,-22,9,22,0,0,Math.PI*2);g.fill();}g.restore();}});}},
 
- conveyor:{weight:d=>.6,build(x,d){const a=rand(100,150),cw=rand(320,440),b=rand(120,180);const c={x:x+a,y:GROUND,w:cw,h:600,kind:'conveyor',conveyor:-(120+d*130)};
+ conveyor:{weight:d=>.6,build(x,d,GROUND){const a=rand(100,150),cw=rand(320,440),b=rand(120,180);const c={x:x+a,y:GROUND,w:cw,h:600,kind:'conveyor',conveyor:-(120+d*130)};
   return mk(x,a+cw+b,{solids:[floor(x,a),c,floor(x+a+cw,b)],stars:starLine(x+a+40,x+a+cw-40,GROUND-60,4)});}},
 
- bumperField:{weight:d=>.7,build(x,d){const w=rand(480,600),n=3+Math.floor(Math.random()*2),bs=[];
+ bumperField:{weight:d=>.7,build(x,d,GROUND){const w=rand(480,600),n=3+Math.floor(Math.random()*2),bs=[];
   for(let i=0;i<n;i++){const y=GROUND-rand(70,240);bs.push({x:x+90+i*(w-180)/(n-1),y,by:y,r:rand(22,30),ph:Math.random()*6,amp:rand(0,45),cd:0,flash:0,hue:Math.floor(Math.random()*360)});}
   return mk(x,w,{solids:[floor(x,w)],bumpers:bs,stars:starLine(x+60,x+w-60,GROUND-300,4),
    update(p,dt){p.t+=dt;for(const b of bs){b.y=b.by+Math.sin(p.t*2+b.ph)*b.amp;b.flash*=Math.exp(-6*dt);b.cd-=dt;}},
    draw(p){for(const b of bs){const r=b.r*(1+b.flash*.3);g.fillStyle=`hsl(${b.hue},95%,62%)`;circle(b.x,b.y,r);g.strokeStyle='#fff';g.lineWidth=5;g.beginPath();g.arc(b.x,b.y,r*.62,0,Math.PI*2);g.stroke();g.fillStyle=b.flash>.1?'#fff':`hsl(${b.hue+60},100%,75%)`;circle(b.x,b.y,r*.35);
     g.strokeStyle=`hsla(${b.hue},100%,70%,${b.flash})`;g.lineWidth=4;g.beginPath();g.arc(b.x,b.y,r+12*(1-b.flash)+4,0,Math.PI*2);g.stroke();}}});}},
 
- cannon:{weight:d=>.35+d*.9,build(x,d){const w=rand(520,620),cx0=x+w-130,per=Math.max(.9,rand(1.3,1.8)-d*.4),spd=260+d*160;let ft=0,alt=0;
+ cannon:{weight:d=>.35+d*.9,build(x,d,GROUND){const w=rand(520,620),cx0=x+w-130,per=Math.max(.9,rand(1.3,1.8)-d*.4),spd=260+d*160;let ft=0,alt=0;
   const cb={x:cx0,y:GROUND-120,w:84,h:120,kind:'cannon'};
   return mk(x,w,{solids:[floor(x,w),cb],stars:[star(x+w*.4,GROUND-150),star(cx0+42,GROUND-170)],
    update(p,dt){p.t+=dt;ft+=dt;if(ft>per){ft=0;if(onScreen(cx0)){alt^=1;const yy=alt?GROUND-20:GROUND-100;p.hazards.push({type:'circle',x:cx0-20,y:yy,r:16,vx:-spd});p.recoil=1;p.lastAlt=alt;sfx('fire');burst(cx0-24,yy,8,20,150,'dust');}}
@@ -181,7 +191,7 @@ const TEMPLATES={
     const rc=(p.recoil||0)*8;for(const[yy,i]of[[GROUND-20,1],[GROUND-100,0]]){g.fillStyle=(p.lastAlt===i&&rc>1)?'#ff8a3d':'#7a5cff';rr(cx0-30+rc*(p.lastAlt===i?1:0),yy-14,40,28,8);g.fill();}
     const gr=g.createLinearGradient(0,cb.y,0,GROUND);gr.addColorStop(0,'#ffd23f');gr.addColorStop(1,'#ff8a3d');g.fillStyle=gr;rr(cb.x,cb.y,cb.w,cb.h,12);g.fill();g.strokeStyle='#fff';g.lineWidth=3;g.stroke();angryFace(cb.x+cb.w/2,cb.y+30,cb.w);}});}},
 
- pendulum:{weight:d=>.4+d*.8,build(x,d){const w=rand(380,440),cx=x+w/2,py=GROUND-330,L=275,sp=rand(1.6,2.2)+d*.6,ph=Math.random()*6;const hz={type:'circle',x:cx,y:py+L,r:30};
+ pendulum:{weight:d=>.4+d*.8,build(x,d,GROUND){const w=rand(380,440),cx=x+w/2,py=GROUND-330,L=275,sp=rand(1.6,2.2)+d*.6,ph=Math.random()*6;const hz={type:'circle',x:cx,y:py+L,r:30};
   return mk(x,w,{solids:[floor(x,w)],hazards:[hz],stars:[star(cx,GROUND-200)],
    update(p,dt){p.t+=dt;const a=Math.sin(p.t*sp+ph)*1.15;hz.x=cx+Math.sin(a)*L;hz.y=py+Math.cos(a)*L;},
    draw(p){g.fillStyle='#c9b8ff';g.fillRect(cx-160,py-8,10,GROUND-py+8);g.fillRect(cx+150,py-8,10,GROUND-py+8);rr(cx-170,py-18,340,20,8);g.fill();
@@ -190,7 +200,7 @@ const TEMPLATES={
     g.fillStyle='#ffe14f';for(let i=0;i<8;i++){const a=i*Math.PI/4+p.t*2;g.beginPath();g.moveTo(hz.x+Math.cos(a)*hz.r,hz.y+Math.sin(a)*hz.r);g.lineTo(hz.x+Math.cos(a+.2)*(hz.r+11),hz.y+Math.sin(a+.2)*(hz.r+11));g.lineTo(hz.x+Math.cos(a+.4)*hz.r,hz.y+Math.sin(a+.4)*hz.r);g.fill();}
     angryFace(hz.x,hz.y-4,hz.r*1.5);}});}},
 
- laser:{weight:d=>.35+d*.9,build(x,d){const w=rand(300,360),lx=x+w/2,on=rand(.9,1.2),off=Math.max(.7,rand(1,1.4)-d*.3),per=on+off,ph=Math.random()*per;
+ laser:{weight:d=>.35+d*.9,build(x,d,GROUND){const w=rand(300,360),lx=x+w/2,on=rand(.9,1.2),off=Math.max(.7,rand(1,1.4)-d*.3),per=on+off,ph=Math.random()*per;
   const hz={type:'rect',x:lx-7,y:GROUND-340,w:14,h:340,off:true};let wasOff=true,warn=false;
   return mk(x,w,{solids:[floor(x,w)],hazards:[hz],stars:[star(lx-90,GROUND-60),star(lx+90,GROUND-60)],
    update(p,dt){p.t+=dt;const k=(p.t+ph)%per;hz.off=k>=on;warn=hz.off&&k>per-.4;if(wasOff&&!hz.off&&onScreen(lx))sfx('laser');wasOff=hz.off;},
@@ -199,34 +209,34 @@ const TEMPLATES={
      if(Math.random()<.5)burst(lx,GROUND-4,1,(time*600)%360,120,'spark');}
     else if(warn&&Math.floor(time*16)%2===0){g.strokeStyle='#ff3d5a';g.lineWidth=2;g.setLineDash([6,6]);g.beginPath();g.moveTo(lx,GROUND-338);g.lineTo(lx,GROUND);g.stroke();g.setLineDash([]);}}});}},
 
- saw:{weight:d=>.4+d*.8,build(x,d){const w=rand(340,400),sx=x+w/2,sp=rand(1.4,2)+d*.8,ph=Math.random()*6;const hz={type:'circle',x:sx,y:GROUND-30,r:28};let rot=0;
+ saw:{weight:d=>.4+d*.8,build(x,d,GROUND){const w=rand(340,400),sx=x+w/2,sp=rand(1.4,2)+d*.8,ph=Math.random()*6;const hz={type:'circle',x:sx,y:GROUND-30,r:28};let rot=0;
   return mk(x,w,{solids:[floor(x,w)],hazards:[hz],stars:[star(sx-110,GROUND-120),star(sx+110,GROUND-120)],
    update(p,dt){p.t+=dt;hz.y=GROUND-30-(1+Math.sin(p.t*sp+ph))*.5*220;rot+=dt*12;},
    draw(p){g.fillStyle='#c9b8ff';rr(sx-5,GROUND-290,10,290,5);g.fill();g.save();g.translate(hz.x,hz.y);g.rotate(rot);g.fillStyle='#ff5fa8';g.beginPath();
     for(let i=0;i<24;i++){const a=i*Math.PI/12,r=i%2?hz.r+2:hz.r+11;g.lineTo(Math.cos(a)*r,Math.sin(a)*r);}g.closePath();g.fill();g.fillStyle='#fff';circle(0,0,hz.r*.6);g.fillStyle='#ffd23f';circle(0,0,8);g.restore();}});}},
 
- ferris:{weight:d=>.5,build(x,d){const a=rand(140,190),gap=rand(400,460),b=rand(150,200),cx=x+a+gap/2,cy=GROUND-170,R=135,sp=.7+d*.5,n=4,plats=[];
+ ferris:{weight:d=>.5,build(x,d,GROUND){const a=rand(140,190),gap=rand(400,460),b=rand(150,200),cx=x+a+gap/2,cy=GROUND-170,R=135,sp=.7+d*.5,n=4,plats=[];
   for(let i=0;i<n;i++)plats.push({x:0,y:0,w:90,h:18,kind:'plat',dx:0,dy:0});
   return mk(x,a+gap+b,{solids:[floor(x,a),...plats,floor(x+a+gap,b)],stars:[star(cx,cy-R-60),star(cx,cy)],
    update(p,dt){p.t+=dt;plats.forEach((s,i)=>{const an=p.t*sp+i*Math.PI*2/n,nx=cx+Math.cos(an)*R-45,ny=cy+Math.sin(an)*R-9;s.dx=nx-s.x;s.dy=ny-s.y;s.x=nx;s.y=ny;});},
    draw(p){g.strokeStyle='rgba(122,92,255,.5)';g.lineWidth=5;for(const s of plats){g.beginPath();g.moveTo(cx,cy);g.lineTo(s.x+45,s.y+9);g.stroke();}g.beginPath();g.arc(cx,cy,R,0,Math.PI*2);g.stroke();
-    g.fillStyle='#c9b8ff';g.beginPath();g.moveTo(cx,cy);g.lineTo(cx-60,VH+40);g.lineTo(cx+60,VH+40);g.fill();g.fillStyle='#ff4fa3';circle(cx,cy,14);g.fillStyle='#fff';circle(cx,cy,5);}});}},
+    g.fillStyle='#c9b8ff';g.beginPath();g.moveTo(cx,cy);g.lineTo(cx-60,GROUND+120);g.lineTo(cx+60,GROUND+120);g.fill();g.fillStyle='#ff4fa3';circle(cx,cy,14);g.fillStyle='#fff';circle(cx,cy,5);}});}},
 
- elevator:{weight:d=>.5+d*.4,build(x,d){const pre=rand(180,240),ww=90,post=rand(200,260),w=pre+ww+post,sp=rand(1.1,1.6),ph=Math.random()*6,lo=50,hi=300+d*60;
+ elevator:{weight:d=>.5+d*.4,build(x,d,GROUND){const pre=rand(180,240),ww=90,post=rand(200,260),w=pre+ww+post,sp=rand(1.1,1.6),ph=Math.random()*6,lo=50,hi=300+d*60;
   const s={x:x+pre,y:GROUND-lo,w:ww,h:lo,kind:'wall',eyes:true,dx:0,dy:0};
   return mk(x,w,{solids:[floor(x,w),s],stars:[star(x+pre+ww/2,GROUND-hi-60)],update(p,dt){p.t+=dt;const hh=lo+(1+Math.sin(p.t*sp+ph))*.5*(hi-lo),ny=GROUND-hh;s.dy=ny-s.y;s.y=ny;s.h=hh;}});}},
 
- crumble:{weight:d=>.5+d*.4,build(x,d){const a=rand(130,180),n=5+Math.floor(d*2),bw=60,sg=20,gap=n*bw+(n+1)*sg,b=rand(150,200),bl=[];
+ crumble:{weight:d=>.5+d*.4,build(x,d,GROUND){const a=rand(130,180),n=5+Math.floor(d*2),bw=60,sg=20,gap=n*bw+(n+1)*sg,b=rand(150,200),bl=[];
   for(let i=0;i<n;i++)bl.push({x:x+a+sg+i*(bw+sg),y:GROUND,w:bw,h:26,kind:'crumble',crumble:true,ct:-1,fy:0,off:false});
   return mk(x,a+gap+b,{solids:[floor(x,a),...bl,floor(x+a+gap,b)],stars:starLine(x+a+40,x+a+gap-40,GROUND-70,4),
    update(p,dt){p.t+=dt;for(const s of bl)if(s.ct>=0){s.ct+=dt;if(s.ct>.45&&!s.off){s.off=true;if(onScreen(s.x))sfx('crack');}if(s.off)s.fy+=dt*(200+s.fy*3);if(s.ct>3.2){s.ct=-1;s.off=false;s.fy=0;}}}});}},
 
- pistons:{weight:d=>.5+d*.4,build(x,d){const a=rand(130,180),n=4,pw=70,sg=50,gap=n*pw+(n+1)*sg,b=rand(150,200),sp=rand(1.6,2.2),ps=[];
+ pistons:{weight:d=>.5+d*.4,build(x,d,GROUND){const a=rand(130,180),n=4,pw=70,sg=50,gap=n*pw+(n+1)*sg,b=rand(150,200),sp=rand(1.6,2.2),ps=[];
   for(let i=0;i<n;i++)ps.push({x:x+a+sg+i*(pw+sg),y:GROUND,w:pw,h:600,kind:'piston',dx:0,dy:0,ph:i*1.1});
   return mk(x,a+gap+b,{solids:[floor(x,a),...ps,floor(x+a+gap,b)],stars:ps.map(s=>star(s.x+pw/2,GROUND-230)),
    update(p,dt){p.t+=dt;for(const s of ps){const ny=GROUND-20-(1+Math.sin(p.t*sp+s.ph))*.5*150;s.dy=ny-s.y;s.y=ny;}}});}},
  // GREEN PHONE EDIT: v3 slopes. Ramp up, plateau, then ramp down or stairs down. Sometimes boulders roll down at you.
- hill:{weight:d=>1,build(x,d){const h=rand(110,190),a=rand(80,140),up=Math.max(rand(220,320),h*1.6),top=rand(160,280),dn=Math.max(rand(220,300),h*1.6),b=rand(100,160),ty=GROUND-h,steps=Math.random()<.45,boulders=Math.random()<.3+d*.5,w=a+up+top+dn+b;
+ hill:{weight:d=>1,build(x,d,GROUND){const h=rand(110,190),a=rand(80,140),up=Math.max(rand(220,320),h*1.6),top=rand(160,280),dn=Math.max(rand(220,300),h*1.6),b=rand(100,160),ty=GROUND-h,steps=Math.random()<.45,boulders=Math.random()<.3+d*.5,w=a+up+top+dn+b;
   const rU={x:x+a,w:up,y0:GROUND,y1:ty},solids=[floor(x,a),floor(x+a+up,top,ty),floor(x+a+up+top+dn,b)],ramps=[rU];
   if(steps){const n=4,sw=dn/n;for(let i=0;i<n;i++)solids.push({x:x+a+up+top+i*sw,y:ty+h*(i+1)/(n+1),w:sw,h:600,kind:'step'});}
   else ramps.push({x:x+a+up+top,w:dn,y0:ty,y1:GROUND});
@@ -238,63 +248,70 @@ const TEMPLATES={
    draw(p){for(const h2 of hz){g.save();g.translate(h2.x,h2.y);g.rotate(h2.rot);g.fillStyle='#b98cff';circle(0,0,20);g.fillStyle='#8a5cd6';circle(-6,-5,5);circle(7,4,4);circle(-2,9,3);g.restore();}}});}},
 
  // GREEN PHONE EDIT: v3 climbing shaft. Hop into the far wall, it kicks you back into the near wall, hop again, ping pong to the top.
- shaft:{weight:d=>.6,build(x,d){const pre=rand(150,210),lw=40,gap=100,rw=70,H=rand(380,440),post=rand(200,260),w=pre+lw+gap+rw+post,lx=x+pre,rx=lx+lw+gap,cx=lx+lw+gap/2;
+ shaft:{weight:d=>.6,build(x,d,GROUND){const pre=rand(150,210),lw=40,gap=100,rw=70,H=rand(380,440),post=rand(200,260),w=pre+lw+gap+rw+post,lx=x+pre,rx=lx+lw+gap,cx=lx+lw+gap/2;
   const L={x:lx,y:GROUND-H-100,w:lw,h:H+10,kind:'wall'},R={x:rx,y:GROUND-H,w:rw,h:H,kind:'wall',eyes:true};
   const st=[];for(let yy=GROUND-110;yy>GROUND-H-40;yy-=75)st.push(star(cx,yy));
   return mk(x,w,{solids:[floor(x,w),L,R],zones:[{type:'shaft',x:lx,y:GROUND-H-260,w:lw+gap+rw,h:H+260}],stars:st,
    draw(p){for(let i=0;i<4;i++){const yy=GROUND-120-i*90-((time*60)%90);g.fillStyle=`hsla(${(time*200+i*50)%360},100%,60%,.55)`;g.beginPath();g.moveTo(cx-14,yy+10);g.lineTo(cx,yy-6);g.lineTo(cx+14,yy+10);g.lineTo(cx+14,yy+18);g.lineTo(cx,yy+2);g.lineTo(cx-14,yy+18);g.fill();}
     txt('CLIMB!',lx-70,GROUND-110+Math.sin(time*5)*4,18,'#ff3d8b','center');}});}},
  // GREEN PHONE EDIT: v4 sky tower. Spring up a staircase of pillars way into the sky, grab a glider or parachute at the summit, then fly the long way down.
- skyTower:{weight:d=>.45,build(x,d){const pre=220,n=5+Math.floor(Math.random()*3),pw=170,rise=250,sg=30,summitW=420,springs=[],solids=[floor(x,pre)],stars=[];
+ skyTower:{weight:d=>.45,build(x,d,GROUND){const pre=220,n=5+Math.floor(Math.random()*3),pw=170,rise=250,sg=30,summitW=420,springs=[],solids=[floor(x,pre)],stars=[];
   const sp0={x:x+pre-100,y:GROUND-14,w:60,h:14,kind:'spring',bounce:1350,squish:0};solids.push(sp0);springs.push(sp0);let cx=x+pre,top=GROUND,sumX=0;
   for(let i=0;i<n;i++){top=GROUND-(i+1)*rise;const last=i===n-1,w=last?summitW:pw;solids.push({x:cx,y:top,w,h:GROUND-top+600,kind:'pillar',hue:(i*45+300)%360});
    if(!last){const sp={x:cx+w-75,y:top-14,w:60,h:14,kind:'spring',bounce:1350,squish:0};solids.push(sp);springs.push(sp);stars.push(star(cx+w-45,top-130),star(cx+w+15,top-240));}else sumX=cx;cx+=w+sg;}
   const sumTop=top,wingType=Math.random()<.3?'para':'glider',wz={type:'wing',wing:wingType,x:sumX+40,y:sumTop-140,w:330,h:140};
   const len=rand(2000,2800),sky=skyRun(cx,len,sumTop+80,d),endX=cx+len;
-  return mk(x,endX+260-x,{solids:[...solids,...sky.solids,floor(endX,260)],zones:[wz,...sky.zones],rings:sky.rings,stars:[...stars,...sky.stars],
-   update(p,dt){p.t+=dt;for(const s of springs)s.squish*=Math.exp(-8*dt);},
-   draw(p){const bx=wz.x+wz.w/2,by=sumTop-70+Math.sin(time*3)*8;g.fillStyle='#fff';rr(sumX+summitW-60,sumTop-110,8,110,4);g.fill();g.fillStyle=`hsl(${(time*200)%360},100%,62%)`;g.beginPath();g.moveTo(sumX+summitW-52,sumTop-110);g.lineTo(sumX+summitW-10,sumTop-96+Math.sin(time*8)*4);g.lineTo(sumX+summitW-52,sumTop-82);g.fill();
+  return mk(x,endX+260-x,{solids:[...solids,...sky.solids,floor(endX,260)],zones:[wz,...sky.zones],rings:sky.rings,stars:[...stars,...sky.stars],bumpers:sky.bumpers,hazards:sky.hazards,
+   update(p,dt){p.t+=dt;sky.tick(dt,p.t);for(const s of springs)s.squish*=Math.exp(-8*dt);},
+   draw(p){sky.draw();const bx=wz.x+wz.w/2,by=sumTop-70+Math.sin(time*3)*8;g.fillStyle='#fff';rr(sumX+summitW-60,sumTop-110,8,110,4);g.fill();g.fillStyle=`hsl(${(time*200)%360},100%,62%)`;g.beginPath();g.moveTo(sumX+summitW-52,sumTop-110);g.lineTo(sumX+summitW-10,sumTop-96+Math.sin(time*8)*4);g.lineTo(sumX+summitW-52,sumTop-82);g.fill();
     if(P.wing!==wingType||P.x>wz.x+wz.w){drawWing(wingType,bx,by+30,1.2);}txt(wingType==='para'?'PARACHUTE!':'GLIDER!',bx,by-40,22,`hsl(${(time*200)%360},90%,52%)`,'center');}});}},
 
  // GREEN PHONE EDIT: v4 blast cannon. Run into the barrel, get launched into a long flight over a giant gap.
- bigLaunch:{weight:d=>.4,build(x,d){const pre=200,bx=x+pre,run=bx+320,len=rand(2000,2600),sky=skyRun(run,len,GROUND-700,d),endX=run+len;
+ bigLaunch:{weight:d=>.4,build(x,d,GROUND){const pre=200,bx=x+pre,run=bx+320,len=rand(2000,2600),sky=skyRun(run,len,GROUND-700,d),endX=run+len;
   const z={type:'launch',x:bx+30,y:GROUND-260,w:70,h:260};
-  return mk(x,endX+260-x,{solids:[floor(x,run-x),...sky.solids,floor(endX,260)],zones:[z,...sky.zones],rings:sky.rings,stars:[...starLine(x+40,bx-20,GROUND-60,3),...sky.stars],
-   draw(p){g.save();g.translate(bx+60,GROUND-40);g.rotate(-Math.PI/4);const gr=g.createLinearGradient(0,-36,0,36);gr.addColorStop(0,'#ff4fa3');gr.addColorStop(1,'#7a5cff');g.fillStyle=gr;rr(-20,-36,170,72,20);g.fill();
+  return mk(x,endX+260-x,{solids:[floor(x,run-x),...sky.solids,floor(endX,260)],zones:[z,...sky.zones],rings:sky.rings,stars:[...starLine(x+40,bx-20,GROUND-60,3),...sky.stars],bumpers:sky.bumpers,hazards:sky.hazards,update(p,dt){p.t+=dt;sky.tick(dt,p.t);},
+   draw(p){sky.draw();g.save();g.translate(bx+60,GROUND-40);g.rotate(-Math.PI/4);const gr=g.createLinearGradient(0,-36,0,36);gr.addColorStop(0,'#ff4fa3');gr.addColorStop(1,'#7a5cff');g.fillStyle=gr;rr(-20,-36,170,72,20);g.fill();
     g.fillStyle='#ffe14f';for(let i=0;i<3;i++)g.fillRect(20+i*40,-36,12,72);g.fillStyle='#fff';g.beginPath();g.ellipse(150,0,14,34,0,0,Math.PI*2);g.fill();g.restore();
     g.fillStyle='#ffd23f';rr(bx+10,GROUND-46,100,46,12);g.fill();g.strokeStyle='#fff';g.lineWidth=3;g.stroke();txt('BLAST OFF!',bx+60,GROUND-230+Math.sin(time*5)*5,20,'#ff3d8b','center');}});}},
  // GREEN PHONE EDIT: v7 UP MODE tower. A full vertical segment. Walk in at the bottom and the controls flip:
  // you bounce on every ledge automatically, hold LEFT or RIGHT to steer. Exit at the top right and glide back to side mode.
- upTower:{weight:d=>.35,build(x,d){const pre=260,ww=40,W=560,H=Math.round(rand(2400,3000)+d*600),ix=x+pre+ww,top=GROUND-H,rx=ix+W;
+ upTower:{weight:(d,b)=>b>-6000?.4:0,build(x,d,GROUND){const pre=260,ww=40,W=560,H=Math.round(rand(2400,3000)+d*600),ix=x+pre+ww,top=GROUND-H,rx=ix+W;
   const solids=[floor(x,pre+ww+W+ww)],hz=[],st=[],movers=[];
-  solids.push({x:x+pre,y:top-400,w:ww,h:(GROUND-120)-(top-400),kind:'wall'});
+  solids.push({x:x+pre,y:top-400,w:ww,h:(GROUND-200)-(top-400),kind:'wall'});
   solids.push({x:rx,y:top+300,w:ww,h:GROUND-(top+300),kind:'wall',eyes:true});
   solids.push({x:ix,y:top,w:W,h:18,kind:'ledge',oneWay:true,hue:50});
   let y=GROUND-140,cx=ix+W/2;
-  while(y>top+40){const lw=rand(90,140);cx=clamp(cx+rand(-220,220),ix+lw/2+6,rx-lw/2-6);const r=Math.random(),lx=cx-lw/2;
+  while(y>top+40){const lw=rand(110,170);cx=clamp(cx+rand(-220,220),ix+lw/2+6,rx-lw/2-6);const r=Math.random(),lx=cx-lw/2;
    if(r<.1){solids.push({x:lx+lw/2-35,y,w:70,h:14,kind:'vspring',oneWay:true,bounce:1500,squish:0});y-=rand(200,240);continue;}
    if(r<.1+.12+d*.1)solids.push({x:lx,y,w:lw,h:20,kind:'crumble',crumble:true,oneWay:true,ct:-1,fy:0,off:false});
    else if(r<.45){const m={x:lx,y,w:lw,h:18,kind:'ledge',oneWay:true,hue:190,dx:0,dy:0,bx:lx,amp:rand(50,110),ph:Math.random()*6,sp:rand(1,1.8)};m.bx=clamp(lx,ix+m.amp+4,rx-lw-m.amp-4);solids.push(m);movers.push(m);}
    else solids.push({x:lx,y,w:lw,h:18,kind:'ledge',oneWay:true,hue:(320+Math.random()*80)%360});
    if(Math.random()<.4)st.push(star(cx,y-60));
    if(Math.random()<.25){const lw2=rand(80,110),cx2=cx>ix+W/2?ix+lw2/2+20+Math.random()*120:rx-lw2/2-20-Math.random()*120;solids.push({x:cx2-lw2/2,y:y-rand(0,30),w:lw2,h:18,kind:'ledge',oneWay:true,hue:120});}
-   y-=rand(120,160);}
+   y-=rand(110,150);}
   for(let hy=GROUND-500;hy>top+400;hy-=rand(450,650))hz.push({type:'circle',x:ix+W/2,y:hy,r:22,ph:Math.random()*6,sp:rand(1,1.8)+d,rot:0});
-  const ex=rx+ww+120,len=Math.round(H*1.1),sky=skyRun(ex,len,top+40,d,true),endX=ex+len;
-  return mk(x,endX+260-x,{solids:[...solids,floor(rx+ww,120,top+300),...sky.solids,floor(endX,260)],hazards:hz,stars:[...st,...sky.stars],rings:sky.rings,
-   zones:[{type:'upMode',x:ix,y:GROUND-200,w:50,h:200,info:{ix,W,top,bottom:GROUND}},{type:'sideMode',x:rx-10,y:top-500,w:ww+140,h:800},...sky.zones],
+  const endX=rx+ww+420; // GREEN PHONE EDIT: v8, the top of the tower becomes the new floor level and the game carries on up there
+  return mk(x,endX-x,{endBase:top+300,solids:[...solids,floor(rx+ww,420,top+300)],hazards:hz,stars:st,
+   zones:[{type:'upMode',x:ix,y:GROUND-200,w:50,h:200,info:{ix,W,top,bottom:GROUND}},{type:'sideMode',x:rx-10,y:top-500,w:ww+140,h:800}],
    update(p,dt){p.t+=dt;for(const m of movers){const nx=m.bx+Math.sin(p.t*m.sp+m.ph)*m.amp;m.dx=nx-m.x;m.x=nx;}for(const h of hz){h.x=ix+W/2+Math.sin(p.t*h.sp+h.ph)*(W/2-40);h.rot+=dt*10;}
     for(const s of p.solids){if(s.squish)s.squish*=Math.exp(-8*dt);if(s.crumble&&s.ct>=0){s.ct+=dt;if(s.ct>.35&&!s.off){s.off=true;if(onScreen(s.x))sfx('crack');}if(s.off)s.fy+=dt*(200+s.fy*3);if(s.ct>3){s.ct=-1;s.off=false;s.fy=0;}}}},
    back(p){g.fillStyle='rgba(255,255,255,.35)';g.fillRect(ix,top-400,W,GROUND-top+400);g.strokeStyle='rgba(122,92,255,.25)';g.lineWidth=2;
     for(let yy=GROUND-500;yy>top;yy-=500){g.beginPath();g.moveTo(ix,yy);g.lineTo(rx,yy);g.stroke();txt(Math.round((GROUND-yy)/10)+'m',ix+30,yy-6,14,'#9a8ad6','left');}
     txt('UP!',ix+W/2,GROUND-150+Math.sin(time*5)*6,28,`hsl(${(time*200)%360},90%,55%)`,'center');txt('EXIT',rx+ww/2+40,top+260,18,'#ff3d8b','center');},
-   draw(p){for(const h of hz){g.save();g.translate(h.x,h.y);g.rotate(h.rot);g.fillStyle='#ff5fa8';g.beginPath();for(let i=0;i<20;i++){const a=i*Math.PI/10,r=i%2?h.r+2:h.r+9;g.lineTo(Math.cos(a)*r,Math.sin(a)*r);}g.closePath();g.fill();g.fillStyle='#fff';circle(0,0,h.r*.6);g.restore();}}});}}
+   draw(p){for(const h of hz){g.save();g.translate(h.x,h.y);g.rotate(h.rot);g.fillStyle='#ff5fa8';g.beginPath();for(let i=0;i<20;i++){const a=i*Math.PI/10,r=i%2?h.r+2:h.r+9;g.lineTo(Math.cos(a)*r,Math.sin(a)*r);}g.closePath();g.fill();g.fillStyle='#fff';circle(0,0,h.r*.6);g.restore();}}});}},
+ // GREEN PHONE EDIT: v8 cliff drop. Grab the glider at the edge and fly down through air traffic to a lower floor level.
+ dropOff:{weight:(d,b)=>b<GROUND0-300?(b<GROUND0-3000?1.4:.8):0,build(x,d,GROUND){const drop=Math.min(GROUND0-GROUND,rand(700,1500)),nb=GROUND+drop,pre=300,len=Math.round(drop*1.1+800),sky=skyRun(x+pre,len,GROUND-80,d,true,nb-180),endX=x+pre+len,wing=Math.random()<.25?'para':'glider';
+  const wz={type:'wing',wing,x:x+110,y:GROUND-500,w:120,h:500};
+  return mk(x,endX+320-x,{endBase:nb,solids:[floor(x,pre),...sky.solids,floor(endX,320,nb)],zones:[wz,...sky.zones],rings:sky.rings,stars:sky.stars,bumpers:sky.bumpers,hazards:sky.hazards,
+   update(p,dt){p.t+=dt;sky.tick(dt,p.t);},
+   draw(p){sky.draw();if(P.wing!==wing||P.x>wz.x+wz.w)drawWing(wing,wz.x+60,GROUND-70+Math.sin(time*3)*6,1.2);txt(wing==='para'?'PARACHUTE!':'GLIDER!',wz.x+60,GROUND-150,20,`hsl(${(time*200)%360},90%,52%)`,'center');
+    txt('DROP '+Math.round(drop/10)+'m',x+pre-30,GROUND-40+Math.sin(time*5)*4,18,'#ff3d8b','center');g.fillStyle='#ffe14f';for(let i=0;i<5;i++){g.beginPath();g.moveTo(x+pre-4,GROUND+20+i*30);g.lineTo(x+pre+10,GROUND+30+i*30);g.lineTo(x+pre-4,GROUND+40+i*30);g.fill();}}});}}
 };
 
-function spawnNext(){const d=Math.min(1,genX/25000);const keys=Object.keys(TEMPLATES).filter(k=>k!==lastT);let tot=0;const ws=keys.map(k=>{const w=TEMPLATES[k].weight(d);tot+=w;return w;});
- let r=Math.random()*tot,i=0;while(i<keys.length-1&&r>ws[i]){r-=ws[i];i++;}const k=keys[i];lastT=k;const p=TEMPLATES[k].build(genX,d);p.name=k;
+function spawnNext(){const d=Math.min(1,genX/25000);const keys=Object.keys(TEMPLATES).filter(k=>k!==lastT);let tot=0;const ws=keys.map(k=>{const w=TEMPLATES[k].weight(d,BASE);tot+=w;return w;});
+ let r=Math.random()*tot,i=0;while(i<keys.length-1&&r>ws[i]){r-=ws[i];i++;}const k=keys[i];lastT=k;const p=TEMPLATES[k].build(genX,d,BASE);p.name=k;p.base=BASE;if(p.endBase!=null)BASE=p.endBase;p.low=Math.max(p.base,BASE);p.high=Math.min(p.base,BASE);
  p.hue=((themeAt(genX).hue+rand(-55,55))%360+360)%360;p.update(p,0);for(const s of p.solids){s.dx=0;s.dy=0;}pieceCount++;pieces.push(p);genX+=p.w;}
-function init(){const p0=mk(0,900,{solids:[floor(0,900)],stars:starLine(500,820,GROUND-60,4)});p0.hue=330;pieces.push(p0);genX=900;pieceCount=1;camX=P.x-VW*.3;}
+function init(){const p0=mk(0,900,{solids:[floor(0,900)],stars:starLine(500,820,GROUND-60,4)});p0.hue=330;p0.base=p0.low=p0.high=GROUND;pieces.push(p0);genX=900;pieceCount=1;camX=P.x-VW*.3;}
 init();
 
 // GREEN PHONE EDIT: effects
@@ -308,6 +325,7 @@ function circRect(cx,cy,r){const px=clamp(cx,P.x+5,P.x+P.w-5),py=clamp(cy,P.y+5,
 function hitHaz(h){if(h.off)return false;if(h.type==='circle')return circRect(h.x,h.y,h.r);
  if(h.type==='rect')return P.x+5<h.x+h.w&&P.x+P.w-5>h.x&&P.y+5<h.y+h.h&&P.y+P.h-5>h.y;
  if(h.type==='seg'){for(let i=0;i<=10;i++){const t=i/10;if(circRect(h.x1+(h.x2-h.x1)*t,h.y1+(h.y2-h.y1)*t,h.r))return true;}}return false;}
+function pieceAt(x){for(const p of pieces)if(x>=p.x&&x<p.x+p.w)return p;return pieces[pieces.length-1];}
 function nearby(){return pieces.filter(p=>p.x<P.x+400&&p.x+p.w>P.x-400);}
 
 function hit(){P.kick=-T.hitKick;P.vy=-T.hitUp;P.inv=T.invuln;P.speed=T.cruise;P.holding=false;bonks++;comboN=0;comboT=0;shake(12);burst(P.x+P.w/2,P.y+P.h/2,26,0,320,'spark');popup(P.x+P.w/2,P.y-20,pick(['BONK!','OOF!','SPLAT!','YIKES!']),340);sfx('hit');}
@@ -334,7 +352,7 @@ function updateUp(dt){
  const cx=P.x+P.w/2,cy=P.y+P.h/2;
  if(P.inv<=0){outer:for(const p of near)for(const h of p.hazards)if(hitHaz(h)){P.vy=Math.max(P.vy,450);P.vx=-P.vx;P.inv=T.invuln;bonks++;comboN=0;comboT=0;shake(10);burst(cx,cy,24,0,300,'spark');popup(cx,P.y-20,pick(['BONK!','OOF!']),340);sfx('hit');break outer;}}
  for(const p of near)for(const st of p.stars)if(!st.got&&(st.x-cx)**2+(st.y-cy)**2<34*34)getStar(st);
- for(const p of near)for(const z of p.zones)if(z.type==='sideMode'&&P.x<z.x+z.w&&P.x+P.w>z.x&&P.y<z.y+z.h&&P.y+P.h>z.y){P.mode='side';P.up=null;P.wing='glider';P.wingT=0;P.speed=420;P.kick=200;P.vy=Math.min(P.vy,-300);banner={text:'SIDE MODE!',t:0};flashA=.5;sfx('zone');popup(cx,P.y-40,'GLIDE!',190,30);}
+ for(const p of near)for(const z of p.zones)if(z.type==='sideMode'&&P.x<z.x+z.w&&P.x+P.w>z.x&&P.y<z.y+z.h&&P.y+P.h>z.y){P.mode='side';P.up=null;P.wing=null;P.speed=300;P.kick=200;P.vy=Math.min(P.vy,-300);banner={text:'NEW FLOOR: '+Math.round((GROUND0-P.y)/10)+'m UP',t:0};flashA=.5;sfx('zone');popup(cx,P.y-40,'SIDE MODE!',190,30);}
  parts.push({x:P.x+P.w/2,y:P.y+P.h,vx:rand(-20,20),vy:60,life:0,max:.35,size:5,hue:(time*300)%360,kind:'trail'});
 }
 function updatePlayer(dt){
@@ -375,7 +393,8 @@ function updatePlayer(dt){
   if(landed.crumble&&landed.ct<0)landed.ct=0;
  }
  // GREEN PHONE EDIT: fell in a hole, drop back in from the sky like nothing happened
- if(P.y>VH+80){P.y=-120;P.vy=Math.min(P.vy,250);P.ground=null;popup(P.x+P.w/2,30,'SKY DROP!',200);sfx('sky');}
+ const pa=pieceAt(P.x+P.w/2);if(P.y>pa.low+200){P.y=pa.low-580; // GREEN PHONE EDIT: hole drops you from the sky above this floor level
+ P.vy=Math.min(P.vy,250);P.ground=null;popup(P.x+P.w/2,P.y+60,'SKY DROP!',200);sfx('sky');}
  const cx=P.x+P.w/2,cy=P.y+P.h/2;let shaftNow=false;
  for(const p of near)for(const z of p.zones)if(P.x<z.x+z.w&&P.x+P.w>z.x&&P.y<z.y+z.h&&P.y+P.h>z.y){
   if(z.type==='wind'){P.vy=Math.max(-420,P.vy-z.force*dt);if(Math.random()<.3)parts.push({x:P.x+rand(0,40),y:P.y+P.h,vx:0,vy:rand(80,160),life:0,max:.3,size:3,hue:200,kind:'dust'});}
@@ -403,7 +422,7 @@ function step(dt){
  comboT=Math.max(0,comboT-dt);if(comboT===0)comboN=0;
  const sf=(P.speed-T.cruise)/(T.maxSpeed-T.cruise);
  const tx=P.mode==='up'&&P.up?P.up.ix+P.up.W/2-VW/2:P.x-VW*(.3-sf*.1);camX+=(tx-camX)*Math.min(1,dt*8);
- const ty=Math.min(0,P.y+yOffNow()-viewH*(P.mode==='up'?.55:.45));camY+=(ty-camY)*Math.min(1,dt*6);
+ const pc=pieceAt(P.x+P.w/2),ty=Math.min((pc?pc.low:GROUND)-GROUND,P.y+yOffNow()-viewH*(P.mode==='up'?.55:.45));camY+=(ty-camY)*Math.min(1,dt*6);
  shakeA*=Math.exp(-8*dt);flashA*=Math.exp(-4*dt);
  const th=themeAt(P.x).hue;let dh=((th-skyHue+540)%360)-180;skyHue=(skyHue+dh*Math.min(1,dt*1.5)+360)%360;
  const z=Math.floor(Math.max(0,P.x)/ZONE_LEN);if(z>zoneN){zoneN=z;banner={text:'ZONE '+(z+1)+': '+themeAt(P.x).name,t:0};flashA=.7;sfx('zone');}
@@ -441,7 +460,7 @@ function drawSolid(s,p){
  if(s.kind==='crumble'){if(s.off&&s.fy>VH)return;g.save();if(s.off)g.globalAlpha=Math.max(0,1-s.fy/300);const jx=(s.ct>=0&&!s.off)?rand(-2,2):0,yy=s.y+(s.off?s.fy:0);
   g.fillStyle='#f4b866';rr(s.x+jx,yy,s.w,s.h,8);g.fill();g.fillStyle='#8a5a2b';circle(s.x+jx+14,yy+9,3);circle(s.x+jx+34,yy+15,3);circle(s.x+jx+48,yy+8,3);
   if(s.ct>=0){g.strokeStyle='#8a5a2b';g.lineWidth=2;g.beginPath();g.moveTo(s.x+jx+s.w/2,yy);g.lineTo(s.x+jx+s.w/2-6,yy+10);g.lineTo(s.x+jx+s.w/2+4,yy+s.h);g.stroke();}g.strokeStyle='#fff';g.lineWidth=3;rr(s.x+jx,yy,s.w,s.h,8);g.stroke();g.restore();return;}
- if(s.kind==='piston'){const gr=g.createLinearGradient(s.x,0,s.x+s.w,0);gr.addColorStop(0,'#c9d6ff');gr.addColorStop(.5,'#ffffff');gr.addColorStop(1,'#a9b8f0');g.fillStyle=gr;g.fillRect(s.x+10,s.y+20,s.w-20,VH-s.y);
+ if(s.kind==='piston'){const gr=g.createLinearGradient(s.x,0,s.x+s.w,0);gr.addColorStop(0,'#c9d6ff');gr.addColorStop(.5,'#ffffff');gr.addColorStop(1,'#a9b8f0');g.fillStyle=gr;g.fillRect(s.x+10,s.y+20,s.w-20,s.h-20);
   g.fillStyle=`hsl(${(p.hue+180)%360},90%,62%)`;rr(s.x,s.y,s.w,24,8);g.fill();g.strokeStyle='#fff';g.lineWidth=3;g.stroke();return;}
  if(s.kind==='cannon')return;
  if(s.kind==='ledge'){g.fillStyle=`hsl(${s.hue},90%,66%)`;rr(s.x,s.y,s.w,s.h,9);g.fill();g.fillStyle='rgba(255,255,255,.55)';rr(s.x+6,s.y+3,s.w-12,5,3);g.fill();g.strokeStyle='#fff';g.lineWidth=3;rr(s.x,s.y,s.w,s.h,9);g.stroke();return;}
@@ -452,8 +471,8 @@ function drawSolid(s,p){
  if(s.kind==='island'){g.fillStyle='#c9a3ff';g.beginPath();g.moveTo(s.x,s.y+10);g.lineTo(s.x+s.w,s.y+10);g.lineTo(s.x+s.w*.6,s.y+60);g.lineTo(s.x+s.w*.4,s.y+50);g.closePath();g.fill();
   g.fillStyle='#7be08a';rr(s.x,s.y,s.w,20,10);g.fill();g.strokeStyle='#fff';g.lineWidth=3;g.stroke();return;}
 }
-function drawRamp(r,p){const h=p.hue;g.save();g.beginPath();g.moveTo(r.x,r.y0);g.lineTo(r.x+r.w,r.y1);g.lineTo(r.x+r.w,Math.max(VH+600,visBottom()));g.lineTo(r.x,Math.max(VH+600,visBottom()));g.closePath();g.clip();
- floorBody({x:r.x,y:Math.min(r.y0,r.y1),w:r.w,h:Math.max(VH+600,visBottom())},h);g.restore();
+function drawRamp(r,p){const h=p.hue;g.save();g.beginPath();g.moveTo(r.x,r.y0);g.lineTo(r.x+r.w,r.y1);g.lineTo(r.x+r.w,Math.max(r.y0,r.y1)+600);g.lineTo(r.x,Math.max(r.y0,r.y1)+600);g.closePath();g.clip();
+ floorBody({x:r.x,y:Math.min(r.y0,r.y1),w:r.w,h:Math.abs(r.y0-r.y1)+600},h);g.restore();
  g.lineCap='butt';g.strokeStyle=`hsl(${h},90%,60%)`;g.lineWidth=16;g.beginPath();g.moveTo(r.x,r.y0+8);g.lineTo(r.x+r.w,r.y1+8);g.stroke();
  g.strokeStyle='rgba(255,255,255,.6)';g.lineWidth=12;g.setLineDash([10,18]);g.lineDashOffset=-r.x;g.beginPath();g.moveTo(r.x,r.y0+8);g.lineTo(r.x+r.w,r.y1+8);g.stroke();g.setLineDash([]);
  g.strokeStyle='#fff';g.lineWidth=3;g.beginPath();g.moveTo(r.x,r.y0+1);g.lineTo(r.x+r.w,r.y1+1);g.stroke();}

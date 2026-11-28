@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Ghost Wing</title>
-<!-- GREEN PHONE EDIT: v1 Ghost Wing, a retro stealth strike flight game built on the Polygon Starfighter engine (MobbyHill tilt mapping, paper and ink wireframe renderer, laser pool, debris). Low resolution pixel render, tilt to fly, radar bubbles, bombs, flares, landing. -->
+<!-- GREEN PHONE EDIT: v3 adds a helicopter door gunner, an airfield SAM battery, parked aircraft, enemy delta wing attack drones and FPV quadcopters, two Hold the Field defense missions, and an escort slot with a wingman drone or strike drones. v2 adds a tabbed hangar menu with five aircraft (stealth, bomber, fighter, classic prop, helicopter), payload and defense loadouts, and runway takeoff and landing. v1 Ghost Wing, a retro stealth strike flight game built on the Polygon Starfighter engine (MobbyHill tilt mapping, paper and ink wireframe renderer, laser pool, debris). Low resolution pixel render, tilt to fly, radar bubbles, bombs, flares, landing. -->
 <style>
 :root{--panel:#eceae3;--panel2:#dedbd1;--edge:#9d9a8f;--ink:#2e3338;--ink2:#5f6469;--yellow:#f2c230;--red:#c8362b;--blue:#2a62b0;--green:#3f8a3f;--orange:#d2601a;
   --ui:"Roboto Condensed","Arial Narrow","sans-serif-condensed",system-ui,sans-serif}
@@ -40,6 +40,8 @@ body.btnmode .wpn{left:auto;right:190px}
 .wb.on{transform:translateY(2px);box-shadow:0 1px 0 #b9b6ab;background:#f6dca5}
 .wb.bomb{border-color:var(--orange)}
 .wb.flare{border-color:#b58d12}
+.wb.drone{border-color:var(--green);display:none}
+body.hasdrones .wb.drone{display:flex}
 .pad{position:fixed;left:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);width:170px;height:170px;display:none}
 body.playing.btnmode .pad{display:block}
 .pad .b{position:absolute;width:58px;height:58px;border-radius:9px;background:#fff;border:2px solid var(--edge);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:var(--ink);box-shadow:0 3px 0 #b9b6ab}
@@ -71,7 +73,8 @@ body.playing .menu{display:none}
 .logo span{color:var(--green)}
 .sub{font-size:12px;color:var(--ink2);margin:3px 0 8px}
 .lbl2{font-size:10px;font-weight:900;color:var(--ink2);letter-spacing:.5px;margin:4px 0 3px}
-.mlist{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.mlist{display:grid;grid-template-columns:repeat(8,1fr);gap:4px}
+.mlist button.def{border-style:dashed}
 .mlist button{border:2px solid var(--edge);background:#fff;border-radius:7px;padding:7px 0;font-size:14px;font-weight:900;color:var(--ink)}
 .mlist button.sel{background:#f6dca5;border-color:#c27a12}
 .mlist button.done{background:#dcefdc;border-color:var(--green);color:#24552a}
@@ -96,6 +99,33 @@ input[type=range]{width:130px;accent-color:var(--blue)}
 .rating{font-size:30px;font-weight:900;letter-spacing:3px;color:var(--green);margin:6px 0}
 .rating.loud{color:var(--red)}
 .rating.shadow{color:var(--blue)}
+/* GREEN PHONE EDIT: v2 tabbed menu, hangar, loadout */
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:2px 0 8px;flex:none}
+.tabs button{border:2px solid var(--edge);background:#fff;border-radius:8px;padding:7px 2px;font-size:13px;font-weight:900;color:var(--ink)}
+.tabs button.sel{background:#dcefdc;border-color:var(--green);color:#24552a}
+.tab{display:none}.tab.on{display:block}
+.acgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.acgrid button{border:2px solid var(--edge);background:#fff;border-radius:8px;padding:6px 2px 5px;font-size:12px;font-weight:900;color:var(--ink);line-height:1.15}
+.acgrid button small{display:block;font-size:9px;font-weight:800;color:var(--ink2)}
+.acgrid button.sel{background:#dcefdc;border-color:var(--green);color:#24552a}
+.acname{font-size:18px;font-weight:900;color:#24552a;margin-top:8px}
+.acrole{font-size:11px;font-weight:900;color:var(--ink2);letter-spacing:.5px}
+.acdesc{font-size:13px;line-height:1.4;margin:4px 0 6px}
+.stat{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:800;margin:3px 0}
+.stat b{width:60px;font-weight:800}
+.stat .bar{flex:1;height:9px;background:#fff;border:1px solid var(--edge);border-radius:4px;overflow:hidden}
+.stat .bar i{display:block;height:100%;background:var(--green)}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.opts button{border:2px solid var(--edge);background:#fff;border-radius:8px;padding:7px 3px;font-size:12px;font-weight:900;color:var(--ink)}
+.opts button.sel{background:#f6dca5;border-color:#c27a12}
+.odesc{font-size:12px;color:var(--ink2);margin:4px 0 8px;line-height:1.35;min-height:32px}
+.lsum{font-size:12px;font-weight:900;color:#24552a;margin-top:4px;line-height:1.5}
+.selline{font-size:11px;font-weight:900;color:var(--ink2);align-self:center;flex:1.3;line-height:1.3}
+.plate{position:fixed;right:14px;bottom:14px;background:var(--panel);border:2px solid var(--edge);border-radius:10px;padding:6px 12px;text-align:right;z-index:9;box-shadow:0 3px 0 #b9b6ab}
+body.playing .plate{display:none}
+.plate b{display:block;font-size:20px;font-weight:900;color:#24552a}
+.plate span{font-size:11px;font-weight:900;color:var(--ink2);letter-spacing:.5px}
+@media (orientation:portrait){.plate{top:10px;bottom:auto}}
 </style>
 </head>
 <body>
@@ -140,6 +170,7 @@ input[type=range]{width:130px;accent-color:var(--blue)}
 <div class="wpn" id="wpn">
   <div class="wb bomb" id="bombBtn">BOMB<small id="bombN">4</small></div>
   <div class="wb flare" id="flareBtn">FLARE<small id="flareN">6</small></div>
+  <div class="wb drone" id="droneBtn">DRONE<small id="droneN">3</small></div>
 </div>
 <div class="slider play" id="slider"><div class="fill" id="fill"></div><div class="lbl">THROTTLE</div></div>
 <div class="fire" id="fireBtn">GUNS</div>
@@ -150,22 +181,45 @@ input[type=range]{width:130px;accent-color:var(--blue)}
 
 <div class="menu" id="menu">
   <div class="logo">GHOST <span>WING</span></div>
-  <div class="sub">Fly low, stay off radar, hit the target, make it home.</div>
-  <div class="lbl2">MISSIONS</div>
-  <div class="mlist" id="mlist"></div>
-  <div class="mtitle" id="mtitle"></div>
-  <div class="mbrief" id="mbrief"></div>
-  <div class="mgoal" id="mgoal"></div>
-  <div class="mbest" id="mbest"></div>
-  <div class="lbl2" style="margin-top:8px">SETTINGS</div>
-  <div class="row">Steering<div class="seg" id="segSteer"><button data-v="tilt">Tilt</button><button data-v="buttons">Buttons</button></div></div>
-  <div class="row">View<div class="seg" id="segView"><button data-v="cockpit">Cockpit</button><button data-v="chase">Chase</button></div></div>
-  <div class="row">Pixels<div class="seg" id="segPix"><button data-v="retro">Retro</button><button data-v="crisp">Crisp</button><button data-v="full">Full</button></div></div>
-  <div class="row">Invert pitch<div class="seg" id="segInv"><button data-v="0">Off</button><button data-v="1">On</button></div></div>
-  <div class="row">Tilt sensitivity<input type="range" id="sens" min="0.5" max="2" step="0.1"></div>
-  <div class="row">Sound<div class="seg" id="segSnd"><button data-v="1">On</button><button data-v="0">Off</button></div></div>
-  <div class="mrow"><button class="go" id="flyBtn">FLY</button></div>
+  <div class="sub">Pick a mission, pick a plane, load it up, and take off.</div>
+  <div class="tabs" id="tabs"><button data-t="mission">Mission</button><button data-t="hangar">Hangar</button><button data-t="loadout">Loadout</button><button data-t="settings">Settings</button></div>
+  <div class="tab" id="tab-mission">
+    <div class="mlist" id="mlist"></div>
+    <div class="mtitle" id="mtitle"></div>
+    <div class="mbrief" id="mbrief"></div>
+    <div class="mgoal" id="mgoal"></div>
+    <div class="mbest" id="mbest"></div>
+  </div>
+  <div class="tab" id="tab-hangar">
+    <div class="acgrid" id="acgrid"></div>
+    <div class="acname" id="acname"></div>
+    <div class="acrole" id="acrole"></div>
+    <div class="acdesc" id="acdesc"></div>
+    <div id="acstats"></div>
+  </div>
+  <div class="tab" id="tab-loadout">
+    <div class="lbl2">PAYLOAD</div>
+    <div class="opts" id="optPay"></div>
+    <div class="odesc" id="descPay"></div>
+    <div class="lbl2">DEFENSE</div>
+    <div class="opts" id="optDef"></div>
+    <div class="odesc" id="descDef"></div>
+    <div class="lbl2">ESCORT</div>
+    <div class="opts" id="optEsc"></div>
+    <div class="odesc" id="descEsc"></div>
+    <div class="lsum" id="lsum"></div>
+  </div>
+  <div class="tab" id="tab-settings">
+    <div class="row">Steering<div class="seg" id="segSteer"><button data-v="tilt">Tilt</button><button data-v="buttons">Buttons</button></div></div>
+    <div class="row">View<div class="seg" id="segView"><button data-v="cockpit">Cockpit</button><button data-v="chase">Chase</button></div></div>
+    <div class="row">Pixels<div class="seg" id="segPix"><button data-v="retro">Retro</button><button data-v="crisp">Crisp</button><button data-v="full">Full</button></div></div>
+    <div class="row">Invert pitch<div class="seg" id="segInv"><button data-v="0">Off</button><button data-v="1">On</button></div></div>
+    <div class="row">Tilt sensitivity<input type="range" id="sens" min="0.5" max="2" step="0.1"></div>
+    <div class="row">Sound<div class="seg" id="segSnd"><button data-v="1">On</button><button data-v="0">Off</button></div></div>
+  </div>
+  <div class="mrow"><div class="selline" id="selline"></div><button class="go" id="flyBtn">TAKE OFF</button></div>
 </div>
+<div class="plate" id="plate"><span id="plateRole"></span><b id="plateName"></b></div>
 
 <div class="overlay" id="pauseOv"><div class="card"><h1>PAUSED</h1>
   <p id="pauseGoal"></p>
@@ -180,7 +234,7 @@ input[type=range]{width:130px;accent-color:var(--blue)}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 // GREEN PHONE EDIT: settings with safe storage
-const DEF={steer:'tilt',view:'cockpit',pix:'retro',invPitch:false,sens:1,sound:true,mission:0,done:{}};
+const DEF={steer:'tilt',view:'cockpit',pix:'retro',invPitch:false,sens:1,sound:true,mission:0,done:{},ac:0,pay:0,def:0,esc:0,tab:'mission'};
 let S=Object.assign({},DEF);
 try{const s=JSON.parse(localStorage.getItem('gw_settings')||'null');if(s)S=Object.assign(S,s);}catch(e){}
 if(!S.done)S.done={};
@@ -279,7 +333,104 @@ function buildJet(){
   [-1,1].forEach(s=>{const t=new THREE.ConeGeometry(0.6,1.6,3);t.scale(0.2,1,1);t.rotateZ(s*0.6);t.translate(s*1.1,0.9,2.1);g.add(W(t,GREEN,GREENFILL));});
   return g;
 }
-const jet=buildJet();scene.add(jet);
+// GREEN PHONE EDIT: v2 landing gear, wheels on struts that tuck away once you climb
+function gearLeg(x,z,h){
+  const gg=new THREE.Group();
+  const s=new THREE.CylinderGeometry(0.12,0.12,h,4);s.translate(x,-h/2,z);gg.add(W(s,INK,0xffffff));
+  const w=new THREE.CylinderGeometry(0.45,0.45,0.3,8);w.rotateZ(Math.PI/2);w.translate(x,-h,z);gg.add(W(w,INK,0x8a8f94));
+  return gg;
+}
+function addGear(g,legs){const gr=new THREE.Group();legs.forEach(l=>gr.add(gearLeg(l[0],l[1],l[2])));g.add(gr);g.userData.gear=gr;}
+function buildGhost(){const g=buildJet();g.userData.spin=[];addGear(g,[[0,-3.6,1],[-2,1,1],[2,1,1]]);return g;}
+// GREEN PHONE EDIT: v2 bomber, long body, four engines, wide wing
+function buildBomber(){
+  const g=new THREE.Group();
+  const f=new THREE.CylinderGeometry(1.6,1.3,22,8);f.rotateX(Math.PI/2);g.add(W(f,GREEN,0xffffff));
+  const n=new THREE.ConeGeometry(1.6,3.4,8);n.rotateX(-Math.PI/2);n.translate(0,0,-12.7);g.add(W(n,GREEN,0xffffff));
+  const c=new THREE.OctahedronGeometry(1);c.scale(1.1,0.7,2);c.translate(0,1.3,-9);g.add(W(c,INK,0xcfe0f4));
+  g.add(W(wingGeo([[0,-3],[15,1.5],[15,3.5],[0,3]],0.4,-0.2),GREEN,GREENFILL));
+  g.add(W(wingGeo([[0,-3],[0,3],[-15,3.5],[-15,1.5]],0.4,-0.2),GREEN,GREENFILL));
+  [-10,-5,5,10].forEach(x=>{const e=new THREE.CylinderGeometry(0.8,0.9,4,8);e.rotateX(Math.PI/2);e.translate(x,-0.9,-1+Math.abs(x)*0.12);g.add(W(e,GREEN,0xc9dcc9));});
+  const fin=new THREE.BoxGeometry(0.3,4.5,4);fin.translate(0,3,9.5);g.add(W(fin,GREEN,GREENFILL));
+  const st=new THREE.BoxGeometry(10,0.3,3);st.translate(0,0.6,10);g.add(W(st,GREEN,GREENFILL));
+  g.userData.spin=[];addGear(g,[[0,-8,2.4],[-3.2,1,2.4],[3.2,1,2.4]]);return g;
+}
+// GREEN PHONE EDIT: v2 fighter, needle nose, delta wing, twin tails
+function buildFighterJet(){
+  const g=new THREE.Group();
+  const b=new THREE.ConeGeometry(0.85,8.5,6);b.rotateX(-Math.PI/2);b.translate(0,0,-0.6);g.add(W(b,GREEN,0xffffff));
+  const c=new THREE.OctahedronGeometry(0.5);c.scale(0.9,0.7,2);c.translate(0,0.6,-1.6);g.add(W(c,INK,0xcfe0f4));
+  g.add(W(wingGeo([[0.5,-1.5],[4.6,3.4],[0.5,3.4]],0.2,0),GREEN,GREENFILL));
+  g.add(W(wingGeo([[-0.5,-1.5],[-0.5,3.4],[-4.6,3.4]],0.2,0),GREEN,GREENFILL));
+  [-1,1].forEach(s=>{const t=new THREE.ConeGeometry(0.7,2,3);t.scale(0.2,1,1);t.rotateZ(s*0.35);t.translate(s*0.9,1.1,3.2);g.add(W(t,GREEN,GREENFILL));});
+  const e=new THREE.CylinderGeometry(0.6,0.7,1.2,8);e.rotateX(Math.PI/2);e.translate(0,0,3.9);g.add(W(e,GREEN,0xc9dcc9));
+  g.userData.spin=[];addGear(g,[[0,-2.8,1.1],[-1.3,1.6,1.1],[1.3,1.6,1.1]]);return g;
+}
+// GREEN PHONE EDIT: v2 classic prop plane with a spinning propeller
+function buildProp(){
+  const g=new THREE.Group();
+  const f=new THREE.CylinderGeometry(0.45,0.8,7,8);f.rotateX(-Math.PI/2);g.add(W(f,GREEN,0xffffff));
+  const cw=new THREE.CylinderGeometry(0.85,0.85,1.1,8);cw.rotateX(Math.PI/2);cw.translate(0,0,-3.9);g.add(W(cw,GREEN,0xc9dcc9));
+  const c=new THREE.OctahedronGeometry(0.5);c.scale(0.9,0.8,1.6);c.translate(0,0.8,-0.8);g.add(W(c,INK,0xcfe0f4));
+  const w=new THREE.BoxGeometry(11,0.22,1.8);w.translate(0,0.1,-1);g.add(W(w,GREEN,GREENFILL));
+  const st=new THREE.BoxGeometry(4,0.2,1.1);st.translate(0,0.2,3.1);g.add(W(st,GREEN,GREENFILL));
+  const fin=new THREE.BoxGeometry(0.2,1.5,1.2);fin.translate(0,0.9,3.1);g.add(W(fin,GREEN,GREENFILL));
+  const prop=new THREE.Group();prop.position.set(0,0,-4.6);
+  const bl=new THREE.BoxGeometry(0.3,4.4,0.12);prop.add(W(bl,INK,0xdedbd1));
+  const sp=new THREE.ConeGeometry(0.35,0.7,6);sp.rotateX(-Math.PI/2);prop.add(W(sp,INK,0xf2c230));
+  g.add(prop);
+  g.userData.spin=[{m:prop,axis:'z',rate:40,idle:6}];addGear(g,[[-1.3,-1.4,1.4],[1.3,-1.4,1.4],[0,3,1.4]]);return g;
+}
+// GREEN PHONE EDIT: v2 helicopter with main and tail rotors and skids
+function buildHeli(){
+  const g=new THREE.Group();
+  const b=new THREE.BoxGeometry(2.4,2.2,4.4);b.translate(0,0,-0.4);g.add(W(b,GREEN,0xffffff));
+  const n=new THREE.OctahedronGeometry(1);n.scale(1.15,1,1.4);n.translate(0,0,-2.6);g.add(W(n,INK,0xcfe0f4));
+  const tb=new THREE.BoxGeometry(0.5,0.6,6.5);tb.translate(0,0.4,4.8);g.add(W(tb,GREEN,GREENFILL));
+  const fin=new THREE.BoxGeometry(0.2,2,1.2);fin.translate(0,1.2,7.8);g.add(W(fin,GREEN,GREENFILL));
+  const hub=new THREE.CylinderGeometry(0.3,0.3,0.8,6);hub.translate(0,1.5,-0.4);g.add(W(hub,INK,0xffffff));
+  const rot=new THREE.Group();rot.position.set(0,1.95,-0.4);
+  const bl=new THREE.BoxGeometry(13,0.08,0.5);rot.add(W(bl,INK,0xdedbd1));const bl2=bl.clone();bl2.rotateY(Math.PI/2);rot.add(W(bl2,INK,0xdedbd1));
+  g.add(rot);
+  const tr=new THREE.Group();tr.position.set(0.35,1.2,8);
+  const tbl=new THREE.BoxGeometry(0.08,2.2,0.25);tr.add(W(tbl,INK,0xdedbd1));g.add(tr);
+  [-1.1,1.1].forEach(x=>{const s=new THREE.BoxGeometry(0.15,0.15,4.6);s.translate(x,-1.75,-0.4);g.add(W(s,INK,0x8a8f94));
+    [-1.6,0.8].forEach(z=>{const p=new THREE.BoxGeometry(0.1,0.7,0.1);p.translate(x*0.8,-1.35,z);g.add(W(p,INK,0x8a8f94));});});
+  g.userData.spin=[{m:rot,axis:'y',rate:22,idle:4},{m:tr,axis:'x',rate:50,idle:8}];g.userData.gear=null;return g;
+}
+// GREEN PHONE EDIT: v2 aircraft roster. gear is how high the middle of the plane sits on its wheels
+const AIRCRAFT=[
+  {name:'Ghost',role:'STEALTH STRIKE',desc:'Faceted flying wedge. Radar barely sees it, decent speed, a small bomb bay.',build:buildGhost,max:230,stall:62,rotate:80,land:105,turn:0.95,pitch:1.1,hp:100,sig:1,bombs:4,gunRate:0.09,gunDmg:10,gunX:1.2,gear:1.45,hitR:3.5,view:16,cock:[0,0.9,-1.4],snd:['square',48]},
+  {name:'Hauler',role:'HEAVY BOMBER',desc:'Four engines, a bay full of bombs, and a thick hull. Slow to turn, and radar picks it up from far off.',build:buildBomber,max:185,stall:52,rotate:72,land:95,turn:0.55,pitch:0.7,hp:180,sig:1.35,bombs:10,gunRate:0.16,gunDmg:8,gunX:1.6,gear:2.85,hitR:7,view:34,cock:[0,1.6,-9.5],snd:['sawtooth',38]},
+  {name:'Lancer',role:'FIGHTER',desc:'Fastest thing in the sky with the hardest hitting guns. Lights up radar and carries only two bombs.',build:buildFighterJet,max:300,stall:78,rotate:98,land:115,turn:1.4,pitch:1.55,hp:120,sig:1.55,bombs:2,gunRate:0.06,gunDmg:14,gunX:1,gear:1.55,hitR:3.5,view:16,cock:[0,0.9,-2],snd:['square',62]},
+  {name:'Kestrel',role:'CLASSIC PROP',desc:'Old piston plane. Slow and nimble, and quiet on radar because it lives low and slow.',build:buildProp,max:150,stall:38,rotate:52,land:75,turn:1.35,pitch:1.35,hp:90,sig:0.85,bombs:3,gunRate:0.11,gunDmg:8,gunX:2.5,gear:1.85,hitR:4,view:15,cock:[0,1.1,-0.6],snd:['sawtooth',30]},
+  {name:'Hornbill',role:'HELICOPTER',desc:'Hovers, backs up, and sets down anywhere on the airfield. Hug the ground and radar barely sees it. The slowest of the five.',build:buildHeli,max:110,stall:0,rotate:0,land:30,turn:1.3,pitch:1,hp:110,sig:0.75,bombs:4,gunRate:0.1,gunDmg:9,gunX:1.3,gear:1.9,hitR:4,view:17,cock:[0,0.6,-2.4],snd:['square',22],heli:true}
+];
+// GREEN PHONE EDIT: v2 loadouts
+const PAYLOADS=[
+  {name:'Iron bombs',desc:'Standard bombs at the plane\'s normal count. Opening the bay spikes your signature.',mult:1,radius:1,type:'bomb'},
+  {name:'Cluster',desc:'Half as many bombs, but each blast covers a much wider patch of ground.',mult:0.5,radius:1.7,type:'bomb'},
+  {name:'Rockets',desc:'Fire straight ahead at ground targets. Twice the count, smaller blasts, no bomb bay to open.',mult:2,radius:0.8,type:'rocket'}
+];
+const DEFENSES=[
+  {name:'Flares',desc:'Six flares plus one for every fighter the mission can scramble. Each pair pulls missiles off you.',flares:6,bonus:true,sigMul:1,hpAdd:0,spdMul:1},
+  {name:'Jammer',desc:'Cuts your radar signature by a quarter. Only three flares.',flares:3,bonus:false,sigMul:0.75,hpAdd:0,spdMul:1},
+  {name:'Armor',desc:'Fifty more hull points and four flares. The extra weight costs ten percent of top speed.',flares:4,bonus:false,sigMul:1,hpAdd:50,spdMul:0.9}
+];
+// GREEN PHONE EDIT: v3 escort slot
+const ESCORTS=[
+  {name:'None',desc:'Fly alone.'},
+  {name:'Wingman',desc:'A drone wingman holds formation off your right wing and shoots at enemy aircraft and drones in range.'},
+  {name:'Strike drones',desc:'Three one way attack drones. Tap DRONE and one flies low to the nearest target or radar post and blows it up.'}
+];
+let A=AIRCRAFT[0],P=PAYLOADS[0],D=DEFENSES[0],E=0;
+let jet=null;
+function setAircraft(){
+  A=AIRCRAFT[S.ac]||AIRCRAFT[0];P=PAYLOADS[S.pay]||PAYLOADS[0];D=DEFENSES[S.def]||DEFENSES[0];E=S.esc||0;
+  if(jet)scene.remove(jet);jet=A.build();scene.add(jet);
+  if(engOsc){engOsc.type=A.snd[0];}
+}
+function spinParts(dt,power){(jet.userData.spin||[]).forEach(s=>{s.m.rotation[s.axis]+=dt*(s.idle+(s.rate-s.idle)*power);});}
 
 // GREEN PHONE EDIT: enemy fighters, always red
 function buildFighter(){
@@ -326,7 +477,7 @@ function audioInit(){
   if(AC||!S.sound)return;
   try{
     AC=new (window.AudioContext||window.webkitAudioContext)();
-    engOsc=AC.createOscillator();engOsc.type='square';engGain=AC.createGain();engGain.gain.value=0;
+    engOsc=AC.createOscillator();engOsc.type=A.snd[0];engGain=AC.createGain();engGain.gain.value=0;
     const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=420;
     engOsc.connect(lp);lp.connect(engGain);engGain.connect(AC.destination);engOsc.start();
     noiseBuf=AC.createBuffer(1,AC.sampleRate,AC.sampleRate);const d=noiseBuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
@@ -355,12 +506,16 @@ const MISSIONS=[
   {name:'Ridge Line',brief:'A comms bunker behind a wall of ridges. Climbing over them lights you up. Find the gaps.',targets:1,sites:8,dist:3800,fighters:2,seed:37},
   {name:'Twin Pads',brief:'Two launch pads far apart. The posts on the way have overlapping coverage. Strafe a post if you have to, but every shot raises your signature.',targets:2,sites:10,dist:4000,fighters:3,seed:48},
   {name:'Deep Strike',brief:'Three targets deep in defended country. Fighters are already on alert. Bring every flare home.',targets:3,sites:13,dist:4400,fighters:4,seed:59},
-  {name:'Last Light',brief:'The heaviest radar net yet, four targets, and a long way home. Fly like you are not there.',targets:4,sites:16,dist:4800,fighters:4,seed:71}
+  {name:'Last Light',brief:'The heaviest radar net yet, four targets, and a long way home. Fly like you are not there.',targets:4,sites:16,dist:4800,fighters:4,seed:71},
+  // GREEN PHONE EDIT: v3 defense missions. protect the planes parked at your own airfield
+  {name:'Hold the Field',brief:'Delta wing attack drones are coming for the planes parked at your airfield. The SAM battery will catch some of them. The rest are yours. When the last wave is down, land.',type:'defend',waves:[[3,0],[4,2],[5,3],[6,5]],targets:0,sites:0,dist:0,fighters:0,seed:83},
+  {name:'Swarm',brief:'Cheap FPV quadcopters mixed in with delta drones. The SAM battery cannot track the small ones. Stay close to home, and a helicopter door gunner helps a lot here.',type:'defend',waves:[[2,4],[3,6],[4,8],[5,10],[6,12]],targets:0,sites:0,dist:0,fighters:0,seed:97}
 ];
 
 // GREEN PHONE EDIT: world objects that get rebuilt per mission
 let world=new THREE.Group();scene.add(world);
-let targets=[],sites=[],fighters=[],missiles=[],flares=[],bombs=[];
+let targets=[],sites=[],fighters=[],missiles=[],flares=[],bombs=[],parked=[],drones=[],intc=[],strikers=[],spawnQ=[];
+let sam=null,wm=null,waveIdx=0,waveGap=0,droneKills=0,dronesLeft=0;
 const RUNWAY={hw:16,hl:320};
 function buildBase(){
   const g=new THREE.Group();
@@ -394,6 +549,49 @@ function domeFor(r){
   const m=new THREE.LineSegments(new THREE.EdgesGeometry(geo,1),new THREE.LineBasicMaterial({color:RED,transparent:true,opacity:0.28}));
   return m;
 }
+// GREEN PHONE EDIT: v3 delta wing one way attack drone with a pusher prop. red for the enemy, green for your strike drones
+function buildDelta(line,fill){
+  const g=new THREE.Group();
+  g.add(W(wingGeo([[0,-2.6],[3.4,1.8],[2.6,2.2],[-2.6,2.2],[-3.4,1.8]],0.25,0),line,fill));
+  const b=new THREE.CylinderGeometry(0.35,0.35,4.4,6);b.rotateX(Math.PI/2);b.translate(0,0.2,-0.2);g.add(W(b,line,0xffffff));
+  [-1,1].forEach(s=>{const f=new THREE.BoxGeometry(0.12,0.9,0.8);f.translate(s*3.1,0.4,1.9);g.add(W(f,line,fill));});
+  const pr=new THREE.Group();pr.position.set(0,0.2,2.3);pr.add(W(new THREE.BoxGeometry(0.15,1.6,0.08),INK,0xdedbd1));g.add(pr);
+  g.userData.spin=[{m:pr,axis:'z',rate:40,idle:40}];g.scale.setScalar(1.4);return g;
+}
+// GREEN PHONE EDIT: v3 FPV quadcopter, bare X frame with a taped on battery and a camera
+function buildFPV(){
+  const g=new THREE.Group();
+  [0.785,-0.785].forEach(a=>{const arm=new THREE.BoxGeometry(2.6,0.12,0.18);arm.rotateY(a);g.add(W(arm,RED,0xf3c9c4));});
+  g.add(W(new THREE.BoxGeometry(0.6,0.35,0.9),RED,0xffffff));
+  const bat=new THREE.BoxGeometry(0.42,0.3,0.8);bat.translate(0,0.34,0.1);g.add(W(bat,INK,0xf2c230));
+  const cam=new THREE.BoxGeometry(0.25,0.25,0.25);cam.translate(0,0.1,-0.55);g.add(W(cam,INK,0x8a8f94));
+  const rots=[];
+  [[0.92,0.92],[-0.92,0.92],[0.92,-0.92],[-0.92,-0.92]].forEach(p=>{const r=new THREE.Group();r.position.set(p[0],0.2,p[1]);r.add(W(new THREE.BoxGeometry(1.1,0.03,0.12),INK,0xdedbd1));g.add(r);rots.push({m:r,axis:'y',rate:60,idle:60});});
+  g.userData.spin=rots;g.scale.setScalar(1.7);return g;
+}
+// GREEN PHONE EDIT: v3 wingman drone, sleek body, swept wing, V tail
+function buildWingman(){
+  const g=new THREE.Group();
+  const b=new THREE.OctahedronGeometry(1);b.scale(0.9,0.6,4.2);g.add(W(b,GREEN,0xffffff));
+  g.add(W(wingGeo([[0.6,-0.6],[4.2,2],[4.2,2.8],[0.6,1.6]],0.15,0),GREEN,GREENFILL));
+  g.add(W(wingGeo([[-0.6,-0.6],[-0.6,1.6],[-4.2,2.8],[-4.2,2]],0.15,0),GREEN,GREENFILL));
+  [-1,1].forEach(s=>{const t=new THREE.ConeGeometry(0.7,1.8,3);t.scale(0.18,1,1);t.rotateZ(s*0.7);t.translate(s*0.8,0.8,3.2);g.add(W(t,GREEN,GREENFILL));});
+  return g;
+}
+// GREEN PHONE EDIT: v3 SAM battery. launcher truck with four canisters and a radar truck beside it
+function buildSAM(){
+  const g=new THREE.Group();
+  g.add(W(new THREE.BoxGeometry(5,2.4,12).translate(0,1.6,0),INK,0xdedbd1));
+  g.add(W(new THREE.BoxGeometry(4.6,3,3.6).translate(0,1.9,-7.8),INK,0xffffff));
+  const ln=new THREE.Group();ln.position.set(0,3.2,3);ln.rotation.x=0.75;
+  ln.add(W(new THREE.BoxGeometry(4.4,3.2,9).translate(0,1.6,-4.5),GREEN,GREENFILL));
+  [[-1.1,0.8],[1.1,0.8],[-1.1,2.4],[1.1,2.4]].forEach(p=>{const c=new THREE.CylinderGeometry(0.65,0.65,0.3,8);c.rotateX(Math.PI/2);c.translate(p[0],p[1],-9.05);ln.add(W(c,INK,0xf2c230));});
+  g.add(ln);
+  const rt=new THREE.Group();rt.position.set(10,0,0);
+  rt.add(W(new THREE.BoxGeometry(4.6,2.6,9).translate(0,1.6,0),INK,0xdedbd1));
+  const panel=new THREE.BoxGeometry(5,5,0.5);panel.rotateX(-0.5);panel.translate(0,5.2,-1.5);rt.add(W(panel,INK,0xcfe0f4));
+  g.add(rt);return g;
+}
 const MS_GEO=new THREE.CylinderGeometry(0.4,0.4,3.4,5);MS_GEO.rotateX(Math.PI/2);
 const FL_GEO=new THREE.OctahedronGeometry(1.4);
 const BM_GEO=new THREE.CylinderGeometry(0.5,0.5,2.6,6);BM_GEO.rotateX(Math.PI/2);
@@ -412,7 +610,7 @@ function genMission(i){
   }
   FLAT=[{x:0,z:0,r:420}].concat(tp.map(p=>({x:p.x,z:p.z,r:110})));
   world.add(buildBase());
-  tp.forEach(p=>{const m=buildTarget();m.position.set(p.x,0,p.z);m.rotation.y=rng()*6;world.add(m);targets.push({m:m,p:V(p.x,6,p.z),alive:true});});
+  tp.forEach(p=>{const m=buildTarget();m.position.set(p.x,0,p.z);m.rotation.y=rng()*6;world.add(m);targets.push({m:m,p:V(p.x,6,p.z),alive:true,hp:400});});
   // GREEN PHONE EDIT: radar posts. most guard the approach, the rest ring the targets. many sit on high ground
   for(let k=0;k<M.sites;k++){
     let x,z,ok=false,tries=0;
@@ -428,6 +626,22 @@ function genMission(i){
     const R=620+rng()*360,dome=domeFor(R);dome.position.set(x,y,z);world.add(dome);
     sites.push({m:m,dome:dome,p:V(x,y+16,z),R:R,meter:0,alert:0,fireT:rnd(1,3),hp:40,alive:true,seen:false});
   }
+  // GREEN PHONE EDIT: v3 planes parked on the apron east of the runway, the SAM battery to the west, interceptor pool, wingman
+  parked=[];drones=[];strikers=[];spawnQ=[];intc=[];
+  [[55,-265,1],[55,-185,3],[55,-120,0],[55,10,2],[55,80,3],[55,150,4]].forEach(p=>{
+    const a=AIRCRAFT[p[2]],m=a.build();m.position.set(p[0],a.gear,p[1]);m.rotation.y=Math.PI/2;world.add(m);
+    parked.push({m:m,p:V(p[0],2,p[1]),alive:true});
+  });
+  const sm=buildSAM();sm.position.set(-85,0,200);world.add(sm);
+  sam={m:sm,p:V(-85,8,200),ammo:12,cool:3,reloadT:0};
+  for(let k=0;k<8;k++){
+    const m=new THREE.Group();m.add(W(MS_GEO,GREEN,0xffffff));m.visible=false;world.add(m);
+    const tg=new THREE.BufferGeometry();tg.setAttribute('position',new THREE.BufferAttribute(new Float32Array(24*3),3));
+    const tr=new THREE.Line(tg,new THREE.LineBasicMaterial({color:0x8a8f94}));tr.frustumCulled=false;tr.visible=false;world.add(tr);
+    intc.push({m:m,trail:tr,pts:[],alive:false,dir:V(),spd:0,life:0,tgt:null});
+  }
+  wm=null;
+  if(S.esc===1){const m=buildWingman();m.visible=false;world.add(m);wm={m:m,cool:0};}
   for(let k=0;k<6;k++){const m=buildFighter();m.visible=false;world.add(m);fighters.push({m:m,alive:false,dir:V(0,0,-1),hp:30,cool:0,bank:0});}
   for(let k=0;k<10;k++){
     const m=new THREE.Group();m.add(W(MS_GEO,RED,0xffffff));m.visible=false;world.add(m);
@@ -436,18 +650,24 @@ function genMission(i){
     missiles.push({m:m,trail:tr,pts:[],alive:false,dir:V(),spd:0,life:0,tgt:null});
   }
   for(let k=0;k<8;k++){const m=new THREE.Mesh(FL_GEO,new THREE.MeshBasicMaterial({color:0xf2c230,fog:false}));m.visible=false;world.add(m);flares.push({m:m,v:V(),life:0});}
-  for(let k=0;k<6;k++){const m=W(BM_GEO,INK,0x8a8f94);m.visible=false;world.add(m);bombs.push({m:m,v:V(),alive:false});}
+  for(let k=0;k<10;k++){const m=W(BM_GEO,INK,0x8a8f94);m.visible=false;world.add(m);bombs.push({m:m,v:V(),alive:false});}
   updateTerrain(0,0,true);
 }
 
 // GREEN PHONE EDIT: flight and run state
 const pos=V(),vel=V(),q=new THREE.Quaternion(),fwd=V();
-const MINSPD=70,MAXSPD=230;
+let grounded=true,hs=0,vyH=0,hpMax=100,maxS=230,doorT=0;
 let speed=110,throttle=0.4,bank=0,pitchRate=0,hp=100,bombsLeft=4,flaresLeft=6,flareCool=0,bayT=0,fireT=0,gunCool=0,shake=0;
 let mode='menu',phase='strike',runT=0,detections=0,kills=0,spotted=0,lockT=0,warnT=0,agl=0,sig=0,maxMeter=0,landT=0;
 function resetRun(){
-  pos.set(0,70,RUNWAY.hl+40);q.identity();speed=120;throttle=0.45;bank=0;pitchRate=0;
-  hp=100;bombsLeft=Math.max(4,M.targets+2);flaresLeft=6+M.fighters;flareCool=0;bayT=0;fireT=0;gunCool=0;
+  // GREEN PHONE EDIT: v2 every run starts parked at the south end of the runway
+  pos.set(0,H(0,RUNWAY.hl-40)+A.gear,RUNWAY.hl-40);q.identity();speed=0;throttle=A.heli?0.25:0;bank=0;pitchRate=0;grounded=true;hs=0;vyH=0;
+  maxS=A.max*D.spdMul;hpMax=A.hp+D.hpAdd;hp=hpMax;
+  bombsLeft=Math.max(Math.round(A.bombs*P.mult),M.targets+(P.type==='rocket'?3:1));
+  flaresLeft=D.flares+(D.bonus?M.fighters:0);flareCool=0;bayT=0;fireT=0;gunCool=0;
+  waveIdx=0;waveGap=20;droneKills=0;dronesLeft=(E===2&&M.type!=='defend')?3:0;doorT=0;
+  if(wm){wm.m.visible=true;wm.m.position.copy(pos).add(V(14,0,0));wm.m.quaternion.identity();}
+  document.body.classList.toggle('hasdrones',dronesLeft>0);
   phase='strike';runT=0;detections=0;kills=0;spotted=0;lockT=0;warnT=0;landT=0;
   fwd.set(0,0,-1);vel.copy(fwd).multiplyScalar(speed);
   bolts.forEach(b=>{b.life=0;b.m.visible=false;});debris.forEach(d=>{d.life=0;d.m.visible=false;});
@@ -475,7 +695,7 @@ function tiltInput(){
 }
 
 // GREEN PHONE EDIT: buttons, keyboard, throttle slider
-const keys={up:0,dn:0,lf:0,rt:0,thUp:0,thDn:0,fire:0,bomb:0,flare:0};
+const keys={up:0,dn:0,lf:0,rt:0,thUp:0,thDn:0,fire:0,bomb:0,flare:0,drone:0};
 function holdBtn(el,k,tap){
   const on=e=>{e.preventDefault();audioInit();keys[k]=1;el.classList.add('on');if(tap)tap();try{el.setPointerCapture(e.pointerId);}catch(_){}};
   const off=()=>{keys[k]=0;el.classList.remove('on');};
@@ -485,6 +705,7 @@ document.querySelectorAll('.pad .b').forEach(b=>holdBtn(b,b.dataset.k));
 holdBtn($('fireBtn'),'fire');
 holdBtn($('bombBtn'),'bomb',()=>dropBomb());
 holdBtn($('flareBtn'),'flare',()=>dropFlare());
+holdBtn($('droneBtn'),'drone',()=>launchStriker());
 const keyMap={ArrowUp:'up',ArrowDown:'dn',ArrowLeft:'lf',ArrowRight:'rt',w:'thUp',s:'thDn',W:'thUp',S:'thDn',' ':'fire'};
 addEventListener('keydown',e=>{
   if(keyMap[e.key]){keys[keyMap[e.key]]=1;e.preventDefault();}
@@ -505,10 +726,12 @@ function hitFlash(){const fl=$('flash');fl.style.opacity=0.3;setTimeout(()=>fl.s
 function dropBomb(){
   if(mode!=='play'||bombsLeft<=0)return;
   const b=bombs.find(x=>!x.alive);if(!b)return;
-  bombsLeft--;bayT=1.6;
-  b.alive=true;b.m.visible=true;b.m.position.copy(pos).addScaledVector(V(0,1,0).applyQuaternion(q),-1.5);
-  b.v.copy(fwd).multiplyScalar(speed);
-  beep(1400,1.2,0.04,'square',300);
+  if(grounded)return;
+  bombsLeft--;
+  b.alive=true;b.m.visible=true;
+  // GREEN PHONE EDIT: v2 rockets fly forward fast with little drop, bombs fall from the bay
+  if(P.type==='rocket'){b.g=8;fireT=0.8;b.m.position.copy(pos).addScaledVector(fwd,3);b.v.copy(fwd).multiplyScalar(260).add(vel);beep(500,0.4,0.05,'sawtooth',120);noise(0.3,0.1);}
+  else{b.g=62;bayT=1.6;b.m.position.copy(pos).addScaledVector(V(0,1,0).applyQuaternion(q),-1.5);b.v.copy(vel);beep(1400,1.2,0.04,'square',300);}
 }
 function dropFlare(){
   if(mode!=='play'||flaresLeft<=0||flareCool>0)return;
@@ -540,6 +763,179 @@ function siteDown(s){
   s.m.rotation.z=0.9;s.m.position.y-=4;boom(s.p,RED,4,14);blast(s.p,22);noise(0.6,0.25);kills++;
 }
 function fighterDown(f,msg){f.alive=false;f.m.visible=false;boom(f.m.position,RED,4,16);blast(f.m.position,16);noise(0.5,0.25);if(msg)kills++;}
+// GREEN PHONE EDIT: v3 mission target destruction, shared by bombs, rockets, guns, the door gunner and strike drones
+function targetDown(t){
+  if(!t.alive)return;t.alive=false;t.m.scale.y=0.25;boom(t.p,0x8a4a12,8,26);blast(t.p,60,0x8a4a12);toast('TARGET DESTROYED',2);
+  if(M.type!=='defend'&&phase==='strike'&&targets.every(x=>!x.alive)){phase='home';setTimeout(()=>{if(mode==='play')toast('ALL TARGETS DOWN. LAND AT BASE',3);},1800);}
+}
+function groundBlast(bp,BR){
+  boom(bp,0xd2601a,6,20);blast(bp,BR,0xd2601a);noise(0.9,0.35);buzz(60);
+  for(const t of targets){if(t.alive&&Math.hypot(t.p.x-bp.x,t.p.z-bp.z)<BR)targetDown(t);}
+  for(const s of sites){if(s.alive&&s.p.distanceTo(bp)<BR+2)siteDown(s);}
+  for(const pk of parked){if(pk.alive&&pk.p.distanceTo(bp)<BR*0.6)parkedDown(pk);}
+  if(bp.distanceTo(pos)<35)damage(30,'Caught in your own blast.');
+}
+function parkedDown(pk){
+  if(!pk.alive)return;pk.alive=false;pk.m.rotation.z=0.25;pk.m.scale.y=0.45;
+  boom(pk.p,GREEN,6,22);blast(pk.p,30,RED);noise(0.8,0.3);
+  if(M.type==='defend')toast('PARKED AIRCRAFT HIT',1.6,true);
+}
+// GREEN PHONE EDIT: v3 enemy drones. delta wings cruise in low then dive, FPV quads weave in close to the ground
+function spawnDrone(kind){
+  const a=rnd(-1.3,1.3),fpv=kind==='fpv',dist=fpv?rnd(1200,1600):rnd(3000,3500);
+  const x=Math.sin(a)*dist,z=-Math.cos(a)*dist;
+  const m=fpv?buildFPV():buildDelta(RED,0xf3c9c4);m.position.set(x,H(x,z)+(fpv?30:110),z);world.add(m);
+  const d={kind:kind,m:m,alive:true,hp:fpv?4:10,spd:fpv?85:140,dir:V(0,0,1),seed:Math.random()*9,claimed:false,tgt:null};
+  pickDroneTarget(d);drones.push(d);
+}
+function pickDroneTarget(d){
+  const live=parked.filter(p=>p.alive);
+  const meOk=grounded&&Math.hypot(pos.x,pos.z)<420;
+  if(meOk&&(live.length===0||Math.random()<0.3)){d.tgt='p';return;}
+  d.tgt=live.length?live[Math.floor(Math.random()*live.length)]:null;
+}
+function droneTgtPos(d){return d.tgt==='p'?pos:d.tgt?d.tgt.p:V(0,0,0);}
+function droneDown(d,byMe){
+  if(!d.alive)return;d.alive=false;world.remove(d.m);boom(d.m.position,RED,d.kind==='fpv'?1.5:3,10);blast(d.m.position,d.kind==='fpv'?8:14,RED);noise(0.4,0.2);
+  droneKills++;if(byMe)kills++;
+}
+function droneHit(d){
+  if(!d.alive)return;d.alive=false;world.remove(d.m);
+  const bp=d.m.position,R=d.kind==='fpv'?12:26;
+  boom(bp,0xd2601a,5,18);blast(bp,R+10,0xd2601a);noise(0.8,0.3);
+  for(const pk of parked){if(pk.alive&&pk.p.distanceTo(bp)<R)parkedDown(pk);}
+  if(bp.distanceTo(pos)<R+4)damage(d.kind==='fpv'?40:60,'Hit by an attack drone.');
+}
+function stepDrones(dt){
+  for(const d of drones){
+    if(!d.alive)continue;
+    if(d.tgt&&d.tgt!=='p'&&!d.tgt.alive)pickDroneTarget(d);
+    if(d.tgt==='p'&&!(grounded&&Math.hypot(pos.x,pos.z)<420))pickDroneTarget(d);
+    const dp=d.m.position,tp=droneTgtPos(d),fpv=d.kind==='fpv';
+    const fl=tmp.set(tp.x-dp.x,0,tp.z-dp.z),hd=fl.length();
+    const want=tmp2;
+    if(hd>(fpv?110:380)){
+      fl.normalize();
+      if(fpv){const w=Math.sin(runT*2.6+d.seed)*0.5;fl.set(fl.x-fl.z*w,0,fl.z+fl.x*w).normalize();}
+      const ahead=H(dp.x+fl.x*120,dp.z+fl.z*120),gy=Math.max(H(dp.x,dp.z),ahead)+(fpv?25:110);
+      want.set(fl.x,clamp((gy-dp.y)/60,-0.5,0.6),fl.z).normalize();
+    }else want.copy(tp).sub(dp).normalize();
+    const a=d.dir.angleTo(want),mx=(fpv?2.6:1.2)*dt;d.dir.lerp(want,a>mx?mx/a:1).normalize();
+    dp.addScaledVector(d.dir,d.spd*dt);
+    if(fpv)d.m.quaternion.setFromAxisAngle(AY,Math.atan2(-d.dir.x,-d.dir.z));else d.m.quaternion.setFromUnitVectors(NZ,d.dir);
+    (d.m.userData.spin||[]).forEach(s=>{s.m.rotation[s.axis]+=dt*s.rate;});
+    if(dp.distanceTo(tp)<(fpv?4:7)||dp.y<H(dp.x,dp.z)+0.5)droneHit(d);
+  }
+  if(drones.length>40)drones=drones.filter(d=>d.alive);
+}
+// GREEN PHONE EDIT: v3 SAM battery fires interceptors at delta drones and fighters near the airfield
+function stepSAM(dt){
+  if(!sam)return;
+  sam.cool-=dt;sam.reloadT+=dt;
+  if(sam.ammo<12&&sam.reloadT>8){sam.ammo++;sam.reloadT=0;}
+  if(sam.cool<=0&&sam.ammo>0){
+    let best=null,bd=2200;
+    drones.forEach(d=>{if(d.alive&&d.kind!=='fpv'&&!d.claimed){const dd=d.m.position.distanceTo(sam.p);if(dd<bd){bd=dd;best=d;}}});
+    fighters.forEach(f=>{if(f.alive&&!f.claimed){const dd=f.m.position.distanceTo(sam.p);if(dd<bd){bd=dd;best=f;}}});
+    const ic=intc.find(x=>!x.alive);
+    if(best&&ic){
+      best.claimed=true;sam.ammo--;sam.cool=2.2;
+      ic.alive=true;ic.m.visible=true;ic.trail.visible=true;ic.pts=[];ic.m.position.copy(sam.p).add(V(0,4,-6));
+      ic.dir.set(0,1,-0.6).normalize();ic.spd=80;ic.life=10;ic.tgt=best;
+      noise(0.6,0.12);beep(200,0.6,0.04,'sawtooth',800);
+    }
+  }
+  for(const ic of intc){
+    if(!ic.alive)continue;
+    ic.life-=dt;ic.spd=Math.min(430,ic.spd+260*dt);
+    const t=ic.tgt,tl=t&&t.alive;
+    if(tl){const want=tmp.copy(t.m.position).sub(ic.m.position).normalize();const a=ic.dir.angleTo(want),mx=3.4*dt;ic.dir.lerp(want,a>mx?mx/a:1).normalize();}
+    ic.m.position.addScaledVector(ic.dir,ic.spd*dt);ic.m.quaternion.setFromUnitVectors(NZ,ic.dir);
+    ic.pts.unshift(ic.m.position.clone());if(ic.pts.length>24)ic.pts.pop();
+    const arr=ic.trail.geometry.attributes.position.array;for(let i=0;i<24;i++){const p=ic.pts[Math.min(i,ic.pts.length-1)];arr[i*3]=p.x;arr[i*3+1]=p.y;arr[i*3+2]=p.z;}
+    ic.trail.geometry.attributes.position.needsUpdate=true;
+    const ip=ic.m.position;let gone=ic.life<=0||ip.y<H(ip.x,ip.z);
+    if(tl&&ip.distanceTo(t.m.position)<8){gone=true;if(Math.random()<0.9){if(t.kind)droneDown(t,false);else fighterDown(t,false);}}
+    if(gone){ic.alive=false;ic.m.visible=false;ic.trail.visible=false;boom(ip,INK,2,8);blast(ip,10,INK);if(t){t.claimed=false;}}
+  }
+}
+// GREEN PHONE EDIT: v3 shared picker for the door gunner and the wingman. air threats first, then ground
+function nearestEnemy(from,range,ground){
+  let best=null,bd=range;
+  fighters.forEach(f=>{if(f.alive){const d=f.m.position.distanceTo(from);if(d<bd){bd=d;best={k:'f',o:f,p:f.m.position};}}});
+  drones.forEach(o=>{if(o.alive){const d=o.m.position.distanceTo(from);if(d<bd){bd=d;best={k:'d',o:o,p:o.m.position};}}});
+  if(ground&&!best){
+    sites.forEach(s=>{if(s.alive){const d=s.p.distanceTo(from);if(d<bd&&los(s.p,from)){bd=d;best={k:'s',o:s,p:s.p};}}});
+    targets.forEach(t=>{if(t.alive){const d=t.p.distanceTo(from);if(d<bd&&los(t.p,from)){bd=d;best={k:'t',o:t,p:t.p};}}});
+  }
+  return best;
+}
+function applyHit(e,dmg){
+  e.o.hp-=dmg;if(e.o.hp>0||!e.o.alive)return;
+  if(e.k==='f')fighterDown(e.o,true);else if(e.k==='d')droneDown(e.o,true);else if(e.k==='s')siteDown(e.o);else targetDown(e.o);
+}
+function autoShot(from,e,hitP,dmg){
+  const hit=Math.random()<hitP;
+  const aim=tmp3.copy(e.p);if(!hit)aim.add(V(rnd(-7,7),rnd(-4,7),rnd(-7,7)));
+  const dir=V().copy(aim).sub(from).normalize();
+  shoot(from,dir,520,'v',0,null);
+  if(hit)applyHit(e,dmg);
+}
+// GREEN PHONE EDIT: v3 strike drones, launched from your plane, fly low to the nearest target and blow up
+function launchStriker(){
+  if(mode!=='play'||dronesLeft<=0||grounded)return;
+  let best=null,bd=1e9;
+  targets.forEach(t=>{if(t.alive){const d=t.p.distanceTo(pos);if(d<bd){bd=d;best=t;}}});
+  if(!best)sites.forEach(s=>{if(s.alive){const d=s.p.distanceTo(pos);if(d<bd){bd=d;best=s;}}});
+  if(!best){toast('NO TARGET FOR THE DRONE',1.2);return;}
+  dronesLeft--;
+  const m=buildDelta(GREEN,GREENFILL);m.position.copy(pos).add(V(0,-3,0));world.add(m);
+  strikers.push({m:m,alive:true,tgt:best,dir:V().copy(fwd),spd:Math.max(150,speed)});
+  beep(700,0.3,0.04,'square',350);toast('DRONE AWAY',1);
+}
+function stepStrikers(dt){
+  for(const s of strikers){
+    if(!s.alive)continue;
+    const dp=s.m.position,tp=s.tgt.p,fl=tmp.set(tp.x-dp.x,0,tp.z-dp.z),hd=fl.length(),want=tmp2;
+    if(hd>300){fl.normalize();const gy=Math.max(H(dp.x,dp.z),H(dp.x+fl.x*150,dp.z+fl.z*150))+70;want.set(fl.x,clamp((gy-dp.y)/60,-0.5,0.6),fl.z).normalize();}
+    else want.copy(tp).sub(dp).normalize();
+    const a=s.dir.angleTo(want),mx=1.5*dt;s.dir.lerp(want,a>mx?mx/a:1).normalize();
+    s.spd+=(160-s.spd)*dt*0.5;dp.addScaledVector(s.dir,s.spd*dt);s.m.quaternion.setFromUnitVectors(NZ,s.dir);
+    (s.m.userData.spin||[]).forEach(p=>{p.m.rotation[p.axis]+=dt*p.rate;});
+    if(dp.distanceTo(tp)<9||dp.y<H(dp.x,dp.z)+0.5){s.alive=false;world.remove(s.m);groundBlast(dp.clone(),42);}
+  }
+}
+// GREEN PHONE EDIT: v3 wingman keeps formation and shoots at air threats
+function stepWingman(dt){
+  if(!wm)return;
+  const r=V(1,0,0).applyQuaternion(q);
+  let want;
+  if(grounded){want=V().copy(pos).addScaledVector(r,16);want.y=H(want.x,want.z)+1.2;}
+  else want=V().copy(pos).addScaledVector(r,16).addScaledVector(fwd,-10).add(V(0,2,0));
+  const gy=H(want.x,want.z)+1.2;if(want.y<gy)want.y=gy;
+  wm.m.position.lerp(want,1-Math.exp(-dt*(grounded?6:2.5)));
+  wm.m.quaternion.slerp(tmpQ.copy(q).multiply(new THREE.Quaternion().setFromAxisAngle(NZ,bank)),1-Math.exp(-dt*3));
+  wm.cool-=dt;
+  if(wm.cool<=0&&!grounded){const e=nearestEnemy(wm.m.position,800,false);if(e){wm.cool=0.2;autoShot(wm.m.position.clone(),e,0.6,8);}}
+}
+// GREEN PHONE EDIT: v3 defense waves
+function stepWaves(dt){
+  if(M.type!=='defend')return;
+  for(let i=spawnQ.length-1;i>=0;i--){if(spawnQ[i].t<=runT){spawnDrone(spawnQ[i].k);spawnQ.splice(i,1);}}
+  const live=drones.some(d=>d.alive);
+  if(phase==='strike'){
+    if(waveIdx<M.waves.length&&spawnQ.length===0&&!live){
+      waveGap-=dt;
+      if(waveGap<=0){
+        const w=M.waves[waveIdx];waveIdx++;waveGap=10;
+        for(let i=0;i<w[0];i++)spawnQ.push({t:runT+rnd(0,10),k:'delta'});
+        for(let i=0;i<w[1];i++)spawnQ.push({t:runT+rnd(4,16),k:'fpv'});
+        toast('WAVE '+waveIdx+' INBOUND',2.5,true);beep(440,0.5,0.05,'square',880);setTimeout(()=>beep(440,0.5,0.05,'square',880),600);
+      }
+    }else if(waveIdx>=M.waves.length&&spawnQ.length===0&&!live){phase='home';toast('FIELD HELD. LAND TO FINISH',3);}
+  }
+  if(parked.every(p=>!p.alive)){endRun(false,'Every parked aircraft was destroyed.');}
+}
 function spawnMissile(from){
   const m=missiles.find(x=>!x.alive);if(!m)return;
   m.alive=true;m.m.visible=true;m.trail.visible=true;m.pts=[];
@@ -578,21 +974,54 @@ function applySettings(){
   if(!S.sound&&engGain)engGain.gain.value=0;
   resize();
 }
-function unlocked(i){return i===0||!!S.done[i-1];}
+// GREEN PHONE EDIT: v2 tabs, hangar and loadout pickers
+function paintTabs(){
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('sel',b.dataset.t===S.tab));
+  ['mission','hangar','loadout','settings'].forEach(t=>$('tab-'+t).classList.toggle('on',t===S.tab));
+}
+document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click',()=>{S.tab=b.dataset.t;saveS();paintTabs();}));
+function bar(label,v){return '<div class="stat"><b>'+label+'</b><div class="bar"><i style="width:'+Math.round(clamp(v,0.05,1)*100)+'%"></i></div></div>';}
+function paintHangar(){
+  const gEl=$('acgrid');gEl.innerHTML='';
+  AIRCRAFT.forEach((a,i)=>{const b=document.createElement('button');b.innerHTML=a.name+'<small>'+a.role.split(' ').pop()+'</small>';if(i===S.ac)b.classList.add('sel');
+    b.addEventListener('click',()=>{S.ac=i;saveS();setAircraft();paintHangar();paintLoadout();paintSel();});gEl.appendChild(b);});
+  const a=AIRCRAFT[S.ac];
+  $('acname').textContent=a.name;$('acrole').textContent=a.role;$('acdesc').textContent=a.desc;
+  $('acstats').innerHTML=bar('SPEED',a.max/300)+bar('AGILITY',a.turn/1.4)+bar('ARMOR',a.hp/180)+bar('PAYLOAD',a.bombs/10)+bar('STEALTH',(1.65-a.sig)/0.9);
+}
+function opts(id,list,key,descId){
+  const el=$(id);el.innerHTML='';
+  list.forEach((o,i)=>{const b=document.createElement('button');b.textContent=o.name;if(i===S[key])b.classList.add('sel');
+    b.addEventListener('click',()=>{S[key]=i;saveS();setAircraft();paintLoadout();paintSel();});el.appendChild(b);});
+  $(descId).textContent=list[S[key]].desc;
+}
+function paintLoadout(){
+  opts('optPay',PAYLOADS,'pay','descPay');opts('optDef',DEFENSES,'def','descDef');opts('optEsc',ESCORTS,'esc','descEsc');
+  const a=AIRCRAFT[S.ac],p=PAYLOADS[S.pay],d=DEFENSES[S.def],m=MISSIONS[S.mission];
+  const n=Math.max(Math.round(a.bombs*p.mult),m.targets+(p.type==='rocket'?3:1));
+  $('lsum').textContent=a.name+' carries '+n+(p.type==='rocket'?' rockets':' bombs')+', '+(d.flares+(d.bonus?m.fighters:0))+' flares, and '+(a.hp+d.hpAdd)+' hull'+(d.sigMul<1?', with the jammer on':'')+(S.esc===1?', and a wingman drone.':S.esc===2?', and three strike drones.':'.')+(a.heli?' The door gunner fires on his own.':'');
+}
+function paintSel(){
+  const a=AIRCRAFT[S.ac];
+  $('selline').textContent='Mission '+(S.mission+1)+', '+a.name+', '+PAYLOADS[S.pay].name+', '+DEFENSES[S.def].name+(S.esc?', '+ESCORTS[S.esc].name:'');
+  $('plateName').textContent=a.name;$('plateRole').textContent=a.role;
+}
+function unlocked(i){return i===0||MISSIONS[i].type==='defend'||!!S.done[i-1];}
 function paintMenu(){
   const ml=$('mlist');ml.innerHTML='';
   MISSIONS.forEach((m,i)=>{
     const b=document.createElement('button');b.textContent=i+1;
-    if(S.done[i])b.classList.add('done');if(i===S.mission)b.classList.add('sel');
+    if(S.done[i])b.classList.add('done');if(i===S.mission)b.classList.add('sel');if(m.type==='defend')b.classList.add('def');
     b.disabled=!unlocked(i);
-    b.addEventListener('click',()=>{S.mission=i;saveS();paintMenu();});
+    b.addEventListener('click',()=>{S.mission=i;saveS();paintMenu();genMission(S.mission);});
     ml.appendChild(b);
   });
   const m=MISSIONS[S.mission];
   $('mtitle').textContent=(S.mission+1)+'. '+m.name;
   $('mbrief').textContent=m.brief;
-  $('mgoal').textContent='Destroy '+m.targets+(m.targets>1?' targets':' target')+', then land back at base. '+m.sites+' radar posts.';
+  $('mgoal').textContent=m.type==='defend'?'Defense. Protect the six parked aircraft through '+m.waves.length+' waves of attack drones, then land.':'Take off, destroy '+m.targets+(m.targets>1?' targets':' target')+', then land back on the airfield. '+m.sites+' radar posts.';
   $('mbest').textContent=S.done[S.mission]?'Best rating: '+S.done[S.mission]:'Not flown yet';
+  paintTabs();paintHangar();paintLoadout();paintSel();
 }
 $('flyBtn').addEventListener('click',async()=>{
   try{if(isIOS)await DeviceOrientationEvent.requestPermission();}catch(e){}
@@ -600,16 +1029,18 @@ $('flyBtn').addEventListener('click',async()=>{
   startRun(S.mission);
 });
 function startRun(i){
-  genMission(i);resetRun();jet.visible=true;tZero=null;
+  setAircraft();genMission(i);resetRun();jet.visible=true;tZero=null;chaseCam.copy(pos).add(V(0,8,30));
+  $('bombBtn').innerHTML=(P.type==='rocket'?'ROCKET':'BOMB')+'<small id="bombN">'+bombsLeft+'</small>';
+  document.querySelector('#slider .lbl').textContent=A.heli?'SPEED':'THROTTLE';
   hideOv();mode='play';document.body.classList.add('playing');
-  toast(MISSIONS[i].name.toUpperCase(),2.5);
+  toast(A.heli?'PULL BACK TO LIFT OFF':'THROTTLE UP, PULL BACK AT '+A.rotate,3);
 }
 function hideOv(){$('pauseOv').style.display='none';$('endOv').style.display='none';}
 function toMenu(){
   hideOv();mode='menu';document.body.classList.remove('playing');
   ['mark','markl','pip'].forEach(id=>$(id).style.display='none');
   if(engGain)engGain.gain.value=0;
-  paintMenu();genMission(S.mission);resetRun();jet.visible=true;
+  setAircraft();paintMenu();genMission(S.mission);resetRun();jet.visible=true;
 }
 const RANK={GHOST:3,SHADOW:2,LOUD:1};
 function endRun(ok,msg){
@@ -619,12 +1050,13 @@ function endRun(ok,msg){
   $('endTitle').textContent=ok?'MISSION COMPLETE':'MISSION FAILED';
   const r=$('endRating');
   if(ok){
-    const rank=detections===0?'GHOST':detections<=2?'SHADOW':'LOUD';
+    const saved=parked.filter(p=>p.alive).length;
+    const rank=M.type==='defend'?(saved===parked.length?'GHOST':saved>=3?'SHADOW':'LOUD'):detections===0?'GHOST':detections<=2?'SHADOW':'LOUD';
     r.textContent=rank;r.className='rating'+(rank==='LOUD'?' loud':rank==='SHADOW'?' shadow':'');
     if(!S.done[mIndex]||RANK[rank]>RANK[S.done[mIndex]])S.done[mIndex]=rank;
     if(mIndex<MISSIONS.length-1)S.mission=mIndex+1;saveS();
     const t=Math.floor(runT/60)+':'+String(Math.floor(runT%60)).padStart(2,'0');
-    $('endMsg').textContent='Time '+t+'. Spotted '+detections+(detections===1?' time':' times')+'. '+kills+' kills. Hull '+Math.round(hp)+'%.';
+    $('endMsg').textContent=M.type==='defend'?'Time '+t+'. Saved '+saved+' of '+parked.length+' parked aircraft. '+droneKills+' drones down, '+kills+' by you.':'Time '+t+'. Spotted '+detections+(detections===1?' time':' times')+'. '+kills+' kills. Hull '+Math.round(hp/hpMax*100)+'%.';
     beep(523,0.15,0.06);setTimeout(()=>beep(659,0.15,0.06),160);setTimeout(()=>beep(784,0.35,0.06),320);
   }else{
     r.textContent='';r.className='rating';$('endMsg').textContent=msg;
@@ -662,6 +1094,9 @@ function drawRadar(){
   let bp=P(0,-RUNWAY.hl),bq=P(0,RUNWAY.hl);rx.strokeStyle='#2a62b0';rx.lineWidth=3;rx.beginPath();rx.moveTo(bp[0],bp[1]);rx.lineTo(bq[0],bq[1]);rx.stroke();rx.lineWidth=1;
   fighters.forEach(f=>{if(!f.alive)return;const p=P(f.m.position.x,f.m.position.z);rx.fillStyle='#c8362b';rx.beginPath();rx.arc(p[0],p[1],2.5,0,6.283);rx.fill();});
   missiles.forEach(m=>{if(!m.alive)return;const p=P(m.m.position.x,m.m.position.z);rx.fillStyle='#2e3338';rx.fillRect(p[0]-1,p[1]-1,2,2);});
+  parked.forEach(pk=>{if(!pk.alive)return;const p=P(pk.p.x,pk.p.z);rx.fillStyle='#2a62b0';rx.fillRect(p[0]-2,p[1]-2,4,4);});
+  drones.forEach(d=>{if(!d.alive)return;const p=P(d.m.position.x,d.m.position.z);rx.fillStyle='#c8362b';rx.beginPath();rx.moveTo(p[0],p[1]-3);rx.lineTo(p[0]+3,p[1]+2);rx.lineTo(p[0]-3,p[1]+2);rx.closePath();rx.fill();});
+  if(wm){const p=P(wm.m.position.x,wm.m.position.z);rx.fillStyle='#3f8a3f';rx.fillRect(p[0]-2,p[1]-2,4,4);}
   rx.restore();
   targets.forEach(t=>{if(!t.alive)return;const p=edge(P(t.p.x,t.p.z));rx.fillStyle='#d2601a';rx.strokeStyle='#8a4a12';rx.fillRect(p[0]-3.5,p[1]-3.5,7,7);rx.strokeRect(p[0]-3.5,p[1]-3.5,7,7);});
   if(phase==='home'){const p=edge(P(0,0));rx.fillStyle='#2a62b0';rx.beginPath();rx.arc(p[0],p[1],4,0,6.283);rx.fill();}
@@ -700,45 +1135,84 @@ function step(dt){
   if(keys.thDn)throttle=clamp(throttle-dt*0.6,0,1);
   fill.style.height=(throttle*100)+'%';
 
-  // GREEN PHONE EDIT: arcade flight. bank to turn, tilt forward to dive, gravity trades height for speed
   const k=1-Math.exp(-dt*4);
-  bank+=(turn*1.05-bank)*k;
-  pitchRate+=(pitch*1.1-pitchRate)*k;
-  fwd.set(0,0,-1).applyQuaternion(q);
-  let pr=pitchRate;
-  if(fwd.y>0.8&&pr>0)pr=0;if(fwd.y<-0.8&&pr<0)pr=0;
-  q.multiply(tmpQ.setFromAxisAngle(AX,pr*dt));
-  q.premultiply(tmpQ.setFromAxisAngle(AY,-Math.sin(bank)*0.95*dt));
-  q.normalize();
-  fwd.set(0,0,-1).applyQuaternion(q);
-  const target=MINSPD+throttle*(MAXSPD-MINSPD);
-  speed+=(target-speed)*(1-Math.exp(-dt*0.8));
-  speed+=-fwd.y*55*dt;speed=clamp(speed,MINSPD*0.8,MAXSPD*1.15);
-  vel.copy(fwd).multiplyScalar(speed);
-  pos.addScaledVector(vel,dt);
-  if(pos.y>1600)pos.y=1600;
-
-  // GREEN PHONE EDIT: ground, runway and landing
-  const g=H(pos.x,pos.z);agl=pos.y-g;
-  const onRunway=Math.abs(pos.x)<RUNWAY.hw+4&&Math.abs(pos.z)<RUNWAY.hl;
-  if(onRunway&&agl<3.5){
-    if(fwd.y<-0.3){crash('Hit the runway too steep.');return;}
-    pos.y=g+3;agl=3;
-    if(fwd.y<0)q.multiply(tmpQ.setFromAxisAngle(AX,-Math.asin(fwd.y)*0.5));
-    if(phase==='home'){
-      if(speed<100){landT+=dt;speed=Math.max(0,speed-60*dt);throttle=Math.max(0,throttle-dt);if(landT>1.2){endRun(true);return;}}
-      else if(toastT<=0)toast('TOO FAST, THROTTLE DOWN',1.2);
-    }else if(toastT<=0)toast('TARGETS FIRST',1.2);
+  let g=0;
+  if(A.heli){
+    // GREEN PHONE EDIT: v2 helicopter. throttle sets forward speed with hover at a quarter, tilt back to climb, tilt forward to sink, tilt sideways to turn
+    const want=(throttle-0.25)/0.75*maxS;
+    hs+=((want<0?want*0.4:want)-hs)*(1-Math.exp(-dt*1.2));
+    vyH+=(pitch*42-vyH)*(1-Math.exp(-dt*2.5));
+    if(grounded){hs=0;if(pitch>0.2){grounded=false;vyH=Math.max(vyH,8);pos.y+=0.3;toast('LIFT OFF',1.2);}else vyH=0;}
+    bank+=((grounded?0:turn*0.35)-bank)*k;
+    if(!grounded)q.premultiply(tmpQ.setFromAxisAngle(AY,-turn*A.turn*dt));
+    q.normalize();fwd.set(0,0,-1).applyQuaternion(q);
+    vel.copy(fwd).multiplyScalar(hs);vel.y=vyH;
+    pos.addScaledVector(vel,dt);speed=Math.abs(hs);
+    g=H(pos.x,pos.z);agl=pos.y-g-A.gear;
+    if(!grounded&&agl<=0){
+      const onField=Math.hypot(pos.x,pos.z)<420;
+      if(vyH<-24||!onField&&Math.abs(H(pos.x+6,pos.z)-H(pos.x-6,pos.z))>4){crash('Came down too hard.');return;}
+      grounded=true;vyH=0;hs=0;bank=0;toast('ON THE GROUND',1);
+    }
+    if(grounded){pos.y=g+A.gear;agl=0;}
   }else{
-    landT=0;
-    if(agl<1.5){crash(agl<-20?'Flew into a ridge.':'Hit the ground.');return;}
+    const target=throttle*maxS;
+    if(grounded){
+      // GREEN PHONE EDIT: v2 ground roll. steer with tilt, throttle up, pull back past rotate speed to lift off, throttle to zero to brake
+      bank+=(0-bank)*k;
+      speed+=(target-speed)*(1-Math.exp(-dt*(target>speed?0.45:0.3)));
+      if(throttle<0.05)speed=Math.max(0,speed-32*dt);
+      if(speed>3)q.premultiply(tmpQ.setFromAxisAngle(AY,-turn*0.6*dt));
+      pitchRate+=(pitch*A.pitch-pitchRate)*k;
+      if(speed>=A.rotate&&pitchRate>0.15)q.multiply(tmpQ.setFromAxisAngle(AX,pitchRate*dt));
+      q.normalize();fwd.set(0,0,-1).applyQuaternion(q);
+      if(fwd.y<0){q.setFromAxisAngle(AY,Math.atan2(-fwd.x,-fwd.z));fwd.set(0,0,-1).applyQuaternion(q);}
+      vel.copy(fwd).multiplyScalar(speed);pos.addScaledVector(vel,dt);
+      g=H(pos.x,pos.z);
+      if(fwd.y>0.04&&speed>=A.rotate){grounded=false;toast('WHEELS UP',1.2);}
+      else pos.y=g+A.gear;
+      agl=pos.y-g-A.gear;
+      if(Math.hypot(pos.x,pos.z)>470){crash('Ran off the airfield.');return;}
+      if(phase==='strike'&&speed>A.rotate*0.85&&pitch<0.15&&toastT<=0)toast('PULL BACK TO LIFT OFF',1);
+    }else{
+      // GREEN PHONE EDIT: arcade flight. bank to turn, tilt forward to dive, gravity trades height for speed, stall when too slow
+      bank+=(turn*1.05-bank)*k;
+      pitchRate+=(pitch*A.pitch-pitchRate)*k;
+      fwd.set(0,0,-1).applyQuaternion(q);
+      let pr=pitchRate;
+      if(fwd.y>0.8&&pr>0)pr=0;if(fwd.y<-0.8&&pr<0)pr=0;
+      q.multiply(tmpQ.setFromAxisAngle(AX,pr*dt));
+      q.premultiply(tmpQ.setFromAxisAngle(AY,-Math.sin(bank)*A.turn*dt));
+      const st=speed<A.stall?(A.stall-speed)/A.stall:0;
+      if(st>0&&fwd.y>-0.7)q.multiply(tmpQ.setFromAxisAngle(AX,-st*1.4*dt));
+      q.normalize();fwd.set(0,0,-1).applyQuaternion(q);
+      speed+=(target-speed)*(1-Math.exp(-dt*0.8));
+      speed+=-fwd.y*55*dt;speed=clamp(speed,0,maxS*1.15);
+      vel.copy(fwd).multiplyScalar(speed);vel.y-=st*45;
+      pos.addScaledVector(vel,dt);
+      g=H(pos.x,pos.z);agl=pos.y-g-A.gear;
+      if(st>0.05&&toastT<=0)toast('STALL, THROTTLE UP',1,true);
+      if(agl<0.4&&vel.y>=0){pos.y=g+A.gear+0.4;agl=0.4;}
+      else if(agl<0.4){
+        const onField=Math.hypot(pos.x,pos.z)<420;
+        if(onField&&fwd.y>-0.3&&Math.abs(bank)<0.5&&speed<A.land*1.5){
+          grounded=true;pos.y=g+A.gear;agl=0;bank=0;q.setFromAxisAngle(AY,Math.atan2(-fwd.x,-fwd.z));fwd.set(0,0,-1).applyQuaternion(q);toast('TOUCHDOWN',1);
+        }else{crash(onField?(speed>=A.land*1.5?'Touched down too fast.':'Came down too hard.'):agl<-20?'Flew into a ridge.':'Hit the ground.');return;}
+      }
+    }
   }
+  if(pos.y>1600)pos.y=1600;
+  // GREEN PHONE EDIT: v2 landing. roll to a stop on the airfield once the targets are down
+  if(grounded&&phase==='home'&&Math.hypot(pos.x,pos.z)<420){
+    if(speed<12){landT+=dt;if(landT>1){endRun(true);return;}}
+    else{landT=0;if(toastT<=0)toast('THROTTLE TO ZERO TO BRAKE',1.2);}
+  }else landT=0;
   updateTerrain(pos.x,pos.z);
 
   // GREEN PHONE EDIT: signature. height, speed, open bomb bay and gunfire all make you easier to see
   bayT=Math.max(0,bayT-dt);fireT=Math.max(0,fireT-dt);flareCool=Math.max(0,flareCool-dt);
-  sig=0.12+clamp(agl/420,0,1)*0.55+clamp((speed-MINSPD)/(MAXSPD-MINSPD),0,1)*0.22+(bayT>0?0.55:0)+(fireT>0?0.3:0);
-  sig=clamp(sig,0,1.4);
+  sig=0.12+clamp(agl/420,0,1)*0.55+clamp((speed-A.stall)/(maxS-A.stall),0,1)*0.22+(bayT>0?0.55:0)+(fireT>0?0.3:0);
+  sig=clamp(sig*A.sig*D.sigMul,0,1.4);
 
   // GREEN PHONE EDIT: radar posts sweep, build up detection, then fire missiles and call fighters
   maxMeter=0;let anyAlert=false;
@@ -772,10 +1246,10 @@ function step(dt){
 
   // GREEN PHONE EDIT: guns. firing raises your signature
   gunCool-=dt;
-  if(keys.fire&&gunCool<=0){
-    gunCool=0.09;fireT=0.8;
+  if(keys.fire&&gunCool<=0&&!grounded){
+    gunCool=A.gunRate;fireT=0.8;
     const r=V(1,0,0).applyQuaternion(q);
-    shoot(tmp.copy(pos).addScaledVector(r,(Math.random()<0.5?-1:1)*1.2).addScaledVector(fwd,-2),fwd,420,'g',10,vel);
+    shoot(tmp.copy(pos).addScaledVector(r,(Math.random()<0.5?-1:1)*A.gunX).addScaledVector(fwd,-2),fwd,420,'g',A.gunDmg,vel);
     beep(180,0.05,0.025,'square',90);
   }
   for(const b of bolts){
@@ -783,26 +1257,25 @@ function step(dt){
     b.life-=dt;b.last.copy(b.m.position);b.m.position.addScaledVector(b.v,dt);
     const bp=b.m.position;
     if(b.life<=0||bp.y<H(bp.x,bp.z)){b.life=0;b.m.visible=false;continue;}
-    if(b.team==='g'){
-      for(const f of fighters){if(f.alive&&segHit(b.last,bp,f.m.position,6)){f.hp-=b.dmg;b.life=0;boom(bp,RED,1,3);beep(700,0.05,0.03);if(f.hp<=0)fighterDown(f,true);break;}}
+    if(b.team==='v'){}
+    else if(b.team==='g'){
+      for(const d of drones){if(d.alive&&segHit(b.last,bp,d.m.position,d.kind==='fpv'?3.5:5)){d.hp-=b.dmg;b.life=0;boom(bp,RED,1,3);if(d.hp<=0)droneDown(d,true);break;}}
+      if(b.life>0)for(const t of targets){if(t.alive&&segHit(b.last,bp,t.p,22)){t.hp-=b.dmg;b.life=0;boom(bp,0x8a4a12,1,2);if(t.hp<=0)targetDown(t);break;}}
+      if(b.life>0)for(const f of fighters){if(f.alive&&segHit(b.last,bp,f.m.position,6)){f.hp-=b.dmg;b.life=0;boom(bp,RED,1,3);beep(700,0.05,0.03);if(f.hp<=0)fighterDown(f,true);break;}}
       if(b.life>0)for(const s of sites){if(s.alive&&segHit(b.last,bp,s.p,9)){s.hp-=b.dmg;b.life=0;boom(bp,RED,1,3);if(s.hp<=0)siteDown(s);break;}}
       if(b.life>0)for(const m of missiles){if(m.alive&&segHit(b.last,bp,m.m.position,4)){m.alive=false;m.m.visible=false;m.trail.visible=false;b.life=0;boom(m.m.position,INK,2,8);noise(0.3,0.15);break;}}
-    }else if(segHit(b.last,bp,pos,3.5)){b.life=0;damage(5,'Shot down by a fighter.');}
+    }else if(segHit(b.last,bp,pos,A.hitR)){b.life=0;damage(5,'Shot down by a fighter.');}
     if(b.life<=0)b.m.visible=false;
   }
 
   // GREEN PHONE EDIT: bombs fall with your forward speed, the pipper shows where they land
   for(const b of bombs){
     if(!b.alive)continue;
-    b.v.y-=62*dt;b.m.position.addScaledVector(b.v,dt);b.m.quaternion.setFromUnitVectors(NZ,tmp.copy(b.v).normalize());
+    b.v.y-=b.g*dt;b.m.position.addScaledVector(b.v,dt);b.m.quaternion.setFromUnitVectors(NZ,tmp.copy(b.v).normalize());
     const bp=b.m.position;
     if(bp.y<H(bp.x,bp.z)+1){
       b.alive=false;b.m.visible=false;
-      boom(bp,0xd2601a,6,20);blast(bp,40);noise(0.9,0.35);buzz(60);
-      for(const t of targets){if(t.alive&&Math.hypot(t.p.x-bp.x,t.p.z-bp.z)<38){t.alive=false;t.m.scale.y=0.25;boom(t.p,0x8a4a12,8,26);blast(t.p,60,0x8a4a12);toast('TARGET DESTROYED',2);}}
-      for(const s of sites){if(s.alive&&s.p.distanceTo(bp)<40)siteDown(s);}
-      if(bp.distanceTo(pos)<35)damage(30,'Caught in your own blast.');
-      if(phase==='strike'&&targets.every(t=>!t.alive)){phase='home';setTimeout(()=>{if(mode==='play')toast('ALL TARGETS DOWN. LAND AT BASE',3);},1800);}
+      groundBlast(bp,38*P.radius*(A.name==='Hauler'?1.2:1));
     }
   }
 
@@ -819,7 +1292,7 @@ function step(dt){
     const arr=m.trail.geometry.attributes.position.array;for(let i=0;i<24;i++){const p=m.pts[Math.min(i,m.pts.length-1)];arr[i*3]=p.x;arr[i*3+1]=p.y;arr[i*3+2]=p.z;}
     m.trail.geometry.attributes.position.needsUpdate=true;
     const mp=m.m.position;let gone=m.life<=0||mp.y<H(mp.x,mp.z);
-    if(m.tgt==='p'&&mp.distanceTo(pos)<9){gone=true;damage(45,'Hit by a missile.');}
+    if(m.tgt==='p'&&mp.distanceTo(pos)<6+A.hitR){gone=true;damage(45,'Hit by a missile.');}
     else if(m.tgt&&m.tgt!=='p'&&mp.distanceTo(m.tgt.m.position)<8)gone=true;
     if(gone){m.alive=false;m.m.visible=false;m.trail.visible=false;boom(mp,INK,2,8);blast(mp,10,INK);}
   }
@@ -847,30 +1320,44 @@ function step(dt){
     if(dist>3200&&!anyAlert){f.alive=false;f.m.visible=false;}
   }
 
+  // GREEN PHONE EDIT: v3 helicopter door gunner. unlimited ammo, about seven in ten rounds hit, air threats first
+  if(A.heli&&!grounded){
+    doorT-=dt;
+    if(doorT<=0){const e=nearestEnemy(pos,700,true);if(e){doorT=0.22;fireT=0.8;autoShot(tmp2.copy(pos).addScaledVector(V(1,0,0).applyQuaternion(q),1.4).clone(),e,0.7,6);beep(150,0.04,0.02,'square',80);}}
+  }
+  stepDrones(dt);stepSAM(dt);stepWingman(dt);stepStrikers(dt);stepWaves(dt);
+  if(mode!=='play')return;
+
   // GREEN PHONE EDIT: debris and blast rings
   for(const d of debris){if(d.life<=0)continue;d.life-=dt;d.v.y-=20*dt;d.m.position.addScaledVector(d.v,dt);d.m.rotation.x+=d.spin.x*dt;d.m.rotation.y+=d.spin.y*dt;if(d.life<=0)d.m.visible=false;}
   for(const r of rings){if(r.life<=0)continue;r.life-=dt;const t=1-r.life/r.max;r.m.scale.setScalar(2+t*r.size);r.m.material.opacity=1-t;if(r.life<=0)r.m.visible=false;}
 
   // GREEN PHONE EDIT: jet pose and engine note
   jet.position.copy(pos);jet.quaternion.copy(q).multiply(tmpQ.setFromAxisAngle(NZ,bank));
-  if(engGain&&S.sound){engGain.gain.value=0.035;engOsc.frequency.value=48+throttle*70+speed*0.08;}
+  if(A.heli)jet.quaternion.multiply(tmpQ.setFromAxisAngle(AX,-hs/maxS*0.22+vyH*0.002));
+  if(jet.userData.gear)jet.userData.gear.visible=grounded||agl<30;
+  spinParts(dt,grounded&&!A.heli?throttle:1);
+  if(engGain&&S.sound){
+    const chop=A.heli?0.55+0.45*Math.abs(Math.sin(runT*Math.PI*7)):1;
+    engGain.gain.value=0.035*chop;engOsc.frequency.value=A.snd[1]+throttle*60+speed*0.08;
+  }
   spotted=Math.max(0,spotted-dt);
 }
 
 // GREEN PHONE EDIT: cameras
 function placeCamera(dt){
-  if(S.view==='cockpit'&&mode!=='menu'){
+  if(S.view==='cockpit'){
     jet.visible=false;
-    camera.position.copy(V(0,0.9,-1.4).applyQuaternion(q).add(pos));
+    camera.position.copy(V(A.cock[0],A.cock[1],A.cock[2]).applyQuaternion(q).add(pos));
     camera.quaternion.copy(q).multiply(tmpQ.setFromAxisAngle(NZ,bank));
   }else{
-    if(mode==='play'||mode==='menu')jet.visible=true;
-    const flat=tmp.set(fwd.x,0,fwd.z).normalize();
-    const want=tmp2.copy(pos).addScaledVector(flat,-24).addScaledVector(upW,7).addScaledVector(fwd,-4);
+    if(mode==='play')jet.visible=true;
+    const cs=A.view/16,flat=tmp.set(fwd.x,0,fwd.z).normalize();
+    const want=tmp2.copy(pos).addScaledVector(flat,-24*cs).addScaledVector(upW,7*cs).addScaledVector(fwd,-4);
     const gh=H(want.x,want.z)+4;if(want.y<gh)want.y=gh;
     chaseCam.lerp(want,1-Math.exp(-dt*6));
     camera.position.copy(chaseCam);
-    camLook.copy(pos).addScaledVector(fwd,30);
+    camLook.copy(pos).addScaledVector(fwd,30*cs);
     camera.up.set(0,1,0);camera.lookAt(camLook);camera.rotateZ(-bank*0.3);
   }
   if(shake>0){shake=Math.max(0,shake-dt);camera.position.x+=rnd(-.5,.5)*shake;camera.position.y+=rnd(-.5,.5)*shake;}
@@ -889,45 +1376,51 @@ function paintHud(dt){
   if(lockT){st='MISSILE INBOUND, FLARE';hot=true;}
   else if(anyAlert){st='TRACKED, BREAK LINE OF SIGHT';hot=true;}
   else if(maxMeter>0.05)st='RADAR SWEEP, GET LOW';
-  else if(phase==='home')st='RETURN TO BASE';
+  else if(M.type==='defend'&&phase==='strike'){const inb=drones.filter(d=>d.alive).length+spawnQ.length;st='WAVE '+waveIdx+' OF '+M.waves.length+'   '+inb+' INBOUND   SAM '+(sam?sam.ammo:0);hot=inb>0;}
+  else if(phase==='home')st=grounded?'ROLL TO A STOP':'RETURN TO BASE, LAND';
+  else if(grounded)st=A.heli?'PULL BACK TO LIFT OFF':'ON THE RUNWAY';
   status.textContent=st;status.className='status'+(hot?' hot':'');
   hudT-=dt;
   if(hudT<=0){
     hudT=0.1;
     $('dSpd').textContent=Math.round(speed);$('dAlt').textContent=Math.round(agl);
-    $('dAltBox').className=agl<25?'warn':'';$('dBmb').textContent=bombsLeft;$('dFlr').textContent=flaresLeft;
-    $('dHp').textContent=Math.round(hp);$('dHpBox').className=hp<40?'warn':'';
-    $('bombN').textContent=bombsLeft;$('flareN').textContent=flaresLeft;
-    $('chasehud').textContent='SPD '+Math.round(speed)+'   ALT '+Math.round(agl)+'   HULL '+Math.round(hp)+'%';
+    $('dAltBox').className=agl<25&&!grounded?'warn':'';$('dBmb').textContent=bombsLeft;$('dFlr').textContent=flaresLeft;
+    $('dHp').textContent=Math.round(hp/hpMax*100);$('dHpBox').className=hp<hpMax*0.4?'warn':'';
+    $('bombN').textContent=bombsLeft;$('flareN').textContent=flaresLeft;$('droneN').textContent=dronesLeft;
+    $('chasehud').textContent='SPD '+Math.round(speed)+'   ALT '+Math.round(agl)+'   HULL '+Math.round(hp/hpMax*100)+'%';
     drawRadar();
   }
   // GREEN PHONE EDIT: objective marker, nearest live target or the base
   let goal=null,label='';
   if(phase==='strike'){let best=1e9;targets.forEach(t=>{if(!t.alive)return;const d=t.p.distanceTo(pos);if(d<best){best=d;goal=t.p;}});if(goal)label='TARGET '+(best/1000).toFixed(1)+'km';}
-  else{goal=V(0,0,RUNWAY.hl);label='BASE '+(pos.distanceTo(goal)/1000).toFixed(1)+'km';if(Math.hypot(pos.x,pos.z-RUNWAY.hl)<500){goal=V(0,0,-RUNWAY.hl);label='RUNWAY';}}
+  else{goal=V(0,0,RUNWAY.hl);label='AIRFIELD '+(pos.distanceTo(goal)/1000).toFixed(1)+'km';if(Math.hypot(pos.x,pos.z-RUNWAY.hl)<500){goal=V(0,0,-RUNWAY.hl);label='RUNWAY';}}
+  if(M.type==='defend'&&phase==='strike'){goal=null;let best=1e9;drones.forEach(d=>{if(!d.alive)return;const dd=d.m.position.distanceTo(pos);if(dd<best){best=dd;goal=d.m.position;}});label=goal?(goal&&best<1000?Math.round(best)+'m':(best/1000).toFixed(1)+'km')+' DRONE':'';}
+  if(grounded&&phase==='home')goal=null;
   placeMark(goal,phase==='home'?'base':'',label);
   // GREEN PHONE EDIT: bomb pipper, simulated fall from right now
   const pip=$('pip');
-  if(bombsLeft>0&&phase==='strike'&&agl>8){
-    const p=tmp3.copy(pos),v=V().copy(vel);let t=0;
-    while(t<9){v.y-=62*0.05;p.addScaledVector(v,0.05);t+=0.05;if(p.y<H(p.x,p.z))break;}
+  if(bombsLeft>0&&phase==='strike'&&agl>8&&!grounded){
+    const rk=P.type==='rocket',gg=rk?8:62,p=tmp3.copy(pos),v=V().copy(vel);let t=0;
+    if(rk)v.addScaledVector(fwd,260);
+    while(t<9){v.y-=gg*0.05;p.addScaledVector(v,0.05);t+=0.05;if(p.y<H(p.x,p.z))break;}
     const s=toScreen(p);
     if(s.front&&s.inside){pip.style.display='block';pip.style.left=s.x+'px';pip.style.top=s.y+'px';
-      const near=targets.some(tg=>tg.alive&&Math.hypot(tg.p.x-p.x,tg.p.z-p.z)<38);pip.style.borderColor=near?'#3f8a3f':'#d2601a';pip.style.width=pip.style.height=near?'26px':'18px';pip.style.margin=near?'-13px 0 0 -13px':'-9px 0 0 -9px';}
+      const near=targets.some(tg=>tg.alive&&Math.hypot(tg.p.x-p.x,tg.p.z-p.z)<38*P.radius);pip.style.borderColor=near?'#3f8a3f':'#d2601a';pip.style.width=pip.style.height=near?'26px':'18px';pip.style.margin=near?'-13px 0 0 -13px':'-9px 0 0 -9px';}
     else pip.style.display='none';
   }else pip.style.display='none';
 }
 
-// GREEN PHONE EDIT: attract mode, the jet cruises over the terrain behind the menu
-function attract(dt){
+// GREEN PHONE EDIT: v2 hangar preview. the chosen aircraft sits on the runway while the camera circles it
+function hangar(dt){
   runT+=dt;
-  const t=runT*0.12;
-  bank=Math.sin(t*1.3)*0.35;
-  q.premultiply(tmpQ.setFromAxisAngle(AY,-Math.sin(bank)*0.4*dt));
-  fwd.set(0,0,-1).applyQuaternion(q);speed=110;vel.copy(fwd).multiplyScalar(speed);pos.addScaledVector(vel,dt);
-  const want=H(pos.x,pos.z)+90,ahead=H(pos.x+fwd.x*200,pos.z+fwd.z*200)+90;pos.y+=(Math.max(want,ahead)-pos.y)*(1-Math.exp(-dt*1.5));
-  updateTerrain(pos.x,pos.z);
-  jet.position.copy(pos);jet.quaternion.copy(q).multiply(tmpQ.setFromAxisAngle(NZ,bank));
+  const gy=H(0,60)+A.gear;
+  jet.visible=true;jet.position.set(0,gy,60);jet.quaternion.identity();
+  if(jet.userData.gear)jet.userData.gear.visible=true;
+  spinParts(dt,0.15);
+  const a=runT*0.22,R=A.view*1.25;
+  camera.position.set(Math.sin(a)*R,gy+R*0.28,60+Math.cos(a)*R);
+  camera.up.set(0,1,0);camera.lookAt(0,gy+A.view*0.04,60);
+  if(innerWidth>innerHeight){camera.rotateY(0.28);}
   for(const s of sites){if(s.alive)s.m.userData.dish.rotation.y+=dt*1.4;}
 }
 
@@ -937,17 +1430,17 @@ function loop(now){
   requestAnimationFrame(loop);
   const dt=Math.min(0.05,(now-lastT)/1000);lastT=now;
   if(mode==='play'){step(dt);if(mode==='play')paintHud(dt);}
-  else if(mode==='menu')attract(dt);
+  else if(mode==='menu')hangar(dt);
   else if(mode==='end'){
     for(const d of debris){if(d.life<=0)continue;d.life-=dt;d.v.y-=20*dt;d.m.position.addScaledVector(d.v,dt);if(d.life<=0)d.m.visible=false;}
     for(const r of rings){if(r.life<=0)continue;r.life-=dt;const t=1-r.life/r.max;r.m.scale.setScalar(2+t*r.size);r.m.material.opacity=1-t;if(r.life<=0)r.m.visible=false;}
   }
   if(toastT>0){toastT-=dt;if(toastT<=0)$('toast').style.opacity=0;}
-  if(mode!=='pause')placeCamera(dt);
+  if(mode!=='pause'&&mode!=='menu')placeCamera(dt);
   renderer.render(scene,camera);
 }
 
-applySettings();
+setAircraft();applySettings();
 genMission(S.mission);resetRun();chaseCam.copy(pos).add(V(0,10,30));
 paintMenu();
 requestAnimationFrame(loop);
