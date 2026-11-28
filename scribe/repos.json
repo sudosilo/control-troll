@@ -158,8 +158,8 @@
    "summary": "A field log with a map, receipts, mileage, and an Android app that tracks stops",
    "name": "Field Twin",
    "latest": {
-    "date": "2026-11-21",
-    "text": "Added a Charging station place type with its own sign and its own form."
+    "date": "2026-11-27",
+    "text": "Added a ticket clock that logs time on site on the ticket and syncs it. Added a work clock, so every locker visit logs itself with no ticket needed."
    }
   },
   "mohavetech-website": {
@@ -1268,8 +1268,8 @@
    "summary": "A vertical climbing game with many modes and global leaderboards",
    "name": "Ascend",
    "latest": {
-    "date": "2026-11-24",
-    "text": "Added a global leaderboard that shows over the game, backed by a new leaderboard service. Added challenge, career, gauntlet, jewels, and marathon modes, each with its own leaderboard. The climb now has five height zones, solid blocks, a ghost replay, synth sound, and vibration. New pickups include shrink and grow, slow motion, and a trail blazer. The glider now burns out after ten seconds."
+    "date": "2026-11-25",
+    "text": "Fixed a cloud kingdom crash and made the game loop crash proof. Added northern lights and emerald night zones, and career result screens with a time board for each level. Marathon mode is now an endless sideways run on climb physics, where the abyss drops you from the sky, and it has its own leaderboard. Version 2.0 added fuel mode, where gems are fuel and every gem in a stretch levels you up at the gate, and the side scroll engine gained all the climb power-ups."
    }
   },
   "mohavetech-contracts": {
@@ -2996,7 +2996,7 @@
    "category": "Tools",
    "latest": {
     "date": "2026-11-25",
-    "text": "Created ClipRig, an Android phone app with a screen recorder, a highlight finder, a clip editor, a library, a games list, settings, and an updater. The build now uses the Android tools already on the build machine."
+    "text": "Added themes with intro animations and a live preview tab, and a rapid fire montage mode. Added a live camera source, any video in the inbox, a fast forward recap style, highlight speed, and rapid fire that fills short footage with fast forward replays. Added a music tab with a song queue, previews, a song start point, and a new music button on clips. The advertised link is now separate from the play address, with an intro line, pop up lines dropped into clips, and a default text editor. The top bar has an update button, and the app checks for updates whenever you return to it."
    }
   },
   "2026-11-25-blue-manualrebuild": {
@@ -3008,7 +3008,7 @@
    "category": "Tools",
    "latest": {
     "date": "2026-11-25",
-    "text": "Created Manual Rebuild, a tool that turns manual figures into parts. Version 2 added a parts studio that traces figures into polygon parts and exports them as SVG. It also shows an exploded 3D view with a spin control and an explode slider."
+    "text": "Added a book mode with page turning, two page spreads, pinch zoom, wear that builds with use, glare that follows tilt, bookmarks, notes, search, and added photo pages. Added a library of books where you can combine two books page by page or in sequence, pull picked pages from another book, compare side by side, and save and load whole books. Version 4 then lets you drag a figure up off a page into a 3D wireframe."
    }
   },
   "2026-11-25-ten-turn-machine": {
@@ -3063,8 +3063,8 @@
    "summary": "An endless side scroller with kinetic obstacles, zones, and combos",
    "category": "Games",
    "latest": {
-    "date": "2026-11-26",
-    "text": "Flight rings, updrafts, and islands are twice as high. The ground now sits at 70 percent of the height on tall screens, and the canvas uses a lighter resolution."
+    "date": "2026-11-27",
+    "text": "Version 7 added Up Mode, with vertical towers, left and right steering, and bounce ledges that work on their own. Version 8 added floor levels where a tower top becomes the new floor, cliff drops with gliders, and air traffic during flight stretches."
    }
   },
   "2026-11-25-green-starfighter": {
@@ -3136,11 +3136,11 @@
    "urls": [],
    "private": false,
    "name": "Ghost Wing",
-   "summary": "Repo named Ghost Wing whose page is currently a tile placing game",
+   "summary": "An aircraft game with a hangar, loadouts, and drone defense missions",
    "category": "Games",
    "latest": {
-    "date": "2026-11-26",
-    "text": "Created Ghost Wing v1 as a single page tile placing game."
+    "date": "2026-11-27",
+    "text": "Replaced the tile game that landed here by mistake with Ghost Wing, an aircraft game. Version 2 added a hangar menu, five aircraft, loadouts, and runway takeoff and landing. Version 3 added a door gunner, a SAM battery, attack drones, FPV quads, defense missions, and wingman and strike drones."
    }
   },
   "2026-11-26-orange-centipede": {
@@ -3165,8 +3165,70 @@
    "summary": "A rocket flight simulator where you stack parts, stage, and fly missions",
    "category": "Tools",
    "latest": {
-    "date": "2026-11-26",
-    "text": "Created Rocketbench, a time step rocket simulation with part stacking, staging, and missions."
+    "date": "2026-11-27",
+    "text": "Version 2 added a round planet with orbits, a thermal model, drogue and main parachutes, and rocket tiers with a hangar. The orbit map now shows live known satellite orbits (ISS, Tiangong, Hubble, GPS, geostationary) with a nearest satellite readout. Added Match the ISS and Hubble Shell missions, and a Pajamastan Space Administration link with a live space weather GO or HOLD badge."
+   }
+  },
+  "2026-11-27-purple-sodashelf": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Games",
+   "summary": "An isometric pixel game about stocking a soda kiosk shelf",
+   "name": "Soda Shelf",
+   "latest": {
+    "date": "2026-11-27",
+    "text": "Created Soda Shelf, an isometric pixel game about stocking a soda kiosk. The first build has one kiosk, one shelf, and twenty sodas. Customers walk up and buy, cash builds in the till, and an upgrades panel is ready."
+   }
+  },
+  "2026-11-27-orange-whatareyou": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Games",
+   "summary": "A collection of 24 short quizzes that tell you which thing you are",
+   "name": "What Are You",
+   "latest": {
+    "date": "2026-11-27",
+    "text": "Created What Are You, a collection of ten question quizzes that tell you which thing you are. Added result cards, a wall of your results, an image prompt for each result, and twelve new quizzes. Added the Big Test, a 50 question personality test that fills in all 24 quiz results, and a Match Me view that uses it."
+   }
+  },
+  "2026-11-27-orange-lumbricus": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Games",
+   "summary": "A burrowing game where you play a worm in soil",
+   "name": "Lumbricus",
+   "latest": {
+    "date": "2026-11-27",
+    "text": "Created Lumbricus, a burrowing game where you play a worm digging through soil. Version 2 doubled the size of the world and added relics and a day and night cycle. Version 3 added a choice of worm species and ground, a burrow network, tunnel art to dig for bonus points, loops that pay a pocket bonus, more relics, and sound."
+   }
+  },
+  "2026-11-27-blue-familytree": {
+   "apps": [],
+   "urls": [],
+   "private": false,
+   "category": "Games",
+   "summary": "A year by year family and career simulation",
+   "name": "Family Tree",
+   "latest": {
+    "date": "2026-11-27",
+    "text": "Created Family Tree, a year by year page with money, income per year, a home, and a family tree. Version 2 added careers, skill fields, lineage, synergies, alignment, hobbies, and disability. Version 3 added over a hundred careers, western jobs, kid jobs, hobby tiers, work modes, windfalls, and business roles."
+   }
+  },
+  "2026-11-27-orange-parallaxwire": {
+   "apps": [],
+   "urls": [
+    "https://2026-11-27-orange-parallaxwire.vercel.app"
+   ],
+   "private": false,
+   "category": "Tools",
+   "summary": "Turns multi phone photos and 3D captures into refined images and wireframes",
+   "name": "Parallax Wire",
+   "latest": {
+    "date": "2026-11-27",
+    "text": "Created Parallax Wire, a page that turns photos from several phones into refined images and 3D wireframes. Added a phone rig where each phone joins and takes the next free frame corner, with synced capture, and a relay server so phones on cellular data can link up. Repeated captures now stack into one depth model. Added object cutout, which keeps only the object in the mesh, and a built in feature matcher that replaced a heavier image library, plus a timeout on the object finder."
    }
   }
  }
