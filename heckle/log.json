@@ -1,6 +1,76 @@
 {
   "heckles": [
     {
+      "date": "2026-11-28T07:56:40Z",
+      "repo": "2026-11-26-orange-rocketbench",
+      "sha": "28dcf7996904c7115e2174c08acb782ac06400eb",
+      "message": "Known satellite orbits shared with Rocketbench",
+      "heckle": "Seventy four lines of index.html, a changelog entry and a README rewrite, and the changelog line is the same sentence pasted twice like a politician repeating a talking point. It also claims live orbits, Match the ISS and Hubble Shell missions, and a space weather badge, none of which this commit is about, so the message reads like a campaign promise nobody audited. The o_iss mission check calls knownSat('ISS') and quietly returns false when the fetch fails, so the intern's flagship mission is dead whenever the network sneezes, and the line is one unbroken blob you cannot review.\n\nFix it: Split the o_iss and Hubble mission lines in index.html so a human can read them. Make the check function in index.html tell the player when knownSat has no data instead of silently failing. Write a commit message that matches what the diff does. Stop pasting the same sentence into CHANGELOG.md and README.md by hand."
+    },
+    {
+      "date": "2026-11-28T07:56:40Z",
+      "repo": "pajamastan-space-administration",
+      "sha": "2c5bbc1af724d681262e7069e5321ba4189aef30",
+      "message": "Known satellite orbits shared with Rocketbench",
+      "heckle": "One line. One. You added Access-Control-Allow-Origin star to the proxy in api/pajamastan-space-administration-v1-tle.js, and the commit message brags about shared satellite orbits like a bailout was a triumph. The wildcard means any site on earth can leech your CelesTrak proxy and burn your function quota, and the message says nothing about that. You also did this one commit after the page change instead of together with it, so the history looks like a filibuster of tiny steps. Did you learn version control from a cereal box?\n\nFix it: Restrict the CORS origin in api/pajamastan-space-administration-v1-tle.js to the Rocketbench domain instead of star. Write a message that says CORS header added. Squash tiny follow up commits into the change that needs them."
+    },
+    {
+      "date": "2026-11-28T07:56:40Z",
+      "repo": "2026-11-26-orange-rocketbench",
+      "sha": "6230edfc2c89c44a5bc06db588ddab7872a3a9b6",
+      "message": "Link Rocketbench and Pajamastan Space Administration, launch space weather badge",
+      "heckle": "You bolted a badge onto the HUD in index.html with a nine and a half pixel font, a two pixel padding, and a fixed pointer-events auto link wedged into a heads up display that already caps its width at 46vw. On a phone that is a cramped postage stamp nobody can tap without hitting the neighboring view buttons. The hard coded blue 1e6fd9 ignores the theme variables used everywhere else, like a senator ignoring the budget. And the GO or HOLD badge depends on a live fetch you did not visibly guard in this diff.\n\nFix it: Raise the #psalink font size and tap target in index.html to at least 12px and 32px tall. Replace the hard coded blue with a theme variable. Show a neutral state in the badge when the space weather fetch fails. Test the HUD at a narrow phone width."
+    },
+    {
+      "date": "2026-11-28T07:56:40Z",
+      "repo": "pajamastan-space-administration",
+      "sha": "d4b01d619818d749f3e185cfdd1f41b83e9815af",
+      "message": "Link Rocketbench and Pajamastan Space Administration, launch space weather badge",
+      "heckle": "Five lines pasted into pajamastan-space-administration-v4.html, and the intern still did it with inline style attributes, a hard coded production URL, and an emoji bullet, like decorating a government shutdown with balloons. The details element is set to open, so every visitor gets an ad for your other toy shoved above the About section whether they asked or not. The page already keeps a whole stylesheet and you ignored it for style equals color var blue font weight 700 text decoration none.\n\nFix it: Move the inline style on the Rocketbench link in pajamastan-space-administration-v4.html into a class in the stylesheet. Drop the open attribute on the new details block so it stays collapsed. Keep the URL in one config constant instead of a pasted string."
+    },
+    {
+      "date": "2026-11-28T07:56:40Z",
+      "repo": "sudosilo.github.io",
+      "sha": "6a87a44e5bc22139712472294a492007c05a88d2",
+      "message": "Redirect to the new domain",
+      "heckle": "A fourteen line redirect page that does the same redirect three times: a meta refresh, a canonical link, and a location.replace script. That is a redundant bureaucracy, a committee of three to do the job of one. The body is hard coded white while the title is just the domain name, so anyone with scripts blocked stares at a blank sans serif sentence with no context. Also the commit message is three words, which is about the effort a filibuster gets.\n\nFix it: Keep the meta refresh in index.html and delete the location.replace script, since one redirect is enough. Give the page a real title and a visible message. Add a 404.html so old deep links also land on the new domain."
+    },
+    {
+      "date": "2026-11-28T07:56:40Z",
+      "repo": "2026-11-27-purple-sodashelf",
+      "sha": "b9e6979f38e892b03d734a76755a32ba069a31e0",
+      "message": "First build: kiosk, one shelf, twenty sodas, customers, cash",
+      "heckle": "A seven hundred line index.html dumped in one commit titled First build, as if the intern believes version control is a trash can. Styles, game logic, and markup all live in one file with no tests and no history, so any bug is a needle in a haystack the size of a federal budget. The color-scheme is pinned to light, so anyone on a dark phone gets a glaring white kiosk at night. And the commit before it is a literally empty README, which tells me the plan was vibes.\n\nFix it: Split the style and script blocks of index.html into separate files so diffs mean something. Respect prefers-color-scheme or at least dim the paper color. Commit in small steps, not one lump. Add a real line to README.md."
+    },
+    {
+      "date": "2026-11-28T07:56:40Z",
+      "repo": "2026-11-27-purple-sodashelf",
+      "sha": "f3cba068bcede44e79f081a74f4d29e5743e4650",
+      "message": "Initial commit",
+      "heckle": "An initial commit that adds a README with zero lines in it. Zero. That is a campaign promise with no platform, a ribbon cutting for an empty lot. It is a file that exists only so the repo is not embarrassing, and it is still embarrassing. The message says Initial commit like the intern has never typed anything else, and the repo name wears a date and a color prefix as if naming it were the actual work.\n\nFix it: Write at least one sentence in README.md saying what Soda Shelf is and how to play. List the controls and the goal. Add the live link once the deploy works."
+    },
+    {
+      "date": "2026-11-28T07:56:40Z",
+      "repo": "2026-11-27-orange-whatareyou",
+      "sha": "94ba45f858afcbcbd1af19ce84fe8b28cc563a99",
+      "message": "Add Big Test: 50 IPIP items fill all 24 quiz results, Big Test matching",
+      "heckle": "Fifty personality questions hand typed as nested arrays in index.html, each one a bare string with two mystery numbers after it, so the trait index and the sign are guessed from position like a ballot with no labels. A single flipped minus sign changes a person's verdict, and nobody can check them by eye. Then the commit claims they fill all 24 quiz results, a promise bigger than a stimulus package and just as unaudited. This file is now over a thousand lines of data and logic soup, and the intern thinks that is a feature.\n\nFix it: Give each BIG item in index.html named fields instead of two bare numbers. Add a small check that every trait has an equal count of positive and negative items. Move the quiz data out of index.html into its own file. Show the player how the Big Test match was computed."
+    },
+    {
+      "date": "2026-11-28T07:56:40Z",
+      "repo": "2026-11-27-orange-lumbricus",
+      "sha": "e53e6bee3f8217f8a5b5bcd79f0820cc571c4a1c",
+      "message": "LUMBRICUS v3: species and ground picker, burrow network, tunnel art, loops, more relics, sound",
+      "heckle": "Four hundred thirty seven lines added and one hundred fifty one deleted in one index.html, with a message listing six features like a bill stuffed with riders nobody read. Species picker, ground picker, burrow network, tunnel art, loops, relics and sound in a single commit means that when it breaks, and it will, you cannot bisect to the culprit. The title screen was rewritten from top to bottom in the same pass, so a cosmetic redo is hiding inside a gameplay overhaul. Sound on a phone game with a user-select none body, great.\n\nFix it: Break LUMBRICUS v3 into separate commits for the picker, the burrow network, and sound. Start audio only after a tap in index.html so mobile browsers do not block it. Do not hide the title redesign inside gameplay changes."
+    },
+    {
+      "date": "2026-11-28T07:56:40Z",
+      "repo": "2026-11-27-orange-whatareyou",
+      "sha": "dcd1e813547c9054a11e57292da0b84980a70344",
+      "message": "Add result cards, wall identity and image prompt, 12 new quizzes",
+      "heckle": "Twelve new quizzes in one commit, and the sandwich quiz at the top of the diff has its results as plain two item arrays with a icon and blurb thrown in, copy pasted twelve times with only the nouns changed. This is a clone factory wearing a quiz hat, a ministry of redundancy producing the same thing again. Add result cards, a wall identity and an image prompt on top and you get a three hundred fifty line pile that changes everything and tests nothing. The score arrays use bare numbers that nobody can read, so one typo gives every sandwich the wrong personality.\n\nFix it: Generate the twelve quizzes in index.html from one template function and a small data table instead of pasting them. Label the answer weight numbers or add a check that every result is reachable. Keep result cards and the image prompt in their own commit."
+    },
+    {
       "date": "2026-11-27T23:29:55Z",
       "repo": "RTSS",
       "sha": "fa6ef76427184f19b6228f4e284cf7dcee378e98",
@@ -1329,76 +1399,6 @@
       "sha": "f580716f",
       "message": "Music mode: Rain view, color jar catching game, rain over every view",
       "heckle": "A rain view, a jar catching game and a rain overlay for every view, all in one commit, like a spending bill with eleven riders nobody read. cityseek-music-v1.js grows another 168 lines of makeRain, packed with one line canvas math nobody could debug at gunpoint. In city-seek-v2.html the Top down button got renamed to Top while you squeezed Rain into the same segmented row, so on a phone that row is now four buttons fighting over the same thumb space. The changelog entry is another wall of prose that reads like a campaign press release. This is the fifth Music mode commit in four hours and the feature still has no tests, no pause for sanity, and no end in sight.\n\nFix it: Check the viewSeg row in city-seek-v2.html on a narrow phone and let it wrap. Split makeRain out of cityseek-music-v1.js into its own file before that one hits a thousand lines. Put the jar game behind its own switch instead of hiding it under Hunt while it plays. Stop piling one changelog paragraph per commit and write one per day."
-    },
-    {
-      "date": "2026-11-14T01:28:38Z",
-      "repo": "city-seek",
-      "sha": "15266a45",
-      "message": "Music mode: infographic layer, isometric train buildings with cutaways, pylon wires, richer street detail",
-      "heckle": "You added an infographic layer, isometric prisms, cutaway offices with coiled water pipes and sagging pylon wires to a music visualizer that already could not stop adding things. The shade and prism helpers in cityseek-music-v1.js parse hex colors with parseInt and quietly return the input if it is not a hash color, so any named color just goes unshaded and nobody finds out. The optInfo checkbox in city-seek-v2.html is one more toggle in a menu that is turning into a cockpit. Nine more toggles and this is a flight simulator for people who can not decide what the app is. The scope creep here is a bipartisan achievement.\n\nFix it: Make shade in cityseek-music-v1.js handle rgb and named colors or throw. Cache the prism and cutaway drawing instead of redrawing it all every frame. Group the toggles in city-seek-v2.html into a collapsible panel. Decide what the app is before the next commit."
-    },
-    {
-      "date": "2026-11-14T01:28:38Z",
-      "repo": "city-seek",
-      "sha": "435b048a",
-      "message": "Music mode top down: place beat objects on matching ground, cars follow streets",
-      "heckle": "The buildSurf function in cityseek-music-v1.js redraws the entire city onto a canvas one sixth the size, then reads every pixel back and guesses what surface it is by nearest color distance against six hard coded RGB triples in GROUND. That is not a ground map, that is a guess dressed up as a map, and any palette tweak turns every car into a tree. The try and catch wrapped around all of it swallows every error and sets surf to null, so when it breaks it breaks silently, the way a bad budget does. getImageData on a large canvas will also stall a phone.\n\nFix it: Ask the city generator for road and grass data instead of reverse engineering it from pixels in buildSurf. Log the error in that catch instead of eating it. Build the map once and cache it per city code. Test with the Muted look, since GROUND only matches the Bold colors."
-    },
-    {
-      "date": "2026-11-14T01:28:38Z",
-      "repo": "city-seek",
-      "sha": "ab2deaf6",
-      "message": "Music mode: Lanes view, a street styled MIDI waterfall where each band queues up in its own lanes",
-      "heckle": "A MIDI waterfall wearing a street costume, built in makeLanes with lane x positions typed in as magic numbers like 75, 145, 215, 285, 342 and 382. Change the width and the whole thing is garbage, because LX is a table of guesses scaled by u. The rows helper loops over the full screen height with fillRect every frame, so your visualizer is burning battery to draw painted lines. The view button row in city-seek-v2.html got Train shortened from Train window, so now nobody can tell what anything is. You are decorating a street while the app has no way to stop playing a song.\n\nFix it: Derive the lane positions in makeLanes from lane count and width instead of the LX table. Draw the road rows once to an offscreen canvas and scroll that. Put the full word back on the Train button in city-seek-v2.html. Add a stop and pause control while you are in there."
-    },
-    {
-      "date": "2026-11-14T01:28:38Z",
-      "repo": "city-seek",
-      "sha": "29e09fc4",
-      "message": "Music mode: centered action line with hit bursts per band, kick frame pulse, direct city drawing to stop tile glitches",
-      "heckle": "You moved the beat line to the middle of the screen and renamed it action line, which is the kind of rebranding a failing agency does instead of fixing the product. In lineFg, a kick pulses a full screen strokeRect that gets thicker with each hit, so a fast kick pattern is a strobe, and nobody warned the person with the song loaded. The tile glitch fix is to just draw the whole city every frame, which is brute force, not a fix, and the commit says so itself. The new E.between in cityseek-beat-v1.js slices the events with no bounds check on the lower search.\n\nFix it: Cap the kick pulse in lineFg in cityseek-music-v1.js and add a reduce flashing switch. Find why the tiles glitched instead of redrawing the whole city. Check E.between in cityseek-beat-v1.js with an empty event list and a time before the start. Rename the label back or update the README, since it still says beat line."
-    },
-    {
-      "date": "2026-11-14T01:28:38Z",
-      "repo": "city-seek",
-      "sha": "b4d713a3",
-      "message": "Music mode: beat synced city visualizer, train window view, stream hunt, video recording",
-      "heckle": "A beat engine, two views, a hunt mode and a video recorder in a single commit, 531 lines of cityseek-music-v1.js plus 159 of cityseek-beat-v1.js landed in one lump like a omnibus bill nobody read. You bolted a music visualizer onto a hidden object game, so the thing now has a Mode switch for two unrelated apps sharing a menu and a name. The README had the old game description rewritten around it. REC saves a video of the scene by recording the canvas, which means browser support is a coin flip, and the commit has no fallback story for a phone that cannot record. The two files stuff everything into closures so none of it can be tested.\n\nFix it: Ship the beat engine, the stages and the recorder as separate commits next time. Check for MediaRecorder support in cityseek-music-v1.js and hide REC when it is missing. Decide whether Music mode belongs in the City Seek game or in its own repo. Update the README so it does not lie about what the game is."
-    },
-    {
-      "date": "2026-11-14T01:28:38Z",
-      "repo": "delivery-twin",
-      "sha": "99b4153d",
-      "message": "Add step 10 script",
-      "heckle": "You committed step10.sh, a seventy line heredoc patch script that cds into a home folder on your phone, and pushed it to the repo root like a ransom note to your future self. This is the tenth one of these, and each of them gets deleted a commit later, which makes the history a pile of scripts that exist for one commit. It writes a .dt-cats.js full of category keys and colors with the CATEGORIES object assumed to already exist, so the script only works if the exact right file state is there. This is not version control, this is a filibuster where the filibusterer is yourself.\n\nFix it: Stop committing step scripts and edit index.html directly. Add step10.sh to a gitignore if you must keep it. Put the DT_HIDDEN_CATS and DT_FULL_Q lists into a data file instead of generating them through a heredoc. Delete the dead step files already sitting in the repo root."
-    },
-    {
-      "date": "2026-11-14T01:28:38Z",
-      "repo": "delivery-twin",
-      "sha": "b8f18235",
-      "message": "Own inventory app, Offers tab replaces Roads",
-      "heckle": "You renamed the Roads tab label to Offers but left the element id as tabRoads, so every handler, style and test says Roads while the screen says Offers, a classic rebrand that fixes the sign and leaves the building. The same change in index.html swaps the Violet site constant to a new URL while the CQ_ANON Supabase key and the old field-twin-glaucous site stay hard coded in the client of a 4000 line single file page. The anon key is meant to be public, fine, but only if row level security is actually on for every table, and nothing in this diff shows it. The file is now so big that nobody can review it.\n\nFix it: Rename tabRoads and anything that uses it to match Offers in index.html. Move the CQ_URL, CQ_ANON and site constants into one config object. Confirm row level security on every table the anon key can reach. Split the inline script out of index.html before it grows past five thousand lines."
-    },
-    {
-      "date": "2026-11-14T01:28:38Z",
-      "repo": "delivery-twin-violet",
-      "sha": "892836b7",
-      "message": "Delivery Twin inventory from Field Twin Violet",
-      "heckle": "This is a copy of the field twin violet api repo with find and replace on the name, and it shows: the changelog entries are dated 2026-11-06 and 2026-11-10, ahead of a repo that was created today, so it is a clone with a fake past. delivery-twin-violet-v1-fix-user.mjs sets a known password on a Supabase user from a keys.json file with a hard coded project URL, and a user admin script has no business living in the app repo. The api folder holds db.js which builds tables and row level security at every boot with ssl rejectUnauthorized set to false, which turns off certificate checking. The first commit is a hundred files deep and nobody can review it.\n\nFix it: Turn on certificate checking in the Pool in delivery-twin-violet-api/db.js or pin the database certificate. Move delivery-twin-violet-v1-fix-user.mjs and the find-project script out of the repo. Replace the cloned changelog and README with ones that describe this app. Add the config file to gitignore, as you did, and check the history for any real keys."
-    },
-    {
-      "date": "2026-11-14T01:28:38Z",
-      "repo": "delivery-twin",
-      "sha": "1488cc7d",
-      "message": "Add step 9 script",
-      "heckle": "Step 9. The ninth time you pushed a heredoc patch script to the repo root instead of just editing the files, and this one is a twenty six line shell script that clones the violet api repo with gh repo clone, strips the git folder and renames files with a for loop and a bash substitution. If any of those renames misses, you now have a half renamed repo and no way to tell. It deletes git metadata with rm -rf and depends on a home directory path that only exists on your phone. It gets deleted the very next commit, so it is a one shot tool pretending to be source code.\n\nFix it: Run the setup script on your phone and never commit it. Add a check that the target folder is empty before rm -rf in step9.sh. Pin the clone to a commit instead of whatever the default branch is. Delete leftover step files from the repo root."
-    },
-    {
-      "date": "2026-11-13T19:48:37Z",
-      "repo": "2026-10-18-orange-testbed",
-      "sha": "9465a931",
-      "message": "grok 2026-11-13T170846",
-      "heckle": "The grok bot pushed contrib/grok/2026-11-13T170846.json straight to the branch with no pull request, no review and no check, under your own name, three times in under two minutes at 170726, 170813 and 170846. It defines a lot with a zone, then places a Brittlebush Cottage with a wall height of 3658 and hand typed coordinates. Three machine commits in two minutes is a loop with no brakes, and your branch protection is a decorative sign. Every other bot at least goes through a pull request. This one just walks in the front door.\n\nFix it: Make grok open a pull request like the other bots instead of pushing to the branch. Turn on branch protection for the main branch of the testbed. Rate limit the grok turns so three do not land in two minutes. Pretty print the contrib JSON files."
     }
   ]
 }
