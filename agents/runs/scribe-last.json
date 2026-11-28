@@ -1,15 +1,15 @@
 {
- "duration_api_ms": 110021,
+ "duration_api_ms": 163745,
  "stop_reason": "end_turn",
- "session_id": "87f388f5-d653-48eb-86be-6c28dc08e413",
- "total_cost_usd": 0.4475873,
+ "session_id": "92ab8a56-df17-43a7-ba09-34815341b122",
+ "total_cost_usd": 0.7278090999999999,
  "usage": {
-  "input_tokens": 38,
-  "cache_creation_input_tokens": 54179,
-  "cache_read_input_tokens": 835661,
-  "output_tokens": 14710,
+  "input_tokens": 58,
+  "cache_creation_input_tokens": 83385,
+  "cache_read_input_tokens": 1753239,
+  "output_tokens": 21870,
   "output_tokens_details": {
-   "thinking_tokens": 2282
+   "thinking_tokens": 6219
   },
   "server_tool_use": {
    "web_search_requests": 0,
@@ -17,19 +17,19 @@
   },
   "service_tier": "standard",
   "cache_creation": {
-   "ephemeral_1h_input_tokens": 54179,
+   "ephemeral_1h_input_tokens": 83385,
    "ephemeral_5m_input_tokens": 0
   },
   "inference_geo": "global",
   "iterations": [
    {
     "input_tokens": 2,
-    "output_tokens": 605,
-    "cache_read_input_tokens": 66752,
-    "cache_creation_input_tokens": 828,
+    "output_tokens": 622,
+    "cache_read_input_tokens": 95973,
+    "cache_creation_input_tokens": 813,
     "cache_creation": {
      "ephemeral_5m_input_tokens": 0,
-     "ephemeral_1h_input_tokens": 828
+     "ephemeral_1h_input_tokens": 813
     },
     "type": "message"
    }
@@ -38,22 +38,6 @@
   "fallback_credit": null
  },
  "modelUsage": {
-  "claude-sonnet-5-5": {
-   "inputTokens": 38,
-   "outputTokens": 14710,
-   "cacheReadInputTokens": 835661,
-   "cacheCreationInputTokens": 54179,
-   "webSearchRequests": 0,
-   "costUSD": 0.44745809999999997,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 2282,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 54179,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
   "claude-haiku-5-5": {
    "inputTokens": 1207,
    "outputTokens": 17,
@@ -67,6 +51,22 @@
    "cacheCreationEphemeral5mInputTokens": 0,
    "cacheCreationEphemeral1hInputTokens": 0,
    "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 58,
+   "outputTokens": 21870,
+   "cacheReadInputTokens": 1753239,
+   "cacheCreationInputTokens": 83385,
+   "webSearchRequests": 0,
+   "costUSD": 0.7276798999999999,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 6219,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 83385,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
@@ -101,36 +101,20 @@
  },
  "safety_stops": 0,
  "is_error": false,
- "num_turns": 20,
+ "num_turns": 29,
  "subtype": "success",
  "api_error_status": null,
- "result": "I documented 12 repos this run. All 12 were new backfills, so each got a README, a CHANGELOG and release jobs in `publish.json`. They are the day-named repos from 2026-11-25 and 2026-11-26: ten-turn-machine, turret-sight, lobhill, hopper, starfighter, bingo and its server, casino and its server, ghostwing, centipede and rocketbench.\n\nEvery docs push and the profile push went through, and I made no `vercel.json` change. None of those repos has app files in a subfolder that the root deploy would miss.\n\nBackfills left: none. The repos that still need work are all ones with new commits, not backfills. They are field-twin, hubview, mohavetech-website, itchy-troll, the testbed, blue-agent, downfree-foundry, scores, shared-server and a few Android and backend repos. The 12-repo cap was reached, so they wait for the next run. Most of the other newer `pushedAt` values were bulk bot touches, not real commits.\n\nI reached every repo I tried. I did not touch `sudosilo`, `control-troll` or `heckle-troll`, which are skipped on purpose.\n\nThe profile in `sudosilo/sudosilo` is rebuilt and pushed. The state files, the new notes and `publish.json` are committed to control-troll main as \"scribe state\". The 12 releases and repo settings will be created when the `scribe-publish` workflow runs; I did not check that it has run.\n\nThe Ghost Wing repo's only page is a copy of Tile-topia, so I described it as a tile game under the Ghost Wing name. `agents/notes/general.md` is now well over 40 lines, and I added to it without condensing it.",
- "ttft_ms": 1104,
+ "result": "I documented 12 repos this run, hit the cap, and pushed one docs commit to each. All pushes went through and I reached every repo.\n\nFive were backfills, the new 2026-11-27 repos: sodashelf, whatareyou, lumbricus, familytree and parallaxwire. The other seven were updates: rocketbench, ghostwing, hopper, field-twin, cliprig, manualrebuild and ascend. I also pushed the refreshed profile README to the sudosilo repo, and committed `scribe/state.json`, `scribe/repos.json`, `scribe/publish.json` and the notes to control-troll main as \"scribe state\".\n\nNo backfills remain. About 16 repos still have real changes waiting for the next run. The biggest are hubview, with 189 commits since the last run, and mohavetech-website, with 47 bot sync commits. The others are itchy-troll, the testbed, blue-agent, downfree-foundry, scores, shared-server, fleetindex, filecensus, birdix, final-vector, rogue-rail, artifactium, centipede and pajamastan-space-administration.\n\nOver 100 more repos only have footer seal commits or developer README cleanups. I left them untouched, since they change nothing a user sees and only need a lastSha refresh.\n\nNone of the new repos needed a root `vercel.json` change. Only parallaxwire is live at its own address. The `.vercel.app` names for whatareyou, lumbricus and familytree answer 200 but serve a different page, so I gave those no homepage.\n\nThe release and repo-setting jobs are queued in `publish.json` for the scribe-publish workflow; I haven't confirmed that workflow ran.\n\n`agents/notes/general.md` is now well over 40 lines. I added three notes and did not condense it.",
+ "ttft_ms": 1060,
  "type": "result",
- "duration_ms": 153566,
- "uuid": "01b09ba2-2b19-4021-bcee-31d6d4dcbf6e",
- "ttft_stream_ms": 827,
- "time_to_request_ms": 366,
- "first_content_frame_ms": 828,
+ "duration_ms": 317110,
+ "uuid": "ff7fa1aa-f028-4e4e-8b5d-c9f65389b294",
+ "ttft_stream_ms": 782,
+ "time_to_request_ms": 303,
+ "first_content_frame_ms": 783,
  "queued_turn_count": 0,
  "result_index": 0,
  "model_usage_since_last_result": {
-  "claude-sonnet-5-5": {
-   "inputTokens": 38,
-   "outputTokens": 14710,
-   "cacheReadInputTokens": 835661,
-   "cacheCreationInputTokens": 54179,
-   "webSearchRequests": 0,
-   "costUSD": 0.44745809999999997,
-   "contextWindow": 1000000,
-   "maxOutputTokens": 128000,
-   "thinkingTokens": 2282,
-   "cacheCreationEphemeral5mInputTokens": 0,
-   "cacheCreationEphemeral1hInputTokens": 54179,
-   "canonicalModel": "claude-sonnet-5-5",
-   "provider": "firstParty",
-   "costBasis": "list"
-  },
   "claude-haiku-5-5": {
    "inputTokens": 1207,
    "outputTokens": 17,
@@ -144,6 +128,22 @@
    "cacheCreationEphemeral5mInputTokens": 0,
    "cacheCreationEphemeral1hInputTokens": 0,
    "canonicalModel": "claude-haiku-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-sonnet-5-5": {
+   "inputTokens": 58,
+   "outputTokens": 21870,
+   "cacheReadInputTokens": 1753239,
+   "cacheCreationInputTokens": 83385,
+   "webSearchRequests": 0,
+   "costUSD": 0.7276798999999999,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 6219,
+   "cacheCreationEphemeral5mInputTokens": 0,
+   "cacheCreationEphemeral1hInputTokens": 83385,
+   "canonicalModel": "claude-sonnet-5-5",
    "provider": "firstParty",
    "costBasis": "list"
   }
