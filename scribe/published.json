@@ -553,7 +553,19 @@
   "sudosilo/2026-11-26-orange-casino@v2026.11.26",
   "sudosilo/2026-11-26-green-ghostwing@v2026.11.26",
   "sudosilo/2026-11-26-orange-centipede@v2026.11.26",
-  "sudosilo/2026-11-26-orange-rocketbench@v2026.11.26"
+  "sudosilo/2026-11-26-orange-rocketbench@v2026.11.26",
+  "sudosilo/2026-11-27-purple-sodashelf@v2026.11.27",
+  "sudosilo/2026-11-27-orange-whatareyou@v2026.11.27",
+  "sudosilo/2026-11-27-orange-lumbricus@v2026.11.27",
+  "sudosilo/2026-11-27-blue-familytree@v2026.11.27",
+  "sudosilo/2026-11-27-orange-parallaxwire@v2026.11.27",
+  "sudosilo/2026-11-26-orange-rocketbench@v2026.11.27",
+  "sudosilo/2026-11-26-green-ghostwing@v2026.11.27",
+  "sudosilo/2026-11-25-green-hopper@v2026.11.27",
+  "sudosilo/field-twin@v2026.11.27",
+  "sudosilo/2026-11-25-blue-cliprig@v2026.11.25-2",
+  "sudosilo/2026-11-25-blue-manualrebuild@v2026.11.25-2",
+  "sudosilo/ascend@v2026.11.25"
  ],
  "settings": {
   "sudosilo/groundcore": {
@@ -2710,12 +2722,12 @@
    ]
   },
   "sudosilo/2026-11-26-green-ghostwing": {
-   "d": "Early Ghost Wing repo whose page is a tile placing map building game.",
+   "d": "Aircraft game with a hangar, five aircraft, loadouts, and drone defense missions.",
    "h": "",
    "t": [
-    "game",
-    "puzzle",
-    "tiles"
+    "aircraft",
+    "arcade",
+    "game"
    ]
   },
   "sudosilo/2026-11-26-orange-centipede": {
@@ -2736,6 +2748,52 @@
     "rocket",
     "simulator",
     "tool"
+   ]
+  },
+  "sudosilo/2026-11-27-purple-sodashelf": {
+   "d": "Isometric pixel game where you stock a soda kiosk shelf and sell to customers.",
+   "h": "",
+   "t": [
+    "game",
+    "pixel-art",
+    "simulator"
+   ]
+  },
+  "sudosilo/2026-11-27-orange-whatareyou": {
+   "d": "A collection of 24 short quizzes that tell you which cheese, or what else, you are.",
+   "h": "",
+   "t": [
+    "fun",
+    "game",
+    "quiz"
+   ]
+  },
+  "sudosilo/2026-11-27-orange-lumbricus": {
+   "d": "A burrowing game where you play a worm digging through soil, relics, and danger.",
+   "h": "",
+   "t": [
+    "arcade",
+    "game",
+    "worm"
+   ]
+  },
+  "sudosilo/2026-11-27-blue-familytree": {
+   "d": "A year by year family and career simulation with money, skills, and a growing tree.",
+   "h": "",
+   "t": [
+    "family",
+    "game",
+    "simulator"
+   ]
+  },
+  "sudosilo/2026-11-27-orange-parallaxwire": {
+   "d": "Turns multi phone parallax photos and 3D captures into refined images and wireframes.",
+   "h": "https://2026-11-27-orange-parallaxwire.vercel.app",
+   "t": [
+    "3d",
+    "photo",
+    "tool",
+    "vercel"
    ]
   }
  }
